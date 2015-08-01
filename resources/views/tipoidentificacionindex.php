@@ -16,12 +16,7 @@
 				{!!link_to_route('tipoidentificacion.create', 'Nuevo', null, ['class'=>'btn btn-primary'])!!}
 			</td>
 		</tr>
-		<tr>
-			<td>Acci&oacute;n</td>
-			<td>Id</td>
-			<td>C&oacute;digo</td>
-			<td>Nombre</td>
-		</tr>
+		
 		@foreach ($tipoidentificacion as $dato)
 		<tr>
 			<td>
