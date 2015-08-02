@@ -1,0 +1,6 @@
+<?php /*
+Copyright (c) 2014 Trirand Ltd
+If you want to obtain license for this product, go to http://www.guriddo.net
+*/
+${"GLO\x42ALS"}["\x6fg\x79\x6aq\x74ib"]="pC\x6cas\x73Nam\x65";${"\x47\x4c\x4f\x42\x41LS"}["\x68z\x6f\x6ag\x72"]="pC\x6c\x61\x73\x73\x46\x69\x6c\x65\x50\x61\x74\x68";date_default_timezone_set("E\x75r\x6f\x70\x65/L\x6fn\x64\x6f\x6e");PHPSuito_Autoloader::Register();class PHPSuito_Autoloader{public static function Register(){if(function_exists("\x5f_a\x75t\x6flo\x61d")){spl_autoload_register("__au\x74\x6f\x6coa\x64");}return spl_autoload_register(array("P\x48PS\x75\x69\x74o\x5fAu\x74\x6fl\x6fa\x64e\x72","\x4coa\x64"));}public static function Load($pClassName){$ijhijiut="\x70\x43\x6c\x61ssN\x61me";if((class_exists(${$ijhijiut},FALSE))){return FALSE;}${${"\x47LOB\x41LS"}["\x68z\x6f\x6a\x67\x72"]}=PHPSUITO_ROOT.${${"\x47L\x4fB\x41\x4cS"}["o\x67\x79\x6a\x71\x74i\x62"]}.".\x70hp";if((file_exists(${${"G\x4c\x4f\x42\x41\x4c\x53"}["h\x7a\x6f\x6ag\x72"]})===FALSE)||(is_readable(${${"G\x4cO\x42\x41L\x53"}["h\x7a\x6f\x6a\x67r"]})===FALSE)){return FALSE;}$lrpyid="\x70Cl\x61\x73\x73\x46\x69le\x50\x61t\x68";require(${$lrpyid});}}
+?>
