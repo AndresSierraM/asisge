@@ -23,14 +23,14 @@
   <div class="form-container">
 	<fieldset id="pais-form-fieldset">	
 		<div class="form-group" id='test'>
-          {!! Form::label('codigoPais', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
+          {!!Form::label('codigoPais', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoPais',null,['class'=>'form-control','placeholder'=>'Ingresa el código del país'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!!Form::hidden('id', null, array('id' => 'id')) !!}
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@
 
 		
 		<div class="form-group" id='test'>
-          {!! Form::label('nombrePais', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+          {!!Form::label('nombrePais', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">

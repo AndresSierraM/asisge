@@ -18,7 +18,7 @@ Route::get('/', function()
 
 Route::get('/grid', function()
 {
-	return view('paisgrid');
+	return view('paisgridphp');
 });
 
 Route::resource('pais','PaisController');
