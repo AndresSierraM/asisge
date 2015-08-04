@@ -7,15 +7,15 @@ define('DB_USER', 'root');     // Your MySQL username
 define('DB_PASSWORD', ''); // ...and password
 define('DB_DATABASE', 'asisge'); // ...and password
 
-define('ABSPATH', '../../public/assets/guriddosuito/');
+define('ABSPATH', '../public/assets/guriddosuito/');
 // Form settings
 $SERVER_HOST = "";        // the host name
 $SELF_PATH = "";    // the web path to the project without http
 $CODE_PATH = "../../public/assets/guriddosuito/php/PHPSuito/"; // the physical path to the php files
 // include the jqGrid Class
-require_once "../../public/assets/guriddosuito/php/PHPSuito/jqGrid.php";
+require_once "../public/assets/guriddosuito/php/PHPSuito/jqGrid.php";
 // include the driver class
-require_once "../../public/assets/guriddosuito/php/PHPSuito/DBdrivers/jqGridPdo.php";
+require_once "../public/assets/guriddosuito/php/PHPSuito/DBdrivers/jqGridPdo.php";
 // include the datepicker
 //require_once ABSPATH."php/jqCalendar.php";
 
@@ -32,7 +32,7 @@ $grid->dataType = 'json';
 // Let the grid create the model
 $grid->setColModel();
 // Set the url from where we obtain the data
-$grid->setUrl('paisgrid.blade.php');
+$grid->setUrl('grid');
 // Set some grid options
 $grid->setGridOptions(array(
     "caption"=>"Paises",
@@ -150,13 +150,20 @@ $grid->callGridMethod('#grid', 'bindKeys');
 
 // add a custom button via the build in callGridMethod
 // note the js: before the function
-$buttonoptions = array("#pager",
+$buttonadicionar = array("#pager",
+    array("caption"=>"Adicionar", "title"=>"Adicionar", "onClickButton"=>"js: function(){
+        window.location.href = 'pais/create'}"
+    )
+);
+$grid->callGridMethod("#grid", "navButtonAdd", $buttonadicionar);
+
+/*$buttonoptions = array("#pager",
     array("caption"=>"Pdf", "title"=>"Exportar a Pdf", "onClickButton"=>"js: function(){
         jQuery('#grid').jqGrid('excelExport',{tag:'pdf', url:'grid.php'});}"
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonoptions);
-
+*/
 // Set it to toppager
 $buttonoptions[0] = "#grid_toppager";
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonoptions);

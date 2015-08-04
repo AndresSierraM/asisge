@@ -17,7 +17,7 @@ class PaisController extends Controller
     public function index()
     {
         $pais = \App\Pais::All();
-        return view('paisindex',compact('pais'));
+        return view('grid',compact('pais'));
     }
 
     /**
