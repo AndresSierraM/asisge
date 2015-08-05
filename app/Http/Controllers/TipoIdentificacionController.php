@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\TipoIdentificacionRequest;
 use App\Http\Controllers\Controller;
 
 class TipoIdentificacionController extends Controller
@@ -17,7 +18,7 @@ class TipoIdentificacionController extends Controller
     public function index()
     {
         $tipoidentificacion = \App\TipoIdentificacion::All();
-        return view('tipoidentificacionindex',compact('tipoidentificacion'));
+        return view('tipoidentificaciongrid',compact('tipoidentificacion'));
     }
 
     /**
@@ -36,7 +37,7 @@ class TipoIdentificacionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(TipoIdentificacionRequest $request)
     {
         \App\TipoIdentificacion::create([
             'codigoTipoIdentificacion' => $request['codigoTipoIdentificacion'],
@@ -76,7 +77,7 @@ class TipoIdentificacionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id,Request $request)
+    public function update($id,TipoIdentificacionRequest $request)
     {
         
         $tipoidentificacion = \App\TipoIdentificacion::find($id);

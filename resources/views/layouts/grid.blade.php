@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>jqGrid PHP Demo</title>
+    <title>Asisge S.A.</title>
     {!! Html::style('assets/guriddosuito/css/jquery-ui.css'); !!}
     {!! Html::style('assets/guriddosuito/css/trirand/ui.jqgrid.css'); !!}
     {!! Html::style('assets/guriddosuito/css/ui.multiselect.css'); !!}

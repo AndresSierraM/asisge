@@ -1,6 +1,8 @@
 @extends('layouts.principal')
 
 @section('content')
+@include('alerts.request')
+
 	@if(isset($tipoidentificacion))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($tipoidentificacion,['route'=>['tipoidentificacion.destroy',$tipoidentificacion->idTipoIdentificacion],'method'=>'DELETE'])!!}
@@ -49,8 +51,15 @@
           </div>
         </div>
     </fieldset>
-	{!!Form::submit('Grabar',["class"=>"btn btn-primary"])!!}
-
+	@if(isset($tipoidentificacion))
+ 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
+  		@else
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+  		@endif
+ 	@else
+  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+ 	@endif
 	{!! Form::close() !!}
 	</div>
 </div>

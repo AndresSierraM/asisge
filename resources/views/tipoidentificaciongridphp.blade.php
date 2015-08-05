@@ -2,10 +2,10 @@
 //------------------------------------
 // CONFIGURACION DE LA BASE DE DATOS
 //------------------------------------
-//define('DB_DSN','mysql:host=localhost;dbname=asisge');
-//define('DB_USER', 'root');     // Your MySQL username
-//define('DB_PASSWORD', ''); // ...and password
-//define('DB_DATABASE', 'asisge'); // ...and password
+/*define('DB_DSN','mysql:host=localhost;dbname=asisge');
+define('DB_USER', 'root');     // Your MySQL username
+define('DB_PASSWORD', ''); // ...and password
+define('DB_DATABASE', 'asisge'); // ...and password*/
 
 // Ruta absoluta de las librearias de la Grid
 define('ABSPATH', '../public/assets/guriddosuito/');
@@ -29,19 +29,19 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT idPais, codigoPais, nombrePais FROM pais';
+$grid->SelectCommand = 'SELECT idTipoIdentificacion, codigoTipoIdentificacion, nombreTipoIdentificacion FROM tipoidentificacion';
 // Establecer el formato de salida en JSON
 $grid->dataType = 'json';
 // Permitir que la grid cree el modelo
 $grid->setColModel();
 // establecer la URL desde donde se obtienen los datos
-$grid->setUrl('paisgrid');
+$grid->setUrl('tipoidentificaciongrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
-    "caption"=>"Paises",
+    "caption"=>"Tipos de Identificacion",
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
-    "sortname"=>"nombrePais",
+    "sortname"=>"nombreTipoIdentificacion",
     "multiSort"=>true,
     "sortable"=>true,
     "altRows"=>true,
@@ -57,7 +57,7 @@ $grid->setGridOptions(array(
 // P R O P I E D A D E S   D E   L O S   C A M P O S
 // ----------------------------------------------------
 
-$grid->setColProperty("idPais", array(
+$grid->setColProperty("idTipoIdentificacion", array(
 	"searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
 	"formatter"=>"integer",
 	"formatoptions"=>array("thousandsSeparator"=>","),
@@ -65,13 +65,13 @@ $grid->setColProperty("idPais", array(
     )
 );
 
-$grid->setColProperty("codigoPais", array(
+$grid->setColProperty("codigoTipoIdentificacion", array(
 	"searchoptions"=>array("sopt"=>array("bw", "eq","ne","le","lt","ge","gt")),
 	"label"=>"C&oacute;digo"
     )
 );
 
-$grid->setColProperty("nombrePais", array(
+$grid->setColProperty("nombreTipoIdentificacion", array(
 	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
 	"label"=>"Nombre"
     )
@@ -106,7 +106,7 @@ $grid->callGridMethod('#grid', 'bindKeys');
 //------------------------------
 $buttonadicionar = array("#pager",
     array("caption"=>"Adicionar", "title"=>"Adicionar un nuevo registro", "onClickButton"=>"js: function(){
-        window.location.href = 'pais/create'}"
+        window.location.href = 'tipoidentificacion/create'}"
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonadicionar);
@@ -120,7 +120,7 @@ $buttonmodificar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'pais/'+id+'/edit';
+          window.location.href = 'tipoidentificacion/'+id+'/edit';
         } else {
           alert('Por favor seleccione el registro a Editar');
           return;
@@ -140,7 +140,7 @@ $buttoneliminar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'pais/'+id+'/edit?accion=eliminar';
+          window.location.href = 'tipoidentificacion/'+id+'/edit?accion=eliminar';
         } else {
           alert('Por favor seleccione el registro a Eliminar');
           return;

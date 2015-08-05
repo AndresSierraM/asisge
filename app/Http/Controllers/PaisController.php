@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\PaisRequest;
 use App\Http\Controllers\Controller;
 
 class PaisController extends Controller
@@ -36,7 +37,7 @@ class PaisController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(PaisRequest $request)
     {
         \App\Pais::create([
             'codigoPais' => $request['codigoPais'],
@@ -76,7 +77,7 @@ class PaisController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id,Request $request)
+    public function update($id,PaisRequest $request)
     {
         
         $pais = \App\Pais::find($id);

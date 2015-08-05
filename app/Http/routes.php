@@ -16,10 +16,14 @@ Route::get('/', function()
 	return view('welcome');
 });
 
-Route::get('/grid', function()
+Route::get('/paisgrid', function()
 {
 	return view('paisgridphp');
 });
 
+Route::get('/tipoidentificaciongrid', function()
+{
+	return view('tipoidentificaciongridphp');
+});
 Route::resource('pais','PaisController');
 Route::resource('tipoidentificacion','TipoIdentificacionController');
