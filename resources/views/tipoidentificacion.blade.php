@@ -31,7 +31,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::text('codigoTipoIdentificacion',null,['class'=>'form-control','placeholder'=>'Ingresa el código del país'])!!}
+              {!!Form::text('codigoTipoIdentificacion',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la identificacion'])!!}
               {!! Form::hidden('id', null, array('id' => 'id')) !!}
             </div>
           </div>
@@ -46,7 +46,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-				{!!Form::text('nombreTipoIdentificacion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del país'])!!}
+				{!!Form::text('nombreTipoIdentificacion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la identificacion'])!!}
             </div>
           </div>
         </div>
