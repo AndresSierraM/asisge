@@ -2,7 +2,30 @@
 
 @section('content')
 @include('alerts.request')
+{!!Html::script('js/compania.js')!!}
+<script>
 
+  var companiaObjetivos = JSON.parse('<?php echo json_encode($companiaObjetivo);?>');
+  var valor = [0,0,''];
+
+  $(document).ready(function()
+  {
+    
+    objetivos = new Atributos('objetivos','contenedor_objetivos','objetivos_');
+    objetivos.campos = ['idCompaniaObjetivo','nombreCompaniaObjetivo'];
+    objetivos.valor = [0,''];
+    objetivos.tipo = ['hidden','text'];
+    objetivos.estilo = ['','width: 250px;'];
+    objetivos.clase = ['',''];
+    objetivos.sololectura = [false,false];
+
+    for(var j=0, k = companiaObjetivos.length; j < k; j++)
+    {
+        objetivos.agregarCampos(JSON.stringify(companiaObjetivos[j]));
+    }
+
+  });
+</script>
 	@if(isset($compania))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($compania,['route'=>['compania.destroy',$compania->idCompania],'method'=>'DELETE'])!!}
@@ -13,12 +36,11 @@
 		{!!Form::open(['route'=>'compania.store','method'=>'POST'])!!}
 	@endif
 
-
 <div id='form-section' >
 
 	<div class="container">
 		<div class="navbar-header pull-left">
-	  	<a class="navbar-brand"  >Tipos de Identificacion</a>
+	  	<a class="navbar-brand"  >Compa&ntilde;&iacute;a</a>
 	</div>
 	</div>
 
@@ -62,8 +84,13 @@
             </div>
           </div>
         </div>
+        <div>
+            <a href="javascript:objetivos.agregarCampos(valor,'A')">Agregar Objetivos</a>
+        </div>
+        <div id="contenedor_objetivos">
 
 
+        </div>
     </fieldset>
 	@if(isset($compania))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -77,4 +104,5 @@
 	{!! Form::close() !!}
 	</div>
 </div>
+
 @stop

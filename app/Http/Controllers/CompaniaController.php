@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\CompaniaRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CompaniaObjetivo;
 
 class CompaniaController extends Controller
 {
@@ -50,6 +51,18 @@ class CompaniaController extends Controller
             'metasCompania' => $request['metasCompania']
             ]);
 
+        $compania = \App\Compania::All()->last();
+
+        $contador = count($request['nombreCompaniaObjetivo']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+            \App\CompaniaObjetivo::create([
+            'Compania_idCompania' => $compania->idCompania,
+            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i]
+           ]);
+        }
+
         return redirect('/compania');
     }
 
@@ -73,7 +86,11 @@ class CompaniaController extends Controller
     public function edit($id)
     {
         $compania = \App\Compania::find($id);
-        return view('compania',['compania'=>$compania]);
+        $companiaObjetivo = \App\CompaniaObjetivo::select('idCompaniaObjetivo','nombreCompaniaObjetivo')
+                                                    ->where('Compania_idCompania',$id)
+                                                    ->get();
+
+        return view('compania',['compania'=>$compania],compact('companiaObjetivo'));
     }
 
     /**
@@ -85,13 +102,23 @@ class CompaniaController extends Controller
      */
     public function update($id,CompaniaRequest $request)
     {
-        
         $compania = \App\Compania::find($id);
+        echo $compania.' ---- ';
         $compania->fill($request->all());
-        $compania->save();
+        echo $compania.' ??? ';
+        //$compania->save();
 
-        return redirect('/compania');
-
+        $companiaObjetivo = \App\CompaniaObjetivo::select('idCompaniaObjetivo','nombreCompaniaObjetivo')
+                                                    ->where('Compania_idCompania',$id)
+                                                    ->get();
+        echo $companiaObjetivo.' ---- ';
+        $contador = count($request['nombreCompaniaObjetivo']);
+        //return redirect('/compania');
+        for($i = 0; $i < $contador; $i++)
+        {
+            echo $request['nombreCompaniaObjetivo'][$i].' ----- campos';
+            
+        }
     }
 
     /**
