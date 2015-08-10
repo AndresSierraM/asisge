@@ -21,6 +21,15 @@ Route::get('/paisgrid', function()
 	return view('paisgridphp');
 });
 
+Route::get('/departamentogrid', function(){
+	return view('departamentogridphp');
+});
+
+
+Route::get('/ciudadgrid', function(){
+	return view('ciudadgridphp');
+});
+
 Route::get('/tipoidentificaciongrid', function()
 {
 	return view('tipoidentificaciongridphp');
@@ -40,3 +49,5 @@ Route::resource('pais','PaisController');
 Route::resource('tipoidentificacion','TipoIdentificacionController');
 Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
 Route::resource('compania','CompaniaController');
+Route::resource('departamento','DepartamentoController');
+Route::resource('ciudad','CiudadController');

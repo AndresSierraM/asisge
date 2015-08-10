@@ -10,6 +10,13 @@
 	{!!Html::style('assets/jquery-jqGrid-v4.8.0/css/ui.jqgrid.css'); !!}
 	{!!Html::style('assets/tutorial/css/main.css'); !!}
 	{!!Html::style('assets/tutorial/css/callouts.css'); !!}
+	{!!Html::style('choosen/docsupport/style.css'); !!}
+	{!!Html::style('choosen/docsupport/prism.css'); !!}
+	{!!Html::style('choosen/chosen.css'); !!}
+	<style type="text/css" media="all">
+	    /* fix rtl for demo */
+	    .chosen-rtl .chosen-drop { left: -9000px; }
+  	</style>
 	<!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	{!!Html::script('assets/tutorial/js/ie10-viewport-bug-workaround.js'); !!}
@@ -27,6 +34,22 @@
 	{!!Html::script('assets/jquery-jqMgVal-v0.1/jquery.jqMgVal.src.js'); !!}
 	{!!Html::script('assets/tutorial/js/helpers.js'); !!}
 	{!!Html::script('assets/tutorial/js/base.js'); !!}
+	{!!Html::script('choosen/chosen.jquery.js'); !!}
+  	{!!Html::script('choosen/docsupport/prism.js'); !!}
+  	<script type="text/javascript">
+    	$(document).ready(function (){
+		    var config = {
+		      '.chosen-select'           : {},
+		      '.chosen-select-deselect'  : {allow_single_deselect:true},
+		      '.chosen-select-no-single' : {disable_search_threshold:10},
+		      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+		      '.chosen-select-width'     : {width:"95%"}
+		    }
+		    for (var selector in config) {
+		      $(selector).chosen(config[selector]);
+		    }
+		});
+  	</script>
 	<title>Laravel jqGrid Tutorial</title>
 </head>
 <body id='body'>
