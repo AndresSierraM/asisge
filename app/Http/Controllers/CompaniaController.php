@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\CompaniaRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CompaniaObjetivo;
 
 class CompaniaController extends Controller
 {
@@ -50,6 +51,18 @@ class CompaniaController extends Controller
             'metasCompania' => $request['metasCompania']
             ]);
 
+        $compania = \App\Compania::All()->last();
+
+        $contador = count($request['nombreCompaniaObjetivo']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+            \App\CompaniaObjetivo::create([
+            'Compania_idCompania' => $compania->idCompania,
+            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i]
+           ]);
+        }
+
         return redirect('/compania');
     }
 
@@ -73,6 +86,7 @@ class CompaniaController extends Controller
     public function edit($id)
     {
         $compania = \App\Compania::find($id);
+        
         return view('compania',['compania'=>$compania]);
     }
 
@@ -85,13 +99,24 @@ class CompaniaController extends Controller
      */
     public function update($id,CompaniaRequest $request)
     {
-        
         $compania = \App\Compania::find($id);
+        
         $compania->fill($request->all());
         $compania->save();
+        
+        \App\CompaniaObjetivo::where('Compania_idCompania',$id)->delete();
+        
+        $contador = count($request['nombreCompaniaObjetivo']);
 
+        for($i = 0; $i < $contador; $i++)
+        {
+            \App\CompaniaObjetivo::create([
+            'Compania_idCompania' => $id,
+            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i]
+           ]);
+        }
+        
         return redirect('/compania');
-
     }
 
     /**
@@ -105,6 +130,7 @@ class CompaniaController extends Controller
     public function destroy($id)
     {
         \App\Compania::destroy($id);
+        \App\CompaniaObjetivo::where('Compania_idCompania',$id)->delete();
         return redirect('/compania');
     }
 }
