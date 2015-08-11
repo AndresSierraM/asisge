@@ -12,4 +12,9 @@ class CompaniaObjetivo extends Model
     protected $fillable = ['nombreCompaniaObjetivo','Compania_idCompania'];
 
     public $timestamps = false;
+
+    public function compania()
+    {
+    	return $this->hasOne('App\Compania','idCompania');
+    }
 }

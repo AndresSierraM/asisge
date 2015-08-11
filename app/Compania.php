@@ -12,4 +12,8 @@ class Compania extends Model
     protected $fillable = ['codigoCompania', 'nombreCompania'];
 
     public $timestamps = false;
+
+    public function companiaobjetivos(){
+		return $this->hasMany('App\CompaniaObjetivo','Compania_idCompania');
+    }
 }

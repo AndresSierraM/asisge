@@ -3,17 +3,17 @@
 @section('content')
 @include('alerts.request')
 {!!Html::script('js/compania.js')!!}
+
 <script>
 
-  var companiaObjetivos = JSON.parse('<?php echo json_encode($companiaObjetivo);?>');
-  var valor = [0,0,''];
+  var companiaObjetivos = '<?php echo (isset($compania) ? json_encode($compania->companiaobjetivos) : "");?>';
+  companiaObjetivos = (companiaObjetivos != '' ? JSON.parse(companiaObjetivos) : '');
+  var valor = [0,''];
 
-  $(document).ready(function()
-  {
+  $(document).ready(function(){
     
     objetivos = new Atributos('objetivos','contenedor_objetivos','objetivos_');
     objetivos.campos = ['idCompaniaObjetivo','nombreCompaniaObjetivo'];
-    objetivos.valor = [0,''];
     objetivos.tipo = ['hidden','text'];
     objetivos.estilo = ['','width: 250px;'];
     objetivos.clase = ['',''];
@@ -21,7 +21,7 @@
 
     for(var j=0, k = companiaObjetivos.length; j < k; j++)
     {
-        objetivos.agregarCampos(JSON.stringify(companiaObjetivos[j]));
+        objetivos.agregarCampos(JSON.stringify(companiaObjetivos[j]),'L');
     }
 
   });

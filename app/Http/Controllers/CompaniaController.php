@@ -86,11 +86,8 @@ class CompaniaController extends Controller
     public function edit($id)
     {
         $compania = \App\Compania::find($id);
-        $companiaObjetivo = \App\CompaniaObjetivo::select('idCompaniaObjetivo','nombreCompaniaObjetivo')
-                                                    ->where('Compania_idCompania',$id)
-                                                    ->get();
-
-        return view('compania',['compania'=>$compania],compact('companiaObjetivo'));
+        
+        return view('compania',['compania'=>$compania]);
     }
 
     /**
@@ -103,22 +100,23 @@ class CompaniaController extends Controller
     public function update($id,CompaniaRequest $request)
     {
         $compania = \App\Compania::find($id);
-        echo $compania.' ---- ';
+        
         $compania->fill($request->all());
-        echo $compania.' ??? ';
-        //$compania->save();
-
-        $companiaObjetivo = \App\CompaniaObjetivo::select('idCompaniaObjetivo','nombreCompaniaObjetivo')
-                                                    ->where('Compania_idCompania',$id)
-                                                    ->get();
-        echo $companiaObjetivo.' ---- ';
+        $compania->save();
+        
+        \App\CompaniaObjetivo::where('Compania_idCompania',$id)->delete();
+        
         $contador = count($request['nombreCompaniaObjetivo']);
-        //return redirect('/compania');
+
         for($i = 0; $i < $contador; $i++)
         {
-            echo $request['nombreCompaniaObjetivo'][$i].' ----- campos';
-            
+            \App\CompaniaObjetivo::create([
+            'Compania_idCompania' => $id,
+            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i]
+           ]);
         }
+        
+        return redirect('/compania');
     }
 
     /**
@@ -132,6 +130,7 @@ class CompaniaController extends Controller
     public function destroy($id)
     {
         \App\Compania::destroy($id);
+        \App\CompaniaObjetivo::where('Compania_idCompania',$id)->delete();
         return redirect('/compania');
     }
 }
