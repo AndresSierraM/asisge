@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class CompaniaRequest extends Request
+class PaqueteRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class CompaniaRequest extends Request
     public function rules()
     {
         return [
-            "codigoCompania" => "required|string",
-            "nombreCompania" => "required|string"
+            "ordenPaquete" => "required|integer",
+            "nombrePaquete" => "required|string"
         ];
     }
 }
+// ,            "iconoPaquete" => "required|mimes:jpg, jpeg, png, bmp, gif|max:3000"

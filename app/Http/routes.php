@@ -36,7 +36,16 @@ Route::get('/companiagrid', function()
 	return view('companiagridphp');
 });
 
+Route::get('/paquetegrid', function()
+{
+	return view('paquetegridphp');
+});
+
+
 Route::resource('pais','PaisController');
 Route::resource('tipoidentificacion','TipoIdentificacionController');
 Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
 Route::resource('compania','CompaniaController');
+Route::resource('paquete','PaqueteController');
+
+ 	

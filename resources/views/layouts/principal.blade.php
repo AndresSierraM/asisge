@@ -30,7 +30,7 @@
 	{!!Html::script('assets/jquery-jqMgVal-v0.1/jquery.jqMgVal.src.js'); !!}
 	{!!Html::script('assets/tutorial/js/helpers.js'); !!}
 	{!!Html::script('assets/tutorial/js/base.js'); !!}
-	<title>Laravel jqGrid Tutorial</title>
+	<title>Asisge S.A.</title>
 </head>
 <body id='body'>
 	
