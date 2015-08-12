@@ -16,6 +16,37 @@ Route::get('/', function()
 	return view('welcome');
 });
 
+Route::get('/asisge', function()
+{
+	return view('layouts.menuprincipal');
+});
+
+// ---------------------------------
+// Opciones del modulo de seguridad
+// ---------------------------------
+Route::get('/usuariogrid', function()
+{
+	return view('usuariogridphp');
+});
+
+Route::get('/paquetegrid', function()
+{
+	return view('paquetegridphp');
+});
+
+Route::get('/opciongrid', function()
+{
+	return view('opciongridphp');
+});
+
+Route::resource('usuario','UsuarioController');
+Route::resource('paquete','PaqueteController');
+Route::resource('opcion','OpcionController');
+
+
+// ---------------------------------
+// Archivos Maestros
+// ---------------------------------
 Route::get('/paisgrid', function()
 {
 	return view('paisgridphp');
@@ -45,12 +76,6 @@ Route::get('/companiagrid', function()
 	return view('companiagridphp');
 });
 
-Route::get('/paquetegrid', function()
-{
-	return view('paquetegridphp');
-});
-
-
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -58,6 +83,9 @@ Route::resource('ciudad','CiudadController');
 Route::resource('tipoidentificacion','TipoIdentificacionController');
 Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
 Route::resource('compania','CompaniaController');
-Route::resource('paquete','PaqueteController');
 
- 	
+
+
+// ---------------------------------
+// Documentos
+// ---------------------------------
