@@ -57,12 +57,24 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
+                <i class="fa fa-code"></i>
               </span>
               {!!Form::text('rutaOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa la ruta de acceso'])!!}
             </div>
           </div>
         </div>
+
+        <div class="form-group" id='test'>
+            {!!Form::label('Paquete_idPaquete', 'Paquete', array('class' => 'col-sm-2 control-label'))!!}
+            <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="fa fa-bars"></i>
+                        </span>
+                {!!Form::select('Paquete_idPaquete',$paquete, (isset($opcion) ? $opcion->Paquete_idPaquete : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Paquete"])!!}
+              </div>
+            </div>
+          </div>
 
         <div class="form-group" id='test'>
           {!! Form::label('iconoOpcion', 'Icono', array('class' => 'col-sm-2 control-label')) !!}
@@ -79,6 +91,7 @@
             </div>
           </div>
         </div>
+
 
     </fieldset>
 	@if(isset($opcion))

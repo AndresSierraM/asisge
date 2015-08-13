@@ -37,7 +37,8 @@ class OpcionController extends Controller
      */
     public function create()
     {
-        return view('opcion');
+        $paquete = \App\Paquete::All()->lists('nombrePaquete','idPaquete');
+        return view('opcion',compact('paquete','selected'));
     }
 
     /**
@@ -87,7 +88,8 @@ class OpcionController extends Controller
     public function edit($id)
     {
         $opcion = \App\Opcion::find($id);
-        return view('opcion',['opcion'=>$opcion]);
+        $paquete = \App\Paquete::All()->lists('nombrePaquete','idPaquete');
+        return view('opcion',compact('paquete'),['opcion'=>$opcion]);
     }
 
     /**

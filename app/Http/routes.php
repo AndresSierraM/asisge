@@ -11,10 +11,13 @@
 |
 */
 
-Route::get('/', function()
+/*Route::get('/', function()
 {
 	return view('welcome');
-});
+});*/
+
+// Creamos un Controlador para gestionar la autenticación en HomeController.
+//Route::controller('/','HomeController');
 
 Route::get('/asisge', function()
 {
@@ -24,9 +27,9 @@ Route::get('/asisge', function()
 // ---------------------------------
 // Opciones del modulo de seguridad
 // ---------------------------------
-Route::get('/usuariogrid', function()
+Route::get('/usersgrid', function()
 {
-	return view('usuariogridphp');
+	return view('usersgridphp');
 });
 
 Route::get('/paquetegrid', function()
@@ -39,7 +42,7 @@ Route::get('/opciongrid', function()
 	return view('opciongridphp');
 });
 
-Route::resource('usuario','UsuarioController');
+Route::resource('users','UsersController');
 Route::resource('paquete','PaqueteController');
 Route::resource('opcion','OpcionController');
 
@@ -71,6 +74,11 @@ Route::get('/frecuenciamediciongrid', function()
 	return view('frecuenciamediciongridphp');
 });
 
+Route::get('/procesogrid', function()
+{
+	return view('procesogridphp');
+});
+
 Route::get('/companiagrid', function()
 {
 	return view('companiagridphp');
@@ -82,6 +90,7 @@ Route::resource('ciudad','CiudadController');
 
 Route::resource('tipoidentificacion','TipoIdentificacionController');
 Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
+Route::resource('proceso','ProcesoController');
 Route::resource('compania','CompaniaController');
 
 

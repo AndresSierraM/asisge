@@ -11,7 +11,7 @@
 	
 	<div id='menu' class="container" role="main" data-current-page-width="">
 	<div class="row">
-		<a href="usuario" target="formularios">
+		<a href="users" target="formularios">
  			<img src="images/menu/iconos_sistema-10.png" width="48" title="Paises" />
 		</a>
 		<a href="paquete" target="#formularios">
@@ -38,7 +38,9 @@
 		<a href="frecuenciamedicion" target="formularios">
  			<img src="images/menu/icons 2-09.png" width="48" title="Frecuencias de Medicion" />
 		</a>
-		
+		<a href="proceso" target="formularios">
+ 			<img src="images/menu/iconos_sistema-09.png" width="48" title="Frecuencias de Medicion" />
+		</a>
 
 	</div>
 

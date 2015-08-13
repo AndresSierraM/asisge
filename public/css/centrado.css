@@ -1,0 +1,129 @@
+html {
+    height: 100%
+}
+body{
+    font-family: 'Arial';
+     height: 100%;
+    margin: 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e4ebef+29,cbdae0+61,b9ccd5+100 */
+background: #e4ebef; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMjklIiBzdG9wLWNvbG9yPSIjZTRlYmVmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNjElIiBzdG9wLWNvbG9yPSIjY2JkYWUwIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2I5Y2NkNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8cmVjdCB4PSItNTAiIHk9Ii01MCIgd2lkdGg9IjEwMSIgaGVpZ2h0PSIxMDEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+background: -moz-radial-gradient(center, ellipse cover,  #e4ebef 29%, #cbdae0 61%, #b9ccd5 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(29%,#e4ebef), color-stop(61%,#cbdae0), color-stop(100%,#b9ccd5)); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover,  #e4ebef 29%,#cbdae0 61%,#b9ccd5 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover,  #e4ebef 29%,#cbdae0 61%,#b9ccd5 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover,  #e4ebef 29%,#cbdae0 61%,#b9ccd5 100%); /* IE10+ */
+background: radial-gradient(ellipse at center,  #e4ebef 29%,#cbdae0 61%,#b9ccd5 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4ebef', endColorstr='#b9ccd5',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+
+}
+
+#contenedor {
+    line-height: 100px;
+    text-align: center;
+    width: 350px;
+    height: 250px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    background-image:url('../images/dni.png');
+    background-repeat: no-repeat;
+}
+
+#nombre{
+    position: absolute;
+    top: 106px;
+    right: 31px;
+    width: 136px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    z-index: 10;
+}
+
+#password{
+    position: absolute;
+    top: 143px;
+    right: 31px;
+    width: 136px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    z-index: 10;
+}
+
+#enviar{
+        background-image: url('../images/enviar-02.png');
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+    width: 31px;
+    height: 26px;
+    position: absolute;
+    top: 172px;
+    right: 30px;
+    cursor: pointer;
+    outline: none;
+}
+
+#footer{
+        background-color: #687887;
+    width: 100%;
+    height: 30px;
+    position: fixed;
+    left:0px;
+    bottom: 0px;
+    padding-bottom: 10px;
+}
+
+#footer p{
+    text-align: center;
+    color: white;
+    z-index: 10;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label:before {
+     content: "";
+    display: inline-block;
+    width: 13px;
+    height: 17px;
+    margin: 0 .5em 0 0;
+    background: #343C44;
+    vertical-align: bottom;
+    position: absolute;
+    bottom: 59px;
+    left: 183px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+input[type=checkbox]:checked + label:before {
+    content: "\2713";
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+    font-size: 15px;
+    color: #f3f3f3;
+    text-align: center;
+    line-height: 15px;
+}
+
+#tex-recordarme{
+        position: absolute;
+    top: 120px;
+    left: 199px;
+    color: #F9B03F;
+    font-size: 15px;
+}
+
+img{
+    position: absolute;
+    left: 30%;
+}
