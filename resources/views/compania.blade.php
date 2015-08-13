@@ -14,9 +14,10 @@
     
     objetivos = new Atributos('objetivos','contenedor_objetivos','objetivos_');
     objetivos.campos = ['idCompaniaObjetivo','nombreCompaniaObjetivo'];
-    objetivos.tipo = ['hidden','text'];
-    objetivos.estilo = ['','width: 250px;'];
-    objetivos.clase = ['',''];
+    objetivos.etiqueta = ['input','textarea'];
+    objetivos.tipo = ['hidden',''];
+    objetivos.estilo = ['','width: 600px; height: 100px;'];
+    objetivos.clase = ['','form-control'];
     objetivos.sololectura = [false,false];
 
     for(var j=0, k = companiaObjetivos.length; j < k; j++)
@@ -84,12 +85,17 @@
             </div>
           </div>
         </div>
-        <div>
-            <a href="javascript:objetivos.agregarCampos(valor,'A')">Agregar Objetivos</a>
-        </div>
-        <div id="contenedor_objetivos">
-
-
+        <div class="form-group" id='test'>
+          <div class="col-sm-10">
+            <div class="row show-grid">
+                <div class="col-md-1" style="width: 600px;">Objetivos</div>
+                <div class="col-md-1" style="width: 30px;"><a href="javascript:objetivos.agregarCampos(valor,'A')">+</a></div>
+                <div id="contenedor_objetivos">
+                </div>
+            </div>
+            
+            
+          </div>
         </div>
     </fieldset>
 	@if(isset($compania))
