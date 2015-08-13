@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div class="form-container">
-				<fieldset id="pais-form-fieldset">	
+				<fieldset id="departamento-form-fieldset">	
 					<div class="form-group" id='test'>
 						{!!Form::label('codigoDepartamento', 'C&oacute;digo', array('class' => 'col-sm-2 control-label'))!!}
 						<div class="col-sm-10">
@@ -35,7 +35,7 @@
 						<div class="col-sm-10">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-pencil-square-o"></i>
 				              	</span>
 								{!!Form::text('nombreDepartamento',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del departamento'])!!}
 				    		</div>
@@ -46,7 +46,7 @@
 						<div class="col-sm-10">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-flag"></i>
 				              	</span>
 								{!!Form::select('Pais_idPais',$pais, (isset($departamento) ? $departamento->Pais_idPais : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Pais"])!!}
 							</div>
