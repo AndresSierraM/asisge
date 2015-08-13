@@ -5,6 +5,7 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.contenido = nombreDiv;
     this.contador = 0;
     this.campos = new Array();
+    this.etiqueta = new Array();
     this.tipo = new Array();
     this.estilo = new Array();
     this.clase = new Array();
@@ -33,16 +34,32 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
 
     for (var i = 0,  e = this.campos.length; i < e ; i++)
     {
-        var input = document.createElement('input');
-        input.type =  this.tipo[i];
-        input.id =  this.campos[i] + this.contador;
-        input.name =  this.campos[i]+'[]';
-        
-        input.value = valor[(tipo == 'A' ? i : this.campos[i])];
-        input.setAttribute("class", this.clase[i]);
-        input.setAttribute("style", this.estilo[i]);
+        if(this.etiqueta[i] == 'input')
+        {    
+            var input = document.createElement('input');
+            input.type =  this.tipo[i];
+            input.id =  this.campos[i] + this.contador;
+            input.name =  this.campos[i]+'[]';
+            
+            input.value = valor[(tipo == 'A' ? i : this.campos[i])];
+            input.setAttribute("class", this.clase[i]);
+            input.setAttribute("style", this.estilo[i]);
 
-        div.appendChild(input);
+            div.appendChild(input);
+        }
+
+        if(this.etiqueta[i] == 'textarea')
+        {    
+            var input = document.createElement('textarea');
+            input.id =  this.campos[i] + this.contador;
+            input.name =  this.campos[i]+'[]';
+            
+            input.value = valor[(tipo == 'A' ? i : this.campos[i])];
+            input.setAttribute("class", this.clase[i]);
+            input.setAttribute("style", this.estilo[i]);
+
+            div.appendChild(input);
+        }
 
         caneca.setAttribute("style","margin: 12px");
         caneca.id = this.campos[i] + this.contador;
