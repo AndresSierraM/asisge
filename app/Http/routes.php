@@ -84,14 +84,19 @@ Route::get('/companiagrid', function()
 	return view('companiagridphp');
 });
 
+Route::get('/tercerogrid', function()
+{
+	return view('tercerogridphp');
+});
+
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
-
 Route::resource('tipoidentificacion','TipoIdentificacionController');
 Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
 Route::resource('proceso','ProcesoController');
 Route::resource('compania','CompaniaController');
+Route::resource('tercero','TerceroController');
 
 
 
