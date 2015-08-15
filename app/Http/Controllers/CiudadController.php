@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Departamento;
 use Illuminate\Routing\Route;
+
 class CiudadController extends Controller
 {
     public function _construct(){

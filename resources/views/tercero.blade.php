@@ -25,10 +25,10 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-credit-card" style="width: 14px;"></i>
 				              	</span>
-								{!!Form::text('TipoIdentificacion_idTipoIdentificacion',null,['class'=>'form-control','placeholder'=>'Ingresa el tipo de identificaci&oacute;n','style'=>'width:300px;'])!!}
-						    </div>
+				              	{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
+							</div>
 						</div>
 					</div>
 					<div class="form-group" style="width:565px; display: inline;" >
@@ -36,7 +36,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group" >
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-barcode" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('documentoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de documento','style'=>'width:300px;'])!!}
 						    </div>
@@ -47,7 +47,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('nombre1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre 1 del tercero','style'=>'width:300px;'])!!}
 						    </div>
@@ -58,7 +58,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('nombre2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre 2 del tercero','style'=>'width:300px;'])!!}
 						    </div>
@@ -69,7 +69,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('apellido1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el apellido 1 del tercero','style'=>'width:300px;'])!!}
 						    </div>
@@ -80,7 +80,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('apellido2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el apellido 2 del tercero','style'=>'width:300px;'])!!}
 						    </div>
@@ -91,7 +91,7 @@
 						<div class="col-sm-10" >
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-navicon" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>'Nombre completo del Tercero'])!!}
 						    </div>
@@ -102,7 +102,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-calendar" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('fechaCreacionTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n del tercero','style'=>'width:300px;'])!!}
 						    </div>
@@ -113,7 +113,7 @@
 						<div class="col-sm-10" style="width:340px;">
 				            <div class="input-group">
 				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
+				                	<i class="fa fa-bar-chart-o" style="width: 14px;"></i>
 				              	</span>
 								{!!Form::text('estadoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el estado del tercero','style'=>'width:300px;'])!!}
 						    </div>
@@ -125,7 +125,6 @@
                         <div class="panel-heading">
                             Detalles
                         </div>
-                        <!-- .panel-heading -->
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
                                 <div class="panel panel-default">
@@ -136,34 +135,36 @@
                                     </div>
                                     <div id="collapseOne" class="panel-collapse collapse in">
                                         <div class="panel-body">
+                                            <div class="form-group" style="width:565px; display: inline;" >
+												{!!Form::label('Ciudad_idCiudad', 'Ciudad', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+												<div class="col-sm-10" style="width:340px;">
+										            <div class="input-group" >
+										              	<span class="input-group-addon">
+										                	<i class="fa fa-flag" style="width: 14px;"></i>
+										              	</span>
+										              	{!!Form::select('Ciudad_idCiudad',$ciudad, (isset($tercero) ? $tercero->Ciudad_idCiudad : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la ciudad",'style'=>'width:300px;'])!!}
+														
+												    </div>
+												</div>
+											</div>
                                             <div class="form-group" style="width:565px; display: inline;">
 												{!!Form::label('direccionTercero', 'Direcci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-home" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('direccionTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la direcci&oacute;n','style'=>'width:300px;'])!!}
 												    </div>
 												</div>
 											</div>
-											<div class="form-group" style="width:565px; display: inline;" >
-												{!!Form::label('Ciudad_idCiudad', 'Ciudad', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
-												<div class="col-sm-10" style="width:340px;">
-										            <div class="input-group" >
-										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
-										              	</span>
-														{!!Form::text('Ciudad_idCiudad',null,['class'=>'form-control','placeholder'=>'Ingresa la ciudad','style'=>'width:300px;'])!!}
-												    </div>
-												</div>
-											</div>
+											
 											<div class="form-group" style="width:565px; display: inline;">
 												{!!Form::label('telefonoTercero', 'Tel&eacute;fono', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-phone" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('telefonoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:300px;'])!!}
 												    </div>
@@ -174,7 +175,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-fax" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('faxTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el fax','style'=>'width:300px;'])!!}
 												    </div>
@@ -185,7 +186,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-mobile-phone" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('movil1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero del m&oacute;vil 1','style'=>'width:300px;'])!!}
 												    </div>
@@ -196,7 +197,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-mobile" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('movil2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero del m&oacute;vil 2','style'=>'width:300px;'])!!}
 												    </div>
@@ -207,7 +208,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-user" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('sexoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el sexo del tercero','style'=>'width:300px;'])!!}
 												    </div>
@@ -218,7 +219,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-calendar" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('fechaNacimientoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha de nacimiento','style'=>'width:300px;'])!!}
 												    </div>
@@ -229,7 +230,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-envelope" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('correoElectronicoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el correo','style'=>'width:300px;'])!!}
 												    </div>
@@ -240,7 +241,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-laptop" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('paginaWebTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la p&aacute;gina web','style'=>'width:300px;'])!!}
 												    </div>
@@ -251,7 +252,7 @@
 												<div class="col-sm-10" style="width:340px;">
 										            <div class="input-group">
 										              	<span class="input-group-addon">
-										                	<i class="fa fa-barcode"></i>
+										                	<i class="fa fa-gear" style="width: 14px;"></i>
 										              	</span>
 														{!!Form::text('Cargo_idCargo',null,['class'=>'form-control','placeholder'=>'Ingresa el cargo','style'=>'width:300px;'])!!}
 												    </div>

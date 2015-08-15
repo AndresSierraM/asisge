@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Ciudad;
+use App\Http\Controllers\TipoIdentificacion;
 
 class TerceroController extends Controller
 {
@@ -26,7 +28,9 @@ class TerceroController extends Controller
      */
     public function create()
     {
-        return view('tercero');
+        $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
+        $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
+        return view('tercero',compact('ciudad','tipoIdentificacion'));
     }
 
     /**
