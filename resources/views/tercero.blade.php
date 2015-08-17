@@ -401,7 +401,8 @@
 		</div>
 	{!!Form::close()!!}
 	<script type="text/javascript">
-		//document.getElementById('page-container').style.width = '1350px';
+		document.getElementById('contenedor').style.width = '1350px';
+		document.getElementById('contenedor-fin').style.width = '1350px';
         $('#fechaNacimientoTercero').datetimepicker(({
 			format: "YYYY-MM-DD"
 		}));

@@ -19,7 +19,7 @@
 	{!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
 	{!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
 	{!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
-	{!!Html::style('CSS/principal.css'); !!}
+	{!!Html::style('css/principal.css'); !!}
 	<style type="text/css" media="all">
 	    /* fix rtl for demo */
 	    .chosen-rtl .chosen-drop { left: -9000px; }
