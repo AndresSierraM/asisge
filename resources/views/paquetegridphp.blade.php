@@ -38,7 +38,6 @@ $grid->setColModel();
 $grid->setUrl('paquetegrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
-    "caption"=>"Paquetes de Men&uacute;",
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
     "sortname"=>"ordenPaquete",
@@ -46,8 +45,6 @@ $grid->setGridOptions(array(
     "sortable"=>true,
     "altRows"=>true,
     "hoverrows"=>true,
-    "width"=>'1000',
-    "height"=>'400'
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));

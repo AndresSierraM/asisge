@@ -17,33 +17,26 @@
  	{!!Html::style('sb-admin/bower_components/metisMenu/dist/metisMenu.min.css'); !!}
 	{!!Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
 	{!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
-
-	
-
+	{!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
+	{!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
 	<style type="text/css" media="all">
 	    /* fix rtl for demo */
 	    .chosen-rtl .chosen-drop { left: -9000px; }
   	</style>
-	<!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	{!!Html::script('assets/tutorial/js/ie10-viewport-bug-workaround.js'); !!}
 	{!!Html::script('assets/tutorial/js/ie-emulation-modes-warning.js'); !!}
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
 	{!!Html::script('assets/jquery-v2.1.4/jquery-2.1.4.min.js'); !!}
 	{!!Html::script('assets/jquery-jqGrid-v4.8.0/js/i18n/grid.locale-en.js'); !!}
 	{!!Html::script('assets/jquery-jqGrid-v4.8.0/js/jquery.jqGrid.src.js'); !!}
 	{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
 	{!!Html::script('assets/tutorial/js/helpers.js'); !!}
 	{!!Html::script('assets/tutorial/js/base.js'); !!}
+	{!!Html::script('sb-admin/bower_components/datetimepicker/js/moment.js'); !!}
+	{!!Html::script('sb-admin/bower_components/datetimepicker/js/bootstrap-datetimepicker.min.js'); !!}
+	{!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
+	{!!Html::script('sb-admin/bower_components/fileinput/js/fileinput_locale_es.js'); !!}
 	{!!Html::script('choosen/chosen.jquery.js'); !!}
-  	{!!Html::script('choosen/docsupport/prism.js'); !!}
-
-
+	{!!Html::script('choosen/docsupport/prism.js'); !!}
 
   	<script type="text/javascript">
     	$(document).ready(function (){
@@ -60,30 +53,24 @@
 		});
   	</script>
 
-
 	{!! Html::style('assets/guriddosuito/css/jquery-ui.css'); !!}
     {!! Html::style('assets/guriddosuito/css/trirand/ui.jqgrid.css'); !!}
     {!! Html::style('assets/guriddosuito/css/ui.multiselect.css'); !!}
-    <style type="text">
-        body {
-        margin: 0;			/* Remove body margin/padding */
-    	padding: 0;
-        overflow: hidden;	/* Remove scroll bars on browser window */
-        font-size: 75%;
-        }
-		
-    </style>
     {!! Html::script('assets/guriddosuito/js/jquery.min.js'); !!}
     {!! Html::script('assets/guriddosuito/js/trirand/i18n/grid.locale-en.js'); !!}
     {!! Html::script('assets/guriddosuito/js/trirand/jquery.jqGrid.min.js'); !!}
-  <script>     	  
-	$.jgrid.no_legacy_api = true;
-	$.jgrid.useJSON = true;
-	$.jgrid.defaults.width = "700";
-	</script>
-     {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
 
-{!!Html::style('CSS/principal.css'); !!}
+  	<script>     	  
+		$.jgrid.no_legacy_api = true;
+		$.jgrid.useJSON = true;
+		$.jgrid.defaults.width = "1150";
+		$.jgrid.defaults.height = "300";
+	</script>
+
+    {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
+
+	{!!Html::style('CSS/principal.css'); !!}
+	
 	<title>Asisge S.A.</title>
 
 </head>
@@ -92,17 +79,46 @@
 	<nav>
         <ul>
         <li><center>Logo<center></li>
-        <li><center><img src="images/iconosmenu/Cargos.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Frecuencia%20Medicion.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Generador%20Informes.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Gestion%20Recursos%20Financieros.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Grupos%20apoyo.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Modulos.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Procesos.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/Progrmaci%C3%B3n%20Alertas.png" width="60px"></center></li>
-        <li><center><img src="images/iconosmenu/salir-01.png" width="40px"></center></li>
+        <li><center><a href="users" >
+ 			<img src="images/iconosmenu/usuarios.png" width="48" title="Usuarios" />
+		</a></center></li>
+		<li><center><a href="paquete" >
+ 			<img src="images/iconosmenu/Opciones%20Seguridad.png" width="48" title="Paquetes del menu" />
+		</a></center></li>
+		<li><center><a href="opcion">
+ 			<img src="images/iconosmenu/Opciones%20Generales.png" width="48" title="Opciones del menu" />
+		</a></center></li>
+		<li><center><a href="pais">
+ 			<img src="images/iconosmenu/Paises.png" width="48" title="Paises" />
+		</a></center></li>
+		<li><center><a href="departamento">
+ 			<img src="images/iconosmenu/Paises.png" width="48" title="Departamentos" />
+		</a></center></li>
+		<li><center><a href="ciudad">
+ 			<img src="images/iconosmenu/Ciudades.png" width="48" title="Ciudades" />
+		</a></center></li>
+		<li><center><a href="tipoidentificacion">
+ 			<img src="images/iconosmenu/Tipos%20Identificacion.png" width="48" title="Tipos de Identificacion" />
+		</a></center></li>
+		<li><center><a href="compania">
+ 			<img src="images/iconosmenu/Companias.png" width="48" title="Compañías" />
+		</a></center></li>
+		<li><center><a href="frecuenciamedicion">
+ 			<img src="images/iconosmenu/Frecuencia%20Medicion.png" width="48" title="Frecuencias de Medicion" />
+		</a></center></li>
+		<li><center><a href="proceso">
+ 			<img src="images/iconosmenu/Procesos.png" width="48" title="Procesos" />
+		</a></center></li>
+		<li><center><a href="tercero">
+ 			<img src="images/iconosmenu/Terceros.png" width="48" title="Terceros" />
+		</a></center></li>
+		<li><center><a href="">
+ 			<img src="images/iconosmenu/salir-01.png" width="48" title="Salir" />
+		</a></center></li>
+        
         </ul>
     </nav>
+
 
 	<div id="contenedor">
 	    @yield('titulo')

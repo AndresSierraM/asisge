@@ -46,12 +46,13 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        \App\User::create([
+        /*\App\User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            ]);
-
+            ]);*/
+        $user = new User($request->all());
+        $user->save();
         return redirect('/users');
     }
 
@@ -90,8 +91,10 @@ class UsersController extends Controller
         
         $usuario = \App\User::find($id);
         $usuario->fill($request->all());
-        $usuario->password = Hash::make($request['password']);
+        //$usuario->password = Hash::make($request['password']);
         $usuario->save();
+
+
 
         return redirect('/users');
 

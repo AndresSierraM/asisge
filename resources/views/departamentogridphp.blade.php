@@ -38,7 +38,6 @@ $grid->setColModel();
 $grid->setUrl('departamentogrid');
 // Set some grid options
 $grid->setGridOptions(array(
-    "caption"=>"Departamentos",
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
     "sortname"=>"nombreDepartamento",
@@ -46,8 +45,6 @@ $grid->setGridOptions(array(
     "sortable"=>true,
     "altRows"=>true,
     "hoverrows"=>true,
-    "width"=>'1000',
-    "height"=>'400'
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));

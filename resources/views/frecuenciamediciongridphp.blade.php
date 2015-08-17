@@ -38,7 +38,6 @@ $grid->setColModel();
 $grid->setUrl('frecuenciamediciongrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
-    "caption"=>"Frecuencias de Medici&oacute;n",
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
     "sortname"=>"nombreFrecuenciaMedicion",
@@ -46,8 +45,6 @@ $grid->setGridOptions(array(
     "sortable"=>true,
     "altRows"=>true,
     "hoverrows"=>true,
-    "width"=>'1000',
-    "height"=>'400'
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));

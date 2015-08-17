@@ -38,7 +38,6 @@ $grid->setColModel();
 $grid->setUrl('procesogrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
-    "caption"=>"Procesos",
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
     "sortname"=>"nombreProceso",
@@ -46,8 +45,6 @@ $grid->setGridOptions(array(
     "sortable"=>true,
     "altRows"=>true,
     "hoverrows"=>true,
-    "width"=>'1150',
-    "height"=>'300'
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));
