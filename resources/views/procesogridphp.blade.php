@@ -46,8 +46,8 @@ $grid->setGridOptions(array(
     "sortable"=>true,
     "altRows"=>true,
     "hoverrows"=>true,
-    "width"=>'1000',
-    "height"=>'400'
+    "width"=>'1150',
+    "height"=>'300'
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));

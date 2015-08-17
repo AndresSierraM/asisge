@@ -39,7 +39,7 @@
  			<img src="images/menu/icons 2-09.png" width="48" title="Frecuencias de Medicion" />
 		</a>
 		<a href="proceso" target="formularios">
- 			<img src="images/menu/iconos_sistema-09.png" width="48" title="Frecuencias de Medicion" />
+ 			<img src="images/menu/iconos_sistema-09.png" width="48" title="Procesos" />
 		</a>
 
 	</div>

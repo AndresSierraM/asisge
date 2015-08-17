@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +17,9 @@
  	{!!Html::style('sb-admin/bower_components/metisMenu/dist/metisMenu.min.css'); !!}
 	{!!Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
 	{!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
+
+	
+
 	<style type="text/css" media="all">
 	    /* fix rtl for demo */
 	    .chosen-rtl .chosen-drop { left: -9000px; }
@@ -41,6 +44,7 @@
   	{!!Html::script('choosen/docsupport/prism.js'); !!}
 
 
+
   	<script type="text/javascript">
     	$(document).ready(function (){
 		    var config = {
@@ -55,15 +59,63 @@
 		    }
 		});
   	</script>
+
+
+	{!! Html::style('assets/guriddosuito/css/jquery-ui.css'); !!}
+    {!! Html::style('assets/guriddosuito/css/trirand/ui.jqgrid.css'); !!}
+    {!! Html::style('assets/guriddosuito/css/ui.multiselect.css'); !!}
+    <style type="text">
+        body {
+        margin: 0;			/* Remove body margin/padding */
+    	padding: 0;
+        overflow: hidden;	/* Remove scroll bars on browser window */
+        font-size: 75%;
+        }
+		
+    </style>
+    {!! Html::script('assets/guriddosuito/js/jquery.min.js'); !!}
+    {!! Html::script('assets/guriddosuito/js/trirand/i18n/grid.locale-en.js'); !!}
+    {!! Html::script('assets/guriddosuito/js/trirand/jquery.jqGrid.min.js'); !!}
+  <script>     	  
+	$.jgrid.no_legacy_api = true;
+	$.jgrid.useJSON = true;
+	$.jgrid.defaults.width = "700";
+	</script>
+     {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
+
+{!!Html::style('CSS/principal.css'); !!}
 	<title>Asisge S.A.</title>
+
 </head>
 <body id='body'>
 	
-	<div id='page-container' class="container" role="main" data-current-page-width="">
-	<div class="row">
+	<nav>
+        <ul>
+        <li><center>Logo<center></li>
+        <li><center><img src="images/iconosmenu/Cargos.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Frecuencia%20Medicion.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Generador%20Informes.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Gestion%20Recursos%20Financieros.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Grupos%20apoyo.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Modulos.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Procesos.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/Progrmaci%C3%B3n%20Alertas.png" width="60px"></center></li>
+        <li><center><img src="images/iconosmenu/salir-01.png" width="40px"></center></li>
+        </ul>
+    </nav>
 
-			@yield('content')
+	<div id="contenedor">
+	    @yield('titulo')
 	</div>
+	
+	<div id="contenedor-fin">
+	    <div id="pantalla">
+	       @yield('content') 
+	    </div>
+	</div>
+
+	<div id="footer">
+	    <p>Sistema de gestion documental... Todos los derechos reservados</p>
 	</div>
 </body>
 </html>
