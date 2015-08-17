@@ -1,7 +1,46 @@
 @extends('layouts.principal')
 
 @section('content')
+	{!!Html::script('js/tercero.js')!!}
+	<script>
 
+		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($compania->terceroContacto) : "");?>';
+		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
+		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($compania->terceroProducto) : "");?>';
+		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
+		var valorContactos = [0,'','','','',''];
+		var valorProductos = [0,'',''];
+
+		$(document).ready(function(){
+
+			contactos = new Atributos('contactos','contenedor_contactos','contactos_');
+			contactos.campos = ['idTerceroContacto','nombreTerceroContacto','cargoTerceroContacto','telefonoTerceroContacto','movilTerceroContacto','correoElectronicoTerceroContacto'];
+			contactos.etiqueta = ['input','input','input','input','input','input'];
+			contactos.tipo = ['hidden','text','text','text','text','text'];
+			contactos.estilo = ['','width: 340px; height:35px;','width: 270px;height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 240px;height:35px;'];
+			contactos.clase = ['','','','','',''];
+			contactos.sololectura = [false,false,false,false,false,false];
+
+			productos = new Atributos('productos','contenedor_productos','productos_');
+			productos.campos = ['idTerceroProducto','nombreTerceroProducto','descripcionTerceroProducto'];
+			productos.etiqueta = ['input','input','input'];
+			productos.tipo = ['hidden','text','text'];
+			productos.estilo = ['','width: 400px; height:35px;','width: 750px;height:35px;'];
+			productos.clase = ['','',''];
+			productos.sololectura = [false,false,false];
+
+			for(var j=0, k = terceroContactos.length; j < k; j++)
+			{
+				contactos.agregarCampos(JSON.stringify(terceroContactos[j]),'L');
+			}
+
+			for(var j=0, k = terceroProductos.length; j < k; j++)
+			{
+				productos.agregarCampos(JSON.stringify(terceroProductos[j]),'L');
+			}
+
+		});
+	</script>
 	@if(isset($tercero))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($tercero,['route'=>['tercero.destroy',$tercero->idTercero],'method'=>'DELETE'])!!}
@@ -13,12 +52,12 @@
 	@endif
 
 		<div id="form_section">
-			<div class="container" style="width:1300px">
+			<div class="container" style="width:1350px">
 				<div class="navbar-header pull-left">
 					<a class="navbar-brand">Terceros</a>
 				</div>
 			</div>
-			<div class="form-container" style="width:1300px">
+			<div class="form-container" style="width:1350px">
 				<fieldset id="tercero-form-fieldset">
 					<table width="100%">
 						<tr>
@@ -157,23 +196,10 @@
 								</div>
 							</td>
 							<td>
-								<div class="form-group" style="width:200px; display: inline;" >
-									<div class="col-sm-10" style="width:200px;">
+								<div class="form-group" style="width:250px; display: inline;" >
+									<div class="col-sm-10" style="width:250px;">
 										<div class="panel panel-default">
-											<div class="panel-heading">
-											Headings
-											</div>
-											<div class="panel-body">
-											<h3>Heading 1
-											<small>Sub-heading</small>
-											</h3>
-											<h4>Heading 2
-											<small>Sub-heading</small>
-											</h4>
-											<h5>Heading 3
-											<small>Sub-heading</small>
-											</h5>
-											</div>
+											<input id="imagenTercero" name="imagenTercero" type="file" >
 										</div>
 									</div>
 								</div>
@@ -321,15 +347,15 @@
 													<div class="form-group" id='test'>
 														<div class="col-sm-10">
 															<div class="row show-grid">
-																<div class="col-md-1" style="width: 400px;">Nombre</div>
-																<div class="col-md-1" style="width: 240px;">Cargo</div>
-																<div class="col-md-1" style="width: 130px;">Tel&eacute;fono</div>
-																<div class="col-md-1" style="width: 130px;">M&oacute;vil</div>
-																<div class="col-md-1" style="width: 200px;">Correo</div>
-																<div class="col-md-1" style="width: 40px;">
+																<div class="col-md-1" style="width: 40px;" onclick="contactos.agregarCampos(valorContactos,'A')">
 																	<span class="glyphicon glyphicon-plus"></span>
 																</div>
-																<div id="contenedor_objetivos">
+																<div class="col-md-1" style="width: 340px;">Nombre</div>
+																<div class="col-md-1" style="width: 270px;">Cargo</div>
+																<div class="col-md-1" style="width: 150px;">Tel&eacute;fono</div>
+																<div class="col-md-1" style="width: 150px;">M&oacute;vil</div>
+																<div class="col-md-1" style="width: 240px;">Correo</div>
+																<div id="contenedor_contactos">
 																</div>
 															</div>
 														</div>
@@ -348,12 +374,12 @@
 													<div class="form-group" id='test'>
 														<div class="col-sm-10">
 															<div class="row show-grid">
-																<div class="col-md-1" style="width: 400px;">Referencia</div>
-																<div class="col-md-1" style="width: 700px;">Descripci&oacute;n</div>
-																<div class="col-md-1" style="width: 40px;">
+																<div class="col-md-1" style="width: 40px;" onclick="productos.agregarCampos(valorProductos,'A')">
 																	<span class="glyphicon glyphicon-plus"></span>
 																</div>
-																<div id="contenedor_objetivos">
+																<div class="col-md-1" style="width: 400px;">Referencia</div>
+																<div class="col-md-1" style="width: 750px;">Descripci&oacute;n</div>
+																<div id="contenedor_productos">
 																</div>
 															</div>
 														</div>
@@ -367,14 +393,31 @@
 						</div>
 					</div>
 				</fieldset>
+				@if(isset($tercero))
+					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+				@else
+					{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+				@endif
 			</div>
 		</div>
 	{!!Form::close()!!}
 	<script type="text/javascript">
-		$(function () {
-            $('#fechaNacimientoTercero').datetimepicker(({
-				format: "YYYY-MM-DD"
-			}));
-        });
+		document.getElementById('page-container').style.width = '1350px';
+        $('#fechaNacimientoTercero').datetimepicker(({
+			format: "YYYY-MM-DD"
+		}));
+
+		$('#imagenTercero').fileinput({
+			language: 'es',
+			uploadUrl: '#',
+			allowedFileExtensions : ['jpg', 'png','gif'],
+			dropZoneTitle: 'Arrastre su foto',
+			removeLabel: '',
+			uploadLabel: '',
+			browseLabel: '',
+			uploadClass: "",
+			uploadLabel: "",
+			uploadIcon: "",
+		});
     </script>
 @stop

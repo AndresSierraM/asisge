@@ -18,12 +18,11 @@
 	{!!Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
 	{!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
 	{!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
+	{!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
 	<style type="text/css" media="all">
 	    /* fix rtl for demo */
 	    .chosen-rtl .chosen-drop { left: -9000px; }
   	</style>
-	<!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	{!!Html::script('assets/tutorial/js/ie10-viewport-bug-workaround.js'); !!}
 	{!!Html::script('assets/tutorial/js/ie-emulation-modes-warning.js'); !!}
 	{!!Html::script('assets/jquery-v2.1.4/jquery-2.1.4.min.js'); !!}
@@ -34,8 +33,10 @@
 	{!!Html::script('assets/tutorial/js/base.js'); !!}
 	{!!Html::script('sb-admin/bower_components/datetimepicker/js/moment.js'); !!}
 	{!!Html::script('sb-admin/bower_components/datetimepicker/js/bootstrap-datetimepicker.min.js'); !!}
+	{!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
+	{!!Html::script('sb-admin/bower_components/fileinput/js/fileinput_locale_es.js'); !!}
 	{!!Html::script('choosen/chosen.jquery.js'); !!}
-  	{!!Html::script('choosen/docsupport/prism.js'); !!}
+	{!!Html::script('choosen/docsupport/prism.js'); !!}
 
 
   	<script type="text/javascript">
