@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +19,7 @@
 	{!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
 	{!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
 	{!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
+	{!!Html::style('CSS/principal.css'); !!}
 	<style type="text/css" media="all">
 	    /* fix rtl for demo */
 	    .chosen-rtl .chosen-drop { left: -9000px; }
@@ -38,6 +39,7 @@
 	{!!Html::script('choosen/chosen.jquery.js'); !!}
 	{!!Html::script('choosen/docsupport/prism.js'); !!}
 
+
   	<script type="text/javascript">
     	$(document).ready(function (){
 		    var config = {
@@ -52,35 +54,14 @@
 		    }
 		});
   	</script>
-
-	{!! Html::style('assets/guriddosuito/css/jquery-ui.css'); !!}
-    {!! Html::style('assets/guriddosuito/css/trirand/ui.jqgrid.css'); !!}
-    {!! Html::style('assets/guriddosuito/css/ui.multiselect.css'); !!}
-    {!! Html::script('assets/guriddosuito/js/jquery.min.js'); !!}
-    {!! Html::script('assets/guriddosuito/js/trirand/i18n/grid.locale-en.js'); !!}
-    {!! Html::script('assets/guriddosuito/js/trirand/jquery.jqGrid.min.js'); !!}
-
-  	<script>     	  
-		$.jgrid.no_legacy_api = true;
-		$.jgrid.useJSON = true;
-		$.jgrid.defaults.width = "1150";
-		$.jgrid.defaults.height = "300";
-	</script>
-
-    {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
-
-	{!!Html::style('CSS/principal.css'); !!}
-	
 	<title>Asisge S.A.</title>
-
 </head>
 <body id='body'>
-	
 	<nav>
         <ul>
         <li><center>Logo<center></li>
         <li><center><a href="users" >
- 			<img src="images/iconosmenu/usuarios.png" width="48" title="Usuarios" />
+ 			<img src="../../public/images/iconosmenu/usuarios.png" width="48" title="Usuarios" />
 		</a></center></li>
 		<li><center><a href="paquete" >
  			<img src="images/iconosmenu/Opciones%20Seguridad.png" width="48" title="Paquetes del menu" />
@@ -118,18 +99,15 @@
         
         </ul>
     </nav>
-
-
 	<div id="contenedor">
 	    @yield('titulo')
 	</div>
-	
 	<div id="contenedor-fin">
 	    <div id="pantalla">
 	       @yield('content') 
 	    </div>
 	</div>
-
+	
 	<div id="footer">
 	    <p>Sistema de gestion documental... Todos los derechos reservados</p>
 	</div>
