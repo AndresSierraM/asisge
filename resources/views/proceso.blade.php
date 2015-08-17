@@ -1,9 +1,9 @@
-@extends('layouts.principal')
+@extends('layouts.vista')
 
 @section('titulo')<h3 id="titulo"><center>Procesos</center></h3>@stop
 
 @section('content')
-@include('alerts.request')
+  @include('alerts.request')
 
 	@if(isset($proceso))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')

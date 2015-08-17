@@ -1,4 +1,4 @@
-@extends('layouts.principal')
+@extends('layouts.vista')
 @section('titulo')<h3 id="titulo"><center>Usuarios</center></h3>@stop
 
 @section('content')
@@ -51,7 +51,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-key "></i>
               </span>
-            {!!Form::password('password',null,['class'=>'form-control','placeholder'=>'Ingresa la contrase&ntilde;a'])!!}
+            {!!Form::password('password',array('class'=>'form-control','placeholder'=>'Ingresa la contrase&ntilde;a'))!!}
             </div>
           </div>
         </div>

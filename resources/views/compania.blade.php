@@ -1,4 +1,4 @@
-@extends('layouts.principal')
+@extends('layouts.vista')
 
 @section('content')
 @include('alerts.request')

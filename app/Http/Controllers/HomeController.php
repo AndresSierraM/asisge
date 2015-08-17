@@ -34,10 +34,10 @@ class HomeController extends Controller {
 	{
 		$credenciales=array(
 			'email'=>Request::input('email'),
-			'password'=>Hash::make(Request::input('password'))
+			'password'=>Request::input('password')
 			);
 
-		if (Auth::validate($credenciales))
+		if (Auth::attempt($credenciales))
 		{
 			// En  lugar de redireccionarlo a una página en cuestión lo redireccionamos
 			// a la página a la cuál el usuario quería ir antes de estar autenticado en la aplicación.
@@ -45,11 +45,10 @@ class HomeController extends Controller {
  
 			// En el caso de que no ésté en la sesión especificada la URL a la que quería ir
 			// se le puede indicar por defecto la URL por defecto a la que ir: ('users') en este caso.
-			return Redirect::intended('layouts.menuprincipal');
+			return Redirect::to('pais');
 		}
 		else
-			return "NO esta bien ".Request::input('email').Request::input('password');
-			//return Redirect::to('login')->withInput();
+			return Redirect::to('login')->withInput(); //"NO esta bien ".Request::input('email').Request::input('password');
 	}
  
  

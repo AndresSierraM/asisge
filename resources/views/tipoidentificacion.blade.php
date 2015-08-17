@@ -1,4 +1,5 @@
-@extends('layouts.principal')
+@extends('layouts.vista')
+@section('titulo')<h3 id="titulo"><center>Tipo de Identificaci&oacute;n</center></h3>@stop
 
 @section('content')
 @include('alerts.request')
@@ -16,13 +17,6 @@
 
 <div id='form-section' >
 
-	<div class="container">
-		<div class="navbar-header pull-left">
-	  	<a class="navbar-brand"  >Tipos de Identificacion</a>
-	</div>
-	</div>
-
-  <div class="form-container">
 	<fieldset id="tipoidentificacion-form-fieldset">	
 		<div class="form-group" id='test'>
           {!! Form::label('codigoTipoIdentificacion', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
@@ -61,6 +55,5 @@
   		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
  	@endif
 	{!! Form::close() !!}
-	</div>
 </div>
 @stop
