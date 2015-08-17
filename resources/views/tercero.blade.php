@@ -85,46 +85,46 @@
 									</div>
 								</div>
 								<div class="form-group" style="width:565px; display: inline;">
-									{!!Form::label('nombre1Tercero', 'Nombre 1', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+									{!!Form::label('nombre1Tercero', 'Primer Nombre', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 									<div class="col-sm-10" style="width:340px;">
 										<div class="input-group">
 											<span class="input-group-addon">
 												<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 											</span>
-											{!!Form::text('nombre1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre 1 del tercero','style'=>'width:300px;'])!!}
+											{!!Form::text('nombre1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer nombre del tercero','style'=>'width:300px;'])!!}
 										</div>
 									</div>
 								</div>
 								<div class="form-group" style="width:565px; display: inline;">
-									{!!Form::label('nombre2Tercero', 'Nombre 2', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+									{!!Form::label('nombre2Tercero', 'Segundo Nombre', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 									<div class="col-sm-10" style="width:340px;">
 										<div class="input-group">
 											<span class="input-group-addon">
 												<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 											</span>
-											{!!Form::text('nombre2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre 2 del tercero','style'=>'width:300px;'])!!}
+											{!!Form::text('nombre2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el segundo nombre del tercero','style'=>'width:300px;'])!!}
 										</div>
 									</div>
 								</div>
 								<div class="form-group" style="width:565px; display: inline;">
-									{!!Form::label('apellido1Tercero', 'Apellido 1', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+									{!!Form::label('apellido1Tercero', 'Primer Apellido', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 									<div class="col-sm-10" style="width:340px;">
 										<div class="input-group">
 											<span class="input-group-addon">
 												<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 											</span>
-											{!!Form::text('apellido1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el apellido 1 del tercero','style'=>'width:300px;'])!!}
+											{!!Form::text('apellido1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer apellido del tercero','style'=>'width:300px;'])!!}
 										</div>
 									</div>
 								</div>
 								<div class="form-group" style="width:565px; display: inline;">
-									{!!Form::label('apellido2Tercero', 'Apellido 2', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+									{!!Form::label('apellido2Tercero', 'Segundo Apellido', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 									<div class="col-sm-10" style="width:340px;">
 										<div class="input-group">
 											<span class="input-group-addon">
 												<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 											</span>
-											{!!Form::text('apellido2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el apellido 2 del tercero','style'=>'width:300px;'])!!}
+											{!!Form::text('apellido2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el segundo apellido del tercero','style'=>'width:300px;'])!!}
 										</div>
 									</div>
 								</div>
@@ -345,7 +345,7 @@
 											<div id="collapseTwo" class="panel-collapse collapse">
 												<div class="panel-body">
 													<div class="form-group" id='test'>
-														<div class="col-sm-10">
+														<div class="col-sm-12">
 															<div class="row show-grid">
 																<div class="col-md-1" style="width: 40px;" onclick="contactos.agregarCampos(valorContactos,'A')">
 																	<span class="glyphicon glyphicon-plus"></span>
@@ -372,7 +372,7 @@
 											<div id="collapseThree" class="panel-collapse collapse">
 												<div class="panel-body">
 													<div class="form-group" id='test'>
-														<div class="col-sm-10">
+														<div class="col-sm-12">
 															<div class="row show-grid">
 																<div class="col-md-1" style="width: 40px;" onclick="productos.agregarCampos(valorProductos,'A')">
 																	<span class="glyphicon glyphicon-plus"></span>
