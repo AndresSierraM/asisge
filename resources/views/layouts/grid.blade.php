@@ -26,5 +26,3 @@
        {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
 
      @stop
-
-
