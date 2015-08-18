@@ -57,48 +57,50 @@
 	<title>Asisge S.A.</title>
 </head>
 <body id='body'>
+	<div id="header">
 	<nav>
         <ul>
         <li><center>Logo<center></li>
-        <li><center><a href="users" >
- 			<img src="../../public/images/iconosmenu/usuarios.png" width="48" title="Usuarios" />
-		</a></center></li>
-		<li><center><a href="paquete" >
- 			<img src="images/iconosmenu/Opciones%20Seguridad.png" width="48" title="Paquetes del menu" />
-		</a></center></li>
-		<li><center><a href="opcion">
- 			<img src="images/iconosmenu/Opciones%20Generales.png" width="48" title="Opciones del menu" />
-		</a></center></li>
-		<li><center><a href="pais">
- 			<img src="images/iconosmenu/Paises.png" width="48" title="Paises" />
-		</a></center></li>
-		<li><center><a href="departamento">
- 			<img src="images/iconosmenu/Paises.png" width="48" title="Departamentos" />
-		</a></center></li>
-		<li><center><a href="ciudad">
- 			<img src="images/iconosmenu/Ciudades.png" width="48" title="Ciudades" />
-		</a></center></li>
-		<li><center><a href="tipoidentificacion">
- 			<img src="images/iconosmenu/Tipos%20Identificacion.png" width="48" title="Tipos de Identificacion" />
-		</a></center></li>
-		<li><center><a href="compania">
- 			<img src="images/iconosmenu/Companias.png" width="48" title="Compañías" />
-		</a></center></li>
-		<li><center><a href="frecuenciamedicion">
- 			<img src="images/iconosmenu/Frecuencia%20Medicion.png" width="48" title="Frecuencias de Medicion" />
-		</a></center></li>
-		<li><center><a href="proceso">
- 			<img src="images/iconosmenu/Procesos.png" width="48" title="Procesos" />
-		</a></center></li>
-		<li><center><a href="tercero">
- 			<img src="images/iconosmenu/Terceros.png" width="48" title="Terceros" />
-		</a></center></li>
-		<li><center><a href="">
- 			<img src="images/iconosmenu/salir-01.png" width="48" title="Salir" />
-		</a></center></li>
+        <li><center>
+			{!! HTML::decode(HTML::link('users', HTML::image('images/iconosmenu/usuarios.png','Imagen no encontrada',array('width'=>'48','title' => 'Usuarios')))) !!}
+        	</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('paquete', HTML::image('images/iconosmenu/Opciones%20Generales.png','Imagen no encontrada',array('width'=>'48','title' => 'Paquetes del menu')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('opcion', HTML::image('images/iconosmenu/Opciones%20Generales.png','Imagen no encontrada',array('width'=>'48','title' => 'Opciones del menu')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('pais', HTML::image('images/iconosmenu/Paises.png','Imagen no encontrada',array('width'=>'48','title' => 'Paises')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('departamento', HTML::image('images/iconosmenu/Paises.png','Imagen no encontrada',array('width'=>'48','title' => 'Departamentos')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('ciudad', HTML::image('images/iconosmenu/Ciudades.png','Imagen no encontrada',array('width'=>'48','title' => 'Ciudades')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('tipoidentificacion', HTML::image('images/iconosmenu/Tipos%20Identificacion.png','Imagen no encontrada',array('width'=>'48','title' => 'Tipos de Identificacion')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('compania', HTML::image('images/iconosmenu/Companias.png','Imagen no encontrada',array('width'=>'48','title' => 'Compañías')))) !!}
+			</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('frecuenciamedicion', HTML::image('images/iconosmenu/Frecuencia%20Medicion.png','Imagen no encontrada',array('width'=>'48','title' => 'Frecuencias de Medicion')))) !!}
+		</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('proceso', HTML::image('images/iconosmenu/Procesos.png','Imagen no encontrada',array('width'=>'48','title' => 'Procesos')))) !!}
+		</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('tercero', HTML::image('images/iconosmenu/Terceros.png','Imagen no encontrada',array('width'=>'48','title' => 'Terceros')))) !!}
+ 		</center></li>
+		<li><center>
+			{!! HTML::decode(HTML::link('', HTML::image('images/iconosmenu/salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')))) !!}
+		</center></li>
         
         </ul>
     </nav>
+</div>
 	<div id="contenedor">
 	    @yield('titulo')
 	</div>
