@@ -8,12 +8,13 @@ use App\Http\Controllers\TipoIdentificacion;
 use App\Http\Controllers\TerceroContacto;
 use App\Http\Controllers\TerceroProducto;
 //use Intervention\Image\ImageManagerStatic as Image;
-//use Input;
-//use File;
+use Input;
+use File;
 // include composer autoload
 //require '../vendor/autoload.php';
 // import the Intervention Image Manager Class
-//use Intervention\Image\ImageManager ;
+use Intervention\Image\ImageManager ;
+
 class TerceroController extends Controller
 {
     /**
@@ -45,10 +46,11 @@ class TerceroController extends Controller
      */
     public function store(Request $request)
     {
-        /*$image = Input::file('imagenTercero');
+        $image = Input::file('imagenTercero');
         $imageName = $request->file('imagenTercero')->getClientOriginalName();
         $manager = new ImageManager();
-        $manager->make($image->getRealPath())->heighten(48)->save('images/terceros/'. $imageName);*/
+        $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
+
         \App\Tercero::create([
             'TipoIdentificacion_idTipoIdentificacion'  => (isset($request['TipoIdentificacion_idTipoIdentificacion']) ? $request['TipoIdentificacion_idTipoIdentificacion'] : 0),
             'documentoTercero' => $request['documentoTercero'],
@@ -59,7 +61,7 @@ class TerceroController extends Controller
             'nombreCompletoTercero' => $request['nombreCompletoTercero'],
             'fechaCreacionTercero' => $request['fechaCreacionTercero'],
             'estadoTercero' => $request['estadoTercero'],
-            'imagenTercero' => $request['imagenTercero'],
+            'imagenTercero' => 'terceros\\'. $imageName,
             'tipoTercero' => $request['tipoTercero'],
             'direccionTercero' => $request['direccionTercero'],
             'Ciudad_idCiudad' => $request['Ciudad_idCiudad'],
@@ -74,6 +76,7 @@ class TerceroController extends Controller
             'Cargo_idCargo' => 1,
             'Compania_idCompania' => 1
             ]);
+        
         $tercero = \App\Tercero::All()->last();
         $contadorContacto = count($request['nombreTerceroContacto']);
         for($i = 0; $i < $contadorContacto; $i++)
@@ -87,6 +90,7 @@ class TerceroController extends Controller
             'correoElectronicoTerceroContacto' => $request['correoElectronicoTerceroContacto'][$i]
            ]);
         }
+        
         $contadorProducto = count($request['codigoTerceroProducto']);
         for($i = 0; $i < $contadorProducto; $i++)
         {
@@ -130,9 +134,23 @@ class TerceroController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
         $tercero = \App\Tercero::find($id);
         $tercero->fill($request->all());
+
+        if(null !== Input::file('imagenTercero') )
+        {
+            $image = Input::file('imagenTercero');
+            $imageName = $request->file('imagenTercero')->getClientOriginalName();
+            $manager = new ImageManager();
+            $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
+
+            $tercero->imagenTercero = 'terceros\\'. $imageName;
+        }   
+
         $tercero->save();
+
         \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
         \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
         $contadorContacto = count($request['nombreTerceroContacto']);

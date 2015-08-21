@@ -39,7 +39,8 @@ class RolController extends Controller
      */
     public function create()
     {
-        return view('rol');
+        $opcion = \App\Opcion::All()->lists('nombreOpcion','idOpcion');
+        return view('rol',compact('opcion','selected'));
     }
 
     /**
@@ -94,7 +95,8 @@ class RolController extends Controller
     public function edit($id)
     {
         $rol = \App\Rol::find($id);
-        return view('rol',['rol'=>$rol]);
+        $opcion = \App\Opcion::All()->lists('nombreOpcion','idOpcion');
+        return view('rol',compact('opcion'),['rol'=>$rol]);
     }
 
     /**

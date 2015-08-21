@@ -157,7 +157,11 @@ $grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
 $seleccion = <<<CUSTOM
 jQuery("#getselected").click(function(){
     var selr = jQuery('#grid').jqGrid('getGridParam','selarrrow');
-    if(selr) alert(selr);
+    if(selr)
+      {
+        datosSeleccionados(selr)
+      }
+    window.close();
 });
 CUSTOM;
 $grid->setJSCode($seleccion);

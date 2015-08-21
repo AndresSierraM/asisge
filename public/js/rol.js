@@ -11,10 +11,12 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.clase = new Array();
     this.sololectura = new Array();
     this.etiqueta = new Array();
+    this.nombreOpcion = new Array();
+    this.valorOpcion = new Array();
 
 };
 
-Atributos.prototype.agregarCampos = function(datos, tipo){
+Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
 
     var valor;
     if(tipo == 'A')
@@ -43,8 +45,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
 
             div.appendChild(input);
         }
-
-        if(this.etiqueta[i] == 'textarea')
+        else if(this.etiqueta[i] == 'textarea')
         {
             var input = document.createElement('textarea');
             input.id =  this.campos[i] + this.contador;
@@ -55,6 +56,57 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             input.setAttribute("style", this.estilo[i]);
 
             div.appendChild(input);
+        }
+        else if(this.etiqueta[i] == 'select')
+        {
+            var select = document.createElement('select');
+            var option = '';
+            select.id =  this.campos[i] + this.contador;
+            select.name =  this.campos[i]+'[]';
+            select.setAttribute("style", this.estilo[i]);
+            select.setAttribute("class", this.clase[i]);
+            select.setAttribute("onfocus", this.eventofocus[i]);
+            select.setAttribute("onkeyup", this.eventokeyup[i]);
+            select.setAttribute("onclick", this.eventoclick[i]);
+             
+            for(var j=0,k=this.valorOpcion.length;j<k;j++)
+            {
+                option = document.createElement('option');
+                option.value = this.valorOpcion[j];
+                option.text = this.nombreOpcion[j];
+                option.selected = (valor[i] == this.valorOpcion[j] ? true : false);
+                select.appendChild(option);
+            }
+ 
+            div.appendChild(select);
+ 
+        }
+        else if(this.etiqueta[i] == 'checkbox')
+        {
+            var divCheck = document.createElement('div');
+            divCheck.setAttribute('class',this.clase[i]);
+            divCheck.setAttribute('style',this.estilo[i]);
+ 
+            var inputHidden = document.createElement('input');
+            inputHidden.type =  'hidden';
+            inputHidden.id =  this.campos[i] + this.contador;
+            inputHidden.name =  this.campos[i]+'[]';
+            inputHidden.value = valor[i];
+ 
+            divCheck.appendChild(inputHidden);
+ 
+            var input = document.createElement('input');
+            input.type = this.tipo[i];
+            input.id =  this.campos[i]+'C'+this.contador;
+            input.name =  this.campos[i]+'C'+'[]';
+            input.checked = (valor[i] == 1 ? true : false);
+            input.setAttribute("onfocus", this.eventofocus[i]);
+            input.setAttribute("onkeyup", this.eventokeyup[i]);
+            input.setAttribute("onclick", this.eventoclick[i]);
+     
+            divCheck.appendChild(input);
+ 
+            div.appendChild(divCheck);
         }
 
     }
