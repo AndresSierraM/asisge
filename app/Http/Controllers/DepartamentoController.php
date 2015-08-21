@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DepartamentoRequest;
+
 use App\Http\Controllers\PaisController;
 
 class DepartamentoController extends Controller
@@ -39,7 +41,7 @@ class DepartamentoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(DepartamentoRequest $request)
     {
 
         \App\Departamento::create([
@@ -82,7 +84,7 @@ class DepartamentoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(DepartamentoRequest $request, $id)
     {
         $departamento = \App\Departamento::find($id);
         $departamento->fill($request->all());

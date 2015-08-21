@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Departamento;
+use App\Http\Requests\CiudadRequest;
+
 use Illuminate\Routing\Route;
 
 class CiudadController extends Controller
@@ -47,7 +49,7 @@ class CiudadController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CiudadRequest $request)
     {
         \App\Ciudad::create([
             'codigoCiudad' => $request['codigoCiudad'],
@@ -88,7 +90,7 @@ class CiudadController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CiudadRequest $request, $id)
     {
         $ciudad = \App\Ciudad::find($id);
         $ciudad->fill($request->all());

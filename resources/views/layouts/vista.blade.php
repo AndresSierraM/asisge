@@ -1,5 +1,5 @@
 @extends('layouts.principal')
-    
+
     @section('clases')
 
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}

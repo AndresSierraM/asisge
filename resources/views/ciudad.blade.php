@@ -1,6 +1,9 @@
 @extends('layouts.vista')
+@section('titulo')<h3 id="titulo"><center>Ciudades</center></h3>@stop
 
 @section('content')
+@include('alerts.request')
+
 	@if(isset($ciudad))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($ciudad,['route'=>['ciudad.destroy',$ciudad->idCiudad],'method'=>'DELETE'])!!}
@@ -11,12 +14,6 @@
 		{!!Form::open(['route'=>'ciudad.store','method'=>'POST'])!!}
 	@endif
 		<div id='form-section' >
-			<div class="container">
-				<div class="navbar-header pull-left">
-			  		<a class="navbar-brand">Ciudades</a>
-				</div>
-			</div>
-			<div class="form-container">
 				<fieldset id="ciudad-form-fieldset">	
 					<div class="form-group" id='test'>
 						{!!Form::label('codigoCiudad', 'C&oacute;digo', array('class' => 'col-sm-2 control-label'))!!}
@@ -58,7 +55,6 @@
 				@else
   					{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
  				@endif
-			</div>
 		</div>
 	{!!Form::close()!!}		
 @stop

@@ -19,10 +19,12 @@
 // Creamos un Controlador para gestionar la autenticación en HomeController.
 //Route::controller('/','HomeController');
 
-Route::get('/asisge', function()
-{
-	return view('layouts.menuprincipal');
-});
+//Route::get('/asisge', 'HomeController@index');
+/*Route::controllers([
+		"auth" 		=> "Auth\AuthController",
+		"password" 	=> "Auth\PasswordController"
+	]);	*/
+
 
 // ---------------------------------
 // Opciones del modulo de seguridad
@@ -42,10 +44,21 @@ Route::get('/opciongrid', function()
 	return view('opciongridphp');
 });
 
+Route::get('/opciongridselect', function()
+{
+	return view('opciongridphpselect');
+});
+
+Route::get('/rolgrid', function()
+{
+	return view('rolgridphp');
+});
+
 Route::resource('users','UsersController');
 Route::resource('paquete','PaqueteController');
 Route::resource('opcion','OpcionController');
-
+Route::resource('opcionselect','OpcionController@select');
+Route::resource('rol','RolController');
 
 // ---------------------------------
 // Archivos Maestros

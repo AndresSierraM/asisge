@@ -5,8 +5,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	@yield('clases')
-
 	{!!Html::style('CSS/principal.css'); !!}
 
 	<title>Asisge S.A.</title>
@@ -56,14 +54,7 @@
         </ul>
     </nav>
 </div>
-	<div id="contenedor">
-	    @yield('titulo')
-	</div>
-	<div id="contenedor-fin">
-	    <div id="pantalla">
-	       @yield('content') 
-	    </div>
-	</div>
+	
 	
 	<div id="footer">
 	    <p>Sistema de gestion documental... Todos los derechos reservados</p>

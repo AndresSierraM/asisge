@@ -1,4 +1,5 @@
 @extends('layouts.vista')
+@section('titulo')<h3 id="titulo"><center>Paises</center></h3>@stop
 
 @section('content')
 @include('alerts.request')
@@ -15,13 +16,6 @@
 
 <div id='form-section' >
 
-	<div class="container">
-		<div class="navbar-header pull-left">
-	  	<a class="navbar-brand"  >Paises</a>
-	</div>
-	</div>
-
-  <div class="form-container">
 	<fieldset id="pais-form-fieldset">	
 		<div class="form-group" id='test'>
           {!!Form::label('codigoPais', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
@@ -48,7 +42,6 @@
 				{!!Form::text('nombrePais',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del país'])!!}
             </div>
           </div>
-        </div>
     </fieldset>
 	@if(isset($pais))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')

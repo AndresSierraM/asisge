@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\UsersRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CompaniaController;
 // Indicamos que usamos el Modelo User.
 use App\User;
 // Hash de contraseñas.
@@ -35,7 +36,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users');
+        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
+        return view('users',compact('compania','selected'));
     }
 
     /**
@@ -46,13 +48,13 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        /*\App\User::create([
+        \App\User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            ]);*/
-        $user = new User($request->all());
-        $user->save();
+             'Compania_idCompania'=> $request['Compania_idCompania']
+            ]);
+        
         return redirect('/users');
     }
 
@@ -76,7 +78,8 @@ class UsersController extends Controller
     public function edit($id)
     {
         $usuario = \App\User::find($id);
-        return view('users',['usuario'=>$usuario]);
+        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
+        return view('users',compact('compania'),['usuario'=>$usuario]);
     }
 
     /**
@@ -91,6 +94,7 @@ class UsersController extends Controller
         
         $usuario = \App\User::find($id);
         $usuario->fill($request->all());
+        $usuario->Compania_idCompania = 1;
         //$usuario->password = Hash::make($request['password']);
         $usuario->save();
 

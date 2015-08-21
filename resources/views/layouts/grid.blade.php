@@ -21,7 +21,7 @@
       	$.jgrid.no_legacy_api = true;
       	$.jgrid.useJSON = true;
       	$.jgrid.defaults.width = "1150";
-        $.jgrid.defaults.height = "200";
+        $.jgrid.defaults.height = "300";
     	</script>
        {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
 

@@ -30,6 +30,11 @@ class OpcionController extends Controller
         return view('opciongrid',compact('opcion'));
     }
 
+    public function select()
+    {
+        $opcion = \App\Opcion::All();
+        return view('opciongridselect',compact('opcion'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -62,6 +67,7 @@ class OpcionController extends Controller
             'ordenOpcion' => $request['ordenOpcion'],
             'nombreOpcion' => $request['nombreOpcion'],
             'rutaOpcion' => $request['rutaOpcion'],
+            'Paquete_idPaquete' => $request['Paquete_idPaquete'],
             'iconoOpcion' => 'menu\\'. $imageName
             ]); 
         return redirect('/opcion');

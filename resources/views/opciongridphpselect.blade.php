@@ -29,25 +29,26 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT id, name, email , nombreCompania
-                        FROM users
-                        LEFT JOIN Compania
-                        on Compania_idCompania = idCompania';
+$grid->SelectCommand = 'SELECT idOpcion, nombrePaquete, nombreOpcion
+                        FROM opcion
+                        LEFT JOIN  paquete
+                        on Opcion.Paquete_idPaquete = paquete.idPaquete';
 // Establecer el formato de salida en JSON
 $grid->dataType = 'json';
 // Permitir que la grid cree el modelo
 $grid->setColModel();
 // establecer la URL desde donde se obtienen los datos
-$grid->setUrl('usersgrid');
+$grid->setUrl('opciongridselect');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
     "rowNum"=>30,
-    "rowList"=>array(30,50,100),
-    "sortname"=>"name",
+    "rowList"=>array(30,50,100,99999),
+    "sortname"=>"ordenOpcion",
     "multiSort"=>true,
     "sortable"=>true,
     "altRows"=>true,
     "hoverrows"=>true,
+    "multiselect"=>true
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));
@@ -57,7 +58,7 @@ $grid->setGridOptions(array(
 // P R O P I E D A D E S   D E   L O S   C A M P O S
 // ----------------------------------------------------
 
-$grid->setColProperty("id", array(
+$grid->setColProperty("idOpcion", array(
 	"searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
 	"formatter"=>"integer",
 	"formatoptions"=>array("thousandsSeparator"=>","),
@@ -65,24 +66,19 @@ $grid->setColProperty("id", array(
     )
 );
 
-$grid->setColProperty("name", array(
-	"searchoptions"=>array("sopt"=>array("bw", "eq","ne","le","lt","ge","gt")),
+$grid->setColProperty("nombrePaquete", array(
+  "searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
+  "label"=>"Paquete"
+    )
+);
+
+$grid->setColProperty("nombreOpcion", array(
+	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
 	"label"=>"Nombre"
     )
 );
 
 
-$grid->setColProperty("email", array(
-	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
-	"label"=>"Correo Electr&oacute;nico"
-    )
-);
-
-$grid->setColProperty("nombreCompania", array(
-  "searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
-  "label"=>"Compa&ntilde;&iacute;a"
-    )
-);
 
 
 // Formatos de fecha
@@ -113,7 +109,7 @@ $grid->callGridMethod('#grid', 'bindKeys');
 //------------------------------
 $buttonadicionar = array("#pager",
     array("caption"=>"Adicionar", "title"=>"Adicionar un nuevo registro", "onClickButton"=>"js: function(){
-        window.location.href = 'users/create'}"
+        window.location.href = 'opcion/create'}"
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonadicionar);
@@ -127,7 +123,7 @@ $buttonmodificar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'users/'+id+'/edit';
+          window.location.href = 'opcion/'+id+'/edit';
         } else {
           alert('Por favor seleccione el registro a Editar');
           return;
@@ -147,7 +143,7 @@ $buttoneliminar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'users/'+id+'/edit?accion=eliminar';
+          window.location.href = 'opcion/'+id+'/edit?accion=eliminar';
         } else {
           alert('Por favor seleccione el registro a Eliminar');
           return;
@@ -157,6 +153,14 @@ $buttoneliminar = array("#pager",
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
+
+$seleccion = <<<CUSTOM
+jQuery("#getselected").click(function(){
+    var selr = jQuery('#grid').jqGrid('getGridParam','selarrrow');
+    if(selr) alert(selr);
+});
+CUSTOM;
+$grid->setJSCode($seleccion);
 
 // Ejecutamos la grid
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);

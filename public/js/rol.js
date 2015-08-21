@@ -77,38 +77,3 @@ Atributos.prototype.borrarCampos = function(elemento){
     aux.removeChild(elemento);
 
 }
-
-function validarTipoTercero()
-{
-    document.getElementById("tipoTercero").value = '';
-
-    for (tipo = 1; tipo <= 5; tipo++)
-    {
-        document.getElementById("tipoTercero").value = document.getElementById("tipoTercero").value + ((document.getElementById("tipoTercero" + (tipo)).checked) ? '*' + document.getElementById("tipoTercero" + (tipo)).value + '*' : '');
-    }
-}
-
-function seleccionarTipoTercero()
-{
-    for (tipo = 1; tipo <= 5; tipo++)
-    {
-        if (document.getElementById("tipoTercero").value.indexOf('*' + document.getElementById("tipoTercero" + (tipo)).value + '*') >= 0)
-        {
-            document.getElementById("tipoTercero" + (tipo)).checked = true;
-        }
-        else
-        {
-            document.getElementById("tipoTercero" + (tipo)).checked = false;
-        }
-    }
-}
-
-function llenaNombreTercero()
-{
-    nombre1 = document.getElementById('nombre1Tercero').value;
-    nombre2 = document.getElementById('nombre2Tercero').value;
-    apellido1 = document.getElementById('apellido1Tercero').value;
-    apellido2 = document.getElementById('apellido2Tercero').value;
-
-    document.getElementById('nombreCompletoTercero').value = nombre1 + ' ' + nombre2 + ' ' + apellido1 + ' ' + apellido2;
-}

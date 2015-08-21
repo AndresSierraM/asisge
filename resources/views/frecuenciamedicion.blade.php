@@ -1,4 +1,5 @@
 @extends('layouts.vista')
+@section('titulo')<h3 id="titulo"><center>Frecuencias de <br>Medici&oacute;n</center></h3>@stop
 
 @section('content')
 @include('alerts.request')
@@ -16,13 +17,7 @@
 
 <div id='form-section' >
 
-	<div class="container">
-		<div class="navbar-header pull-left">
-	  	<a class="navbar-brand"  >Frecuencias de medici&oacute;n</a>
-	</div>
-	</div>
-
-  <div class="form-container">
+	
 	<fieldset id="frecuenciamedicion-form-fieldset">	
 		<div class="form-group" id='test'>
           {!! Form::label('codigoFrecuenciaMedicion', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
@@ -73,7 +68,6 @@
                 ), ['class'=>'form-control']) !!}
           </div>
         </div>
-      </div>
 
     </fieldset>
 	@if(isset($frecuenciamedicion))

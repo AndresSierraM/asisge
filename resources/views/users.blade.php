@@ -55,6 +55,18 @@
             </div>
           </div>
         </div>
+
+        <div class="form-group" id='test'>
+            {!!Form::label('Compania_idCompania', 'Compa&ntilde;&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
+            <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="fa fa-bank"></i>
+                        </span>
+                {!!Form::select('Compania_idCompania',$compania, (isset($usuario) ? $usuario->Compania_idCompania : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione La compa&ntilde;&iacute;a"])!!}
+              </div>
+            </div>
+          </div>
     </fieldset>
 	@if(isset($usuario))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')

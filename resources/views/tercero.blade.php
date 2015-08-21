@@ -1,4 +1,4 @@
-@extends('layouts.principal')
+@extends('layouts.vista')
 
 @section('titulo')
 	<h3 id="titulo">
@@ -7,31 +7,34 @@
 @stop
 
 @section('content')
+
 	{!!Html::script('js/tercero.js')!!}
 	<script>
 
-		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($compania->terceroContacto) : "");?>';
+		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroContactos) : "");?>';
 		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
-		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($compania->terceroProducto) : "");?>';
+		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroProductos) : "");?>';
 		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
 		var valorContactos = [0,'','','','',''];
 		var valorProductos = [0,'',''];
 
 		$(document).ready(function(){
 
+			seleccionarTipoTercero();
+
 			contactos = new Atributos('contactos','contenedor_contactos','contactos_');
 			contactos.campos = ['idTerceroContacto','nombreTerceroContacto','cargoTerceroContacto','telefonoTerceroContacto','movilTerceroContacto','correoElectronicoTerceroContacto'];
 			contactos.etiqueta = ['input','input','input','input','input','input'];
 			contactos.tipo = ['hidden','text','text','text','text','text'];
-			contactos.estilo = ['','width: 340px; height:35px;','width: 270px;height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 240px;height:35px;'];
+			contactos.estilo = ['','width: 330px; height:35px;','width: 270px;height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 230px;height:35px;'];
 			contactos.clase = ['','','','','',''];
 			contactos.sololectura = [false,false,false,false,false,false];
 
 			productos = new Atributos('productos','contenedor_productos','productos_');
-			productos.campos = ['idTerceroProducto','nombreTerceroProducto','descripcionTerceroProducto'];
+			productos.campos = ['idTerceroProducto','codigoTerceroProducto','nombreTerceroProducto'];
 			productos.etiqueta = ['input','input','input'];
 			productos.tipo = ['hidden','text','text'];
-			productos.estilo = ['','width: 400px; height:35px;','width: 750px;height:35px;'];
+			productos.estilo = ['','width: 380px; height:35px;','width: 750px;height:35px;'];
 			productos.clase = ['','',''];
 			productos.sololectura = [false,false,false];
 
@@ -49,12 +52,12 @@
 	</script>
 	@if(isset($tercero))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($tercero,['route'=>['tercero.destroy',$tercero->idTercero],'method'=>'DELETE'])!!}
+			{!!Form::model($tercero,['route'=>['tercero.destroy',$tercero->idTercero],'method'=>'DELETE', 'files' => true])!!}
 		@else
-			{!!Form::model($tercero,['route'=>['tercero.update',$tercero->idTercero],'method'=>'PUT'])!!}
+			{!!Form::model($tercero,['route'=>['tercero.update',$tercero->idTercero],'method'=>'PUT', 'files' => true])!!}
 		@endif
 	@else
-		{!!Form::open(['route'=>'tercero.store','method'=>'POST'])!!}
+		{!!Form::open(['route'=>'tercero.store','method'=>'POST', 'files' => true])!!}
 	@endif
 
 		<div id="form_section">
@@ -69,6 +72,9 @@
 										<span class="input-group-addon">
 											<i class="fa fa-credit-card" style="width: 14px;"></i>
 										</span>
+										{!! Form::hidden('idTercero', null, array('id' => 'idTercero')) !!}
+										{!! Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo')) !!}
+										{!! Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania')) !!}
 										{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
 									</div>
 								</div>
@@ -91,7 +97,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('nombre1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer nombre del tercero','style'=>'width:300px;'])!!}
+										{!!Form::text('nombre1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer nombre del tercero','style'=>'width:300px;','id'=>'nombre1Tercero', 'onchange'=>'llenaNombreTercero()'])!!}
 									</div>
 								</div>
 							</div>
@@ -102,7 +108,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('nombre2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el segundo nombre del tercero','style'=>'width:300px;'])!!}
+										{!!Form::text('nombre2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el segundo nombre del tercero','style'=>'width:300px;','id'=>'nombre2Tercero', 'onchange'=>'llenaNombreTercero()'])!!}
 									</div>
 								</div>
 							</div>
@@ -113,7 +119,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('apellido1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer apellido del tercero','style'=>'width:300px;'])!!}
+										{!!Form::text('apellido1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer apellido del tercero','style'=>'width:300px;','id'=>'apellido1Tercero', 'onchange'=>'llenaNombreTercero()'])!!}
 									</div>
 								</div>
 							</div>
@@ -124,7 +130,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('apellido2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el segundo apellido del tercero','style'=>'width:300px;'])!!}
+										{!!Form::text('apellido2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el segundo apellido del tercero','style'=>'width:300px;','id'=>'apellido2Tercero', 'onchange'=>'llenaNombreTercero()'])!!}
 									</div>
 								</div>
 							</div>
@@ -135,7 +141,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-navicon" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>'Nombre completo del Tercero','style'=>'width:820px;'])!!}
+										{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>'Nombre completo del Tercero','style'=>'width:820px;','readonly'=>true])!!}
 									</div>
 								</div>
 							</div>
@@ -157,7 +163,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-bar-chart-o" style="width: 14px;"></i>
 										</span>
-										{!!Form::select('estadoTercero',array('ACTIVO'=>'Activo','INACTIVO'=>'Inactivo'),(isset($tercero) ? $tercero->estadoTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el estado del tercero",'style'=>'width:300px;'])!!}
+										{!!Form::select('estadoTercero',array('ACTIVO'=>'Activo','INACTIVO'=>'Inactivo'),(isset($tercero) ? $tercero->estadoTercero : 0),["class" => "chosen-select form-control",'style'=>'width:300px;'])!!}
 									</div>
 								</div>
 							</div>
@@ -165,29 +171,30 @@
 								<div class="col-lg-12">
 									<div class="panel panel-default">
 										<div class="panel-body">
+											{!! Form::hidden('tipoTercero', null, array('id' => 'tipoTercero')) !!}
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','value',true)!!}Empleado
+													{!!Form::checkbox('tipoTercero1','01',false, array('id' => 'tipoTercero1', 'onclick'=>'validarTipoTercero()'))!!}Empleado
 												</label>
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','value',true)!!}Proveedor
+													{!!Form::checkbox('tipoTercero1','02',false, array('id' => 'tipoTercero2', 'onclick'=>'validarTipoTercero()'))!!}Proveedor
 												</label>
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','value',true)!!}Cliente
+													{!!Form::checkbox('tipoTercero1','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
 												</label>
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','value',true)!!}EntidadEstatal
+													{!!Form::checkbox('tipoTercero1','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}EntidadEstatal
 												</label>
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','value',true)!!}Seguridad Social
+													{!!Form::checkbox('tipoTercero1','05',false, array('id' => 'tipoTercero5', 'onclick'=>'validarTipoTercero()'))!!}Seguridad Social
 												</label>
 											</div>
 										</div>
@@ -296,7 +303,7 @@
 															</span>
 															{!!Form::select('sexoTercero',
 															array('F'=>'Femenino','M'=>'Masculino'), 
-															(isset($tercero) ? $tercero->estadoTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el sexo del tercero",'style'=>'width:340;'])!!}
+															(isset($tercero) ? $tercero->sexoTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el sexo del tercero",'style'=>'width:340;'])!!}
 														</div>
 													</div>
 												</div>
@@ -350,11 +357,11 @@
 															<div class="col-md-1" style="width: 40px;" onclick="contactos.agregarCampos(valorContactos,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 340px;">Nombre</div>
+															<div class="col-md-1" style="width: 330px;">Nombre</div>
 															<div class="col-md-1" style="width: 270px;">Cargo</div>
 															<div class="col-md-1" style="width: 150px;">Tel&eacute;fono</div>
 															<div class="col-md-1" style="width: 150px;">M&oacute;vil</div>
-															<div class="col-md-1" style="width: 240px;">Correo</div>
+															<div class="col-md-1" style="width: 230px;">Correo</div>
 															<div id="contenedor_contactos">
 															</div>
 														</div>
@@ -377,7 +384,7 @@
 															<div class="col-md-1" style="width: 40px;" onclick="productos.agregarCampos(valorProductos,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 400px;">Referencia</div>
+															<div class="col-md-1" style="width: 380px;">Referencia</div>
 															<div class="col-md-1" style="width: 750px;">Descripci&oacute;n</div>
 															<div id="contenedor_productos">
 															</div>
@@ -392,12 +399,17 @@
 						</div>
 					</div>
 				</div>
+				<div class="form-group">
+					<div class="col-sm-12">
+						@if(isset($tercero))
+							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+						@else
+							{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+						@endif
+					</div>
+				</div>
 			</fieldset>
-			@if(isset($tercero))
-				{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
-			@else
-				{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
-			@endif
+
 		</div>
 	{!!Form::close()!!}
 	<script type="text/javascript">
