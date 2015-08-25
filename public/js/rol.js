@@ -13,6 +13,7 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.etiqueta = new Array();
     this.nombreOpcion = new Array();
     this.valorOpcion = new Array();
+    this.eventoclick = new Array();
 
 };
 
@@ -32,6 +33,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
 
     for (var i = 0,  e = this.campos.length; i < e ; i++)
     {
+
         if(this.etiqueta[i] == 'input')
         {
             var input = document.createElement('input');
@@ -59,26 +61,27 @@ Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
         }
         else if(this.etiqueta[i] == 'select')
         {
+
             var select = document.createElement('select');
             var option = '';
             select.id =  this.campos[i] + this.contador;
             select.name =  this.campos[i]+'[]';
             select.setAttribute("style", this.estilo[i]);
             select.setAttribute("class", this.clase[i]);
-            select.setAttribute("onfocus", this.eventofocus[i]);
-            select.setAttribute("onkeyup", this.eventokeyup[i]);
-            select.setAttribute("onclick", this.eventoclick[i]);
+            
              
             for(var j=0,k=this.valorOpcion.length;j<k;j++)
             {
                 option = document.createElement('option');
                 option.value = this.valorOpcion[j];
                 option.text = this.nombreOpcion[j];
-                option.selected = (valor[i] == this.valorOpcion[j] ? true : false);
+
+                option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.valorOpcion[j] ? true : false);
                 select.appendChild(option);
             }
  
             div.appendChild(select);
+
  
         }
         else if(this.etiqueta[i] == 'checkbox')
@@ -97,12 +100,11 @@ Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
  
             var input = document.createElement('input');
             input.type = this.tipo[i];
+            input.setAttribute('style',this.estilo[i]);
             input.id =  this.campos[i]+'C'+this.contador;
             input.name =  this.campos[i]+'C'+'[]';
-            input.checked = (valor[i] == 1 ? true : false);
-            input.setAttribute("onfocus", this.eventofocus[i]);
-            input.setAttribute("onkeyup", this.eventokeyup[i]);
-            input.setAttribute("onclick", this.eventoclick[i]);
+            input.checked = (valor[(tipo == 'A' ? i : this.campos[i])] == 1 ? true : false);
+            input.setAttribute("onclick", this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')');
      
             divCheck.appendChild(input);
  
@@ -114,13 +116,25 @@ Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
     caneca.id = 'eliminarRegistro'+ this.contador;
     caneca.setAttribute('onclick',this.nombre+'.borrarCampos('+this.contenido+this.contador+')');
     caneca.setAttribute("class","col-md-1");
-    caneca.setAttribute("style","width:40px; height: 35px;");
+    caneca.setAttribute("style","width:40px; height: 34px;");
     img.setAttribute("class","glyphicon glyphicon-trash");
 
     caneca.appendChild(img);
     div.appendChild(caneca);
     espacio.appendChild(div);
+
     this.contador++;
+
+    var config = {
+      '.chosen-select'           : {},
+      '.chosen-select-deselect'  : {allow_single_deselect:true},
+      '.chosen-select-no-single' : {disable_search_threshold:10},
+      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
 }
 
 Atributos.prototype.borrarCampos = function(elemento){
@@ -128,4 +142,10 @@ Atributos.prototype.borrarCampos = function(elemento){
     aux = elemento.parentNode;
     aux.removeChild(elemento);
 
+}
+
+Atributos.prototype.cambiarCheckbox = function(campo, registro)
+{
+    console.log(campo+' ----> '+registro);
+    document.getElementById(campo+registro).value = document.getElementById(campo+"C"+registro).checked ? 1 : 0;
 }

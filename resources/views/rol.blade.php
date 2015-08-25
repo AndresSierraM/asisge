@@ -4,26 +4,26 @@
 @section('content')
 @include('alerts.request')
 
-
-{!!Html::script('js/tercero.js')!!}
+{!!Html::script('js/rol.js')!!}
   <script>
-
+    var idOpcion = '<?php echo isset($idOpcion) ? $idOpcion : "";?>';
+    var nombreOpcion = '<?php echo isset($nombreOpcion) ? $nombreOpcion : "";?>';
     var rolOpcion = '<?php echo (isset($rol) ? json_encode($rol->rolOpcion) : "");?>';
-    var opcion = '<?php echo (isset($opcion) ? json_encode($opcion) : "");?>';
     rolOpcion = (rolOpcion != '' ? JSON.parse(rolOpcion) : '');
-    var valorPermisos = [0,'','',0,0,0,0];
+    var valorPermisos = ['',0,0,0,0];
 
     $(document).ready(function(){
 
 
       permisos = new Atributos('permisos','contenedor_permisos','permisos_');
-      permisos.campos   = ['Opcion_idOpcion',   'nombrePaquete' ,   'nombreOpcion',   'adicionarRolOpcion','modificarRolOpcion','eliminarRolOpcion','consultarRolOpcion'];
-      permisos.etiqueta = ['input',             'input',            'input',          'input',              'input',            'input',            'input'];
-      permisos.tipo     = ['hidden',             'text',             'text',           'checkbox',           'checkbox',         'checkbox',         'checkbox'];
-      permisos.estilo   = ['', 'width: 250px; height:35px;','width: 400px;height:35px;','width: 70px;height:30px;','width: 70px;height:30px;','width: 70px;height:30px;','width: 70px;height:30px;'];
-      permisos.clase = ['','','','','','',''];
-      permisos.sololectura = [false,false,false,false,false,false,false];
-
+      permisos.campos   = ['Opcion_idOpcion',   'adicionarRolOpcion','modificarRolOpcion','eliminarRolOpcion','consultarRolOpcion'];
+      permisos.etiqueta = ['select',          'checkbox',          'checkbox',          'checkbox',         'checkbox'];
+      permisos.tipo     = ['',                'checkbox',           'checkbox',          'checkbox',         'checkbox'];
+      permisos.estilo   = ['width: 600px;height:35px;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;'];
+      permisos.clase = ['chosen-select form-control','','','',''];
+      permisos.sololectura = [false,false,false,false,false];
+      permisos.nombreOpcion =  JSON.parse(nombreOpcion);
+      permisos.valorOpcion =  JSON.parse(idOpcion);
       for(var j=0, k = rolOpcion.length; j < k; j++)
       {
         permisos.agregarCampos(JSON.stringify(rolOpcion[j]),'L');
@@ -32,7 +32,6 @@
     });
 
   </script>
-
 	@if(isset($rol))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($rol,['route'=>['rol.destroy',$rol->idRol],'method'=>'DELETE', 'files' => true])!!}
@@ -80,8 +79,7 @@
                 <div class="col-md-1" style="width: 40px;" onclick="permisos.agregarCampos(valorPermisos,'A')">
                   <span class="glyphicon glyphicon-plus"></span>
                 </div>
-                <div class="col-md-1" style="width: 250px;">Paquete</div>
-                <div class="col-md-1" style="width: 400px;">Opci&oacute;n</div>
+                <div class="col-md-1" style="width: 600px;">Opci&oacute;n</div>
                 <div class="col-md-1" style="width: 70px;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
                 <div class="col-md-1" style="width: 70px;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
                 <div class="col-md-1" style="width: 70px;"><center><span title="Eliminar / Anular" class="fa fa-trash"></span></center></div>

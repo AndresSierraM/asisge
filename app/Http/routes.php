@@ -102,6 +102,7 @@ Route::get('/tercerogrid', function()
 	return view('tercerogridphp');
 });
 
+
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -112,7 +113,13 @@ Route::resource('compania','CompaniaController');
 Route::resource('tercero','TerceroController');
 
 
-
 // ---------------------------------
 // Documentos
 // ---------------------------------
+
+Route::get('/diagnosticogrid', function()
+{
+	return view('diagnosticogridphp');
+});
+
+Route::resource('diagnostico','DiagnosticoController');

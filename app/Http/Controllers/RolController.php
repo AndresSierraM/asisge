@@ -12,6 +12,7 @@ use App\Http\Controllers\RolOpcion;
 //use Intervention\Image\ImageManagerStatic as Image;
 use Input;
 use File;
+use DB;
 // include composer autoload
 require '../vendor/autoload.php';
 // import the Intervention Image Manager Class
@@ -39,8 +40,12 @@ class RolController extends Controller
      */
     public function create()
     {
-        $opcion = \App\Opcion::All()->lists('nombreOpcion','idOpcion');
-        return view('rol',compact('opcion','selected'));
+       
+        $idOpcion = \App\Opcion::All()->lists('idOpcion');
+        $nombreOpcion = \App\Opcion::All()->lists('nombreOpcion');
+        
+        return view('rol',compact('idOpcion','nombreOpcion'));
+
     }
 
     /**
@@ -58,7 +63,9 @@ class RolController extends Controller
             ]); 
 
         $rol = \App\Rol::All()->last();
-        $contadorPermiso = count($request['nombrePaquete']);
+        $contadorPermiso = count($request['Opcion_idOpcion']);
+        
+
         for($i = 0; $i < $contadorPermiso; $i++)
         {
             \App\RolOpcion::create([
@@ -95,8 +102,9 @@ class RolController extends Controller
     public function edit($id)
     {
         $rol = \App\Rol::find($id);
-        $opcion = \App\Opcion::All()->lists('nombreOpcion','idOpcion');
-        return view('rol',compact('opcion'),['rol'=>$rol]);
+        $idOpcion = \App\Opcion::All()->lists('idOpcion');
+        $nombreOpcion = \App\Opcion::All()->lists('nombreOpcion');
+        return view('rol',compact('idOpcion','nombreOpcion'),['rol'=>$rol]);
     }
 
     /**
@@ -116,7 +124,7 @@ class RolController extends Controller
 
         \App\RolOpcion::where('Rol_idRol',$id)->delete();
 
-        $contadorPermiso = count($request['nombrePaquete']);
+        $contadorPermiso = count($request['Opcion_idOpcion']);
         for($i = 0; $i < $contadorPermiso; $i++)
         {
             \App\RolOpcion::create([

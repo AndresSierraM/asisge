@@ -1,4 +1,5 @@
 <?php namespace App\Http\Controllers;
+use App\Http\Controllers\Departamento;
 use Auth;
 use Redirect;
 use Request;
@@ -18,9 +19,49 @@ class HomeController extends Controller {
 	|
 	*/
  
-	public function index()
+	public function getIndex()
 	{
-		return view('auth\login');
+		return Redirect::to('login');
 	}
-}
  
+	// Al acceder a login mostramos un formulario de Login.
+	public function getLogin()
+	{
+		return view('login');
+	}
+ 
+
+ 	// Al recibir los datos del formulario de Login.
+	public function postLogin()
+	{
+		$credenciales=array(
+			'email'=>Request::input('email'),
+			'password'=>Request::input('password')
+			);
+
+		if (Auth::attempt($credenciales))
+		{
+			// En  lugar de redireccionarlo a una página en cuestión lo redireccionamos
+			// a la página a la cuál el usuario quería ir antes de estar autenticado en la aplicación.
+			// Esa página debería estar identificada en una variable de sesión.
+ 
+			// En el caso de que no ésté en la sesión especificada la URL a la que quería ir
+			// se le puede indicar por defecto la URL por defecto a la que ir: ('users') en este caso.
+			return view('layouts.bienvenida');
+			//return Redirect::to('pais');
+			//return redirect('/ciudad');
+			//return redirect('/pais');
+		}
+		else
+			return Redirect::to('login')->withInput(); //"NO esta bien ".Request::input('email').Request::input('password');
+	}
+ 
+ 
+	// Página de logout.
+	public function getLogout()
+	{
+		Auth::logout();
+		return Redirect::to('login');
+	}
+ 
+}

@@ -18,8 +18,9 @@ class CompaniaController extends Controller
      */
     public function index()
     {
-        $compania = \App\Compania::All();
-        return view('companiagrid',compact('compania'));
+        echo 'hola';
+        //$compania = \App\Compania::All();
+        //return view('companiagrid',compact('compania'));
     }
 
     /**

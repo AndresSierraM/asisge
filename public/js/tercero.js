@@ -21,6 +21,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
        valor = datos;
     else
         valor = $.parseJSON(datos);
+    
     var espacio = document.getElementById(this.contenedor);
     var caneca = document.createElement('div');
     var img = document.createElement('i');
