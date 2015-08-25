@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-
+@include('alerts.request')
 	{!!Html::script('js/tercero.js')!!}
 	<script>
 

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\TerceroRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Ciudad;
 use App\Http\Controllers\TipoIdentificacion;
@@ -44,7 +45,7 @@ class TerceroController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(TerceroRequest $request)
     {
         $image = Input::file('imagenTercero');
         $imageName = $request->file('imagenTercero')->getClientOriginalName();
@@ -132,7 +133,7 @@ class TerceroController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(TerceroRequest $request, $id)
     {
 
 
