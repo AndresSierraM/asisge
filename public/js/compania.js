@@ -26,7 +26,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
     
     
     var espacio = document.getElementById(this.contenedor);
-    var caneca = document.createElement('a');
+    var caneca = document.createElement('div');
     var img = document.createElement('i');
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;

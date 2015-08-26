@@ -86,10 +86,7 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-10" style="width: 100%;">
                             <div class="input-group">
-                              <span class="input-group-addon">
-                                <i class="fa fa-pencil-square-o "></i>
-                              </span>
-                              {!!Form::textarea('misionCompania',null,['class'=>'form-control','placeholder'=>'Ingresa la misión de la compania'])!!}
+                              {!!Form::textarea('misionCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa la misión de la compania'])!!}
                             </div>
                           </div>
                         </div>  
@@ -107,10 +104,7 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-10" style="width: 100%;">
                             <div class="input-group">
-                              <span class="input-group-addon">
-                                <i class="fa fa-pencil-square-o "></i>
-                              </span>
-                              {!!Form::textarea('visionCompania',null,['class'=>'form-control','placeholder'=>'Ingresa la visión de la compania'])!!}
+                                {!!Form::textarea('visionCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa la visión de la compania'])!!}
                             </div>
                           </div>
                         </div>   
@@ -128,10 +122,7 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-10" style="width: 100%;">
                             <div class="input-group">
-                              <span class="input-group-addon">
-                                <i class="fa fa-pencil-square-o "></i>
-                              </span>
-                              {!!Form::textarea('valoresCompania',null,['class'=>'form-control','placeholder'=>'Ingresa los valores de la compania'])!!}
+                              {!!Form::textarea('valoresCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa los valores de la compania'])!!}
                             </div>
                           </div>
                         </div>  
@@ -149,10 +140,7 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-10" style="width: 100%;">
                             <div class="input-group">
-                              <span class="input-group-addon">
-                                <i class="fa fa-pencil-square-o "></i>
-                              </span>
-                              {!!Form::textarea('politicasCompania',null,['class'=>'form-control','placeholder'=>'Ingresa las políticas de la compania'])!!}
+                              {!!Form::textarea('politicasCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa las políticas de la compania'])!!}
                             </div>
                           </div>
                         </div>  
@@ -170,10 +158,7 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-10" style="width: 100%;">
                             <div class="input-group">
-                              <span class="input-group-addon">
-                                <i class="fa fa-pencil-square-o "></i>
-                              </span>
-                              {!!Form::textarea('principiosCompania',null,['class'=>'form-control','placeholder'=>'Ingresa los principios de la compania'])!!}
+                              {!!Form::textarea('principiosCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa los principios de la compania'])!!}
                             </div>
                           </div>
                         </div> 
@@ -191,10 +176,7 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-10" style="width: 100%;">
                             <div class="input-group">
-                              <span class="input-group-addon">
-                                <i class="fa fa-pencil-square-o "></i>
-                              </span>
-                              {!!Form::textarea('metasCompania',null,['class'=>'form-control','placeholder'=>'Ingresa las metas de la compania'])!!}
+                              {!!Form::textarea('metasCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa las metas de la compania'])!!}
                             </div>
                           </div>
                         </div> 
@@ -219,8 +201,6 @@
                                 <div id="contenedor_objetivos">
                                 </div>
                             </div>
-                            
-                            
                           </div>
                         </div> 
                       </div>
@@ -241,8 +221,13 @@
  	@else
   		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
  	@endif
-	{!! Form::close() !!}
+	{!!Form::close()!!}
 	</div>
 </div>
-
+<script>
+    CKEDITOR.replace(('misionCompania','visionCompania','valoresCompania','politicasCompania','principiosCompania','metasCompania'), {
+        fullPage: true,
+        allowedContent: true
+      });  
+</script>
 @stop
