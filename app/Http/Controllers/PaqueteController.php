@@ -26,8 +26,7 @@ class PaqueteController extends Controller
      */
     public function index()
     {
-        $paquete = \App\Paquete::All();
-        return view('paquetegrid',compact('paquete'));
+        return view('paquetegrid');
     }
 
     /**

@@ -25,8 +25,7 @@ class TerceroController extends Controller
      */
     public function index()
     {
-        $tercero = \App\Tercero::All();
-        return view('tercerogrid',compact('tercero'));
+        return view('tercerogrid');
     }
     /**
      * Show the form for creating a new resource.

@@ -105,8 +105,8 @@ Titulos.prototype.agregarTitulos = function(grupo, nombreGrupo){
     div.setAttribute("width", '100%');
     
     var label = document.createElement('div');
-    label.setAttribute("class", this.clase[i] );
-    label.setAttribute("style", "width: 100%;");
+    label.setAttribute("class", this.clase[0] );
+    label.setAttribute("style", "width: 1120px;");
     label.innerHTML = nombreGrupo;
     div.appendChild(label);
 

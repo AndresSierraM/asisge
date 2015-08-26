@@ -17,8 +17,7 @@ class ProcesoController extends Controller
      */
     public function index()
     {
-        $proceso = \App\Proceso::All();
-        return view('procesogrid',compact('proceso'));
+        return view('procesogrid');
     }
 
     /**

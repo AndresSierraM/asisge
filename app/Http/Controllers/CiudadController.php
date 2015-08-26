@@ -28,8 +28,7 @@ class CiudadController extends Controller
 
     public function index()
     {
-        $ciudad = \App\Ciudad::All();
-        return view('ciudadgrid',compact('ciudad'));
+        return view('ciudadgrid');
     }
 
     /**

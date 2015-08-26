@@ -25,8 +25,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $usuario = \App\User::All();
-        return view('usersgrid',compact('usuario'));
+        return view('usersgrid');
     }
 
     /**

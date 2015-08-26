@@ -26,8 +26,7 @@ class OpcionController extends Controller
      */
     public function index()
     {
-        $opcion = \App\Opcion::All();
-        return view('opciongrid',compact('opcion'));
+        return view('opciongrid');
     }
 
     public function select()

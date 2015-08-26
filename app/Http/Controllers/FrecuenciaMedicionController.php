@@ -17,8 +17,7 @@ class FrecuenciaMedicionController extends Controller
      */
     public function index()
     {
-        $frecuenciamedicion = \App\FrecuenciaMedicion::All();
-        return view('frecuenciamediciongrid',compact('frecuenciamedicion'));
+        return view('frecuenciamediciongrid');
     }
 
     /**

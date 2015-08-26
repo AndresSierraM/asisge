@@ -28,7 +28,11 @@
         diagnostico.campos   = ['DiagnosticoPregunta_idDiagnosticoPregunta',  'detalleDiagnosticoPregunta', 'puntuacionDiagnosticoDetalle',   'resultadoDiagnosticoDetalle','mejoraDiagnosticoDetalle'];
         diagnostico.etiqueta = ['input',                                      'textarea',                   'input',                          'input',                      'textarea'];
         diagnostico.tipo     = ['hidden',                                     'textarea',                   'text',                           'text',                       'textarea'];
-        diagnostico.estilo   = ['',                                           'overflow:hidden; resize:none; font-size:10px; width: 500px; height:60px;', 'text-align: center; width: 100px;  height:60px;',     'text-align: center; width: 100px;  height:60px;',  'overflow:hidden; resize:none; font-size:10px; width: 420px; height:60px;'];
+        diagnostico.estilo   = ['',                                           
+                                'vertical-align:top; resize:none; font-size:10px; width: 500px; height:60px;', 
+                                'vertical-align:top; text-align: center; width: 100px;  height:60px;',
+                                'vertical-align:top; text-align: center; width: 100px;  height:60px;',
+                                'vertical-align:top; resize:none; font-size:10px; width: 420px; height:60px;'];
         diagnostico.clase    = ['','','','',''];
         diagnostico.sololectura = [false,true,false,true,false];
         diagnostico.calculo = [false,false,true,false,false];

@@ -17,8 +17,7 @@ class TipoIdentificacionController extends Controller
      */
     public function index()
     {
-        $tipoidentificacion = \App\TipoIdentificacion::All();
-        return view('tipoidentificaciongrid',compact('tipoidentificacion'));
+        return view('tipoidentificaciongrid');
     }
 
     /**

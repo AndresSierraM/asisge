@@ -20,8 +20,7 @@ class DepartamentoController extends Controller
 
     public function index()
     {
-        $departamento = \App\Departamento::All();
-        return view('departamentogrid',compact('departamento'));
+        return view('departamentogrid');
     }
 
     /**

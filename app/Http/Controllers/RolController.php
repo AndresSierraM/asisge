@@ -29,8 +29,7 @@ class RolController extends Controller
      */
     public function index()
     {
-        $rol = \App\Rol::All();
-        return view('rolgrid',compact('rol'));
+        return view('rolgrid');
     }
 
     /**
