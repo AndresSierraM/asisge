@@ -27,7 +27,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
     
     var espacio = document.getElementById(this.contenedor);
     var caneca = document.createElement('a');
-    var img = document.createElement('img');
+    var img = document.createElement('i');
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
     div.setAttribute("width", '100%');
@@ -61,13 +61,14 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             div.appendChild(input);
         }
 
-        caneca.setAttribute("style","margin: 12px");
-        caneca.id = this.campos[i] + this.contador;
-        caneca.setAttribute('onclick',this.nombre+'.borrarCampos('+this.contenido+this.contador+')');
-        caneca.setAttribute("class","desactive");
-        img.setAttribute("src","../images/eliminar.png");
-
     }
+
+    caneca.id = 'eliminarRegistro'+ this.contador;
+    caneca.setAttribute('onclick',this.nombre+'.borrarCampos('+this.contenido+this.contador+')');
+    caneca.setAttribute("class","col-md-1");
+    caneca.setAttribute("style","width:40px; height: 80px;");
+    img.setAttribute("class","glyphicon glyphicon-trash");
+
     caneca.appendChild(img);
     div.appendChild(caneca);
     espacio.appendChild(div);
