@@ -11,13 +11,30 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.clase = new Array();
     this.sololectura = new Array();
     this.etiqueta = new Array();
-    this.nombreOpcion = new Array();
-    this.valorOpcion = new Array();
+    
+    this.nombreCompaniaObjetivo = new Array();
+    this.valorCompaniaObjetivo = new Array();
+
+    this.nombreProceso = new Array();
+    this.valorProceso = new Array();
+
+    this.nombretipoMeta = new Array('C','%','$');
+
+    this.nombreoperadorMeta = new Array('>','>=','<','<=','=');
+    
+
+    this.nombreFrecuenciaMedicion = new Array();
+    this.valorFrecuenciaMedicion = new Array();
+
+    this.nombreTercero = new Array();
+    this.valorTercero = new Array();
+
+
     this.eventoclick = new Array();
 
 };
 
-Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
+Atributos.prototype.agregarCampos = function(datos, tipo){
 
     var valor;
     if(tipo == 'A')
@@ -69,17 +86,73 @@ Atributos.prototype.agregarCampos = function(datos, tipo, valorOpcion){
             select.setAttribute("style", this.estilo[i]);
             select.setAttribute("class", this.clase[i]);
             
-             
-            for(var j=0,k=this.valorOpcion.length;j<k;j++)
-            {
-                option = document.createElement('option');
-                option.value = this.valorOpcion[j];
-                option.text = this.nombreOpcion[j];
+            // para construir las diferentes listas de seleccion, consultamos  los nombres de los 
+            // campos que van en cada uno de los select
 
-                option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.valorOpcion[j] ? true : false);
-                select.appendChild(option);
+            switch(detalle.campos[i])
+            {
+                case 'CompaniaObjetivo_idCompaniaObjetivo':
+                    for(var j=0,k=this.valorCompaniaObjetivo.length;j<k;j++)
+                    {
+                        option = document.createElement('option');
+                        option.value = this.valorCompaniaObjetivo[j];
+                        option.text = this.nombreCompaniaObjetivo[j];
+                        option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.valorCompaniaObjetivo[j] ? true : false);
+                        select.appendChild(option);
+                    }
+                    break 
+                case'Proceso_idProceso':  
+                    for(var j=0,k=this.valorProceso.length;j<k;j++)
+                    {
+                        option = document.createElement('option');
+                        option.value = this.valorProceso[j];
+                        option.text = this.nombreProceso[j];
+                        option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.valorProceso[j] ? true : false);
+                        select.appendChild(option);
+                    }
+                    break 
+               case'operadorMetaCuadroMandoDetalle':
+                    for(var j=0,k=this.nombreoperadorMeta.length;j<k;j++)
+                    {
+                        option = document.createElement('option');
+                        option.value = this.nombreoperadorMeta[j];
+                        option.text = this.nombreoperadorMeta[j];
+                        option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.nombreoperadorMeta[j] ? true : false);
+                        select.appendChild(option);
+                    }
+                    break 
+                case'tipoMetaCuadroMandoDetalle':
+                    for(var j=0,k=this.nombretipoMeta.length;j<k;j++)
+                    {
+                        option = document.createElement('option');
+                        option.value = this.nombretipoMeta[j];
+                        option.text = this.nombretipoMeta[j];
+                        option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.nombretipoMeta[j] ? true : false);
+                        select.appendChild(option);
+                    }
+                    break 
+                case'FrecuenciaMedicion_idFrecuenciaMedicion':
+                    for(var j=0,k=this.valorProceso.length;j<k;j++)
+                    {
+                        option = document.createElement('option');
+                        option.value = this.valorFrecuenciaMedicion[j];
+                        option.text = this.nombreFrecuenciaMedicion[j];
+                        option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.valorFrecuenciaMedicion[j] ? true : false);
+                        select.appendChild(option);
+                    }
+                    break 
+                case'Tercero_idResponsable':
+                    for(var j=0,k=this.valorTercero.length;j<k;j++)
+                    {
+                        option = document.createElement('option');
+                        option.value = this.valorTercero[j];
+                        option.text = this.nombreTercero[j];
+                        option.selected = (valor[(tipo == 'A' ? i : this.campos[i])] == this.valorTercero[j] ? true : false);
+                        select.appendChild(option);
+                    }
+                    break 
             }
- 
+
             div.appendChild(select);
 
  

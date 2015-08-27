@@ -9,16 +9,6 @@ use App\Http\Requests\RolRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RolOpcion;
 
-//use Intervention\Image\ImageManagerStatic as Image;
-use Input;
-use File;
-use DB;
-// include composer autoload
-require '../vendor/autoload.php';
-// import the Intervention Image Manager Class
-use Intervention\Image\ImageManager ;
-
-
 
 class RolController extends Controller
 {

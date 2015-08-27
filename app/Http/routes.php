@@ -117,9 +117,11 @@ Route::resource('tercero','TerceroController');
 // Documentos
 // ---------------------------------
 
+
 Route::get('/diagnosticogrid', function()
 {
 	return view('diagnosticogridphp');
 });
 
 Route::resource('diagnostico','DiagnosticoController');
+Route::resource('cuadromando','CuadroMandoController');
