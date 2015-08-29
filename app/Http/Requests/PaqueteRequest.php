@@ -24,8 +24,8 @@ class PaqueteRequest extends Request
     public function rules()
     {
         return [
-            "ordenPaquete" => "required|integer",
-            "nombrePaquete" => "required|string"
+            "ordenPaquete" => "required|integer|between:0,99|unique:paquete,ordenPaquete,".$this->get('idPaquete') .",idPaquete",
+            "nombrePaquete" => "required|string|max:80"
         ];
     }
 }

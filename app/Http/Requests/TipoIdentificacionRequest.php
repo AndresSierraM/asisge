@@ -24,8 +24,8 @@ class TipoIdentificacionRequest extends Request
     public function rules()
     {
         return [
-            "codigoTipoIdentificacion" => "required|string",
-            "nombreTipoIdentificacion" => "required|string"
+            "codigoTipoIdentificacion" => "required|string|max:20|unique:tipoidentificacion,codigoTipoIdentificacion,".$this->get('idTipoIdentificacion') .",idTipoIdentificacion",
+            "nombreTipoIdentificacion" => "required|string|max:80"
         ];
     }
 }

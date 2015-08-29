@@ -24,8 +24,8 @@ class RolRequest extends Request
     public function rules()
     {
         return [
-            "codigoRol" => "required|string",
-            "nombreRol" => "required|string"
+            "codigoRol" => "required|string|max:20|unique:rol,codigoRol,".$this->get('idRol') .",idRol",
+            "nombreRol" => "required|string|max:80"
         ];
     }
 }

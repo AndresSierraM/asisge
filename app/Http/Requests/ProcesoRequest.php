@@ -24,8 +24,8 @@ class ProcesoRequest extends Request
     public function rules()
     {
         return [
-            "codigoProceso" => "required|string",
-            "nombreProceso" => "required|string"
+            "codigoProceso" => "required|string|max:20|unique:proceso,codigoProceso,".$this->get('idProceso') .",idProceso",
+            "nombreProceso" => "required|string|max:80"
         ];
     }
 }

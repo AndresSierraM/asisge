@@ -24,8 +24,8 @@ class CompaniaRequest extends Request
     public function rules()
     {
         return [
-            "codigoCompania" => "required|string",
-            "nombreCompania" => "required|string"
+            "codigoCompania" => "required|string|max:20|unique:compania,codigoCompania,".$this->get('idCompania') .",idCompania",
+            "nombreCompania" => "required|string|max:80"
         ];
     }
 }

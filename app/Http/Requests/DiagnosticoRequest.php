@@ -24,8 +24,8 @@ class DiagnosticoRequest extends Request
     public function rules()
     {
         return [
-            "codigoDiagnostico" => "required|string",
-            "nombreDiagnostico" => "required|string",
+            "codigoDiagnostico" => "required|string|max:20|unique:diagnostico,codigoDiagnostico,".$this->get('idDiagnostico') .",idDiagnostico",
+            "nombreDiagnostico" => "required|string|max:80",
             "fechaElaboracionDiagnostico" => "required|date",
             "puntuacionDiagnosticoDetalle0" => "integer|between:1,5"
         ];

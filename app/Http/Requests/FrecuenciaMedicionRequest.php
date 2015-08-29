@@ -24,9 +24,9 @@ class FrecuenciaMedicionRequest extends Request
     public function rules()
     {
         return [
-            "codigoFrecuenciaMedicion" => "required|string",
-            "nombreFrecuenciaMedicion" => "required|string",
-            "valorFrecuenciaMedicion" => "required|integer",
+            "codigoFrecuenciaMedicion" => "required|string|max:20|unique:frecuenciamedicion,codigoFrecuenciaMedicion,".$this->get('idFrecuenciaMedicion') .",idFrecuenciaMedicion",
+            "nombreFrecuenciaMedicion" => "required|string|max:80",
+            "valorFrecuenciaMedicion" => "required|integer|between:0,99",
             "unidadFrecuenciaMedicion" => "required|string"
         ];
     }

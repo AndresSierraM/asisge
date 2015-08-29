@@ -24,8 +24,8 @@ class PaisRequest extends Request
     public function rules()
     {
         return [
-            "codigoPais" => "required|string",
-            "nombrePais" => "required|string"
+            "codigoPais" => "required|string|max:20|unique:pais,codigoPais,".$this->get('idPais') .",idPais",
+            "nombrePais" => "required|string|max:80"
         ];
     }
 }

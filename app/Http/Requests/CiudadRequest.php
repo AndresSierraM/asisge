@@ -23,12 +23,10 @@ class CiudadRequest extends Request
      */
     public function rules()
     {
-        $validacionCodigo = ($this->get('idCiudad') != null 
-            ? "required|string|unique:ciudad,codigoCiudad".$this->get('idCiudad') 
-            : "required|string|unique:ciudad");
-        return [
-            "codigoCiudad" => $validacionCodigo,
-            "nombreCiudad" => "required|string",
+        
+        return[
+            "codigoCiudad" => "required|string|max:20|unique:ciudad,codigoCiudad,".$this->get('idCiudad') .",idCiudad",
+            "nombreCiudad" => "required|string|max:80",
             "Departamento_idDepartamento" => "required"
         ];
     }

@@ -24,9 +24,9 @@ class UsersRequest extends Request
     public function rules()
     {
         return [
-            "name" => "required|string",
-            "email" => "required|email",
-            "password" => "required"
+            "name" => "required|string|max:255",
+            "email" => "required|email|max:255|unique:users,email,".$this->get('id') .",id",
+            "password" => "required|min:4|max:20"
         ];
     }
 }

@@ -25,14 +25,16 @@ class TerceroRequest extends Request
     {
         return [
             'TipoIdentificacion_idTipoIdentificacion' => 'required',
-            'documentoTercero' => 'required',
-            'nombre1Tercero' => 'required|string',
-            'apellido1Tercero' => 'required|string',
+            "documentoTercero" => "required|string|max:30|unique:tercero,documentoTercero,".$this->get('idTercero') .",idTercero",
+            'nombre1Tercero' => 'required|string|max:20',
+            'apellido1Tercero' => 'required|string|max:20',
+            'nombre2Tercero' => 'string|max:20',
+            'apellido2Tercero' => 'string|max:20',
             'fechaCreacionTercero' => 'required',
             'tipoTercero' => 'required',
-            'direccionTercero' => 'required',
+            'direccionTercero' => 'required|max:200',
             'Ciudad_idCiudad' => 'required',
-            'telefonoTercero' => 'required',
+            'telefonoTercero' => 'required|max:20',
             'fechaNacimientoTercero' => 'required'
         ];
     }

@@ -24,8 +24,8 @@ class DepartamentoRequest extends Request
     public function rules()
     {
         return [
-            "codigoDepartamento" => "required|string",
-            "nombreDepartamento" => "required|string",
+            "codigoDepartamento" => "required|string|max:20|unique:departamento,codigoDepartamento,".$this->get('idDepartamento') .",idDepartamento",
+            "nombreDepartamento" => "required|string|max:80",
             "Pais_idPais" => "required"
         ];
     }
