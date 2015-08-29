@@ -9,7 +9,8 @@ class CuadroMando extends Model
     protected $table = 'cuadromando';
     protected $primaryKey = 'idCuadroMando';
 
-    protected $fillable = ['politicasCuadroMando', 'fechaCreacionCuadroMando', 'fechaModificacionCuadroMando'];
+    protected $fillable = ['politicasCuadroMando', 'fechaCreacionCuadroMando', 
+    						'fechaModificacionCuadroMando', 'Compania_idCompania'];
 
     public $timestamps = false;
 

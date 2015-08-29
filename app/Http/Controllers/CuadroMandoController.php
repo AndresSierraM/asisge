@@ -19,6 +19,9 @@ class CuadroMandoController extends Controller
      */
     public function index()
     {
+
+        $cuadromando = \App\CuadroMando::All()->last();
+
         $idCompaniaObjetivo = \App\CompaniaObjetivo::where('Compania_idCompania', '=',1)->lists('idCompaniaObjetivo');
         $nombreCompaniaObjetivo = \App\CompaniaObjetivo::where('Compania_idCompania', '=',1)->lists('nombreCompaniaObjetivo');
 
@@ -31,25 +34,26 @@ class CuadroMandoController extends Controller
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         
-        return view('cuadromando', compact('idCompaniaObjetivo','nombreCompaniaObjetivo',
-                                            'idTercero','nombreTercero',
-                                            'idProceso','nombreProceso',
-                                            'idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
-    }
+        
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-       
-        //$idOpcion = \App\Opcion::All()->lists('idOpcion');
-        //$nombreOpcion = \App\Opcion::All()->lists('nombreOpcion');
-        //compact('idOpcion','nombreOpcion')
-        return view('cuadromando');
-
+        if(count($cuadromando) > 0)
+        {
+            return view('cuadromando', 
+                compact('idCompaniaObjetivo','nombreCompaniaObjetivo',
+                        'idTercero','nombreTercero',
+                        'idProceso','nombreProceso',
+                        'idFrecuenciaMedicion','nombreFrecuenciaMedicion'),
+                ['cuadromando'=>$cuadromando]);
+        }
+        else
+        {
+            return view('cuadromando', 
+                compact('idCompaniaObjetivo','nombreCompaniaObjetivo',
+                        'idTercero','nombreTercero',
+                        'idProceso','nombreProceso',
+                        'idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
+        }
+        
     }
 
     /**
@@ -63,13 +67,13 @@ class CuadroMandoController extends Controller
         
         \App\CuadroMando::create([
             'politicasCuadroMando' => $request['politicasCuadroMando'],
-            'fechaCreacionCuadroMando' => $request['fechaCreacionCuadroMando'],
-            'fechaModificacionCuadroMando' => $request['fechaModificacionCuadroMando'],
-            'Compania_idCompania' => $request['Compania_idCompania'],
+            'fechaCreacionCuadroMando' => date('Y-m-d H:i:s'),
+            'fechaModificacionCuadroMando' => date('Y-m-d H:i:s'),
+            'Compania_idCompania' => 1,
             ]); 
 
         $cuadromando = \App\CuadroMando::All()->last();
-        $contadorDetalle = count($request['CuadroMando_idCuadroMando']);
+        $contadorDetalle = count($request['CompaniaObjetivo_idCompaniaObjetivo']);
         
 
         for($i = 0; $i < $contadorDetalle; $i++)
@@ -92,33 +96,6 @@ class CuadroMandoController extends Controller
         return redirect('/cuadromando');
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $cuadromando = \App\CuadroMando::find($id);
-        //$idOpcion = \App\Opcion::All()->lists('idOpcion');
-        //$nombreOpcion = \App\Opcion::All()->lists('nombreOpcion');
-        //,compact('idOpcion','nombreOpcion')
-        return view('cuadromando',['cuadromando'=>$cuadromando]);
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -131,12 +108,12 @@ class CuadroMandoController extends Controller
         
         $cuadromando = \App\CuadroMando::find($id);
         $cuadromando->fill($request->all());
-
+        $cuadromando->fechaModificacionCuadroMando = date('Y-m-d H:i:s');
         $cuadromando->save();
 
         \App\CuadroMandoDetalle::where('CuadroMando_idCuadroMando',$id)->delete();
 
-        $contadorDetalle = count($request['CuadroMando_idCuadroMando']);
+        $contadorDetalle = count($request['CompaniaObjetivo_idCompaniaObjetivo']);
         for($i = 0; $i < $contadorDetalle; $i++)
         {
             \App\CuadroMandoDetalle::create([

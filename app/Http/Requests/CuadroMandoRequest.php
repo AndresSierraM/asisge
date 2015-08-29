@@ -24,7 +24,7 @@ class CuadroMandoRequest extends Request
     public function rules()
     {
         return [
-            "politicasCuadroMando" => "politicasCuadroMando|string"
+            
         ];
     }
 }

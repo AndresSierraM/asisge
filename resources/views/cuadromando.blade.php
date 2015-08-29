@@ -33,9 +33,9 @@
                           'vertical-align:top; width: 130px;height:35px;',
                           'vertical-align:top; width: 200px;height:35px;',
                           'vertical-align:top; width: 150px;height:35px;',
-                          'vertical-align:top; width: 40px;height:35px;',
+                          'vertical-align:top; width: 50px;height:35px;',
                           'vertical-align:top; text-align: center; width: 50px;height:35px;',
-                          'vertical-align:top; width: 40px;height:35px;',
+                          'vertical-align:top; width: 50px;height:35px;',
                           'vertical-align:top; width: 100px;height:35px;',
                           'vertical-align:top; width: 150px;height:35px;'];
       detalle.clase   =  ['chosen-select form-control',
@@ -76,9 +76,9 @@
   </script>
 	@if(isset($cuadromando))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($cuadromando,['route'=>['cuadromando.destroy',$cuadromando->idRol],'method'=>'DELETE', 'files' => true])!!}
+			{!!Form::model($cuadromando,['route'=>['cuadromando.destroy',$cuadromando->idCuadroMando],'method'=>'DELETE', 'files' => true])!!}
 		@else
-			{!!Form::model($cuadromando,['route'=>['cuadromando.update',$cuadromando->idRol],'method'=>'PUT', 'files' => true])!!}
+			{!!Form::model($cuadromando,['route'=>['cuadromando.update',$cuadromando->idCuadroMando],'method'=>'PUT', 'files' => true])!!}
 		@endif
 	@else
 		{!!Form::open(['route'=>'cuadromando.store','method'=>'POST', 'files' => true])!!}
@@ -113,7 +113,7 @@
                 <div class="col-md-1" style="width: 130px; height:60px; text-align: center;">Proceso</div>
                 <div class="col-md-1" style="width: 200px; height:60px; text-align: center;">Objetivos Espec&iacute;ficos del Proceso</div>
                 <div class="col-md-1" style="width: 150px; height:60px; text-align: center;">Nombre del Indicador</div>
-                <div class="col-md-1" style="width: 130px; height:60px; text-align: center;">Meta</div>
+                <div class="col-md-1" style="width: 150px; height:60px; text-align: center;">Meta</div>
                 <div class="col-md-1" style="width: 100px; height:60px; text-align: center;">Frecuencia Medici&oacute;n</div>
                 <div class="col-md-1" style="width: 150px; height:60px; text-align: center;">Responsable de la Actividad</div>
                 <div id="contenedor_detalle">
