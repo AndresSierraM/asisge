@@ -132,7 +132,6 @@ class PaqueteController extends Controller
         if(isset($id)) {
             $paquete = \App\Paquete::find($id);
             if($paquete) {
-                //Todo::find($id)->delete();
                 \App\Paquete::destroy($id); 
                 
                 File::Delete( 'images/' . $paquete->iconoPaquete );

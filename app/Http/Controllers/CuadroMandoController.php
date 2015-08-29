@@ -7,7 +7,6 @@ use App\CuadroMando;
 use App\Http\Requests;
 use App\Http\Requests\CuadroMandoRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\CuadroMandoDetalle;
 
 
 class CuadroMandoController extends Controller

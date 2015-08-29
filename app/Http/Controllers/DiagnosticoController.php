@@ -7,7 +7,6 @@ use App\Diagnostico;
 use App\Http\Requests;
 use App\Http\Requests\DiagnosticoRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\DiagnosticoDetalle;
 use DB;
 
 class DiagnosticoController extends Controller

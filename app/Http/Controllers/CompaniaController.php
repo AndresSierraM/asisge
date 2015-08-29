@@ -129,7 +129,6 @@ class CompaniaController extends Controller
     public function destroy($id)
     {
         \App\Compania::destroy($id);
-        \App\CompaniaObjetivo::where('Compania_idCompania',$id)->delete();
         return redirect('/compania');
     }
 }

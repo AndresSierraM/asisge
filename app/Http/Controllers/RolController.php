@@ -7,7 +7,7 @@ use App\Rol;
 use App\Http\Requests;
 use App\Http\Requests\RolRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\RolOpcion;
+
 
 
 class RolController extends Controller

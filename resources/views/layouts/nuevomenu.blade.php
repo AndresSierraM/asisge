@@ -125,3 +125,34 @@
 	</div>
 </body>
 </html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h3>Popover Options</h3>
+  <p>The <strong>html</strong> option specifies whether to accept HTML tags in the popover.</p>
+  <button class="btn btn-success btn-md">Click me</button>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('.btn').popover({title: "<h1><strong>HTML</strong> inside <code>the</code> <em>popover</em></h1>", content: "<img src='https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0CAcQjRxqFQoTCLD-nLaMz8cCFcTXHgodmMQPew&url=http%3A%2F%2Fwww.zehngames.com%2Farticulos%2Fel-item-como-icono-videoludico%2F&ei=cxHiVfD4GMSve5iJv9gH&psig=AFQjCNG27haemtmIz7FZXBwfC4yYe_elcg&ust=1440965358642198&cad=rja' title='hongo'>", html: true, placement: "right"}); 
+});
+</script>
+
+</body>
+</html>

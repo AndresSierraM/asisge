@@ -23,7 +23,12 @@ $("#Grabar").click(function(){
 
 });
 
-
+//$("input[name=OUTWARDONEWAY]").each(function(){
+//                    if(this.checked)
+//                    {
+//                        sw=true;
+//                    }
+//                });
 
 
 <div id="msj-error" class="alert alert-danger alert-dismissible" role="alert"  style="display:none;">

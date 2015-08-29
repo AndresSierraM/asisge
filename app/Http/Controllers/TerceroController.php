@@ -4,10 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\TerceroRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Ciudad;
-use App\Http\Controllers\TipoIdentificacion;
-use App\Http\Controllers\TerceroContacto;
-use App\Http\Controllers\TerceroProducto;
+
 //use Intervention\Image\ImageManagerStatic as Image;
 use Input;
 use File;
@@ -184,8 +181,6 @@ class TerceroController extends Controller
      */
     public function destroy($id)
     {
-        \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
-        \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
         \App\Tercero::destroy($id);
         return redirect('/tercero');
     }
