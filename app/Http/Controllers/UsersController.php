@@ -50,7 +50,7 @@ class UsersController extends Controller
         \App\User::create([
             'name' => $request['name'],
             'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+            'password' => $request['password'],
              'Compania_idCompania'=> $request['Compania_idCompania']
             ]);
         

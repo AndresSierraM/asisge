@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	{!!Html::style('CSS/principal.css'); !!}
+	{!!Html::style('css/principal.css'); !!}
 
 	<title>Asisge S.A.</title>
 </head>
@@ -48,7 +48,7 @@
 			{!! HTML::decode(HTML::link('tercero', HTML::image('images/iconosmenu/Terceros.png','Imagen no encontrada',array('width'=>'48','title' => 'Terceros')))) !!}
  		</center></li>
 		<li><center>
-			{!! HTML::decode(HTML::link('', HTML::image('images/iconosmenu/salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')))) !!}
+			{!! HTML::decode(HTML::link('auth/logout', HTML::image('images/iconosmenu/salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')))) !!}
 		</center></li>
        
         </ul>
