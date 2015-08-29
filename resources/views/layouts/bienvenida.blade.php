@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	{!!Html::style('CSS/principal.css'); !!}
+	{!!Html::style('css/principal.css'); !!}
 
 	<title>Asisge S.A.</title>
 </head>
