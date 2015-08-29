@@ -96,7 +96,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::textarea('politicasCuadroMando',null,['class'=>'ckeditor','placeholder'=>'Ingresa las políticas de la compania'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idCuadroMando', null, array('id' => 'idCuadroMando')) !!}
             </div>
           </div>
         </div>

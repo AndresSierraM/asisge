@@ -50,7 +50,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoCompania',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la compania'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idCompania', null, array('id' => 'idCompania')) !!}
             </div>
           </div>
         </div>

@@ -85,7 +85,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoDiagnostico',null,['class'=>'form-control','placeholder'=>'Ingresa el codigo del diagnostico'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idDiagnostico', null, array('id' => 'idDiagnostico')) !!}
             </div>
           </div>
         </div>

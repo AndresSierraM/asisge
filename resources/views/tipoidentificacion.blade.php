@@ -26,7 +26,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoTipoIdentificacion',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la identificacion'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idTipoIdentificacion', null, array('id' => 'idTipoIdentificacion')) !!}
             </div>
           </div>
         </div>

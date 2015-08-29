@@ -27,7 +27,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('ordenOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el orden del opcion en el menu'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idOpcion', null, array('id' => 'idOpcion')) !!}
             </div>
           </div>
         </div>

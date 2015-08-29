@@ -26,7 +26,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('ordenPaquete',null,['class'=>'form-control','placeholder'=>'Ingresa el orden del paquete en el menu'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idPaquete', null, array('id' => 'idPaquete')) !!}
             </div>
           </div>
         </div>

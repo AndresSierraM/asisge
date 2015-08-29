@@ -25,7 +25,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoPais',null,['class'=>'form-control','placeholder'=>'Ingresa el código del país'])!!}
-              {!!Form::hidden('id', null, array('id' => 'id')) !!}
+              {!!Form::hidden('idPais', null, array('id' => 'idPais')) !!}
             </div>
           </div>
         </div>

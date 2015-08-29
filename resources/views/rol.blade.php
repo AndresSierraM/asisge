@@ -54,7 +54,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoRol',null,['class'=>'form-control','placeholder'=>'Ingresa el codigo del rol'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idRol', null, array('id' => 'idRol')) !!}
             </div>
           </div>
         </div>

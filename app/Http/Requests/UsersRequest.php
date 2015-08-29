@@ -26,7 +26,8 @@ class UsersRequest extends Request
         return [
             "name" => "required|string|max:255",
             "email" => "required|email|max:255|unique:users,email,".$this->get('id') .",id",
-            "password" => "required|min:4|max:20"
+            "password" => "required|min:4|max:20",
+            "Compania_idCompania" => "required"
         ];
     }
 }

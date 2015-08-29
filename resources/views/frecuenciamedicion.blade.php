@@ -27,7 +27,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoFrecuenciaMedicion',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la frecuencia'])!!}
-              {!! Form::hidden('id', null, array('id' => 'id')) !!}
+              {!! Form::hidden('idFrecuenciaMedicion', null, array('id' => 'idFrecuenciaMedicion')) !!}
             </div>
           </div>
         </div>
