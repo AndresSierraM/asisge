@@ -1,6 +1,46 @@
-<?php /*
-Copyright (c) 2014 Trirand Ltd
-If you want to obtain license for this product, go to http://www.guriddo.net
-*/
-${"\x47L\x4f\x42ALS"}["n\x72y\x6c\x75\x65\x79"]="\x66ile";${"\x47L\x4f\x42\x41\x4c\x53"}["\x70\x66\x6ed\x76\x79"]="\x66\x69\x6ce\x73";${"G\x4cO\x42\x41\x4c\x53"}["\x61\x79\x6c\x71\x66\x61\x68\x64\x62"]="\x72\x6f\x6f\x74";$ugocbpqt="\x72\x6f\x6f\x74";$_POST["d\x69r"]=urldecode($_POST["\x64ir"]);${$ugocbpqt}="";if(file_exists(${${"\x47\x4c\x4f\x42\x41L\x53"}["\x61\x79\x6c\x71\x66\x61h\x64\x62"]}.$_POST["\x64ir"])){$piavpetg="\x72o\x6f\x74";$hnrpvkmkqu="\x66i\x6c\x65s";${${"\x47L\x4fBAL\x53"}["\x70\x66\x6e\x64\x76\x79"]}=scandir(${$piavpetg}.$_POST["di\x72"]);natcasesort(${${"\x47LO\x42\x41\x4cS"}["\x70\x66\x6ed\x76\x79"]});if(count(${$hnrpvkmkqu})>2){echo"<\x75l\x20c\x6c\x61s\x73\x3d\x22\x6a\x71\x75e\x72\x79F\x69l\x65\x54\x72e\x65\x22\x20s\x74y\x6c\x65=\"\x64\x69\x73pl\x61\x79:\x20n\x6fne\x3b\x22>";foreach(${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["p\x66\x6e\x64\x76\x79"]} as${${"\x47\x4cOBA\x4cS"}["n\x72y\x6c\x75\x65\x79"]}){$rtugtf="\x66\x69\x6ce";if(file_exists(${${"G\x4c\x4f\x42\x41\x4c\x53"}["\x61\x79\x6c\x71fa\x68d\x62"]}.$_POST["\x64\x69\x72"].${${"G\x4c\x4f\x42ALS"}["\x6e\x72y\x6c\x75ey"]})&&${${"G\x4c\x4f\x42\x41\x4c\x53"}["n\x72ylu\x65\x79"]}!="\x2e"&&${$rtugtf}!=".."&&is_dir(${${"\x47\x4c\x4f\x42AL\x53"}["\x61\x79l\x71\x66\x61hdb"]}.$_POST["\x64ir"].${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["n\x72\x79l\x75\x65\x79"]})){$ptvsqrbc="\x66\x69l\x65";echo"<li \x63\x6cass\x3d\"d\x69r\x65ctor\x79\x20c\x6fl\x6caps\x65d\"\x3e\x3c\x61\x20href=\x22#\x22\x20\x72el\x3d\"".htmlentities($_POST["dir"].${${"\x47L\x4fBA\x4c\x53"}["nry\x6cuey"]})."/\"\x3e".htmlentities(${$ptvsqrbc})."</a>\x3c/l\x69\x3e";}}foreach(${${"\x47\x4c\x4f\x42A\x4c\x53"}["\x70fn\x64vy"]} as${${"\x47\x4c\x4fBAL\x53"}["\x6e\x72\x79\x6c\x75\x65\x79"]}){$sgqpbad="\x72\x6f\x6f\x74";$snyktbhigeis="f\x69le";${"GL\x4f\x42\x41\x4c\x53"}["xsb\x6c\x63\x6d\x65\x64\x6a\x66"]="\x66\x69\x6ce";if(file_exists(${${"G\x4c\x4f\x42\x41\x4c\x53"}["\x61\x79\x6cqf\x61h\x64\x62"]}.$_POST["\x64ir"].${${"G\x4c\x4f\x42\x41\x4cS"}["\x6e\x72\x79\x6cu\x65y"]})&&${${"\x47L\x4f\x42\x41\x4c\x53"}["nryl\x75\x65\x79"]}!="\x2e"&&${$snyktbhigeis}!=".."&&!is_dir(${$sgqpbad}.$_POST["\x64\x69\x72"].${${"\x47\x4cOBAL\x53"}["\x78s\x62\x6cc\x6d\x65d\x6a\x66"]})){${"\x47L\x4f\x42\x41\x4c\x53"}["i\x6f\x75\x69kr\x72\x76w"]="e\x78t";$wdqndtdc="\x65\x78\x74";${$wdqndtdc}=preg_replace("/^\x2e*\\\x2e/","",${${"\x47\x4cOB\x41L\x53"}["\x6e\x72\x79l\x75e\x79"]});$ciosokfmrc="\x66\x69\x6c\x65";if(${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["i\x6fui\x6br\x72vw"]}!="\x78\x6d\x6c"){continue;}echo"\x3c\x6c\x69\x20\x63\x6ca\x73\x73\x3d\"\x66\x69le\x20\x65\x78t_$ext\x22\x3e<a\x20\x68\x72ef\x3d\"\x23\" re\x6c=\x22".htmlentities($_POST["\x64i\x72"].${$ciosokfmrc})."\x22\x3e".htmlentities(${${"G\x4cO\x42A\x4c\x53"}["n\x72\x79\x6c\x75\x65y"]})."</\x61\x3e</\x6c\x69\x3e";}}echo"</ul\x3e";}}
+<?php
+//
+// jQuery File Tree PHP Connector
+//
+// Version 1.01
+//
+// Cory S.N. LaViska
+// A Beautiful Site (http://abeautifulsite.net/)
+// 24 March 2008
+//
+// History:
+//
+// 1.01 - updated to work with foreign characters in directory/file names (12 April 2008)
+// 1.00 - released (24 March 2008)
+//
+// Output a list of files for jQuery File Tree
+//
+
+$_POST['dir'] = urldecode($_POST['dir']);
+$root = "";
+if( file_exists($root . $_POST['dir']) ) {
+	$files = scandir($root . $_POST['dir']);
+	natcasesort($files);
+	if( count($files) > 2 ) { /* The 2 accounts for . and .. */
+		echo "<ul class=\"jqueryFileTree\" style=\"display: none;\">";
+		// All dirs
+		foreach( $files as $file ) {
+			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && is_dir($root . $_POST['dir'] . $file) ) {
+				echo "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file) . "/\">" . htmlentities($file) . "</a></li>";
+			}
+		}
+		// All files
+		foreach( $files as $file ) {
+			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && !is_dir($root . $_POST['dir'] . $file) ) {
+				$ext = preg_replace('/^.*\./', '', $file);
+				if($ext != 'xml') {
+					continue;
+				}
+				echo "<li class=\"file ext_$ext\"><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file) . "\">" . htmlentities($file) . "</a></li>";
+			}
+		}
+		echo "</ul>";	
+	}
+}
+
 ?>

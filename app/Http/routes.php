@@ -29,10 +29,7 @@
 // ---------------------------------
 // Opciones del modulo de seguridad
 // ---------------------------------
-Route::get('/', function()
-{
-	return view('layouts.bienvenida');
-}); 
+
 
 
 

@@ -14,7 +14,7 @@ $conn->query("SET NAMES utf8");
 // Create the jqGrid instance
 $grid = new jqGridRender($conn);
 // Write the SQL Query
-$grid->SelectCommand = 'SELECT idPais, codigoPais, nombrePais FROM pais';
+$grid->SelectCommand = 'SELECT OrderID, RequiredDate, ShipName, ShipCity, Freight FROM orders';
 // Set output format to json
 $grid->dataType = 'json';
 // Let the grid create the model
@@ -23,38 +23,31 @@ $grid->setColModel();
 $grid->setUrl('grid.php');
 // Set some grid options
 $grid->setGridOptions(array(
-	"caption"=>"Paises",
-    "rowNum"=>3,
+    "rowNum"=>10,
     "rowList"=>array(10,20,30),
-    "sortname"=>"nombrePais",
-    "multiSort"=>true,
-    "sortable"=>true
+    "sortname"=>"OrderID"
 	//"rowTotal"=>-1,
 	//"loadonce"=>true
 ));
 
-
 // Change some property of the field(s)
-$grid->setColProperty("idPais", array(
+$grid->setColProperty("OrderID", array(
 	"searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
-	"formatter"=>"integer",
-	"formatoptions"=>array("thousandsSeparator"=>","),
-	"label"=>"ID"
     )
 );
 
-$grid->setColProperty("codigoPais", array(
-	"searchoptions"=>array("sopt"=>array("bw", "eq","ne","le","lt","ge","gt")),
-	"label"=>"C&oacute;digo"
+
+$grid->setColProperty("RequiredDate", array(
+	"datefmt"=>'d.m.Y',
+    "formatter"=>"date",
+	"searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
+    "formatoptions"=>array("srcformat"=>"Y-m-d H:i:s","newformat"=>"d.m.Y")
     )
 );
+$grid->setColProperty("ShipName", array("width"=>"200", "searchoptions"=>array("sopt"=>array('cn'))));
 
-$grid->setColProperty("nombrePais", array(
-	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
-	"label"=>"Nombre"
-    )
-);
-
+$grid->setColProperty("ShipCity", array( "searchoptions"=>array("sopt"=>array("eq","ne"))));
+$grid->setColProperty("Freight", array("searchoptions"=>array("sopt"=>array("eq","gt","lt"))));
 
 // Set the dates
 $grid->setUserDate('d.m.Y');
@@ -76,77 +69,18 @@ $grid->toolbarfilter = true;
 $grid->setFilterOptions(array("searchOperators"=>true));
 
 // we set the select for ship city
-//$grid->setSelect("nombrePais", "SELECT DISTINCT nombrePais AS nombrePais  FROM pais ORDER BY nombrePais", false, false, true, array(""=>"All"));
+$grid->setSelect("ShipCity", "SELECT DISTINCT ShipCity, ShipCity AS CityName FROM orders ORDER BY 2", false, false, true, array(""=>"All"));
 $grid->navigator = true;
-$grid->setNavOptions('navigator', array("excel"=>false,"add"=>false,"edit"=>false,"del"=>false,"view"=>true, "search"=>true));
+$grid->setNavOptions('navigator', array("excel"=>false,"add"=>false,"edit"=>false,"del"=>false,"view"=>false, "search"=>false));
 
-/*// Close the dialog after editing
-$grid->setNavOptions('edit',array("closeAfterEdit"=>true,"editCaption"=>"Update Customer","bSubmit"=>"Update"));
-// Enjoy
-
-$form = <<< FORM
-function(){
-   var id = $("#grid").jqGrid('getGridParam','selrow'), data={};
-   if(id) {
-       data = {CustomerID:id};
-   } else {
-      alert('Please select a row to edit');
-      return;
-   }
-   var ajaxDialog = $('<div id="ajax-dialog" style="display:hidden" title="Customer Edit"></div>').appendTo('body');
-   ajaxDialog.load(
-      'customer.php',
-       data,
-       function(response, status){
-           ajaxDialog.dialog({
-               width: 'auto',
-               modal:true,
-               open: function(ev, ui){
-                  $(".ui-dialog").css('font-size','0.9em');
-               },
-               close: function(e,ui) {
-                   ajaxDialog.remove();
-               }
-           });
-            ajaxDialog.dialog('widget').css('font-size','12px');
-        }
-    );
-}
-FORM;
-
-$buttonoptions = array("#pager",
-    array(
-      "caption"=>"Custom Edit Form",
-      "onClickButton"=>"js:".$form
-    )
-);
-$grid->callGridMethod("#grid", "navButtonAdd", $buttonoptions);*/
-
-/*$bindkeys =<<<KEYS
-$("#grid").bind('', function( event, form, oper ) {
-alert('The operation is:'+oper);
+//Trigger toolbar with custom button
+$search = <<<SEARCH
+jQuery("#searchtoolbar").click(function(){
+	jQuery('#grid')[0].triggerToolbar();
+	return false;
 });
-KEYS;
-$grid->setJSCode($bindkeys);
-*/
-// Adicional al funcionilidad de desplazamiento con teclado
-$grid->callGridMethod('#grid', 'bindKeys');
-
-
-// add a custom button via the build in callGridMethod
-// note the js: before the function
-$buttonoptions = array("#pager",
-    array("caption"=>"Pdf", "title"=>"Exportar a Pdf", "onClickButton"=>"js: function(){
-        jQuery('#grid').jqGrid('excelExport',{tag:'pdf', url:'grid.php'});}"
-    )
-);
-$grid->callGridMethod("#grid", "navButtonAdd", $buttonoptions);
-
-// Set it to toppager
-$buttonoptions[0] = "#grid_toppager";
-$grid->callGridMethod("#grid", "navButtonAdd", $buttonoptions);
-
-
+SEARCH;
+$grid->setJSCode($search);
 // Enjoy
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);
 

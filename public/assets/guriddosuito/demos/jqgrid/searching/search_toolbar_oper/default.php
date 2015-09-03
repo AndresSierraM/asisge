@@ -31,6 +31,10 @@ require_once '../../../../php/demo/tabs.php';
       <div>
           <?php include ("grid.php");?>
       </div>
-
+	  <div>
+		  <button id="searchtoolbar">Trigger Search</button>
+	  </div>
+      <br/>
+      <?php tabs(array("grid.php"));?>
    </body>
 </html>
