@@ -38,7 +38,6 @@ class ClasificacionRiesgoController extends Controller
      */
     public function store(ClasificacionRiesgoRequest $request)
     {
-        echo $request['codigoClasificacionRiesgo'].' -- '.$request['nombreClasificacionRiesgo'].' --- ';
         \App\ClasificacionRiesgo::create([
             'codigoClasificacionRiesgo' => $request['codigoClasificacionRiesgo'],
             'nombreClasificacionRiesgo' => $request['nombreClasificacionRiesgo'],

@@ -115,6 +115,11 @@ Route::get('/clasificacionriesgogrid', function()
 	return view('clasificacionriesgogridphp');
 });
 
+Route::get('/tiporiesgogrid', function()
+{
+	return view('tiporiesgogridphp');
+});
+
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -124,6 +129,7 @@ Route::resource('proceso','ProcesoController');
 Route::resource('compania','CompaniaController');
 Route::resource('tercero','TerceroController');
 Route::resource('clasificacionriesgo','ClasificacionRiesgoController');
+Route::resource('tiporiesgo','TipoRiesgoController');
 
 
 // ---------------------------------
