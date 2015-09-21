@@ -72,9 +72,9 @@
 										<span class="input-group-addon">
 											<i class="fa fa-credit-card" style="width: 14px;"></i>
 										</span>
-										{!! Form::hidden('idTercero', null, array('id' => 'idTercero')) !!}
-										{!! Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo')) !!}
-										{!! Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania')) !!}
+										{!!Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo'))!!}
+										{!!Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo'))!!}
+										{!!Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania'))!!}
 										{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
 									</div>
 								</div>

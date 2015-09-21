@@ -144,3 +144,10 @@ Route::get('/diagnosticogrid', function()
 
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
+Route::resource('matrizriesgo','MatrizRiesgoController');
+
+Route::get('/matrizriesgogrid', function()
+{
+	return view('matrizriesgogridphp');
+});
+Route::get('buscar', 'MatrizRiesgoController@buscar');
