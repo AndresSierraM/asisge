@@ -3,7 +3,7 @@ function buscarTipoRiesgo(registro){
 	var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
 	var dato = document.getElementById('ClasificacionRiesgo_idClasificacionRiesgo'+posicion).value;
 	var token = document.getElementById('token').value;
-	var id = document.getElementById('idMatrizRiesgo').value;
+	var id = document.getElementById('idMatrizRiesgoDetalle'+posicion).value;
 
 	$.ajax({
 		async: true,
@@ -14,51 +14,24 @@ function buscarTipoRiesgo(registro){
 		method: 'GET',
 		data: {clasificacionRiesgo: dato},
 		success: function(data){
-			var id = JSON.stringify(data[0]);
-			var nombre = JSON.stringify(data[1]);
-
-            var objetoId = JSON.parse(id);
-            var objetoNombre = JSON.parse(nombre);
+			var id = data[0];
+			var nombre = data[1];
+            var tipoRiesgo = data[2][0].TipoRiesgo_idTipoRiesgo;
+            
             var select = document.getElementById('TipoRiesgo_idTipoRiesgo'+posicion);
             
-            var div = document.getElementById('TipoRiesgo_idTipoRiesgo'+posicion+'_chosen');
-            /*aux = div.parentNode;
-			aux.removeChild(div);*/
-			div.setAttribute("style", 'display:none;');
-			select.setAttribute("style", 'width: 110px;height:35px;');
-			//select.setAttribute("class", '');
-			select.options.length = 0;
+            select.options.length = 0;
             var option = '';
-            for(var j=0,k=objetoId.length;j<k;j++)
+            for(var j=0,k=id.length;j<k;j++)
             {
-				var registroId =JSON.stringify(objetoId[j]);
-
-				var valorId = JSON.parse(registroId);
-
 				option = document.createElement('option');
-                option.value = valorId.idTipoRiesgo;
-                option.text = valorId.idTipoRiesgo;
-
+                option.value = id[j].idTipoRiesgo;
+                option.text = nombre[j].nombreTipoRiesgo;
+                option.selected = (tipoRiesgo == id[j].idTipoRiesgo ? true : false);
                 select.appendChild(option);
 
             }
             buscarDetalleTipoRiesgo('detalle_'+posicion);
-            
-            /*select.setAttribute("style", 'display:none;');
-            div.setAttribute("style", 'width: 110px;');
-            
-            var config = {
-		      '.chosen-select'           : {},
-		      '.chosen-select-deselect'  : {allow_single_deselect:true},
-		      '.chosen-select-no-single' : {disable_search_threshold:10},
-		      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-		      '.chosen-select-width'     : {width:"95%"}
-		    }
-		    for (var selector in config) {
-		      $(selector).chosen(config[selector]);
-		    }*/
-
-
         }
 	});
 }
@@ -68,7 +41,7 @@ function buscarDetalleTipoRiesgo(registro){
 	var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
 	var dato = document.getElementById('TipoRiesgo_idTipoRiesgo'+posicion).value;
 	var token = document.getElementById('token').value;
-	var id = document.getElementById('idMatrizRiesgo').value;
+	var id = document.getElementById('idMatrizRiesgoDetalle'+posicion).value;
 
 	$.ajax({
 		async: true,
@@ -84,25 +57,19 @@ function buscarDetalleTipoRiesgo(registro){
 			var nombreDetalle = data[1];
 			var idSalud = data[2];
 			var nombreSalud = data[3];
-
+            var tipoRiesgoDetalle = data[4][0].TipoRiesgoDetalle_idTipoRiesgoDetalle;
+            var tipoRiesgoSalud = data[4][0].TipoRiesgoSalud_idTipoRiesgoSalud;
 			var selectDetalle = document.getElementById('TipoRiesgoDetalle_idTipoRiesgoDetalle'+posicion);
-			console.log(selectDetalle.value);
 			var selectSalud = document.getElementById('TipoRiesgoSalud_idTipoRiesgoSalud'+posicion);
             
-            //var div = document.getElementById('TipoRiesgoDetalle_idTipoRiesgoDetalle'+posicion+'_chosen');
-            /*aux = div.parentNode;
-			aux.removeChild(div);*/
-			//div.setAttribute("style", 'display:none;');
-			/*select.setAttribute("style", 'width: 110px;height:35px;');
-			//select.setAttribute("class", '');*/
-			selectDetalle.options.length = 0;
+            selectDetalle.options.length = 0;
             var optionDetalle = '';
             for(var j=0,k=idDetalle.length;j<k;j++)
             {
             	optionDetalle = document.createElement('option');
                 optionDetalle.value = idDetalle[j].idTipoRiesgoDetalle;
                 optionDetalle.text = nombreDetalle[j].nombreTipoRiesgoDetalle;
-
+                optionDetalle.selected = (tipoRiesgoDetalle == idDetalle[j].idTipoRiesgoDetalle ? true : false);
                 selectDetalle.appendChild(optionDetalle);
             }
 
@@ -113,25 +80,10 @@ function buscarDetalleTipoRiesgo(registro){
             	optionSalud = document.createElement('option');
                 optionSalud.value = idSalud[j].idTipoRiesgoSalud;
                 optionSalud.text = nombreSalud[j].nombreTipoRiesgoSalud;
-
+                optionSalud.selected = (tipoRiesgoSalud == idSalud[j].idTipoRiesgoSalud ? true : false);
                 selectSalud.appendChild(optionSalud);
             }
             
-            /*select.setAttribute("style", 'display:none;');
-            div.setAttribute("style", 'width: 110px;');
-            
-            var config = {
-		      '.chosen-select'           : {},
-		      '.chosen-select-deselect'  : {allow_single_deselect:true},
-		      '.chosen-select-no-single' : {disable_search_threshold:10},
-		      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-		      '.chosen-select-width'     : {width:"95%"}
-		    }
-		    for (var selector in config) {
-		      $(selector).chosen(config[selector]);
-		    }*/
-
-
         }
 	});
 }
@@ -140,7 +92,7 @@ function calcularNiveles(registro){
 
     var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
     
-    var campos = document.querySelectorAll(" div#detalle_"+posicion+"  select[name='nivelDeficienciaMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" select[name='nivelExposicionMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nivelProbabilidadMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nombreProbabilidadMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" select[name='nivelConsecuenciaMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nivelRiesgoMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nombreRiesgoMatrizRiesgoDetalle[]']");
+    var campos = document.querySelectorAll(" div#detalle_"+posicion+"  select[name='nivelDeficienciaMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" select[name='nivelExposicionMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nivelProbabilidadMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nombreProbabilidadMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" select[name='nivelConsecuenciaMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nivelRiesgoMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nombreRiesgoMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='aceptacionRiesgoMatrizRiesgoDetalle[]']");
     
     var nivelDeficiencia = campos[0];
     var nivelExposicion = campos[1];
@@ -149,6 +101,7 @@ function calcularNiveles(registro){
     var nivelConsecuencia = campos[4];
     var nivelRiesgo = campos[5];
     var nombreRiesgo = campos[6];
+    var aceptacionRiesgo = campos[7];
     
     nivelProbabilidad.value = parseFloat(nivelDeficiencia.value) * parseFloat(nivelExposicion.value);
 
@@ -166,14 +119,41 @@ function calcularNiveles(registro){
     nivelRiesgo.value = parseFloat(nivelProbabilidad.value) * parseFloat(nivelConsecuencia.value);
     
     if(nivelRiesgo.value >= 600 && nivelRiesgo.value <= 4000)
-    	nombreRiesgo.value = 'I';
+    {	
+        nombreRiesgo.value = 'I';
+        aceptacionRiesgo.value = 'No aceptable';
+    }
     else if(nivelRiesgo.value >=  150  && nivelRiesgo.value <= 500)
+    {
     	nombreRiesgo.value = 'II';
+        aceptacionRiesgo.value = 'No aceptable o aceptable con control específico';
+    }
     else if(nivelRiesgo.value >=  40  && nivelRiesgo.value <= 120)
+    {
     	nombreRiesgo.value = 'III';
+        aceptacionRiesgo.value = 'Aceptable';
+    }
     else if(nivelRiesgo.value ==  20)
+    {
     	nombreRiesgo.value = 'IV';
+        aceptacionRiesgo.value = 'Aceptable';
+    }
     else if(nivelRiesgo.value ==  0)
-    	nombreRiesgo.value = '';												
-	
+    {
+    	nombreRiesgo.value = '';
+        aceptacionRiesgo.value = '';												
+	}
+}
+
+function calcularExpuestos(registro)
+{
+    var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+    
+    var campos = document.querySelectorAll(" div#detalle_"+posicion+"  input[name='vinculadosMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='temporalesMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='totalExpuestosMatrizRiesgoDetalle[]']");
+
+    var vinculados = campos[0];
+    var temporales = campos[1];
+    var total = campos[2];
+
+    total.value = parseFloat(vinculados.value) + parseFloat(temporales.value); 
 }

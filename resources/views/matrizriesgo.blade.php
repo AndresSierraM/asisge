@@ -33,6 +33,7 @@
     	var eventos1 = ['onchange','buscarTipoRiesgo(this.parentNode.id);'];
     	var eventos2 = ['onchange','buscarDetalleTipoRiesgo(this.parentNode.id);'];
     	var eventos3 = ['onchange','calcularNiveles(this.parentNode.id);']
+    	var eventos4 = ['onchange','calcularExpuestos(this.parentNode.id);']
     	var valorND = ['10','6','2','0'];
     	var opcionND = ['Muy alto','Alto','Medio','Bajo'];
     	var nivelDeficiencia = [valorND, opcionND];
@@ -52,9 +53,10 @@
 			detalle.etiqueta = ['input','select','checkbox','select','select','select','select','input','input','input','input','input','input','input','select','select','input','input','select','input','input','input','select','select','select','select','input','input'];
 			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','text','text','','text','text','text','','','','','file','text'];
 			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 140px;height:35px;display:inline-block;','width: 240px;height:35px;'];
-			detalle.clase = ['','chosen-select form-control','','chosen-select form-control','chosen-select form-control','','','','','','','','','','','','','','','','','','chosen-select form-control','chosen-select form-control','chosen-select form-control','chosen-select form-control','file',''];
+			detalle.clase = ['','chosen-select form-control','','chosen-select form-control','','','','','','','','','','','','','','','','','','','chosen-select form-control','chosen-select form-control','chosen-select form-control','chosen-select form-control','file',''];
+			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false,false];
 			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','',listaGeneral,listaGeneral,listaGeneral,listaGeneral,'',''];
-			detalle.funciones = ['','','',eventos1,eventos2,'','','','','','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','','',''];
+			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','','',''];
 
 			for(var j=0, k = matrizRiesgoDetalle.length; j < k; j++)
 			{

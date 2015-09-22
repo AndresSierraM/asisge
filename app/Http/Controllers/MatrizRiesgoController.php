@@ -105,12 +105,28 @@ class MatrizRiesgoController extends Controller
     {
         if(isset($request['accion']) and $request['accion'] == 'imprimir')
         {
+
           $matrizRiesgo = \App\MatrizRiesgo::find($id);
+          
+          $matrizRiesgoDetalle = DB::table('matrizriesgodetalle')
+            ->leftJoin('diagnosticopregunta', 'diagnosticodetalle.DiagnosticoPregunta_idDiagnosticoPregunta', '=', 'diagnosticopregunta.idDiagnosticoPregunta')
+            ->leftJoin('diagnosticogrupo', 'diagnosticopregunta.DiagnosticoGrupo_idDiagnosticoGrupo', '=', 'diagnosticogrupo.idDiagnosticoGrupo')
+            ->select(DB::raw('idDiagnosticoGrupo, diagnosticodetalle.DiagnosticoPregunta_idDiagnosticoPregunta, 
+                                nombreDiagnosticoGrupo, detalleDiagnosticoPregunta, 
+                                puntuacionDiagnosticoDetalle, resultadoDiagnosticoDetalle, mejoraDiagnosticoDetalle'))
+            ->orderBy('ordenDiagnosticoPregunta', 'ASC')
+            ->where('MatrizRiesgo_idMatrizRiesgo','=',$id)
+            ->get();
           return view('formatos.matrizriesgoimpresion',['matrizRiesgo'=>$matrizRiesgo]);
         }
 
         if(isset($request['clasificacionRiesgo']))
         {
+
+            $ids = \App\MatrizRiesgoDetalle::where('idMatrizRiesgoDetalle',$id)
+                                        ->select('TipoRiesgo_idTipoRiesgo')
+                                        ->get();
+
             $idTipoRiesgo = \App\TipoRiesgo::where('ClasificacionRiesgo_idClasificacionRiesgo',$request['clasificacionRiesgo'])
                                             ->select('idTipoRiesgo')
                                             ->get();
@@ -122,13 +138,18 @@ class MatrizRiesgoController extends Controller
             {
                 return response()->json([
                     $idTipoRiesgo,
-                    $nombreTipoRiesgo
+                    $nombreTipoRiesgo,
+                    $ids
                 ]);
             }
         }
 
         if(isset($request['tipoRiesgo']))
         {
+            $ids = \App\MatrizRiesgoDetalle::where('idMatrizRiesgoDetalle',$id)
+                                        ->select('TipoRiesgoDetalle_idTipoRiesgoDetalle','TipoRiesgoSalud_idTipoRiesgoSalud')
+                                        ->get();
+            
             $idTipoRiesgoSalud = \App\TipoRiesgoSalud::where('TipoRiesgo_idTipoRiesgo',$request['tipoRiesgo'])
                                         ->select('idTipoRiesgoSalud')
                                         ->get();
@@ -152,6 +173,7 @@ class MatrizRiesgoController extends Controller
                     $nombreTipoRiesgoDetalle,
                     $idTipoRiesgoSalud,
                     $nombreTipoRiesgoSalud,
+                    $ids
                 ]);
             }                            
             
