@@ -61,7 +61,7 @@ class MatrizRiesgoController extends Controller
         for($i = 0; $i < $contadorDetalle; $i++)
         {
             \App\MatrizRiesgoDetalle::create([
-             'MatrizRiesgo_idMatrizRiesgo' => $matrizRiesgo->idMatrizRiesgo,
+              'MatrizRiesgo_idMatrizRiesgo' => $matrizRiesgo->idMatrizRiesgo,
               'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
               'rutinariaMatrizRiesgoDetalle' => $request['rutinariaMatrizRiesgoDetalle'][$i],
               'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'][$i],
@@ -103,6 +103,12 @@ class MatrizRiesgoController extends Controller
      */
     public function show($id, Request $request)
     {
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+          $matrizRiesgo = \App\MatrizRiesgo::find($id);
+          return view('formatos.matrizriesgoimpresion',['matrizRiesgo'=>$matrizRiesgo]);
+        }
+
         if(isset($request['clasificacionRiesgo']))
         {
             $idTipoRiesgo = \App\TipoRiesgo::where('ClasificacionRiesgo_idClasificacionRiesgo',$request['clasificacionRiesgo'])

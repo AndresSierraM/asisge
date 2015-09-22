@@ -10,7 +10,7 @@
 @include('alerts.request')
 	{!!Html::script('js/tercero.js')!!}
 	<script>
-
+		
 		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroContactos) : "");?>';
 		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
 		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroProductos) : "");?>';
@@ -423,6 +423,11 @@
 			language: 'es',
 			uploadUrl: '#',
 			allowedFileExtensions : ['jpg', 'png','gif'],
+			 initialPreview: [
+			 '<?php if(isset($tercero->imagenTercero))
+						echo Html::image("images/". $tercero->imagenTercero,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
+							             ;?>'
+            ],
 			dropZoneTitle: 'Seleccione su foto',
 			removeLabel: '',
 			uploadLabel: '',
