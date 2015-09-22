@@ -45,7 +45,25 @@
 			{!! HTML::decode(HTML::link('proceso', HTML::image('images/iconosmenu/Procesos.png','Imagen no encontrada',array('width'=>'48','title' => 'Procesos')))) !!}
 		</center></li>
 		<li><center>
+			{!! HTML::decode(HTML::link('clasificacionriesgo', HTML::image('images/iconosmenu/Factores%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Clasificaci&oacute;n de Riesgos')))) !!}
+ 		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('tiporiesgo', HTML::image('images/iconosmenu/Factores%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Tipo de Riesgos')))) !!}
+ 		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('listageneral', HTML::image('images/iconosmenu/Factores%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Lista General')))) !!}
+ 		</center></li>
+		<li><center>
 			{!! HTML::decode(HTML::link('tercero', HTML::image('images/iconosmenu/Terceros.png','Imagen no encontrada',array('width'=>'48','title' => 'Terceros')))) !!}
+ 		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('diagnostico', HTML::image('images/iconosmenu/Diagnostico.png','Imagen no encontrada',array('width'=>'48','title' => 'Diagnostico General')))) !!}
+ 		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('cuadromando', HTML::image('images/iconosmenu/Cuadro%20Mando.png','Imagen no encontrada',array('width'=>'48','title' => 'Cuadro de Mando')))) !!}
+ 		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('matrizriesgo', HTML::image('images/iconosmenu/Matriz%20Riesgos.png','Imagen no encontrada',array('width'=>'48','title' => 'Matriz de Riesgos')))) !!}
  		</center></li>
 		<li><center>
 			{!! HTML::decode(HTML::link('auth/logout', HTML::image('images/iconosmenu/salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')))) !!}

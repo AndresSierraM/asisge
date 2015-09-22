@@ -2,10 +2,10 @@
 //------------------------------------
 // CONFIGURACION DE LA BASE DE DATOS
 //------------------------------------
-//define('DB_DSN','mysql:host=localhost;dbname=asisge');
-//define('DB_USER', 'root');     // Your MySQL username
-//define('DB_PASSWORD', ''); // ...and password
-//define('DB_DATABASE', 'asisge'); // ...and password
+/*define('DB_DSN','mysql:host=localhost;dbname=asisge');
+define('DB_USER', 'root');     // Your MySQL username
+define('DB_PASSWORD', ''); // ...and password
+define('DB_DATABASE', 'asisge'); // ...and password*/
 
 // Ruta absoluta de las librearias de la Grid
 define('ABSPATH', '../public/assets/guriddosuito/');
@@ -29,18 +29,19 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT idClasificacionRiesgo, codigoClasificacionRiesgo, nombreClasificacionRiesgo FROM clasificacionriesgo';
+$grid->SelectCommand = 'SELECT idListaGeneral, codigoListaGeneral, nombreListaGeneral, tipoListaGeneral
+                        FROM listageneral';
 // Establecer el formato de salida en JSON
 $grid->dataType = 'json';
 // Permitir que la grid cree el modelo
 $grid->setColModel();
 // establecer la URL desde donde se obtienen los datos
-$grid->setUrl('clasificacionriesgogrid');
+$grid->setUrl('listageneralgrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
-    "sortname"=>"codigoClasificacionRiesgo",
+    "sortname"=>"nombreListaGeneral",
     "multiSort"=>true,
     "sortable"=>true,
     "altRows"=>true,
@@ -54,7 +55,7 @@ $grid->setGridOptions(array(
 // P R O P I E D A D E S   D E   L O S   C A M P O S
 // ----------------------------------------------------
 
-$grid->setColProperty("idClasificacionRiesgo", array(
+$grid->setColProperty("idListaGeneral", array(
 	"searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
 	"formatter"=>"integer",
 	"formatoptions"=>array("thousandsSeparator"=>","),
@@ -62,15 +63,21 @@ $grid->setColProperty("idClasificacionRiesgo", array(
     )
 );
 
-$grid->setColProperty("codigoClasificacionRiesgo", array(
+$grid->setColProperty("codigoListaGeneral", array(
 	"searchoptions"=>array("sopt"=>array("bw", "eq","ne","le","lt","ge","gt")),
-	"label"=>"C&oacute;digo"
+  "label"=>"C&oacute;digo"
     )
 );
 
-$grid->setColProperty("nombreClasificacionRiesgo", array(
+$grid->setColProperty("nombreListaGeneral", array(
 	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
 	"label"=>"Nombre"
+    )
+);
+
+$grid->setColProperty("tipoListaGeneral", array(
+  "searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
+  "label"=>"Tipo"
     )
 );
 
@@ -103,7 +110,7 @@ $grid->callGridMethod('#grid', 'bindKeys');
 //------------------------------
 $buttonadicionar = array("#pager",
     array("caption"=>"Adicionar", "title"=>"Adicionar un nuevo registro", "onClickButton"=>"js: function(){
-        window.location.href = 'clasificacionriesgo/create'}"
+        window.location.href = 'listageneral/create'}"
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonadicionar);
@@ -117,7 +124,7 @@ $buttonmodificar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'clasificacionriesgo/'+id+'/edit';
+          window.location.href = 'listageneral/'+id+'/edit';
         } else {
           alert('Por favor seleccione el registro a Editar');
           return;
@@ -137,7 +144,7 @@ $buttoneliminar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'clasificacionriesgo/'+id+'/edit?accion=eliminar';
+          window.location.href = 'listageneral/'+id+'/edit?accion=eliminar';
         } else {
           alert('Por favor seleccione el registro a Eliminar');
           return;
@@ -147,6 +154,7 @@ $buttoneliminar = array("#pager",
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
+
 
 // Ejecutamos la grid
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);

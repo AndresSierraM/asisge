@@ -16,7 +16,7 @@ class ListaGeneralController extends Controller
      */
     public function index()
     {
-        //
+        return view('listageneralgrid');
     }
 
     /**
@@ -26,7 +26,7 @@ class ListaGeneralController extends Controller
      */
     public function create()
     {
-        //
+        return view('listageneral');
     }
 
     /**
@@ -37,7 +37,14 @@ class ListaGeneralController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        \App\ListaGeneral::create([
+            'codigoListaGeneral' => $request['codigoListaGeneral'],
+            'nombreListaGeneral' => $request['nombreListaGeneral'],
+            'tipoListaGeneral' => $request['tipoListaGeneral'],
+            'observacionListaGeneral' => $request['observacionListaGeneral'],
+            ]);
+
+        return redirect('/listageneral');
     }
 
     /**
@@ -59,7 +66,8 @@ class ListaGeneralController extends Controller
      */
     public function edit($id)
     {
-        //
+        $listaGeneral = \App\ListaGeneral::find($id);
+        return view('listageneral',['listaGeneral'=>$listaGeneral]);
     }
 
     /**
@@ -71,7 +79,11 @@ class ListaGeneralController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $listaGeneral = \App\ListaGeneral::find($id);
+        $listaGeneral->fill($request->all());
+        $listaGeneral->save();
+
+        return redirect('/listageneral');
     }
 
     /**
@@ -82,6 +94,7 @@ class ListaGeneralController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\ListaGeneral::destroy($id);
+        return redirect('/listageneral');
     }
 }

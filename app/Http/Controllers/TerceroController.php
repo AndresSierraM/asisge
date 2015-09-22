@@ -132,6 +132,7 @@ class TerceroController extends Controller
     public function update(TerceroRequest $request, $id)
     {
 
+
         $tercero = \App\Tercero::find($id);
         $tercero->fill($request->all());
 

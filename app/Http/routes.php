@@ -120,6 +120,12 @@ Route::get('/tiporiesgogrid', function()
 	return view('tiporiesgogridphp');
 });
 
+Route::get('/listageneralgrid', function()
+{
+	return view('listageneralgridphp');
+});
+
+Route::resource('listageneral','ListaGeneralController');
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -142,12 +148,12 @@ Route::get('/diagnosticogrid', function()
 	return view('diagnosticogridphp');
 });
 
-Route::resource('diagnostico','DiagnosticoController');
-Route::resource('cuadromando','CuadroMandoController');
-Route::resource('matrizriesgo','MatrizRiesgoController');
-
 Route::get('/matrizriesgogrid', function()
 {
 	return view('matrizriesgogridphp');
 });
+
+Route::resource('diagnostico','DiagnosticoController');
+Route::resource('cuadromando','CuadroMandoController');
+Route::resource('matrizriesgo','MatrizRiesgoController');
 Route::get('buscar', 'MatrizRiesgoController@buscar');

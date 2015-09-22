@@ -72,9 +72,9 @@
 										<span class="input-group-addon">
 											<i class="fa fa-credit-card" style="width: 14px;"></i>
 										</span>
-										{!!Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo'))!!}
-										{!!Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo'))!!}
-										{!!Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania'))!!}
+										{!! Form::hidden('idTercero', null, array('id' => 'idTercero')) !!}
+										{!! Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo')) !!}
+										{!! Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania')) !!}
 										{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
 									</div>
 								</div>
@@ -152,7 +152,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-calendar" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('fechaCreacionTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n del tercero','style'=>'width:300px;'])!!}
+										{!!Form::text('fechaCreacionTercero',date('Y-m-d'),['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n del tercero','style'=>'width:300px;','readonly'=>true])!!}
 									</div>
 								</div>
 							</div>
@@ -423,7 +423,7 @@
 			language: 'es',
 			uploadUrl: '#',
 			allowedFileExtensions : ['jpg', 'png','gif'],
-			dropZoneTitle: 'Arrastre su foto',
+			dropZoneTitle: 'Seleccione su foto',
 			removeLabel: '',
 			uploadLabel: '',
 			browseLabel: '',
