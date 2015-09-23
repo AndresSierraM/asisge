@@ -51,9 +51,9 @@
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
 			detalle.campos = ['idMatrizRiesgoDetalle', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'ListaGeneral_idEliminacionRiesgo', 'ListaGeneral_idSustitucionRiesgo', 'ListaGeneral_idControlAdministrativo', 'ListaGeneral_idElementoProteccion', 'imagenMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
 			detalle.etiqueta = ['input','select','checkbox','select','select','select','select','input','input','input','input','input','input','input','select','select','input','input','select','input','input','input','select','select','select','select','input','input'];
-			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','text','text','','text','text','text','','','','','file','text'];
-			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 140px;height:35px;display:inline-block;','width: 240px;height:35px;'];
-			detalle.clase = ['','chosen-select form-control','','chosen-select form-control','','','','','','','','','','','','','','','','','','','chosen-select form-control','chosen-select form-control','chosen-select form-control','chosen-select form-control','file',''];
+			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','hidden','text','','hidden','text','text','','','','','file','text'];
+			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 210px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 140px;height:35px;display:inline-block;','width: 340px;height:35px;'];
+			detalle.clase = ['','','','','','','','','','','','','','','','','','','','','','','','','','','file',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false,false];
 			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','',listaGeneral,listaGeneral,listaGeneral,listaGeneral,'',''];
 			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','','',''];
@@ -120,10 +120,10 @@
 													<div class="col-md-1" style="width: 440px;height:40px;">Peligro</div>
 													<div class="col-md-1" style="width: 270px;height:40px;">Expuestos</div>
 													<div class="col-md-1" style="width: 330px;height:40px;">M&eacute;todos de control existentes</div>
-													<div class="col-md-1" style="width: 770px;height:40px;">Evaluci&oacute;n de riesgos</div>
-													<div class="col-md-1" style="width: 110px;height:40px;">Valoraci&oacute;n</div>
+													<div class="col-md-1" style="width: 550px;height:40px;">Evaluaci&oacute;n de riesgos</div>
+													<div class="col-md-1" style="width: 210px;height:40px;">Valoraci&oacute;n</div>
 													<div class="col-md-1" style="width: 440px;height:40px;">Medidas de Intervenci&oacute;n</div>
-													<div class="col-md-1" style="width: 380px;height:40px;">&nbsp;</div>
+													<div class="col-md-1" style="width: 480px;height:40px;">&nbsp;</div>
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
@@ -141,18 +141,16 @@
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel deficiencia</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel exposici&oacute;n</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel probabilidad</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Interpretaci&oacute;n probabilidad</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel consecuencia</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel riesgo</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Interpretaci&oacute;n riesgo</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Aceptaci&oacute;n riesgo</div>
+													<div class="col-md-1" style="width: 210px;display:inline-block;height:60px;">Aceptaci&oacute;n riesgo</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Eliminaci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Sustituaci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Controles</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Protección Persona</div>
 													<div class="col-md-1" style="width: 140px;display:inline-block;height:60px;">Evidencia</div>
-													<div class="col-md-1" style="width: 240px;display:inline-block;height:60px;">Observaciones</div>
+													<div class="col-md-1" style="width: 340px;display:inline-block;height:60px;">Observaciones</div>
 													<div id="contenedor_detalle">
 													</div>
 												</div>

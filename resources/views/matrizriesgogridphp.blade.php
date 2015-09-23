@@ -136,7 +136,9 @@ $buttoneliminar = array("#pager",
     )
 );
 
-/*$buttoneliminar = array("#pager",
+$grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
+
+$buttonimprimir = array("#pager",
     array("caption"=>"Imprimir", "title"=>"Imprimir el registro", 
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
@@ -150,7 +152,7 @@ $buttoneliminar = array("#pager",
         
       }"
     )
-);*/
-$grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
+);
+$grid->callGridMethod("#grid", "navButtonAdd", $buttonimprimir);
 // Ejecutamos la grid
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);

@@ -1,82 +1,102 @@
-<html>
-	<head>
-	</head>
-	<body>
-		{!!Form::model($matrizRiesgo)!!}
-			<table>
-				<tr>
-					<td>
-						Fecha Elaboraci&oacute;n
-					</td>
-					<td>
-						{{$matrizRiesgo->fechaElaboracionMatrizRiesgo}}
-					</td>
-					<td>
-						Matriz Riesgo
-					</td>
-					<td>
-						{{$matrizRiesgo->nombreMatrizRiesgo}}
-					</td>
-				</tr>
-				<tr>
-					<td>Proceso</td>
-					<td>Rutinaria</td>
-					<td>Clasificaci&oacute;n</td>
-					<td>Tipo Riesgo</td>
-					<td>Descripci&oacute;n</td>
-					<td>Efectos salud</td>
-					<td>Planta</td>
-					<td>Temporal</td>
-					<td>Total</td>
-					<td>Fuente</td>
-					<td>Medio</td>
-					<td>Persona</td>
-					<td>Nivel deficiencia</td>
-					<td>Nivel exposici&oacute;n</td>
-					<td>Nivel probabilidad</td>
-					<td>Interpretaci&oacute;n probabilidad</td>
-					<td>Nivel consecuencia</td>
-					<td>Nivel riesgo</td>
-					<td>Interpretaci&oacute;n riesgo</td>
-					<td>Aceptaci&oacute;n riesgo</td>
-					<td>Eliminaci&oacute;n</td>
-					<td>Sustituaci&oacute;n</td>
-					<td>Controles</td>
-					<td>Protección Persona</td>
-					<td>Evidencia</td>
-					<td>Observaciones</td>
-				</tr>
-				@foreach($matrizRiesgo->matrizRiesgoDetalles as $dato)
-					<tr>
-						<td>{{$dato->Proceso_idProceso}}</td>
-						<td>{{$dato->rutinariaMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->ClasificacionRiesgo_idClasificacionRiesgo}}</td>
-						<td>{{$dato->TipoRiesgo_idTipoRiesgo}}</td>
-						<td>{{$dato->TipoRiesgoDetalle_idTipoRiesgoDetalle}}</td>
-						<td>{{$dato->TipoRiesgoSalud_idTipoRiesgoSalud}}</td>
-						<td>{{$dato->vinculadosMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->temporalesMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->totalExpuestosMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->fuenteMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->medioMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->personaMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nivelDeficienciaMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nivelExposicionMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nivelProbabilidadMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nombreProbabilidadMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nivelConsecuenciaMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nivelRiesgoMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->nombreRiesgoMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->aceptacionRiesgoMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->ListaGeneral_idEliminacionRiesgo}}</td>
-						<td>{{$dato->ListaGeneral_idSustitucionRiesgo}}</td>
-						<td>{{$dato->ListaGeneral_idControlAdministrativo}}</td>
-						<td>{{$dato->ListaGeneral_idElementoProteccion}}</td>
-						<td>{{$dato->imagenMatrizRiesgoDetalle}}</td>
-						<td>{{$dato->observacionMatrizRiesgoDetalle}}</td>
-					</tr>
-				@endforeach
-			</table>
-		{!!Form::close()!!}
-	</body>
-</html>
+@extends('layouts.formato')
+
+@section('contenido')
+	{!!Form::model($matrizRiesgo)!!}
+		<div class="col-lg-12">
+            <div class="panel panel-default" style="width:2100px;">
+				<div class="panel-body" >
+					<table class="table" style="width:500px">
+						<thead>
+							<tr>
+								<th>
+									Fecha Elaboraci&oacute;n:
+								</th>
+								<th>
+									{{$matrizRiesgo->fechaElaboracionMatrizRiesgo}}
+								</th>
+								<th>
+									Matriz Riesgo:
+								</th>
+								<th>
+									{{$matrizRiesgo->nombreMatrizRiesgo}}
+								</th>
+							</tr>
+						</thead>
+					</table>
+		            <table class="table table-striped table-bordered" width="100%">
+						<thead>
+							<tr>
+								<th>Proceso</th>
+								<th>Rutina</th>
+								<th>Clasificaci&oacute;n</th>
+								<th>Tipo Riesgo</th>
+								<th>Descripci&oacute;n</th>
+								<th>Efectos salud</th>
+								<th>Planta</th>
+								<th>Temporal</th>
+								<th>Total</th>
+								<th>Fuente</th>
+								<th>Medio</th>
+								<th>Persona</th>
+								<th>Nivel deficiencia</th>
+								<th>Nivel exposici&oacute;n</th>
+								<th>Inter. probabilidad</th>
+								<th>Nivel consecuencia</th>
+								<th>Inter. riesgo</th>
+								<th>Aceptaci&oacute;n riesgo</th>
+								<th>Eliminaci&oacute;n</th>
+								<th>Sustituaci&oacute;n</th>
+								<th>Controles</th>
+								<th>Protección Persona</th>
+								<th>Evidencia</th>
+								<th>Observaciones</th>
+							</tr>
+						<thead>
+						<tbody>
+						@foreach($matrizRiesgoDetalle as $dato)
+							<tr>
+								<td>{{$dato->nombreProceso}}</td>
+								<td>{{($dato->rutinariaMatrizRiesgoDetalle == 1 ? 'Sí' : 'No')}}</td>
+								<td>{{$dato->nombreClasificacionRiesgo}}</td>
+								<td>{{$dato->nombreTipoRiesgo}}</td>
+								<td>{{$dato->nombreTipoRiesgoDetalle}}</td>
+								<td>{{$dato->nombreTipoRiesgoSalud}}</td>
+								<td>{{$dato->vinculadosMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->temporalesMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->totalExpuestosMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->fuenteMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->medioMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->personaMatrizRiesgoDetalle}}</td>
+								<td>{{($dato->nivelDeficienciaMatrizRiesgoDetalle == 10 ? 'Muy Alto' 
+									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 6 ? 'Alto'
+									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 2 ? 'Medio'
+									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 0 ? 'Bajo'
+									  	: '' ))))}}</td>
+								<td>{{($dato->nivelExposicionMatrizRiesgoDetalle == 4 ? 'Continua' 
+									  	: ($dato->nivelExposicionMatrizRiesgoDetalle == 3 ? 'Frecuente'
+									  	: ($dato->nivelExposicionMatrizRiesgoDetalle == 2 ? 'Ocasional'
+									  	: ($dato->nivelExposicionMatrizRiesgoDetalle == 1 ? 'Esporádica'
+									  	: '' ))))}}</td>
+								<td>{{$dato->nombreProbabilidadMatrizRiesgoDetalle}}</td>
+								<td>{{($dato->nivelConsecuenciaMatrizRiesgoDetalle == 100 ? 'Mortal' 
+									  	: ($dato->nivelConsecuenciaMatrizRiesgoDetalle == 60 ? 'Muy Grave'
+									  	: ($dato->nivelConsecuenciaMatrizRiesgoDetalle == 25 ? 'Grave'
+									  	: ($dato->nivelConsecuenciaMatrizRiesgoDetalle == 10 ? 'Leve'
+									  	: '' ))))}}</td>
+								<td>{{$dato->nombreRiesgoMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->aceptacionRiesgoMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->nombreEliminacionRiesgo}}</td>
+								<td>{{$dato->nombreSustitucionRiesgo}}</td>
+								<td>{{$dato->nombreControlAdministrativo}}</td>
+								<td>{{$dato->nombreElementoProteccion}}</td>
+								<td>{{$dato->imagenMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->observacionMatrizRiesgoDetalle}}</td>
+							</tr>
+						@endforeach
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	{!!Form::close()!!}
+@stop

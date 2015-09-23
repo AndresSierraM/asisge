@@ -136,6 +136,11 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
                 }
             } 
 
+            option = document.createElement('option');
+            option.value = '';
+            option.text = 'Seleccione...';
+            select.appendChild(option);
+            
             for(var j=0,k=this.opciones[i].length;j<k;j+=2)
             {
                 for(var p=0,l = this.opciones[i][j].length;p<l;p++)

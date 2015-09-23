@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use DB;
 class MatrizRiesgoController extends Controller
 {
     /**
@@ -108,16 +108,23 @@ class MatrizRiesgoController extends Controller
 
           $matrizRiesgo = \App\MatrizRiesgo::find($id);
           
-          $matrizRiesgoDetalle = DB::table('matrizriesgodetalle')
-            ->leftJoin('diagnosticopregunta', 'diagnosticodetalle.DiagnosticoPregunta_idDiagnosticoPregunta', '=', 'diagnosticopregunta.idDiagnosticoPregunta')
-            ->leftJoin('diagnosticogrupo', 'diagnosticopregunta.DiagnosticoGrupo_idDiagnosticoGrupo', '=', 'diagnosticogrupo.idDiagnosticoGrupo')
-            ->select(DB::raw('idDiagnosticoGrupo, diagnosticodetalle.DiagnosticoPregunta_idDiagnosticoPregunta, 
-                                nombreDiagnosticoGrupo, detalleDiagnosticoPregunta, 
-                                puntuacionDiagnosticoDetalle, resultadoDiagnosticoDetalle, mejoraDiagnosticoDetalle'))
-            ->orderBy('ordenDiagnosticoPregunta', 'ASC')
+          $matrizRiesgoDetalle = DB::table('matrizriesgodetalle as mrd')
+            ->leftJoin('proceso as p', 'mrd.Proceso_idProceso', '=', 'p.idProceso')
+            ->leftJoin('clasificacionriesgo as cr', 'mrd.ClasificacionRiesgo_idClasificacionRiesgo', '=', 'cr.idClasificacionRiesgo')
+            ->leftJoin('tiporiesgo as tr', 'mrd.TipoRiesgo_idTipoRiesgo', '=', 'tr.idTipoRiesgo')
+            ->leftJoin('tiporiesgodetalle as trd', 'mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle', '=', 'trd.idTipoRiesgoDetalle')
+            ->leftJoin('tiporiesgosalud as trs', 'mrd.TipoRiesgoSalud_idTipoRiesgoSalud', '=', 'trs.idTipoRiesgoSalud')
+            ->leftJoin('listageneral as lse', 'mrd.ListaGeneral_idEliminacionRiesgo', '=', 'lse.idListaGeneral')
+            ->leftJoin('listageneral as lss', 'mrd.ListaGeneral_idSustitucionRiesgo', '=', 'lss.idListaGeneral')
+            ->leftJoin('listageneral as lsc', 'mrd.ListaGeneral_idControlAdministrativo', '=', 'lsc.idListaGeneral')
+            ->leftJoin('listageneral as lsp', 'mrd.ListaGeneral_idElementoProteccion', '=', 'lsp.idListaGeneral')
+            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.ListaGeneral_idEliminacionRiesgo, lse.nombreListaGeneral as nombreEliminacionRiesgo, mrd.ListaGeneral_idSustitucionRiesgo, lss.nombreListaGeneral as nombreSustitucionRiesgo, mrd.ListaGeneral_idControlAdministrativo, lsc.nombreListaGeneral as nombreControlAdministrativo, mrd.ListaGeneral_idElementoProteccion, lsp.nombreListaGeneral as nombreElementoProteccion, mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
+            ->orderBy('idMatrizRiesgoDetalle', 'ASC')
             ->where('MatrizRiesgo_idMatrizRiesgo','=',$id)
             ->get();
-          return view('formatos.matrizriesgoimpresion',['matrizRiesgo'=>$matrizRiesgo]);
+
+            
+            return view('formatos.matrizriesgoimpresion',['matrizRiesgo'=>$matrizRiesgo], compact('matrizRiesgoDetalle'));
         }
 
         if(isset($request['clasificacionRiesgo']))

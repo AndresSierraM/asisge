@@ -16,12 +16,18 @@ function buscarTipoRiesgo(registro){
 		success: function(data){
 			var id = data[0];
 			var nombre = data[1];
-            var tipoRiesgo = data[2][0].TipoRiesgo_idTipoRiesgo;
+            var tipoRiesgo = (data[2][0] ? data[2][0].TipoRiesgo_idTipoRiesgo : '');
             
             var select = document.getElementById('TipoRiesgo_idTipoRiesgo'+posicion);
             
             select.options.length = 0;
             var option = '';
+
+            option = document.createElement('option');
+            option.value = '';
+            option.text = 'Seleccione...';
+            select.appendChild(option);
+
             for(var j=0,k=id.length;j<k;j++)
             {
 				option = document.createElement('option');
@@ -57,13 +63,19 @@ function buscarDetalleTipoRiesgo(registro){
 			var nombreDetalle = data[1];
 			var idSalud = data[2];
 			var nombreSalud = data[3];
-            var tipoRiesgoDetalle = data[4][0].TipoRiesgoDetalle_idTipoRiesgoDetalle;
-            var tipoRiesgoSalud = data[4][0].TipoRiesgoSalud_idTipoRiesgoSalud;
+            var tipoRiesgoDetalle = (data[4][0] ? data[4][0].TipoRiesgoDetalle_idTipoRiesgoDetalle : '');
+            var tipoRiesgoSalud = (data[4][0] ? data[4][0].TipoRiesgoSalud_idTipoRiesgoSalud : '');
 			var selectDetalle = document.getElementById('TipoRiesgoDetalle_idTipoRiesgoDetalle'+posicion);
 			var selectSalud = document.getElementById('TipoRiesgoSalud_idTipoRiesgoSalud'+posicion);
             
             selectDetalle.options.length = 0;
             var optionDetalle = '';
+
+            optionDetalle = document.createElement('option');
+            optionDetalle.value = '';
+            optionDetalle.text = 'Seleccione...';
+            selectDetalle.appendChild(optionDetalle);
+
             for(var j=0,k=idDetalle.length;j<k;j++)
             {
             	optionDetalle = document.createElement('option');
@@ -75,6 +87,12 @@ function buscarDetalleTipoRiesgo(registro){
 
             selectSalud.options.length = 0;
             var optionSalud = '';
+
+            optionSalud = document.createElement('option');
+            optionSalud.value = '';
+            optionSalud.text = 'Seleccione...';
+            selectSalud.appendChild(optionSalud);
+
             for(var j=0,k=idSalud.length;j<k;j++)
             {
             	optionSalud = document.createElement('option');
