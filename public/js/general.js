@@ -60,6 +60,7 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.estilo = new Array();
     this.clase = new Array();
     this.sololectura = new Array();
+    this.completar = new Array();
     this.etiqueta = new Array();
     this.opciones = new Array();
     this.funciones = new Array();
@@ -97,6 +98,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             input.setAttribute("class", this.clase[i]);
             input.setAttribute("style", this.estilo[i]);
             input.readOnly = this.sololectura[i];
+            input.autocomplete = this.completar[i];
             if(typeof(this.funciones[i]) !== "undefined") 
             {
                 for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
@@ -168,7 +170,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             inputHidden.type =  'hidden';
             inputHidden.id =  this.campos[i] + this.contador;
             inputHidden.name =  this.campos[i]+'[]';
-            inputHidden.value = valor[i];
+            inputHidden.value = valor[(tipo == 'A' ? i : this.campos[i])];
  
             divCheck.appendChild(inputHidden);
  
@@ -210,17 +212,6 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
       $(selector).chosen(config[selector]);
     }
 
-    /*$('input:file').fileinput({
-            language: 'es',
-            uploadUrl: '#',
-            allowedFileExtensions : ['jpg', 'png','gif'],
-            removeLabel: '',
-            uploadLabel: '',
-            browseLabel: '',
-            uploadClass: "",
-            uploadLabel: "",
-            uploadIcon: "",
-        });*/
 }
 
 Atributos.prototype.borrarCampos = function(elemento){

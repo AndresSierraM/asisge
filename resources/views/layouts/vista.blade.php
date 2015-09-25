@@ -38,7 +38,7 @@
       {!!Html::script('choosen/chosen.jquery.js'); !!}
       {!!Html::script('choosen/docsupport/prism.js'); !!}
       {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
-
+      {!!Html::script('js/general.js')!!}
 
         <script type="text/javascript">
           $(document).ready(function (){

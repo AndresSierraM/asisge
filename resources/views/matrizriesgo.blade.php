@@ -9,7 +9,6 @@
 @section('content')
 
 	@include('alerts.request')
-	{!!Html::script('js/general.js')!!}
 	{!!Html::script('js/matrizriesgo.js')!!}
 	<script>
 		

@@ -153,12 +153,12 @@ Route::get('/matrizriesgogrid', function()
 	return view('matrizriesgogridphp');
 });
 
-Route::get('/matrizriesgo_impresion', function()
+Route::get('/matrizlegalgrid', function()
 {
-	return view('formatos.matrizriesgoimpresion');
+	return view('matrizlegalgridphp');
 });
 
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
-Route::get('buscar', 'MatrizRiesgoController@buscar');
+Route::resource('matrizlegal','MatrizLegalController');

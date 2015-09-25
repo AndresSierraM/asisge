@@ -65,6 +65,9 @@
  		<li><center>
 			{!! HTML::decode(HTML::link('matrizriesgo', HTML::image('images/iconosmenu/Matriz%20Riesgos.png','Imagen no encontrada',array('width'=>'48','title' => 'Matriz de Riesgos')))) !!}
  		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('matrizlegal', HTML::image('images/iconosmenu/Matriz%20Requisitos%20Legales.png','Imagen no encontrada',array('width'=>'48','title' => 'Matriz Legal')))) !!}
+ 		</center></li>
 		<li><center>
 			{!! HTML::decode(HTML::link('auth/logout', HTML::image('images/iconosmenu/salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')))) !!}
 		</center></li>
