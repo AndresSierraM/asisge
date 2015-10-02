@@ -2,7 +2,8 @@
 @section('titulo')<h3 id="titulo"><center>Paquetes del Men&uacute;</center></h3>@stop
 
 @section('content')
-@include('alerts.request')
+  @include('alerts.request')
+
 
 	@if(isset($paquete))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -45,20 +46,15 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
-          {!! Form::label('iconoPaquete', 'Icono', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-file-image-o "></i>
-              </span>
-              {!!Form::file('iconoPaquete')!!}
-
-              @if(isset($paquete->iconoPaquete))
-                {!!Html::image('images/'. $paquete->iconoPaquete) !!}
-              @endif
+        <div class="form-group" style="width:250px; display: inline;" >
+          <div class="col-sm-10" style="width:250px;">
+            <div class="panel panel-default">
+              <input id="iconoPaquete" name="iconoPaquete" type="file" value="<?php echo (isset($paquete->iconoPaquete) ? 'images/'. $paquete->iconoPaquete : ''); ?>" >
             </div>
           </div>
+        </div>
+
+       
 
     </fieldset>
 	@if(isset($paquete))
@@ -71,6 +67,32 @@
   		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
  	@endif
 	{!! Form::close() !!}
+
+  <script type="text/javascript">
+    document.getElementById('contenedor').style.width = '1350px';
+    document.getElementById('contenedor-fin').style.width = '1350px';
+        
+
+    $('#iconoPaquete').fileinput({
+      language: 'es',
+      uploadUrl: '#',
+      allowedFileExtensions : ['jpg', 'png','gif'],
+       initialPreview: [
+       '<?php if(isset($paquete->iconoPaquete))
+            echo Html::image("images/". $paquete->iconoPaquete,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
+                           ;?>'
+            ],
+      dropZoneTitle: 'Seleccione su foto',
+      removeLabel: '',
+      uploadLabel: '',
+      browseLabel: '',
+      uploadClass: "",
+      uploadLabel: "",
+      uploadIcon: "",
+    });
+    </script>
+
 	</div>
 </div>
+</body>
 @stop

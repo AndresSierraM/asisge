@@ -189,7 +189,7 @@
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}EntidadEstatal
+													{!!Form::checkbox('tipoTercero1','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}Entidad Estatal
 												</label>
 											</div>
 											<div class="checkbox-inline">

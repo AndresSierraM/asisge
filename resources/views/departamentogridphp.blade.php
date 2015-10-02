@@ -1,17 +1,6 @@
 <?php
-// ** MySQL settings ** //
-//define('DB_NAME', 'northwind');    // The name of the database
-//define('DB_HOST', 'localhost');    // 99% chance you won't need to change this value
-define('DB_DSN','mysql:host=localhost;dbname=asisge');
-define('DB_USER', 'root');     // Your MySQL username
-define('DB_PASSWORD', ''); // ...and password
-define('DB_DATABASE', 'asisge'); // ...and password
 
 define('ABSPATH', '../public/assets/guriddosuito/');
-// Form settings
-$SERVER_HOST = "";        // the host name
-$SELF_PATH = "";    // the web path to the project without http
-$CODE_PATH = "../../public/assets/guriddosuito/php/PHPSuito/"; // the physical path to the php files
 // include the jqGrid Class
 require_once "../public/assets/guriddosuito/php/PHPSuito/jqGrid.php";
 // include the driver class
@@ -20,7 +9,7 @@ require_once "../public/assets/guriddosuito/php/PHPSuito/DBdrivers/jqGridPdo.php
 //require_once ABSPATH."php/jqCalendar.php";
 
 // Connection to the server
-$conn = new PDO(DB_DSN,DB_USER,DB_PASSWORD);
+$conn = new PDO(env('DB_DSN', false),env('DB_USERNAME', false),env('DB_PASSWORD', false));
 // Tell the db that we use utf-8
 $conn->query("SET NAMES utf8");
 // Create the jqGrid instance

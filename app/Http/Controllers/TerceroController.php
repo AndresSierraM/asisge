@@ -58,7 +58,7 @@ class TerceroController extends Controller
             'nombreCompletoTercero' => $request['nombreCompletoTercero'],
             'fechaCreacionTercero' => $request['fechaCreacionTercero'],
             'estadoTercero' => $request['estadoTercero'],
-            'imagenTercero' => 'terceros\\'. $imageName,
+            'imagenTercero' => 'terceros/'. $imageName,
             'tipoTercero' => $request['tipoTercero'],
             'direccionTercero' => $request['direccionTercero'],
             'Ciudad_idCiudad' => $request['Ciudad_idCiudad'],
@@ -143,7 +143,7 @@ class TerceroController extends Controller
             $manager = new ImageManager();
             $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
 
-            $tercero->imagenTercero = 'terceros\\'. $imageName;
+            $tercero->imagenTercero = 'terceros/'. $imageName;
         }   
 
         $tercero->save();

@@ -117,7 +117,7 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#mision">Detalle</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#mision">Descripci&oacute;n</a>
                       </h4>
                     </div>
                     <div id="mision" class="panel-collapse collapse in">
@@ -140,7 +140,7 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#vision">Salud</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#vision">Consecuencias</a>
                       </h4>
                     </div>
                     <div id="vision" class="panel-collapse collapse">

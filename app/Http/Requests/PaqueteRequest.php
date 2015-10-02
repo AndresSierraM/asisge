@@ -25,8 +25,8 @@ class PaqueteRequest extends Request
     {
         return [
             "ordenPaquete" => "required|integer|between:0,99|unique:paquete,ordenPaquete,".$this->get('idPaquete') .",idPaquete",
-            "nombrePaquete" => "required|string|max:80"
+            "nombrePaquete" => "required|string|max:80",
+            "iconoPaquete" => "required"
         ];
     }
 }
-// ,            "iconoPaquete" => "required|mimes:jpg, jpeg, png, bmp, gif|max:3000"

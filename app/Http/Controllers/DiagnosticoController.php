@@ -85,9 +85,33 @@ class DiagnosticoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+
+          $diagnostico = \App\Diagnostico::find($id);
+          
+          $diagnosticoDetalle = DB::table('diagnosticodetalle as dd')
+            ->leftJoin('diagnosticopregunta as dp', 'dd.DiagnosticoPregunta_idDiagnosticoPregunta', '=', 'dp.idDiagnosticoPregunta')
+            ->leftJoin('diagnosticogrupo as dg', 'dp.DiagnosticoGrupo_idDiagnosticoGrupo', '=', 'dg.idDiagnosticoGrupo')
+            ->select(DB::raw('dd.idDiagnosticoDetalle, dg.nombreDiagnosticoGrupo, dp.idDiagnosticoPregunta, dp.ordenDiagnosticoPregunta, dp.detalleDiagnosticoPregunta, dd.puntuacionDiagnosticoDetalle, dd.resultadoDiagnosticoDetalle, dd.mejoraDiagnosticoDetalle'))
+            ->orderBy('dg.nombreDiagnosticoGrupo', 'ASC')
+            ->orderBy('dp.ordenDiagnosticoPregunta', 'ASC')
+            ->where('Diagnostico_idDiagnostico','=',$id)
+            ->get();
+
+          $diagnosticoResumen = DB::table('diagnosticodetalle as dd')
+            ->leftJoin('diagnosticopregunta as dp', 'dd.DiagnosticoPregunta_idDiagnosticoPregunta', '=', 'dp.idDiagnosticoPregunta')
+            ->leftJoin('diagnosticogrupo as dg', 'dp.DiagnosticoGrupo_idDiagnosticoGrupo', '=', 'dg.idDiagnosticoGrupo')
+            ->select(DB::raw('dg.nombreDiagnosticoGrupo, AVG(dd.resultadoDiagnosticoDetalle) as resultadoDiagnosticoDetalle'))
+            ->orderBy('dg.nombreDiagnosticoGrupo', 'ASC')
+            ->groupBy('dg.nombreDiagnosticoGrupo')
+            ->where('Diagnostico_idDiagnostico','=',$id)
+            ->get();
+
+            return view('formatos.diagnosticoimpresion',['diagnostico'=>$diagnostico], compact('diagnosticoDetalle','diagnosticoResumen'));
+        }
     }
 
     /**

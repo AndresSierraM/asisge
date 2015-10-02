@@ -1,18 +1,7 @@
 <?php
-//------------------------------------
-// CONFIGURACION DE LA BASE DE DATOS
-//------------------------------------
-/*define('DB_DSN','mysql:host=localhost;dbname=asisge');
-define('DB_USER', 'root');     // Your MySQL username
-define('DB_PASSWORD', ''); // ...and password
-define('DB_DATABASE', 'asisge'); // ...and password*/
 
 // Ruta absoluta de las librearias de la Grid
 define('ABSPATH', '../public/assets/guriddosuito/');
-// configuracion de formulario
-//$SERVER_HOST = "";        // the host name
-//$SELF_PATH = "";    // the web path to the project without http
-//$CODE_PATH = "../../public/assets/guriddosuito/php/PHPSuito/"; // the physical path to the php files
 
 // inclusion de la clase jqGrid
 require_once "../public/assets/guriddosuito/php/PHPSuito/jqGrid.php";
@@ -165,6 +154,27 @@ $buttoneliminar = array("#pager",
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
+
+//------------------------------
+// B O T O N   I M P R I M I R
+//------------------------------
+$buttonimprimir = array("#pager",
+    array("caption"=>"Imprimir", "title"=>"Imprimir el registro", 
+      "onClickButton"=>"js: function(){
+        var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
+        if(id) {
+          window.open('diagnostico/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+          
+        } else {
+          alert('Por favor seleccione el registro a Imprimir');
+          return;
+        }
+        
+      }"
+    )
+);
+$grid->callGridMethod("#grid", "navButtonAdd", $buttonimprimir);
+
 
 // Ejecutamos la grid
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);

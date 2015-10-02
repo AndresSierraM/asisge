@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class OpcionRequest extends Request
+class TipoNormaLegalRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class OpcionRequest extends Request
     public function rules()
     {
         return [
-            "ordenOpcion" => "required|integer|between:0,99|unique:opcion,ordenOpcion,".$this->get('idOpcion') .",idOpcion",
-            "nombreOpcion" => "required|string|max:80",
-            "Paquete_idPaquete" => "required",
-            "iconoOpcion" => "required|mimes:jpg, jpeg, png, bmp, gif|max:3000"
+            "codigoTipoNormaLegal" => "required|string|max:20|unique:tiponormalegal,codigoTipoNormaLegal,".$this->get('idTipoNormaLegal') .",idTipoNormaLegal",
+            "nombreTipoNormaLegal" => "required|string|max:80"
         ];
     }
 }

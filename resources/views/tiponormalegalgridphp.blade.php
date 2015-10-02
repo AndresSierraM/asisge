@@ -1,12 +1,16 @@
 <?php
+
 // Ruta absoluta de las librearias de la Grid
 define('ABSPATH', '../public/assets/guriddosuito/');
+
 // inclusion de la clase jqGrid
 require_once "../public/assets/guriddosuito/php/PHPSuito/jqGrid.php";
 // inclusion de l driver de la clase 
 require_once "../public/assets/guriddosuito/php/PHPSuito/DBdrivers/jqGridPdo.php";
+
 // inclusion del datepicker
 //require_once ABSPATH."php/jqCalendar.php";
+
 // Conexion al servidor de BD
 $conn = new PDO(env('DB_DSN', false),env('DB_USERNAME', false),env('DB_PASSWORD', false));
 // Indicar a la base de datos el uso de UTF8
@@ -14,21 +18,18 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT idMatrizRiesgo, nombreMatrizRiesgo, fechaElaboracionMatrizRiesgo, name
-                        FROM matrizriesgo MR
-                        LEFT JOIN users U
-                        ON MR.Users_id = U.id';
+$grid->SelectCommand = 'SELECT idTipoNormaLegal, codigoTipoNormaLegal, nombreTipoNormaLegal FROM tiponormalegal';
 // Establecer el formato de salida en JSON
 $grid->dataType = 'json';
 // Permitir que la grid cree el modelo
 $grid->setColModel();
 // establecer la URL desde donde se obtienen los datos
-$grid->setUrl('matrizriesgogrid');
+$grid->setUrl('tiponormalegalgrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
     "rowNum"=>30,
     "rowList"=>array(30,50,100),
-    "sortname"=>"nombreMatrizRiesgo",
+    "sortname"=>"nombreTipoNormaLegal",
     "multiSort"=>true,
     "sortable"=>true,
     "altRows"=>true,
@@ -36,31 +37,32 @@ $grid->setGridOptions(array(
     //"rowTotal"=>-1,
     //"loadonce"=>true
 ));
+
+
 // ----------------------------------------------------
 // P R O P I E D A D E S   D E   L O S   C A M P O S
 // ----------------------------------------------------
-$grid->setColProperty("idMatrizRiesgo", array(
-  "searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
-  "formatter"=>"integer",
-  "formatoptions"=>array("thousandsSeparator"=>","),
-  "label"=>"ID"
+
+$grid->setColProperty("idTipoNormaLegal", array(
+	"searchoptions"=>array("sopt"=>array("eq","ne","le","lt","ge","gt")),
+	"formatter"=>"integer",
+	"formatoptions"=>array("thousandsSeparator"=>","),
+	"label"=>"ID"
     )
 );
-$grid->setColProperty("nombreMatrizRiesgo", array(
-  "searchoptions"=>array("sopt"=>array("bw", "eq","ne","le","lt","ge","gt")),
-  "label"=>"Nombre"
+
+$grid->setColProperty("codigoTipoNormaLegal", array(
+	"searchoptions"=>array("sopt"=>array("bw", "eq","ne","le","lt","ge","gt")),
+	"label"=>"C&oacute;digo"
     )
 );
-$grid->setColProperty("fechaElaboracionMatrizRiesgo", array(
-  "searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
-  "label"=>"Fecha Elaboraci&oacute;n"
+
+$grid->setColProperty("nombreTipoNormaLegal", array(
+	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
+	"label"=>"Nombre"
     )
 );
-$grid->setColProperty("name", array(
-  "searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
-  "label"=>"Usuario"
-    )
-);
+
 
 // Formatos de fecha
 $grid->setUserDate('d.m.Y');
@@ -70,25 +72,32 @@ $grid->setDbTime('Y-m-d');
 // poner el datepicker como obligatorio en caso de que se use
 $grid->setDatepicker( "RequiredDate" );
 $grid->datearray= array( "RequiredDate" );
+
 // habilitar la barra de herramientas de busquedas (boton en la barra que llama formulario de filtros)
 $grid->toolbarfilter = true;
 // habilitar operaciones de busqueda (en las columnas)
 $grid->setFilterOptions(array("searchOperators"=>true));
+
 // habilitar la barra de navegacion
 $grid->navigator = true;
 // indicamos a la barra de navegacion que botones utiliza
 $grid->setNavOptions('navigator', array("excel"=>true,"add"=>false,"edit"=>false,"del"=>false,"view"=>true, "search"=>true));
+
 // Adicional al funcionalidad de desplazamiento con teclado
 $grid->callGridMethod('#grid', 'bindKeys');
+
+
 //------------------------------
 // B O T O N   A D I C I O N A R 
 //------------------------------
 $buttonadicionar = array("#pager",
     array("caption"=>"Adicionar", "title"=>"Adicionar un nuevo registro", "onClickButton"=>"js: function(){
-        window.location.href = 'matrizriesgo/create'}"
+        window.location.href = 'tiponormalegal/create'}"
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonadicionar);
+
+
 //------------------------------
 // B O T O N   E D I T A R
 //------------------------------
@@ -97,7 +106,7 @@ $buttonmodificar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'matrizriesgo/'+id+'/edit';
+          window.location.href = 'tiponormalegal/'+id+'/edit';
         } else {
           alert('Por favor seleccione el registro a Editar');
           return;
@@ -107,6 +116,8 @@ $buttonmodificar = array("#pager",
     )
 );
 $grid->callGridMethod("#grid", "navButtonAdd", $buttonmodificar);
+
+
 //------------------------------
 // B O T O N   E L I M I N A R
 //------------------------------
@@ -115,7 +126,7 @@ $buttoneliminar = array("#pager",
       "onClickButton"=>"js: function(){
         var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
         if(id) {
-          window.location.href = 'matrizriesgo/'+id+'/edit?accion=eliminar';
+          window.location.href = 'tiponormalegal/'+id+'/edit?accion=eliminar';
         } else {
           alert('Por favor seleccione el registro a Eliminar');
           return;
@@ -124,27 +135,7 @@ $buttoneliminar = array("#pager",
       }"
     )
 );
-
 $grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
 
-//------------------------------
-// B O T O N   I M P R I M I R
-//------------------------------
-$buttonimprimir = array("#pager",
-    array("caption"=>"Imprimir", "title"=>"Imprimir el registro", 
-      "onClickButton"=>"js: function(){
-        var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
-        if(id) {
-          window.open('matrizriesgo/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
-          
-        } else {
-          alert('Por favor seleccione el registro a Imprimir');
-          return;
-        }
-        
-      }"
-    )
-);
-$grid->callGridMethod("#grid", "navButtonAdd", $buttonimprimir);
 // Ejecutamos la grid
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);

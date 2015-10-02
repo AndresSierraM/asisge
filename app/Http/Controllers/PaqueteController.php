@@ -59,7 +59,7 @@ class PaqueteController extends Controller
         \App\Paquete::create([
             'ordenPaquete' => $request['ordenPaquete'],
             'nombrePaquete' => $request['nombrePaquete'],
-            'iconoPaquete' => 'menu\\'. $imageName
+            'iconoPaquete' => 'menu/'. $imageName
             ]); 
         return redirect('/paquete');
     }
@@ -108,7 +108,7 @@ class PaqueteController extends Controller
             $manager = new ImageManager();
             $manager->make($image->getRealPath())->heighten(48)->save('images/menu/'. $imageName);
 
-            $paquete->iconoPaquete = 'menu\\'. $imageName;
+            $paquete->iconoPaquete = 'menu/'. $imageName;
         }
 
        

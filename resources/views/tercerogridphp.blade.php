@@ -1,17 +1,7 @@
 <?php
-//------------------------------------
-// CONFIGURACION DE LA BASE DE DATOS
-//------------------------------------
-//define('DB_DSN','mysql:host=localhost;dbname=asisge');
-//define('DB_USER', 'root');     // Your MySQL username
-//define('DB_PASSWORD', ''); // ...and password
-//define('DB_DATABASE', 'asisge'); // ...and password
 // Ruta absoluta de las librearias de la Grid
 define('ABSPATH', '../public/assets/guriddosuito/');
-// configuracion de formulario
-//$SERVER_HOST = "";        // the host name
-//$SELF_PATH = "";    // the web path to the project without http
-//$CODE_PATH = "../../public/assets/guriddosuito/php/PHPSuito/"; // the physical path to the php files
+
 // inclusion de la clase jqGrid
 require_once "../public/assets/guriddosuito/php/PHPSuito/jqGrid.php";
 // inclusion de l driver de la clase 

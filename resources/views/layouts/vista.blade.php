@@ -55,6 +55,21 @@
         });
         </script>
 
+          <script>
+          function VerificarAbandono(){
+            c = confirm('Esta seguro de abandonar la pagina?');
+            if(c == true){
+              window.location = 'http://www.url_de_la_otra_web.com';
+            }
+            else{
+              return false;
+            }
+          }
+          
+        </script>
+
+        
+<body id='formulario' onbeforeunload="VerificarAbandono()" >
+
+
      @stop
-
-
