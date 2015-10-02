@@ -10,6 +10,17 @@
         {!! Html::style('sb-admin/bower_components/datatables-responsive/css/dataTables.responsive.css'); !!}
         {!! Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
         {!! Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
+
+
+        {!! Html::style('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); !!}
+        {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'); !!}
+        {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'); !!}
+        {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'); !!}
+
+        {!! Html::style('sb-admin/bower_components/flot/examples/examples.css'); !!}
+        {!! Html::script('sb-admin/bower_components/flot/jquery.js'); !!}
+        {!! Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
+
     </head>
     <body>
         
