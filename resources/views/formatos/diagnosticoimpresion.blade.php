@@ -37,15 +37,18 @@
 							</tr>
 							<tr>
 								<td colspan="1">1 = No se cumple con el aspecto evaluado</td>
-								<td colspan="3">entre 0% y 35%</td>
+								<td colspan="1" style="background-color:red;">&nbsp;</td>
+								<td colspan="2">entre 0% y 35%</td>
 							</tr>
 							<tr>
 								<td colspan="1">3 = Se cumple parcialmente con el aspecto evaluado</td>
-								<td colspan="3">entre 36% y 70%</td>
+								<td colspan="1" style="background-color:yellow;">&nbsp;</td>
+								<td colspan="2">entre 36% y 70%</td>
 							</tr>
 							<tr>
 								<td colspan="1">5 = Se cumple totalmente con el aspecto evaluado</td>
-								<td colspan="3">entre 71% y 100%</td>
+								<td colspan="1" style="background-color:green;">&nbsp;</td>
+								<td colspan="2">entre 71% y 100%</td>
 							</tr>
 							<tr>
 								<td colspan="4">
@@ -141,6 +144,7 @@
 							$j=0; 
 							$suma = 0;
 							$conteo = 0;
+							$arrayGrafico = '';
 					        while($j < $total)
 					        {
 
@@ -149,10 +153,14 @@
 										<td>'.number_format($diagnosticoResumen[$j]["resultadoDiagnosticoDetalle"],1,'.',',').'</td>
 									</tr>';
 
+								$arrayGrafico .= "{ aspecto: '".$diagnosticoResumen[$j]["nombreDiagnosticoGrupo"]."', value: ".$diagnosticoResumen[$j]["resultadoDiagnosticoDetalle"]." },";
+
 								$suma += $diagnosticoResumen[$j]["resultadoDiagnosticoDetalle"];
 								$conteo++;
 								$j++;
 							}
+							$arrayGrafico = substr($arrayGrafico,0,strlen($arrayGrafico)-1);
+
 							echo '<tr>
 									<td style="font-weight: bold;">Ejecucion Total </td>
 									<td style="font-weight: bold;">'.number_format(($suma/$conteo),1,'.',',').'%</td>
@@ -168,50 +176,7 @@
 			</div>
 		</div>
 
-<div id="header">
-		<h2>Basic Usage</h2>
-	</div>
 
-	<div id="content">
-
-		<div class="demo-container">
-			<div id="placeholder" class="demo-placeholder"></div>
-		</div>
-
-		<p>You don't have to do much to get an attractive plot.  Create a placeholder, make sure it has dimensions (so Flot knows at what size to draw the plot), then call the plot function with your data.</p>
-
-		<p>The axes are automatically scaled.</p>
-
-	</div>
-
-	<div id="footer">
-		Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
-	</div>
-
-		
-	<script type="text/javascript">
-
-	$(function() {
-
-		var d1 = [];
-		for (var i = 0; i < 14; i += 0.5) {
-			d1.push([i, Math.sin(i)]);
-		}
-
-		var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
-
-		// A null signifies separate line segments
-
-		var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
-
-		$.plot("#placeholder", [ d1, d2, d3 ]);
-
-		// Add the Flot version string to the footer
-
-		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
-	});
-
-	</script>
 
 <script type="text/javascript">
 	
@@ -221,10 +186,7 @@
 	// Chart data records -- each entry in this array corresponds to a point on
 	// the chart.
 	data: [
-	  { aspecto: '1. PLANIFICACION', value: 57.8 },
-	  { aspecto: '2. IMPLEMENTACION', value: 78 },
-	  { aspecto: '3. VERIFICACION ', value: 76 },
-	  { aspecto: '4. ACTUACION', value: 80 }
+	<?php echo $arrayGrafico;?>
 	],
 	// The name of the data record attribute that contains x-values.
 	xkey: 'aspecto',

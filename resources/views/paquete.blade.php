@@ -47,6 +47,7 @@
         </div>
 
         <div class="form-group" style="width:250px; display: inline;" >
+        {!! Form::label('iconoPaquete', 'Icono', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10" style="width:250px;">
             <div class="panel panel-default">
               <input id="iconoPaquete" name="iconoPaquete" type="file" value="<?php echo (isset($paquete->iconoPaquete) ? 'images/'. $paquete->iconoPaquete : ''); ?>" >

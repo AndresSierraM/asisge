@@ -114,6 +114,7 @@
           </div>
         </div>
 
+        
         <div class="form-group">
           <div class="col-lg-12">
             <div class="panel panel-default">
@@ -195,7 +196,27 @@
           </div>
 
 
-
+        <table class="table table-striped table-bordered" width="100%">
+          <tr>
+                <th colspan="1">La calificación posible es entre 1 y 5, segun el grado de cumplimiento del aspecto evaluado</th>
+                <th colspan="3">% cumplimiento</th>
+              </tr>
+              <tr>
+                <td colspan="1">1 = No se cumple con el aspecto evaluado</td>
+                <td colspan="1" style="background-color:red;">&nbsp;</td>
+                <td colspan="2">entre 0% y 35%</td>
+              </tr>
+              <tr>
+                <td colspan="1">3 = Se cumple parcialmente con el aspecto evaluado</td>
+                <td colspan="1" style="background-color:yellow;">&nbsp;</td>
+                <td colspan="2">entre 36% y 70%</td>
+              </tr>
+              <tr>
+                <td colspan="1">5 = Se cumple totalmente con el aspecto evaluado</td>
+                <td colspan="1" style="background-color:green;">&nbsp;</td>
+                <td colspan="2">entre 71% y 100%</td>
+              </tr>
+        </table>
 
 
         <div class="panel-body">
