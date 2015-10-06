@@ -175,3 +175,25 @@ function calcularExpuestos(registro)
 
     total.value = parseFloat(vinculados.value) + parseFloat(temporales.value); 
 }
+
+$("#Grabar").click(function(){
+    var route = "http://localhost:8000/matrizriesgo";
+    var token = $("#token").val();
+
+    $.ajax({
+        url:route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        
+        success:function(){
+            $("#msj-success").fadeIn();
+        },
+
+        /*error:function(msj){
+            $("#msj").html(msj.responseJSON);
+            $("#msj-error").fadeIn();
+        }*/        
+    });
+
+});

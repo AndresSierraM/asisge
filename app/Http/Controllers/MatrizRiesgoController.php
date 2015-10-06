@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\MatrizRiesgoRequest;
 use App\Http\Controllers\Controller;
 use DB;
 class MatrizRiesgoController extends Controller
@@ -43,7 +44,7 @@ class MatrizRiesgoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(MatrizRiesgoRequest $request)
     {
         /*$image = Input::file('imagenTercero');
         $imageName = $request->file('imagenTercero')->getClientOriginalName();
@@ -92,7 +93,7 @@ class MatrizRiesgoController extends Controller
             ]);
         }
         
-        return redirect('/matrizriesgo');
+        //return redirect('/matrizriesgo');
     }
 
     /**
@@ -215,7 +216,7 @@ class MatrizRiesgoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(MatrizRiesgoRequest $request, $id)
     {
         $matrizRiesgo = \App\MatrizRiesgo::find($id);
         $matrizRiesgo->fill($request->all());

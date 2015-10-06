@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\MatrizLegalRequest;
 use App\Http\Controllers\Controller;
 use DB;
 class MatrizLegalController extends Controller
@@ -39,7 +40,7 @@ class MatrizLegalController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(MatrizLegalRequest $request)
     {
         \App\MatrizLegal::create([
             'nombreMatrizLegal' => $request['nombreMatrizLegal'],
@@ -122,7 +123,7 @@ class MatrizLegalController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(MatrizLegalRequest $request, $id)
     {
         $matrizLegal = \App\MatrizLegal::find($id);
         $matrizLegal->fill($request->all());
