@@ -50,32 +50,34 @@ class DiagnosticoController extends Controller
      */
     public function store(DiagnosticoRequest $request)
     {
-        
-        \App\Diagnostico::create([
-            'codigoDiagnostico' => $request['codigoDiagnostico'],
-            'nombreDiagnostico' => $request['nombreDiagnostico'],
-            'fechaElaboracionDiagnostico' => $request['fechaElaboracionDiagnostico'],
-            'equiposCriticosDiagnostico' => $request['equiposCriticosDiagnostico'],
-            'herramientasCriticasDiagnostico' => $request['herramientasCriticasDiagnostico'],
-            'observacionesDiagnostico' => $request['observacionesDiagnostico'],
-            'Compania_idCompania' => 1
-            ]); 
-
-        $diagnostico = \App\Diagnostico::All()->last();
-        $contadorDetalle = count($request['detalleDiagnosticoPregunta']);
-        for($i = 0; $i < $contadorDetalle; $i++)
+        if($request['respuesta'] != 'falso')
         {
-            \App\DiagnosticoDetalle::create([
-            'Diagnostico_idDiagnostico' => $diagnostico->idDiagnostico,
-            'DiagnosticoPregunta_idDiagnosticoPregunta' => $request['DiagnosticoPregunta_idDiagnosticoPregunta'][$i],
-            'puntuacionDiagnosticoDetalle' => $request['puntuacionDiagnosticoDetalle'][$i],
-            'resultadoDiagnosticoDetalle' => $request['resultadoDiagnosticoDetalle'][$i],
-            'mejoraDiagnosticoDetalle' => $request['mejoraDiagnosticoDetalle'][$i],
-            'consultarDiagnosticoDetalle' => $request['consultarDiagnosticoDetalle'][$i]
-           ]);
-        }
+            \App\Diagnostico::create([
+                'codigoDiagnostico' => $request['codigoDiagnostico'],
+                'nombreDiagnostico' => $request['nombreDiagnostico'],
+                'fechaElaboracionDiagnostico' => $request['fechaElaboracionDiagnostico'],
+                'equiposCriticosDiagnostico' => $request['equiposCriticosDiagnostico'],
+                'herramientasCriticasDiagnostico' => $request['herramientasCriticasDiagnostico'],
+                'observacionesDiagnostico' => $request['observacionesDiagnostico'],
+                'Compania_idCompania' => 1
+                ]); 
 
-        return redirect('/diagnostico');
+            $diagnostico = \App\Diagnostico::All()->last();
+            $contadorDetalle = count($request['detalleDiagnosticoPregunta']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\DiagnosticoDetalle::create([
+                'Diagnostico_idDiagnostico' => $diagnostico->idDiagnostico,
+                'DiagnosticoPregunta_idDiagnosticoPregunta' => $request['DiagnosticoPregunta_idDiagnosticoPregunta'][$i],
+                'puntuacionDiagnosticoDetalle' => $request['puntuacionDiagnosticoDetalle'][$i],
+                'resultadoDiagnosticoDetalle' => $request['resultadoDiagnosticoDetalle'][$i],
+                'mejoraDiagnosticoDetalle' => $request['mejoraDiagnosticoDetalle'][$i],
+                'consultarDiagnosticoDetalle' => $request['consultarDiagnosticoDetalle'][$i]
+               ]);
+            }
+
+            return redirect('/diagnostico');
+        }
     }
 
 
@@ -146,29 +148,30 @@ class DiagnosticoController extends Controller
      */
     public function update($id,DiagnosticoRequest $request)
     {
-        
-        $diagnostico = \App\Diagnostico::find($id);
-        $diagnostico->fill($request->all());
-        //$diagnostico->Compania_idCompania = 1;
-        $diagnostico->save();
-
-        \App\DiagnosticoDetalle::where('Diagnostico_idDiagnostico',$id)->delete();
-
-        $contadorDetalle = count($request['detalleDiagnosticoPregunta']);
-        for($i = 0; $i < $contadorDetalle; $i++)
+        if($request['respuesta'] != 'falso')
         {
-            \App\DiagnosticoDetalle::create([
-            'Diagnostico_idDiagnostico' => $id,
-            'DiagnosticoPregunta_idDiagnosticoPregunta' => $request['DiagnosticoPregunta_idDiagnosticoPregunta'][$i],
-            'puntuacionDiagnosticoDetalle' => $request['puntuacionDiagnosticoDetalle'][$i],
-            'resultadoDiagnosticoDetalle' => $request['resultadoDiagnosticoDetalle'][$i],
-            'mejoraDiagnosticoDetalle' => $request['mejoraDiagnosticoDetalle'][$i],
-            'consultarDiagnosticoDetalle' => $request['consultarDiagnosticoDetalle'][$i]
-           ]);
-        }
+            $diagnostico = \App\Diagnostico::find($id);
+            $diagnostico->fill($request->all());
+            //$diagnostico->Compania_idCompania = 1;
+            $diagnostico->save();
 
-        return redirect('/diagnostico');
+            \App\DiagnosticoDetalle::where('Diagnostico_idDiagnostico',$id)->delete();
 
+            $contadorDetalle = count($request['detalleDiagnosticoPregunta']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\DiagnosticoDetalle::create([
+                'Diagnostico_idDiagnostico' => $id,
+                'DiagnosticoPregunta_idDiagnosticoPregunta' => $request['DiagnosticoPregunta_idDiagnosticoPregunta'][$i],
+                'puntuacionDiagnosticoDetalle' => $request['puntuacionDiagnosticoDetalle'][$i],
+                'resultadoDiagnosticoDetalle' => $request['resultadoDiagnosticoDetalle'][$i],
+                'mejoraDiagnosticoDetalle' => $request['mejoraDiagnosticoDetalle'][$i],
+                'consultarDiagnosticoDetalle' => $request['consultarDiagnosticoDetalle'][$i]
+               ]);
+            }
+
+            return redirect('/diagnostico');
+        }    
     }
 
     /**

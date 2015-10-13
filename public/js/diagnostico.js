@@ -124,3 +124,71 @@ Titulos.prototype.agregarTitulos = function(grupo, nombreGrupo){
     this.contador++;
 }
 
+function validarFormulario(event)
+{
+    var route = "http://localhost:8000/diagnostico";
+    var token = $("#token").val();
+    var dato1 = document.getElementById('codigoDiagnostico').value;
+    var dato2 = document.getElementById('nombreDiagnostico').value;
+    var dato3 = document.getElementById('fechaElaboracionDiagnostico').value;
+    var datoPuntuacion = document.querySelectorAll("[name='puntuacionDiagnosticoDetalle[]']");
+    var dato4 = [];
+    
+    var valor = '';
+    var sw = true;
+    for(var j=0,i=datoPuntuacion.length; j<i;j++)
+    {
+        dato4[j] = datoPuntuacion[j].value;
+    }
+
+    $.ajax({
+        async: false,
+        url:route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: {respuesta: 'falso',
+                codigoDiagnostico: dato1,
+                nombreDiagnostico: dato2,
+                fechaElaboracionDiagnostico: dato3,
+                puntuacionDiagnosticoDetalle: dato4
+                },
+        success:function(){
+            //$("#msj-success").fadeIn();
+            //console.log(' sin errores');
+        },
+        error:function(msj){
+            var mensaje = '';
+            var respuesta = JSON.stringify(msj.responseJSON); 
+            console.log(respuesta);
+            if(typeof respuesta === "undefined")
+            {
+                sw = false;
+                $("#msj").html('');
+                $("#msj-error").fadeOut();
+                $("#Grabar").click();
+            }
+            else
+            {    
+                sw = true;
+                respuesta = JSON.parse(respuesta);
+
+                for(var j=0,i=datoProceso.length; j<i;j++)
+                {
+                    mensaje += (typeof respuesta['puntuacionDiagnosticoDetalle'+j] === "undefined" ? '' : '<ul>'+respuesta['puntuacionDiagnosticoDetalle'+j]+'</ul>')+;
+                }
+                $("#msj").html(
+                    (typeof msj.responseJSON.codigoDiagnostico === "undefined" ? '' : '<ul>'+msj.responseJSON.codigoDiagnostico+'</ul>')+''+
+                    (typeof msj.responseJSON.nombreDiagnostico === "undefined" ? '' : '<ul>'+msj.responseJSON.nombreDiagnostico+'</ul>')+''+
+                    (typeof msj.responseJSON.fechaElaboracionDiagnostico === "undefined" ? '' : '<ul>'+msj.responseJSON.fechaElaboracionDiagnostico+'</ul>')+''+
+                    mensaje
+                    );
+                $("#msj-error").fadeIn();
+            }
+                
+        }        
+    });
+    
+    if(sw === true)
+        event.preventDefault();
+}

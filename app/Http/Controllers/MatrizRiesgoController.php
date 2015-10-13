@@ -51,49 +51,56 @@ class MatrizRiesgoController extends Controller
         $manager = new ImageManager();
         $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);*/
 
-        \App\MatrizRiesgo::create([
-            'nombreMatrizRiesgo' => $request['nombreMatrizRiesgo'],
-            'fechaElaboracionMatrizRiesgo' => $request['fechaElaboracionMatrizRiesgo'],
-            'Users_id' => 1
-            ]);
+        echo 'hola';
+        echo $request['respuesta'];
+        if($request['respuesta'] != 'falso')
+        {  
+
+          echo $request['respuesta'];
+          \App\MatrizRiesgo::create([
+              'nombreMatrizRiesgo' => $request['nombreMatrizRiesgo'],
+              'fechaElaboracionMatrizRiesgo' => $request['fechaElaboracionMatrizRiesgo'],
+              'Users_id' => 1
+              ]);
+          
+          $matrizRiesgo = \App\MatrizRiesgo::All()->last();
+          $contadorDetalle = count($request['Proceso_idProceso']);
+          for($i = 0; $i < $contadorDetalle; $i++)
+          {
+              \App\MatrizRiesgoDetalle::create([
+                'MatrizRiesgo_idMatrizRiesgo' => $matrizRiesgo->idMatrizRiesgo,
+                'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
+                'rutinariaMatrizRiesgoDetalle' => $request['rutinariaMatrizRiesgoDetalle'][$i],
+                'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'][$i],
+                'TipoRiesgo_idTipoRiesgo' => $request['TipoRiesgo_idTipoRiesgo'][$i],
+                'TipoRiesgoDetalle_idTipoRiesgoDetalle' => $request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i],
+                'TipoRiesgoSalud_idTipoRiesgoSalud' => $request['TipoRiesgoSalud_idTipoRiesgoSalud'][$i],
+                'vinculadosMatrizRiesgoDetalle' => $request['vinculadosMatrizRiesgoDetalle'][$i],
+                'temporalesMatrizRiesgoDetalle' => $request['temporalesMatrizRiesgoDetalle'][$i],
+                'independientesMatrizRiesgoDetalle' => $request['independientesMatrizRiesgoDetalle'][$i],
+                'totalExpuestosMatrizRiesgoDetalle' => $request['totalExpuestosMatrizRiesgoDetalle'][$i],
+                'fuenteMatrizRiesgoDetalle' => $request['fuenteMatrizRiesgoDetalle'][$i],
+                'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
+                'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
+                'nivelDeficienciaMatrizRiesgoDetalle' => $request['nivelDeficienciaMatrizRiesgoDetalle'][$i],
+                'nivelExposicionMatrizRiesgoDetalle' => $request['nivelExposicionMatrizRiesgoDetalle'][$i],
+                'nivelProbabilidadMatrizRiesgoDetalle' => $request['nivelProbabilidadMatrizRiesgoDetalle'][$i],
+                'nombreProbabilidadMatrizRiesgoDetalle' => $request['nombreProbabilidadMatrizRiesgoDetalle'][$i],
+                'nivelConsecuenciaMatrizRiesgoDetalle' => $request['nivelConsecuenciaMatrizRiesgoDetalle'][$i],
+                'nivelRiesgoMatrizRiesgoDetalle' => $request['nivelRiesgoMatrizRiesgoDetalle'][$i],
+                'nombreRiesgoMatrizRiesgoDetalle' => $request['nombreRiesgoMatrizRiesgoDetalle'][$i],
+                'aceptacionRiesgoMatrizRiesgoDetalle' => $request['aceptacionRiesgoMatrizRiesgoDetalle'][$i],
+                'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
+                'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
+                'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
+                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
+                'imagenMatrizRiesgoDetalle' => $request['imagenMatrizRiesgoDetalle'][$i],
+                'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
+              ]);
+          }
         
-        $matrizRiesgo = \App\MatrizRiesgo::All()->last();
-        $contadorDetalle = count($request['Proceso_idProceso']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\MatrizRiesgoDetalle::create([
-              'MatrizRiesgo_idMatrizRiesgo' => $matrizRiesgo->idMatrizRiesgo,
-              'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
-              'rutinariaMatrizRiesgoDetalle' => $request['rutinariaMatrizRiesgoDetalle'][$i],
-              'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'][$i],
-              'TipoRiesgo_idTipoRiesgo' => $request['TipoRiesgo_idTipoRiesgo'][$i],
-              'TipoRiesgoDetalle_idTipoRiesgoDetalle' => $request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i],
-              'TipoRiesgoSalud_idTipoRiesgoSalud' => $request['TipoRiesgoSalud_idTipoRiesgoSalud'][$i],
-              'vinculadosMatrizRiesgoDetalle' => $request['vinculadosMatrizRiesgoDetalle'][$i],
-              'temporalesMatrizRiesgoDetalle' => $request['temporalesMatrizRiesgoDetalle'][$i],
-              'independientesMatrizRiesgoDetalle' => $request['independientesMatrizRiesgoDetalle'][$i],
-              'totalExpuestosMatrizRiesgoDetalle' => $request['totalExpuestosMatrizRiesgoDetalle'][$i],
-              'fuenteMatrizRiesgoDetalle' => $request['fuenteMatrizRiesgoDetalle'][$i],
-              'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
-              'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
-              'nivelDeficienciaMatrizRiesgoDetalle' => $request['nivelDeficienciaMatrizRiesgoDetalle'][$i],
-              'nivelExposicionMatrizRiesgoDetalle' => $request['nivelExposicionMatrizRiesgoDetalle'][$i],
-              'nivelProbabilidadMatrizRiesgoDetalle' => $request['nivelProbabilidadMatrizRiesgoDetalle'][$i],
-              'nombreProbabilidadMatrizRiesgoDetalle' => $request['nombreProbabilidadMatrizRiesgoDetalle'][$i],
-              'nivelConsecuenciaMatrizRiesgoDetalle' => $request['nivelConsecuenciaMatrizRiesgoDetalle'][$i],
-              'nivelRiesgoMatrizRiesgoDetalle' => $request['nivelRiesgoMatrizRiesgoDetalle'][$i],
-              'nombreRiesgoMatrizRiesgoDetalle' => $request['nombreRiesgoMatrizRiesgoDetalle'][$i],
-              'aceptacionRiesgoMatrizRiesgoDetalle' => $request['aceptacionRiesgoMatrizRiesgoDetalle'][$i],
-              'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
-              'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
-              'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
-              'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
-              'imagenMatrizRiesgoDetalle' => $request['imagenMatrizRiesgoDetalle'][$i],
-              'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
-            ]);
+          return redirect('/matrizriesgo');
         }
-        
-        //return redirect('/matrizriesgo');
     }
 
     /**
@@ -218,59 +225,62 @@ class MatrizRiesgoController extends Controller
      */
     public function update(MatrizRiesgoRequest $request, $id)
     {
-        $matrizRiesgo = \App\MatrizRiesgo::find($id);
-        $matrizRiesgo->fill($request->all());
-
-        /*if(null !== Input::file('imagenTercero') )
+        if($request['respuesta'] != 'falso')
         {
-            $image = Input::file('imagenTercero');
-            $imageName = $request->file('imagenTercero')->getClientOriginalName();
-            $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
+          $matrizRiesgo = \App\MatrizRiesgo::find($id);
+          $matrizRiesgo->fill($request->all());
 
-            $tercero->imagenTercero = 'terceros\\'. $imageName;
-        } */  
+          /*if(null !== Input::file('imagenTercero') )
+          {
+              $image = Input::file('imagenTercero');
+              $imageName = $request->file('imagenTercero')->getClientOriginalName();
+              $manager = new ImageManager();
+              $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
 
-        $matrizRiesgo->save();
+              $tercero->imagenTercero = 'terceros\\'. $imageName;
+          } */  
 
-        \App\MatrizRiesgoDetalle::where('MatrizRiesgo_idMatrizRiesgo',$id)->delete();
-        
-        $contadorDetalle = count($request['Proceso_idProceso']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\MatrizRiesgoDetalle::create([
-             'MatrizRiesgo_idMatrizRiesgo' => $id,
-              'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
-              'rutinariaMatrizRiesgoDetalle' => $request['rutinariaMatrizRiesgoDetalle'][$i],
-              'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'][$i],
-              'TipoRiesgo_idTipoRiesgo' => $request['TipoRiesgo_idTipoRiesgo'][$i],
-              'TipoRiesgoDetalle_idTipoRiesgoDetalle' => $request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i],
-              'TipoRiesgoSalud_idTipoRiesgoSalud' => $request['TipoRiesgoSalud_idTipoRiesgoSalud'][$i],
-              'vinculadosMatrizRiesgoDetalle' => $request['vinculadosMatrizRiesgoDetalle'][$i],
-              'temporalesMatrizRiesgoDetalle' => $request['temporalesMatrizRiesgoDetalle'][$i],
-              'independientesMatrizRiesgoDetalle' => $request['independientesMatrizRiesgoDetalle'][$i],
-              'totalExpuestosMatrizRiesgoDetalle' => $request['totalExpuestosMatrizRiesgoDetalle'][$i],
-              'fuenteMatrizRiesgoDetalle' => $request['fuenteMatrizRiesgoDetalle'][$i],
-              'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
-              'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
-              'nivelDeficienciaMatrizRiesgoDetalle' => $request['nivelDeficienciaMatrizRiesgoDetalle'][$i],
-              'nivelExposicionMatrizRiesgoDetalle' => $request['nivelExposicionMatrizRiesgoDetalle'][$i],
-              'nivelProbabilidadMatrizRiesgoDetalle' => $request['nivelProbabilidadMatrizRiesgoDetalle'][$i],
-              'nombreProbabilidadMatrizRiesgoDetalle' => $request['nombreProbabilidadMatrizRiesgoDetalle'][$i],
-              'nivelConsecuenciaMatrizRiesgoDetalle' => $request['nivelConsecuenciaMatrizRiesgoDetalle'][$i],
-              'nivelRiesgoMatrizRiesgoDetalle' => $request['nivelRiesgoMatrizRiesgoDetalle'][$i],
-              'nombreRiesgoMatrizRiesgoDetalle' => $request['nombreRiesgoMatrizRiesgoDetalle'][$i],
-              'aceptacionRiesgoMatrizRiesgoDetalle' => $request['aceptacionRiesgoMatrizRiesgoDetalle'][$i],
-              'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
-              'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
-              'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
-              'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
-              'imagenMatrizRiesgoDetalle' => AB,
-              'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
-            ]);
+          $matrizRiesgo->save();
+
+          \App\MatrizRiesgoDetalle::where('MatrizRiesgo_idMatrizRiesgo',$id)->delete();
+          
+          $contadorDetalle = count($request['Proceso_idProceso']);
+          for($i = 0; $i < $contadorDetalle; $i++)
+          {
+              \App\MatrizRiesgoDetalle::create([
+               'MatrizRiesgo_idMatrizRiesgo' => $id,
+                'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
+                'rutinariaMatrizRiesgoDetalle' => $request['rutinariaMatrizRiesgoDetalle'][$i],
+                'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'][$i],
+                'TipoRiesgo_idTipoRiesgo' => $request['TipoRiesgo_idTipoRiesgo'][$i],
+                'TipoRiesgoDetalle_idTipoRiesgoDetalle' => $request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i],
+                'TipoRiesgoSalud_idTipoRiesgoSalud' => $request['TipoRiesgoSalud_idTipoRiesgoSalud'][$i],
+                'vinculadosMatrizRiesgoDetalle' => $request['vinculadosMatrizRiesgoDetalle'][$i],
+                'temporalesMatrizRiesgoDetalle' => $request['temporalesMatrizRiesgoDetalle'][$i],
+                'independientesMatrizRiesgoDetalle' => $request['independientesMatrizRiesgoDetalle'][$i],
+                'totalExpuestosMatrizRiesgoDetalle' => $request['totalExpuestosMatrizRiesgoDetalle'][$i],
+                'fuenteMatrizRiesgoDetalle' => $request['fuenteMatrizRiesgoDetalle'][$i],
+                'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
+                'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
+                'nivelDeficienciaMatrizRiesgoDetalle' => $request['nivelDeficienciaMatrizRiesgoDetalle'][$i],
+                'nivelExposicionMatrizRiesgoDetalle' => $request['nivelExposicionMatrizRiesgoDetalle'][$i],
+                'nivelProbabilidadMatrizRiesgoDetalle' => $request['nivelProbabilidadMatrizRiesgoDetalle'][$i],
+                'nombreProbabilidadMatrizRiesgoDetalle' => $request['nombreProbabilidadMatrizRiesgoDetalle'][$i],
+                'nivelConsecuenciaMatrizRiesgoDetalle' => $request['nivelConsecuenciaMatrizRiesgoDetalle'][$i],
+                'nivelRiesgoMatrizRiesgoDetalle' => $request['nivelRiesgoMatrizRiesgoDetalle'][$i],
+                'nombreRiesgoMatrizRiesgoDetalle' => $request['nombreRiesgoMatrizRiesgoDetalle'][$i],
+                'aceptacionRiesgoMatrizRiesgoDetalle' => $request['aceptacionRiesgoMatrizRiesgoDetalle'][$i],
+                'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
+                'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
+                'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
+                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
+                'imagenMatrizRiesgoDetalle' => AB,
+                'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
+              ]);
+          }
+          
+          return redirect('/matrizriesgo');
         }
-        
-        return redirect('/matrizriesgo');
     }
 
     /**

@@ -42,36 +42,39 @@ class MatrizLegalController extends Controller
      */
     public function store(MatrizLegalRequest $request)
     {
-        \App\MatrizLegal::create([
-            'nombreMatrizLegal' => $request['nombreMatrizLegal'],
-            'fechaElaboracionMatrizLegal' => $request['fechaElaboracionMatrizLegal'],
-            'origenMatrizLegal' => $request['origenMatrizLegal'],
-            'Users_id' => 1
-            ]);
-        
-        $matrizLegal = \App\MatrizLegal::All()->last();
-        $contadorDetalle = count($request['TipoNormaLegal_idTipoNormaLegal']);
-        for($i = 0; $i < $contadorDetalle; $i++)
+        if($request['respuesta'] != 'falso')
         {
-            \App\MatrizLegalDetalle::create([
+            \App\MatrizLegal::create([
+                'nombreMatrizLegal' => $request['nombreMatrizLegal'],
+                'fechaElaboracionMatrizLegal' => $request['fechaElaboracionMatrizLegal'],
+                'origenMatrizLegal' => $request['origenMatrizLegal'],
+                'Users_id' => 1
+                ]);
+            
+            $matrizLegal = \App\MatrizLegal::All()->last();
+            $contadorDetalle = count($request['TipoNormaLegal_idTipoNormaLegal']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\MatrizLegalDetalle::create([
 
-                'MatrizLegal_idMatrizLegal' => $matrizLegal->idMatrizLegal,
-                'TipoNormaLegal_idTipoNormaLegal' => $request['TipoNormaLegal_idTipoNormaLegal'][$i],
-                'articuloAplicableMatrizLegalDetalle' => $request['articuloAplicableMatrizLegalDetalle'][$i],
-                'ExpideNormaLegal_idExpideNormaLegal' => $request['ExpideNormaLegal_idExpideNormaLegal'][$i],
-                'exigenciaMatrizLegalDetalle' => $request['exigenciaMatrizLegalDetalle'][$i],
-                'fuenteMatrizLegalDetalle' => $request['fuenteMatrizLegalDetalle'][$i],
-                'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
-                'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
-                'herramientaSeguimientoMatrizLegalDetalle' => $request['herramientaSeguimientoMatrizLegalDetalle'][$i],
-                'cumpleMatrizLegalDetalle' => $request['cumpleMatrizLegalDetalle'][$i],
-                'fechaVerificacionMatrizLegalDetalle' => $request['fechaVerificacionMatrizLegalDetalle'][$i],
-                'accionEvidenciaMatrizLegalDetalle' => $request['accionEvidenciaMatrizLegalDetalle'][$i],
-                'controlAImplementarMatrizLegalDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i]
-            ]);
+                    'MatrizLegal_idMatrizLegal' => $matrizLegal->idMatrizLegal,
+                    'TipoNormaLegal_idTipoNormaLegal' => $request['TipoNormaLegal_idTipoNormaLegal'][$i],
+                    'articuloAplicableMatrizLegalDetalle' => $request['articuloAplicableMatrizLegalDetalle'][$i],
+                    'ExpideNormaLegal_idExpideNormaLegal' => $request['ExpideNormaLegal_idExpideNormaLegal'][$i],
+                    'exigenciaMatrizLegalDetalle' => $request['exigenciaMatrizLegalDetalle'][$i],
+                    'fuenteMatrizLegalDetalle' => $request['fuenteMatrizLegalDetalle'][$i],
+                    'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
+                    'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
+                    'herramientaSeguimientoMatrizLegalDetalle' => $request['herramientaSeguimientoMatrizLegalDetalle'][$i],
+                    'cumpleMatrizLegalDetalle' => $request['cumpleMatrizLegalDetalle'][$i],
+                    'fechaVerificacionMatrizLegalDetalle' => $request['fechaVerificacionMatrizLegalDetalle'][$i],
+                    'accionEvidenciaMatrizLegalDetalle' => $request['accionEvidenciaMatrizLegalDetalle'][$i],
+                    'controlAImplementarMatrizLegalDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i]
+                ]);
+            }
+            
+            return redirect('/matrizlegal');
         }
-        
-        return redirect('/matrizlegal');
     }
 
     /**
@@ -125,35 +128,38 @@ class MatrizLegalController extends Controller
      */
     public function update(MatrizLegalRequest $request, $id)
     {
-        $matrizLegal = \App\MatrizLegal::find($id);
-        $matrizLegal->fill($request->all());
-
-        $matrizLegal->save();
-
-        \App\MatrizLegalDetalle::where('MatrizLegal_idMatrizLegal',$id)->delete();
-        
-        $contadorDetalle = count($request['TipoNormaLegal_idTipoNormaLegal']);
-        for($i = 0; $i < $contadorDetalle; $i++)
+        if($request['respuesta'] != 'falso')
         {
-            \App\MatrizLegalDetalle::create([
+            $matrizLegal = \App\MatrizLegal::find($id);
+            $matrizLegal->fill($request->all());
 
-                'MatrizLegal_idMatrizLegal' => $id,
-                'TipoNormaLegal_idTipoNormaLegal' => $request['TipoNormaLegal_idTipoNormaLegal'][$i],
-                'articuloAplicableMatrizLegalDetalle' => $request['articuloAplicableMatrizLegalDetalle'][$i],
-                'ExpideNormaLegal_idExpideNormaLegal' => $request['ExpideNormaLegal_idExpideNormaLegal'][$i],
-                'exigenciaMatrizLegalDetalle' => $request['exigenciaMatrizLegalDetalle'][$i],
-                'fuenteMatrizLegalDetalle' => $request['fuenteMatrizLegalDetalle'][$i],
-                'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
-                'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
-                'herramientaSeguimientoMatrizLegalDetalle' => $request['herramientaSeguimientoMatrizLegalDetalle'][$i],
-                'cumpleMatrizLegalDetalle' => $request['cumpleMatrizLegalDetalle'][$i],
-                'fechaVerificacionMatrizLegalDetalle' => $request['fechaVerificacionMatrizLegalDetalle'][$i],
-                'accionEvidenciaMatrizLegalDetalle' => $request['accionEvidenciaMatrizLegalDetalle'][$i],
-                'controlAImplementarMatrizLegalDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i]
-            ]);
+            $matrizLegal->save();
+
+            \App\MatrizLegalDetalle::where('MatrizLegal_idMatrizLegal',$id)->delete();
+            
+            $contadorDetalle = count($request['TipoNormaLegal_idTipoNormaLegal']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\MatrizLegalDetalle::create([
+
+                    'MatrizLegal_idMatrizLegal' => $id,
+                    'TipoNormaLegal_idTipoNormaLegal' => $request['TipoNormaLegal_idTipoNormaLegal'][$i],
+                    'articuloAplicableMatrizLegalDetalle' => $request['articuloAplicableMatrizLegalDetalle'][$i],
+                    'ExpideNormaLegal_idExpideNormaLegal' => $request['ExpideNormaLegal_idExpideNormaLegal'][$i],
+                    'exigenciaMatrizLegalDetalle' => $request['exigenciaMatrizLegalDetalle'][$i],
+                    'fuenteMatrizLegalDetalle' => $request['fuenteMatrizLegalDetalle'][$i],
+                    'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
+                    'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
+                    'herramientaSeguimientoMatrizLegalDetalle' => $request['herramientaSeguimientoMatrizLegalDetalle'][$i],
+                    'cumpleMatrizLegalDetalle' => $request['cumpleMatrizLegalDetalle'][$i],
+                    'fechaVerificacionMatrizLegalDetalle' => $request['fechaVerificacionMatrizLegalDetalle'][$i],
+                    'accionEvidenciaMatrizLegalDetalle' => $request['accionEvidenciaMatrizLegalDetalle'][$i],
+                    'controlAImplementarMatrizLegalDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i]
+                ]);
+            }
+            
+            return redirect('/matrizlegal');
         }
-        
-        return redirect('/matrizlegal');
     }
 
     /**

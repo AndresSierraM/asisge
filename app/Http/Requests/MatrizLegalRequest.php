@@ -27,7 +27,8 @@ class MatrizLegalRequest extends Request
         $tipoNorma = count($this->get('TipoNormaLegal_idTipoNormaLegal'));
         
         $validacion = array('nombreMatrizLegal' => 'required|max:200',
-            'fechaElaboracionMatrizLegal' => 'required');
+            'fechaElaboracionMatrizLegal' => 'required',
+            'origenMatrizLegal' => 'required');
 
         for($i = 0; $i < $tipoNorma; $i++)
         {

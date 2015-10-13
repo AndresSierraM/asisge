@@ -77,7 +77,7 @@
 	@else
 		{!!Form::open(['route'=>'matrizriesgo.store','method'=>'POST', 'files' => true])!!}
 	@endif
-
+		
 		<div id="form_section">
 			<fieldset id="matrizRiesgo-form-fieldset">
 				<div class="form-group" id='test'>
@@ -167,7 +167,7 @@
 						@if(isset($matrizRiesgo))
 							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
 						@else
-							{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+							{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@endif
 					</div>
 				</div>

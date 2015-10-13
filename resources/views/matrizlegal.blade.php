@@ -9,7 +9,7 @@
 @section('content')
 
 	@include('alerts.request')
-
+	{!!Html::script('js/matrizlegal.js')!!}
 	<script>
 
 		var matrizLegalDetalle = '<?php echo (isset($matrizLegal) ? json_encode($matrizLegal->matrizLegalDetalles) : "");?>';
@@ -141,9 +141,9 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						@if(isset($matrizLegal))
-							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!}
 						@else
-							{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+							{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!}
 						@endif
 					</div>
 				</div>

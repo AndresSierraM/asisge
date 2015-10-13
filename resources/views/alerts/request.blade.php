@@ -1,8 +1,9 @@
 	@if(count($errors) > 0)
-	    <div class="alert alert-danger alert-dismissible" role="alert">
+	    <div  class="alert alert-danger alert-dismissible" role="alert">
 	      <button type="button" class="close" data-dismiss="alert" aria-label="close">
 	        <span aria-hidden="true">&times;</span>
 	      </button>
+	      	
 	      <ul>
 	        @foreach($errors->all() as $error)
 	        <li>{!! $error !!}</li>
@@ -10,3 +11,8 @@
 	      </ul>
 	    </div>
 	  @endif
+
+	<div id="msj-error" class="alert alert-danger alert-dismissible" role="alert" style="display: none" >
+		<div id="msj">
+		</div>
+	</div>  
