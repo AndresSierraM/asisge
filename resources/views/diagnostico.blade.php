@@ -231,7 +231,7 @@
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary",,"onclick"=>"validarFormulario(event);"])!!}
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!}
   		@endif
  	@else
   		{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}

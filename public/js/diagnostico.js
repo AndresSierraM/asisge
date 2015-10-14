@@ -169,26 +169,25 @@ function validarFormulario(event)
                 $("#Grabar").click();
             }
             else
-            {    
+            {
                 sw = true;
                 respuesta = JSON.parse(respuesta);
 
+                (typeof msj.responseJSON.codigoDiagnostico === "undefined" ? document.getElementById('codigoDiagnostico').style.borderColor = '' : document.getElementById('codigoDiagnostico').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.nombreDiagnostico === "undefined" ? document.getElementById('nombreDiagnostico').style.borderColor = '' : document.getElementById('nombreDiagnostico').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.fechaElaboracionDiagnostico === "undefined" ? document.getElementById('fechaElaboracionDiagnostico').style.borderColor = '' : document.getElementById('fechaElaboracionDiagnostico').style.borderColor = '#a94442');
+
                 for(var j=0,i=datoProceso.length; j<i;j++)
                 {
-                    mensaje += (typeof respuesta['puntuacionDiagnosticoDetalle'+j] === "undefined" ? '' : '<ul>'+respuesta['puntuacionDiagnosticoDetalle'+j]+'</ul>')+;
+                    (typeof respuesta['puntuacionDiagnosticoDetalle'+j] === "undefined" ? document.getElementById('puntuacionDiagnosticoDetalle'+j).style.borderColor = '' : document.getElementById('puntuacionDiagnosticoDetalle'+j).style.borderColor = '#a94442');
                 }
-                $("#msj").html(
-                    (typeof msj.responseJSON.codigoDiagnostico === "undefined" ? '' : '<ul>'+msj.responseJSON.codigoDiagnostico+'</ul>')+''+
-                    (typeof msj.responseJSON.nombreDiagnostico === "undefined" ? '' : '<ul>'+msj.responseJSON.nombreDiagnostico+'</ul>')+''+
-                    (typeof msj.responseJSON.fechaElaboracionDiagnostico === "undefined" ? '' : '<ul>'+msj.responseJSON.fechaElaboracionDiagnostico+'</ul>')+''+
-                    mensaje
-                    );
+                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
                 $("#msj-error").fadeIn();
             }
-                
-        }        
+
+        }
     });
-    
+
     if(sw === true)
         event.preventDefault();
 }

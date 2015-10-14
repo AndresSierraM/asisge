@@ -1,5 +1,5 @@
 @extends('layouts.vista')
-@section('titulo')<h3 id="titulo"><center>Normas Legales</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Emisor Norma Legal</center></h3>@stop
 
 @section('content')
 @include('alerts.request')
@@ -24,7 +24,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::text('codigoExpideNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el código del país'])!!}
+              {!!Form::text('codigoExpideNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la entidad que expide la norma'])!!}
               {!!Form::hidden('idExpideNormaLegal', null, array('id' => 'idExpideNormaLegal')) !!}
             </div>
           </div>
@@ -39,7 +39,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-				{!!Form::text('nombreExpideNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del país'])!!}
+				{!!Form::text('nombreExpideNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la entidad que expide la norma'])!!}
             </div>
           </div>
     </fieldset>

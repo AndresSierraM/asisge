@@ -23,16 +23,16 @@
 <div class="contenedor">
   <ul class="nav nav-pills">
     <li>
-    	{!! HTML::decode(HTML::link('#', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'48','title' => 'ASISGE')),array("data-toggle"=>"pill"))) !!}
-  	</li>
+    	<center>SISoft<center>
+    </li>
   	<li class="active">
-    	{!! HTML::decode(HTML::link('#menu1', HTML::image('images/iconosmenu/Archivos%20Maestros.png','Imagen no encontrada',array('width'=>'48','title' => 'Archivos Maestros')),array("data-toggle"=>"pill"))) !!}
+    	{!! HTML::decode(HTML::link('#menu1', HTML::image('images/iconosmenu/Archivos%20Maestros.png','Archivos Maestros',array('width'=>'48','title' => 'Archivos Maestros')),array("data-toggle"=>"pill"))) !!}
   	</li>
     <li>
-    	{!! HTML::decode(HTML::link('#menu2', HTML::image('images/iconosmenu/Documentos.png','Imagen no encontrada',array('width'=>'48','title' => 'Documentos')),array("data-toggle"=>"pill"))) !!}
+    	{!! HTML::decode(HTML::link('#menu2', HTML::image('images/iconosmenu/Documentos.png','Documentos',array('width'=>'48','title' => 'Documentos')),array("data-toggle"=>"pill"))) !!}
   	</li>
   	<li>
-    	{!! HTML::decode(HTML::link('#menu3', HTML::image('images/iconosmenu/Registros.png','Imagen no encontrada',array('width'=>'48','title' => 'Registros')),array("data-toggle"=>"pill"))) !!}
+    	{!! HTML::decode(HTML::link('#menu3', HTML::image('images/iconosmenu/Seguridad.png','Seguridad',array('width'=>'48','title' => 'Seguridad')),array("data-toggle"=>"pill"))) !!}
   	</li>
   	<li>
     	{!! HTML::decode(HTML::link('', HTML::image('images/iconosmenu/Salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')),array("data-toggle"=>"pill"))) !!}
@@ -41,24 +41,9 @@
   </ul>
   
   <div class="tab-content">
-    <div id="menu1" class="tab-pane fade  in active">
+    <div id="menu1" class="tab-pane fade in active">
 		<nav>
-	        <ul>
-				<li><center>
-					{!! HTML::decode(HTML::link('compania', HTML::image('images/iconosmenu/Companias.png','Imagen no encontrada',array('width'=>'48','title' => 'Compañías')))) !!}
-					</center></li>
-		        <li><center>
-					{!! HTML::decode(HTML::link('rol', HTML::image('images/iconosmenu/Perfiles.png','Imagen no encontrada',array('width'=>'48','title' => 'Roles/Perfiles')))) !!}
-		        	</center></li>
-		       	<li><center>
-					{!! HTML::decode(HTML::link('users', HTML::image('images/iconosmenu/usuarios.png','Imagen no encontrada',array('width'=>'48','title' => 'Usuarios')))) !!}
-		        	</center></li>
-				<li><center>
-					{!! HTML::decode(HTML::link('paquete', HTML::image('images/iconosmenu/Opciones%20Seguridad.png','Imagen no encontrada',array('width'=>'48','title' => 'Paquetes del menu')))) !!}
-					</center></li>
-				<li><center>
-					{!! HTML::decode(HTML::link('opcion', HTML::image('images/iconosmenu/Opciones%20Generales.png','Imagen no encontrada',array('width'=>'48','title' => 'Opciones del menu')))) !!}
-					</center></li>
+	        <ul class="nav nav-pills">
 				<li><center>
 					{!! HTML::decode(HTML::link('pais', HTML::image('images/iconosmenu/Paises.png','Imagen no encontrada',array('width'=>'48','title' => 'Paises')))) !!}
 					</center></li>
@@ -88,7 +73,7 @@
 
     <div id="menu2" class="tab-pane fade">
 		<nav>
-	        <ul  width="50px">
+	        <ul class="nav nav-pills">
       		 	<li>
 					{!! HTML::decode(HTML::link('diagnostico', HTML::image('images/iconosmenu/Diagnostico.png','Imagen no encontrada',array('width'=>'48','title' => 'Diagnostico General')))) !!}
 		 		</li>
@@ -98,8 +83,28 @@
 		    </ul>
     	</nav>
     </div>
+
+
     <div id="menu3" class="tab-pane fade">
-      
+		<nav>
+	        <ul class="nav nav-pills">
+				<li><center>
+					{!! HTML::decode(HTML::link('compania', HTML::image('images/iconosmenu/Companias.png','Imagen no encontrada',array('width'=>'48','title' => 'Compañías')))) !!}
+					</center></li>
+		        <li><center>
+					{!! HTML::decode(HTML::link('rol', HTML::image('images/iconosmenu/Perfiles.png','Imagen no encontrada',array('width'=>'48','title' => 'Roles/Perfiles')))) !!}
+		        	</center></li>
+		       	<li><center>
+					{!! HTML::decode(HTML::link('users', HTML::image('images/iconosmenu/usuarios.png','Imagen no encontrada',array('width'=>'48','title' => 'Usuarios')))) !!}
+		        	</center></li>
+				<li><center>
+					{!! HTML::decode(HTML::link('paquete', HTML::image('images/iconosmenu/Opciones%20Seguridad.png','Imagen no encontrada',array('width'=>'48','title' => 'Paquetes del menu')))) !!}
+					</center></li>
+				<li><center>
+					{!! HTML::decode(HTML::link('opcion', HTML::image('images/iconosmenu/Opciones%20Generales.png','Imagen no encontrada',array('width'=>'48','title' => 'Opciones del menu')))) !!}
+					</center></li>
+		    </ul>
+    	</nav>
 
     </div>
   </div>

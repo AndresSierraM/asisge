@@ -57,6 +57,18 @@
         </div>
 
         <div class="form-group" id='test'>
+          {!! Form::label('password_confirmation', 'Confirmar Contrase&ntilde;a', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-key "></i>
+              </span>
+            {!!Form::password('password_confirmation',array('class'=>'form-control','placeholder'=>'Ingresa de nuevo la contrase&ntilde;a'))!!}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id='test'>
             {!!Form::label('Compania_idCompania', 'Compa&ntilde;&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">

@@ -135,6 +135,11 @@ Route::get('/expidenormalegalgrid', function()
 	return view('expidenormalegalgridphp');
 });
 
+Route::get('/documentogrid', function()
+{
+	return view('documentogridphp');
+});
+
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -148,6 +153,7 @@ Route::resource('tiporiesgo','TipoRiesgoController');
 Route::resource('listageneral','ListaGeneralController');
 Route::resource('tiponormalegal','TipoNormaLegalController');
 Route::resource('expidenormalegal','ExpideNormaLegalController');
+Route::resource('documento','DocumentoController');
 
 // ---------------------------------
 // Documentos
@@ -169,7 +175,13 @@ Route::get('/matrizlegalgrid', function()
 	return view('matrizlegalgridphp');
 });
 
+Route::get('/procedimientogrid', function()
+{
+	return view('procedimientogridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
 Route::resource('matrizlegal','MatrizLegalController');
+Route::resource('procedimiento','ProcedimientoController');

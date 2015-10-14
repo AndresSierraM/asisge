@@ -51,13 +51,13 @@
 			{!! HTML::decode(HTML::link('proceso', HTML::image('images/iconosmenu/Procesos.png','Imagen no encontrada',array('width'=>'48','title' => 'Procesos')))) !!}
 		</center></li>
 		<li><center>
-			{!! HTML::decode(HTML::link('clasificacionriesgo', HTML::image('images/iconosmenu/Factores%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Clasificaci&oacute;n de Riesgos')))) !!}
+			{!! HTML::decode(HTML::link('clasificacionriesgo', HTML::image('images/iconosmenu/Clasificacion%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Clasificaci&oacute;n de Riesgos')))) !!}
  		</center></li>
  		<li><center>
-			{!! HTML::decode(HTML::link('tiporiesgo', HTML::image('images/iconosmenu/Factores%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Tipo de Riesgos')))) !!}
+			{!! HTML::decode(HTML::link('tiporiesgo', HTML::image('images/iconosmenu/Tipo%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Tipo de Riesgos')))) !!}
  		</center></li>
  		<li><center>
-			{!! HTML::decode(HTML::link('listageneral', HTML::image('images/iconosmenu/Factores%20Riesgo.png','Imagen no encontrada',array('width'=>'48','title' => 'Lista General')))) !!}
+			{!! HTML::decode(HTML::link('listageneral', HTML::image('images/iconosmenu/Lista%20General.png','Imagen no encontrada',array('width'=>'48','title' => 'Lista General')))) !!}
  		</center></li>
 		<li><center>
 			{!! HTML::decode(HTML::link('tercero', HTML::image('images/iconosmenu/Terceros.png','Imagen no encontrada',array('width'=>'48','title' => 'Terceros')))) !!}
@@ -69,6 +69,14 @@
 			{!! HTML::decode(HTML::link('expidenormalegal', HTML::image('images/iconosmenu/Manual%20Funciones.png','Imagen no encontrada',array('width'=>'48','title' => 'Emisor de Norma Legal')))) !!}
  		</center></li>
  		<li><center>
+			{!! HTML::decode(HTML::link('documento', HTML::image('images/iconosmenu/Documentos.png','Imagen no encontrada',array('width'=>'48','title' => 'Documentos o Registros')))) !!}
+ 		</center></li>
+
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+ 		<li><center>
 			{!! HTML::decode(HTML::link('diagnostico', HTML::image('images/iconosmenu/Diagnostico.png','Imagen no encontrada',array('width'=>'48','title' => 'Diagnostico General')))) !!}
  		</center></li>
  		<li><center>
@@ -79,6 +87,9 @@
  		</center></li>
  		<li><center>
 			{!! HTML::decode(HTML::link('matrizlegal', HTML::image('images/iconosmenu/Matriz%20Requisitos%20Legales.png','Imagen no encontrada',array('width'=>'48','title' => 'Matriz Legal')))) !!}
+ 		</center></li>
+ 		<li><center>
+			{!! HTML::decode(HTML::link('procedimiento', HTML::image('images/iconosmenu/Planilla%20Procedimientos.png','Imagen no encontrada',array('width'=>'48','title' => 'Procedimientos')))) !!}
  		</center></li>
 		<li><center>
 			{!! HTML::decode(HTML::link('auth/logout', HTML::image('images/iconosmenu/salir-01.png','Imagen no encontrada',array('width'=>'48','title' => 'Salir')))) !!}

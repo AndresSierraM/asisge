@@ -24,7 +24,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::text('codigoTipoNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el código del país'])!!}
+              {!!Form::text('codigoTipoNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Norma'])!!}
               {!!Form::hidden('idTipoNormaLegal', null, array('id' => 'idTipoNormaLegal')) !!}
             </div>
           </div>
@@ -39,7 +39,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-				{!!Form::text('nombreTipoNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del país'])!!}
+				{!!Form::text('nombreTipoNormaLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la Norma'])!!}
             </div>
           </div>
     </fieldset>
