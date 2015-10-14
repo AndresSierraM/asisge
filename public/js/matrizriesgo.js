@@ -265,35 +265,49 @@ function validarFormulario(event)
                 $("#Grabar").click();
             }
             else
-            {    
+            {
                 sw = true;
                 respuesta = JSON.parse(respuesta);
 
+
+                (typeof msj.responseJSON.nombreMatrizRiesgo === "undefined" ? document.getElementById('nombreMatrizRiesgo').style.borderColor = '' : document.getElementById('nombreMatrizRiesgo').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.fechaElaboracionMatrizRiesgo === "undefined" ? document.getElementById('fechaElaboracionMatrizRiesgo').style.borderColor = '' : document.getElementById('fechaElaboracionMatrizRiesgo').style.borderColor = '#a94442');
+
                 for(var j=0,i=datoProceso.length; j<i;j++)
                 {
-                    mensaje += (typeof respuesta['Proceso_idProceso'+j] === "undefined" ? '' : '<ul>'+respuesta['Proceso_idProceso'+j]+'</ul>')+''+
-                        (typeof respuesta['ClasificacionRiesgo_idClasificacionRiesgo'+j] === "undefined" ? '' : '<ul>'+respuesta['ClasificacionRiesgo_idClasificacionRiesgo'+j]+'</ul>')+''+
-                        (typeof respuesta['TipoRiesgoDetalle_idTipoRiesgoDetalle'+j] === "undefined" ? '' : '<ul>'+respuesta['TipoRiesgoDetalle_idTipoRiesgoDetalle'+j]+'</ul>')+''+
-                        (typeof respuesta['TipoRiesgoSalud_idTipoRiesgoSalud'+j] === "undefined" ? '' : '<ul>'+respuesta['TipoRiesgoSalud_idTipoRiesgoSalud'+j]+'</ul>')+''+
-                        (typeof respuesta['ListaGeneral_idEliminacionRiesgo'+j] === "undefined" ? '' : '<ul>'+respuesta['ListaGeneral_idEliminacionRiesgo'+j]+'</ul>')+''+
-                        (typeof respuesta['ListaGeneral_idSustitucionRiesgo'+j] === "undefined" ? '' : '<ul>'+respuesta['ListaGeneral_idSustitucionRiesgo'+j]+'</ul>')+''+
-                        (typeof respuesta['ListaGeneral_idControlAdministrativo'+j] === "undefined" ? '' : '<ul>'+respuesta['ListaGeneral_idControlAdministrativo'+j]+'</ul>')+''+
-                        (typeof respuesta['ListaGeneral_idElementoProteccion'+j] === "undefined" ? '' : '<ul>'+respuesta['ListaGeneral_idElementoProteccion'+j]+'</ul>')+''+
-                        (typeof respuesta['nivelDeficienciaMatrizRiesgoDetalle'+j] === "undefined" ? '' : '<ul>'+respuesta['nivelDeficienciaMatrizRiesgoDetalle'+j]+'</ul>')+''+
-                        (typeof respuesta['nivelExposicionMatrizRiesgoDetalle'+j] === "undefined" ? '' : '<ul>'+respuesta['nivelExposicionMatrizRiesgoDetalle'+j]+'</ul>')+''+
-                        (typeof respuesta['nivelConsecuenciaMatrizRiesgoDetalle'+j] === "undefined" ? '' : '<ul>'+respuesta['nivelConsecuenciaMatrizRiesgoDetalle'+j]+'</ul>');
+                    (typeof respuesta['Proceso_idProceso'+j] === "undefined" ? document.getElementById('Proceso_idProceso'+j).style.borderColor = '' : document.getElementById('Proceso_idProceso'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['ClasificacionRiesgo_idClasificacionRiesgo'+j] === "undefined" ? document.getElementById('ClasificacionRiesgo_idClasificacionRiesgo'+j).style.borderColor = '' : document.getElementById('ClasificacionRiesgo_idClasificacionRiesgo'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['TipoRiesgoDetalle_idTipoRiesgoDetalle'+j] === "undefined" ? document.getElementById('TipoRiesgoDetalle_idTipoRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('TipoRiesgoDetalle_idTipoRiesgoDetalle'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['TipoRiesgoSalud_idTipoRiesgoSalud'+j] === "undefined" ? document.getElementById('TipoRiesgoSalud_idTipoRiesgoSalud'+j).style.borderColor = '' : document.getElementById('TipoRiesgoSalud_idTipoRiesgoSalud'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['TipoRiesgo_idTipoRiesgo'+j] === "undefined" ? document.getElementById('TipoRiesgo_idTipoRiesgo'+j).style.borderColor = '' : document.getElementById('TipoRiesgo_idTipoRiesgo'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['ListaGeneral_idEliminacionRiesgo'+j] === "undefined" ? document.getElementById('ListaGeneral_idEliminacionRiesgo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idEliminacionRiesgo'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['ListaGeneral_idSustitucionRiesgo'+j] === "undefined" ? document.getElementById('ListaGeneral_idSustitucionRiesgo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idSustitucionRiesgo'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['ListaGeneral_idControlAdministrativo'+j] === "undefined" ? document.getElementById('ListaGeneral_idControlAdministrativo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idControlAdministrativo'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['ListaGeneral_idElementoProteccion'+j] === "undefined" ? document.getElementById('ListaGeneral_idElementoProteccion'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idElementoProteccion'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['nivelDeficienciaMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('nivelDeficienciaMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('nivelDeficienciaMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['nivelExposicionMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('nivelExposicionMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('nivelExposicionMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['nivelConsecuenciaMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('nivelConsecuenciaMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('nivelConsecuenciaMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
+
                 }
-                $("#msj").html(
-                    (typeof msj.responseJSON.nombreMatrizRiesgo === "undefined" ? '' : '<ul>'+msj.responseJSON.nombreMatrizRiesgo+'</ul>')+''+
-                    (typeof msj.responseJSON.fechaElaboracionMatrizRiesgo === "undefined" ? '' : '<ul>'+msj.responseJSON.fechaElaboracionMatrizRiesgo+'</ul>')+''+
-                    mensaje
-                    );
+                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
                 $("#msj-error").fadeIn();
             }
-                
-        }        
+
+        }
     });
-    
+
     if(sw === true)
         event.preventDefault();
 }

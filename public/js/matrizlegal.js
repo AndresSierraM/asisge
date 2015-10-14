@@ -9,7 +9,7 @@ function validarFormulario(event)
     var datoClasificacion = document.querySelectorAll("[name='ExpideNormaLegal_idExpideNormaLegal[]']");
     var dato4 = [];
     var dato5 = [];
-    
+
     
     var valor = '';
     var sw = true;
@@ -38,7 +38,7 @@ function validarFormulario(event)
         },
         error:function(msj){
             var mensaje = '';
-            var respuesta = JSON.stringify(msj.responseJSON); 
+            var respuesta = JSON.stringify(msj.responseJSON);
             console.log(respuesta);
             if(typeof respuesta === "undefined")
             {
@@ -48,27 +48,28 @@ function validarFormulario(event)
                 $("#Grabar").click();
             }
             else
-            {    
+            {
                 sw = true;
                 respuesta = JSON.parse(respuesta);
 
+
+                (typeof msj.responseJSON.nombreMatrizLegal === "undefined" ? document.getElementById('nombreMatrizLegal').style.borderColor = '' : document.getElementById('nombreMatrizLegal').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.origenMatrizLegal === "undefined" ? document.getElementById('origenMatrizLegal').style.borderColor = '' : document.getElementById('origenMatrizLegal').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.fechaElaboracionMatrizLegal === "undefined" ? document.getElementById('fechaElaboracionMatrizLegal').style.borderColor = '' : document.getElementById('fechaElaboracionMatrizLegal').style.borderColor = '#a94442');
+
                 for(var j=0,i=datoProceso.length; j<i;j++)
                 {
-                    mensaje += (typeof respuesta['TipoNormaLegal_idTipoNormaLegal'+j] === "undefined" ? '' : '<ul>'+respuesta['TipoNormaLegal_idTipoNormaLegal'+j]+'</ul>')+''+
-                        (typeof respuesta['ExpideNormaLegal_idExpideNormaLegal'+j] === "undefined" ? '' : '<ul>'+respuesta['ExpideNormaLegal_idExpideNormaLegal'+j]+'</ul>');
+                    (typeof respuesta['TipoNormaLegal_idTipoNormaLegal'+j] === "undefined" ? document.getElementById('TipoNormaLegal_idTipoNormaLegal'+j).style.borderColor = '' : document.getElementById('TipoNormaLegal_idTipoNormaLegal'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['ExpideNormaLegal_idExpideNormaLegal'+j] === "undefined" ? document.getElementById('ExpideNormaLegal_idExpideNormaLegal'+j).style.borderColor = '' : document.getElementById('ExpideNormaLegal_idExpideNormaLegal'+j).style.borderColor = '#a94442');
                 }
-                $("#msj").html(
-                    (typeof msj.responseJSON.nombreMatrizLegal === "undefined" ? '' : '<ul>'+msj.responseJSON.nombreMatrizLegal+'</ul>')+''+
-                    (typeof msj.responseJSON.origenMatrizLegal === "undefined" ? '' : '<ul>'+msj.responseJSON.origenMatrizLegal+'</ul>')+''+
-                    (typeof msj.responseJSON.fechaElaboracionMatrizLegal === "undefined" ? '' : '<ul>'+msj.responseJSON.fechaElaboracionMatrizLegal+'</ul>')+''+
-                    mensaje
-                    );
+                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
                 $("#msj-error").fadeIn();
             }
-                
-        }        
+
+        }
     });
-    
+
     if(sw === true)
         event.preventDefault();
 }
