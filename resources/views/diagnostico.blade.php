@@ -86,6 +86,7 @@
               </span>
               {!!Form::text('codigoDiagnostico',null,['class'=>'form-control','placeholder'=>'Ingresa el codigo del diagnostico'])!!}
               {!! Form::hidden('idDiagnostico', null, array('id' => 'idDiagnostico')) !!}
+              <input type="hidden" id="token" value="{{csrf_token()}}"/>
             </div>
           </div>
         </div>

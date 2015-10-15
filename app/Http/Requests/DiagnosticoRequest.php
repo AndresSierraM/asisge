@@ -24,7 +24,6 @@ class DiagnosticoRequest extends Request
     public function rules()
     {
        
-
         $puntuacion = count($this->get('puntuacionDiagnosticoDetalle'));
         
         $validacion = array('codigoDiagnostico' => "required|string|max:20|unique:diagnostico,codigoDiagnostico,".$this->get('idDiagnostico') .",idDiagnostico",

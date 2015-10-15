@@ -160,7 +160,7 @@ function validarFormulario(event)
         error:function(msj){
             var mensaje = '';
             var respuesta = JSON.stringify(msj.responseJSON); 
-            console.log(respuesta);
+            
             if(typeof respuesta === "undefined")
             {
                 sw = false;
@@ -177,7 +177,7 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.nombreDiagnostico === "undefined" ? document.getElementById('nombreDiagnostico').style.borderColor = '' : document.getElementById('nombreDiagnostico').style.borderColor = '#a94442');
                 (typeof msj.responseJSON.fechaElaboracionDiagnostico === "undefined" ? document.getElementById('fechaElaboracionDiagnostico').style.borderColor = '' : document.getElementById('fechaElaboracionDiagnostico').style.borderColor = '#a94442');
 
-                for(var j=0,i=datoProceso.length; j<i;j++)
+                for(var j=0,i=datoPuntuacion.length; j<i;j++)
                 {
                     (typeof respuesta['puntuacionDiagnosticoDetalle'+j] === "undefined" ? document.getElementById('puntuacionDiagnosticoDetalle'+j).style.borderColor = '' : document.getElementById('puntuacionDiagnosticoDetalle'+j).style.borderColor = '#a94442');
                 }
