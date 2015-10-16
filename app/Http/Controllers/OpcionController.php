@@ -54,20 +54,26 @@ class OpcionController extends Controller
     public function store(OpcionRequest $request)
     {
         
-        $image = Input::file('iconoOpcion');
-        $imageName = $request->file('iconoOpcion')->getClientOriginalName();
-        
-        $manager = new ImageManager();
-        $manager->make($image->getRealPath())->heighten(48)->save('images/menu/'. $imageName);
-        //$manager->make($image->getRealPath())->widen(48)->save('images/menu/'. $imageName);
-        //$manager->make($image->getRealPath())->resize(48,48)->save('images/menu/'. $imageName);
-
+        if(null !== Input::file('iconoOpcion') )
+        {
+            $image = Input::file('iconoOpcion');
+            $imageName = 'menu/'.$request->file('iconoOpcion')->getClientOriginalName();
+            
+            $manager = new ImageManager();
+            $manager->make($image->getRealPath())->heighten(48)->save('images/'. $imageName);
+            //$manager->make($image->getRealPath())->widen(48)->save('images/'. $imageName);
+            //$manager->make($image->getRealPath())->resize(48,48)->save('images/'. $imageName);
+        }
+        else
+        {
+            $imageName = "";
+        }
         \App\Opcion::create([
             'ordenOpcion' => $request['ordenOpcion'],
             'nombreOpcion' => $request['nombreOpcion'],
             'rutaOpcion' => $request['rutaOpcion'],
             'Paquete_idPaquete' => $request['Paquete_idPaquete'],
-            'iconoOpcion' => 'menu\\'. $imageName
+            'iconoOpcion' =>  $imageName
             ]); 
         return redirect('/opcion');
     }
@@ -117,7 +123,7 @@ class OpcionController extends Controller
             $manager = new ImageManager();
             $manager->make($image->getRealPath())->heighten(48)->save('images/menu/'. $imageName);
 
-            $opcion->iconoOpcion = 'menu\\'. $imageName;
+            $opcion->iconoOpcion = 'menu/'. $imageName;
         }
 
        

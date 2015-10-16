@@ -26,10 +26,10 @@ nav ul {
     background-color: #687887;
 }
 
-nav ul li:first-child ,nav ul li:last-child{
+/*nav ul li:first-child ,nav ul li:last-child{
     background-color: #F9AF3E;
     z-index: 10;
-}
+}*/
 
 #titulo{
 
@@ -53,7 +53,7 @@ nav ul li {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    top: 22px;
+    top: -40px;
 }
 
 #contenedor-fin{
@@ -65,7 +65,7 @@ nav ul li {
     background-repeat: repeat-y;
     background-size: contain;
     background-position: center;
-    top: -30px;
+    top: -70px;
 }
 
 #pantalla{

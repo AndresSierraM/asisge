@@ -27,7 +27,8 @@ class OpcionRequest extends Request
             "ordenOpcion" => "required|integer|between:0,99|unique:opcion,ordenOpcion,".$this->get('idOpcion') .",idOpcion",
             "nombreOpcion" => "required|string|max:80",
             "Paquete_idPaquete" => "required",
-            "iconoOpcion" => "required|mimes:jpg, jpeg, png, bmp, gif|max:3000"
         ];
     }
 }
+
+//            "iconoOpcion" => "required|mimes:jpg, jpeg, png, bmp, gif|max:3000"

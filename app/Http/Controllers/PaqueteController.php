@@ -47,19 +47,25 @@ class PaqueteController extends Controller
      */
     public function store(PaqueteRequest $request)
     {
+       
+        if(null !== Input::file('iconoPaquete') )
+        {
+            $image = Input::file('iconoPaquete');
+            $imageName = 'menu/'. $request->file('iconoPaquete')->getClientOriginalName();
         
-        $image = Input::file('iconoPaquete');
-        $imageName = $request->file('iconoPaquete')->getClientOriginalName();
-        
-        $manager = new ImageManager();
-        $manager->make($image->getRealPath())->heighten(48)->save('images/menu/'. $imageName);
-        //$manager->make($image->getRealPath())->widen(48)->save('images/menu/'. $imageName);
-        //$manager->make($image->getRealPath())->resize(48,48)->save('images/menu/'. $imageName);
-
+            $manager = new ImageManager();
+            $manager->make($image->getRealPath())->heighten(48)->save('images/'. $imageName);
+            //$manager->make($image->getRealPath())->widen(48)->save('images/'. $imageName);
+            //$manager->make($image->getRealPath())->resize(48,48)->save('images/'. $imageName);
+        }
+        else
+        {
+            $imageName = "";
+        }
         \App\Paquete::create([
             'ordenPaquete' => $request['ordenPaquete'],
             'nombrePaquete' => $request['nombrePaquete'],
-            'iconoPaquete' => 'menu/'. $imageName
+            'iconoPaquete' => $imageName
             ]); 
         return redirect('/paquete');
     }
@@ -110,7 +116,6 @@ class PaqueteController extends Controller
 
             $paquete->iconoPaquete = 'menu/'. $imageName;
         }
-
        
         $paquete->save();
 

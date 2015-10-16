@@ -83,7 +83,7 @@
             echo Html::image("images/". $paquete->iconoPaquete,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
                            ;?>'
             ],
-      dropZoneTitle: 'Seleccione su foto',
+      dropZoneTitle: 'Seleccione el icono',
       removeLabel: '',
       uploadLabel: '',
       browseLabel: '',

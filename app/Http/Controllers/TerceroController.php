@@ -43,11 +43,17 @@ class TerceroController extends Controller
      */
     public function store(TerceroRequest $request)
     {
-        $image = Input::file('imagenTercero');
-        $imageName = $request->file('imagenTercero')->getClientOriginalName();
-        $manager = new ImageManager();
-        $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
-
+        if(null !== Input::file('imagenTercero') )
+        {
+            $image = Input::file('imagenTercero');
+            $imageName = 'terceros/'.$request->file('imagenTercero')->getClientOriginalName();
+            $manager = new ImageManager();
+            $manager->make($image->getRealPath())->heighten(500)->save('images/'. $imageName);
+        }
+        else
+        {
+            $imageName = "";
+        }
         \App\Tercero::create([
             'TipoIdentificacion_idTipoIdentificacion'  => (isset($request['TipoIdentificacion_idTipoIdentificacion']) ? $request['TipoIdentificacion_idTipoIdentificacion'] : 0),
             'documentoTercero' => $request['documentoTercero'],
@@ -141,7 +147,7 @@ class TerceroController extends Controller
             $image = Input::file('imagenTercero');
             $imageName = $request->file('imagenTercero')->getClientOriginalName();
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(500)->save('images/terceros/'. $imageName);
 
             $tercero->imagenTercero = 'terceros/'. $imageName;
         }   
