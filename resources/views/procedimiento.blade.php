@@ -48,7 +48,7 @@
 			{!!Form::model($procedimiento,['route'=>['procedimiento.update',$procedimiento->idProcedimiento],'method'=>'PUT', 'files' => true])!!}
 		@endif
 	@else
-		{!!Form::open(['route'=>'procedimiento.store','method'=>'POST', 'files' => true])!!}
+		{!!Form::open(['route'=>'procedimiento.store','method'=>'POST'])!!}
 	@endif
 
 
@@ -101,7 +101,7 @@
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('objetivoProcedimiento',null,['class'=>'form-control','placeholder'=>'Especfica los objetivos del procedimiento'])!!}
+                                {!!Form::textarea('objetivoProcedimiento',null,['class'=>'ckeditor','placeholder'=>'Especfica los objetivos del procedimiento'])!!}
                               </div>
                             </div>
                           </div>
@@ -124,7 +124,7 @@
                                   <span class="input-group-addon">
                                     <i class="fa fa-pencil-square-o "></i>
                                   </span>
-                                  {!!Form::textarea('alcanceProcedimiento',null,['class'=>'form-control','placeholder'=>'Especfica el alcance del procedimiento'])!!}
+                                  {!!Form::textarea('alcanceProcedimiento',null,['class'=>'ckeditor','placeholder'=>'Especfica el alcance del procedimiento'])!!}
                                 </div>
                               </div>
                             </div>
@@ -146,7 +146,7 @@
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('responsabilidadProcedimiento',null,['class'=>'form-control','placeholder'=>'Especfica las responsabilidades del procedimiento'])!!}
+                                {!!Form::textarea('responsabilidadProcedimiento',null,['class'=>'ckeditor','placeholder'=>'Especfica las responsabilidades del procedimiento'])!!}
                               </div>
                             </div>
                           </div>
@@ -194,6 +194,12 @@
         $('#fechaElaboracionProcedimiento').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
+
+    
+    CKEDITOR.replace(('objetivoProcedimiento','alcanceProcedimiento','responsabilidadProcedimiento'), {
+        fullPage: true,
+        allowedContent: false
+    });
 
   </script>
 
