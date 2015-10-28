@@ -39,8 +39,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo, grupo){
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
     div.setAttribute("width", '100%');
-
-    for (var i = 0,  e = this.campos.length; i < e ; i++)
+    for (var  i = 0,  e = this.campos.length; i < e ; i++)
     {
 
         if(this.etiqueta[i] == 'input')
@@ -128,16 +127,18 @@ function validarFormulario(event)
 {
     var route = "http://localhost:8000/diagnostico";
     var token = $("#token").val();
+    var dato0 = document.getElementById('idDiagnostico').value;
     var dato1 = document.getElementById('codigoDiagnostico').value;
     var dato2 = document.getElementById('nombreDiagnostico').value;
     var dato3 = document.getElementById('fechaElaboracionDiagnostico').value;
     var datoPuntuacion = document.querySelectorAll("[name='puntuacionDiagnosticoDetalle[]']");
     var dato4 = [];
-    
+    console.log(dato1);
     var valor = '';
     var sw = true;
     for(var j=0,i=datoPuntuacion.length; j<i;j++)
     {
+        //console.log(j+' -> '+datoPuntuacion[j].value+"\n");
         dato4[j] = datoPuntuacion[j].value;
     }
 
@@ -148,6 +149,7 @@ function validarFormulario(event)
         type: 'POST',
         dataType: 'json',
         data: {respuesta: 'falso',
+                idDiagnostico: dato0,
                 codigoDiagnostico: dato1,
                 nombreDiagnostico: dato2,
                 fechaElaboracionDiagnostico: dato3,
@@ -159,8 +161,9 @@ function validarFormulario(event)
         },
         error:function(msj){
             var mensaje = '';
+            //console.log(msj.responseJSON);
             var respuesta = JSON.stringify(msj.responseJSON); 
-            
+            //console.log(respuesta);
             if(typeof respuesta === "undefined")
             {
                 sw = false;
@@ -179,15 +182,56 @@ function validarFormulario(event)
 
                 for(var j=0,i=datoPuntuacion.length; j<i;j++)
                 {
+
                     (typeof respuesta['puntuacionDiagnosticoDetalle'+j] === "undefined" ? document.getElementById('puntuacionDiagnosticoDetalle'+j).style.borderColor = '' : document.getElementById('puntuacionDiagnosticoDetalle'+j).style.borderColor = '#a94442');
                 }
-                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
+                $("#msj").html('Los campos bordeados en rojo son obligatorios.'+respuesta['puntuacionDiagnosticoDetalle0']);
                 $("#msj-error").fadeIn();
             }
 
         }
     });
 
-    if(sw === true)
+    //if(sw === true)
         event.preventDefault();
+}
+
+function habilitarSubmit(event)
+{
+    event.preventDefault();
+    
+
+    validarformulario();
+}
+
+function validarformulario()
+{
+    var resp = true;
+    // Validamos los datos de detalle
+    for(actual = 0; actual < document.getElementById('registros').value ; actual++)
+    {
+        if(document.getElementById("puntuacionDiagnosticoDetalle"+(actual)) && 
+            (document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).value < 0 ||  
+            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).value > 5))
+        {
+            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:red;";
+            resp = false;
+            
+        } 
+        else
+        {
+            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:white;";
+        } 
+    }
+
+    if(resp === true)
+    {
+        $("form").submit();
+    }
+    else
+    {
+        alert('Por favor verifique las puntuaciones resaltadas en rojo, deben ser valor 0 (No aplica) o valores entre 1 y 5 (siendo 1 que no se cumple y 5 que cumple totalmente con el aspecto evaluado)');
+    }
+
+    return true;
 }

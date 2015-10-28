@@ -4,14 +4,14 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{!!Html::style('CSS/menu.css'); !!}
+	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
+	
+	
 
 	@yield('clases')
 
-	{!!Html::style('CSS/menu.css'); !!}
-	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
-	
-	{!! Html::script('assets/guriddosuito/js/jquery.min.js'); !!}
-	{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
+		{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
 	{!!Html::script('js/menu.js'); !!}
 
 	<title>Asisge S.A.</title>
@@ -20,6 +20,7 @@
 
 	<div id="header">
 		<div id="container">
+		<div class="barramenu">
 			<div id="menuarch" class="menu">
 				{!! HTML::image('images/iconosmenu/Archivos%20Maestros.png','Archivos Maestros',array('width'=>'32','title' => 'Archivos maestros')) !!}
 			</div>
@@ -29,16 +30,16 @@
 			<div id="menuseg" class="menu">
 				{!! HTML::image('images/iconosmenu/Seguridad.png','Seguridad',array('width'=>'32','title' => 'Seguridad')) !!}
 			</div>
+		</div>
 
+			<div id="arrowarch" class="arrow" style="margin-left: 25px;">
+			</div>
+			<div id="arrowdoc" class="arrow" style="margin-left: 60px;">
+			</div>
+			<div id="arrowseg" class="arrow" style="margin-left: 95px;">
+			</div>
 
-			<div id="arrowarch" class="arrow" style="margin-left: 15px;">
-			</div>
-			<div id="arrowdoc" class="arrow" style="margin-left: 50px;">
-			</div>
-			<div id="arrowseg" class="arrow" style="margin-left: 85px;">
-			</div>
-
-			<div id="gridboxarch" class="gridbox">
+			<div id="gridboxarch" class="gridbox" style="margin-left: 15px;">
 				<div id="innergridarch" class="innergrid">
 					<ul id="iconsarch" class="icons">
 						<li>
@@ -84,7 +85,7 @@
 				</div>
 			</div>
 			
-			<div id="gridboxdoc" class="gridbox">
+			<div id="gridboxdoc" class="gridbox" style="margin-left: 50px;">
 				<div id="innergriddoc" class="innergrid">
 					<ul id="iconsdoc" class="icons">
 	      		 	<li>
@@ -107,7 +108,7 @@
 				</div>
 			</div>
 
-			<div id="gridboxseg" class="gridbox">
+			<div id="gridboxseg" class="gridbox" style="margin-left: 85px;">
 				<div id="innergridseg" class="innergrid">
 					<ul id="iconsseg" class="icons">
 					<li>
@@ -250,7 +251,7 @@
 
 	</div> -->
 
-	<div id="contenedor-ini">
+	<div id="contenedor">
 	    @yield('titulo')
 	</div>
 	<div id="contenedor-fin">

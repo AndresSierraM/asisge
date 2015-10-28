@@ -11,6 +11,8 @@ $(document).ready(function(){
 	
 	$('#menudoc').click(function(event){
 		$('#arrowdoc').slideToggle('slow');
+		$("#gridboxdoc").css("position", "absolute"); 
+
 		$('#gridboxdoc').slideToggle('slow',function(){
 			//$('ul').animate({marginTop:'0'});
 			$('#gridboxdoc').animate({height:'200px'});
@@ -20,6 +22,8 @@ $(document).ready(function(){
 	
 	$('#menuseg').click(function(event){
 		$('#arrowseg').slideToggle('slow');
+		$("#gridboxseg").css("position", "absolute"); 
+
 		$('#gridboxseg').slideToggle('slow',function(){
 			//$('ul').animate({marginTop:'0'});
 			$('#gridboxseg').animate({height:'200px'});

@@ -14,6 +14,7 @@
           }
   		
       </style>
+      
       {!! Html::script('assets/guriddosuito/js/jquery.min.js'); !!}
       {!! Html::script('assets/guriddosuito/js/trirand/i18n/grid.locale-en.js'); !!}
       {!! Html::script('assets/guriddosuito/js/trirand/jquery.jqGrid.min.js'); !!}

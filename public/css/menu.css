@@ -22,7 +22,7 @@ body{
 
 
 
-#contenedor-ini{
+#contenedor{
     width: 1200px;
     height: 120px;
     position: relative;
@@ -31,7 +31,7 @@ body{
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    top: -35px;
+    top: -10px;
 }
 
 #contenedor-fin{
@@ -43,7 +43,7 @@ body{
     background-repeat: repeat-y;
     background-size: contain;
     background-position: center;
-    top: -80px;
+    top: -40px;
 }
 
 #pantalla{
@@ -61,9 +61,11 @@ body{
 }
 
 #footer p{
-    text-align: center;
+    text-align: left;
     color: white;
+    margin: 5px 5px;
     z-index: 1;
+    font-size: 12px;
 }
 
 
@@ -72,11 +74,21 @@ body{
 width:100%;
 height:300px;
 border:solid #CCC 0px;
-padding:5px;
+padding:0px;
+margin:0 auto;
+margin-top:0px;
+position: relative;
+z-index: 99;
+ }
+
+.barramenu{
+width:100%;
+height:40px;
+border:solid #CCC 0px;
+padding:3px;
 margin:0 auto;
 margin-top:2px;
-position: absolute;
-z-index: 99;
+background-color: #687887;
  }
 
 ul{
@@ -99,6 +111,18 @@ background-color: #687887;
 display:inline-block;
 }
 
+.arrow{
+position: relative;
+margin-left: 118px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 0 5px 10px 5px;
+border-color: transparent transparent #efefef transparent;
+display: none;
+top: -5px;
+}
+
 .gridbox{
  width:200px;
  height:210px;
@@ -109,6 +133,9 @@ display:inline-block;
  color:#666;
  overflow:hidden;
  display:none;
+ position: absolute;
+ z-index: 999;
+ top: 45px;
  }
 
 .innergrid{
@@ -119,15 +146,7 @@ display:inline-block;
 
  }
 
-.arrow{
-margin-left: 118px;
-width: 0;
-height: 0;
-border-style: solid;
-border-width: 0 15px 20px 15px;
-border-color: transparent transparent #efefef transparent;
-display: none;
-}
+
 
 .icons img{
  width: 32px;

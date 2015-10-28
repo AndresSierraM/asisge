@@ -18,8 +18,10 @@
       {!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
       <!--{!!Html::style('sb-admin/bower_components/ckeditor/sample.css'); !!}-->
-      {!!Html::style('css/menu.css'); !!}
-      
+      <!-- {!!Html::style('css/menu.css'); !!} -->
+      {!!Html::style('CSS/menu.css'); !!}
+      {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
+  
       <style type="text/css" media="all">
           /* fix rtl for demo */
           .chosen-rtl .chosen-drop { left: -9000px; }

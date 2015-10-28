@@ -52,6 +52,8 @@
           // llena los campos de preguntas
           diagnostico.agregarCampos(JSON.stringify(diagnosticoDetalle[j]),'L', diagnosticoDetalle[j]["idDiagnosticoGrupo"]);
         }
+        document.getElementById('registros').value = j ;
+
 
     });
 
@@ -86,6 +88,7 @@
               </span>
               {!!Form::text('codigoDiagnostico',null,['class'=>'form-control','placeholder'=>'Ingresa el codigo del diagnostico'])!!}
               {!! Form::hidden('idDiagnostico', null, array('id' => 'idDiagnostico')) !!}
+              {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
               <input type="hidden" id="token" value="{{csrf_token()}}"/>
             </div>
           </div>
@@ -230,13 +233,22 @@
     </fieldset>
 	@if(isset($diagnostico))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
+   			<input class="btn btn-primary" type="submit" id="grabarUno" name="grabarUno" value="Eliminar"
+         onclick="habilitarSubmit(event)"/>
+         <!-- {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!} -->
   		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!}
+   			<input class="btn btn-primary" type="submit" id="grabarUno" name="grabarUno" value="Modificar"
+         onclick="habilitarSubmit(event)"/>
+         <!-- {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!} -->
   		@endif
  	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+      <input class="btn btn-primary" type="submit" id="grabarUno" name="grabarUno" value="Adicionar"
+         onclick="habilitarSubmit(event)"/>
+  		<!-- {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!} -->
  	@endif
+  
+  
+
 	{!! Form::close() !!}
 
   <script type="text/javascript">

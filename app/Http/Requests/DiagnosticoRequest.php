@@ -28,19 +28,17 @@ class DiagnosticoRequest extends Request
         
         $validacion = array('codigoDiagnostico' => "required|string|max:20|unique:diagnostico,codigoDiagnostico,".$this->get('idDiagnostico') .",idDiagnostico",
                             'nombreDiagnostico' => 'required|string|max:80',
-                            'fechaElaboracionDiagnostico' => 'required|date');
+                            'fechaElaboracionDiagnostico' => 'required|date',
+                            'puntuacionDiagnosticoDetalle51' => 'min:0|max:5');
 
-        for($i = 0; $i < $puntuacion; $i++)
+        /*for($i = 0; $i < $puntuacion; $i++)
         {
-            if(trim($this->get('puntuacionDiagnosticoDetalle')[$i]) >= 1 and trim($this->get('puntuacionDiagnosticoDetalle')[$i]) <= 5)
+            //if(trim($this->get('puntuacionDiagnosticoDetalle')[$i]) <= 0 or trim($this->get('puntuacionDiagnosticoDetalle')[$i]) >= 5)
             {    
-                $validacion['puntuacionDiagnosticoDetalle'.$i] =  'integer|between:1,5';
+                $validacion['puntuacionDiagnosticoDetalle'.$i] = 'integer';
             }
-
-            
-            
         }
-
+*/
         return $validacion;
     }
 }
