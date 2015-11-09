@@ -5,7 +5,7 @@
 		<center>Matriz Legal</center>
 	</h3>
 @stop
-
+<?php  session_start(); echo $_SESSION['Compania_idCompania'].' el id de sesion';?>
 @section('content')
 
 	@include('alerts.request')

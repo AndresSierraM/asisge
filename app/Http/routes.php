@@ -11,10 +11,10 @@
 |
 */
 
-/*Route::get('/', function()
+Route::get('/', function()
 {
-	return view('welcome');
-});*/
+	return view('layouts.principal');
+});
 
 // Creamos un Controlador para gestionar la autenticación en HomeController.
 //Route::controller('/','HomeController');
@@ -180,8 +180,20 @@ Route::get('/procedimientogrid', function()
 	return view('procedimientogridphp');
 });
 
+Route::get('/actacapacitaciongrid', function()
+{
+	return view('actacapacitaciongridphp');
+});
+
+Route::get('/plancapacitaciongrid', function()
+{
+	return view('plancapacitaciongridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
 Route::resource('matrizlegal','MatrizLegalController');
 Route::resource('procedimiento','ProcedimientoController');
+Route::resource('actacapacitacion','ActaCapacitacionController');
+Route::resource('plancapacitacion','PlanCapacitacionController');
