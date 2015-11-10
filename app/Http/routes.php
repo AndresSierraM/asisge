@@ -181,10 +181,12 @@ Route::get('/procedimientogrid', function()
 });
 
 
+
 Route::get('/programagrid', function()
 {
 	return view('programagridphp');
 });
+
 
 Route::get('/actacapacitaciongrid', function()
 {
@@ -195,12 +197,14 @@ Route::get('/plancapacitaciongrid', function()
 {
 	return view('plancapacitaciongridphp');
 });
- 
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
 Route::resource('matrizlegal','MatrizLegalController');
 Route::resource('procedimiento','ProcedimientoController');
+
 Route::resource('programa','ProgramaController');
+
 Route::resource('actacapacitacion','ActaCapacitacionController');
 Route::resource('plancapacitacion','PlanCapacitacionController');
