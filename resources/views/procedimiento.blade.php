@@ -36,7 +36,7 @@
       {
         procedimiento.agregarCampos(JSON.stringify(procedimientoDetalle[j]),'L');
       }
-
+      document.getElementById('registros').value = j ;
     });
 
   </script>
@@ -63,6 +63,10 @@
                         <i class="fa fa-flag"></i>
                       </span>
               {!!Form::select('Proceso_idProceso',$procesos, (isset($procedimiento) ? $procedimiento->Proceso_idProceso : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Proceso"])!!}
+              {!! Form::hidden('idProcedimiento', 0, array('id' => 'idProcedimiento')) !!}
+              {!! Form::hidden('Compania_idCompania', 0, array('id' => 'Compania_idCompania')) !!}
+              {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
+
             </div>
           </div>
         </div>
@@ -177,15 +181,15 @@
           </div>
         </div>
     </fieldset>
-	@if(isset($procedimiento))
- 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
-  		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
-  		@endif
- 	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
- 	@endif
+  @if(isset($diagnostico))
+    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+         {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+      @else
+         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+      @endif
+  @else
+         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
+  @endif
 	{!! Form::close() !!}
 
   <script type="text/javascript">

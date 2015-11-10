@@ -4,13 +4,13 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-{!!Html::style('CSS/menu.css'); !!}
-	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
-	
+
 	
 
 	@yield('clases')
-
+{!!Html::style('CSS/menu.css'); !!}
+	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
+	
 		{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
 	{!!Html::script('js/menu.js'); !!}
 
@@ -102,6 +102,9 @@
 				 	</li>
 			 		<li>
 						{!! HTML::decode(HTML::link('procedimiento', HTML::image('images/iconosmenu/Planilla%20Procedimientos.png','Imagen no encontrada',array('width'=>'22','title' => 'Procedimientos')))) !!}
+			 		</li>
+			 		<li>
+						{!! HTML::decode(HTML::link('programa', HTML::image('images/iconosmenu/Programas%20Actividades.png','Imagen no encontrada',array('width'=>'22','title' => 'Programas/Actividades')))) !!}
 			 		</li>
 
 					</ul>

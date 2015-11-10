@@ -180,8 +180,14 @@ Route::get('/procedimientogrid', function()
 	return view('procedimientogridphp');
 });
 
+Route::get('/programagrid', function()
+{
+	return view('programagridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
 Route::resource('matrizlegal','MatrizLegalController');
 Route::resource('procedimiento','ProcedimientoController');
+Route::resource('programa','ProgramaController');

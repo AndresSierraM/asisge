@@ -232,20 +232,14 @@
         </div>
     </fieldset>
 	@if(isset($diagnostico))
- 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-   			<input class="btn btn-primary" type="submit" id="grabarUno" name="grabarUno" value="Eliminar"
-         onclick="habilitarSubmit(event)"/>
-         <!-- {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!} -->
-  		@else
-   			<input class="btn btn-primary" type="submit" id="grabarUno" name="grabarUno" value="Modificar"
-         onclick="habilitarSubmit(event)"/>
-         <!-- {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!} -->
-  		@endif
- 	@else
-      <input class="btn btn-primary" type="submit" id="grabarUno" name="grabarUno" value="Adicionar"
-         onclick="habilitarSubmit(event)"/>
-  		<!-- {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!} -->
- 	@endif
+    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+         {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+      @else
+         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+      @endif
+  @else
+         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
+  @endif
   
   
 

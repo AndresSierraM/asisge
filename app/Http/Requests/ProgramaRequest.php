@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class ProcedimientoRequest extends Request
+class ProgramaRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,8 @@ class ProcedimientoRequest extends Request
         // validacion (where) para que no permita el mimso proceso pero por cada compania
         //, Compania_idCompania = ".$this->get('Compania_idCompania')
         return [
-            "Proceso_idProceso" => "required|integer|unique:procedimiento,Proceso_idProceso,".$this->get('idProcedimiento') .",idProcedimiento",
-            "fechaElaboracionProcedimiento" => "required|date"
+            "nombrePrograma" => "required|String",
+            "fechaElaboracionPrograma" => "required|date"
         ];
     }
 }

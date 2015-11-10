@@ -123,7 +123,7 @@ Titulos.prototype.agregarTitulos = function(grupo, nombreGrupo){
     this.contador++;
 }
 
-function validarFormulario(event)
+function validarFormularioREQUEST(event)
 {
     var route = "http://localhost:8000/diagnostico";
     var token = $("#token").val();
@@ -214,7 +214,7 @@ function validarformulario()
             (document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).value < 0 ||  
             document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).value > 5))
         {
-            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:red;";
+            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:F5A9A9;";
             resp = false;
             
         } 

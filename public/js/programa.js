@@ -44,11 +44,21 @@ Atributos.prototype.agregarCampos = function(datos, tipo, idTercero, idDocumento
             input.id =  this.campos[i] + this.contador;
             input.name =  this.campos[i]+'[]';
 
+
+
             input.value = valor[(tipo == 'A' ? i : this.campos[i])];
             input.setAttribute("class", this.clase[i]);
             input.setAttribute("style", this.estilo[i]);
 
             div.appendChild(input);
+
+            /*if(this.campos[i] == 'fechaPlaneadaProgramaDetalle')
+            {
+
+                $(input.id).datetimepicker(({
+                    format: "YYYY-MM-DD"
+                }));
+            }*/
         }
         else if(this.etiqueta[i] == 'textarea')
         {
@@ -113,6 +123,9 @@ Atributos.prototype.agregarCampos = function(datos, tipo, idTercero, idDocumento
  
         }
 
+
+        
+
     }
 
     caneca.id = 'eliminarRegistro'+ this.contador;
@@ -137,6 +150,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo, idTercero, idDocumento
     for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
+
 }
 
 Atributos.prototype.borrarCampos = function(elemento){
@@ -166,16 +180,16 @@ function validarformulario()
     // Validamos los datos de detalle
     for(actual = 0; actual < document.getElementById('registros').value ; actual++)
     {
-        if(document.getElementById("actividadProcedimientoDetalle"+(actual)) && 
-                (document.getElementById("actividadProcedimientoDetalle"+(actual)).value == ''))
+        if(document.getElementById("actividadProgramaDetalle"+(actual)) && 
+                (document.getElementById("actividadProgramaDetalle"+(actual)).value == ''))
         {
-            document.getElementById("actividadProcedimientoDetalle"+(actual)).style = "width: 500px; height: 35px; background-color:#F5A9A9;";
+            document.getElementById("actividadProgramaDetalle"+(actual)).style = "width: 400px; height: 35px; background-color:#F5A9A9;";
             resp = false;
             
         } 
         else
         {
-            document.getElementById("actividadProcedimientoDetalle"+(actual)).style = "width: 500px; height: 35px; background-color:white;";
+            document.getElementById("actividadProgramaDetalle"+(actual)).style = "width: 400px; height: 35px; background-color:white;";
         }
          
         /*if(document.getElementById("Tercero_idResponsable"+(actual)) && 
