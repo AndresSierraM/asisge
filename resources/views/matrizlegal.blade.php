@@ -5,7 +5,6 @@
 		<center>Matriz Legal</center>
 	</h3>
 @stop
-
 @section('content')
 
 	@include('alerts.request')

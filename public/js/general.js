@@ -94,7 +94,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             input.id =  this.campos[i] + this.contador;
             input.name =  this.campos[i]+'[]';
 
-            input.value = valor[(tipo == 'A' ? i : this.campos[i])];
+            input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
             input.setAttribute("class", this.clase[i]);
             input.setAttribute("style", this.estilo[i]);
             input.readOnly = this.sololectura[i];
