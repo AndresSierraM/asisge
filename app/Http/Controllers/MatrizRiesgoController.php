@@ -51,12 +51,9 @@ class MatrizRiesgoController extends Controller
         $manager = new ImageManager();
         $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);*/
 
-        echo 'hola';
-        echo $request['respuesta'];
         if($request['respuesta'] != 'falso')
         {  
 
-          echo $request['respuesta'];
           \App\MatrizRiesgo::create([
               'nombreMatrizRiesgo' => $request['nombreMatrizRiesgo'],
               'fechaElaboracionMatrizRiesgo' => $request['fechaElaboracionMatrizRiesgo'],

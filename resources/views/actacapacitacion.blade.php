@@ -2,7 +2,7 @@
 
 @section('titulo')
 	<h3 id="titulo">
-		<center>Plan Capacitaci&oacute;n</center>
+		<center>Acta Capacitaci&oacute;n</center>
 	</h3>
 @stop
 
@@ -15,8 +15,8 @@
 
 		var planCapacitacionTema = '';
 		planCapacitacionTema = (planCapacitacionTema != '' ? JSON.parse(planCapacitacionTema) : '');
-		var valorTema = [0,'',0,'0000-00-00','00:00'];
-		var valorAsistente = [0,,0,''];
+		var valorTema = [0,'',0,'0000-00-00','00:00',0];
+		var valorAsistente = [0,0,''];
 
 		var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
@@ -30,7 +30,7 @@
 			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema','dictadaPlanCapacitacionTema'];
 			tema.etiqueta = ['input','input','select','input','input','checkbox'];
 			tema.tipo = ['hidden','text','','text','text','checkbox'];
-			tema.estilo = ['','width: 300px;height:35px;','width: 380px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:35px;display:inline-block;'];
+			tema.estilo = ['','width: 300px;height:35px;','width: 380px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;'];
 			tema.clase = ['','','','','',''];
 			tema.sololectura = [false,true,false,false,false,false];
 			tema.completar = ['off','off','off','off','off',''];
@@ -41,7 +41,7 @@
 			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'Cargo_idCargo'];
 			asistente.etiqueta = ['input','select','input'];
 			asistente.tipo = ['hidden','','text'];
-			asistente.estilo = ['','width: 350px;height:35px;','width: 400px;height:35px;'];
+			asistente.estilo = ['','width: 500px;height:35px;','width: 400px;height:35px;'];
 			asistente.clase = ['','',''];
 			asistente.sololectura = [false,false,true];
 			asistente.completar = ['off','off','off'];
@@ -64,7 +64,9 @@
 
 		function fechaDetalle(registro)
 		{
+			console.log('hola');
 			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+			console.log(posicion+' ----');
 			$('#fechaPlanCapacitacionTema'+posicion).datetimepicker(({
 				format: "YYYY-MM-DD"
 			}));
@@ -174,7 +176,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('objetivoPlanCapacitacion',null,['placeholder'=>'Objetivos','readonly'=>'readonly','id'=>'objetivoPlanCapacitacion','style'=>'width: 1020px;height: 120px;'])!!}
+															{!!Form::textarea('objetivoPlanCapacitacion',null,['placeholder'=>'Objetivos','readonly'=>'readonly','id'=>'objetivoPlanCapacitacion','style'=>'width: 1020px;height: 100px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -192,7 +194,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('personalInvolucradoPlanCapacitacion',null,['placeholder'=>'Ingresa los objetivos','readonly'=>'readonly','id'=>'personalInvolucradoPlanCapacitacion','style'=>'width: 1020px;height: 120px;'])!!}
+															{!!Form::textarea('personalInvolucradoPlanCapacitacion',null,['placeholder'=>'Ingresa los objetivos','readonly'=>'readonly','id'=>'personalInvolucradoPlanCapacitacion','style'=>'width: 1020px;height: 100px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -243,7 +245,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('metodoEficaciaPlanCapacitacion',null,['placeholder'=>'M&eacute;todo de Eficacia','readonly'=>'readonly','id'=>'metodoEficaciaPlanCapacitacion','style'=>'width: 1020px;height: 120px;'])!!}
+															{!!Form::textarea('metodoEficaciaPlanCapacitacion',null,['placeholder'=>'M&eacute;todo de Eficacia','readonly'=>'readonly','id'=>'metodoEficaciaPlanCapacitacion','style'=>'width: 1020px;height: 100px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -261,14 +263,14 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;height: 60px;" >
+															<div class="col-md-1" style="width: 40px;height: 50px;" >
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n</div>
-															<div class="col-md-1" style="width: 380px;display:inline-block;height:60px;">Capacitador</div>
-															<div class="col-md-1" style="width: 140px;display:inline-block;height:60px;">Fecha</div>
-															<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Hora</div>
-															<div class="col-md-1" style="width: 70px;display:inline-block;height:60px;">Dictado</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Descripci&oacute;n</div>
+															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Capacitador</div>
+															<div class="col-md-1" style="width: 140px;display:inline-block;height:50px;">Fecha</div>
+															<div class="col-md-1" style="width: 120px;display:inline-block;height:50px;">Hora</div>
+															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Dictado</div>
 															<div id="contenedor_tema">
 															</div>
 														</div>
@@ -288,11 +290,11 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;height: 60px;"  onclick="asistente.agregarCampos(valorAsistente,'A')">
+															<div class="col-md-1" style="width: 40px;height: 50px;"  onclick="asistente.agregarCampos(valorAsistente,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 500px;display:inline-block;height:60px;">Nombre</div>
-															<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Cargo</div>
+															<div class="col-md-1" style="width: 500px;display:inline-block;height:50px;">Nombre</div>
+															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Cargo</div>
 															<div id="contenedor_asistente">
 															</div>
 														</div>
@@ -309,12 +311,14 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						@if(isset($actaCapacitacion))
-							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@else
-							{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+							{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@endif
+						</br></br></br></br>
 					</div>
 				</div>
+				
 			</fieldset>
 		</div>	
 	{!!Form::close()!!}

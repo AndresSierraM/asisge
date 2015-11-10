@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\PlanCapacitacionRequest;
 use App\Http\Controllers\Controller;
 
 class PlanCapacitacionController extends Controller
@@ -38,8 +39,10 @@ class PlanCapacitacionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(PlanCapacitacionRequest $request)
     {
+        if($request['respuesta'] != 'falso')
+        {
             \App\PlanCapacitacion::create([
                 'tipoPlanCapacitacion' => $request['tipoPlanCapacitacion'],
                 'nombrePlanCapacitacion' => $request['nombrePlanCapacitacion'],
@@ -63,11 +66,13 @@ class PlanCapacitacionController extends Controller
                     'nombrePlanCapacitacionTema' => $request['nombrePlanCapacitacionTema'][$i],
                     'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
                     'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],
-                    'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i]
+                    'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i],
+                    'dictadaPlanCapacitacionTema' => 0
                 ]);
             }
 
             return redirect('/plancapacitacion');
+        }
     }
 
     /**
@@ -104,8 +109,10 @@ class PlanCapacitacionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(PlanCapacitacionRequest $request, $id)
     {
+        if($request['respuesta'] != 'falso')
+        {
             $planCapacitacion = \App\PlanCapacitacion::find($id);
             $planCapacitacion->fill($request->all());
 
@@ -122,11 +129,13 @@ class PlanCapacitacionController extends Controller
                     'nombrePlanCapacitacionTema' => $request['nombrePlanCapacitacionTema'][$i],
                     'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
                     'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],
-                    'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i]
+                    'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i],
+                    'dictadaPlanCapacitacionTema' => 0
                 ]);
             }
 
-            //return redirect('/plancapacitacion');
+            return redirect('/plancapacitacion');
+        }
     }
 
     /**

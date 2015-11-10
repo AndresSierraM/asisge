@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\ActaCapacitacionRequest;
 use App\Http\Controllers\Controller;
 
 class ActaCapacitacionController extends Controller
@@ -38,8 +39,10 @@ class ActaCapacitacionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(ActaCapacitacionRequest $request)
     {
+        if($request['respuesta'] != 'falso')
+        {
             \App\ActaCapacitacion::create([
                 'numeroActaCapacitacion' => $request['numeroActaCapacitacion'],
                 'fechaElaboracionActaCapacitacion' => $request['fechaElaboracionActaCapacitacion'],
@@ -48,7 +51,7 @@ class ActaCapacitacionController extends Controller
                 ]);
 
             $actaCapacitacion = \App\ActaCapacitacion::All()->last();
-            $contadorDetalle = count($request['ActaCapacitacion_idActaCapacitacion']);
+            $contadorDetalle = count($request['Tercero_idAsistente']);
             
             for($i = 0; $i < $contadorDetalle; $i++)
             {
@@ -59,7 +62,20 @@ class ActaCapacitacionController extends Controller
                 ]);
             }
 
+            $contadorDetalle = count($request['nombrePlanCapacitacionTema']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                $planCapacitacionTema = \App\PlanCapacitacionTema::find($request['idPlanCapacitacionTema'][$i]);
+                
+                $planCapacitacionTema->Tercero_idCapacitador = $request['Tercero_idCapacitador'][$i];
+                $planCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
+                $planCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
+                $planCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
+                
+                $planCapacitacionTema->save();
+            }
             return redirect('/actacapacitacion');
+        }
     }
 
     /**
@@ -105,8 +121,10 @@ class ActaCapacitacionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(ActaCapacitacionRequest $request, $id)
     {
+        if($request['respuesta'] != 'falso')
+        {
             $actaCapacitacion = \App\ActaCapacitacion::find($id);
             $actaCapacitacion->fill($request->all());
 
@@ -114,7 +132,7 @@ class ActaCapacitacionController extends Controller
 
             \App\ActaCapacitacionAsistente::where('ActaCapacitacion_idActaCapacitacion',$id)->delete();
 
-            $contadorDetalle = count($request['ActaCapacitacion_idActaCapacitacion']);
+            $contadorDetalle = count($request['Tercero_idAsistente']);
             
             for($i = 0; $i < $contadorDetalle; $i++)
             {
@@ -125,7 +143,20 @@ class ActaCapacitacionController extends Controller
                 ]);
             }
 
+            $contadorDetalle = count($request['nombrePlanCapacitacionTema']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                $planCapacitacionTema = \App\PlanCapacitacionTema::find($request['idPlanCapacitacionTema'][$i]);
+                
+                $planCapacitacionTema->Tercero_idCapacitador = $request['Tercero_idCapacitador'][$i];
+                $planCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
+                $planCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
+                $planCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
+                
+                $planCapacitacionTema->save();
+            }
             return redirect('/actacapacitacion');
+        }
     }
 
     /**

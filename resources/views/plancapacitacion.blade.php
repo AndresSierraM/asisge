@@ -9,7 +9,7 @@
 @section('content')
 
 	@include('alerts.request')
-
+	{!!Html::script('js/plancapacitacion.js')!!}
 	<script>
 		var planCapacitacionTema = '<?php echo (isset($planCapacitacion) ? json_encode($planCapacitacion->planCapacitacionTemas) : "");?>';
 		planCapacitacionTema = (planCapacitacionTema != '' ? JSON.parse(planCapacitacionTema) : '');
@@ -261,10 +261,11 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						@if(isset($planCapacitacion))
-							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@else
-							{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+							{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@endif
+						</br></br></br></br>
 					</div>
 				</div>
 			</fieldset>

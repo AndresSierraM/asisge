@@ -1,7 +1,7 @@
 @extends('layouts.grid')
 @section('titulo')
 	<h3 id="titulo">
-		<center>Plan Capacitaci&oacute;n</center>
+		<center>Acta Capacitaci&oacute;n</center>
 	</h3>
 @stop
 

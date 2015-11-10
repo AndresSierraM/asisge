@@ -13,7 +13,7 @@ class PlanCapacitacionRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,34 @@ class PlanCapacitacionRequest extends Request
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        $tema = count($this->get('Tercero_idCapacitador'));
+        
+        $validacion = array('tipoPlanCapacitacion' => 'required',
+            'nombrePlanCapacitacion' => 'required',
+            'Tercero_idResponsable' => 'required');
+
+        for($i = 0; $i < $tema; $i++)
+        {
+            if(trim($this->get('nombrePlanCapacitacionTema')[$i]) == '' )
+            {    
+                $validacion['nombrePlanCapacitacionTema'.$i] =  'required';
+            }
+
+            if(trim($this->get('Tercero_idCapacitador')[$i]) == '' or trim($this->get('Tercero_idCapacitador')[$i]) == 0)
+            {    
+                $validacion['Tercero_idCapacitador'.$i] =  'required';
+            }
+
+            if(trim($this->get('fechaPlanCapacitacionTema')[$i]) == '' or trim($this->get('fechaPlanCapacitacionTema')[$i]) == '0000-00-00')
+            {    
+                $validacion['fechaPlanCapacitacionTema'.$i] =  'required';
+            }
+
+            if(trim($this->get('horaPlanCapacitacionTema')[$i]) == '' or trim($this->get('horaPlanCapacitacionTema')[$i]) == '00:00')
+            {    
+                $validacion['horaPlanCapacitacionTema'.$i] =  'required';
+            }
+        }
+        return $validacion;
     }
 }
