@@ -18,7 +18,7 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT idProcedimiento, nombreProceso, fechaElaboracionProcedimiento 
+$grid->SelectCommand = 'SELECT idProcedimiento, nombreProcedimiento, nombreProceso, fechaElaboracionProcedimiento 
                         FROM procedimiento P
                         left join proceso MP
                         on P.Proceso_idProceso = MP.idProceso';
@@ -58,6 +58,12 @@ $grid->setColProperty("idProcedimiento", array(
 $grid->setColProperty("nombreProceso", array(
 	"searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
 	"label"=>"Proceso"
+    )
+);
+
+$grid->setColProperty("nombreProcedimiento", array(
+  "searchoptions"=>array("sopt"=>array("bw", "ne","le","lt","ge","gt")),
+  "label"=>"Nombre del Procedimiento"
     )
 );
 

@@ -9,7 +9,7 @@ class Procedimiento extends Model
     protected $table = 'procedimiento';
     protected $primaryKey = 'idProcedimiento';
 
-    protected $fillable = ['Proceso_idProceso', 'fechaElaboracionProcedimiento', 
+    protected $fillable = ['Proceso_idProceso', 'nombreProcedimiento', 'fechaElaboracionProcedimiento', 
     						'objetivoProcedimiento', 'alcanceProcedimiento', 
     						'responsabilidadProcedimiento', 'Compania_idCompania'];
 

@@ -21,6 +21,7 @@ class CuadroMandoController extends Controller
 
         $cuadromando = \App\CuadroMando::All()->last();
 
+        $politicasCompania = \App\Compania::where('idCompania', '=',1)->lists('politicasCompania');
         $idCompaniaObjetivo = \App\CompaniaObjetivo::where('Compania_idCompania', '=',1)->lists('idCompaniaObjetivo');
         $nombreCompaniaObjetivo = \App\CompaniaObjetivo::where('Compania_idCompania', '=',1)->lists('nombreCompaniaObjetivo');
 
@@ -41,7 +42,7 @@ class CuadroMandoController extends Controller
                 compact('idCompaniaObjetivo','nombreCompaniaObjetivo',
                         'idTercero','nombreTercero',
                         'idProceso','nombreProceso',
-                        'idFrecuenciaMedicion','nombreFrecuenciaMedicion'),
+                        'idFrecuenciaMedicion','nombreFrecuenciaMedicion','politicasCompania'),
                 ['cuadromando'=>$cuadromando]);
         }
         else
@@ -50,7 +51,7 @@ class CuadroMandoController extends Controller
                 compact('idCompaniaObjetivo','nombreCompaniaObjetivo',
                         'idTercero','nombreTercero',
                         'idProceso','nombreProceso',
-                        'idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
+                        'idFrecuenciaMedicion','nombreFrecuenciaMedicion','politicasCompania'));
         }
         
     }
@@ -65,7 +66,6 @@ class CuadroMandoController extends Controller
     {
         
         \App\CuadroMando::create([
-            'politicasCuadroMando' => $request['politicasCuadroMando'],
             'fechaCreacionCuadroMando' => date('Y-m-d H:i:s'),
             'fechaModificacionCuadroMando' => date('Y-m-d H:i:s'),
             'Compania_idCompania' => 1,

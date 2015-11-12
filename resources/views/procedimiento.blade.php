@@ -51,22 +51,34 @@
 		{!!Form::open(['route'=>'procedimiento.store','method'=>'POST'])!!}
 	@endif
 
-
 <div id='form-section' >
 
 	<fieldset id="procedimiento-form-fieldset">	
 	    <div class="form-group" id='test'>
-          {!!Form::label('Proceso_idProceso', 'Procedimiento de ', array('class' => 'col-sm-2 control-label'))!!}
+          {!!Form::label('Proceso_idProceso', 'Proceso ', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
                   <div class="input-group">
                       <span class="input-group-addon">
                         <i class="fa fa-flag"></i>
                       </span>
               {!!Form::select('Proceso_idProceso',$procesos, (isset($procedimiento) ? $procedimiento->Proceso_idProceso : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Proceso"])!!}
-              {!! Form::hidden('idProcedimiento', 0, array('id' => 'idProcedimiento')) !!}
-              {!! Form::hidden('Compania_idCompania', 0, array('id' => 'Compania_idCompania')) !!}
+              {!! Form::hidden('idProcedimiento', null, array('id' => 'idProcedimiento')) !!}
+              {!! Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania')) !!}
               {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
 
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group" id='test'>
+          {!!Form::label('nombreProcedimiento', 'Nombre del Procedimiento', array('class' => 'col-sm-2 control-label'))!!}
+          <div class="col-sm-10" >
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-calendar" ></i>
+              </span>
+              {!!Form::text('nombreProcedimiento',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del procedimiento', 'style'=>'width:340;'])!!}
             </div>
           </div>
         </div>

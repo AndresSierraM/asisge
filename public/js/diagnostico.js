@@ -214,7 +214,7 @@ function validarformulario()
             (document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).value < 0 ||  
             document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).value > 5))
         {
-            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:F5A9A9;";
+            document.getElementById("puntuacionDiagnosticoDetalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:#F5A9A9;";
             resp = false;
             
         } 

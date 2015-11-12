@@ -89,14 +89,23 @@
 
 	<fieldset id="cuadromando-form-fieldset">	
 		  <div class="form-group" id='test'>
-          {!! Form::label('politicasCuadroMando', 'Pol&iacute;ticas', array('class' => 'col-sm-2 control-label')) !!}
+          {!! Form::label('', 'Pol&iacute;ticas', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-barcode"></i>
-              </span>
-              {!!Form::textarea('politicasCuadroMando',null,['class'=>'ckeditor','placeholder'=>'Ingresa las políticas de la compania'])!!}
+              
+                    <div class="form-group" id='test'>
+
+              <?php 
+                for ($i = 0, $c = count($politicasCompania); $i < $c; ++$i) 
+                {
+                    $politicas = (array) $politicasCompania[$i];
+                }
+                echo $politicas[0];
+              ?>
+
               {!! Form::hidden('idCuadroMando', null, array('id' => 'idCuadroMando')) !!}
+
+        
             </div>
           </div>
         </div>

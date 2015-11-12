@@ -106,6 +106,38 @@
 							<div class="panel-body">
 								<div class="form-group" id='test'>
 									<div class="col-sm-12">
+						              <div class="row show-grid">
+						                <div style="overflow: auto; width: 100%;">
+						                  <div style="width: 2310px; height: 300px; display: inline-block; ">
+						                    <div class="col-md-1" style="width: 1010px;">&nbsp;</div>
+						                    <div class="col-md-1" style="width: 330px; text-align:center;">Controles Existentes</div>
+						                    <div class="col-md-1" style="width: 950px;">&nbsp;</div>
+						                    
+						                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
+												<span class="glyphicon glyphicon-plus"></span>
+											</div>
+											<div class="col-md-1" style="width: 160px;display:inline-block;height:60px;">Tipo de norma</div>
+											<div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Art&iacute;culos Aplicables</div>
+											<div class="col-md-1" style="width: 160px;display:inline-block;height:60px;">Expedida por</div>
+											<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Exigencia</div>
+											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>
+											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medio</div>
+											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
+											<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Herramienta de seguimiento</div>
+											<div class="col-md-1" style="width: 80px;display:inline-block;height:60px;">Se cumple</div>
+											<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Fecha verificaci&oacute;n</div>
+											<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Acci&oacute;n / Evidencia</div>
+											<div class="col-md-1" style="width: 350px;display:inline-block;height:60px;">Control a implementar</div>
+											
+						                  </div>
+						                </div>
+						              </div>
+						            </div>
+
+
+
+
+									<div class="col-sm-12">
 										<div class="row show-grid">
 											<div style="overflow: auto; width: 100%;">
 												<div style="width: 2300px; height: 300px; display: inline-block; ">

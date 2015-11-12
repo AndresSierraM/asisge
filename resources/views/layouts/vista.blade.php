@@ -8,6 +8,7 @@
       {!!Html::style('assets/jquery-jqGrid-v4.8.0/css/ui.jqgrid.css'); !!}
       {!!Html::style('assets/tutorial/css/main.css'); !!}
       {!!Html::style('assets/tutorial/css/callouts.css'); !!}
+      
       {!!Html::style('choosen/docsupport/style.css'); !!}
       {!!Html::style('choosen/docsupport/prism.css'); !!}
       {!!Html::style('choosen/chosen.css'); !!}

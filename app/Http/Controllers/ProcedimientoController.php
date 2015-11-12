@@ -54,6 +54,7 @@ class ProcedimientoController extends Controller
         
         \App\Procedimiento::create([
             'Proceso_idProceso' => $request['Proceso_idProceso'],
+            'nombreProcedimiento' => $request['nombreProcedimiento'],
             'fechaElaboracionProcedimiento' => $request['fechaElaboracionProcedimiento'],
             'objetivoProcedimiento' => $request['objetivoProcedimiento'],
             'alcanceProcedimiento' => $request['alcanceProcedimiento'],

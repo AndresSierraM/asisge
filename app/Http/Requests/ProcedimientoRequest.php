@@ -25,8 +25,10 @@ class ProcedimientoRequest extends Request
     {
         // validacion (where) para que no permita el mimso proceso pero por cada compania
         //, Compania_idCompania = ".$this->get('Compania_idCompania')
+        // "Proceso_idProceso" => "required|integer|unique:procedimiento,Proceso_idProceso,".$this->get('idProcedimiento') .",idProcedimiento",
         return [
-            "Proceso_idProceso" => "required|integer|unique:procedimiento,Proceso_idProceso,".$this->get('idProcedimiento') .",idProcedimiento",
+            "Proceso_idProceso" => "required|integer",
+            "nombreProcedimiento" => "required|string",
             "fechaElaboracionProcedimiento" => "required|date"
         ];
     }
