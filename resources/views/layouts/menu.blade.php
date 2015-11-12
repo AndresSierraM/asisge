@@ -106,6 +106,12 @@
 			 		<li>
 						{!! HTML::decode(HTML::link('programa', HTML::image('images/iconosmenu/Programas%20Actividades.png','Imagen no encontrada',array('width'=>'22','title' => 'Programas/Actividades')))) !!}
 			 		</li>
+			 		<li>
+						{!! HTML::decode(HTML::link('plancapacitacion', HTML::image('images/iconosmenu/Capacitaciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Plan de Capacitaciones')))) !!}
+			 		</li>
+			 		<li>
+						{!! HTML::decode(HTML::link('actacapacitacion', HTML::image('images/iconosmenu/Capacitaciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Acta de Capacitaciones')))) !!}
+			 		</li>
 
 					</ul>
 				</div>

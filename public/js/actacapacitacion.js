@@ -1,6 +1,6 @@
 function consultarPlanCapacitacion()
 {
-	var id = document.getElementById('idActaCapacitacion').value;
+    var id = (document.getElementById('idActaCapacitacion').value == '' ? 0 : document.getElementById('idActaCapacitacion').value) ;
     var dato1 = document.getElementById('PlanCapacitacion_idPlanCapacitacion').value;
 	var route = "http://localhost:8000/actacapacitacion/"+id;
     var token = $("#token").val();

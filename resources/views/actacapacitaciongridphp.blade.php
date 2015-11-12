@@ -23,7 +23,7 @@ $grid->dataType = 'json';
 // Permitir que la grid cree el modelo
 $grid->setColModel();
 // establecer la URL desde donde se obtienen los datos
-$grid->setUrl('plancapacitaciongrid');
+$grid->setUrl('actacapacitaciongrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
     "rowNum"=>30,

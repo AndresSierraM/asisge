@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\ActaCapacitacionRequest;
 use App\Http\Controllers\Controller;
+use DB;
 
 class ActaCapacitacionController extends Controller
 {
@@ -27,7 +28,14 @@ class ActaCapacitacionController extends Controller
      */
     public function create()
     {
-        $planCapacitacion = \App\PlanCapacitacion::All()->lists('nombrePlanCapacitacion','idPlanCapacitacion');
+
+        $planCapacitacion = DB::table('plancapacitacion as PC')
+            ->leftJoin('plancapacitaciontema as PCT', 'PC.idPlanCapacitacion', '=', 'PCT.PlanCapacitacion_idPlanCapacitacion')
+            ->where('dictadaPlanCapacitacionTema','=',0)
+            ->groupBy('idPlanCapacitacion')
+            ->lists('nombrePlanCapacitacion', 'idPlanCapacitacion');
+
+//            print_r($planCapacitacion);
         $idTercero = \App\Tercero::All()->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
         return view('actacapacitacion',compact('planCapacitacion','idTercero','nombreCompletoTercero'));
@@ -95,7 +103,7 @@ class ActaCapacitacionController extends Controller
                 $planCapacitacion->planCapacitacionTemas,
                 $tercero
             ]);
-        }   
+        }  
     }
 
     /**

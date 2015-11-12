@@ -64,15 +64,12 @@
 
 		function fechaDetalle(registro)
 		{
-			console.log('hola');
 			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
-			console.log(posicion+' ----');
 			$('#fechaPlanCapacitacionTema'+posicion).datetimepicker(({
 				format: "YYYY-MM-DD"
 			}));
 		}
 	</script>
-	
 	@if(isset($actaCapacitacion))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($actaCapacitacion,['route'=>['actacapacitacion.destroy',$actaCapacitacion->idActaCapacitacion],'method'=>'DELETE'])!!}
@@ -93,7 +90,7 @@
 							</span>
 							<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::text('numeroActaCapacitacion',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero'])!!}
-							{!!Form::hidden('idActaCapacitacion', 0, array('id' => 'idActaCapacitacion'))!!}
+							{!!Form::hidden('idActaCapacitacion', null, array('id' => 'idActaCapacitacion'))!!}
 							{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
 						</div>
 					</div>

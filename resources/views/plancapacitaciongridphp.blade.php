@@ -14,7 +14,7 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT idPlanCapacitacion, nombrePlanCapacitacion, T.nombreCompletoResponsable as nombreCompletoResponsable
+$grid->SelectCommand = 'SELECT idPlanCapacitacion, nombrePlanCapacitacion, T.nombreCompletoTercero as nombreCompletoResponsable
                         FROM plancapacitacion PC
                         LEFT JOIN tercero T
                         ON PC.Tercero_idResponsable = T.idTercero';
@@ -23,7 +23,7 @@ $grid->dataType = 'json';
 // Permitir que la grid cree el modelo
 $grid->setColModel();
 // establecer la URL desde donde se obtienen los datos
-$grid->setUrl('actacapacitaciongrid');
+$grid->setUrl('plancapacitaciongrid');
 // SetOpciones de la grid
 $grid->setGridOptions(array(
     "rowNum"=>30,
