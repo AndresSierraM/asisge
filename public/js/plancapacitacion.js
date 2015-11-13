@@ -85,6 +85,6 @@ function validarFormulario(event)
         }
     });
 
-    //if(sw === true)
+    if(sw === true)
         event.preventDefault();
 }
