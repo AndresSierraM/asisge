@@ -110,6 +110,11 @@ Route::get('/tercerogrid', function()
 	return view('tercerogridphp');
 });
 
+Route::get('/cargogrid', function()
+{
+	return view('cargogridphp');
+});
+
 Route::get('/clasificacionriesgogrid', function()
 {
 	return view('clasificacionriesgogridphp');
@@ -148,6 +153,7 @@ Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
 Route::resource('proceso','ProcesoController');
 Route::resource('compania','CompaniaController');
 Route::resource('tercero','TerceroController');
+Route::resource('cargo','CargoController');
 Route::resource('clasificacionriesgo','ClasificacionRiesgoController');
 Route::resource('tiporiesgo','TipoRiesgoController');
 Route::resource('listageneral','ListaGeneralController');
