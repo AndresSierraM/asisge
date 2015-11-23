@@ -81,6 +81,10 @@
 				 		<li>
 							{!! HTML::decode(HTML::link('documento', HTML::image('images/iconosmenu/Documentos.png','Imagen no encontrada',array('width'=>'22','title' => 'Documentos o Registros')))) !!}
 				 		</li>
+				 		<li>
+							{!! HTML::decode(HTML::link('tipoinspeccion', HTML::image('images/iconosmenu/Inspecciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Tipo de Inspecci&oacute;n')))) !!}
+			 			</li>
+
 					</ul>
 				</div>
 			</div>
@@ -112,7 +116,9 @@
 			 		<li>
 						{!! HTML::decode(HTML::link('actacapacitacion', HTML::image('images/iconosmenu/Capacitaciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Acta de Capacitaciones')))) !!}
 			 		</li>
-
+			 		<li>
+						{!! HTML::decode(HTML::link('inspeccion', HTML::image('images/iconosmenu/Inspecciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Inspecciones de Seguridad')))) !!}
+			 		</li>
 					</ul>
 				</div>
 			</div>

@@ -140,6 +140,11 @@ Route::get('/documentogrid', function()
 	return view('documentogridphp');
 });
 
+Route::get('/tipoinspecciongrid', function()
+{
+	return view('tipoinspecciongridphp');
+});
+
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -154,6 +159,7 @@ Route::resource('listageneral','ListaGeneralController');
 Route::resource('tiponormalegal','TipoNormaLegalController');
 Route::resource('expidenormalegal','ExpideNormaLegalController');
 Route::resource('documento','DocumentoController');
+Route::resource('tipoinspeccion','TipoInspeccionController');
 
 // ---------------------------------
 // Documentos
@@ -181,7 +187,6 @@ Route::get('/procedimientogrid', function()
 });
 
 
-
 Route::get('/programagrid', function()
 {
 	return view('programagridphp');
@@ -198,13 +203,17 @@ Route::get('/plancapacitaciongrid', function()
 	return view('plancapacitaciongridphp');
 });
 
+Route::get('/inspecciongrid', function()
+{
+	return view('inspecciongridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
 Route::resource('matrizlegal','MatrizLegalController');
 Route::resource('procedimiento','ProcedimientoController');
-
 Route::resource('programa','ProgramaController');
-
 Route::resource('actacapacitacion','ActaCapacitacionController');
 Route::resource('plancapacitacion','PlanCapacitacionController');
+Route::resource('inspeccion','InspeccionController');
