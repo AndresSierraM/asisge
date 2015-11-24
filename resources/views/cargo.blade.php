@@ -29,10 +29,20 @@
 
 		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
 		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';
+		var idListaExamen = '<?php echo isset($idListaExamen) ? $idListaExamen : 0;?>';
+		var nombreListaExamen = '<?php echo isset($nombreListaExamen) ? $nombreListaExamen : "";?>';
+		var idListaElemento = '<?php echo isset($idListaElemento) ? $idListaElemento : 0;?>';
+		var nombreListaElemento = '<?php echo isset($nombreListaElemento) ? $nombreListaElemento : "";?>';
+		var idListaVacuna = '<?php echo isset($idListaVacuna) ? $idListaVacuna : 0;?>';
+		var nombreListaVacuna = '<?php echo isset($nombreListaVacuna) ? $nombreListaVacuna : "";?>';
+		
 		var idFrecuenciaMedicion = '<?php echo isset($idFrecuenciaMedicion) ? $idFrecuenciaMedicion : 0;?>';
 		var nombreFrecuenciaMedicion = '<?php echo isset($nombreFrecuenciaMedicion) ? $nombreFrecuenciaMedicion : "";?>';
 		
 		var listaTarea = [JSON.parse(idListaTarea),JSON.parse(nombreListaTarea)];
+		var listaExamen = [JSON.parse(idListaExamen),JSON.parse(nombreListaExamen)];
+		var listaElemento = [JSON.parse(idListaElemento),JSON.parse(nombreListaElemento)];
+		var listaVacuna = [JSON.parse(idListaVacuna),JSON.parse(nombreListaVacuna)];
 		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
 		
 		$(document).ready(function()
@@ -56,7 +66,7 @@
 			vacuna.clase = ['',''];
 			vacuna.sololectura = [false,false];
 			vacuna.completar = ['off','off'];
-			vacuna.opciones = ['',listaTarea];
+			vacuna.opciones = ['',listaVacuna];
 			vacuna.funciones  = ['',''];
 
 			elemento = new Atributos('elemento','contenedor_elemento','elemento');
@@ -67,7 +77,7 @@
 			elemento.clase = ['',''];
 			elemento.sololectura = [false,false];
 			elemento.completar = ['off','off'];
-			elemento.opciones = ['',listaTarea];
+			elemento.opciones = ['',listaElemento];
 			elemento.funciones  = ['',''];
 
 			examen = new Atributos('examen','contenedor_examen','examen');
@@ -78,7 +88,7 @@
 			examen.clase = ['','','','','',''];
 			examen.sololectura = [false,false,false,false,false,false];
 			examen.completar = ['off','off','off','off','off','off'];
-			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
+			examen.opciones = ['',listaExamen,'','','',frencuenciaMedicion];
 			examen.funciones  = ['','','','','',''];
 
 

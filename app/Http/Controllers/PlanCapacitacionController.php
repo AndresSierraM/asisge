@@ -51,8 +51,6 @@ class PlanCapacitacionController extends Controller
                 'personalInvolucradoPlanCapacitacion' => $request['personalInvolucradoPlanCapacitacion'],
                 'fechaInicioPlanCapacitacion' => $request['fechaInicioPlanCapacitacion'],
                 'fechaFinPlanCapacitacion' => $request['fechaFinPlanCapacitacion'],
-                'realizadaPlanCapacitacion' => $request['realizadaPlanCapacitacion'],
-                'cumpleObjetivoPlanCapacitacion' => $request['cumpleObjetivoPlanCapacitacion'],
                 'metodoEficaciaPlanCapacitacion' => $request['metodoEficaciaPlanCapacitacion']
                 ]);
 
@@ -67,7 +65,8 @@ class PlanCapacitacionController extends Controller
                     'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
                     'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],
                     'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i],
-                    'dictadaPlanCapacitacionTema' => 0
+                    'dictadaPlanCapacitacionTema' => 0,
+                    'cumpleObjetivoPlanCapacitacionTema' =>0
                 ]);
             }
 
@@ -130,7 +129,8 @@ class PlanCapacitacionController extends Controller
                     'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
                     'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],
                     'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i],
-                    'dictadaPlanCapacitacionTema' => 0
+                    'dictadaPlanCapacitacionTema' => 0,
+                    'cumpleObjetivoPlanCapacitacionTema' => 0
                 ]);
             }
 

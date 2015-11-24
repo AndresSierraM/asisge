@@ -26,7 +26,7 @@ function consultarPlanCapacitacion()
             document.getElementById('fechaInicioPlanCapacitacion').value = datosEncabezado['fechaInicioPlanCapacitacion'];
             document.getElementById('metodoEficaciaPlanCapacitacion').value = datosEncabezado['metodoEficaciaPlanCapacitacion'].replace('<p>','').replace('</p>','');
             document.getElementById('personalInvolucradoPlanCapacitacion').value = datosEncabezado['personalInvolucradoPlanCapacitacion'].replace('<p>','').replace('</p>','');
-            (datosEncabezado['cumpleObjetivoPlanCapacitacion'] == 1 ? document.getElementById('cumpleObjetivoPlanCapacitacion').checked = true : document.getElementById('cumpleObjetivoPlanCapacitacion').checked = false);
+           
 
             for(var j=0,k=datosTemas.length;j<k;j++)
             {

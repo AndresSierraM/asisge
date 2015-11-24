@@ -26,12 +26,22 @@ class CargoController extends Controller
      */
     public function create()
     {
-        $idListaTarea = \App\ListaGeneral::All()->lists('idListaGeneral');
-        $nombreListaTarea = \App\ListaGeneral::All()->lists('nombreListaGeneral');
+        $idListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('idListaGeneral');
+        $nombreListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('nombreListaGeneral');
+        
+        $idListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('idListaGeneral');
+        $nombreListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('nombreListaGeneral');
+
+        $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
+        $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
+
+        $idListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('idListaGeneral');
+        $nombreListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('nombreListaGeneral');
+
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idListaExamen','nombreListaExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
     }
 
     /**
@@ -124,12 +134,22 @@ class CargoController extends Controller
      */
     public function edit($id)
     {
-        $idListaTarea = \App\ListaGeneral::All()->lists('idListaGeneral');
-        $nombreListaTarea = \App\ListaGeneral::All()->lists('nombreListaGeneral');
+        $idListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('idListaGeneral');
+        $nombreListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('nombreListaGeneral');
+        
+        $idListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('idListaGeneral');
+        $nombreListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('nombreListaGeneral');
+
+        $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
+        $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
+
+        $idListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('idListaGeneral');
+        $nombreListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('nombreListaGeneral');
+
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $cargo = \App\Cargo::find($id);
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idFrecuenciaMedicion','nombreFrecuenciaMedicion'),['cargo'=>$cargo]);
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idListaExamen','nombreListaExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'),['cargo'=>$cargo]);
     }
 
     /**

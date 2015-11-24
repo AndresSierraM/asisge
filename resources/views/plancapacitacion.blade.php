@@ -74,7 +74,7 @@
 							</span>
 							<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::select('tipoPlanCapacitacion',
-							array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo"])!!}
+							array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n','','GENERAL'=>'General'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo"])!!}
 							{!!Form::hidden('idPlanCapacitacion', 0, array('id' => 'idPlanCapacitacion'))!!}
 							{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
 						</div>
@@ -173,36 +173,6 @@
 																<i class="fa fa-calendar" style="width: 14px;"></i>
 															</span>
 															{!!Form::text('fechaFinPlanCapacitacion',date('Y-m-d'),['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
-														</div>
-													</div>
-												</div>
-												<div class="form-group" id='test'>
-													{!!Form::label('realizadaPlanCapacitacion', 'Realizada', array('class' => 'col-sm-2 control-label'))!!}
-													<div class="col-sm-10">
-														<div class="input-group">
-															<span class="input-group-addon">
-																<i class="fa fa-calendar" style="width: 14px;"></i>
-															</span>
-															<div class="checkbox-inline">
-																<label>
-																	{!!Form::checkbox('realizadaPlanCapacitacion','1',false, array('id' => 'realizadaPlanCapacitacion','style'=>'height: 28px; width: 28px; margin-top: -10px;'))!!}
-																</label>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="form-group" id='test'>
-													{!!Form::label('cumpleObjetivoPlanCapacitacion', 'Cumple el objetivo', array('class' => 'col-sm-2 control-label'))!!}
-													<div class="col-sm-10">
-														<div class="input-group">
-															<span class="input-group-addon">
-																<i class="fa fa-calendar" style="width: 14px;"></i>
-															</span>
-															<div class="checkbox-inline">
-																<label>
-																	{!!Form::checkbox('cumpleObjetivoPlanCapacitacion','1',false, array('id' => 'cumpleObjetivoPlanCapacitacion','style'=>'height: 28px; width: 28px; margin-top: -10px;'))!!}
-																</label>
-															</div>
 														</div>
 													</div>
 												</div>

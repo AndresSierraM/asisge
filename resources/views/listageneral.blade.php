@@ -51,7 +51,12 @@
 				                	<i class="fa fa-pencil-square-o"></i>
 				              	</span>
 				              	{!!Form::select('tipoListaGeneral',
-            					array('EliminacionRiesgo'=>'Eliminaci&oacute;n de Riesgo','ControlAdministrativo'=>'Control Administrativo'), (isset($listaGeneral) ? $listaGeneral->tipoListaGeneral : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo"])!!}
+            					array('EliminacionRiesgo'=>'Eliminaci&oacute;n de Riesgo',
+            					'ControlAdministrativo'=>'Control Administrativo',
+            					'ExamenMedico'=>'Examen M&eacute;dico',
+            					'TareaAltoRiesgo'=>'Tarea de Alto Riesgo',
+            					'Vacuna'=>'Vacuna',
+            					'ElementoProteccion'=>'Elemento de Protecci&oacute;n Personal'), (isset($listaGeneral) ? $listaGeneral->tipoListaGeneral : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo"])!!}
 							</div>
 				    	</div>
 				    </div>

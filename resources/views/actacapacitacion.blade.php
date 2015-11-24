@@ -141,21 +141,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
-					{!!Form::label('cumpleObjetivoPlanCapacitacion', 'Cumple el objetivo', array('class' => 'col-sm-2 control-label'))!!}
-					<div class="col-sm-10">
-						<div class="input-group">
-							<span class="input-group-addon">
-								<i class="fa fa-calendar" style="width: 14px;"></i>
-							</span>
-							<div class="checkbox-inline">
-								<label>
-									{!!Form::checkbox('cumpleObjetivoPlanCapacitacion','1',false, array('id' => 'cumpleObjetivoPlanCapacitacion','style'=>'height: 28px; width: 28px; margin-top: -10px;'))!!}
-								</label>
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -264,10 +249,11 @@
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Descripci&oacute;n</div>
-															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Capacitador</div>
+															<div class="col-md-1" style="width: 310px;display:inline-block;height:50px;">Capacitador</div>
 															<div class="col-md-1" style="width: 140px;display:inline-block;height:50px;">Fecha</div>
 															<div class="col-md-1" style="width: 120px;display:inline-block;height:50px;">Hora</div>
 															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Dictado</div>
+															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Cumple Objetivo</div>
 															<div id="contenedor_tema">
 															</div>
 														</div>
