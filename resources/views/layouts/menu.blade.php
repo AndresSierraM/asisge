@@ -84,6 +84,9 @@
 				 		<li>
 							{!! HTML::decode(HTML::link('tipoinspeccion', HTML::image('images/iconosmenu/Inspecciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Tipo de Inspecci&oacute;n')))) !!}
 			 			</li>
+				 		<li>
+							{!! HTML::decode(HTML::link('cargo', HTML::image('images/iconosmenu/Cargos.png','Imagen no encontrada',array('width'=>'22','title' => 'Cargos / Perfiles')))) !!}
+			 			</li>
 
 					</ul>
 				</div>

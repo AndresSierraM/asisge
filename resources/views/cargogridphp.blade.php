@@ -14,7 +14,7 @@ $conn->query("SET NAMES utf8");
 // Crear la instancia de la GRID
 $grid = new jqGridRender($conn);
 // Escribir la consulta SQL a mostrar en la grid
-$grid->SelectCommand = 'SELECT idACargo, codigoCargo, nombreCargo, salarioBaseCargo
+$grid->SelectCommand = 'SELECT idCargo, codigoCargo, nombreCargo, salarioBaseCargo
                         FROM cargo';
 // Establecer el formato de salida en JSON
 $grid->dataType = 'json';
