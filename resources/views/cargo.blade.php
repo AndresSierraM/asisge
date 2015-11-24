@@ -14,18 +14,26 @@
 		cargoTareaRiesgo = (cargoTareaRiesgo != '' ? JSON.parse(cargoTareaRiesgo) : '');
 		
 		var cargoVacuna = '<?php echo (isset($cargo) ? json_encode($cargo->cargoVacunas) : "");?>';
-		cargoTareaRiesgo = (cargoTareaRiesgo != '' ? JSON.parse(cargoTareaRiesgo) : '');
+		cargoVacuna = (cargoVacuna != '' ? JSON.parse(cargoVacuna) : '');
 
 		var cargoElementoProteccion = '<?php echo (isset($cargo) ? json_encode($cargo->cargoElementoProtecciones) : "");?>';
 		cargoElementoProteccion = (cargoElementoProteccion != '' ? JSON.parse(cargoElementoProteccion) : '');
 
+		var cargoExamenMedico = '<?php echo (isset($cargo) ? json_encode($cargo->cargoExamenMedicos) : "");?>';
+		cargoExamenMedico = (cargoExamenMedico != '' ? JSON.parse(cargoExamenMedico) : '');
+
 		var valorTarea = [0,''];
 		var valorVacuna = [0,''];
 		var valorElemento = [0,''];
+		var valorExamen = [0,'',0,0,0,''];
 
-		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : "";?>';
+		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
 		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';
+		var idFrecuenciaMedicion = '<?php echo isset($idFrecuenciaMedicion) ? $idFrecuenciaMedicion : 0;?>';
+		var nombreFrecuenciaMedicion = '<?php echo isset($nombreFrecuenciaMedicion) ? $nombreFrecuenciaMedicion : "";?>';
+		
 		var listaTarea = [JSON.parse(idListaTarea),JSON.parse(nombreListaTarea)];
+		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
 		
 		$(document).ready(function()
 		{
@@ -52,7 +60,7 @@
 			vacuna.funciones  = ['',''];
 
 			elemento = new Atributos('elemento','contenedor_elemento','elemento');
-			elemento.campos = ['idCargoElementoProteccion', 'idCargoElementoProteccion'];
+			elemento.campos = ['idCargoElementoProteccion', 'ListaGeneral_idElementoProteccion'];
 			elemento.etiqueta = ['input','select'];
 			elemento.tipo = ['hidden',''];
 			elemento.estilo = ['','width: 900px;height:35px;'];
@@ -61,6 +69,17 @@
 			elemento.completar = ['off','off'];
 			elemento.opciones = ['',listaTarea];
 			elemento.funciones  = ['',''];
+
+			examen = new Atributos('examen','contenedor_examen','examen');
+			examen.campos = ['idCargoExamenMedico', 'ListaGeneral_idExamenMedico','ingresoCargoExamenMedico','retiroCargoExamenMedico','periodicoCargoExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
+			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
+			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
+			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
+			examen.clase = ['','','','','',''];
+			examen.sololectura = [false,false,false,false,false,false];
+			examen.completar = ['off','off','off','off','off','off'];
+			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
+			examen.funciones  = ['','','','','',''];
 
 
 			for(var j=0, k = cargoTareaRiesgo.length; j < k; j++)
@@ -76,6 +95,11 @@
 			for(var j=0, k = cargoElementoProteccion.length; j < k; j++)
 			{
 				elemento.agregarCampos(JSON.stringify(cargoElementoProteccion[j]),'L');
+			}
+
+			for(var j=0, k = cargoExamenMedico.length; j < k; j++)
+			{
+				examen.agregarCampos(JSON.stringify(cargoExamenMedico[j]),'L');
 			}
 
 		});
@@ -259,11 +283,11 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="examen.agregarCampos(valorExamen,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 600px;display:inline-block;height:60px;">Examen</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Examen</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Ingreso</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Retiro</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Peri&oacute;dico</div>
-															<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Periodicidad</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Periodicidad</div>
 															<div id="contenedor_examen">
 															</div>
 														</div>
@@ -346,7 +370,7 @@
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1" style="width: 900px;display:inline-block;height:60px;">Descripci&oacute;n</div>
-															<div id="contenedor_vacuna">
+															<div id="contenedor_elemento">
 															</div>
 														</div>
 													</div>

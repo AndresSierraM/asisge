@@ -13,21 +13,21 @@ class Cargo extends Model
 
     public function cargoElementoProtecciones()
     {
-    	return $this->hasMany('App\CargoElementoProteccion','Cargo');
+    	return $this->hasMany('App\CargoElementoProteccion','Cargo_idCargo');
     }
 
     public function cargoExamenMedicos()
     {
-    	return $this->hasMany('App\CargoExamenMedico','Cargo');
+    	return $this->hasMany('App\CargoExamenMedico','Cargo_idCargo');
     }
 
     public function cargoTareaRiesgos()
     {
-    	return $this->hasMany('App\CargoTareaRiesgo','Cargo');
+    	return $this->hasMany('App\CargoTareaRiesgo','Cargo_idCargo');
     }
 
     public function cargoVacunas()
     {
-    	return $this->hasMany('App\CargoVacuna','Cargo');
+    	return $this->hasMany('App\CargoVacuna','Cargo_idCargo');
     }
 }

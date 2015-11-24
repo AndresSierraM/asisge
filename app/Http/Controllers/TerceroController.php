@@ -30,10 +30,15 @@ class TerceroController extends Controller
      * @return Response
      */
     public function create()
-    {
+    {   
+        $idListaTarea = \App\ListaGeneral::All()->lists('idListaGeneral');
+        $nombreListaTarea = \App\ListaGeneral::All()->lists('nombreListaGeneral');
+        $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
+        $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
-        return view('tercero',compact('ciudad','tipoIdentificacion'));
+        $cargo = \App\Cargo::All()->lists('nombreCargo','idCargo');
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idListaTarea','nombreListaTarea','idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
     }
     /**
      * Store a newly created resource in storage.
@@ -76,7 +81,7 @@ class TerceroController extends Controller
             'fechaNacimientoTercero' => $request['fechaNacimientoTercero'],
             'correoElectronicoTercero' => $request['correoElectronicoTercero'],
             'paginaWebTercero' => $request['paginaWebTercero'],
-            'Cargo_idCargo' => 1,
+            'Cargo_idCargo' => $request['Cargo_idCargo'],
             'Compania_idCompania' => 1
             ]);
         
@@ -103,6 +108,19 @@ class TerceroController extends Controller
             'nombreTerceroProducto' => $request['nombreTerceroProducto'][$i]
            ]);
         }
+
+        $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+        for($i = 0; $i < $contadorExamen; $i++)
+        {
+            \App\TerceroExamenMedico::create([
+            'Tercero_idTercero' => $tercero->idTercero,
+            'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+            'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
+            'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
+            'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
+           ]);
+        }
         return redirect('/tercero');
     }
     /**
@@ -123,10 +141,15 @@ class TerceroController extends Controller
      */
     public function edit($id)
     {
+        $idListaTarea = \App\ListaGeneral::All()->lists('idListaGeneral');
+        $nombreListaTarea = \App\ListaGeneral::All()->lists('nombreListaGeneral');
+        $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
+        $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
+        $cargo = \App\Cargo::All()->lists('nombreCargo','idCargo');
         $tercero = \App\Tercero::find($id);
-        return view('tercero',compact('ciudad','tipoIdentificacion'),['tercero'=>$tercero]);
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idListaTarea','nombreListaTarea','idFrecuenciaMedicion','nombreFrecuenciaMedicion'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -156,6 +179,8 @@ class TerceroController extends Controller
 
         \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
         \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
+        \App\TerceroExamenMedico::where('Tercero_idTercero',$id)->delete();
+        
         $contadorContacto = count($request['nombreTerceroContacto']);
         for($i = 0; $i < $contadorContacto; $i++)
         {
@@ -175,6 +200,19 @@ class TerceroController extends Controller
             'Tercero_idTercero' => $id,
             'codigoTerceroProducto' => $request['codigoTerceroProducto'][$i],
             'nombreTerceroProducto' => $request['nombreTerceroProducto'][$i]
+           ]);
+        }
+
+        $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+        for($i = 0; $i < $contadorExamen; $i++)
+        {
+            \App\TerceroExamenMedico::create([
+            'Tercero_idTercero' => $id,
+            'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+            'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
+            'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
+            'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
            ]);
         }
         return redirect('/tercero');

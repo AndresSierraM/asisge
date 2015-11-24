@@ -15,8 +15,20 @@
 		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
 		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroProductos) : "");?>';
 		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
+		var terceroExamenMedico = '<?php echo (isset($tercero) ? json_encode($tercero->terceroExamenMedicos) : "");?>';
+		terceroExamenMedico = (terceroExamenMedico != '' ? JSON.parse(terceroExamenMedico) : '');
 		var valorContactos = [0,'','','','',''];
 		var valorProductos = [0,'',''];
+		var valorExamen = [0,'',0,0,0,''];
+
+
+		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
+		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';
+		var idFrecuenciaMedicion = '<?php echo isset($idFrecuenciaMedicion) ? $idFrecuenciaMedicion : 0;?>';
+		var nombreFrecuenciaMedicion = '<?php echo isset($nombreFrecuenciaMedicion) ? $nombreFrecuenciaMedicion : "";?>';
+		
+		var listaTarea = [JSON.parse(idListaTarea),JSON.parse(nombreListaTarea)];
+		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
 
 		$(document).ready(function(){
 
@@ -38,6 +50,18 @@
 			productos.clase = ['','',''];
 			productos.sololectura = [false,false,false];
 
+			examen = new Atributos('examen','contenedor_examen','examen');
+			examen.campos = ['idTerceroExamenMedico', 'ListaGeneral_idExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
+			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
+			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
+			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
+			examen.clase = ['','','','','',''];
+			examen.sololectura = [false,false,false,false,false,false];
+			examen.completar = ['off','off','off','off','off','off'];
+			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
+			examen.funciones  = ['','','','','',''];
+
+
 			for(var j=0, k = terceroContactos.length; j < k; j++)
 			{
 				contactos.agregarCampos(JSON.stringify(terceroContactos[j]),'L');
@@ -47,6 +71,13 @@
 			{
 				productos.agregarCampos(JSON.stringify(terceroProductos[j]),'L');
 			}
+
+			for(var j=0, k = terceroExamenMedico.length; j < k; j++)
+			{
+				examen.agregarCampos(JSON.stringify(terceroExamenMedico[j]),'L');
+			}
+
+			
 
 		});
 	</script>
@@ -73,7 +104,6 @@
 											<i class="fa fa-credit-card" style="width: 14px;"></i>
 										</span>
 										{!! Form::hidden('idTercero', null, array('id' => 'idTercero')) !!}
-										{!! Form::hidden('Cargo_idCargo', null, array('id' => 'Cargo_idCargo')) !!}
 										{!! Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania')) !!}
 										{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
 									</div>
@@ -340,6 +370,17 @@
 														</div>
 													</div>
 												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('Cargo_idCargo', 'Cargo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-mobile" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('Cargo_idCargo',$cargo, (isset($tercero) ? $tercero->Cargo_idCargo : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el cargo",'style'=>'width:340;'])!!}
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -387,6 +428,33 @@
 															<div class="col-md-1" style="width: 380px;">Referencia</div>
 															<div class="col-md-1" style="width: 750px;">Descripci&oacute;n</div>
 															<div id="contenedor_productos">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#examen">Examenes M&eacute;dicos Requeridos</a>
+											</h4>
+										</div>
+										<div id="examen" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-12">
+														<div class="row show-grid">
+															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="examen.agregarCampos(valorExamen,'A')">
+																<span class="glyphicon glyphicon-plus"></span>
+															</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Examen</div>
+															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Ingreso</div>
+															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Retiro</div>
+															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Peri&oacute;dico</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Periodicidad</div>
+															<div id="contenedor_examen">
 															</div>
 														</div>
 													</div>
