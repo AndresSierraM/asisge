@@ -5,7 +5,6 @@
 		<center>Terceros</center>
 	</h3>
 @stop
-
 @section('content')
 @include('alerts.request')
 	{!!Html::script('js/tercero.js')!!}
@@ -17,9 +16,12 @@
 		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
 		var terceroExamenMedico = '<?php echo (isset($tercero) ? json_encode($tercero->terceroExamenMedicos) : "");?>';
 		terceroExamenMedico = (terceroExamenMedico != '' ? JSON.parse(terceroExamenMedico) : '');
+		var terceroArchivo = '<?php echo (isset($tercero) ? json_encode($tercero->terceroarchivos) : "");?>';
+		terceroArchivo = (terceroArchivo != '' ? JSON.parse(terceroArchivo) : '');
 		var valorContactos = [0,'','','','',''];
 		var valorProductos = [0,'',''];
 		var valorExamen = [0,'',0,0,0,''];
+		var valorArchivo = [0,'','',''];
 
 
 		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
@@ -61,6 +63,17 @@
 			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
 			examen.funciones  = ['','','','','',''];
 
+			archivo = new Atributos('archivo','contenedor_archivo','archivo');
+			archivo.campos = ['idTerceroArchivo', 'tituloTerceroArchivo','fechaTerceroArchivo','rutaTerceroArchivo'];
+			archivo.etiqueta = ['input','input','input','input'];
+			archivo.tipo = ['hidden','text','text','text'];
+			archivo.estilo = ['','width: 300px;height:35px;','width: 200px;height:35px;','width: 600px;height:35px;'];
+			archivo.clase = ['','','','',];
+			archivo.sololectura = [false,false,false,false];
+			archivo.completar = ['off','off','off','off'];
+			archivo.opciones = ['','','',''];
+			archivo.funciones  = ['','','',''];
+
 
 			for(var j=0, k = terceroContactos.length; j < k; j++)
 			{
@@ -75,6 +88,11 @@
 			for(var j=0, k = terceroExamenMedico.length; j < k; j++)
 			{
 				examen.agregarCampos(JSON.stringify(terceroExamenMedico[j]),'L');
+			}
+
+			for(var j=0, k = terceroArchivo.length; j < k; j++)
+			{
+				archivo.agregarCampos(JSON.stringify(terceroArchivo[j]),'L');
 			}
 
 			
@@ -212,19 +230,19 @@
 													{!!Form::checkbox('tipoTercero1','02',false, array('id' => 'tipoTercero2', 'onclick'=>'validarTipoTercero()'))!!}Proveedor
 												</label>
 											</div>
-											<div class="checkbox-inline">
+											<div class="checkbox-inline" style="display:none;">
 												<label>
-													{!!Form::checkbox('tipoTercero1','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
+													{!!Form::hidden('tipoTercero1','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
 												</label>
 											</div>
-											<div class="checkbox-inline">
+											<div class="checkbox-inline" style="display:none;">
 												<label>
-													{!!Form::checkbox('tipoTercero1','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}Entidad Estatal
+													{!!Form::hidden('tipoTercero1','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}Entidad Estatal
 												</label>
 											</div>
-											<div class="checkbox-inline">
+											<div class="checkbox-inline" style="display:none;">
 												<label>
-													{!!Form::checkbox('tipoTercero1','05',false, array('id' => 'tipoTercero5', 'onclick'=>'validarTipoTercero()'))!!}Seguridad Social
+													{!!Form::hidden('tipoTercero1','05',false, array('id' => 'tipoTercero5', 'onclick'=>'validarTipoTercero()'))!!}Seguridad Social
 												</label>
 											</div>
 										</div>
@@ -264,7 +282,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-flag" style="width: 14px;"></i>
 															</span>
-															{!!Form::select('Ciudad_idCiudad',$ciudad, (isset($tercero) ? $tercero->Ciudad_idCiudad : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la ciudad",'style'=>'width:340;'])!!}
+															{!!Form::select('Ciudad_idCiudad',$ciudad, (isset($tercero) ? $tercero->Ciudad_idCiudad : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la ciudad",'style'=>'width:340px;'])!!}
 
 														</div>
 													</div>
@@ -276,7 +294,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-home" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('direccionTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la direcci&oacute;n','style'=>'width:340;'])!!}
+															{!!Form::text('direccionTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la direcci&oacute;n','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -287,7 +305,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-phone" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('telefonoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:340;'])!!}
+															{!!Form::text('telefonoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -298,7 +316,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-fax" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('faxTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el fax','style'=>'width:340;'])!!}
+															{!!Form::text('faxTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el fax','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -309,7 +327,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-mobile-phone" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('movil1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero del m&oacute;vil 1','style'=>'width:340;'])!!}
+															{!!Form::text('movil1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero del m&oacute;vil 1','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -320,7 +338,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-mobile" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('movil2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero del m&oacute;vil 2','style'=>'width:340;'])!!}
+															{!!Form::text('movil2Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero del m&oacute;vil 2','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -333,7 +351,7 @@
 															</span>
 															{!!Form::select('sexoTercero',
 															array('F'=>'Femenino','M'=>'Masculino'), 
-															(isset($tercero) ? $tercero->sexoTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el sexo del tercero",'style'=>'width:340;'])!!}
+															(isset($tercero) ? $tercero->sexoTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el sexo del tercero",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -344,7 +362,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-calendar" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaNacimientoTercero',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de nacimiento', 'style'=>'width:340;'])!!}
+															{!!Form::text('fechaNacimientoTercero',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de nacimiento', 'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -355,7 +373,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-envelope" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('correoElectronicoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el correo','style'=>'width:340;'])!!}
+															{!!Form::text('correoElectronicoTercero',null,['class'=>'form-control','placeholder'=>'Ingresa el correo','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -366,21 +384,294 @@
 															<span class="input-group-addon">
 																<i class="fa fa-laptop" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('paginaWebTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la p&aacute;gina web','style'=>'width:340;'])!!}
+															{!!Form::text('paginaWebTercero',null,['class'=>'form-control','placeholder'=>'Ingresa la p&aacute;gina web','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="width:600px; display: inline;">
+												<div class="form-group" style="width:600px; display: none;" id="cargo">
 													{!!Form::label('Cargo_idCargo', 'Cargo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
 																<i class="fa fa-mobile" style="width: 14px;"></i>
 															</span>
-															{!!Form::select('Cargo_idCargo',$cargo, (isset($tercero) ? $tercero->Cargo_idCargo : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el cargo",'style'=>'width:340;'])!!}
+															{!!Form::select('Cargo_idCargo',$cargo, (isset($tercero) ? $tercero->Cargo_idCargo : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el cargo",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default" style="display:none;" id="pestanaLaboral">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#laboral">Informaci&oacute;n Laboral</a>
+											</h4>
+										</div>
+										<div id="laboral" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('fechaNacimientoTerceroInformacion', 'Fecha Nacimiento', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-phone" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('fechaIngresoTerceroInformacion', 'Fecha Ingreso', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-fax" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('fechaIngresoTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->fechaIngresoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de ingreso','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('fechaRetiroTerceroInformacion', 'Fecha Retiro', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-fax" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('fechaRetiroTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->fechaRetiroTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de retiro','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('tipoContratoTerceroInformacion', 'Tipo de Contrato', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('tipoContratoTerceroInformacion',
+															array('C'=>'Contratista','TF'=>'T&eacute;rmino Fijo','I'=>'Indefinido','S'=>'Servicios'),(isset($tercero) ? $tercero->terceroInformaciones->tipoContratoTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de contrato",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('aniosExperienciaTerceroInformacion', 'A&ntilde;os de Experiencia', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('aniosExperienciaTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->aniosExperienciaTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite los a&ntilde;os de experiencia','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default" style="display:none;" id="pestanaEducacion">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#educacion">Educaci&oacute;n</a>
+											</h4>
+										</div>
+										<div id="educacion" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+															{!!Form::textarea('educacionTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->educacionTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la educaci&oacute;n'])!!}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default" style="display:none;" id="pestanaExperiencia">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#experiencia">Experiencia</a>
+											</h4>
+										</div>
+										<div id="experiencia" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+															{!!Form::textarea('experienciaTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->experienciaTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default" style="display:none;" id="pestanaFormacion">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#formacion">Formaci&oacute;n</a>
+											</h4>
+										</div>
+										<div id="formacion" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+															{!!Form::textarea('formacionTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->formacionTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default" style="display:none;" id="pestanaPersonal">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#personal">Informaci&oacute;n Personal</a>
+											</h4>
+										</div>
+										<div id="personal" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('estadoCivilTerceroInformacion', 'Estado Civil', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('estadoCivilTerceroInformacion',
+															array('CASADO'=>'Casado','SOLTERO'=>'Soltero'),(isset($tercero) ? $tercero->terceroInformaciones->estadoCivilTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('numeroHijosTerceroInformacion', 'N&uacute;mero de Hijos', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('numeroHijosTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->numeroHijosTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el n&uacute;mero de hijos','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('composicionFamiliarTerceroInformacion', 'Composici&oacute;n Familiar', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('composicionFamiliarTerceroInformacion',
+															array('VS'=>'Vive Solo','SH'=>'Solo con Hijos','EH'=>'Esposo e Hijos','FO'=>'Familia de Origen','A'=>'Amigos'),(isset($tercero) ? $tercero->terceroInformaciones->composicionFamiliarTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la composici&oacute;n familiar",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('personasACargoTerceroInformacion', 'Personas a Cargo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('personasACargoTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->personasACargoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el n&uacute;mero de personas a cargo','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('estratoSocialTerceroInformacion', 'Estrato', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('estratoSocialTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->estratoSocialTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el estrato','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('tipoViviendaTerceroInformacion', 'Tipo de Vivienda', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('tipoViviendaTerceroInformacion',
+															array('PROPIA'=>'Propia','ARRENDADA'=>'Arrendada','FAMILIAR'=>'Familiar'),(isset($tercero) ? $tercero->terceroInformaciones->tipoViviendaTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de vivienda",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('tipoTransporteTerceroInformacion', 'Tipo de Transporte', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('tipoTransporteTerceroInformacion',
+															array('PIE'=>'A pie','BICICLETA'=>'Bicicleta','PUBLICO'=>'P&uacute;blico','MOTO'=>'Moto','CARRO'=>'Carro'),(isset($tercero) ? $tercero->terceroInformaciones->tipoTransporteTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de transporte",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('HobbyTerceroInformacion', 'Hobby', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('HobbyTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->HobbyTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el hobby','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('actividadFisicaTerceroInformacion', 'Actividad F&iacute;sica', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('actividadFisicaTerceroInformacion',
+															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero) ? $tercero->terceroInformaciones->actividadFisicaTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si realiza actividad f&iacute;sica",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('consumeLicorTerceroInformacion', 'Consume Licor', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('consumeLicorTerceroInformacion',
+															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero) ? $tercero->terceroInformaciones->consumeLicorTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si consume licor",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('FrecuenciaMedicion_idConsumeLicor', 'Frecuencia', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('FrecuenciaMedicion_idConsumeLicor',
+															$frecuenciaAlcohol, (isset($tercero) ? $tercero->terceroInformaciones->FrecuenciaMedicion_idConsumeLicor : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la frencuencia del consumo de licor",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('consumeCigarrilloTerceroInformacion', 'Consume Cigarrillo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('consumeCigarrilloTerceroInformacion',
+															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero) ? $tercero->terceroInformaciones->consumeCigarrilloTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si consume cigarrillo",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>
@@ -411,7 +702,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="panel panel-default">
+									<div id="pestanaProducto" class="panel panel-default" style="display:none;">
 										<div class="panel-heading">
 											<h4 class="panel-title">
 												<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Productos y Servicios</a>
@@ -462,6 +753,31 @@
 											</div>
 										</div>
 									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#archivos" href="#archivos">Archivos</a>
+											</h4>
+										</div>
+										<div id="archivos" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-12">
+														<div class="row show-grid">
+															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="archivo.agregarCampos(valorArchivo,'A')">
+																<span class="glyphicon glyphicon-plus"></span>
+															</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">T&iacute;tulo</div>
+															<div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Fecha</div>
+															<div class="col-md-1" style="width: 600px;display:inline-block;height:60px;">Ruta</div>
+															<div id="contenedor_archivo">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -477,12 +793,16 @@
 					</div>
 				</div>
 			</fieldset>
-
+		</br></br></br></br>
 		</div>
 	{!!Form::close()!!}
+	
 	<script type="text/javascript">
 		document.getElementById('contenedor').style.width = '1350px';
 		document.getElementById('contenedor-fin').style.width = '1350px';
+		 
+		//mostrarPestanas();
+
         $('#fechaNacimientoTercero').datetimepicker(({
 			format: "YYYY-MM-DD"
 		}));

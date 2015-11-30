@@ -22,4 +22,14 @@ class Tercero extends Model
     {
         return $this->hasMany('App\TerceroExamenMedico','Tercero_idTercero');
     }
+
+    public function terceroArchivos()
+    {
+        return $this->hasMany('App\TerceroArchivo','Tercero_idTercero');
+    }
+
+    public function terceroInformaciones()
+    {
+        return $this->hasOne('App\TerceroInformacion','Tercero_idTercero');
+    }
 }

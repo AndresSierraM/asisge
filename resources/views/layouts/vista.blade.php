@@ -18,6 +18,7 @@
       {!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
+      {!!Html::style('sb-admin/bower_components/select2/css/select2.min.css'); !!}
       <!--{!!Html::style('sb-admin/bower_components/ckeditor/sample.css'); !!}-->
       <!-- {!!Html::style('css/menu.css'); !!} -->
       {!!Html::style('CSS/menu.css'); !!}
@@ -41,6 +42,7 @@
       {!!Html::script('sb-admin/bower_components/datetimepicker/js/bootstrap-datetimepicker.min.js'); !!}
       {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
       {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput_locale_es.js'); !!}
+      {!!Html::script('sb-admin/bower_components/select2/js/select2.min.js'); !!}
       {!!Html::script('choosen/chosen.jquery.js'); !!}
       {!!Html::script('choosen/docsupport/prism.js'); !!}
       {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
