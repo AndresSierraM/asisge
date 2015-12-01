@@ -79,6 +79,7 @@ class ActaCapacitacionController extends Controller
                 $planCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
                 $planCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
                 $planCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
+                $planCapacitacionTema->cumpleObjetivoPlanCapacitacionTema = $request['cumpleObjetivoPlanCapacitacionTema'][$i];
                 
                 $planCapacitacionTema->save();
             }
@@ -160,6 +161,7 @@ class ActaCapacitacionController extends Controller
                 $planCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
                 $planCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
                 $planCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
+                $planCapacitacionTema->cumpleObjetivoPlanCapacitacionTema = $request['cumpleObjetivoPlanCapacitacionTema'][$i];
                 
                 $planCapacitacionTema->save();
             }
