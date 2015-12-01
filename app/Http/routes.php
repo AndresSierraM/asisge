@@ -150,6 +150,16 @@ Route::get('/tipoinspecciongrid', function()
 	return view('tipoinspecciongridphp');
 });
 
+// Route::get('/tipoexamenmedicogrid', function()
+// {
+// 	return view('tipoexamenmedicogridphp');
+// });
+
+Route::get('datosTipoExamenMedico', function()
+{
+    include public_path().'/ajax/datosTipoExamenMedico.php';
+});
+
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');
@@ -166,6 +176,7 @@ Route::resource('tiponormalegal','TipoNormaLegalController');
 Route::resource('expidenormalegal','ExpideNormaLegalController');
 Route::resource('documento','DocumentoController');
 Route::resource('tipoinspeccion','TipoInspeccionController');
+Route::resource('tipoexamenmedico','TipoExamenMedicoController');
 
 // ---------------------------------
 // Documentos
@@ -214,6 +225,11 @@ Route::get('/inspecciongrid', function()
 	return view('inspecciongridphp');
 });
 
+Route::get('/examenmedicogrid', function()
+{
+	return view('examenmedicogridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
@@ -223,3 +239,4 @@ Route::resource('programa','ProgramaController');
 Route::resource('actacapacitacion','ActaCapacitacionController');
 Route::resource('plancapacitacion','PlanCapacitacionController');
 Route::resource('inspeccion','InspeccionController');
+Route::resource('examenmedico','ExamenMedicoController');

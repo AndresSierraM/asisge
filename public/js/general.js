@@ -118,6 +118,8 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             input.value = valor[(tipo == 'A' ? i : this.campos[i])];
             input.setAttribute("class", this.clase[i]);
             input.setAttribute("style", this.estilo[i]);
+            if(this.sololectura[i] === true)
+                input.setAttribute("readOnly", "readOnly");
 
             div.appendChild(input);
         }

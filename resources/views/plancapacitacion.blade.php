@@ -74,7 +74,7 @@
 							</span>
 							<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::select('tipoPlanCapacitacion',
-							array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n','','GENERAL'=>'General'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo"])!!}
+							array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n','GENERAL'=>'General'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo"])!!}
 							{!!Form::hidden('idPlanCapacitacion', 0, array('id' => 'idPlanCapacitacion'))!!}
 							{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
 						</div>

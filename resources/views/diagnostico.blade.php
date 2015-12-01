@@ -202,23 +202,26 @@
 
         <table class="table table-striped table-bordered" width="100%">
           <tr>
-                <th colspan="1">La calificación posible es entre 1 y 5, segun el grado de cumplimiento del aspecto evaluado</th>
-                <th colspan="3">% cumplimiento</th>
+                <th colspan="2">La calificación posible es entre 1 y 5, segun el grado de cumplimiento del aspecto evaluado</th>
+                <th colspan="2">% cumplimiento</th>
               </tr>
               <tr>
-                <td colspan="1">1 = No se cumple con el aspecto evaluado</td>
-                <td colspan="1" style="background-color:red;">&nbsp;</td>
-                <td colspan="2">entre 0% y 35%</td>
+                <td >0: Sin Acción / No se ha Iniciado</td>
+                <td >1: Iniciaci&oacute;n</td>
+                <td style="background-color:red; width: 30px;">&nbsp;</td>
+                <td >entre 0% y 35%</td>
               </tr>
               <tr>
-                <td colspan="1">3 = Se cumple parcialmente con el aspecto evaluado</td>
-                <td colspan="1" style="background-color:yellow;">&nbsp;</td>
-                <td colspan="2">entre 36% y 70%</td>
+                <td >2: Implementaci&oacute;n Parcial</td>
+                <td >3: Implementaci&oacute;n Completa</td>
+                <td style="background-color:yellow;">&nbsp;</td>
+                <td >entre 36% y 70%</td>
               </tr>
               <tr>
-                <td colspan="1">5 = Se cumple totalmente con el aspecto evaluado</td>
-                <td colspan="1" style="background-color:green;">&nbsp;</td>
-                <td colspan="2">entre 71% y 100%</td>
+                <td >4: Implementada y Sostenida</td>
+                <td >5: Mejorada Continuamente</td>
+                <td style="background-color:green;">&nbsp;</td>
+                <td >entre 71% y 100%</td>
               </tr>
         </table>
 

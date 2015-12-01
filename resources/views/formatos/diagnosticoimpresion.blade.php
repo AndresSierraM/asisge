@@ -30,26 +30,35 @@
 								<td colspan="4" >
 									Evaluación inicial que se realiza con el fin de identificar las prioridades en Seguridad y Salud en el Trabajo propias de la empresa como punto de partida para el establecimiento del Sistema de Gestión de Seguridad y Salud en el Trabajo SG-SST o para la actualización existen. La evaluación inicial debe ser revisada (mínimo una vea al año) y actualizada cuando sea necesario, con el objetico de mantener vigente las prioridades en seguridad y salud en el trabajo acorde con los cambios en las condiciones y procesos de trabajo. 
 								</td>
-							</tr>							
-							<tr>
-								<th colspan="1">La calificación posible es entre 1 y 5, segun el grado de cumplimiento del aspecto evaluado</th>
-								<th colspan="3">% cumplimiento</th>
-							</tr>
-							<tr>
-								<td colspan="1">1 = No se cumple con el aspecto evaluado</td>
-								<td colspan="1" style="background-color:red;">&nbsp;</td>
-								<td colspan="2">entre 0% y 35%</td>
-							</tr>
-							<tr>
-								<td colspan="1">3 = Se cumple parcialmente con el aspecto evaluado</td>
-								<td colspan="1" style="background-color:yellow;">&nbsp;</td>
-								<td colspan="2">entre 36% y 70%</td>
-							</tr>
-							<tr>
-								<td colspan="1">5 = Se cumple totalmente con el aspecto evaluado</td>
-								<td colspan="1" style="background-color:green;">&nbsp;</td>
-								<td colspan="2">entre 71% y 100%</td>
-							</tr>
+							</tr>	
+        				</table>
+
+				        <table class="table table-striped table-bordered" width="100%">
+				          <tr>
+				                <th colspan="2">La calificación posible es entre 1 y 5, segun el grado de cumplimiento del aspecto evaluado</th>
+				                <th colspan="2">% cumplimiento</th>
+				              </tr>
+				              <tr>
+				                <td >0: Sin Acción / No se ha Iniciado</td>
+				                <td >1: Iniciaci&oacute;n</td>
+				                <td style="background-color:red; width: 30px;">&nbsp;</td>
+				                <td >entre 0% y 35%</td>
+				              </tr>
+				              <tr>
+				                <td >2: Implementaci&oacute;n Parcial</td>
+				                <td >3: Implementaci&oacute;n Completa</td>
+				                <td style="background-color:yellow;">&nbsp;</td>
+				                <td >entre 36% y 70%</td>
+				              </tr>
+				              <tr>
+				                <td >4: Implementada y Sostenida</td>
+				                <td >5: Mejorada Continuamente</td>
+				                <td style="background-color:green;">&nbsp;</td>
+				                <td >entre 71% y 100%</td>
+				              </tr>
+				        </table>
+				        
+				        <table class="table table-striped table-bordered" width="100%">
 							<tr>
 								<td colspan="4">
 									Equipos Cr&iacute;ticos: {{$diagnostico->equiposCriticosDiagnostico}}

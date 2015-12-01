@@ -73,7 +73,7 @@ class InspeccionController extends Controller
                 
             }
 
-           // return redirect('/inspeccion');
+           return redirect('/inspeccion');
         }
     }
 

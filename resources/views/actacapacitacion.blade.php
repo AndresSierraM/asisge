@@ -158,7 +158,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('objetivoPlanCapacitacion',null,['placeholder'=>'Objetivos','readonly'=>'readonly','id'=>'objetivoPlanCapacitacion','style'=>'width: 1020px;height: 100px;'])!!}
+															<p id="objetivoPlanCapacitacion"></p>
 														</div>
 													</div>
 												</div>
@@ -176,7 +176,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('personalInvolucradoPlanCapacitacion',null,['placeholder'=>'Ingresa los objetivos','readonly'=>'readonly','id'=>'personalInvolucradoPlanCapacitacion','style'=>'width: 1020px;height: 100px;'])!!}
+															<p id="personalInvolucradoPlanCapacitacion"></p>
 														</div>
 													</div>
 												</div>
@@ -227,7 +227,8 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('metodoEficaciaPlanCapacitacion',null,['placeholder'=>'M&eacute;todo de Eficacia','readonly'=>'readonly','id'=>'metodoEficaciaPlanCapacitacion','style'=>'width: 1020px;height: 100px;'])!!}
+															<p id="metodoEficaciaPlanCapacitacion"></p>
+															
 														</div>
 													</div>
 												</div>

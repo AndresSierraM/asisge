@@ -44,10 +44,10 @@
 					<ul id="iconsarch" class="icons">
 						<li>
 							{!! HTML::decode(HTML::link('pais', HTML::image('images/iconosmenu/Paises.png','Imagen no encontrada',array('width'=>'22','title' => 'Paises')))) !!}
-							</li>
+						</li>
 						<li>
 							{!! HTML::decode(HTML::link('departamento', HTML::image('images/iconosmenu/Departamentos.png','Imagen no encontrada',array('width'=>'22','title' => 'Departamentos')))) !!}
-							</li>
+						</li>
 						<li>
 							{!! HTML::decode(HTML::link('ciudad', HTML::image('images/iconosmenu/Ciudades.png','Imagen no encontrada',array('width'=>'22','title' => 'Ciudades')))) !!}
 						</li>
@@ -60,6 +60,9 @@
 						<li>
 							{!! HTML::decode(HTML::link('proceso', HTML::image('images/iconosmenu/Procesos.png','Imagen no encontrada',array('width'=>'22','title' => 'Procesos')))) !!}
 						</li>
+						<li>
+							{!! HTML::decode(HTML::link('cargo', HTML::image('images/iconosmenu/Cargos.png','Imagen no encontrada',array('width'=>'22','title' => 'Cargos / Perfiles')))) !!}
+			 			</li>
 						<li>
 							{!! HTML::decode(HTML::link('tercero', HTML::image('images/iconosmenu/Terceros.png','Imagen no encontrada',array('width'=>'22','title' => 'Terceros')))) !!}
 				 		</li>
@@ -85,7 +88,7 @@
 							{!! HTML::decode(HTML::link('tipoinspeccion', HTML::image('images/iconosmenu/Inspecciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Tipo de Inspecci&oacute;n')))) !!}
 			 			</li>
 				 		<li>
-							{!! HTML::decode(HTML::link('cargo', HTML::image('images/iconosmenu/Cargos.png','Imagen no encontrada',array('width'=>'22','title' => 'Cargos / Perfiles')))) !!}
+							{!! HTML::decode(HTML::link('tipoexamenmedico', HTML::image('images/iconosmenu/Matriz%20Examenes%20medicos.png','Imagen no encontrada',array('width'=>'22','title' => 'Ex&aacute;menes M&eacute;dicos')))) !!}
 			 			</li>
 
 					</ul>
@@ -122,6 +125,9 @@
 			 		<li>
 						{!! HTML::decode(HTML::link('inspeccion', HTML::image('images/iconosmenu/Inspecciones.png','Imagen no encontrada',array('width'=>'22','title' => 'Inspecciones de Seguridad')))) !!}
 			 		</li>
+			 		<li>
+						{!! HTML::decode(HTML::link('examenmedico', HTML::image('images/iconosmenu/Matriz%20Examenes%20medicos.png','Imagen no encontrada',array('width'=>'22','title' => 'Ex&aacute;menes M&eacute;dicos')))) !!}
+		 			</li>
 					</ul>
 				</div>
 			</div>

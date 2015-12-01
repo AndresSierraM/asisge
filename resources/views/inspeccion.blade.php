@@ -25,6 +25,7 @@
         if (data) {
             var data = $.map(data, function(el) { return el });
             // hacemos un rompimiento de control para agrupar las preguntas
+            document.getElementById('registros').value = 0;
             for(var j=0, k = data.length; j < k; j++)
             {
               var dataIns = $.map(data[j], function(el) { return el });
@@ -33,7 +34,11 @@
               var valorInspeccion = [dataIns[0],dataIns[01],dataIns[2],'','','','',0,'',''];
               inspeccion.agregarCampos(valorInspeccion,'A');
             }
-        } else {
+            document.getElementById('registros').value = j ;
+
+        } 
+        else 
+        {
                alert('<div> No hay preguntas asociadas al tipo de inspeccion. </div>');
         }
       }
@@ -74,21 +79,21 @@
                                'textarea', '', 'text',
                                'textarea'];
         inspeccion.estilo   = ['',
-                                'vertical-align:top; resize:none; font-size:10px; width: 60px; height:60px;', 
+                                'vertical-align:top; resize:none; width: 60px; height:60px;', 
                                 'vertical-align:top; resize:none; font-size:10px; width: 300px; height:60px;', 
                                 'vertical-align:top; width: 300px;  height:60px;',
                                 'vertical-align:top; width: 200px;  height:60px;',
-                                'vertical-align:top; resize:none; font-size:10px; width: 100px; height:60px;',
-                                'vertical-align:top; resize:none; font-size:10px; width: 200px; height:60px;',
-                                'vertical-align:top; resize:none; font-size:10px; width: 200px; height:60px;',
-                                'vertical-align:top; resize:none; font-size:10px; width: 100px; height:60px;',
-                                'vertical-align:top; resize:none; font-size:10px; width: 300px; height:60px;'];
+                                'vertical-align:top; resize:none; width: 100px; height:60px;',
+                                'vertical-align:top; resize:none; width: 200px; height:60px;',
+                                'vertical-align:top; resize:none; width: 200px; height:60px;',
+                                'vertical-align:top; resize:none; width: 100px; height:60px;',
+                                'vertical-align:top; resize:none; width: 300px; height:60px;'];
         inspeccion.clase    = ['','','','','','','','','',''];
         inspeccion.sololectura = [false,true,true,false,false,false,false,false,false,false];
       
         inspeccion.opciones = ['','','','','','','',terceroResponsable,'',''];
 
-
+        document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas
         for(var j=0, k = inspeccionDetalle.length; j < k; j++)
         {
@@ -198,13 +203,9 @@
               <div class="row show-grid">
                 <div style="overflow: auto; width: 100%;">
                   <div style="width: 1800px; height: 300px; display: inline-block; ">
-                    <div class="col-md-1" style="width: 1200px;">&nbsp;</div>
+                    <div class="col-md-1" style="width: 1160px;">&nbsp;</div>
                     <div class="col-md-1" style="width: 600px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
-                    
-                    <div class="col-md-1" style="width: 40px;" onclick="inspeccion.agregarCampos(valorInspeccion,'A')">
-                      <span class="glyphicon glyphicon-plus"></span>
-                    </div>
-                      
+                          
                     <div class="col-md-1" style="width: 60px;">No.</div>
                     <div class="col-md-2" style="width: 300px;">Pregunta</div>
                     <div class="col-md-3" style="width: 300px;">Situaci&oacute;n Identificada</div>
