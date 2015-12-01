@@ -27,15 +27,15 @@
 
 
 			tema = new Atributos('tema','contenedor_tema','tema');
-			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema','dictadaPlanCapacitacionTema'];
-			tema.etiqueta = ['input','input','select','input','input','checkbox'];
-			tema.tipo = ['hidden','text','','text','text','checkbox'];
-			tema.estilo = ['','width: 300px;height:35px;','width: 380px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;'];
+			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema','dictadaPlanCapacitacionTema','cumpleObjetivoPlanCapacitacionTema'];
+			tema.etiqueta = ['input','input','select','input','input','checkbox','checkbox'];
+			tema.tipo = ['hidden','text','','text','text','checkbox','checkbox'];
+			tema.estilo = ['','width: 300px;height:35px;','width: 310px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
 			tema.clase = ['','','','','',''];
-			tema.sololectura = [false,true,false,false,false,false];
-			tema.completar = ['off','off','off','off','off',''];
-			tema.opciones = ['','',tercero,'','',''];
-			tema.funciones  = ['','','',eventos1,'',''];
+			tema.sololectura = [false,true,false,false,false,false,false];
+			tema.completar = ['off','off','off','off','off','off','off'];
+			tema.opciones = ['','',tercero,'','','',''];
+			tema.funciones  = ['','','',eventos1,'','',''];
 
 			asistente = new Atributos('asistente','contenedor_asistente','asistente');
 			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'Cargo_idCargo'];

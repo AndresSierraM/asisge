@@ -9,6 +9,7 @@
 @section('content')
 
 	@include('alerts.request')
+	{!!Html::script('js/cargo.js')!!}
 	<script>
 		var cargoTareaRiesgo = '<?php echo (isset($cargo) ? json_encode($cargo->cargoTareaRiesgos) : "");?>';
 		cargoTareaRiesgo = (cargoTareaRiesgo != '' ? JSON.parse(cargoTareaRiesgo) : '');

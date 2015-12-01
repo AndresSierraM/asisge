@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\CargoRequest;
 use App\Http\Controllers\Controller;
 
 class CargoController extends Controller
@@ -50,68 +51,70 @@ class CargoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CargoRequest $request)
     {
-        \App\Cargo::create([
-            'codigoCargo' => $request['codigoCargo'],
-            'nombreCargo' => $request['nombreCargo'],
-            'salarioBaseCargo' => $request['salarioBaseCargo'],
-            'nivelRiesgoCargo' => $request['nivelRiesgoCargo'],
-            'objetivoCargo' => $request['objetivoCargo'],
-            'educacionCargo' => $request['educacionCargo'],
-            'experienciaCargo' => $request['experienciaCargo'],
-            'formacionCargo' => $request['formacionCargo'],
-            'posicionPredominanteCargo' => $request['posicionPredominanteCargo'],
-            'restriccionesCargo' => $request['restriccionesCargo'],
-            'habilidadesCargo' => $request['habilidadesCargo'],
-            'responsabilidadesCargo' => $request['responsabilidadesCargo'],
-            'autoridadesCargo' => $request['autoridadesCargo']
-            ]);
+        if($request['respuesta'] != 'falso')
+        {    
+            \App\Cargo::create([
+                'codigoCargo' => $request['codigoCargo'],
+                'nombreCargo' => $request['nombreCargo'],
+                'salarioBaseCargo' => $request['salarioBaseCargo'],
+                'nivelRiesgoCargo' => $request['nivelRiesgoCargo'],
+                'objetivoCargo' => $request['objetivoCargo'],
+                'educacionCargo' => $request['educacionCargo'],
+                'experienciaCargo' => $request['experienciaCargo'],
+                'formacionCargo' => $request['formacionCargo'],
+                'posicionPredominanteCargo' => $request['posicionPredominanteCargo'],
+                'restriccionesCargo' => $request['restriccionesCargo'],
+                'habilidadesCargo' => $request['habilidadesCargo'],
+                'responsabilidadesCargo' => $request['responsabilidadesCargo'],
+                'autoridadesCargo' => $request['autoridadesCargo']
+                ]);
 
-        $cargo = \App\Cargo::All()->last();
-        
-        $contadorElemento = count($request['ListaGeneral_idElementoProteccion']);
-        for($i = 0; $i < $contadorElemento; $i++)
-        {
-            \App\CargoElementoProteccion::create([
-            'Cargo_idCargo' => $cargo->idCargo,
-            'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i]
-           ]);
+            $cargo = \App\Cargo::All()->last();
+            
+            $contadorElemento = count($request['ListaGeneral_idElementoProteccion']);
+            for($i = 0; $i < $contadorElemento; $i++)
+            {
+                \App\CargoElementoProteccion::create([
+                'Cargo_idCargo' => $cargo->idCargo,
+                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i]
+               ]);
+            }
+
+            $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
+            for($i = 0; $i < $contadorRiesgo; $i++)
+            {
+                \App\CargoTareaRiesgo::create([
+                'Cargo_idCargo' => $cargo->idCargo,
+                'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]
+               ]);
+            }
+
+            $contadorVacuna = count($request['ListaGeneral_idVacuna']);
+            for($i = 0; $i < $contadorVacuna; $i++)
+            {
+                \App\CargoVacuna::create([
+                'Cargo_idCargo' => $cargo->idCargo,
+                'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]
+               ]);
+            }
+
+            $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+            
+            for($i = 0; $i < $contadorExamen; $i++)
+            {
+                \App\CargoExamenMedico::create([
+                'Cargo_idCargo' => $cargo->idCargo,
+                'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+                'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
+                'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
+                'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
+                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
+               ]);
+            }
+            return redirect('/cargo');
         }
-
-        $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
-        for($i = 0; $i < $contadorRiesgo; $i++)
-        {
-            \App\CargoTareaRiesgo::create([
-            'Cargo_idCargo' => $cargo->idCargo,
-            'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]
-           ]);
-        }
-
-        $contadorVacuna = count($request['ListaGeneral_idVacuna']);
-        for($i = 0; $i < $contadorVacuna; $i++)
-        {
-            \App\CargoVacuna::create([
-            'Cargo_idCargo' => $cargo->idCargo,
-            'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]
-           ]);
-        }
-
-        $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
-        
-        for($i = 0; $i < $contadorExamen; $i++)
-        {
-            \App\CargoExamenMedico::create([
-            'Cargo_idCargo' => $cargo->idCargo,
-            'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
-            'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
-            'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
-            'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
-            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
-           ]);
-        }
-
-        return redirect('/cargo');
 
     }
 
@@ -159,59 +162,62 @@ class CargoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CargoRequest $request, $id)
     {
-        $cargo = \App\Cargo::find($id);
-        $cargo->fill($request->all());
+        if($request['respuesta'] != 'falso')
+        {    
+            $cargo = \App\Cargo::find($id);
+            $cargo->fill($request->all());
 
-        $cargo->save();
+            $cargo->save();
 
-        \App\CargoElementoProteccion::where('Cargo_idCargo',$id)->delete();
-        \App\CargoTareaRiesgo::where('Cargo_idCargo',$id)->delete();
-        \App\CargoVacuna::where('Cargo_idCargo',$id)->delete();
-        \App\CargoExamenMedico::where('Cargo_idCargo',$id)->delete();
+            \App\CargoElementoProteccion::where('Cargo_idCargo',$id)->delete();
+            \App\CargoTareaRiesgo::where('Cargo_idCargo',$id)->delete();
+            \App\CargoVacuna::where('Cargo_idCargo',$id)->delete();
+            \App\CargoExamenMedico::where('Cargo_idCargo',$id)->delete();
 
-        $contadorElemento = count($request['ListaGeneral_idElementoProteccion']);
-        for($i = 0; $i < $contadorElemento; $i++)
-        {
-            \App\CargoElementoProteccion::create([
-            'Cargo_idCargo' => $id,
-            'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i]
-           ]);
+            $contadorElemento = count($request['ListaGeneral_idElementoProteccion']);
+            for($i = 0; $i < $contadorElemento; $i++)
+            {
+                \App\CargoElementoProteccion::create([
+                'Cargo_idCargo' => $id,
+                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i]
+               ]);
+            }
+
+            $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
+            for($i = 0; $i < $contadorRiesgo; $i++)
+            {
+                \App\CargoTareaRiesgo::create([
+                'Cargo_idCargo' => $id,
+                'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]
+               ]);
+            }
+
+            $contadorVacuna = count($request['ListaGeneral_idVacuna']);
+            for($i = 0; $i < $contadorVacuna; $i++)
+            {
+                \App\CargoVacuna::create([
+                'Cargo_idCargo' => $id,
+                'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]
+               ]);
+            }
+
+            $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+            for($i = 0; $i < $contadorExamen; $i++)
+            {
+                \App\CargoExamenMedico::create([
+                'Cargo_idCargo' => $cargo->idCargo,
+                'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+                'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
+                'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
+                'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
+                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
+               ]);
+            }
+            return redirect('/cargo');
         }
 
-        $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
-        for($i = 0; $i < $contadorRiesgo; $i++)
-        {
-            \App\CargoTareaRiesgo::create([
-            'Cargo_idCargo' => $id,
-            'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]
-           ]);
-        }
-
-        $contadorVacuna = count($request['ListaGeneral_idVacuna']);
-        for($i = 0; $i < $contadorVacuna; $i++)
-        {
-            \App\CargoVacuna::create([
-            'Cargo_idCargo' => $id,
-            'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]
-           ]);
-        }
-
-        $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
-        for($i = 0; $i < $contadorExamen; $i++)
-        {
-            \App\CargoExamenMedico::create([
-            'Cargo_idCargo' => $cargo->idCargo,
-            'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
-            'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
-            'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
-            'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
-            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
-           ]);
-        }
-
-        return redirect('/cargo');
     }
 
     /**

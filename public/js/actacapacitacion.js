@@ -21,7 +21,6 @@ function consultarPlanCapacitacion()
             document.getElementById('tipoPlanCapacitacion').value = datosEncabezado['tipoPlanCapacitacion'];
             document.getElementById('nombreResponsable').value = tercero['nombreCompletoTercero'];
             document.getElementById('objetivoPlanCapacitacion').value = datosEncabezado['objetivoPlanCapacitacion'].replace('<p>','').replace('</p>','');
-            document.getElementById('cumpleObjetivoPlanCapacitacion').value = datosEncabezado['cumpleObjetivoPlanCapacitacion'];
             document.getElementById('fechaFinPlanCapacitacion').value = datosEncabezado['fechaFinPlanCapacitacion'];
             document.getElementById('fechaInicioPlanCapacitacion').value = datosEncabezado['fechaInicioPlanCapacitacion'];
             document.getElementById('metodoEficaciaPlanCapacitacion').value = datosEncabezado['metodoEficaciaPlanCapacitacion'].replace('<p>','').replace('</p>','');
