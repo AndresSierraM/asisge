@@ -31,15 +31,15 @@ class TerceroController extends Controller
      */
     public function create()
     {   
-        $idListaTarea = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('idListaGeneral');
-        $nombreListaTarea = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('nombreListaGeneral');
+        $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
+        $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $frecuenciaAlcohol = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
         $cargo = \App\Cargo::All()->lists('nombreCargo','idCargo');
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idListaTarea','nombreListaTarea','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'));
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'));
     }
     /**
      * Store a newly created resource in storage.
@@ -137,12 +137,12 @@ class TerceroController extends Controller
            ]);
         }
 
-        $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+        $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
         for($i = 0; $i < $contadorExamen; $i++)
         {
             \App\TerceroExamenMedico::create([
             'Tercero_idTercero' => $tercero->idTercero,
-            'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+            'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
             'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
             'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
             'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
@@ -180,8 +180,8 @@ class TerceroController extends Controller
      */
     public function edit($id)
     {
-        $idListaTarea = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('idListaGeneral');
-        $nombreListaTarea = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('nombreListaGeneral');
+        $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
+        $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $frecuenciaAlcohol = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
@@ -189,7 +189,7 @@ class TerceroController extends Controller
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
         $cargo = \App\Cargo::All()->lists('nombreCargo','idCargo');
         $tercero = \App\Tercero::find($id);
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idListaTarea','nombreListaTarea','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'),['tercero'=>$tercero]);
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -218,30 +218,62 @@ class TerceroController extends Controller
         $tercero->save();
 
         $terceroInformacion = \App\TerceroInformacion::where('Tercero_idTercero',$id)->get();
-
-        $terceroInformacion->Tercero_idTercero = $id;
-        $terceroInformacion->fechaNacimientoTerceroInformacion = $request['fechaNacimientoTerceroInformacion'];
-        $terceroInformacion->fechaIngresoTerceroInformacion = $request['fechaIngresoTerceroInformacion'];
-        $terceroInformacion->fechaRetiroTerceroInformacion = $request['fechaRetiroTerceroInformacion'];
-        $terceroInformacion->tipoContratoTerceroInformacion = $request['tipoContratoTerceroInformacion'];
-        $terceroInformacion->aniosExperienciaTerceroInformacion = $request['aniosExperienciaTerceroInformacion'];
-        $terceroInformacion->educacionTerceroInformacion = $request['educacionTerceroInformacion'];
-        $terceroInformacion->experienciaTerceroInformacion = $request['experienciaTerceroInformacion'];
-        $terceroInformacion->formacionTerceroInformacion = $request['formacionTerceroInformacion'];
-        $terceroInformacion->estadoCivilTerceroInformacion = $request['estadoCivilTerceroInformacion'];
-        $terceroInformacion->numeroHijosTerceroInformacion = $request['numeroHijosTerceroInformacion'];
-        $terceroInformacion->composicionFamiliarTerceroInformacion = $request['composicionFamiliarTerceroInformacion'];
-        $terceroInformacion->personasACargoTerceroInformacion = $request['personasACargoTerceroInformacion'];
-        $terceroInformacion->estratoSocialTerceroInformacion = $request['estratoSocialTerceroInformacion'];
-        $terceroInformacion->tipoViviendaTerceroInformacion = $request['tipoViviendaTerceroInformacion'];
-        $terceroInformacion->tipoTransporteTerceroInformacion = $request['tipoTransporteTerceroInformacion'];
-        $terceroInformacion->HobbyTerceroInformacion = $request['HobbyTerceroInformacion'];
-        $terceroInformacion->actividadFisicaTerceroInformacion = $request['actividadFisicaTerceroInformacion'];
-        $terceroInformacion->consumeLicorTerceroInformacion = $request['consumeLicorTerceroInformacion'];
-        $terceroInformacion->FrecuenciaMedicion_idConsumeLicor = $request['FrecuenciaMedicion_idConsumeLicor'];
-        $terceroInformacion->consumeCigarrilloTerceroInformacion = $request['consumeCigarrilloTerceroInformacion'];
-                
-        $terceroInformacion->save();
+        if($terceroInformacion == '')
+        {    
+            $terceroInformacion->Tercero_idTercero = $id;
+            $terceroInformacion->fechaNacimientoTerceroInformacion = $request['fechaNacimientoTerceroInformacion'];
+            $terceroInformacion->fechaIngresoTerceroInformacion = $request['fechaIngresoTerceroInformacion'];
+            $terceroInformacion->fechaRetiroTerceroInformacion = $request['fechaRetiroTerceroInformacion'];
+            $terceroInformacion->tipoContratoTerceroInformacion = $request['tipoContratoTerceroInformacion'];
+            $terceroInformacion->aniosExperienciaTerceroInformacion = $request['aniosExperienciaTerceroInformacion'];
+            $terceroInformacion->educacionTerceroInformacion = $request['educacionTerceroInformacion'];
+            $terceroInformacion->experienciaTerceroInformacion = $request['experienciaTerceroInformacion'];
+            $terceroInformacion->formacionTerceroInformacion = $request['formacionTerceroInformacion'];
+            $terceroInformacion->estadoCivilTerceroInformacion = $request['estadoCivilTerceroInformacion'];
+            $terceroInformacion->numeroHijosTerceroInformacion = $request['numeroHijosTerceroInformacion'];
+            $terceroInformacion->composicionFamiliarTerceroInformacion = $request['composicionFamiliarTerceroInformacion'];
+            $terceroInformacion->personasACargoTerceroInformacion = $request['personasACargoTerceroInformacion'];
+            $terceroInformacion->estratoSocialTerceroInformacion = $request['estratoSocialTerceroInformacion'];
+            $terceroInformacion->tipoViviendaTerceroInformacion = $request['tipoViviendaTerceroInformacion'];
+            $terceroInformacion->tipoTransporteTerceroInformacion = $request['tipoTransporteTerceroInformacion'];
+            $terceroInformacion->HobbyTerceroInformacion = $request['HobbyTerceroInformacion'];
+            $terceroInformacion->actividadFisicaTerceroInformacion = $request['actividadFisicaTerceroInformacion'];
+            $terceroInformacion->consumeLicorTerceroInformacion = $request['consumeLicorTerceroInformacion'];
+            $terceroInformacion->FrecuenciaMedicion_idConsumeLicor = $request['FrecuenciaMedicion_idConsumeLicor'];
+            $terceroInformacion->consumeCigarrilloTerceroInformacion = $request['consumeCigarrilloTerceroInformacion'];
+                    
+            $terceroInformacion->save();
+        }
+        else
+        {   
+            if($request['fechaNacimientoTerceroInformacion'] == '' and $request['fechaIngresoTerceroInformacion'] == '' and $request['fechaRetiroTerceroInformacion'] == '' and $request['tipoContratoTerceroInformacion'] == '' and $request['aniosExperienciaTerceroInformacion'] == '' and $request['educacionTerceroInformacion'] == '' and $request['experienciaTerceroInformacion'] == '' and $request['formacionTerceroInformacion'] == '' and $request['estadoCivilTerceroInformacion'] == '' and $request['numeroHijosTerceroInformacion'] == '' and $request['composicionFamiliarTerceroInformacion'] == '' and $request['personasACargoTerceroInformacion'] == '' and $request['estratoSocialTerceroInformacion'] == '' and $request['tipoViviendaTerceroInformacion'] == '' and $request['tipoTransporteTerceroInformacion'] == '' and $request['HobbyTerceroInformacion'] == '' and $request['actividadFisicaTerceroInformacion'] == '' and $request['consumeLicorTerceroInformacion'] == '' and $request['FrecuenciaMedicion_idConsumeLicor'] == '' and $request['consumeCigarrilloTerceroInformacion'])
+            {
+                \App\TerceroInformacion::create([
+                    'Tercero_idTercero' => $id,
+                    'fechaNacimientoTerceroInformacion' => $request['fechaNacimientoTerceroInformacion'],
+                    'fechaIngresoTerceroInformacion' => $request['fechaIngresoTerceroInformacion'],
+                    'fechaRetiroTerceroInformacion' => $request['fechaRetiroTerceroInformacion'],
+                    'tipoContratoTerceroInformacion' => $request['tipoContratoTerceroInformacion'],
+                    'aniosExperienciaTerceroInformacion' => $request['aniosExperienciaTerceroInformacion'],
+                    'educacionTerceroInformacion' => $request['educacionTerceroInformacion'],
+                    'experienciaTerceroInformacion' => $request['experienciaTerceroInformacion'],
+                    'formacionTerceroInformacion' => $request['formacionTerceroInformacion'],
+                    'estadoCivilTerceroInformacion' => $request['estadoCivilTerceroInformacion'],
+                    'numeroHijosTerceroInformacion' => $request['numeroHijosTerceroInformacion'],
+                    'composicionFamiliarTerceroInformacion' => $request['composicionFamiliarTerceroInformacion'],
+                    'personasACargoTerceroInformacion' => $request['personasACargoTerceroInformacion'],
+                    'estratoSocialTerceroInformacion' => $request['estratoSocialTerceroInformacion'],
+                    'tipoViviendaTerceroInformacion' => $request['tipoViviendaTerceroInformacion'],
+                    'tipoTransporteTerceroInformacion' => $request['tipoTransporteTerceroInformacion'],
+                    'HobbyTerceroInformacion' => $request['HobbyTerceroInformacion'],
+                    'actividadFisicaTerceroInformacion' => $request['actividadFisicaTerceroInformacion'],
+                    'consumeLicorTerceroInformacion' => $request['consumeLicorTerceroInformacion'],
+                    'FrecuenciaMedicion_idConsumeLicor' => $request['FrecuenciaMedicion_idConsumeLicor'],
+                    'consumeCigarrilloTerceroInformacion' => $request['consumeCigarrilloTerceroInformacion']
+                ]);
+            }
+        }
+        $tercero = \App\Tercero::All()->last();
 
         \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
         \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
@@ -270,12 +302,12 @@ class TerceroController extends Controller
            ]);
         }
 
-        $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+        $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
         for($i = 0; $i < $contadorExamen; $i++)
         {
             \App\TerceroExamenMedico::create([
             'Tercero_idTercero' => $id,
-            'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+            'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
             'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
             'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
             'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 

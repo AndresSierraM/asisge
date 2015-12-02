@@ -30,8 +30,8 @@
 
 		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
 		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';
-		var idListaExamen = '<?php echo isset($idListaExamen) ? $idListaExamen : 0;?>';
-		var nombreListaExamen = '<?php echo isset($nombreListaExamen) ? $nombreListaExamen : "";?>';
+		var idTipoExamen = '<?php echo isset($idTipoExamen) ? $idTipoExamen : 0;?>';
+		var nombreTipoExamen = '<?php echo isset($nombreTipoExamen) ? $nombreTipoExamen : "";?>';
 		var idListaElemento = '<?php echo isset($idListaElemento) ? $idListaElemento : 0;?>';
 		var nombreListaElemento = '<?php echo isset($nombreListaElemento) ? $nombreListaElemento : "";?>';
 		var idListaVacuna = '<?php echo isset($idListaVacuna) ? $idListaVacuna : 0;?>';
@@ -41,7 +41,7 @@
 		var nombreFrecuenciaMedicion = '<?php echo isset($nombreFrecuenciaMedicion) ? $nombreFrecuenciaMedicion : "";?>';
 		
 		var listaTarea = [JSON.parse(idListaTarea),JSON.parse(nombreListaTarea)];
-		var listaExamen = [JSON.parse(idListaExamen),JSON.parse(nombreListaExamen)];
+		var listaExamen = [JSON.parse(idTipoExamen),JSON.parse(nombreTipoExamen)];
 		var listaElemento = [JSON.parse(idListaElemento),JSON.parse(nombreListaElemento)];
 		var listaVacuna = [JSON.parse(idListaVacuna),JSON.parse(nombreListaVacuna)];
 		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
@@ -82,7 +82,7 @@
 			elemento.funciones  = ['',''];
 
 			examen = new Atributos('examen','contenedor_examen','examen');
-			examen.campos = ['idCargoExamenMedico', 'ListaGeneral_idExamenMedico','ingresoCargoExamenMedico','retiroCargoExamenMedico','periodicoCargoExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
+			examen.campos = ['idCargoExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoCargoExamenMedico','retiroCargoExamenMedico','periodicoCargoExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
 			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
 			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
 			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
