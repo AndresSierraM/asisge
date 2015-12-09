@@ -235,6 +235,11 @@ Route::get('/grupoapoyogrid', function()
 	return view('grupoapoyogridphp');
 });
 
+Route::get('/conformaciongrupoapoyogrid', function()
+{
+	return view('conformaciongrupoapoyogridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
@@ -246,3 +251,4 @@ Route::resource('plancapacitacion','PlanCapacitacionController');
 Route::resource('inspeccion','InspeccionController');
 Route::resource('examenmedico','ExamenMedicoController');
 Route::resource('grupoapoyo','GrupoApoyoController');
+Route::resource('conformaciongrupoapoyo','ConformacionGrupoApoyoController');
