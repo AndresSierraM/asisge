@@ -230,6 +230,11 @@ Route::get('/examenmedicogrid', function()
 	return view('examenmedicogridphp');
 });
 
+Route::get('/grupoapoyogrid', function()
+{
+	return view('grupoapoyogridphp');
+});
+
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');
 Route::resource('matrizriesgo','MatrizRiesgoController');
@@ -240,3 +245,4 @@ Route::resource('actacapacitacion','ActaCapacitacionController');
 Route::resource('plancapacitacion','PlanCapacitacionController');
 Route::resource('inspeccion','InspeccionController');
 Route::resource('examenmedico','ExamenMedicoController');
+Route::resource('grupoapoyo','GrupoApoyoController');
