@@ -8,10 +8,10 @@
 	
 
 	@yield('clases')
-{!!Html::style('CSS/menu.css'); !!}
+	{!!Html::style('CSS/menu.css'); !!}
 	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
 	
-		{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
+	{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
 	{!!Html::script('js/menu.js'); !!}
 
 	<title>Asisge S.A.</title>
@@ -127,6 +127,12 @@
 			 		</li>
 			 		<li>
 						{!! HTML::decode(HTML::link('examenmedico', HTML::image('images/iconosmenu/Matriz%20Examenes%20medicos.png','Imagen no encontrada',array('width'=>'22','title' => 'Ex&aacute;menes M&eacute;dicos')))) !!}
+		 			</li>
+		 			<li>
+						{!! HTML::decode(HTML::link('ausentismo', HTML::image('images/iconosmenu/Registro%20Visitantes.png','Imagen no encontrada',array('width'=>'22','title' => 'Ausentismos')))) !!}
+		 			</li>
+		 			<li>
+						{!! HTML::decode(HTML::link('accidente', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Investigaci&oacute;n de Accidentes')))) !!}
 		 			</li>
 					</ul>
 				</div>
