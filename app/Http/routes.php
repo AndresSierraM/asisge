@@ -238,6 +238,14 @@ Route::get('/ausentismogrid', function()
 Route::get('/accidentegrid', function()
 {
 	return view('accidentegridphp');
+Route::get('/grupoapoyogrid', function()
+{
+	return view('grupoapoyogridphp');
+});
+
+Route::get('/conformaciongrupoapoyogrid', function()
+{
+	return view('conformaciongrupoapoyogridphp');
 });
 
 Route::resource('diagnostico','DiagnosticoController');
@@ -252,3 +260,6 @@ Route::resource('inspeccion','InspeccionController');
 Route::resource('examenmedico','ExamenMedicoController');
 Route::resource('ausentismo','AusentismoController');
 Route::resource('accidente','AccidenteController');
+
+Route::resource('grupoapoyo','GrupoApoyoController');
+Route::resource('conformaciongrupoapoyo','ConformacionGrupoApoyoController');

@@ -20,16 +20,16 @@
 		terceroArchivo = (terceroArchivo != '' ? JSON.parse(terceroArchivo) : '');
 		var valorContactos = [0,'','','','',''];
 		var valorProductos = [0,'',''];
-		var valorExamen = [0,'',0,0,0,''];
+		var valorExamen = [0,0,0,0,0,0];
 		var valorArchivo = [0,'','',''];
 
 
-		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
-		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';
+		var idTipoExamen = '<?php echo isset($idTipoExamen) ? $idTipoExamen : 0;?>';
+		var nombreTipoExamen = '<?php echo isset($nombreTipoExamen) ? $nombreTipoExamen : "";?>';
 		var idFrecuenciaMedicion = '<?php echo isset($idFrecuenciaMedicion) ? $idFrecuenciaMedicion : 0;?>';
 		var nombreFrecuenciaMedicion = '<?php echo isset($nombreFrecuenciaMedicion) ? $nombreFrecuenciaMedicion : "";?>';
 		
-		var listaTarea = [JSON.parse(idListaTarea),JSON.parse(nombreListaTarea)];
+		var listaTarea = [JSON.parse(idTipoExamen),JSON.parse(nombreTipoExamen)];
 		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
 
 		$(document).ready(function(){
@@ -53,7 +53,7 @@
 			productos.sololectura = [false,false,false];
 
 			examen = new Atributos('examen','contenedor_examen','examen');
-			examen.campos = ['idTerceroExamenMedico', 'ListaGeneral_idExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
+			examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
 			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
 			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
 			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
@@ -417,7 +417,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-phone" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:340px;'])!!}
+															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -428,7 +428,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-fax" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaIngresoTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->fechaIngresoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de ingreso','style'=>'width:340px;'])!!}
+															{!!Form::text('fechaIngresoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaIngresoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de ingreso','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -439,7 +439,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-fax" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaRetiroTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->fechaRetiroTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de retiro','style'=>'width:340px;'])!!}
+															{!!Form::text('fechaRetiroTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaRetiroTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de retiro','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -451,7 +451,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('tipoContratoTerceroInformacion',
-															array('C'=>'Contratista','TF'=>'T&eacute;rmino Fijo','I'=>'Indefinido','S'=>'Servicios'),(isset($tercero) ? $tercero->terceroInformaciones->tipoContratoTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de contrato",'style'=>'width:340px;'])!!}
+															array('C'=>'Contratista','TF'=>'T&eacute;rmino Fijo','I'=>'Indefinido','S'=>'Servicios'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->tipoContratoTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de contrato",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -462,7 +462,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('aniosExperienciaTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->aniosExperienciaTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite los a&ntilde;os de experiencia','style'=>'width:340px;'])!!}
+															{!!Form::text('aniosExperienciaTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->aniosExperienciaTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite los a&ntilde;os de experiencia','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -480,7 +480,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('educacionTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->educacionTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la educaci&oacute;n'])!!}
+															{!!Form::textarea('educacionTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->educacionTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la educaci&oacute;n'])!!}
 														</div>
 													</div>
 												</div>
@@ -498,7 +498,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('experienciaTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->experienciaTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+															{!!Form::textarea('experienciaTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->experienciaTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
 														</div>
 													</div>
 												</div>
@@ -516,7 +516,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('formacionTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->formacionTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+															{!!Form::textarea('formacionTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->formacionTerceroInformacion : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
 														</div>
 													</div>
 												</div>
@@ -539,7 +539,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('estadoCivilTerceroInformacion',
-															array('CASADO'=>'Casado','SOLTERO'=>'Soltero'),(isset($tercero) ? $tercero->terceroInformaciones->estadoCivilTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil",'style'=>'width:340px;'])!!}
+															array('CASADO'=>'Casado','SOLTERO'=>'Soltero'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->estadoCivilTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -550,7 +550,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('numeroHijosTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->numeroHijosTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el n&uacute;mero de hijos','style'=>'width:340px;'])!!}
+															{!!Form::text('numeroHijosTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->numeroHijosTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el n&uacute;mero de hijos','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -562,7 +562,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('composicionFamiliarTerceroInformacion',
-															array('VS'=>'Vive Solo','SH'=>'Solo con Hijos','EH'=>'Esposo e Hijos','FO'=>'Familia de Origen','A'=>'Amigos'),(isset($tercero) ? $tercero->terceroInformaciones->composicionFamiliarTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la composici&oacute;n familiar",'style'=>'width:340px;'])!!}
+															array('VS'=>'Vive Solo','SH'=>'Solo con Hijos','EH'=>'Esposo e Hijos','FO'=>'Familia de Origen','A'=>'Amigos'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->composicionFamiliarTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la composici&oacute;n familiar",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -573,7 +573,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('personasACargoTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->personasACargoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el n&uacute;mero de personas a cargo','style'=>'width:340px;'])!!}
+															{!!Form::text('personasACargoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->personasACargoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el n&uacute;mero de personas a cargo','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -584,7 +584,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('estratoSocialTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->estratoSocialTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el estrato','style'=>'width:340px;'])!!}
+															{!!Form::text('estratoSocialTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->estratoSocialTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el estrato','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -596,7 +596,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('tipoViviendaTerceroInformacion',
-															array('PROPIA'=>'Propia','ARRENDADA'=>'Arrendada','FAMILIAR'=>'Familiar'),(isset($tercero) ? $tercero->terceroInformaciones->tipoViviendaTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de vivienda",'style'=>'width:340px;'])!!}
+															array('PROPIA'=>'Propia','ARRENDADA'=>'Arrendada','FAMILIAR'=>'Familiar'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->tipoViviendaTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de vivienda",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -608,7 +608,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('tipoTransporteTerceroInformacion',
-															array('PIE'=>'A pie','BICICLETA'=>'Bicicleta','PUBLICO'=>'P&uacute;blico','MOTO'=>'Moto','CARRO'=>'Carro'),(isset($tercero) ? $tercero->terceroInformaciones->tipoTransporteTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de transporte",'style'=>'width:340px;'])!!}
+															array('PIE'=>'A pie','BICICLETA'=>'Bicicleta','PUBLICO'=>'P&uacute;blico','MOTO'=>'Moto','CARRO'=>'Carro'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->tipoTransporteTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de transporte",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -619,7 +619,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('HobbyTerceroInformacion',(isset($tercero) ? $tercero->terceroInformaciones->HobbyTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el hobby','style'=>'width:340px;'])!!}
+															{!!Form::text('HobbyTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->HobbyTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Digite el hobby','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -631,7 +631,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('actividadFisicaTerceroInformacion',
-															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero) ? $tercero->terceroInformaciones->actividadFisicaTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si realiza actividad f&iacute;sica",'style'=>'width:340px;'])!!}
+															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->actividadFisicaTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si realiza actividad f&iacute;sica",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -643,7 +643,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('consumeLicorTerceroInformacion',
-															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero) ? $tercero->terceroInformaciones->consumeLicorTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si consume licor",'style'=>'width:340px;'])!!}
+															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->consumeLicorTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si consume licor",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -655,7 +655,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('FrecuenciaMedicion_idConsumeLicor',
-															$frecuenciaAlcohol, (isset($tercero) ? $tercero->terceroInformaciones->FrecuenciaMedicion_idConsumeLicor : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la frencuencia del consumo de licor",'style'=>'width:340px;'])!!}
+															$frecuenciaAlcohol, (isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->FrecuenciaMedicion_idConsumeLicor : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la frencuencia del consumo de licor",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -667,7 +667,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('consumeCigarrilloTerceroInformacion',
-															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero) ? $tercero->terceroInformaciones->consumeCigarrilloTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si consume cigarrillo",'style'=>'width:340px;'])!!}
+															array('1'=>'S&iacute;','0'=>'No'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->consumeCigarrilloTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione si consume cigarrillo",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>

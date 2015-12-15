@@ -30,8 +30,8 @@ class CargoController extends Controller
         $idListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('idListaGeneral');
         $nombreListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('nombreListaGeneral');
         
-        $idListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('idListaGeneral');
-        $nombreListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('nombreListaGeneral');
+        $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
+        $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
 
         $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
         $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
@@ -42,7 +42,7 @@ class CargoController extends Controller
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idListaExamen','nombreListaExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
     }
 
     /**
@@ -100,13 +100,13 @@ class CargoController extends Controller
                ]);
             }
 
-            $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+            $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
             
             for($i = 0; $i < $contadorExamen; $i++)
             {
                 \App\CargoExamenMedico::create([
                 'Cargo_idCargo' => $cargo->idCargo,
-                'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
                 'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
                 'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
                 'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
@@ -140,8 +140,8 @@ class CargoController extends Controller
         $idListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('idListaGeneral');
         $nombreListaTarea = \App\ListaGeneral::where('tipoListaGeneral','TareaAltoRiesgo')->lists('nombreListaGeneral');
         
-        $idListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('idListaGeneral');
-        $nombreListaExamen = \App\ListaGeneral::where('tipoListaGeneral','ExamenMedico')->lists('nombreListaGeneral');
+        $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
+        $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
 
         $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
         $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
@@ -152,7 +152,7 @@ class CargoController extends Controller
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $cargo = \App\Cargo::find($id);
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idListaExamen','nombreListaExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'),['cargo'=>$cargo]);
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'),['cargo'=>$cargo]);
     }
 
     /**
@@ -203,12 +203,12 @@ class CargoController extends Controller
                ]);
             }
 
-            $contadorExamen = count($request['ListaGeneral_idExamenMedico']);
+            $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
             for($i = 0; $i < $contadorExamen; $i++)
             {
                 \App\CargoExamenMedico::create([
                 'Cargo_idCargo' => $cargo->idCargo,
-                'ListaGeneral_idExamenMedico' => $request['ListaGeneral_idExamenMedico'][$i], 
+                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
                 'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
                 'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
                 'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 

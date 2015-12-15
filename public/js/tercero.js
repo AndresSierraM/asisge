@@ -89,7 +89,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             } 
 
             option = document.createElement('option');
-            option.value = '';
+            option.value = '0';
             option.text = 'Seleccione...';
             select.appendChild(option);
             
