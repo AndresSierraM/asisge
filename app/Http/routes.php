@@ -238,6 +238,8 @@ Route::get('/ausentismogrid', function()
 Route::get('/accidentegrid', function()
 {
 	return view('accidentegridphp');
+});
+
 Route::get('/grupoapoyogrid', function()
 {
 	return view('grupoapoyogridphp');
