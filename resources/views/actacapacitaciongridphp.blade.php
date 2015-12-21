@@ -126,5 +126,21 @@ $buttoneliminar = array("#pager",
 
 $grid->callGridMethod("#grid", "navButtonAdd", $buttoneliminar);
 
+$buttonimprimir = array("#pager",
+    array("caption"=>"Imprimir", "title"=>"Imprimir el registro", 
+      "onClickButton"=>"js: function(){
+        var id = $('#grid').jqGrid('getGridParam','selrow'), data={};
+        if(id) {
+          window.open('actacapacitacion/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+          
+        } else {
+          alert('Por favor seleccione el registro a Imprimir');
+          return;
+        }
+        
+      }"
+    )
+);
+$grid->callGridMethod("#grid", "navButtonAdd", $buttonimprimir);
 // Ejecutamos la grid
 $grid->renderGrid('#grid','#pager',true, null, null, true,true);
