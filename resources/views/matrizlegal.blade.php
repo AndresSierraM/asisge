@@ -128,7 +128,8 @@
 											<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Fecha verificaci&oacute;n</div>
 											<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Acci&oacute;n / Evidencia</div>
 											<div class="col-md-1" style="width: 350px;display:inline-block;height:60px;">Control a implementar</div>
-											
+											<div id="contenedor_detalle">
+											</div>
 						                  </div>
 						                </div>
 						              </div>
