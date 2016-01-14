@@ -126,7 +126,7 @@ top: -5px;
 
 .gridbox{
  width:200px;
- height:210px;
+ height:260px;
  background-color:#FFF;
  box-shadow:0 0 10px #CCC;
  border:solid #CCC 1px;
@@ -141,7 +141,7 @@ top: -5px;
 
 .innergrid{
  width:170px;
- height:180px;
+ height:230px;
  overflow:hidden;
  margin:15px;
 

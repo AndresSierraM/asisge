@@ -12,8 +12,14 @@ class Accidente extends Model
     protected $fillable = ['numeroAccidente',
 							'nombreAccidente',
 							'clasificacionAccidente',
+							'Ausentismo_idAusentismo',
 							'Tercero_idCoordinador',
+							'Tercero_idEmpleado',
+							'edadEmpleadoAccidente',
+							'tiempoServicioAccidente',
+							'Proceso_idProceso',
 							'enSuLaborAccidente',
+							'laborAccidente',
 							'enLaEmpresaAccidente',
 							'lugarAccidente',
 							'fechaOcurrenciaAccidente',
@@ -25,10 +31,18 @@ class Accidente extends Model
 							'agenteYMecanismoAccidente',
 							'naturalezaLesionAccidente',
 							'parteCuerpoAfectadaAccidente',
-							'agenteLesionAccidente',
 							'tipoAccidente',
-							'arbolCausasAccidente',
 							'observacionAccidente'];
 
     public $timestamps = false;
+
+    public function accidenteRecomendacion()
+    {
+    	return $this->hasMany('App\AccidenteRecomendacion','Accidente_idAccidente');
+    }
+
+    public function accidenteEquipo()
+    {
+    	return $this->hasMany('App\AccidenteEquipo','Accidente_idAccidente');
+    }
 }

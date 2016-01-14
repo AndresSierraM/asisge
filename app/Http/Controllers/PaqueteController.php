@@ -26,7 +26,7 @@ class PaqueteController extends Controller
      */
     public function index()
     {
-        return view('paquetegrid');
+        return view('PaqueteGrid');
     }
 
     /**

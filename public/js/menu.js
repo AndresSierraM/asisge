@@ -4,7 +4,7 @@ $(document).ready(function(){
 		$('#arrowarch').slideToggle('slow');
 		$('#gridboxarch').slideToggle('slow',function(){
 			$('ul').animate({marginTop:'0'});
-			$('#gridboxarch').animate({height:'200px'});
+			$('#gridboxarch').animate({height:'250px'});
 		});
 			event.stopPropagation();
 	});

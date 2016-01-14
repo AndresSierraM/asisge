@@ -37,8 +37,16 @@ class AccidenteController extends Controller
      */
     public function create()
     {
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        return view('accidente',compact('tercero'));
+        $terceroCoord = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $terceroEmple = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $ausentismo  = \App\Ausentismo::All()->lists('nombreAusentismo','idAusentismo');
+        $proceso  = \App\Proceso::All()->lists('nombreProceso','idProceso');
+        $idProceso  = \App\Proceso::All()->lists('idProceso');
+        $nombreProceso  = \App\Proceso::All()->lists('nombreProceso');
+        $idTercero = \App\Tercero::All()->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        return view('accidente',compact('terceroCoord','terceroEmple','ausentismo',
+            'proceso','idProceso','nombreProceso','idTercero','nombreCompletoTercero'));
     }
 
     /**
@@ -49,15 +57,20 @@ class AccidenteController extends Controller
      */
     public function store(AccidenteRequest $request)
     {
-
+        
         \App\Accidente::create([
-
             'numeroAccidente' => $request['numeroAccidente'],
             'nombreAccidente' => $request['nombreAccidente'],
             'clasificacionAccidente' => $request['clasificacionAccidente'],
+            'Ausentismo_idAusentismo' => (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']),
             'Tercero_idCoordinador' => $request['Tercero_idCoordinador'],
-            'enSuLaborAccidente' => (isset($request['enSuLaborAccidente']) ? 1 : 0),
-            'enLaEmpresaAccidente' => (isset($request['enLaEmpresaAccidente']) ? 1 : 0),
+            'Tercero_idEmpleado' => $request['Tercero_idEmpleado'],
+            'edadEmpleadoAccidente' => $request['edadEmpleadoAccidente'],
+            'tiempoServicioAccidente' => $request['tiempoServicioAccidente'],
+            'Proceso_idProceso' => $request['Proceso_idProceso'],
+            'enSuLaborAccidente' => (($request['enSuLaborAccidente'] !== null) ? 1 : 0),
+            'laborAccidente' => $request['laborAccidente'],
+            'enLaEmpresaAccidente' => (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0),
             'lugarAccidente' => $request['lugarAccidente'],
             'fechaOcurrenciaAccidente' => $request['fechaOcurrenciaAccidente'],
             'tiempoEnLaborAccidente' => $request['tiempoEnLaborAccidente'],
@@ -70,8 +83,27 @@ class AccidenteController extends Controller
             'parteCuerpoAfectadaAccidente' => $request['parteCuerpoAfectadaAccidente'],
             'tipoAccidente' => $request['tipoAccidente'],
             'observacionAccidente'  => $request['observacionAccidente']
-
             ]);
+
+
+        $accidente = \App\Accidente::All()->last();
+        $contadorDetalle = count($request['idAccidenteRecomendacion']);
+        
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            \App\AccidenteRecomendacion::create([
+
+                'idAccidenteRecomendacion' => $request['idAccidenteRecomendacion'][$i], 
+                'Accidente_idAccidente' => $accidente->idAccidente, 
+                'controlAccidenteRecomendacion' => $request['controlAccidenteRecomendacion'][$i], 
+                'fuenteAccidenteRecomendacion' => $request['fuenteAccidenteRecomendacion'][$i], 
+                'medioAccidenteRecomendacion' => $request['medioAccidenteRecomendacion'][$i], 
+                'personaAccidenteRecomendacion' => $request['personaAccidenteRecomendacion'][$i], 
+                'fechaVerificacionAccidenteRecomendacion' => $request['fechaVerificacionAccidenteRecomendacion'][$i], 
+                'medidaEfectivaAccidenteRecomendacion' => $request['medidaEfectivaAccidenteRecomendacion'][$i], 
+                'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]
+            ]);
+        }
 
         return redirect('/accidente');
     }
@@ -96,8 +128,16 @@ class AccidenteController extends Controller
     public function edit($id)
     {
         $accidente = \App\Accidente::find($id);
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        return view('accidente',compact('tercero'),['accidente'=>$accidente]);
+        $terceroCoord = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $terceroEmple = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $ausentismo  = \App\Ausentismo::All()->lists('nombreAusentismo','idAusentismo');
+        $proceso  = \App\Proceso::All()->lists('nombreProceso','idProceso');
+        $idProceso  = \App\Proceso::All()->lists('idProceso');
+        $nombreProceso  = \App\Proceso::All()->lists('nombreProceso');
+        $idTercero = \App\Tercero::All()->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        return view('accidente',compact('terceroCoord','terceroEmple','ausentismo',
+            'proceso','idProceso','nombreProceso','idTercero','nombreCompletoTercero'),['accidente'=>$accidente]);
     }
 
     /**
@@ -111,8 +151,45 @@ class AccidenteController extends Controller
     {
         $accidente = \App\Accidente::find($id);
         $accidente->fill($request->all());
-        
+        $accidente->enSuLaborAccidente = (($request['enSuLaborAccidente'] !== null) ? 1 : 0);
+        $accidente->enLaEmpresaAccidente = (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0);
+        $accidente->Ausentismo_idAusentismo = (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']);
+
         $accidente->save();
+
+        \App\AccidenteRecomendacion::where('Accidente_idAccidente',$id)->delete();
+
+        $contadorDetalle = count($request['idAccidenteRecomendacion']);
+        
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            \App\AccidenteRecomendacion::create([
+
+                'idAccidenteRecomendacion' => $request['idAccidenteRecomendacion'][$i], 
+                'Accidente_idAccidente' => $id, 
+                'controlAccidenteRecomendacion' => $request['controlAccidenteRecomendacion'][$i], 
+                'fuenteAccidenteRecomendacion' => $request['fuenteAccidenteRecomendacion'][$i], 
+                'medioAccidenteRecomendacion' => $request['medioAccidenteRecomendacion'][$i], 
+                'personaAccidenteRecomendacion' => $request['personaAccidenteRecomendacion'][$i], 
+                'fechaVerificacionAccidenteRecomendacion' => $request['fechaVerificacionAccidenteRecomendacion'][$i], 
+                'medidaEfectivaAccidenteRecomendacion' => $request['medidaEfectivaAccidenteRecomendacion'][$i], 
+                'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]
+            ]);
+        }
+
+        \App\AccidenteEquipo::where('Accidente_idAccidente',$id)->delete();
+
+        $contadorDetalle = count($request['idAccidenteEquipo']);
+        
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            \App\AccidenteEquipo::create([
+
+                'idAccidenteEquipo' => $request['idAccidenteEquipo'][$i], 
+                'Accidente_idAccidente' => $id, 
+                'Tercero_idInvestigador' => $request['Tercero_idInvestigador'][$i]
+            ]);
+        }
 
        return redirect('/accidente');
     }

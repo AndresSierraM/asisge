@@ -90,7 +90,14 @@
 				 		<li>
 							{!! HTML::decode(HTML::link('tipoexamenmedico', HTML::image('images/iconosmenu/Matriz%20Examenes%20medicos.png','Imagen no encontrada',array('width'=>'22','title' => 'Ex&aacute;menes M&eacute;dicos')))) !!}
 			 			</li>
-
+				 		<li>
+							{!! HTML::decode(HTML::link('grupoapoyo', HTML::image('images/iconosmenu/Grupos%20apoyo.png','Imagen no encontrada',array('width'=>'22','title' => 'Grupos de Apoyo')))) !!}
+			 			</li>
+			 			<li>
+							{!! HTML::decode(HTML::link('tipoelementoproteccion', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Tipos de Elementos de Protección')))) !!}
+			 			</li>
+			 			<li>
+							{!! HTML::decode(HTML::link('elementoproteccion', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Elementos de Protección')))) !!}			 			</li>
 					</ul>
 				</div>
 			</div>
@@ -134,7 +141,14 @@
 		 			<li>
 						{!! HTML::decode(HTML::link('accidente', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Investigaci&oacute;n de Accidentes')))) !!}
 		 			</li>
-					</ul>
+		 			<li>
+						{!! HTML::decode(HTML::link('conformaciongrupoapoyo', HTML::image('images/iconosmenu/Grupos%20apoyo.png','Imagen no encontrada',array('width'=>'22','title' => 'Conformaci&oacute;n de Grupos de Apoyo')))) !!}
+		 			</li>
+		 			<li>
+						{!! HTML::decode(HTML::link('entregaelementoproteccion', HTML::image('images/iconosmenu/Entrega%20Elementos.png','Imagen no encontrada',array('width'=>'22','title' => 'Entrega de Elementos de Protecci&oacute;n Personal')))) !!}
+		 			</li>
+
+		 			</ul>
 				</div>
 			</div>
 

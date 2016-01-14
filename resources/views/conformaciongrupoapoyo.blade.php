@@ -2,7 +2,7 @@
 
 @section('titulo')
 	<h3 id="titulo">
-		<center>Conformacii&oacute;n de Grupos de Apoyo</center>
+		<center>Conformaci&oacute;n de <br>Grupos de Apoyo</center>
 	</h3>
 @stop
 

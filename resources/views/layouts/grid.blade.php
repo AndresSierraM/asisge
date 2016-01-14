@@ -2,11 +2,6 @@
     
     @section('clases')
 
-      {!! Html::style('assets/guriddosuito/css/jquery-ui.css'); !!}
-      {!! Html::style('assets/guriddosuito/css/trirand/ui.jqgrid.css'); !!}
-      {!! Html::style('assets/guriddosuito/css/ui.multiselect.css'); !!}
-
-
       <style type="text">
           html, body {
           margin: 0;			/* Remove body margin/padding */
@@ -17,25 +12,12 @@
   		
       </style>
 
-
-
-      {!! Html::script('assets/guriddosuito/js/jquery.min.js'); !!}
-      {!! Html::script('assets/guriddosuito/js/trirand/i18n/grid.locale-en.js'); !!}
-      {!! Html::script('assets/guriddosuito/js/trirand/jquery.jqGrid.min.js'); !!}
-      <script>     	  
-      	$.jgrid.no_legacy_api = true;
-      	$.jgrid.useJSON = true;
-      	$.jgrid.defaults.width = "1150";
-        $.jgrid.defaults.height = "300";
-    	</script>
-       {!! Html::script('assets/guriddosuito/js/jquery-ui.min.js'); !!}
-
-
-      
-<!--       {!!Html::script('DataTables/media/js/jquery.dataTables.js'); !!}
-      {!!Html::style('DataTables/media/css/jquery.dataTables.min.css'); !!}
-          {!!Html::script('DataTables/media/js/jquery.js'); !!}
-      <style type="text/css">
+      <!-- DataTables -->
+        {!!Html::script('DataTables/media/js/jquery.js'); !!}
+        {!!Html::script('DataTables/media/js/jquery.dataTables.js'); !!}
+        {!!Html::style('DataTables/media/css/jquery.dataTables.min.css'); !!}
+               
+        <style type="text/css">
             a
             {
                 color: #000;
@@ -51,6 +33,4 @@
                 border-radius: 4px;
             }
         </style>
-    
- -->
      @stop

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Tipos de Examenes M&eacute;dicos</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Tipo examen medico</center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -28,7 +28,7 @@
                             <li><a class="toggle-vis" data-column="4"><label> Lim Superior</label></a></li>
                         </ul>
                     </div>
-                    <table id="tipoexamenmedico" name="tipoexamenmedico" class="display table-bordered" width="100%">
+                    <table id="ttipoexamenmedico" name="ttipoexamenmedico" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
@@ -63,14 +63,14 @@
     $(document).ready( function () {
 
         
-        /*$('#tipoexamenmedico').DataTable({
+        /*$('#ttipoexamenmedico').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
             "ajax": "{!! URL::to ('/datosTipoExamenMedico')!!}",
         });*/
         var lastIdx = null;
-        var table = $('#tipoexamenmedico').DataTable( {
+        var table = $('#ttipoexamenmedico').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
@@ -112,7 +112,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tipoexamenmedico tbody')
+        $('#ttipoexamenmedico tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -127,15 +127,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tipoexamenmedico tfoot th').each( function () {
+    $('#ttipoexamenmedico tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tipoexamenmedico thead th').eq( $(this).index() ).text();
+        var title = $('#ttipoexamenmedico thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tipoexamenmedico').DataTable();
+    var table = $('#ttipoexamenmedico').DataTable();
  
     // Apply the search
     table.columns().every( function () {

@@ -15,7 +15,6 @@
 	@endif
 
 	<?php $mytime = Carbon\Carbon::now();?>
-<?php echo (isset($ausentismo->archivoAusentismo) ? 'images/'. $ausentismo->archivoAusentismo : ''); ?>
 		<div id='form-section' >
 				<fieldset id="ausentismo-form-fieldset">	
 

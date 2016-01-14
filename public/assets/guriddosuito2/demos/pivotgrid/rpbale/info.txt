@@ -1,1 +1,0 @@
-We can use local array data to build the pivot
