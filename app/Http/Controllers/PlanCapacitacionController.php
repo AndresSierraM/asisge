@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\PlanCapacitacionRequest;
 use App\Http\Controllers\Controller;
+use DB;
 
 class PlanCapacitacionController extends Controller
 {
@@ -82,7 +83,23 @@ class PlanCapacitacionController extends Controller
      */
     public function show($id, Request $request)
     {
-        
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            $planCapacitacion = DB::table('plancapacitacion as pc')
+            ->leftJoin('tercero as t', 'pc.Tercero_idResponsable', '=', 't.idTercero')
+            ->select(DB::raw('tipoPlanCapacitacion, nombrePlanCapacitacion, objetivoPlanCapacitacion, Tercero_idResponsable, t.nombreCompletoTercero, personalInvolucradoPlanCapacitacion, fechaInicioPlanCapacitacion, fechaFinPlanCapacitacion, metodoEficaciaPlanCapacitacion'))
+            ->where('idPlanCapacitacion','=',$id)
+            ->get();
+
+            $planCapacitacionTema = DB::table('plancapacitaciontema as pct')
+            ->leftJoin('tercero as t', 'pct.Tercero_idCapacitador', '=', 't.idTercero')
+            ->select(DB::raw('nombrePlanCapacitacionTema, Tercero_idCapacitador, t.nombreCompletoTercero,fechaPlanCapacitacionTema, horaPlanCapacitacionTema,dictadaPlanCapacitacionTema'))
+            ->orderby('idPlanCapacitacionTema','ASC')
+            ->where('PlanCapacitacion_idPlanCapacitacion','=',$id)
+            ->get();
+            
+            return view('formatos.plancapacitacionimpresion',compact('planCapacitacion','planCapacitacionTema'));
+        }
     }
 
     /**

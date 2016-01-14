@@ -95,6 +95,35 @@ class ActaCapacitacionController extends Controller
      */
     public function show($id, Request $request)
     {
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            $idPlanCapacitacion = \App\ActaCapacitacion::find($id);
+
+            $actaCapacitacion = DB::table('actacapacitacion as ac')
+            ->leftJoin('plancapacitacion as pc', 'ac.PlanCapacitacion_idPlanCapacitacion', '=', 'pc.idPlanCapacitacion')
+            ->leftJoin('tercero as t', 'pc.Tercero_idResponsable', '=', 't.idTercero')
+            ->select(DB::raw('numeroActaCapacitacion, fechaElaboracionActaCapacitacion, PlanCapacitacion_idPlanCapacitacion, idPlanCapacitacion, tipoPlanCapacitacion, nombrePlanCapacitacion, objetivoPlanCapacitacion, Tercero_idResponsable, t.nombreCompletoTercero, personalInvolucradoPlanCapacitacion, fechaInicioPlanCapacitacion, fechaFinPlanCapacitacion, metodoEficaciaPlanCapacitacion'))
+            ->where('idActaCapacitacion','=',$id)
+            ->get();
+
+            $planCapacitacionTema = DB::table('plancapacitaciontema as pct')
+            ->leftJoin('tercero as t', 'pct.Tercero_idCapacitador', '=', 't.idTercero')
+            ->select(DB::raw('nombrePlanCapacitacionTema, Tercero_idCapacitador, t.nombreCompletoTercero,fechaPlanCapacitacionTema, horaPlanCapacitacionTema,dictadaPlanCapacitacionTema,cumpleObjetivoPlanCapacitacionTema'))
+            ->orderby('idPlanCapacitacionTema','ASC')
+            ->where('PlanCapacitacion_idPlanCapacitacion','=',$idPlanCapacitacion->PlanCapacitacion_idPlanCapacitacion)
+            ->get();
+
+            $actaCapacitacionAsistente = DB::table('actacapacitacionasistente as aca')
+            ->leftJoin('tercero as t', 'aca.Tercero_idAsistente', '=', 't.idTercero')
+            ->leftJoin('cargo as c', 't.Cargo_idCargo', '=', 'c.idCargo')
+            ->select(DB::raw('ActaCapacitacion_idActaCapacitacion, Tercero_idAsistente, t.nombreCompletoTercero, t.Cargo_idCargo, c.nombreCargo'))
+            ->orderby('idActaCapacitacionAsistente','ASC')
+            ->where('ActaCapacitacion_idActaCapacitacion','=',$id)
+            ->get();
+
+            return view('formatos.actacapacitacionimpresion',compact('actaCapacitacion','planCapacitacionTema','actaCapacitacionAsistente'));
+        }
+
         $planCapacitacion = \App\PlanCapacitacion::find($request['idPlanCapacitacion']);
         $tercero = \App\Tercero::find($planCapacitacion->Tercero_idResponsable);
         if($request->ajax())

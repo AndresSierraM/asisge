@@ -20,11 +20,11 @@
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
 		var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 		var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
+		var eventos2 = ['onclick','horaDetalle(this.parentNode.id);'];
 
 		$(document).ready(function(){
 
-			
-			tema = new Atributos('tema','contenedor_tema','tema');
+			tema = new Atributos('tema','contenedor_tema','tema_');
 			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema'];
 			tema.etiqueta = ['input','input','select','input','input'];
 			tema.tipo = ['hidden','text','','text','text'];
@@ -33,7 +33,7 @@
 			tema.sololectura = [false,false,false,false,false];
 			tema.completar = ['off','off','off','off','off'];
 			tema.opciones = ['','',tercero,'',''];
-			tema.funciones  = ['','','',eventos1,''];
+			tema.funciones  = ['','','',eventos1,eventos2];
 
 			for(var j=0, k = planCapacitacionTema.length; j < k; j++)
 			{
@@ -47,6 +47,13 @@
 			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
 			$('#fechaPlanCapacitacionTema'+posicion).datetimepicker(({
 				format: "YYYY-MM-DD"
+			}));
+		}
+		function horaDetalle(registro)
+		{
+			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+			$('#horaPlanCapacitacionTema'+posicion).datetimepicker(({
+				format: "hh:mm"
 			}));
 		}
 	</script>
