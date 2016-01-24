@@ -264,7 +264,7 @@ Route::get('datosAccidente', function()
 
 Route::get('datosGrupoApoyo', function()
 {
-	}	return view('accidentegridphp');
+	return view('accidentegridphp');
 });
 
 Route::get('/grupoapoyogrid', function()
@@ -298,4 +298,5 @@ Route::resource('accidente','AccidenteController');
 Route::resource('grupoapoyo','GrupoApoyoController');
 Route::resource('conformaciongrupoapoyo','ConformacionGrupoApoyoController');
 Route::resource('entregaelementoproteccion','EntregaElementoProteccionController');
+Route::resource('planauditoria','PlanAuditoriaController');
 

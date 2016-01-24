@@ -71,7 +71,7 @@
 	@endif
 
 		<div id="form_section">
-			<fieldset id="matrizLegal-form-fieldset">
+			<fieldset id="plancapacitacion-form-fieldset">
 				<div class="form-group" id='test'>
 					{!!Form::label('tipoPlanCapacitacion', 'Tipo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
@@ -125,10 +125,34 @@
 										</div>
 										<div id="objetivo" class="panel-collapse collapse in">
 											<div class="panel-body">
-												<div class="form-group" id='test'>
-													<div class="col-sm-10" style="width: 100%;">
+												<div class="form-group" id='test' style="width:600px; display: inline; " >
+													<div class="col-sm-10" style="width: 800px">
 														<div class="input-group">
-															{!!Form::textarea('objetivoPlanCapacitacion',null,['class'=>'ckeditor','placeholder'=>'Ingresa los objetivos'])!!}
+															{!!Form::textarea('objetivoPlanCapacitacion',null,['class'=>'ckeditor','placeholder'=>'Ingresa los objetivos','style'=>'width:300px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" id='test' style="width:300px; display: inline; " >
+													{!!Form::label('tabla', 'Vista', array('class' => 'col-sm-2 control-label','style'=>'width:60px;'))!!}
+													<div class="col-sm-10" style="width:200px">
+														<div class="input-group" style="width:200px">
+															<span class="input-group-addon">
+																<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('tabla',
+															array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n','GENERAL'=>'General'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo",'style'=>'width:200px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" id='test' style="width:300px; display: inline; " >
+													{!!Form::label('campos', 'Datos', array('class' => 'col-sm-2 control-label','style'=>'width:60px;'))!!}
+													<div class="col-sm-10" style="width:200px">
+														<div class="input-group" style="width:200px">
+															<span class="input-group-addon">
+																<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('campos',
+															array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n','GENERAL'=>'General'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo",'style'=>'width:200px;height'])!!}
 														</div>
 													</div>
 												</div>

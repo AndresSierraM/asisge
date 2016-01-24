@@ -141,7 +141,7 @@ class PlanCapacitacionController extends Controller
             {
                 \App\PlanCapacitacionTema::create([
 
-                    'PlanCapacitacion_idPlanCapacitacion' => $planCapacitacion->idPlanCapacitacion,
+                    'PlanCapacitacion_idPlanCapacitacion' => $id,
                     'nombrePlanCapacitacionTema' => $request['nombrePlanCapacitacionTema'][$i],
                     'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
                     'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],

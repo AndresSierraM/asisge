@@ -22,4 +22,3 @@
 
     $output['aaData'] = $row;
     echo json_encode($output);
-?>

@@ -22,9 +22,7 @@ class ElementoProteccion extends Model
 
     public function entregaelementoprotecciondetalles()
 	{
-		return 'hola';
-		return $this->hasMany('App\EntregaElementoProteccionDetalle',
-		'ElementoProteccion_idElementoProteccion');
+		return $this->hasMany('App\EntregaElementoProteccionDetalle','ElementoProteccion_idElementoProteccion');
 	}
 
     
