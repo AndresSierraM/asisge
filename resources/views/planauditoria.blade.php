@@ -10,13 +10,13 @@
 
 	@include('alerts.request')
 	<script>
-		var planAuditoriaAcompanante = '<?php echo (isset($planAuditoria) ? json_encode($planAuditor->planAuditoriaAcompanantes) : "");?>';
+		var planAuditoriaAcompanante = '<?php echo (isset($planAuditoria) ? json_encode($planAuditoria->planAuditoriaAcompanantes) : "");?>';
 		planAuditoriaAcompanante = (planAuditoriaAcompanante != '' ? JSON.parse(planAuditoriaAcompanante) : '');
 
-		var planAuditoriaNotificado = '<?php echo (isset($planAuditoria) ? json_encode($planAuditor->planAuditoriaNotificados) : "");?>';
+		var planAuditoriaNotificado = '<?php echo (isset($planAuditoria) ? json_encode($planAuditoria->planAuditoriaNotificados) : "");?>';
 		planAuditoriaNotificado = (planAuditoriaNotificado != '' ? JSON.parse(planAuditoriaNotificado) : '');
 
-		var planAuditoriaAgenda = '<?php echo (isset($planAuditoria) ? json_encode($planAuditor->planAuditoriaAgendas) : "");?>';
+		var planAuditoriaAgenda = '<?php echo (isset($planAuditoria) ? json_encode($planAuditoria->planAuditoriaAgendas) : "");?>';
 		planAuditoriaAgenda = (planAuditoriaAgenda != '' ? JSON.parse(planAuditoriaAgenda) : '');
 
 		var valorAcompanante = [0,0];
@@ -28,6 +28,7 @@
 		var idProceso = '<?php echo isset($idProceso) ? $idProceso : "";?>';
 		var nombreProceso = '<?php echo isset($nombreProceso) ? $nombreProceso : "";?>';
 		var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
+		var proceso = [JSON.parse(idProceso),JSON.parse(nombreProceso)];
 		var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
 		var eventos2 = ['onclick','horaDetalle(this.parentNode.id);'];
 
@@ -63,7 +64,7 @@
 			agenda.clase = ['','','','','','','',''];
 			agenda.sololectura = [false,false,false,false,false,false,false,false];
 			agenda.completar = ['off','off','off','off','off','off','off','off'];
-			agenda.opciones = ['',tercero,'','','','','','',''];
+			agenda.opciones = ['',proceso,tercero,tercero,'','','','',''];
 			agenda.funciones  = ['','','','',eventos1,eventos2,eventos2,''];
 
 			for(var j=0, k = planAuditoriaAcompanante.length; j < k; j++)
@@ -332,10 +333,10 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#recursos">Observaciones</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#observaciones">Observaciones</a>
 											</h4>
 										</div>
-										<div id="recursos" class="panel-collapse collapse">
+										<div id="observaciones" class="panel-collapse collapse">
 											<div class="panel-body">
 												<div class="form-group" id='test' >
 													<div class="col-sm-10" >
@@ -362,7 +363,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 															</span>
-															{!!Form::checkbox('fechaInicioPlanAuditoria',0,true)!!}
+															{!!Form::checkbox('aprobacionPlanAuditoria',0,true)!!}
 														</div>
 													</div>
 												</div>

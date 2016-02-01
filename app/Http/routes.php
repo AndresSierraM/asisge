@@ -242,6 +242,16 @@ Route::get('datosPlanCapacitacion', function()
 	include public_path().'/ajax/datosPlanCapacitacion.php';
 });
 
+Route::get('datosPlanAuditoria', function()
+{
+	include public_path().'/ajax/datosPlanAuditoria.php';
+});
+
+Route::get('datosListaChequeo', function()
+{
+	include public_path().'/ajax/datosListaChequeo.php';
+});
+
 Route::get('datosInspeccion', function()
 {
 	include public_path().'/ajax/datosInspeccion.php';
@@ -299,4 +309,6 @@ Route::resource('grupoapoyo','GrupoApoyoController');
 Route::resource('conformaciongrupoapoyo','ConformacionGrupoApoyoController');
 Route::resource('entregaelementoproteccion','EntregaElementoProteccionController');
 Route::resource('planauditoria','PlanAuditoriaController');
+Route::resource('preguntalistachequeo','PreguntasListaChequeoController');
+Route::resource('listachequeo','ListaChequeoController');
 

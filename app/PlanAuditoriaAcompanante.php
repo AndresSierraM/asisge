@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlanAuditoriaAcompanante extends Model
 {
-    protected $table = 'planauditoriacompanante';
+    protected $table = 'planauditoriaacompanante';
     protected $primaryKey = 'idPlanAuditoriaAcompanante';
 
     protected $fillable = ['PlanAuditoria_idPlanAuditoria', 'Tercero_idAcompanante'];

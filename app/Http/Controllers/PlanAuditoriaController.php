@@ -52,7 +52,6 @@ class PlanAuditoriaController extends Controller
                     'objetivoPlanAuditoria' => $request['objetivoPlanAuditoria'],
                     'alcancePlanAuditoria' => $request['alcancePlanAuditoria'],
                     'criterioPlanAuditoria' => $request['criterioPlanAuditoria'],
-                    'criterioPlanAuditoria' => $request['criterioPlanAuditoria'],
                     'recursosPlanAuditoria' => $request['recursosPlanAuditoria'],
                     'observacionesPlanAuditoria' => $request['observacionesPlanAuditoria'],
                     'aprobacionPlanAuditoria' => $request['aprobacionPlanAuditoria'],
@@ -66,7 +65,7 @@ class PlanAuditoriaController extends Controller
             {
                 \App\PlanAuditoriaAcompanante::create([
 
-                    'PlanAuditoria_idAuditoria' => $planAuditoria->idPlanAuditoria,
+                    'PlanAuditoria_idPlanAuditoria' => $planAuditoria->idPlanAuditoria,
                     'Tercero_idAcompanante' => $request['Tercero_idAcompanante'][$i]
                 ]);
             }
@@ -76,8 +75,8 @@ class PlanAuditoriaController extends Controller
             {
                 \App\PlanAuditoriaNotificado::create([
 
-                    'PlanAuditoria_idAuditoria' => $planAuditoria->idPlanAuditoria,
-                    'Tercero_idAcompanante' => $request['Tercero_idAcompanante'][$i]
+                    'PlanAuditoria_idPlanAuditoria' => $planAuditoria->idPlanAuditoria,
+                    'Tercero_idNotificado' => $request['Tercero_idNotificado'][$i]
                 ]);
             }
 
@@ -86,7 +85,7 @@ class PlanAuditoriaController extends Controller
             {
                 \App\PlanAuditoriaAgenda::create([
 
-                    'PlanAuditoria_idAuditoria' => $planAuditoria->idPlanAuditoria,
+                    'PlanAuditoria_idPlanAuditoria' => $planAuditoria->idPlanAuditoria,
                     'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
                     'Tercero_Auditado' => $request['Tercero_Auditado'][$i],
                     'Tercero_Auditor' => $request['Tercero_Auditor'][$i],
@@ -125,7 +124,8 @@ class PlanAuditoriaController extends Controller
         $idProceso = \App\Proceso::All()->lists('idProceso');
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
 
-        $planAuditoria = \App\PlanCapacitacion::find($id);
+        $planAuditoria = \App\PlanAuditoria::find($id);
+        
         return view('planauditoria',compact('tercero','idTercero','nombreCompletoTercero','idProceso','nombreProceso'),['planAuditoria'=>$planAuditoria]);
     }
 
@@ -144,16 +144,16 @@ class PlanAuditoriaController extends Controller
 
             $planAuditoria->save();
 
-            \App\PlanCapacitacionAcompanante::where('PlanAuditoria_idPlanAuditoria',$id)->delete();
-            \App\PlanCapacitacionNotificado::where('PlanAuditoria_idPlanAuditoria',$id)->delete();
-            \App\PlanCapacitacionAgenda::where('PlanAuditoria_idPlanAuditoria',$id)->delete();
+            \App\PlanAuditoriaAcompanante::where('PlanAuditoria_idPlanAuditoria',$id)->delete();
+            \App\PlanAuditoriaNotificado::where('PlanAuditoria_idPlanAuditoria',$id)->delete();
+            \App\PlanAuditoriaAgenda::where('PlanAuditoria_idPlanAuditoria',$id)->delete();
 
             $contadorAcompanante = count($request['Tercero_idAcompanante']);
             for($i = 0; $i < $contadorAcompanante; $i++)
             {
                 \App\PlanAuditoriaAcompanante::create([
 
-                    'PlanAuditoria_idAuditoria' => $id,
+                    'PlanAuditoria_idPlanAuditoria' => $id,
                     'Tercero_idAcompanante' => $request['Tercero_idAcompanante'][$i]
                 ]);
             }
@@ -163,8 +163,8 @@ class PlanAuditoriaController extends Controller
             {
                 \App\PlanAuditoriaNotificado::create([
 
-                    'PlanAuditoria_idAuditoria' => $id,
-                    'Tercero_idAcompanante' => $request['Tercero_idAcompanante'][$i]
+                    'PlanAuditoria_idPlanAuditoria' => $id,
+                    'Tercero_idNotificado' => $request['Tercero_idNotificado'][$i]
                 ]);
             }
 
@@ -173,7 +173,7 @@ class PlanAuditoriaController extends Controller
             {
                 \App\PlanAuditoriaAgenda::create([
 
-                    'PlanAuditoria_idAuditoria' => $id,
+                    'PlanAuditoria_idPlanAuditoria' => $id,
                     'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
                     'Tercero_Auditado' => $request['Tercero_Auditado'][$i],
                     'Tercero_Auditor' => $request['Tercero_Auditor'][$i],

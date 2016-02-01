@@ -1,7 +1,7 @@
 @extends('layouts.grid')
 @section('titulo')
     <h3 id="titulo">
-        <center>Plan Auditor&iacute;a</center>
+        <center>Lista Chequeo</center>
     </h3>
 @stop
 @section('content')
@@ -28,25 +28,23 @@
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> N&uacute;mero</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Fecha Inicio</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Fecha Fin</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Organismo</label></a></li>
-                            <li><a class="toggle-vis" data-column="6"><label> Auditor L&iacute;der</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Fecha</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Plan Auditor&iacute;a</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Proceso</label></a></li>
                         </ul>
                     </div>
-                    <table id="tplanauditoria" name="tplanauditoria" class="display table-bordered" width="100%">
+                    <table id="tlistachequeo" name="tlistachequeo" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                {!!Html::link('planauditoria/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
+                                {!!Html::link('listachequeo/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
                                 <th><b>N&uacute;mero</b></th>
-                                <th><b>Fecha Inicio</b></th>
-                                <th><b>Fecha Fin</b></th>
-                                <th><b>Organismo</b></th>
-                                <th><b>Auditor L&iacute;der</b></th>
+                                <th><b>Fecha</b></th>
+                                <th><b>Plan Auditor&iacute;a</b></th>
+                                <th><b>Proceso</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -56,12 +54,11 @@
                                 </th>
                                 <th>ID</th>
                                 <th>N&uacute;mero</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Organismo</th>
-                                <th>Auditor L&iacute;der</th>
+                                <th>Fecha </th>
+                                <th>Plan Auditor&iacute;a</th>
+                                <th>Proceso</th>
                             </tr>
-                        </tfoot>        
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -70,6 +67,10 @@
 
 <script type="text/javascript">
 
+    function imprimirFormato(id)
+    {
+        window.open('listachequeo/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
     $(document).ready( function () {
 
         
@@ -80,12 +81,12 @@
             "ajax": "{!! URL::to ('/datosPlanCapacitacion')!!}",
         });*/
         var lastIdx = null;
-        var table = $('#tplanauditoria').DataTable( {
+        var table = $('#tlistachequeo').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosPlanAuditoria')!!}",
+            "ajax": "{!! URL::to ('/datosListaChequeo')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -122,7 +123,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tplanauditoria tbody')
+        $('#tlistachequeo tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -137,7 +138,7 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tplanauditoria tfoot th').each( function () {
+    $('#tlistachequeo tfoot th').each( function () {
         if($(this).index()>0){
         var title = $('#tplancapacitacion thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
@@ -145,7 +146,7 @@
     } );
  
     // DataTable
-    var table = $('#tplanauditoria').DataTable();
+    var table = $('#tlistachequeo').DataTable();
  
     // Apply the search
     table.columns().every( function () {

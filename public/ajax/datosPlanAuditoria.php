@@ -15,7 +15,7 @@
                         '<a href="planauditoria/'.$value->idPlanAuditoria.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash"></span>'.
                         '</a>';
-        $row[$key][] = $value->idPlanCapacitacion;
+        $row[$key][] = $value->idPlanAuditoria;
         $row[$key][] = $value->numeroPlanAuditoria;
         $row[$key][] = $value->fechaInicioPlanAuditoria;
         $row[$key][] = $value->fechaFinPlanAuditoria;
