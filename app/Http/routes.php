@@ -16,6 +16,14 @@ Route::get('datos', function()
 	return view('layouts.principal');
 });
 
+
+
+Route::get('calcularCuadroMando', function()
+{
+	include public_path().'/ajax/calcularCuadroMando.php';
+});
+
+
 // Creamos un Controlador para gestionar la autenticación en HomeController.
 //Route::controller('/','HomeController');
 
@@ -76,12 +84,14 @@ Route::get('datosPais', function()
 	include public_path().'/ajax/datosPais.php';
 });
 
-Route::get('datosDepartamento', function(){
+Route::get('datosDepartamento', function()
+{
 	include public_path().'/ajax/datosDepartamento.php';
 });
 
 
-Route::get('datosCiudad', function(){
+Route::get('datosCiudad', function()
+{
 	include public_path().'/ajax/datosCiudad.php';
 });
 
@@ -199,6 +209,15 @@ Route::post('llenarDescripcion', function()
     include public_path().'/ajax/llenarDescripcion.php';
 });
 
+Route::post('llenarObjetivo', function()
+{
+    include public_path().'/ajax/llenarObjetivo.php';
+});
+
+Route::post('consultarCampos', function()
+{
+    include public_path().'/ajax/consultarCampos.php';
+});
 
 // ---------------------------------
 // Documentos
@@ -262,12 +281,8 @@ Route::get('datosAccidente', function()
 	include public_path().'/ajax/datosAccidente.php';
 });
 
-Route::get('datosGrupoApoyo', function()
-{
-	}	return view('accidentegridphp');
-});
 
-Route::get('/grupoapoyogrid', function()
+Route::get('datosGrupoApoyo', function()
 {
 	include public_path().'/ajax/datosGrupoApoyo.php';
 });
@@ -282,6 +297,10 @@ Route::get('datosEntregaElementoProteccion', function()
     include public_path().'/ajax/datosEntregaElementoProteccion.php';
 });
 
+Route::get('datosCuadroMando', function()
+{
+    include public_path().'/ajax/datosCuadroMando.php';
+});
 
 Route::resource('diagnostico','DiagnosticoController');
 Route::resource('cuadromando','CuadroMandoController');

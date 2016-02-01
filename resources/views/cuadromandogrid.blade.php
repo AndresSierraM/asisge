@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Investigación de Accidentes</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Cuadro de Mando</center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -22,25 +22,35 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
-                            <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Número</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Descripción</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Fecha Ocurrencia</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Clasificación</label></a></li>
+                            <li><a class="toggle-vis" data-column="1"><label> N&uacute;mero</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Objetivo de la calidad</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Objetivos de los procesos</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Nombre del indicador</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Procesos involucrados</label></a></li>
+                            <li><a class="toggle-vis" data-column="6"><label> Formula indicador</label></a></li>
+                            <li><a class="toggle-vis" data-column="7"><label> Grafico</label></a></li>
+                            <li><a class="toggle-vis" data-column="8"><label> Meta</label></a></li>
+                            <li><a class="toggle-vis" data-column="9"><label> Frecuencia Medici&oacute;n</label></a></li>
+                            <li><a class="toggle-vis" data-column="10"><label> Responsable Medici&oacute;n</label></a></li>
                         </ul>
                     </div>
-                    <table id="taccidente" name="taccidente" class="display table-bordered" width="100%">
+                    <table id="tcuadromando" name="tcuadromando" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                {!!Html::link('accidente/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
+                                {!!Html::link('cuadromando/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
-                                <th><b>ID</b></th>
-                                <th><b>Número</b></th>
-                                <th><b>Descripción</b></th>
-                                <th><b>País</b></th>
-                                <th><b>Clasificación</b></th>
+                                <th><b>N&uacute;mero</b></th>
+                                <th><b>Objetivo de la calidad</b></th>
+                                <th><b>Objetivos de los procesos</b></th>
+                                <th><b>Nombre del indicador</b></th>
+                                <th><b>Procesos involucrados</b></th>
+                                <th><b>Formula indicador</b></th>
+                                <th><b>Grafico</b></th>
+                                <th><b>Meta</b></th>
+                                <th><b>Frecuencia Medici&oacute;n</b></th>
+                                <th><b>Responsable Medici&oacute;n</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -48,11 +58,16 @@
                                 <th style="width:40px;padding: 1px 8px;">
                                     &nbsp;
                                 </th>
-                                <th>ID</th>
-                                <th>Número</th>
-                                <th>Descripción</th>
-                                <th>Fecha Ocurrencia</th>
-                                <th>Clasificación</th>
+                                <th>N&uacute;mero</th>
+                                <th>Objetivo de la calidad</th>
+                                <th>Objetivos de los procesos</th>
+                                <th>Nombre del indicador</th>
+                                <th>Procesos involucrados</th>
+                                <th>Formula indicador</th>
+                                <th>Grafico</th>
+                                <th>Meta</th>
+                                <th>Frecuencia Medici&oacute;n</th>
+                                <th>Responsable Medici&oacute;n</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -66,19 +81,19 @@
     $(document).ready( function () {
 
         
-        /*$('#taccidente').DataTable({
+        /*$('#tcuadromando').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosAccidente')!!}",
+            "ajax": "{!! URL::to ('/datosCuadroMando')!!}",
         });*/
         var lastIdx = null;
-        var table = $('#taccidente').DataTable( {
+        var table = $('#tcuadromando').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosAccidente')!!}",
+            "ajax": "{!! URL::to ('/datosCuadroMando')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -115,7 +130,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#taccidente tbody')
+        $('#tcuadromando tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -130,15 +145,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#taccidente tfoot th').each( function () {
+    $('#tcuadromando tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#taccidente thead th').eq( $(this).index() ).text();
+        var title = $('#tcuadromando thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#taccidente').DataTable();
+    var table = $('#tcuadromando').DataTable();
  
     // Apply the search
     table.columns().every( function () {

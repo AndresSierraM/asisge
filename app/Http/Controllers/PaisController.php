@@ -17,7 +17,7 @@ class PaisController extends Controller
      */
     public function index()
     {
-        return view('paisgrid');
+        return view('layouts.dashboard');
     }
 
     /**
