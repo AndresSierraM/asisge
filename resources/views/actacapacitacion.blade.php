@@ -102,7 +102,6 @@
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-							<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::text('fechaElaboracionActaCapacitacion',null,['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
 						</div>
 					</div>
