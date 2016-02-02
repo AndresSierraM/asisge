@@ -110,7 +110,6 @@ class ListaChequeoController extends Controller
 
         if(isset($request['planAuditoria']))
         {
-            
             $ids = \App\ListaChequeo::where('idListaChequeo',$id)
                                         ->select('Proceso_idProceso')
                                         ->get();

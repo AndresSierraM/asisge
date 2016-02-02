@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
 
 class ReporteACPMController extends Controller
 {
@@ -54,11 +55,11 @@ class ReporteACPMController extends Controller
             $contadorDetalle = count($request['ordenReporteACPMDetalle']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                \App\ListaChequeoDetalle::create([
+                \App\ReporteACPMDetalle::create([
 
                     'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
                     'ordenReporteACPMDetalle' => $request['ordenReporteACPMDetalle'][$i],
-                    'fechaReporteReporteACPMDetalle' => $request['fechaReporteReporteACPMDetalle'][$i],
+                    'fechaReporteACPMDetalle' => $request['fechaReporteACPMDetalle'][$i],
                     'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
                     'Modelo_idModelo' => $request['Modelo_idModelo'][$i],
                     'tipoReporteACPMDetalle' => $request['tipoReporteACPMDetalle'][$i],
@@ -85,9 +86,26 @@ class ReporteACPMController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            $reporteACPM = \App\ReporteACPM::find($id);
+
+          
+            $reporteACPMDetalle = DB::table('reporteacpmdetalle as rpd')
+                ->leftJoin('proceso as p', 'rpd.Proceso_idProceso', '=', 'p.idProceso')
+                ->leftJoin('tercero as trp', 'rpd.Tercero_idResponsablePlanAccion', '=', 'trp.idTercero')
+                ->leftJoin('tercero as trc', 'rpd.Tercero_idResponsableCorrecion', '=', 'trc.idTercero')
+                ->select(DB::raw('idReporteACPMDetalle, ordenReporteACPMDetalle, fechaReporteACPMDetalle, Proceso_idProceso, p.nombreProceso, Modelo_idModelo, tipoReporteACPMDetalle, descripcionReporteACPMDetalle, analisisReporteACPMDetalle, correccionReporteACPMDetalle, Tercero_idResponsableCorrecion, trc.nombreCompletoTercero as nombreCompletoResponsableCorrecion, planAccionReporteACPMDetalle, Tercero_idResponsablePlanAccion, trp.nombreCompletoTercero as nombreCompletoResponsablePlanAccion, fechaEstimadaCierreReporteACPMDetalle, estadoActualReporteACPMDetalle, fechaCierreReporteACPMDetalle, eficazReporteACPMDetalle,DATEDIFF(fechaCierreReporteACPMDetalle,fechaEstimadaCierreReporteACPMDetalle) as diasAtraso'))
+                ->orderBy('ordenReporteACPMDetalle', 'ASC')
+                ->where('ReporteACPM_idReporteACPM','=',$id)
+                ->get();
+
+            
+            return view('formatos.reporteacpmimpresion',['reporteACPM'=>$reporteACPM], compact('reporteACPMDetalle'));
+
+        }
     }
 
     /**

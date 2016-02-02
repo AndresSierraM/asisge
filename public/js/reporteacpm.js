@@ -1,9 +1,14 @@
-function restarFechas(registro){
+function restarFechas(registro, tipo){
 
-	var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
-
+	
+	var posicion;
+	if(tipo == 'A')
+		posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+	else
+		posicion = registro;
+	
 	var campos = document.querySelectorAll(" div#detalle_"+posicion+" input[name='fechaEstimadaCierreReporteACPMDetalle[]'], div#detalle_"+posicion+" input[name='fechaCierreReporteACPMDetalle[]'], div#detalle_"+posicion+" input[name='diasAtrasoReporteACPMDetalle[]']");
-
+	
 	var fecha1 = campos[0].value;
     var fecha2 = campos[1].value;
     var diferencia = campos[2];

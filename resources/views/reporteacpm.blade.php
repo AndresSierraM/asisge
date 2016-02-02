@@ -26,8 +26,13 @@
 		var proceso = [JSON.parse(idProceso),JSON.parse(nombreProceso)];
 
 		var eventos1 = ['onclick','fechaReporte(this.parentNode.id);'];
-		var eventos2 = ['onclick','fechaEstimadaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id);'];
-		var eventos3 = ['onclick','fechaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id);'];
+		var eventos2 = ['onclick','fechaEstimadaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id,"A");'];
+		var eventos3 = ['onclick','fechaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id,"A");'];
+
+		var valorT = ['C','P','M'];
+    	var opcionT = ['Correctiva','Preventiva','Mejora'];
+    	var tipo = [valorT, opcionT];
+
 		var valorDetalle = [0,0,'0000-00-00',0,0,'','','','',0,'',0,'0000-00-00','','0000-00-00',0,0];
 		$(document).ready(function(){
 
@@ -39,13 +44,13 @@
 			detalle.clase = ['','','','','','','','','','','','','','','','',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true];
 			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
-			detalle.opciones = ['','','',proceso,'','','','','',tercero,'',tercero,'','','','',''];
+			detalle.opciones = ['','','',proceso,'',tipo,'','','',tercero,'',tercero,'','','','',''];
 			detalle.funciones  = ['','',eventos1,'','','','','','','','','',eventos2,'',eventos3,'',''];
 
-			for(var j=0, k = listaChequeoDetalle.length; j < k; j++)
+			for(var j=0, k = reporteACPMDetalle.length; j < k; j++)
 			{
-				detalle.agregarCampos(JSON.stringify(listaChequeoDetalle[j]),'L');
-				restarFechas(j);
+				detalle.agregarCampos(JSON.stringify(reporteACPMDetalle[j]),'L');
+				restarFechas(j,'B');
 			}
 
 		});
@@ -95,7 +100,7 @@
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-							{!!Form::text('descripcionReporteACPM',null,['class'=>'form-control','placeholder'=>'Digite la descripci&oacute,n'])!!}
+							{!!Form::text('descripcionReporteACPM',null,['class'=>'form-control','placeholder'=>'Digite la descripci&oacute;n'])!!}
 						</div>
 					</div>
 				</div>
