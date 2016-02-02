@@ -271,6 +271,11 @@ Route::get('datosListaChequeo', function()
 	include public_path().'/ajax/datosListaChequeo.php';
 });
 
+Route::get('datosReporteACPM', function()
+{
+	include public_path().'/ajax/datosReporteACPM.php';
+});
+
 Route::get('datosInspeccion', function()
 {
 	include public_path().'/ajax/datosInspeccion.php';
@@ -330,4 +335,4 @@ Route::resource('entregaelementoproteccion','EntregaElementoProteccionController
 Route::resource('planauditoria','PlanAuditoriaController');
 Route::resource('preguntalistachequeo','PreguntasListaChequeoController');
 Route::resource('listachequeo','ListaChequeoController');
-
+Route::resource('reporteacpm','ReporteACPMController');

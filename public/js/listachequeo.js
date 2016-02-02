@@ -2,7 +2,7 @@ function buscarProceso(){
 
 	var dato = document.getElementById('PlanAuditoria_idPlanAuditoria').value;
 	var token = document.getElementById('token').value;
-	var id = document.getElementById('idListaChequeo').value;
+	var id = (document.getElementById('idListaChequeo').value == '' ? 0 : document.getElementById('idListaChequeo').value);
 
 	$.ajax({
 		async: true,
