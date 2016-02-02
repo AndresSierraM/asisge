@@ -294,11 +294,6 @@ Route::get('datosAccidente', function()
 
 Route::get('datosGrupoApoyo', function()
 {
-	return view('accidentegridphp');
-});
-
-Route::get('datosGrupoApoyo', function()
-{
 	include public_path().'/ajax/datosGrupoApoyo.php';
 });
 

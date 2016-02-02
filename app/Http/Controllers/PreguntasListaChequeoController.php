@@ -16,7 +16,8 @@ class PreguntasListaChequeoController extends Controller
      */
     public function index()
     {
-        //
+        $preguntaListaChequeo = \App\PreguntasListaChequeo::All();
+        return view('preguntaslistachequeo',compact('preguntaListaChequeo'));
     }
 
     /**
@@ -38,18 +39,18 @@ class PreguntasListaChequeoController extends Controller
      */
     public function store(Request $request)
     {
+        for($i = 0; $i < count($request['ordenPreguntaListaChequeo']); $i++)
+        {
+            $indice = array(
+             'idPreguntaListaChequeo' => $request['idPreguntaListaChequeo'][$i]);
 
-            $contadorDetalle = count($request['ordenPreguntaListaChequeo']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\PreguntasListaChequeo::create([
+             $data = array(
+             'ordenPreguntaListaChequeo' => $request['ordenPreguntaListaChequeo'][$i],
+             'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i]);
 
-                    'ordenPreguntaListaChequeo' => $request['ordenPreguntaListaChequeo'][$i],
-                    'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i]
-                ]);
-            }
-
-            return view('preguntaslistachequeo');
+            $preguntas = \App\PreguntasListaChequeo::updateOrCreate($indice, $data);
+        }
+        // return view('preguntaslistachequeo');
     }
 
     /**
@@ -83,7 +84,19 @@ class PreguntasListaChequeoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      
+        for($i = 0; $i < count($request['ordenPreguntaListaChequeo']); $i++)
+        {
+            $indice = array(
+             'idPreguntaListaChequeo' => $request['idPreguntaListaChequeo'][$i]);
+
+             $data = array(
+             'ordenPreguntaListaChequeo' => $request['ordenPreguntaListaChequeo'][$i],
+             'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i]);
+
+            $preguntas = \App\PreguntasListaChequeo::updateOrCreate($indice, $data);
+        }
+        // return view('preguntaslistachequeo');
     }
 
     /**

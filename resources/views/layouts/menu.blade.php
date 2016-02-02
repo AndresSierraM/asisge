@@ -97,7 +97,11 @@
 							{!! HTML::decode(HTML::link('tipoelementoproteccion', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Tipos de Elementos de Protección')))) !!}
 			 			</li>
 			 			<li>
-							{!! HTML::decode(HTML::link('elementoproteccion', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Elementos de Protección')))) !!}			 			</li>
+							{!! HTML::decode(HTML::link('elementoproteccion', HTML::image('images/iconosmenu/Tipo%20Equipos.png','Imagen no encontrada',array('width'=>'22','title' => 'Elementos de Protección')))) !!}
+						</li>
+						<li>
+							{!! HTML::decode(HTML::link('preguntalistachequeo', HTML::image('images/iconosmenu/Preguntas%20Lista%20Chequeo.png','Imagen no encontrada',array('width'=>'22','title' => 'Preguntas Lista de Verificaci&oacute;n')))) !!}
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -147,6 +151,12 @@
 		 			<li>
 						{!! HTML::decode(HTML::link('entregaelementoproteccion', HTML::image('images/iconosmenu/Entrega%20Elementos.png','Imagen no encontrada',array('width'=>'22','title' => 'Entrega de Elementos de Protecci&oacute;n Personal')))) !!}
 		 			</li>
+		 			<li>
+						{!! HTML::decode(HTML::link('planauditoria', HTML::image('images/iconosmenu/Auditorias.png','Imagen no encontrada',array('width'=>'22','title' => 'Plan de Auditorias')))) !!}
+					</li>
+					<li>
+						{!! HTML::decode(HTML::link('listachequeo', HTML::image('images/iconosmenu/Preguntas%20Lista%20Chequeo.png','Imagen no encontrada',array('width'=>'22','title' => 'Lista de Verificaci&oacute;n')))) !!}
+					</li>
 
 		 			</ul>
 				</div>

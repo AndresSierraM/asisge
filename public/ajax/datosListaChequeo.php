@@ -5,7 +5,8 @@
             ->leftJoin('planauditoria as pa', 'lc.PlanAuditoria_idPlanAuditoria', '=', 'pa.idPlanAuditoria')
             ->select(DB::raw('idListaChequeo, numeroListaChequeo, fechaElaboracionListaChequeo, numeroPlanAuditoria, nombreProceso'))
             ->get();
-
+print_r($listachequeo);
+return;
     $row = array();
 
     foreach($listaChequeo as $key => $value)

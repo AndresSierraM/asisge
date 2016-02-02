@@ -223,28 +223,28 @@
 //     document.getElementById(campo+registro).value = document.getElementById(campo+"C"+registro).checked ? 1 : 0;
 // }
 
-// function llenarObjetivo(idObjetivo)
-// {
-//          var token = document.getElementById('token').value;
+function llenarObjetivo(idObjetivo)
+{
+         var token = document.getElementById('token').value;
 
-//             $.ajax({
-//                 headers: {'X-CSRF-TOKEN': token},
-//                 dataType: "json",
-//                 data: {'CompaniaObjetivo_idCompaniaObjetivo': idObjetivo},
-//                 url:   'http://localhost:8000/llenarObjetivo/',
-//                 type:  'post',
-//                 beforeSend: function(){
-//                     //Lo que se hace antes de enviar el formulario
-//                     },
-//                 success: function(respuesta){
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: "json",
+                data: {'CompaniaObjetivo_idCompaniaObjetivo': idObjetivo},
+                url:   'http://localhost:8000/llenarObjetivo/',
+                type:  'post',
+                beforeSend: function(){
+                    //Lo que se hace antes de enviar el formulario
+                    },
+                success: function(respuesta){
                     
-//                     $("#objetivoCalidad").val(respuesta);
-//                 },
-//                 error:    function(xhr,err){ 
-//                     alert("Error");
-//                 }
-//             });
-// }
+                    $("#objetivoCalidad").val(respuesta);
+                },
+                error:    function(xhr,err){ 
+                    alert("Error");
+                }
+            });
+}
 
     function divFormula()
     {
