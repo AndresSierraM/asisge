@@ -3,7 +3,7 @@
 @section('titulo')
 	<h3 id="titulo">
 		<center>Matriz Legal</center>
-	</h3>
+	</h3> 
 @stop
 @section('content')
 

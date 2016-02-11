@@ -253,11 +253,13 @@ function llenarObjetivo(idObjetivo)
 
     function mostrarDiv(div)
     {
-        document.getElementById("indicador").style.display = "none";
-        document.getElementById("valorConstante").style.display = "none";
-        document.getElementById("variable").style.display = "none";
+        document.getElementById("formIndicador").style.display = "none";
+        document.getElementById("formConstante").style.display = "none";
+        document.getElementById("formVariable").style.display = "none";
 
-        document.getElementById(div).style.display = "block";
+        if(div != '')
+            document.getElementById(div).style.display = "block";
+
     }
 
     function mostrarDivCA(divCA)
@@ -268,37 +270,121 @@ function llenarObjetivo(idObjetivo)
         document.getElementById(divCA).style.display = "block";
     }
 
-    function concatenarFormula(dato)
+    function concatenarFormula(dato, boton)
     {
-        document.getElementById('formulaconcatenada').value = document.getElementById('formulaconcatenada').value + dato;
+        // adicionamos a la formula el nombre del indicador/constante/variable
+        document.getElementById('formulaconcatenada').value = document.getElementById('formulaconcatenada').value + boton;
+
+        document.getElementById("contenedorFormula").innerHTML += '<div id="'+document.getElementById("contadorFormula").value+'" class="btn btn-default">'+boton+'</div>';
+        document.getElementById("contadorFormula").value++; 
+
+        document.getElementById("datosgrabar").value += dato;         
+
+        // Ocultamos el div indicador/constante/variable
+        mostrarDiv('');
+
+
     }
+
+
+    function concatenarDatos(div, dato)
+    {
+         // con el fin de hacer el grabado de las tablas de detalle de la formula, vamos concatenando los datos en un input
+        // que luego viajara a traves de POST al controlador, donde lo separamos y procesamos para grabarlo en las tablas
+        // esta estructura de datos contine los datos en el mismo orden que estan los campos de la tabla a grabar
+        // Tabla: cuadromandoformula 
+        // Campos:
+        //      idCuadroMandoFormula, CuadroMando_idCuadroMando, tipoCuadroMandoFormula, CuadroMando_idIndicador, 
+        //      nombreCuadroMandoFormula, Modulo_idModulo, campoCuadroMandoFormula, calculoCuadroMandoFormula
+        var idCuadroMandoFormula = 0;
+        var CuadroMando_idCuadroMando = 0;
+        var tipoCuadroMandoFormula = '';
+        var CuadroMando_idIndicador = 0;
+        var nombreCuadroMandoFormula =  '';
+        var Modulo_idModulo = 0;
+        var campoCuadroMandoFormula = '';
+        var calculoCuadroMandoFormula = '';
+
+        var datos = '';
+        switch(div)
+        {
+            case 'formVariable':
+                idCuadroMandoFormula = 0;
+                CuadroMando_idCuadroMando = 0;
+                tipoCuadroMandoFormula = 'Variable';
+                CuadroMando_idIndicador = 0;
+                nombreCuadroMandoFormula = document.getElementById('nombreVariable').value;
+                Modulo_idModulo = document.getElementById('Modulo_idModulo').value;
+                campoCuadroMandoFormula = document.getElementById('campoCuadroMandoFormula').value;
+                calculoCuadroMandoFormula = document.getElementById('calculoCuadroMandoFormula').value;
+            break;
+
+            case 'formIndicador':
+                idCuadroMandoFormula = 0;
+                CuadroMando_idCuadroMando = 0;
+                tipoCuadroMandoFormula = 'Indicador';
+                CuadroMando_idIndicador = document.getElementById('Indicador').value;
+                nombreCuadroMandoFormula = document.getElementById('Indicador').options[document.getElementById('Indicador').selectedIndex].text;
+                Modulo_idModulo = 0;
+                campoCuadroMandoFormula = '';
+                calculoCuadroMandoFormula = '';
+            break;
+
+            case 'formConstante':
+                idCuadroMandoFormula = 0;
+                CuadroMando_idCuadroMando = 0;
+                tipoCuadroMandoFormula = 'Constante';
+                CuadroMando_idIndicador = 0;
+                nombreCuadroMandoFormula =  document.getElementById('valorConstante').value;
+                Modulo_idModulo = 0;
+                campoCuadroMandoFormula = '';
+                calculoCuadroMandoFormula = '';
+            break;
+
+            case 'Operador':
+                idCuadroMandoFormula = 0;
+                CuadroMando_idCuadroMando = 0;
+                tipoCuadroMandoFormula = 'Operador';
+                CuadroMando_idIndicador = 0;
+                nombreCuadroMandoFormula =  dato;
+                Modulo_idModulo = 0;
+                campoCuadroMandoFormula = '';
+                calculoCuadroMandoFormula = '';
+            break;
+        }
+        
+        datos += idCuadroMandoFormula+','+CuadroMando_idCuadroMando+','+tipoCuadroMandoFormula+','+CuadroMando_idIndicador+','+nombreCuadroMandoFormula+','+Modulo_idModulo+','+campoCuadroMandoFormula+','+calculoCuadroMandoFormula+'|';
+
+        concatenarFormula(datos, nombreCuadroMandoFormula);
+    }
+
 
     function borrarTodo()
     {
         document.getElementById('formulaconcatenada').value = document.getElementById('formulaconcatenada').value = '';
     }
 
-    function consultarCampos(idModulo){
+    function consultarCampos(idModulo)
+    {
 
-    var token = document.getElementById('token').value;
+        var token = document.getElementById('token').value;
 
-    $.ajax({
+        $.ajax({
             async: true,
             headers: {'X-CSRF-TOKEN': token},
-            url: 'http://localhost:8000/consultarCampos',
+            url: 'http://localhost:8000/CuadroMandoConsultarCampos',
             method: 'POST',
-            data: {Modulo_idModulo: idModulo},
+            data: {idModulo: idModulo},
 
 
             success: function(data){
-
-                var valoresd = data[0];      
+                
+                // los datos recibidos en formato JSON desde el ajax son de tipo 
+                // string, para trabajar con ellos debemos convertirlos a JSON
+                var data = JSON.parse(data);
+                
                 var select = document.getElementById('campoCuadroMandoFormula');
-                var arr = [];
-for (var prop in valoresd) {
-    arr.push(valoresd[prop]);
-}
-console.log(arr);
+
                 select.options.length = 0;
                 var option = '';
 
@@ -306,19 +392,96 @@ console.log(arr);
                 option.value = '';
                 option.text = 'Seleccione el campo';
                 select.appendChild(option);
-                // alert(valoresd.length);
-                for(var j=0,k=valoresd.length;j<k;j++)
+                
+                for(var j=0; j < data.length; j++)
                 {
                     option = document.createElement('option');
-                    // option.value = valoresd[j][0];
-                    // option.text = valoresd[j][4];
 
-                    option.value = valoresd[j].COLUMN_NAME;
-                    option.text = valoresd[j].COLUMN_COMMENT;
+                    option.value = data[j].COLUMN_NAME;
+                    option.text = data[j].COLUMN_COMMENT;
                     select.appendChild(option);
                 }
             }
         });
-}
+    }
 
+
+    function consultarCalculos(idModulo, Campo)
+    {
+
+        var token = document.getElementById('token').value;
+
+        $.ajax({
+            async: true,
+            headers: {'X-CSRF-TOKEN': token},
+            url: 'http://localhost:8000/CuadroMandoConsultarCalculos',
+            method: 'POST',
+            data: { idModulo: idModulo, 
+                    nombreCampo: Campo},
+
+
+            success: function(data){
+                
+                // los datos recibidos en formato JSON desde el ajax son de tipo 
+                // string, para trabajar con ellos debemos convertirlos a JSON
+                var data = JSON.parse(data);
+                
+                var select = document.getElementById('calculoCuadroMandoFormula');
+
+                select.options.length = 0;
+                var option = '';
+
+                option = document.createElement('option');
+                option.value = '';
+                option.text = 'Ninguno';
+                select.appendChild(option);
+                
+                var tipo = '';
+                for(var j=0; j < data.length; j++)
+                {
+                    tipo = data[j].COLUMN_TYPE.substring(0,3);
+                    
+                    option = document.createElement('option');
+                    option.value = 'Conteo';
+                    option.text = 'Conteo';
+                    select.appendChild(option);
+
+                    if(tipo == 'int' || tipo == 'dec' || tipo == 'flo')
+                    {
+                        option = document.createElement('option');
+                        option.value = 'Suma';
+                        option.text = 'Sumatoria';
+                        select.appendChild(option);
+
+                        option = document.createElement('option');
+                        option.value = 'Promedio';
+                        option.text = 'Promedio';
+                        select.appendChild(option);
+
+                        option = document.createElement('option');
+                        option.value = 'Minimo';
+                        option.text = 'Minimo';
+                        select.appendChild(option);
+
+                        option = document.createElement('option');
+                        option.value = 'Maximo';
+                        option.text = 'Maximo';
+                        select.appendChild(option);
+                    }
+                    else if(tipo == 'dat')
+                    {
+                        option = document.createElement('option');
+                        option.value = 'Minimo';
+                        option.text = 'Minimo';
+                        select.appendChild(option);
+
+                        option = document.createElement('option');
+                        option.value = 'Maximo';
+                        option.text = 'Maximo';
+                        select.appendChild(option);
+                    }
+                }
+            }
+        });
+    }
    

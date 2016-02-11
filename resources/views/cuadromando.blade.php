@@ -15,7 +15,7 @@
 	@else
 		{!!Form::open(['route'=>'cuadromando.store','method'=>'POST'])!!}
 	@endif
-
+  
 <script type="text/javascript">
 
   $(document).ready(function(){
@@ -24,6 +24,30 @@
       {
         llenarObjetivo(document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').value); 
       }
+
+  // consultamos los datos de la tabla de formulas y con esta información llenamos el campo de datos a grabar formula
+  var cuadromandoFormula = '<?php echo (isset($cuadromando) ? json_encode($cuadromando->cuadromandoformula) : "");?>';
+  cuadromandoFormula = (cuadromandoFormula != '' ? JSON.parse(cuadromandoFormula) : '');
+  var dato = '';
+  document.getElementById('datosgrabar').value = '';
+  for(var j=0; j < cuadromandoFormula.length; j++)
+  {
+
+   
+      dato += 
+          cuadromandoFormula[j].idCuadroMandoFormula+','+
+          cuadromandoFormula[j].CuadroMando_idCuadroMando+','+
+          cuadromandoFormula[j].tipoCuadroMandoFormula+','+
+          cuadromandoFormula[j].CuadroMando_idIndicador+','+
+          cuadromandoFormula[j].nombreCuadroMandoFormula+','+
+          cuadromandoFormula[j].Modulo_idModulo+','+
+          cuadromandoFormula[j].campoCuadroMandoFormula+','+
+          cuadromandoFormula[j].calculoCuadroMandoFormula+'|';
+      
+      concatenarFormula(dato, cuadromandoFormula[j].nombreCuadroMandoFormula);
+
+  }
+
 });
 </script>
 {!!Html::script('js/cuadromandoagrupador.js')!!}
@@ -244,13 +268,13 @@
         </div>
 
         <div class="form-group" id='test'>
-            {!!Form::label('Tercero_idTercero', 'Responsable de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
+            {!!Form::label('Tercero_idResponsable', 'Responsable de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
                           <i class="fa fa-user"></i>
                         </span>
-                {!!Form::select('Tercero_idTercero',$tercero, (isset($cuadromando) ? $cuadromando->Tercero_idTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el responsable"])!!}
+                {!!Form::select('Tercero_idResponsable',$tercero, (isset($cuadromando) ? $cuadromando->Tercero_idResponsable : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el responsable"])!!}
               </div>
             </div>
           </div>
@@ -262,104 +286,75 @@
     
     <div class="col-md-6" id="uno" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; display: block;">
     <div id="operadores">
-      <span id="suma">
-      {!! HTML::image('images/mas.png','mas',array('width'=>'32', 'style' => 'border:1px inset;', 'onclick' => 'concatenarFormula("+")','title' => 'mas')) !!}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      {!! HTML::image('images/mas.png','mas',array("class"=>"btn btn-success",'width' => '52', 'height' => '52',  'onclick' => 'concatenarDatos("Operador","+")','title' => 'mas')) !!}
+      {!! HTML::image('images/menos.png','menos',array("class"=>"btn btn-success",'width' => '52', 'height' => '52',  'onclick' => 'concatenarDatos("Operador","-")','title' => 'menos')) !!}
+      {!! HTML::image('images/multiplicacion.png','multiplicacion',array("class"=>"btn btn-success",'width' => '52', 'height' => '52', 'onclick' => 'concatenarDatos("Operador","*")','title' => 'multiplicacion')) !!}
+      {!! HTML::image('images/division.png','division',array("class"=>"btn btn-success",'width' => '52', 'height' => '52',  'onclick' => 'concatenarDatos("Operador","/")','title' => 'division')) !!}
+      {!! HTML::image('images/parentesisabre.png','parentesisabre',array("class"=>"btn btn-success",'width' => '52', 'height' => '52',  'onclick' => 'concatenarDatos("Operador","(")','title' => 'parentesisabre')) !!}
+      {!! HTML::image('images/parentesiscierra.png','parentesiscierra',array("class"=>"btn btn-success",'width' => '52', 'height' => '52' , 'onclick' => 'concatenarDatos("Operador",")")','title' => 'parentesiscierra')) !!}
+    </div>
+
+    <div id="indicadores" style="margin:4px 0px 0px 0px;">
+      <span id="indicadorformula" class="btn btn-primary" style="height:52px; width:108px;" onclick="mostrarDiv('formIndicador')">
+        {!! HTML::image('images/indicador.png','indicador',array('width' => '32', 'height' => '32','title' => 'Indicador')) !!}
       </span>
-      <span id="resta" in-line>
-        {!! HTML::image('images/menos.png','menos',array('width'=>'32', 'style' => 'border:1px inset;', 'onclick' => 'concatenarFormula("-")','title' => 'menos')) !!}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <span id="constanteformula" class="btn btn-warning"  style="height:52px; width:108px;" onclick="mostrarDiv('formConstante')">
+        {!! HTML::image('images/pi.png','constante',array('width'=>'32', 'height' => '32','title' => 'Pi')) !!}
       </span>
-      <span id="multiplicacion">
-        {!! HTML::image('images/multiplicacion.png','multiplicacion',array('width'=>'32', 'style' => 'border:1px inset;', 'onclick' => 'concatenarFormula("*")','title' => 'multiplicacion')) !!}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      </span>
-      <span id="divicion">
-        {!! HTML::image('images/division.png','division',array('width'=>'32', 'style' => 'border:1px inset;', 'onclick' => 'concatenarFormula("/")','title' => 'division')) !!}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      </span>
-      <span id="parentabre">
-        {!! HTML::image('images/parentesisabre.png','parentesisabre',array('width'=>'32', 'style' => 'border:1px inset;', 'onclick' => 'concatenarFormula("(")','title' => 'parentesisabre')) !!}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      </span>
-      <span id="parentacierra">
-          {!! HTML::image('images/parentesiscierra.png','parentesiscierra',array('width'=>'32', 'style' => 'border:1px inset;', 'onclick' => 'concatenarFormula(")")','title' => 'parentesiscierra')) !!}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <span id="variableformula" class="btn btn-info"  style="height:52px; width:108px;" onclick="mostrarDiv('formVariable')">
+        {!! HTML::image('images/funcion.png','variable',array('width'=>'32', 'height' => '32','title' => 'Variable')) !!}
       </span>
     </div>
 
-    </br> </br>
-
-    <div id="indicadores">
-    <span id="indicadorformula" onclick="mostrarDiv('indicador')">
-    <b>INDICADOR<b> &nbsp;  {!! HTML::image('images/indicador.png','indicador',array('width'=>'32px', 'style'=>'border:1px inset;','title' => 'indicador')) !!}
-    </span>
-    <span id="constanteformula" onclick="mostrarDiv('valorConstante')">
-    <b>CONSTANTE<b> &nbsp; {!! HTML::image('images/pi.png','constante',array('width'=>'32px', 'style'=>'border:1px inset;','title' => 'pi')) !!}
-    </span>
-    <span id="variableformula" onclick="mostrarDiv('variable')">
-    <b>VARIABLE<b> &nbsp; {!! HTML::image('images/funcion.png','variable',array('width'=>'32px', 'style'=>'border:1px inset;','title' => 'variable')) !!}
-    </span>
+    <div id="borrar" style="margin:4px 0px 0px 0px;">
+      <span id="borrartodo">
+      {!!Form::button('Borrar TODO',["class"=>"btn btn-danger", 'style'=>'height:52px; width:164px;', 'onclick' => 'borrarTodo();'])!!}
+      </span>
+      <span id="borrarultimo">
+      {!!Form::button('Borrar ULTIMO',["class"=>"btn btn-danger", 'style'=>'height:52px; width:164px;', 'onclick' => 'borrarTodo();'])!!}
+      </span>
     </div>
 
-    </br> </br>
-    <div id="borrar">
-    <span id="borrartodo">
-    {!!Form::button('Borrar todo',["class"=>"btn btn-default", 'onclick' => 'borrarTodo();'])!!}
-    </span>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;
-    <span id="borrarultimo">
-    {!!Form::button('Borrar ultimo',["class"=>"btn btn-default"])!!}
-    </span>
-    </div>
-
-    </br> </br>
+    </br>
     <div id="concatenado">
-    <span id="indica">
-    {!! Form::label('indica', 'Indicador', array('class' => 'col-sm-3 control-label')) !!}
-    {!!Form::text('indica',null,['class'=>'form-control','style'=>'width:70px; height:30px;','placeholder'=>'&nbsp;'])!!}
-    </span>
-    <span id="igual">
-    {!! Form::label('igual', '=', array('class' => 'col-sm-1 control-label')) !!}
-    </span>
-    <span >
-    {!! Form::label('formulaconcatenada', 'Formula', array('class' => 'col-sm-2 control-label')) !!}
-    {!!Form::text('formulaconcatenada','',['class'=>'form-control','readonly','style'=>'width:300px;height:30px;','placeholder'=>'&nbsp;'])!!}
-    </span>
+        {!!Form::text('indica',null,['class'=>'form-control','style'=>'width:70px; height:30px;','placeholder'=>'F(x)'])!!}
+        {!!Form::hidden('formulaconcatenada','',['id' => 'formulaconcatenada'])!!}
+        <div id="contenedorFormula"></div>
+        {!!Form::hidden('datosgrabar','',['id' => 'datosgrabar'])!!}
+        {!!Form::hidden('contadorFormula',0,['id' => 'contadorFormula'])!!}
+        
     </div>
 
     </div>
     
 
-    <div class="col-md-6" id="indicador" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
+    <div class="col-md-6" id="formIndicador" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
         <div id="operadores">
           {!! Form::label('Indicador', 'Indicador', array('class' => 'col-sm-2 control-label')) !!}
-          {!! Form::select('visualizacionCuadroMando', ['Columnas' => 'Columnas', 'Barras' => 'Barras', 'Torta' => 'Torta', 'Lineas' => 'Lineas', 'Area' => 'Area'], null, ['class' => 'select form-control col-sm-1', 'onclick' => 'concatenarFormula(this.value);','placeholder'=>'Seleccione'])!!}
+          {!! Form::select('Indicador', $indicador, null, ['class' => 'select form-control col-sm-1', 'placeholder'=>'Seleccione un Indicador'])!!}
         </div>
+        </br>
+        {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formIndicador\',document.getElementById(\'Indicador\').options[document.getElementById(\'Indicador\').selectedIndex].text);'])!!}
     </div>
 
-    <div class="col-md-6" id="valorConstante" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
+    <div class="col-md-6" id="formConstante" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
         <div id="operadores">
         </br>
           {!! Form::label('valorConstante', 'Valor', array('class' => 'col-sm-2 control-label')) !!}
           {!!Form::text('valorConstante',null,['class'=>'form-control','placeholder'=>'&nbsp;'])!!}
           </br>
-          {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarFormula(document.getElementById(\'valorConstante\').value);'])!!}
+          {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formConstante\',document.getElementById(\'valorConstante\').value);'])!!}
         </div>
     </div>
 
-    <div class="col-md-6" id="variable" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
+    <div class="col-md-6" id="formVariable" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
         <div id="variables">
 
           <div class="form-group" id='test'>
-          {!! Form::label('CuadroMandoMando_idIndicador', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+          {!! Form::label('nombreVariable', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-            {!!Form::text('CuadroMandoMando_idIndicador',null,['class'=>'form-control', 'style' => 'width:258px;'])!!}
+            {!!Form::text('nombreVariable',null,['class'=>'form-control', 'style' => 'width:258px;', 'placeholder'=>'Nombre de la Variable'])!!}
             </div>
           </div>
         </div>
@@ -368,7 +363,7 @@
           {!! Form::label('Modulo_idModulo', 'Modulo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-            {!!Form::select('Modulo_idModulo',$modulo, (isset($cuadromando) ? $cuadromando->Modulo_idModulo : 0),["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCampos(this.id)',"placeholder" =>"Seleccione el modulo"])!!}
+            {!!Form::select('Modulo_idModulo',$modulo, (isset($cuadromando) ? $cuadromando->Modulo_idModulo : 0),["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCampos(this.value)',"placeholder" =>"Seleccione el modulo"])!!}
             </div>
           </div>
           </div>
@@ -379,7 +374,7 @@
           {!! Form::label('campoCuadroMandoFormula', 'Campo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-            {!!Form::select('campoCuadroMandoFormula',array(), '',["class" => "select form-control", 'style' => 'width:258px;', "placeholder" =>"Seleccione..."])!!}
+            {!!Form::select('campoCuadroMandoFormula',array(), '',["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCalculos(document.getElementById(\'Modulo_idModulo\').value, this.value)', "placeholder" =>"Seleccione..."])!!}
             </div>
           </div>
           </div>
@@ -388,7 +383,7 @@
           {!! Form::label('calculoCuadroMandoFormula', 'Calculo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-            {!! Form::select('calculoCuadroMandoFormula', ['Sumatoria' => 'Sumatoria', 'Conteo' => 'Conteo', 'Promedio' => 'Promedo', 'Maximo' => 'Maximo', 'Minimo' => 'Minimo', 'Ninguno' => 'Ninguno'], null, ['class' => 'select form-control', 'style' => 'width:259px;', 'placeholder'=>'Seleccione el calculo'])!!}
+            {!! Form::select('calculoCuadroMandoFormula', ['Ninguno' => 'Ninguno'], null, ['class' => 'select form-control', 'style' => 'width:259px;', 'placeholder'=>'Seleccione el calculo'])!!}
             </div>
           </div>
           </div>
@@ -413,7 +408,7 @@
           </div>
         </div>
         </br>
-            {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarFormula(document.getElementById(\'CuadroMandoMando_idIndicador\').value);'])!!}
+            {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formVariable\',document.getElementById(\'nombreVariable\').value);'])!!}
         </div>
     </div>
     

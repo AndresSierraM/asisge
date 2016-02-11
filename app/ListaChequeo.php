@@ -9,7 +9,7 @@ class ListaChequeo extends Model
 	protected $table = 'listachequeo';
     protected $primaryKey = 'idListaChequeo';
 
-    protected $fillable = ['numeroListaChequeo', 'fechaElaboracionListaChequeo', 'PlanAuditoria_PlanAuditoria', 'Proceso_idProceso', 'observacionesListaChequeo'];
+    protected $fillable = ['numeroListaChequeo', 'fechaElaboracionListaChequeo', 'PlanAuditoria_idPlanAuditoria', 'Proceso_idProceso', 'observacionesListaChequeo'];
 
     public $timestamps = false;
 

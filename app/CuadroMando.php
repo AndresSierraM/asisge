@@ -13,6 +13,11 @@ class CuadroMando extends Model
                 
     public $timestamps = false;
 
+    public function cuadromandoformula()
+    {
+        return $this->hasMany('App\CuadroMandoFormula', 'CuadroMando_idCuadroMando');
+    }
+
     public function companiaobjetivo()
     {
         return $this->hasOne('App\CompaniaObjetivo','idCompaniaObjetivo');

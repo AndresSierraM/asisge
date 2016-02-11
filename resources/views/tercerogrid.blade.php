@@ -33,7 +33,7 @@
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                {!!Html::link('departamento/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
+                                {!!Html::link('tercero/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>

@@ -59,10 +59,10 @@ class CuadroMandoController extends Controller
             'tipoMetaCuadroMando' => $request['tipoMetaCuadroMando'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
             'visualizacionCuadroMando' => $request['visualizacionCuadroMando'],
-            'Tercero_idResponsable' => $request['Tercero_idTercero']
+            'Tercero_idResponsable' => $request['Tercero_idResponsable']
             ]);
 
-            $cuadromando = \App\CuadroMandoFormula::All()->last();
+           /* $cuadromando = \App\CuadroMandoFormula::All()->last();
             $contadorCuadroMandoFormula = count($request['tipoCuadroMandoFormula']);
             for ($i=0; $i <$contadorCuadroMandoFormula ; $i++) 
             { 
@@ -103,7 +103,7 @@ class CuadroMandoController extends Controller
 
 
                 
-            }
+            }*/
 
         return redirect('/cuadromando');
     }
@@ -128,14 +128,15 @@ class CuadroMandoController extends Controller
     public function edit($id, CuadroMandoRequest $request)
     {
         $cuadromando = \App\CuadroMando::find($id);
-        $cuadromando->fill($request->all());
+        //$cuadromandoformula = \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->list();
+        $indicador = \App\CuadroMando::where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
         $proceso = \App\Proceso::All()->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
-        $tercero = \App\Tercero::All()->lists('nombreTercero','idTercero');
+        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
-        return view('cuadromando',compact('companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);
+        return view('cuadromando',compact('indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);
     }
 
     /**
@@ -151,23 +152,24 @@ class CuadroMandoController extends Controller
         $cuadromando->fill($request->all());
         $cuadromando->save();
 
-        \App\CuadroMando::create([
-            'numeroCuadroMando'=> $request['numeroCuadroMando'],
-            'CompaniaObjetivo_idCompaniaObjetivo'=> $request['CompaniaObjetivo_idCompaniaObjetivo'],
-            'Compania_idCompania' => 1,
-            'Proceso_idProceso' =>$request['Proceso_idProceso'],
-            'objetivoEspecificoCuadroMando' => $request['objetivoEspecificoCuadroMando'],
-            'indicadorCuadroMando' => $request['indicadorCuadroMando'],
-            'definicionIndicadorCuadroMando' => $request['definicionIndicadorCuadroMando'],
-            'formulaCuadroMando' => $request['formulaCuadroMando'],
-            'operadorMetaCuadroMando' => $request['operadorMetaCuadroMando'],
-            'valorMetaCuadroMando' => $request['valorMetaCuadroMando'],
-            'tipoMetaCuadroMando' => $request['tipoMetaCuadroMando'],
-            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
-            'visualizacionCuadroMando' => $request['visualizacionCuadroMando'],
-            'Tercero_idResponsable' => $request['Tercero_idTercero']
-            ]);
+        \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->delete();
 
+        $registroFormula = explode('|', substr($request["datosgrabar"],0, strlen($request["datosgrabar"])-1)) ;
+        foreach ($registroFormula as $reg => $datos) 
+        {
+            $datoFormula = explode(',', $datos) ;
+        
+            \App\CuadroMandoFormula::create([
+            'CuadroMando_idCuadroMando' => $id,
+            'tipoCuadroMandoFormula' => $datoFormula[2],
+            'CuadroMando_idIndicador' => $datoFormula[3],
+            'nombreCuadroMandoFormula' => $datoFormula[4],
+            'Modulo_idModulo' => $datoFormula[5],
+            'campoCuadroMandoFormula' => $datoFormula[6],
+            'calculoCuadroMandoFormula' => $datoFormula[7]
+             ]);
+        }
+        /*
             $cuadromando = \App\CuadroMandoFormula::All()->last();
             $contadorCuadroMandoFormula = count($request['tipoCuadroMandoFormula']);
             for ($i=0; $i <$contadorCuadroMandoFormula ; $i++) 
@@ -207,9 +209,9 @@ class CuadroMandoController extends Controller
                     ]);
                 }
 
-            }
+            }*/
 
-        return redirect('/cuadromando');
+       // return redirect('/cuadromando');
     }
 
     /**

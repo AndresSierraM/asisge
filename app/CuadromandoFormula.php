@@ -15,11 +15,11 @@ class CuadroMandoFormula extends Model
 
     public function cuadromandocondicion()
     {
-    	return $this->hasMany('App\CuadroMandoCondicion', 'CuadroMandoFormula_idCuadroMandoFormula')
+    	return $this->hasMany('App\CuadroMandoCondicion', 'CuadroMandoFormula_idCuadroMandoFormula');
     }
 
     public function cuadromandoagrupador()
     {
-    	return $this->hasMany('App\CuadroMandoAgrupador', 'CuadroMandoFormula_idCuadroMandoFormula') 
+    	return $this->hasMany('App\CuadroMandoAgrupador', 'CuadroMandoFormula_idCuadroMandoFormula');
     }
 }

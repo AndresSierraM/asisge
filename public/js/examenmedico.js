@@ -43,7 +43,7 @@ function CargarExamenes(idTercero, idCargo, tipo)
       },
 
        error:function(msj){
-          alert('Errores '+msj);
+          //alert('Errores '+msj);
       }
     });
 

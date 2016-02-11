@@ -214,11 +214,15 @@ Route::post('llenarObjetivo', function()
     include public_path().'/ajax/llenarObjetivo.php';
 });
 
-Route::post('consultarCampos', function()
+Route::post('CuadroMandoConsultarCampos', function()
 {
-    include public_path().'/ajax/consultarCampos.php';
+    include public_path().'/ajax/CuadroMandoConsultarCampos.php';
 });
 
+Route::post('CuadroMandoConsultarCalculos', function()
+{
+    include public_path().'/ajax/CuadroMandoConsultarCalculos.php';
+});
 // ---------------------------------
 // Documentos
 // ---------------------------------
