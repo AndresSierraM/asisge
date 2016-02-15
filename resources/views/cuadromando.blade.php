@@ -15,103 +15,83 @@
 	@else
 		{!!Form::open(['route'=>'cuadromando.store','method'=>'POST'])!!}
 	@endif
-  
+ 
 <script type="text/javascript">
 
   $(document).ready(function(){
 
-  if(document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').value > 0)
+      if(document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').value > 0)
       {
         llenarObjetivo(document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').value); 
       }
 
-  // consultamos los datos de la tabla de formulas y con esta información llenamos el campo de datos a grabar formula
-  var cuadromandoFormula = '<?php echo (isset($cuadromando) ? json_encode($cuadromando->cuadromandoformula) : "");?>';
-  cuadromandoFormula = (cuadromandoFormula != '' ? JSON.parse(cuadromandoFormula) : '');
-  var dato = '';
-  document.getElementById('datosgrabar').value = '';
-  for(var j=0; j < cuadromandoFormula.length; j++)
-  {
+     
+      // var data = JSON.parse('<?php echo json_encode($cuadromandoformula);?>');
+      // console.log(data.length);
+      // for(var j=0; j < data.length; j++)
+      // {
+          
+      //    alert( data[j].valorCuadroMandoCondicion);
+      // }
 
-   
-      dato += 
-          cuadromandoFormula[j].idCuadroMandoFormula+','+
-          cuadromandoFormula[j].CuadroMando_idCuadroMando+','+
-          cuadromandoFormula[j].tipoCuadroMandoFormula+','+
-          cuadromandoFormula[j].CuadroMando_idIndicador+','+
-          cuadromandoFormula[j].nombreCuadroMandoFormula+','+
-          cuadromandoFormula[j].Modulo_idModulo+','+
-          cuadromandoFormula[j].campoCuadroMandoFormula+','+
-          cuadromandoFormula[j].calculoCuadroMandoFormula+'|';
-      
-      concatenarFormula(dato, cuadromandoFormula[j].nombreCuadroMandoFormula);
-
-  }
-
-});
-</script>
-{!!Html::script('js/cuadromandoagrupador.js')!!}
-<script >
-    var agrupadores = '<?php echo (isset($cuadromandoformula) ? json_encode($cuadromandoformula->agrupadoress) : "");?>';
-    agrupadores = (agrupadores != '' ? JSON.parse(agrupadores) : '');
-    var valorAgrupador = [''];
-
-    $(document).ready(function(){
-
-      agrupador = new Atributos('agrupador','contenedor_agrupador','agrupador_');
-      agrupador.campos   = ['campoCuadroMandoAgrupador'];
-      agrupador.etiqueta = ['select'];
-      agrupador.tipo     = [''];
-      agrupador.estilo   = ['width: 900px;height:35px;'];
-      agrupador.clase    = ['chosen-select'];
-      agrupador.sololectura = [false];
-      for(var j=0, k = agrupadores.length; j < k; j++)
+      // consultamos los datos de la tabla de formulas y con esta información llenamos el campo de datos a grabar formula
+      var cuadromandoFormula = '<?php echo (isset($cuadromando) ? json_encode($cuadromando->cuadromandoformula) : "");?>';
+      cuadromandoFormula = (cuadromandoFormula != '' ? JSON.parse(cuadromandoFormula) : '');
+      document.getElementById('datosGrabarFormula').value = '';
+      for(var j=0; j < cuadromandoFormula.length; j++)
       {
-        agrupador.agregarCampos(JSON.stringify(agrupadores[j]),'L');
+
+       
+          dato = 
+              (j+1)+','+
+              cuadromandoFormula[j].CuadroMando_idCuadroMando+','+
+              cuadromandoFormula[j].tipoCuadroMandoFormula+','+
+              cuadromandoFormula[j].CuadroMando_idIndicador+','+
+              cuadromandoFormula[j].nombreCuadroMandoFormula+','+
+              cuadromandoFormula[j].Modulo_idModulo+','+
+              cuadromandoFormula[j].campoCuadroMandoFormula+','+
+              cuadromandoFormula[j].calculoCuadroMandoFormula+'|';
+          
+          concatenarFormula(dato, cuadromandoFormula[j].nombreCuadroMandoFormula);
+
       }
+  }); 
+     
 
-    });
-</script>
+      var valorcuadromandocondicion = ['','','','','',''];
+        
+      var parentesisAbre = [["", "(", "((", "(((", "(((("], ["", "(", "((", "(((", "(((("]];
+      var parentesisCierra = [["", ")", "))", ")))", "))))"], ["", ")", "))", ")))", "))))"]];
 
-{!!Html::script('js/cuadromandocondicion.js')!!}
-<script>
+      var operador = [["=", ">", ">=", "<", "<=", "like"],
+                      ["Igual a", "Mayor que", "Mayor o igual", "Menor que", "Menor o igual que", "Contiene"]];
+      var campos = [[],[]];
+      var conector =  [["AND", "OR"], ["Y", "O"]];
 
-    var cuadromandocondiciones = '<?php echo (isset($cuadromandoformula) ? json_encode($cuadromandoformula->cuadromandocondicion) : "");?>';
-    cuadromandocondiciones = (cuadromandocondiciones != '' ? JSON.parse(cuadromandocondiciones) : '');
-
-    var valorcuadromandocondicion = ['','','','','',''];
-
-    $(document).ready(function(){
-
-      cuadromandocondicion = new AtributosPropiedades('cuadromandocondicion','contenedor_cuadromandocondicion','cuadromandocondicion_');
-      cuadromandocondicion.campos   = ['parentesisabre', 'FrecuenciaMedicion_idFrecuenciaMedicion', 'operador','fecha','parentesiscierra','agrupador'];
-      cuadromandocondicion.etiqueta = ['select1', 'select2','select3','input','select4','select5'];
+      cuadromandocondicion = new Atributos('cuadromandocondicion','contenedor_cuadromandocondicion','cuadromandocondicion_');
+      cuadromandocondicion.campos   = ['parentesisInicioCuadroMandoCondicion', 'campoCuadroMandoCondicion', 'operadorCuadroMandoCondicion','valorCuadroMandoCondicion','parentesisFinCuadroMandoCondicion','conectorCuadroMandoCondicion'];
+      cuadromandocondicion.etiqueta = ['select', 'select','select','input','select','select'];
       cuadromandocondicion.tipo     = ['','','','text','',''];
+      cuadromandocondicion.opciones = [parentesisAbre,campos,operador,'',parentesisCierra,conector];
       cuadromandocondicion.estilo   = ['width: 100px;height:35px;','width: 280px;height:35px;','width: 160px;height:35px;','width: 190px;height:35px;','width: 100px;height:35px;','width: 100px;height:35px;'];
-      cuadromandocondicion.clase    = ['chosen-select','chosen-select','chosen-select','','chosen-select','chosen-select'];
+      cuadromandocondicion.clase    = ['','','','','',''];
       cuadromandocondicion.sololectura = [false,false,false,false,false,false];
+        
+     
+      var valorAgrupador = [''];
+      
+      var camposAgr = [[],[]];
 
-      cuadromandocondicion.valorInicioParentesis =  Array("(", "((", "(((", "((((");
-      cuadromandocondicion.nombreInicioParentesis =  Array("(", "((", "(((", "((((");
-
-      cuadromandocondicion.valorTipo =  Array("id");
-      cuadromandocondicion.nombreTipo =  Array("id");
-
-      cuadromandocondicion.valorOperador =  Array("''", "Igual a", "Mayor que", "Mayor o igual", "Menor que", "Menor o igual que", "Contiene");
-      cuadromandocondicion.nombreOperador =  Array("Seleccione", "Igual a", "Mayor que", "Mayor o igual", "Menor que", "Menor o igual que", "Contiene");
-
-      cuadromandocondicion.valorFinParentesis =  Array(")", "))", ")))", "))))");
-      cuadromandocondicion.nombreFinParentesis =  Array(")", "))", ")))", "))))");
-
-      cuadromandocondicion.valorConector =  Array("Y", "O");
-      cuadromandocondicion.nombreConector =  Array("Y", "O");
-
-      for(var j=0, k = cuadromandocondiciones.length; j < k; j++)
-      {
-        cuadromandocondicion.agregarCamposPropiedades(JSON.stringify(cuadromandocondiciones[j]),'L');
-      }
-
-    });
+      cuadromandoagrupador = new Atributos('cuadromandoagrupador','contenedor_cuadromandoagrupador','agrupador_');
+      cuadromandoagrupador.campos   = ['campoCuadroMandoAgrupador'];
+      cuadromandoagrupador.etiqueta = ['select'];
+      cuadromandoagrupador.tipo     = [''];
+      cuadromandoagrupador.opciones = [camposAgr];
+      cuadromandoagrupador.estilo   = ['width: 900px;height:35px;'];
+      cuadromandoagrupador.clase    = [''];
+      cuadromandoagrupador.sololectura = [false];
+      
+  
 
   </script>
 
@@ -279,12 +259,24 @@
             </div>
           </div>
 
-
+  
 
   <div class="col-md-6" id="formula" style="width: 100%; height:100%; background-color: white; z-index: 2 ; border: 1px inset; border-color: #ddd; position: absolute; top: 1px; display: none;">
-    <a class='cerrar' href='javascript:void(0);' onclick='document.getElementById(&apos;formula&apos;).style.display = &apos;none&apos;'>x</a> <!--Es la funcion la cual cierra el div flotante-->
+   <!--  <a class='cerrar' href='javascript:void(0);' onclick='document.getElementById(&apos;formula&apos;).style.display = &apos;none&apos;'>x</a> --> <!--Es la funcion la cual cierra el div flotante-->
     
-    <div class="col-md-6" id="uno" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; display: block;">
+
+    <div id="concatenado" class="col-md-12" style="width: 90%; height:100px; background-color: white; z-index: 2 ; border: 1px inset; border-color: #ddd; position: absolute; top: 0px; display: block;">
+        {!!Form::text('indica',null,['id' => 'indica', 'class'=>'form-control','style'=>'width:70px; height:30px;','placeholder'=>'F(x)'])!!}
+        {!!Form::hidden('formulaconcatenada','',['id' => 'formulaconcatenada'])!!}
+        <div id="contenedorFormula"></div>
+        {!!Form::hidden('datosGrabarFormula','',['id' => 'datosGrabarFormula'])!!}
+        {!!Form::hidden('datosGrabarCondicion','',['id' => 'datosGrabarCondicion'])!!}
+        {!!Form::hidden('datosGrabarAgrupador','',['id' => 'datosGrabarAgrupador'])!!}
+        {!!Form::hidden('contadorFormula',0,['id' => 'contadorFormula'])!!}
+        
+    </div>
+
+    <div class="col-md-6" id="uno" style="width: 540px; height:220px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 103px; display: block;">
     <div id="operadores">
       {!! HTML::image('images/mas.png','mas',array("class"=>"btn btn-success",'width' => '52', 'height' => '52',  'onclick' => 'concatenarDatos("Operador","+")','title' => 'mas')) !!}
       {!! HTML::image('images/menos.png','menos',array("class"=>"btn btn-success",'width' => '52', 'height' => '52',  'onclick' => 'concatenarDatos("Operador","-")','title' => 'menos')) !!}
@@ -311,43 +303,38 @@
       {!!Form::button('Borrar TODO',["class"=>"btn btn-danger", 'style'=>'height:52px; width:164px;', 'onclick' => 'borrarTodo();'])!!}
       </span>
       <span id="borrarultimo">
-      {!!Form::button('Borrar ULTIMO',["class"=>"btn btn-danger", 'style'=>'height:52px; width:164px;', 'onclick' => 'borrarTodo();'])!!}
+      {!!Form::button('Borrar ULTIMO',["class"=>"btn btn-danger", 'style'=>'height:52px; width:164px;', 'onclick' => 'borrarUltimo(document.getElementById(\'contadorFormula\').value);'])!!}
       </span>
     </div>
 
-    </br>
-    <div id="concatenado">
-        {!!Form::text('indica',null,['class'=>'form-control','style'=>'width:70px; height:30px;','placeholder'=>'F(x)'])!!}
-        {!!Form::hidden('formulaconcatenada','',['id' => 'formulaconcatenada'])!!}
-        <div id="contenedorFormula"></div>
-        {!!Form::hidden('datosgrabar','',['id' => 'datosgrabar'])!!}
-        {!!Form::hidden('contadorFormula',0,['id' => 'contadorFormula'])!!}
-        
-    </div>
+    
+    {!!Form::button('Terminar',["class"=>"btn btn-success", 'onclick' => 'document.getElementById(\'formulaCuadroMando\').value = document.getElementById(\'indica\').value + \' = \' + document.getElementById(\'formulaconcatenada\').value; document.getElementById(\'formula\').style.display = \'none\';'])!!}
+
+
 
     </div>
     
 
-    <div class="col-md-6" id="formIndicador" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
+    <div class="col-md-6" id="formIndicador" style="width: 540px; height:220px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 103px; left:560px; display: none;">
         <div id="operadores">
           {!! Form::label('Indicador', 'Indicador', array('class' => 'col-sm-2 control-label')) !!}
           {!! Form::select('Indicador', $indicador, null, ['class' => 'select form-control col-sm-1', 'placeholder'=>'Seleccione un Indicador'])!!}
         </div>
         </br>
-        {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formIndicador\',document.getElementById(\'Indicador\').options[document.getElementById(\'Indicador\').selectedIndex].text);'])!!}
+        {!!Form::button('Aceptar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formIndicador\',document.getElementById(\'Indicador\').options[document.getElementById(\'Indicador\').selectedIndex].text);'])!!}
     </div>
 
-    <div class="col-md-6" id="formConstante" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
+    <div class="col-md-6" id="formConstante" style="width: 540px; height:220px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 103px; left:560px; display: none;">
         <div id="operadores">
         </br>
           {!! Form::label('valorConstante', 'Valor', array('class' => 'col-sm-2 control-label')) !!}
           {!!Form::text('valorConstante',null,['class'=>'form-control','placeholder'=>'&nbsp;'])!!}
           </br>
-          {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formConstante\',document.getElementById(\'valorConstante\').value);'])!!}
+          {!!Form::button('Aceptar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formConstante\',document.getElementById(\'valorConstante\').value);'])!!}
         </div>
     </div>
 
-    <div class="col-md-6" id="formVariable" style="width: 540px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 1px; left:560px; display: none;">
+    <div class="col-md-6" id="formVariable" style="width: 540px; height:220px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 103px; left:560px; display: none;">
         <div id="variables">
 
           <div class="form-group" id='test'>
@@ -363,7 +350,7 @@
           {!! Form::label('Modulo_idModulo', 'Modulo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-            {!!Form::select('Modulo_idModulo',$modulo, (isset($cuadromando) ? $cuadromando->Modulo_idModulo : 0),["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCampos(this.value)',"placeholder" =>"Seleccione el modulo"])!!}
+            {!!Form::select('Modulo_idModulo',$modulo, (isset($cuadromando) ? $cuadromando->Modulo_idModulo : 0),["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCampos(this.value)',"placeholder" =>"Seleccione el Modulo"])!!}
             </div>
           </div>
           </div>
@@ -388,48 +375,34 @@
           </div>
           </div>
 
-          <!-- Es la multi registro -->
-          <div class="form-group" id='test'>
-          {!! Form::label('tipoCuadroMandoFormula', 'Condicion', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-            {!!Form::text('tipoCuadroMandoFormula',null,['class'=>'form-control', 'onclick' => 'mostrarDivCA("condicion")', 'readonly', 'style' => 'width:258px;'])!!}
-            </div>
-          </div>
-        </div>
-
-        <!-- Consulta a la bd -->
-        <div class="form-group" id='test'>
-          {!! Form::label('nombreCuadroMandoFormula', 'Agrupador', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-            {!!Form::text('nombreCuadroMandoFormula',null,['class'=>'form-control', 'onclick' => 'mostrarDivCA("agrupador")', 'readonly', 'style' => 'width:258px;'])!!}
-            </div>
-          </div>
-        </div>
-        </br>
-            {!!Form::button('Enviar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formVariable\',document.getElementById(\'nombreVariable\').value);'])!!}
+          {!!Form::button('Condicion...',["class"=>"btn btn-warning", 'onclick' => 'mostrarDivCA(\'condicion\')'])!!}
+          {!!Form::button('Agrupador...',["class"=>"btn btn-warning", 'onclick' => 'mostrarDivCA(\'agrupador\')'])!!}
+     
+          {!!Form::button('Aceptar',["class"=>"btn btn-success", 'onclick' => 'concatenarDatos(\'formVariable\',document.getElementById(\'nombreVariable\').value);'])!!}
         </div>
     </div>
     
     <!-- Es la multi registro -->
-    <div class="col-md-6" id="condicion" onclick="mostrarDivCA('condicion')" style="width: 1085px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 300px;  display: none;">
+    <div class="col-md-6" id="condicion" style="width: 1085px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 327px;  display: none;">
         <div id="operadores">
           <div class="panel-body">
           <div class="form-group" id='test'>
             <div class="col-sm-12">
               <div class="row show-grid">
-                <div class="col-md-1" style="width: 40px;" onclick="cuadromandocondicion.agregarCamposPropiedades(valorcuadromandocondicion,'A')">
+                <div class="col-md-1" style="width: 40px;" onclick="cuadromandocondicion.agregarCampos(valorcuadromandocondicion,'A')">
                   <span class="glyphicon glyphicon-plus"></span>
                 </div>
-                <div class="col-md-1" style="width: 100px;">&nbsp;</div>
-                <div class="col-md-1" style="width: 280px;">Frecuencia</div>
+                <div class="col-md-1" style="width: 100px;">Agrupador</div>
+                <div class="col-md-1" style="width: 280px;">Campo</div>
                 <div class="col-md-1" style="width: 160px;">Operador</div>
-                <div class="col-md-1" style="width: 190px;">Fecha</div>
-                <div class="col-md-1" style="width: 100px;">&nbsp;</div>
-                <div class="col-md-1" style="width: 100px;">&nbsp;</div>
+                <div class="col-md-1" style="width: 190px;">Valor</div>
+                <div class="col-md-1" style="width: 100px;">Agrupador</div>
+                <div class="col-md-1" style="width: 100px;">Conector</div>
                 <div id="contenedor_cuadromandocondicion">
                 </div>
+
+                {!!Form::button('Aceptar',["class"=>"btn btn-success", 'onclick' => 'concatenarCondicion();'])!!}
+
               </div>
             </div>
           </div>
@@ -437,18 +410,21 @@
         </div>
     </div>
 
-    <div class="col-md-6" id="agrupador" style="width: 1085px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 300px; display: none;">
+    <div class="col-md-6" id="agrupador" style="width: 1085px; height:290px; background-color: white; border: 1px solid; border-color: #ddd; position: absolute; top: 327px; display: none;">
         <div id="operadores">
           <div class="panel-body">
           <div class="form-group" id='test'>
             <div class="col-sm-12">
               <div class="row show-grid">
-                <div class="col-md-1" style="width: 40px;" onclick="agrupador.agregarCampos(valorAgrupador,'A')">
+                <div class="col-md-1" style="width: 40px;" onclick="cuadromandoagrupador.agregarCampos(valorAgrupador,'A')">
                   <span class="glyphicon glyphicon-plus"></span>
                 </div>
                 <div class="col-md-1" style="width: 900px;">Agrupado por</div>
-                <div id="contenedor_agrupador">
+                <div id="contenedor_cuadromandoagrupador">
                 </div>
+
+                {!!Form::button('Aceptar',["class"=>"btn btn-success", 'onclick' => 'concatenarAgrupador();'])!!}
+
               </div>
             </div>
           </div>

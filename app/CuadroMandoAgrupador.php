@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CuadroMandoCondicion extends Model
+class CuadroMandoAgrupador extends Model
 {
     protected $table = 'cuadromandoagrupador';
     protected $primaryKey = 'idCuadroMandoAgrupador';
@@ -15,6 +15,6 @@ class CuadroMandoCondicion extends Model
 
     public function cuadromandoformula()
     {
-    	return $this->hasMany('App\CuadroMandoFormula', 'idCuadroMandoFormula')
+    	return $this->hasMany('App\CuadroMandoFormula', 'CuadroMandoFormula_idCuadroMandoFormula');
     }
 }

@@ -267,22 +267,28 @@ function llenarObjetivo(idObjetivo)
         document.getElementById("condicion").style.display = "none";
         document.getElementById("agrupador").style.display = "none";
 
-        document.getElementById(divCA).style.display = "block";
+        if(divCA != '')
+        {
+            document.getElementById(divCA).style.display = "block";
+        }
     }
 
     function concatenarFormula(dato, boton)
     {
+        // incrementamos el contador de componentes de la formula antes de crearlo
+        document.getElementById("contadorFormula").value++;
+
         // adicionamos a la formula el nombre del indicador/constante/variable
         document.getElementById('formulaconcatenada').value = document.getElementById('formulaconcatenada').value + boton;
 
+        
         document.getElementById("contenedorFormula").innerHTML += '<div id="'+document.getElementById("contadorFormula").value+'" class="btn btn-default">'+boton+'</div>';
-        document.getElementById("contadorFormula").value++; 
+         
 
-        document.getElementById("datosgrabar").value += dato;         
+        document.getElementById("datosGrabarFormula").value += dato;         
 
         // Ocultamos el div indicador/constante/variable
         mostrarDiv('');
-
 
     }
 
@@ -305,11 +311,12 @@ function llenarObjetivo(idObjetivo)
         var campoCuadroMandoFormula = '';
         var calculoCuadroMandoFormula = '';
 
+        componente =  parseFloat(document.getElementById("contadorFormula").value)+1;
         var datos = '';
         switch(div)
         {
             case 'formVariable':
-                idCuadroMandoFormula = 0;
+                idCuadroMandoFormula = componente;
                 CuadroMando_idCuadroMando = 0;
                 tipoCuadroMandoFormula = 'Variable';
                 CuadroMando_idIndicador = 0;
@@ -317,10 +324,17 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = document.getElementById('Modulo_idModulo').value;
                 campoCuadroMandoFormula = document.getElementById('campoCuadroMandoFormula').value;
                 calculoCuadroMandoFormula = document.getElementById('calculoCuadroMandoFormula').value;
+
+                // limpiamos los campos
+                document.getElementById('nombreVariable').value = '';
+                document.getElementById('Modulo_idModulo').value = '';
+                document.getElementById('campoCuadroMandoFormula').value = '';
+                document.getElementById('calculoCuadroMandoFormula').value = '';
+                
             break;
 
             case 'formIndicador':
-                idCuadroMandoFormula = 0;
+                idCuadroMandoFormula = componente;
                 CuadroMando_idCuadroMando = 0;
                 tipoCuadroMandoFormula = 'Indicador';
                 CuadroMando_idIndicador = document.getElementById('Indicador').value;
@@ -328,10 +342,13 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = 0;
                 campoCuadroMandoFormula = '';
                 calculoCuadroMandoFormula = '';
+
+                // limpiamos los campos
+                document.getElementById('Indicador').value = '';
             break;
 
             case 'formConstante':
-                idCuadroMandoFormula = 0;
+                idCuadroMandoFormula = componente;
                 CuadroMando_idCuadroMando = 0;
                 tipoCuadroMandoFormula = 'Constante';
                 CuadroMando_idIndicador = 0;
@@ -339,10 +356,13 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = 0;
                 campoCuadroMandoFormula = '';
                 calculoCuadroMandoFormula = '';
+
+                 // limpiamos los campos
+                document.getElementById('valorConstante').value = '';
             break;
 
             case 'Operador':
-                idCuadroMandoFormula = 0;
+                idCuadroMandoFormula = componente;
                 CuadroMando_idCuadroMando = 0;
                 tipoCuadroMandoFormula = 'Operador';
                 CuadroMando_idIndicador = 0;
@@ -350,6 +370,7 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = 0;
                 campoCuadroMandoFormula = '';
                 calculoCuadroMandoFormula = '';
+
             break;
         }
         
@@ -358,11 +379,168 @@ function llenarObjetivo(idObjetivo)
         concatenarFormula(datos, nombreCuadroMandoFormula);
     }
 
+    function concatenarCondicion()
+    {
+        datos = '';
+        componente =  parseFloat(document.getElementById("contadorFormula").value)+1;
+
+        for(i = 0; i < cuadromandocondicion.contador; i++)
+        {
+            datos += 
+                componente+','+
+                document.getElementById("parentesisInicioCuadroMandoCondicion"+i).value+','+
+                document.getElementById("campoCuadroMandoCondicion"+i).value+','+
+                document.getElementById("operadorCuadroMandoCondicion"+i).value+','+
+                document.getElementById("valorCuadroMandoCondicion"+i).value+','+
+                document.getElementById("parentesisFinCuadroMandoCondicion"+i).value+','+
+                document.getElementById("conectorCuadroMandoCondicion"+i).value+'|';
+        }
+        document.getElementById("datosGrabarCondicion").value += datos;
+
+        // luego de salvar los datos en el campo concatenado, eliminamos los registros para una proxima condicion
+        document.getElementById("contenedor_cuadromandocondicion").innerHTML = '';
+        // reiniciamos el contador de registros de la condicion
+        cuadromandocondicion.contador = 0;
+
+        // ocultamos el div de condiciones
+        mostrarDivCA('');
+    }
+
+
+    function concatenarAgrupador()
+    {
+        datos = '';
+        componente =  parseFloat(document.getElementById("contadorFormula").value)+1;
+
+        for(i = 0; i < cuadromandoagrupador.contador; i++)
+        {
+            datos += 
+                componente+','+
+                document.getElementById("campoCuadroMandoAgrupador"+i).value+'|';
+        }
+        document.getElementById("datosGrabarAgrupador").value += datos;
+
+        // luego de salvar los datos en el campo concatenado, eliminamos los registros para una proxima condicion
+        document.getElementById("contenedor_cuadromandoagrupador").innerHTML = '';
+        // reiniciamos el contador de registros de la condicion
+        cuadromandoagrupador.contador = 0;
+
+        // ocultamos el div de condiciones
+        mostrarDivCA('');
+    }
+
 
     function borrarTodo()
     {
-        document.getElementById('formulaconcatenada').value = document.getElementById('formulaconcatenada').value = '';
+        // limpiamos la formula concatenada (string)
+        document.getElementById('formulaconcatenada').value = '';
+        
+        // limpiamos la formula en forma de botones
+        document.getElementById("contenedorFormula").innerHTML = '';
+
+        // limpiamos los campos de datos a grabar (formula condicion y agrupacion)
+        document.getElementById('datosGrabarFormula').value = '';
+        document.getElementById('datosGrabarCondicion').value = '';
+        document.getElementById('datosGrabarAgrupador').value = '';
+
     }
+
+
+    function borrarUltimo(id)
+    {
+        // tomamos el nombre del componente antes de eliminarlo
+        valor = document.getElementById(id).innerHTML;
+
+        // eliminamos el ultimo componente (div) de la formula en forma de botones
+        document.getElementById("contenedorFormula").removeChild(document.getElementById(id)); 
+       
+        
+        // limpiamos de la formula concatenada el componente eliminado (string)
+        // verificamos la longitud del componente para quitar esta parte del final de la formula
+
+        formula = document.getElementById('formulaconcatenada').value;
+        document.getElementById('formulaconcatenada').value = formula.substring(0, (formula.length - valor.length));
+
+        // tomamos el contenido del campo datosGrabarFormula y lo pasamos a una variable auxiliar, 
+        // luego recorremos el numero de veces del nodo que 
+        // vamos a borrar menos uno, ejemplo: si el nodo a borrar es el 3, le vamos a quitar a la variable auxiliar
+        // los 2 primeros datos para dejar solo el que necesitamos borrar
+        // luego con ese sabremos que borrar desde el campo datosGrabarFormula
+        auxiliar = document.getElementById('datosGrabarFormula').value;
+        for (i = 0; i < id-1; i++)
+        {
+            // vamos quitando el primer dato
+            auxiliar = auxiliar.substring(auxiliar.indexOf('|')+1);
+        }
+        // al final solo nos queda en la variable auxiliar el ultimo dato
+        document.getElementById('datosGrabarFormula').value = document.getElementById('datosGrabarFormula').value.substring(0, (document.getElementById('datosGrabarFormula').value.length - auxiliar.length));
+
+        // Eliminamos las condiciones correspondientes al id del componente
+        // como puede tenenr varias condiciones asociadas al mismo numero de componente, si encontramos una, vamos salvando
+        // las condiciones anteriores en otra variable, al final las que queden en la variable 2 son las que no podemos borrar
+        // ejemplo de datos :   3,...............|3,...............|1,...............|2,...............|3,...............|
+        var auxiliar = document.getElementById('datosGrabarCondicion').value;
+        var auxiliar2 = '';
+        var componElim = id+',';
+
+        while(auxiliar != '')
+        {
+            // buscamos el PIPE (separador)
+            registrocond = auxiliar.substring(0, auxiliar.indexOf('|')+1);
+
+            // si ese registro comienza por el numero de componente antes de la primara coma, lo eliminamos del 
+            // auxiliar sin salvarlo, por el contrario si no empieza por el componente, lo eliminamos pero despues 
+            // de salvarlo en la auxiliar2
+            if(registrocond.substring(0, componElim.length) != componElim)
+            {
+                auxiliar2 += registrocond; 
+            }
+
+            // vamos quitando el primer dato (desde el siguiente caractar del pipe hasta el final)
+            auxiliar = auxiliar.substring(auxiliar.indexOf('|')+1);
+        }
+
+        // en este punto debemos tener la variable auxiliar 2 con los registros correctos 
+        // alert(auxiliar2);
+        // al final solo nos queda en la variable auxiliar el ultimo dato
+        document.getElementById('datosGrabarCondicion').value = auxiliar2;
+
+
+
+
+        // realizamos el mismo proceso para quitar los componentes del agrupador
+        var auxiliar = document.getElementById('datosGrabarAgrupador').value;
+        var auxiliar2 = '';
+        var componElim = id+',';
+
+        while(auxiliar != '')
+        {
+            // buscamos el PIPE (separador)
+            registrocond = auxiliar.substring(0, auxiliar.indexOf('|')+1);
+
+            // si ese registro comienza por el numero de componente antes de la primera coma, lo eliminamos del 
+            // auxiliar sin salvarlo, por el contrario si no empieza por el componente, lo eliminamos pero despues 
+            // de salvarlo en la auxiliar2
+            if(registrocond.substring(0, componElim.length) != componElim)
+            {
+                auxiliar2 += registrocond; 
+            }
+
+            // vamos quitando el primer dato (desde el siguiente caractar del pipe hasta el final)
+            auxiliar = auxiliar.substring(auxiliar.indexOf('|')+1);
+        }
+
+        // en este punto debemos tener la variable auxiliar 2 con los registros correctos 
+        // al final solo nos queda en la variable auxiliar el ultimo dato
+        document.getElementById('datosGrabarAgrupador').value = auxiliar2;
+
+
+        // restamos 1 al contador de componentes de la formula
+        document.getElementById('contadorFormula').value--;
+
+    }
+
+
 
     function consultarCampos(idModulo)
     {
@@ -387,6 +565,8 @@ function llenarObjetivo(idObjetivo)
 
                 select.options.length = 0;
                 var option = '';
+                var valores = new Array();
+                var nombres = new Array();
 
                 option = document.createElement('option');
                 option.value = '';
@@ -400,7 +580,17 @@ function llenarObjetivo(idObjetivo)
                     option.value = data[j].COLUMN_NAME;
                     option.text = data[j].COLUMN_COMMENT;
                     select.appendChild(option);
+
+                    valores[j] = data[j].COLUMN_NAME;
+                    nombres[j] = data[j].COLUMN_COMMENT;
                 }
+
+                // con el array de campos, cambiamos el valor de las opciones para la multiregistro de condiciones que 
+                // muestra los mismos nombres de campo
+                cuadromandocondicion.opciones[1] = [valores,nombres];
+                // y los mismos campos para el multiregistro de agrupadores
+                cuadromandoagrupador.opciones[0] = [valores,nombres];
+
             }
         });
     }

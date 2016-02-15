@@ -7,6 +7,7 @@ use App\CuadroMando;
 use App\Http\Requests;
 use App\Http\Requests\CuadroMandoRequest;
 use App\Http\Controllers\Controller;
+use DB;
 
 class CuadroMandoController extends Controller
 {
@@ -27,13 +28,19 @@ class CuadroMandoController extends Controller
      */
     public function create()
     {
+
+
+        $cuadromandoformula = DB::table('cuadromandoformula as CF')
+            ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula');
+
+        $indicador = \App\CuadroMando::All()->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
         $proceso = \App\Proceso::All()->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
-        return view('cuadromando',compact('companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'));
+        return view('cuadromando',compact('cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'));
 
     }
 
@@ -62,48 +69,89 @@ class CuadroMandoController extends Controller
             'Tercero_idResponsable' => $request['Tercero_idResponsable']
             ]);
 
-           /* $cuadromando = \App\CuadroMandoFormula::All()->last();
-            $contadorCuadroMandoFormula = count($request['tipoCuadroMandoFormula']);
-            for ($i=0; $i <$contadorCuadroMandoFormula ; $i++) 
-            { 
+        $cuadromando = \App\CuadroMando::All()->last();
+
+        $registroFormula = explode('|', substr($request["datosGrabarFormula"],0, strlen($request["datosGrabarFormula"])-1)) ;
+        $registroCondicion = explode('|', substr($request["datosGrabarCondicion"],0, strlen($request["datosGrabarCondicion"])-1)) ;
+        $registroAgrupador = explode('|', substr($request["datosGrabarAgrupador"],0, strlen($request["datosGrabarAgrupador"])-1)) ;
+
+
+        // al fraccionar el string con explode, siempre segenera un array, aunque este vacio
+        // preguntamos si en l aprimera posicion tiene algun dato para saber si lo recorremos
+        // con el fin de que no saque error de offset en las posiciones fijas (2,3,4,5,6,7)
+        if($registroFormula[0] != '')
+        {
+            foreach ($registroFormula as $regF => $datosF) 
+            {
+                $datoFormula = explode(',', $datosF) ;
+            
                 \App\CuadroMandoFormula::create([
                 'CuadroMando_idCuadroMando' => $cuadromando->idCuadroMando,
-                'tipoCuadroMandoFormula' => $request['tipoCuadroMandoFormula'],
-                'CuadroMando_idIndicador' => $request['CuadroMando_idIndicador'],
-                'nombreCuadroMandoFormula' => $request['nombreCuadroMandoFormula'],
-                'Modulo_idModulo' => $request['Modulo_idModulo'],
-                'campoCuadroMandoFormula' => $request['campoCuadroMandoFormula'],
-                'calculoCuadroMandoFormula' => $request['calculoCuadroMandoFormula']
-                ]);
+                'tipoCuadroMandoFormula' => $datoFormula[2],
+                'CuadroMando_idIndicador' => $datoFormula[3],
+                'nombreCuadroMandoFormula' => $datoFormula[4],
+                'Modulo_idModulo' => $datoFormula[5],
+                'campoCuadroMandoFormula' => $datoFormula[6],
+                'calculoCuadroMandoFormula' => $datoFormula[7]
+                 ]);
 
+                // Obtenemos el ultimo ID insertado para relacionarlo con las condiciones y agrupaciones
                 $cuadromandoformula = \App\CuadroMandoFormula::All()->last();
-                $contadorCuadroMandoCondicion = count($request['tipoCuadroMandoFormula']);
-                for ($i=0; $i <$contadorCuadroMandoCondicion; $i++) 
-                { 
-                    \App\CuadroMandoCondicion::create([
-                    'CuadroMandoFormula_idCuadroMando' => $cuadromandoformula->idCuadroMandoFormula,
-                    'parentesisInicioCuadroMandoCondicion' => $request['parentesisInicioCuadroMandoCondicion'],
-                    'campoCuadroMandoCondicion' => $request['campoCuadroMandoCondicion'],
-                    'operadorCuadroMandoCondicion' => $request['operadorCuadroMandoCondicion'],
-                    'valorCuadroMandoCondicion' => $request['valorCuadroMandoCondicion'],
-                    'parentesisFinCuadroMandoCondicion' => $request['parentesisFinCuadroMandoCondicion'],
-                    'conectorCuadroMandoCondicion' => $request['conectorCuadroMandoCondicion']
-                    ]);
+
+                // Por cada una de los componentes de la formula, posiblemente hay unas condiciones
+                // solo aplica para los componentes de tipo Variable
+                if($datoFormula[2] == 'Variable' and $registroCondicion[0] != '')
+                {
+                    //echo 'Tipo Variable =  '. $datoFormula[2]. ' AND  '. $registroCondicion[0].'<br>';
+                    foreach ($registroCondicion as $regC => $datosC) 
+                    {
+                        $datoCondicion = explode(',', $datosC) ;
+                        // si el primer id de este array es igual al del array de Formula, insertamos este valor
+                        //echo 'id Cond '. $datoCondicion[0]. ' == '. $datoFormula[0].'<br>';
+                        if($datoCondicion[0] == $datoFormula[0])
+                        {
+                            
+                            \App\CuadroMandoCondicion::create([
+                            'CuadroMandoFormula_idCuadroMandoFormula' => $cuadromandoformula->idCuadroMandoFormula,
+                            'parentesisInicioCuadroMandoCondicion' => $datoCondicion[1],
+                            'campoCuadroMandoCondicion' => $datoCondicion[2],
+                            'operadorCuadroMandoCondicion' => $datoCondicion[3],
+                            'valorCuadroMandoCondicion' => $datoCondicion[4],
+                            'parentesisFinCuadroMandoCondicion' => $datoCondicion[5],
+                            'conectorCuadroMandoCondicion' => $datoCondicion[6]
+                             ]);
+                            
+                            
+                        }
+                    }
                 }
 
-                $cuadromandoformula = \App\CuadroMandoFormula::All()->last();
-                $contadorCuadroMandoAgrupador = count($request['campoCuadroMandoAgrupador']);
-                for ($i=0; $i <$contadorCuadroMandoAgrupador ; $i++) 
-                { 
-                    \App\CuadroMandoAgrupador::create([
-                    'CuadroMandoFormula_idCuadroMando' => $cuadromandoformula->idCuadroMandoFormula,
-                    'campoCuadroMandoAgrupador' => $request['campoCuadroMandoAgrupador']
-                    ]);
+
+                // Repetimos el mismo proceso para los agrupadores de las variables 
+                // Por cada una de los componentes de la formula, posiblemente hay unos agrupadores
+                // solo aplica para los componentes de tipo Variable
+                if($datoFormula[2] == 'Variable' and $registroAgrupador[0] != '')
+                {
+                    //echo 'Tipo Variable =  '. $datoFormula[2]. ' AND  '. $registroAgrupador[0].'<br>';
+                    foreach ($registroAgrupador as $regC => $datosC) 
+                    {
+                        $datoAgrupador = explode(',', $datosC) ;
+                        // si el primer id de este array es igual al del array de Formula, insertamos este valor
+                        //echo 'id Cond '. $datoAgrupador[0]. ' == '. $datoFormula[0].'<br>';
+                        if($datoAgrupador[0] == $datoFormula[0])
+                        {
+
+                            \App\CuadroMandoAgrupador::create([
+                            'CuadroMandoFormula_idCuadroMandoFormula' => $cuadromandoformula->idCuadroMandoFormula,
+                            'campoCuadroMandoAgrupador' => $datoAgrupador[1]
+                             ]);
+                            
+                        }
+                    }
                 }
 
-
-                
-            }*/
+            }
+        }
 
         return redirect('/cuadromando');
     }
@@ -128,6 +176,11 @@ class CuadroMandoController extends Controller
     public function edit($id, CuadroMandoRequest $request)
     {
         $cuadromando = \App\CuadroMando::find($id);
+
+        $cuadromandoformula = DB::table('cuadromandoformula as CF')
+            ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula')
+            ->where('CF.CuadroMando_idCuadroMando','=',$id);
+
         //$cuadromandoformula = \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->list();
         $indicador = \App\CuadroMando::where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
@@ -136,7 +189,7 @@ class CuadroMandoController extends Controller
         $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
-        return view('cuadromando',compact('indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);
+        return view('cuadromando',compact('cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);
     }
 
     /**
@@ -151,67 +204,95 @@ class CuadroMandoController extends Controller
         $cuadromando = \App\CuadroMando::find($id);
         $cuadromando->fill($request->all());
         $cuadromando->save();
-
-        \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->delete();
-
-        $registroFormula = explode('|', substr($request["datosgrabar"],0, strlen($request["datosgrabar"])-1)) ;
-        foreach ($registroFormula as $reg => $datos) 
-        {
-            $datoFormula = explode(',', $datos) ;
         
-            \App\CuadroMandoFormula::create([
-            'CuadroMando_idCuadroMando' => $id,
-            'tipoCuadroMandoFormula' => $datoFormula[2],
-            'CuadroMando_idIndicador' => $datoFormula[3],
-            'nombreCuadroMandoFormula' => $datoFormula[4],
-            'Modulo_idModulo' => $datoFormula[5],
-            'campoCuadroMandoFormula' => $datoFormula[6],
-            'calculoCuadroMandoFormula' => $datoFormula[7]
-             ]);
-        }
-        /*
-            $cuadromando = \App\CuadroMandoFormula::All()->last();
-            $contadorCuadroMandoFormula = count($request['tipoCuadroMandoFormula']);
-            for ($i=0; $i <$contadorCuadroMandoFormula ; $i++) 
-            { 
+        \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando','=',$id)->delete();
+
+        $registroFormula = explode('|', substr($request["datosGrabarFormula"],0, strlen($request["datosGrabarFormula"])-1)) ;
+        $registroCondicion = explode('|', substr($request["datosGrabarCondicion"],0, strlen($request["datosGrabarCondicion"])-1)) ;
+        $registroAgrupador = explode('|', substr($request["datosGrabarAgrupador"],0, strlen($request["datosGrabarAgrupador"])-1)) ;
+
+
+        // al fraccionar el string con explode, siempre segenera un array, aunque este vacio
+        // preguntamos si en l aprimera posicion tiene algun dato para saber si lo recorremos
+        // con el fin de que no saque error de offset en las posiciones fijas (2,3,4,5,6,7)
+        if($registroFormula[0] != '')
+        {
+            foreach ($registroFormula as $regF => $datosF) 
+            {
+                $datoFormula = explode(',', $datosF) ;
+            
                 \App\CuadroMandoFormula::create([
-                'CuadroMando_idCuadroMando' => $cuadromando->idCuadroMando,
-                'tipoCuadroMandoFormula' => $request['tipoCuadroMandoFormula'],
-                'CuadroMando_idIndicador' => $request['CuadroMando_idIndicador'],
-                'nombreCuadroMandoFormula' => $request['nombreCuadroMandoFormula'],
-                'Modulo_idModulo' => $request['Modulo_idModulo'],
-                'campoCuadroMandoFormula' => $request['campoCuadroMandoFormula'],
-                'calculoCuadroMandoFormula' => $request['calculoCuadroMandoFormula']
+                'CuadroMando_idCuadroMando' => $id,
+                'tipoCuadroMandoFormula' => $datoFormula[2],
+                'CuadroMando_idIndicador' => $datoFormula[3],
+                'nombreCuadroMandoFormula' => $datoFormula[4],
+                'Modulo_idModulo' => $datoFormula[5],
+                'campoCuadroMandoFormula' => $datoFormula[6],
+                'calculoCuadroMandoFormula' => $datoFormula[7]
                  ]);
 
+                // Obtenemos el ultimo ID insertado para relacionarlo con las condiciones y agrupaciones
                 $cuadromandoformula = \App\CuadroMandoFormula::All()->last();
-                $contadorCuadroMandoCondicion = count($request['tipoCuadroMandoFormula']);
-                for ($i=0; $i <$contadorCuadroMandoCondicion; $i++) 
-                { 
-                    \App\CuadroMandoCondicion::create([
-                    'CuadroMandoFormula_idCuadroMando' => $cuadromandoformula->idCuadroMandoFormula,
-                    'parentesisInicioCuadroMandoCondicion' => $request['parentesisInicioCuadroMandoCondicion'],
-                    'campoCuadroMandoCondicion' => $request['campoCuadroMandoCondicion'],
-                    'operadorCuadroMandoCondicion' => $request['operadorCuadroMandoCondicion'],
-                    'valorCuadroMandoCondicion' => $request['valorCuadroMandoCondicion'],
-                    'parentesisFinCuadroMandoCondicion' => $request['parentesisFinCuadroMandoCondicion'],
-                    'conectorCuadroMandoCondicion' => $request['conectorCuadroMandoCondicion']
-                    ]);
+
+                // Por cada una de los componentes de la formula, posiblemente hay unas condiciones
+                // solo aplica para los componentes de tipo Variable
+                if($datoFormula[2] == 'Variable' and $registroCondicion[0] != '')
+                {
+                    //echo 'Tipo Variable =  '. $datoFormula[2]. ' AND  '. $registroCondicion[0].'<br>';
+                    foreach ($registroCondicion as $regC => $datosC) 
+                    {
+                        $datoCondicion = explode(',', $datosC) ;
+                        // si el primer id de este array es igual al del array de Formula, insertamos este valor
+                        //echo 'id Cond '. $datoCondicion[0]. ' == '. $datoFormula[0].'<br>';
+                        if($datoCondicion[0] == $datoFormula[0])
+                        {
+                            
+                            \App\CuadroMandoCondicion::create([
+                            'CuadroMandoFormula_idCuadroMandoFormula' => $cuadromandoformula->idCuadroMandoFormula,
+                            'parentesisInicioCuadroMandoCondicion' => $datoCondicion[1],
+                            'campoCuadroMandoCondicion' => $datoCondicion[2],
+                            'operadorCuadroMandoCondicion' => $datoCondicion[3],
+                            'valorCuadroMandoCondicion' => $datoCondicion[4],
+                            'parentesisFinCuadroMandoCondicion' => $datoCondicion[5],
+                            'conectorCuadroMandoCondicion' => $datoCondicion[6]
+                             ]);
+                            
+                            
+                        }
+                    }
                 }
 
-                $cuadromandoformula = \App\CuadroMandoFormula::All()->last();
-                $contadorCuadroMandoAgrupador = count($request['campoCuadroMandoAgrupador']);
-                for ($i=0; $i <$contadorCuadroMandoAgrupador ; $i++) 
-                { 
-                    \App\CuadroMandoAgrupador::create([
-                    'CuadroMandoFormula_idCuadroMando' => $cuadromandoformula->idCuadroMandoFormula,
-                    'campoCuadroMandoAgrupador' => $request['campoCuadroMandoAgrupador']
-                    ]);
+
+                // Repetimos el mismo proceso para los agrupadores de las variables 
+                // Por cada una de los componentes de la formula, posiblemente hay unos agrupadores
+                // solo aplica para los componentes de tipo Variable
+                if($datoFormula[2] == 'Variable' and $registroAgrupador[0] != '')
+                {
+                    //echo 'Tipo Variable =  '. $datoFormula[2]. ' AND  '. $registroAgrupador[0].'<br>';
+                    foreach ($registroAgrupador as $regC => $datosC) 
+                    {
+                        $datoAgrupador = explode(',', $datosC) ;
+                        // si el primer id de este array es igual al del array de Formula, insertamos este valor
+                        //echo 'id Cond '. $datoAgrupador[0]. ' == '. $datoFormula[0].'<br>';
+                        if($datoAgrupador[0] == $datoFormula[0])
+                        {
+
+                            \App\CuadroMandoAgrupador::create([
+                            'CuadroMandoFormula_idCuadroMandoFormula' => $cuadromandoformula->idCuadroMandoFormula,
+                            'campoCuadroMandoAgrupador' => $datoAgrupador[1]
+                             ]);
+                            
+                        }
+                    }
                 }
 
-            }*/
+            }
+        }
 
-       // return redirect('/cuadromando');
+
+        
+
+       return redirect('/cuadromando');
     }
 
     /**

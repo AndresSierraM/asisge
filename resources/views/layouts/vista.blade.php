@@ -5,7 +5,6 @@
       
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap-theme.min.css'); !!}
       {!!Html::style('assets/font-awesome-v4.3.0/css/font-awesome.min.css'); !!}
-      {!!Html::style('assets/jquery-jqGrid-v4.8.0/css/ui.jqgrid.css'); !!}
       {!!Html::style('assets/tutorial/css/main.css'); !!}
       {!!Html::style('assets/tutorial/css/callouts.css'); !!}
       
@@ -33,8 +32,6 @@
       {!!Html::script('assets/tutorial/js/ie10-viewport-bug-workaround.js'); !!}
       {!!Html::script('assets/tutorial/js/ie-emulation-modes-warning.js'); !!}
       {!!Html::script('assets/jquery-v2.1.4/jquery-2.1.4.min.js'); !!}
-      {!!Html::script('assets/jquery-jqGrid-v4.8.0/js/i18n/grid.locale-en.js'); !!}
-      {!!Html::script('assets/jquery-jqGrid-v4.8.0/js/jquery.jqGrid.src.js'); !!}
       
       {!!Html::script('assets/tutorial/js/helpers.js'); !!}
       {!!Html::script('assets/tutorial/js/base.js'); !!}
