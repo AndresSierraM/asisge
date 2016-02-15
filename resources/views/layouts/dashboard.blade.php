@@ -226,7 +226,7 @@
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Cuadro de Mando</a>
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-calendar fa-fw"></i> Plan de Trabajo</a>
+                            <a href="plantrabajo/0"><i class="fa fa-calendar fa-fw"></i> Plan de Trabajo</a>
                         </li>
                         <li>
                             <a href="tables.html"><i class="fa fa-thumbs-o-up fa-fw"></i> A.C.P.M</a>

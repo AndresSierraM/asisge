@@ -16,6 +16,11 @@ Route::get('datos', function()
 	return view('layouts.principal');
 });
 
+Route::get('dashboard', function()
+{
+	return view('layouts.dashboard');
+});
+
 
 
 Route::get('calcularCuadroMando', function()
@@ -340,3 +345,4 @@ Route::resource('planauditoria','PlanAuditoriaController');
 Route::resource('preguntalistachequeo','PreguntasListaChequeoController');
 Route::resource('listachequeo','ListaChequeoController');
 Route::resource('reporteacpm','ReporteACPMController');
+Route::resource('plantrabajo','PlanTrabajoController');
