@@ -31,7 +31,7 @@
                     <table id="tmatrizriesgo" name="tmatrizriesgo" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:55px;padding: 1px 8px;" data-orderable="false">
                                 {!!Html::link('matrizriesgo/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -43,7 +43,7 @@
                         </thead>
                                         <tfoot>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;">
+                                <th style="width:55px;padding: 1px 8px;">
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
@@ -59,6 +59,11 @@
 
 
 <script type="text/javascript">
+
+    function imprimirFormato(id)
+    {
+        window.open('matrizriesgo/'+id+'?accion=imprimir','matrizriesgo','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
 
     $(document).ready( function () {
 

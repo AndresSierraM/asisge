@@ -18,7 +18,7 @@ Route::get('datos', function()
 
 Route::get('dashboard', function()
 {
-	return view('layouts.dashboard');
+	return view('layouts.tablero');
 });
 
 
@@ -181,7 +181,7 @@ Route::get('datosElementoProteccion', function()
 });
 
 
-
+Route::resource('dashboard','DashboardController');
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
 Route::resource('ciudad','CiudadController');

@@ -72,16 +72,20 @@ function obtenerWhere($idFormula)
 	{
 		// cada valor es un nuevo array de tipo StdClass, el cual debemos convertir en array php
 		$datosCondicion = get_object_vars($where); 
+		$like = ($datosCondicion["operadorCuadroMandoCondicion"] == 'like' ? '%': '');
+
 		// concatenamos caa campo separado por coma
 		$datowhere .= $datosCondicion["parentesisInicioCuadroMandoCondicion"].' '.
 						$datosCondicion["campoCuadroMandoCondicion"].' '.
 						$datosCondicion["operadorCuadroMandoCondicion"].' '.
-						'"'.$datosCondicion["valorCuadroMandoCondicion"].'" '.
+						'"'.$like.$datosCondicion["valorCuadroMandoCondicion"].$like.'" '.
 						$datosCondicion["parentesisFinCuadroMandoCondicion"].' '.
 						$datosCondicion["conectorCuadroMandoCondicion"].' ';
+
+						
 	}
 	// quitamos el conector logico (AND , OR) final si existe
-	$datowhere = substr($datowhere, 0, strlen($datowhere)-4);
+	$datowhere = substr($datowhere, 0, strlen($datowhere)-4);echo $datowhere;
 	return $datowhere;
 }
 
@@ -214,5 +218,180 @@ function calcularFormula($idCuadroMando)
 }
 
 
-calcularFormula(3);
+//-----------------------------------------------------
+//	CALCULO DE INDICADORES DEL CUADRO DE MANDO
+// los indicadores se deben calcular según la formula 
+// creada en el cuadro de mando, adicionalmente, los vamos a 
+// calcular con este proceso diariamente, lo que quiere
+// decir que se insertarán en la tabla con el valor acumulado 
+// hasta la fecha y solo se insertara un nuevo valor despues
+// de que haya pasado su fecha de corte
+//-----------------------------------------------------
+
+// FRECUENCIA DE MEDICION
+// cada indicador tiene asociada una frecuencia, a pesar
+// de que se calcula cada dia, vamos a tener en cuanta la frecuencia
+// para saber hasta que dia calculamos el indicador con el acumulado
+// y apenas llegue a su corte, el siguiente dia creara un nuevo registro 
+// para empezar a acumular de nuevo
+
+// TIPOS DE FRECUENCIAS
+// Semanal. Cortar los dias domingo
+// Quincenal. Corta cada 2 Domingos
+// Mensual. corta el ultimo dia del mes
+// los demas cortan cada X meses el ultimo dia del mes
+
+// guardamos la fecha de hoy para los indicadores Diarios
+$dia = date("Y-m-d");
+
+// consultamos la fecha del proximo domingo
+//la semana tiene 7 dias, si tomamos 7 - dia actual tendremos los dias que faltan para domingo
+// luego sumamos a la fecha de hoy esos dias 
+$dias = 7 - date("w");
+$semana = date ( 'Y-m-d' , strtotime ( "+ $dias day" , strtotime(date('Y-m-d'))) );
+
+// consultamos la fecha de la proxima Quincena
+// por lo tanto asumimos que sera los dias 15 o el ultimo dia del mes
+// miramos cual es el mas cerca y tomamos ese
+// verificamos si la fecha actual es menor a 15, entonces tomamos 15, sino buscamos ultimo dia del mes
+$quincena = date('Y-m') . '-' . (date('d') <= 15 ? '15' : date("t",strtotime(date("Y-m"))));
+
+// Consultamos la fecha del ultimo dia del mes
+$mes = date('Y-m') . '-' . date("t",strtotime(date("Y-m")));
+
+// Para el bimestre verificamos si el mes actual es PAR, sino entonces le sumamos 1 al mes para obtenerlo
+if(intval(date('m'))%2 == 0)
+{
+	$bimestre = date('Y-m') . '-' . date("t",strtotime(date("Y-m")));
+}
+else
+{
+	$proximoMes = date ( 'Y-m' , strtotime ("+ 1 month" , strtotime(date('Y-m-d'))) );
+	$bimestre = date('Y-m') . '-' . date("t",strtotime($proximoMes));
+}
+
+// Para el Trimestre verificamos si el mes actual es multiplo de 3, sino entonces debemos llegar hasta el multiplo de 3
+if(intval(date('m'))%3 == 0)
+{
+	$trimestre = date('Y-m') . '-' . date("t",strtotime(date("Y-m")));
+}
+else
+{
+	$numeroMes = date('m');
+	while(intval($numeroMes)%3 != 0)
+	{
+		$numeroMes++;
+	}	
+	$proximoMes = date ( 'Y-' . $numeroMes);
+	$trimestre = date('Y-'). str_pad($numeroMes, 2, '0', STR_PAD_LEFT) . '-' . date("t",strtotime($proximoMes));
+}
+
+// consultamos la fecha del proximo semestre
+// por lo tanto asumimos que sera en junio o Diciembre, miramos cual es el mas cerca y tomamos ese
+// verificamos si la fecha actual es menor a JUNIO, entonces tomamos ese, sino Tomamos Diciembre
+$semestre = date('Y-') . (date('m') <= 6 ? str_pad('6', 2, '0', STR_PAD_LEFT). '-30' : str_pad('12', 2, '0', STR_PAD_LEFT). '-31');
+
+
+// por ultimo la fecha del ultimo dia del año, que siempre sera fija
+$anio = date('Y-12-31');
+
+echo $dia.'<br>';
+echo $semana.'<br>';
+echo $quincena.'<br>';
+echo $mes.'<br>';
+echo $bimestre.'<br>';
+echo $trimestre.'<br>';
+echo $semestre.'<br>';
+echo $anio.'<br>';
+
+$cuadroMandoObjeto = DB::table('cuadromando as CM')
+    ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
+    ->select(DB::raw('idCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion'))
+    ->get();
+
+
+// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+foreach ($cuadroMandoObjeto as $key => $value) 
+{
+    $CuadroMando[] = (array) $value;
+}
+
+// recorremos cada indicador para calcularlo y almacenar su resultado en la tabla de indicadores
+for ($i=0; $i < count($CuadroMando); $i++) 
+{ 
+	echo $CuadroMando[$i]["unidadFrecuenciaMedicion"].'<br>';
+	$resultado = calcularFormula($CuadroMando[$i]["idCuadroMando"]);
+
+	// verificamos la periodicidad del indicador para tomar la fecha de corte
+	// este dato depende del valor y la unidad de frecuencia
+	switch ($CuadroMando[$i]["unidadFrecuenciaMedicion"]) 
+	{
+		case 'Dias':
+			$fechaCorte = $dia;
+			break;
+
+		case 'Semanas':
+			switch ($CuadroMando[$i]["valorFrecuenciaMedicion"]) 
+			{
+				case 1:
+					$fechaCorte = $semana;
+					break;
+				case 2:
+					$fechaCorte = $quincena;
+					break;
+				
+				default:
+					$fechaCorte = $semana;
+					break;
+			}
+			break;
+		case 'Meses':
+			switch ($CuadroMando[$i]["valorFrecuenciaMedicion"]) 
+			{
+				case 1:
+					$fechaCorte = $mes;
+					break;
+				case 2:
+					$fechaCorte = $bimestre;
+					break;
+				case 3:
+					$fechaCorte = $trimestre;
+					break;
+				case 6:
+					$fechaCorte = $semestre;
+					break;
+				
+				default:
+					$fechaCorte = $mes;
+					break;
+			}
+			break;
+		case 'Años':
+			$fechaCorte = $anio;
+			break;
+		
+		default:
+			$fechaCorte = $dia;
+			break;
+	}
+
+	// verificamos si el resultado hay que insertarlo o actualizarlo en la tabla de indicadores
+	// esto depende de su periodicidad, por lo tanto la verificamos y tomamos la fecha del corte
+	// siya existe en la tabla el idCuadroMando con la fecha de corte, y esta es igual tambien a 
+	// la fecha de calculao, entonces debemos Insertar uno nuevo, sino actulaizamos el existente
+    $indice = array(
+    	'CuadroMando_idCuadroMando' => $CuadroMando[$i]["idCuadroMando"],
+     	'fechaCalculoIndicador' => $fechaCorte,
+     	'fechaCorteIndicador' => $fechaCorte);
+
+	$data = array(
+		'valorIndicador' => $resultado);
+	print_r($indice);
+	print_r($data);
+    $indicador = \App\Indicador::updateOrCreate($indice, $data);
+
+}
+
+
+return;
 ?>

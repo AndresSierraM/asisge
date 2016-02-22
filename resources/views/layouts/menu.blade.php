@@ -21,6 +21,7 @@
 	<div id="header">
 		<div id="container">
 		<div class="barramenu">
+			
 			<div id="menuarch" class="menu">
 				{!! HTML::image('images/iconosmenu/Archivos%20Maestros.png','Archivos Maestros',array('width'=>'40','title' => 'Archivos maestros')) !!}
 			</div>
@@ -29,6 +30,9 @@
 			</div>
 			<div id="menuseg" class="menu">
 				{!! HTML::image('images/iconosmenu/Seguridad.png','Seguridad',array('width'=>'40','title' => 'Seguridad')) !!}
+			</div>
+			<div id="menuarch" class="menu">
+				{!! HTML::decode(HTML::link('dashboard', HTML::image('images/iconosmenu/Informes.png','Imagen no encontrada',array('width'=>'40','title' => 'Tablero de Control')))) !!}
 			</div>
 		</div>
 

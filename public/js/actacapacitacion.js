@@ -135,3 +135,29 @@ function validarFormulario(event)
     if(sw === true)
         event.preventDefault();
 }
+
+function llenarCargo(Tercero)
+{
+
+     var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idTercero': Tercero.value},
+            url:   'http://localhost:8000/llenarCargo/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+            success: function(respuesta){
+                reg = Tercero.id.replace('Tercero_idAsistente','');
+                //lo que se si el destino devuelve algo
+                $("#nombreCargo"+reg).val(respuesta); //Al input nombreCargo le envío la respuesta de la consulta
+                                                  //realizada en llenarCargo
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+}

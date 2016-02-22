@@ -22,6 +22,7 @@
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
 		var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 		var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
+		var eventos2 = ['onchange','llenarCargo(this);'];
 
 		$(document).ready(function(){
 
@@ -38,15 +39,15 @@
 			tema.funciones  = ['','','',eventos1,'','',''];
 
 			asistente = new Atributos('asistente','contenedor_asistente','asistente');
-			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'Cargo_idCargo'];
+			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'nombreCargo'];
 			asistente.etiqueta = ['input','select','input'];
 			asistente.tipo = ['hidden','','text'];
-			asistente.estilo = ['','width: 500px;height:35px;','width: 400px;height:35px;'];
+			asistente.estilo = ['','width: 500px;height:35px;','width: 400px;height:35px; background-color:rgb(238, 238, 238);'];
 			asistente.clase = ['','',''];
 			asistente.sololectura = [false,false,true];
 			asistente.completar = ['off','off','off'];
 			asistente.opciones = ['',tercero,''];
-			asistente.funciones  = ['','',''];
+			asistente.funciones  = ['',eventos2,''];
 
 			for(var j=0, k = planCapacitacionTema.length; j < k; j++)
 			{
@@ -56,6 +57,7 @@
 			for(var j=0, k = actaCapacitacionAsistente.length; j < k; j++)
 			{
 				asistente.agregarCampos(JSON.stringify(actaCapacitacionAsistente[j]),'L');
+				llenarCargo(document.getElementById('Tercero_idAsistente'+j));
 			}
 
 			consultarPlanCapacitacion();

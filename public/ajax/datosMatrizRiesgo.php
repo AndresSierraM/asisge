@@ -14,6 +14,9 @@
                         '</a>&nbsp;'.
                         '<a href="matrizriesgo/'.$value->idMatrizRiesgo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash"></span>'.
+                        '</a>&nbsp;'.
+                        '<a href="#" onclick="imprimirFormato('.$value->idMatrizRiesgo.');">'.
+                            '<span class="glyphicon glyphicon-print"></span>'.
                         '</a>';
         $row[$key][] = $value->idMatrizRiesgo;
         $row[$key][] = $value->nombreMatrizRiesgo;

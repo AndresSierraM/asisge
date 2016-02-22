@@ -2,7 +2,8 @@
 
     $ausentismo = DB::table('ausentismo')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
-            ->select(DB::raw('idAusentismo, nombreCompletoTercero, fechaElaboracionAusentismo, tipoAusentismo, fechaInicioAusentismo, fechaFinAusentismo'))
+            ->leftJoin('accidente', 'Accidente_idAccidente', '=', 'idAccidente')
+            ->select(DB::raw('idAusentismo, nombreCompletoTercero, fechaElaboracionAusentismo, tipoAusentismo, fechaInicioAusentismo, fechaFinAusentismo, nombreAccidente'))
             ->get();
 
     $row = array();
@@ -18,9 +19,10 @@
         $row[$key][] = $value->idAusentismo;
         $row[$key][] = $value->nombreCompletoTercero;
         $row[$key][] = $value->fechaElaboracionAusentismo; 
-        $row[$key][] = $value->tipoAusentismo;
         $row[$key][] = $value->fechaInicioAusentismo;
         $row[$key][] = $value->fechaFinAusentismo;    
+        $row[$key][] = $value->tipoAusentismo;
+        $row[$key][] = $value->nombreAccidente;
     }
 
     $output['aaData'] = $row;

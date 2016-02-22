@@ -10,6 +10,13 @@
                 border: 1px solid #ccc;
                 border-radius: 4px;
             }
+
+    td.error {
+        font-weight: bold;
+        background-color: #FA5858;
+        color: white;
+    }
+
 </style> 
         <div class="container">
             <div class="row">
@@ -25,9 +32,10 @@
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> Empleado</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Elaboración</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Tipo Ausencia</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Desde</label></a></li>
-                            <li><a class="toggle-vis" data-column="6"><label> Hasta</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Desde</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Hasta</label></a></li>
+                            <li><a class="toggle-vis" data-column="6"><label> Tipo Ausencia</label></a></li>
+                            <li><a class="toggle-vis" data-column="7"><label> Accidente Relacionado</label></a></li>
                         </ul>
                     </div>
                     <table id="tausentismo" name="tausentismo" class="display table-bordered" width="100%">
@@ -40,9 +48,10 @@
                                 <th><b>ID</b></th>
                                 <th><b>Empleado</b></th>
                                 <th><b>Elaboración</b></th>
-                                <th><b>Tipo Ausencia</b></th>
                                 <th><b>Desde</b></th>
                                 <th><b>Hasta</b></th>
+                                <th><b>Tipo Ausencia</b></th>
+                                <th><b>Accidente Relacionado</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -53,9 +62,10 @@
                                 <th>ID</th>
                                 <th>Empleado</th>
                                 <th>Elaboración</th>
-                                <th>Tipo Ausencia</th>
                                 <th>Desde</th>
                                 <th>Hasta</th>
+                                <th>Tipo Ausencia</th>
+                                <th>Ausencia Relacionada</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -104,6 +114,11 @@
                         "oAria": {
                             "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
                             "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    },
+            "createdRow": function ( row, data, index ) {
+                        if ( (data[6] == 'Accidente de Trabajo' || data[6] == 'Incidente de Trabajo') && data[7] == null ) {
+                            $('td', row).eq(6).addClass('error');
                         }
                     }
         });
@@ -155,6 +170,7 @@
             }
         } );
     })
+
 
     
 });

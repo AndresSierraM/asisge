@@ -97,6 +97,8 @@
 							}
 
 							$total = count($diagnosticoDetalle);
+
+							
       						$j=0; 
 					        while($j < $total)
 					        {
@@ -150,6 +152,7 @@
 						<tbody>
 						<?php
 							$total = count($diagnosticoResumen);
+							
 							$j=0; 
 							$suma = 0;
 							$conteo = 0;
@@ -172,7 +175,7 @@
 
 							echo '<tr>
 									<td style="font-weight: bold;">Ejecucion Total </td>
-									<td style="font-weight: bold;">'.number_format(($suma/$conteo),1,'.',',').'%</td>
+									<td style="font-weight: bold;">'.number_format(($suma/($conteo == 0 ? 1 : 0)),1,'.',',').'%</td>
 								</tr>';
 
 						?>

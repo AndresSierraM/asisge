@@ -108,3 +108,4 @@ function validarFormulario(event)
     if(sw === true)
         event.preventDefault();
 }
+

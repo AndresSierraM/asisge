@@ -12,6 +12,9 @@ function CargarExamenes(idTercero, idCargo, tipo)
       method: 'GET',
       data: {idTercero: idTercero, idCargo: idCargo, tipoExamenMedico: tipo, consulta: 'Examen'},
       success: function(data){
+        
+        document.getElementById('contenedor_detalle').innerHTML = '';
+        examenmedico.contador = 0;
         if (data) 
         {
           

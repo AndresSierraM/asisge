@@ -21,6 +21,7 @@
         {!! Html::script('sb-admin/bower_components/flot/jquery.js'); !!}
         {!! Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
 
+
     </head>
     <body>
         

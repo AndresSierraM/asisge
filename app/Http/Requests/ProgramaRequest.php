@@ -27,7 +27,10 @@ class ProgramaRequest extends Request
         //, Compania_idCompania = ".$this->get('Compania_idCompania')
         return [
             "nombrePrograma" => "required|String",
-            "fechaElaboracionPrograma" => "required|date"
+            "fechaElaboracionPrograma" => "required|date",
+            "ClasificacionRiesgo_idClasificacionRiesgo" => "required",
+            "CompaniaObjetivo_idCompaniaObjetivo" => "required",
+            "Tercero_idElabora" => "required"
         ];
     }
 }

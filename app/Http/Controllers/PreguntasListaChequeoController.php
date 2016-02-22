@@ -50,7 +50,7 @@ class PreguntasListaChequeoController extends Controller
 
             $preguntas = \App\PreguntasListaChequeo::updateOrCreate($indice, $data);
         }
-        // return view('preguntaslistachequeo');
+        return view('preguntaslistachequeo');
     }
 
     /**
@@ -96,7 +96,7 @@ class PreguntasListaChequeoController extends Controller
 
             $preguntas = \App\PreguntasListaChequeo::updateOrCreate($indice, $data);
         }
-        // return view('preguntaslistachequeo');
+        return view('preguntaslistachequeo');
     }
 
     /**
