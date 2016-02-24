@@ -73,15 +73,15 @@ class ActaCapacitacionController extends Controller
             $contadorDetalle = count($request['nombrePlanCapacitacionTema']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                $planCapacitacionTema = \App\PlanCapacitacionTema::find($request['idPlanCapacitacionTema'][$i]);
+                $actaCapacitacionTema = \App\PlanCapacitacionTema::find($request['idPlanCapacitacionTema'][$i]);
                 
-                $planCapacitacionTema->Tercero_idCapacitador = $request['Tercero_idCapacitador'][$i];
-                $planCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
-                $planCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
-                $planCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
-                $planCapacitacionTema->cumpleObjetivoPlanCapacitacionTema = $request['cumpleObjetivoPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->Tercero_idCapacitador = $request['Tercero_idCapacitador'][$i];
+                $actaCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->cumpleObjetivoPlanCapacitacionTema = $request['cumpleObjetivoPlanCapacitacionTema'][$i];
                 
-                $planCapacitacionTema->save();
+                $actaCapacitacionTema->save();
             }
             return redirect('/actacapacitacion');
         }
@@ -184,15 +184,15 @@ class ActaCapacitacionController extends Controller
             $contadorDetalle = count($request['nombrePlanCapacitacionTema']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                $planCapacitacionTema = \App\PlanCapacitacionTema::find($request['idPlanCapacitacionTema'][$i]);
+                $actaCapacitacionTema = \App\ActaCapacitacionTema::find($request['idPlanCapacitacionTema'][$i]);
                 
-                $planCapacitacionTema->Tercero_idCapacitador = $request['Tercero_idCapacitador'][$i];
-                $planCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
-                $planCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
-                $planCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
-                $planCapacitacionTema->cumpleObjetivoPlanCapacitacionTema = $request['cumpleObjetivoPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->Tercero_idCapacitador = $request['Tercero_idCapacitador'][$i];
+                $actaCapacitacionTema->fechaPlanCapacitacionTema = $request['fechaPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->horaPlanCapacitacionTema = $request['horaPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->dictadaPlanCapacitacionTema = $request['dictadaPlanCapacitacionTema'][$i];
+                $actaCapacitacionTema->cumpleObjetivoPlanCapacitacionTema = $request['cumpleObjetivoPlanCapacitacionTema'][$i];
                 
-                $planCapacitacionTema->save();
+                $actaCapacitacionTema->save();
             }
             return redirect('/actacapacitacion');
         }

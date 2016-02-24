@@ -2,7 +2,7 @@
 
     $ausentismo = DB::table('ausentismo')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
-            ->leftJoin('accidente', 'Accidente_idAccidente', '=', 'idAccidente')
+            ->leftJoin('accidente', 'Ausentismo_idAusentismo', '=', 'idAusentismo')
             ->select(DB::raw('idAusentismo, nombreCompletoTercero, fechaElaboracionAusentismo, tipoAusentismo, fechaInicioAusentismo, fechaFinAusentismo, nombreAccidente'))
             ->get();
 
