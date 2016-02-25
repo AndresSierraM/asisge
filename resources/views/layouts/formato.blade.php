@@ -4,7 +4,10 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {!! Html::style('sb-admin/bower_components/bootstrap/dist/css/bootstrap.min.css'); !!}
+
+        
+
+       
         {!! Html::style('sb-admin/bower_components/metisMenu/dist/metisMenu.min.css'); !!}
         {!! Html::style('sb-admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css'); !!}
         {!! Html::style('sb-admin/bower_components/datatables-responsive/css/dataTables.responsive.css'); !!}
@@ -20,6 +23,9 @@
         {!! Html::style('sb-admin/bower_components/flot/examples/examples.css'); !!}
         {!! Html::script('sb-admin/bower_components/flot/jquery.js'); !!}
         {!! Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
+
+ {!! Html::style('sb-admin/bower_components/bootstrap/dist/css/bootstrap.min.css'); !!}
+        {!! Html::script('sb-admin/bower_components/bootstrap/dist/js/bootstrap.min.js'); !!}
 
 
     </head>
