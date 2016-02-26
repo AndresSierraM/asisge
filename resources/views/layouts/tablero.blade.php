@@ -26,7 +26,13 @@
     {!!Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
 
     <!-- Morris Charts CSS -->
-    {!!Html::style('sb-admin/bower_components/morrisjs/morris.css'); !!}
+    <!-- {!!Html::style('sb-admin/bower_components/morrisjs/morris.css'); !!} -->
+    
+    {!! Html::style('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); !!}
+    {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js'); !!}
+    {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'); !!}
+    {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'); !!}
+
 
     <!-- Custom Fonts -->
     {!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
@@ -507,6 +513,83 @@
             <!-- /.row -->
             <div class="row">
                 
+                <?php
+                    $cuadroMandoObjeto = DB::table('cuadromando as CM')
+                        ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando'))
+                        ->where('idCuadroMando','=',1)
+                        ->get();
+
+                    // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+                    foreach ($cuadroMandoObjeto as $key => $value) 
+                    {
+                        $CuadroMando = (array) $value;
+
+                        $indicadores = DB::table('indicador as I')
+                                ->leftJoin('cuadromando as CM', 'I.CuadroMando_idCuadroMando', '=', 'CM.idCuadroMando')
+                                ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
+                                ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
+                                ->where('CuadroMando_idCuadroMando','=',$CuadroMando['idCuadroMando'])
+                                ->get();
+                                                    // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+                        $arrayGrafico = '';
+                        foreach ($indicadores as $pos => $valor) 
+                        {
+                            $Indicador = (array) $valor;
+                            $dt = strtotime($Indicador['fechaCorteIndicador']);
+                            $month = array("","Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
+                            
+                            $fecha_reg = $month[date('n', $dt)]."/".date("Y", $dt);
+
+                            $arrayGrafico .= "{ aspecto: '".$fecha_reg."', value: ".$Indicador["valorIndicador"]." },";
+                        }
+
+                        echo '
+                        <div class="col-lg-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-pie-chart fa-fw"></i> '.$CuadroMando['indicadorCuadroMando'].'<br>
+                                    <i class="fa fa-superscript fa-fw"></i> '.$CuadroMando['formulaCuadroMando'].'
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <div id="indicador'.$CuadroMando['idCuadroMando'].'" style="height: 100%; width: 100%;"></div>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                        </div>';
+
+
+                        echo '
+                        <script type="text/javascript">
+                            
+                            new Morris.Bar({
+                            // ID of the element in which to draw the chart.
+                            element: "indicador'.$CuadroMando['idCuadroMando'].'",
+                            // Chart data records -- each entry in this array corresponds to a point on
+                            // the chart.
+                            data: [
+                            '.$arrayGrafico.'
+                            ],
+                            // The name of the data record attribute that contains x-values.
+                            xkey: "aspecto",
+                            // A list of names of data record attributes that contain y-values.
+                            ykeys: ["value"],
+                            // Labels for the ykeys -- will be displayed when you hover over the
+                            // chart.
+                            labels: ["%Cump"],
+                            resize: true,
+                            hideHover: "auto",
+                            ymax: 10
+                            });
+
+                        </script>';
+
+                    }
+                ?>
+                
+                
+             
+               
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -523,6 +606,7 @@
                                 ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
                                 ->get();
                             // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+                            $Indicador = array();
                             foreach ($indicadores as $key => $value) 
                             {
                                 $Indicador[] = (array) $value;
@@ -554,22 +638,9 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="../bower_components/raphael/raphael-min.js"></script>
-    <script src="../bower_components/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
 
 </body>
 

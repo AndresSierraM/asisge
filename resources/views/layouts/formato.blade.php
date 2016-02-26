@@ -16,7 +16,7 @@
 
 
         {!! Html::style('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); !!}
-        {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'); !!}
+        {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js'); !!}
         {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'); !!}
         {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'); !!}
 
@@ -24,8 +24,10 @@
         {!! Html::script('sb-admin/bower_components/flot/jquery.js'); !!}
         {!! Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
 
- {!! Html::style('sb-admin/bower_components/bootstrap/dist/css/bootstrap.min.css'); !!}
+        {!! Html::style('sb-admin/bower_components/bootstrap/dist/css/bootstrap.min.css'); !!}
         {!! Html::script('sb-admin/bower_components/bootstrap/dist/js/bootstrap.min.js'); !!}
+
+
 
 
     </head>

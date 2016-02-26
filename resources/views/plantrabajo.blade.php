@@ -11,9 +11,14 @@ function colorTarea($valorTarea, $valorCumplido)
 	$icono = '';		
 	if($valorTarea != $valorCumplido and $valorCumplido != 0)
 	{
+	    
+
 		$tool = 'Tareas Pendientes : '.$valorTarea.'  /  Tareas Realizadas : '.
 $valorCumplido;
-		$icono = ' <img src="images\iconosmenu\Amarillo.png" title="'.$tool.'" width="30"><label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';		
+		$icono = 	'<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
+						<img src="images\iconosmenu\Amarillo.png"  width="30">
+					</a>
+					<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';		
 	}elseif($valorTarea == $valorCumplido and $valorTarea != 0)
 	{
 		$icono = '<img src="images\iconosmenu\Verde.png" width="30">';
@@ -27,23 +32,21 @@ $valorCumplido;
 	return $icono;
 }
 
-function imprimirTabla($titulo, $informacion)
+function imprimirTabla($titulo, $informacion , $idtabla)
 {
 	echo '<div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#mision">'.$titulo.'</a>
+                <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
               </h4>
             </div>
-            <div id="mision" class="panel-collapse collapse in">
+            <div id="'.$idtabla.'" class="panel-collapse">
               <div class="panel-body">
                 <div class="form-group" id="test">
                   <div class="col-sm-10" style="width: 100%;">
                     <div class="input-group">
 
-                    <table  class="table table-striped table-bordered table-hover" width="1490">
-						<caption>'.$titulo.'</caption>
-
+                    <table  class="table table-striped table-bordered table-hover" width="100%">
 						<thead class="thead-inverse">
 							<tr class="table-info">
 								<th scope="col" width="30%">&nbsp;</th>
@@ -69,7 +72,7 @@ function imprimirTabla($titulo, $informacion)
 
 							foreach($informacion as $dato)
 							{
-								echo '<tr>
+								echo '<tr align="center">
 									<th scope="row">'.$dato->descripcionTarea.'</th>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
@@ -128,12 +131,13 @@ function imprimirTabla($titulo, $informacion)
 		              <div class="panel-body">
 		                <div class="panel-group" id="accordion">
 		                  <?php
-								imprimirTabla('Investigacion de Accidentes', $accidente);
-								imprimirTabla('Auditorías', $auditoria);				
-								imprimirTabla('Planes de Capacitación', $capacitacion);				
-								imprimirTabla('Programas / Actividades', $programa);	
-								imprimirTabla('Examenes Médicos', $examen);
-								imprimirTabla('Inspecciones de Seguridad', $inspeccion);
+								imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal');
+								imprimirTabla('Planes de Capacitación', $capacitacion, 'capacitacion');			
+								imprimirTabla('Programas / Actividades', $programa, 'programa');	
+								imprimirTabla('Examenes Médicos', $examen, 'examen');
+								imprimirTabla('Investigacion de Accidentes', $accidente, 'accidente');
+								imprimirTabla('Inspecciones de Seguridad', $inspeccion, 'inspeccion');
+								imprimirTabla('Auditorías', $auditoria, 'auditoria');
 							?>
 		                </div>
 		              </div>

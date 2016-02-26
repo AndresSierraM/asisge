@@ -27,11 +27,12 @@ class MatrizLegalController extends Controller
      */
     public function create()
     {
+        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idTipoNormaLegal = \App\TipoNormaLegal::All()->lists('idTipoNormaLegal');
         $nombreTipoNormaLegal = \App\TipoNormaLegal::All()->lists('nombreTipoNormaLegal');
         $idExpideNormaLegal = \App\ExpideNormaLegal::All()->lists('idExpideNormaLegal');
         $nombreExpideNormaLegal = \App\ExpideNormaLegal::All()->lists('nombreExpideNormaLegal');
-        return view('matrizlegal', compact('idTipoNormaLegal','nombreTipoNormaLegal','idExpideNormaLegal','nombreExpideNormaLegal'));
+        return view('matrizlegal', compact('idTipoNormaLegal','nombreTipoNormaLegal','idExpideNormaLegal','nombreExpideNormaLegal', 'frecuenciaMedicion'));
     }
 
     /**
@@ -42,12 +43,15 @@ class MatrizLegalController extends Controller
      */
     public function store(MatrizLegalRequest $request)
     {
+
         if($request['respuesta'] != 'falso')
         {
             \App\MatrizLegal::create([
                 'nombreMatrizLegal' => $request['nombreMatrizLegal'],
                 'fechaElaboracionMatrizLegal' => $request['fechaElaboracionMatrizLegal'],
                 'origenMatrizLegal' => $request['origenMatrizLegal'],
+                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
+                'fechaActualizacionMatrizLegal' => date("Y-m-d"),
                 'Users_id' => 1
                 ]);
             
@@ -110,13 +114,14 @@ class MatrizLegalController extends Controller
      */
     public function edit($id)
     {
+        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idTipoNormaLegal = \App\TipoNormaLegal::All()->lists('idTipoNormaLegal');
         $nombreTipoNormaLegal = \App\TipoNormaLegal::All()->lists('nombreTipoNormaLegal');
         $idExpideNormaLegal = \App\ExpideNormaLegal::All()->lists('idExpideNormaLegal');
         $nombreExpideNormaLegal = \App\ExpideNormaLegal::All()->lists('nombreExpideNormaLegal');
 
         $matrizLegal = \App\MatrizLegal::find($id);
-        return view('matrizlegal', compact('idTipoNormaLegal','nombreTipoNormaLegal','idExpideNormaLegal','nombreExpideNormaLegal'),['matrizLegal'=>$matrizLegal]);
+        return view('matrizlegal', compact('idTipoNormaLegal','nombreTipoNormaLegal','idExpideNormaLegal','nombreExpideNormaLegal','frecuenciaMedicion'),['matrizLegal'=>$matrizLegal]);
     }
 
     /**
@@ -128,10 +133,12 @@ class MatrizLegalController extends Controller
      */
     public function update(MatrizLegalRequest $request, $id)
     {
+
         if($request['respuesta'] != 'falso')
         {
             $matrizLegal = \App\MatrizLegal::find($id);
             $matrizLegal->fill($request->all());
+            $matrizLegal->fechaActualizacionMatrizLegal = date("Y-m-d");
 
             $matrizLegal->save();
 

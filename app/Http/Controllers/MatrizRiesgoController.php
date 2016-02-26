@@ -28,6 +28,7 @@ class MatrizRiesgoController extends Controller
      */
     public function create()
     {
+        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idProceso = \App\Proceso::All()->lists('idProceso');
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
@@ -35,7 +36,7 @@ class MatrizRiesgoController extends Controller
         $idListaGeneral = \App\ListaGeneral::All()->lists('idListaGeneral');
         $nombreListaGeneral = \App\ListaGeneral::All()->lists('nombreListaGeneral');
 
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral'));
+        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'frecuenciaMedicion'));
     }
 
     /**
@@ -57,6 +58,8 @@ class MatrizRiesgoController extends Controller
           \App\MatrizRiesgo::create([
               'nombreMatrizRiesgo' => $request['nombreMatrizRiesgo'],
               'fechaElaboracionMatrizRiesgo' => $request['fechaElaboracionMatrizRiesgo'],
+              'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
+              'fechaActualizacionMatrizRiesgo' => date("Y-m-d"),
               'Users_id' => 1
               ]);
           
@@ -202,6 +205,7 @@ class MatrizRiesgoController extends Controller
      */
     public function edit($id)
     {
+        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idProceso = \App\Proceso::All()->lists('idProceso');
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
@@ -210,7 +214,7 @@ class MatrizRiesgoController extends Controller
         $nombreListaGeneral = \App\ListaGeneral::All()->lists('nombreListaGeneral');
 
         $matrizRiesgo = \App\MatrizRiesgo::find($id);
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral'),['matrizRiesgo'=>$matrizRiesgo]);
+        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral','frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
     }
 
     /**
@@ -222,10 +226,14 @@ class MatrizRiesgoController extends Controller
      */
     public function update(MatrizRiesgoRequest $request, $id)
     {
+
+
         if($request['respuesta'] != 'falso')
         {
           $matrizRiesgo = \App\MatrizRiesgo::find($id);
           $matrizRiesgo->fill($request->all());
+          $matrizRiesgo->fechaActualizacionMatrizRiesgo = date("Y-m-d");
+
 
           /*if(null !== Input::file('imagenTercero') )
           {
@@ -271,7 +279,7 @@ class MatrizRiesgoController extends Controller
                 'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
                 'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
                 'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
-                'imagenMatrizRiesgoDetalle' => AB,
+                'imagenMatrizRiesgoDetalle' => '',
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);
           }

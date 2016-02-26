@@ -9,7 +9,7 @@ class MatrizRiesgo extends Model
     protected $table = 'matrizriesgo';
     protected $primaryKey = 'idMatrizRiesgo';
 
-    protected $fillable = ['nombreMatrizRiesgo','fechaElaboracionMatrizRiesgo','Users_id'];
+    protected $fillable = ['nombreMatrizRiesgo','fechaElaboracionMatrizRiesgo','Users_id','FrecuenciaMedicion_idFrecuenciaMedicion','fechaActualizacionMatrizRiesgo'];
 
     public $timestamps = false;
 

@@ -99,6 +99,17 @@
 						</div>
 					</div>
 				</div>
+				<div class="form-group" >
+					{!!Form::label('FrecuenciaMedicion_idFrecuenciaMedicion', 'Frecuencia de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
+					<div class="col-sm-10" >
+					  <div class="input-group">
+					    <span class="input-group-addon">
+					      <i class="fa fa-caret-square-o-down" ></i>
+					    </span>
+					    {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciaMedicion, (isset($matrizLegal) ? $matrizLegal->frecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
+					  </div>
+					</div>
+				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
