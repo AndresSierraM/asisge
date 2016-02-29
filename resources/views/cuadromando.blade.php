@@ -242,7 +242,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-table"></i>
               </span>
-            {!! Form::select('visualizacionCuadroMando', ['Columnas' => 'Columnas', 'Barras' => 'Barras', 'Torta' => 'Torta', 'Lineas' => 'Lineas', 'Area' => 'Area'], null, ['class' => 'chosen-select form-control','placeholder'=>'Seleccione'])!!}
+            {!! Form::select('visualizacionCuadroMando', ['Lineas' => 'Lineas', 'Barras' => 'Barras', 'Dona' => 'Dona', 'Area' => 'Area'], null, ['class' => 'chosen-select form-control','placeholder'=>'Seleccione'])!!}
             </div>
           </div>
         </div>

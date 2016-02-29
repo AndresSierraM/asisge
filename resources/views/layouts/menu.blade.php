@@ -174,7 +174,7 @@
 						{!!Form::label('', 'Examen Medico')!!}
 		 			</li>
 		 			<li>
-						{!! HTML::decode(HTML::link('ausentismo', HTML::image('images/iconosmenu/Registro%20Visitantes.png','Imagen no encontrada',array('width'=>'22','title' => 'Ausentismos')))) !!}
+						{!! HTML::decode(HTML::link('ausentismo', HTML::image('images/iconosmenu/Ausentismo.png','Imagen no encontrada',array('width'=>'22','title' => 'Ausentismos')))) !!}
 						{!!Form::label('', 'Ausentismos')!!}
 		 			</li>
 		 			<li>
@@ -184,6 +184,10 @@
 		 			<li>
 						{!! HTML::decode(HTML::link('conformaciongrupoapoyo', HTML::image('images/iconosmenu/Grupos%20apoyo.png','Imagen no encontrada',array('width'=>'22','title' => 'Conformaci&oacute;n de Grupos de Apoyo')))) !!}
 						{!!Form::label('', 'Conf. Grupo Apoyo')!!}
+		 			</li>
+		 			<li>
+						{!! HTML::decode(HTML::link('actagrupoapoyo', HTML::image('images/iconosmenu/Acta%20Reunion.png','Imagen no encontrada',array('width'=>'22','title' => 'Acta de Reuni&oacute;n de Grupos de Apoyo')))) !!}
+						{!!Form::label('', 'Acta Reunión')!!}
 		 			</li>
 		 			<li>
 						{!! HTML::decode(HTML::link('entregaelementoproteccion', HTML::image('images/iconosmenu/Entrega%20Elementos.png','Imagen no encontrada',array('width'=>'22','title' => 'Entrega de Elementos de Protecci&oacute;n Personal')))) !!}

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,6 +31,25 @@
     {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js'); !!}
     {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'); !!}
     {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'); !!}
+
+
+        <!-- jQuery 2.0.2 -->
+        <!-- {!! Html::script('http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'); !!} -->
+        <!-- Bootstrap -->
+        <!-- {!! Html::script('../../js/bootstrap.min.js'); !!} -->
+        <!-- AdminLTE App -->
+        <!-- {!! Html::script('../../js/AdminLTE/app.js'); !!} -->
+        <!-- AdminLTE for demo purposes -->
+        <!-- {!! Html::script('js/AdminLTE/demo.js'); !!} -->
+        <!-- FLOT CHARTS -->
+        {!! Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
+        <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+        {!! Html::script('sb-admin/bower_components/flot/jquery.flot.resize.js'); !!}
+        <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+        {!! Html::script('sb-admin/bower_components/flot/jquery.flot.pie.js'); !!}
+        <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+        {!! Html::script('sb-admin/bower_components/flot/jquery.flot.categories.js'); !!}
+
 
 
     <!-- Custom Fonts -->
@@ -512,11 +530,11 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                
+
+
                 <?php
                     $cuadroMandoObjeto = DB::table('cuadromando as CM')
                         ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando'))
-                        ->where('idCuadroMando','=',1)
                         ->get();
 
                     // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
@@ -530,8 +548,9 @@
                                 ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
                                 ->where('CuadroMando_idCuadroMando','=',$CuadroMando['idCuadroMando'])
                                 ->get();
-                                                    // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
-                        $arrayGrafico = '';
+                                                    
+                        // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+                        $arrayGrafico = '[';
                         foreach ($indicadores as $pos => $valor) 
                         {
                             $Indicador = (array) $valor;
@@ -540,11 +559,37 @@
                             
                             $fecha_reg = $month[date('n', $dt)]."/".date("Y", $dt);
 
-                            $arrayGrafico .= "{ aspecto: '".$fecha_reg."', value: ".$Indicador["valorIndicador"]." },";
-                        }
 
+                            switch ($CuadroMando['visualizacionCuadroMando']) {
+                                case 'Lineas':
+                                    $arrayGrafico .= "[".date('n', $dt).", ".$Indicador["valorIndicador"]." ],";
+                                    break;
+
+                                case 'Barras':
+                                    $arrayGrafico .= "['".$fecha_reg."', ".$Indicador["valorIndicador"]." ],";
+                                    break;
+
+                                case 'Dona':
+                                    $arrayGrafico .= "{label: '".$fecha_reg."', data: ".$Indicador["valorIndicador"]." },";
+                                    break;
+
+                                case 'Area':
+                                    $arrayGrafico .= "[".date('n', $dt).", ".$Indicador["valorIndicador"]." ],";
+                                    break;
+                                
+                                default:
+                                    $arrayGrafico .= "['".$fecha_reg."', ".$Indicador["valorIndicador"]." ],";
+                                    break;
+                            }
+                             
+                            
+                        }
+                        $arrayGrafico = substr($arrayGrafico,0,strlen($arrayGrafico)-1);
+                        $arrayGrafico .= "]";
+                        
+                        
                         echo '
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <i class="fa fa-pie-chart fa-fw"></i> '.$CuadroMando['indicadorCuadroMando'].'<br>
@@ -552,37 +597,34 @@
                                 </div>
                                 <!-- /.panel-heading -->
                                 <div class="panel-body">
-                                    <div id="indicador'.$CuadroMando['idCuadroMando'].'" style="height: 100%; width: 100%;"></div>
+                                    <div id="indicador'.$CuadroMando['idCuadroMando'].'" style="height: 300px;"></div>
                                 </div>
                                 <!-- /.panel-body -->
                             </div>
                         </div>';
 
+                        switch ($CuadroMando['visualizacionCuadroMando']) {
+                                case 'Lineas':
 
-                        echo '
-                        <script type="text/javascript">
-                            
-                            new Morris.Bar({
-                            // ID of the element in which to draw the chart.
-                            element: "indicador'.$CuadroMando['idCuadroMando'].'",
-                            // Chart data records -- each entry in this array corresponds to a point on
-                            // the chart.
-                            data: [
-                            '.$arrayGrafico.'
-                            ],
-                            // The name of the data record attribute that contains x-values.
-                            xkey: "aspecto",
-                            // A list of names of data record attributes that contain y-values.
-                            ykeys: ["value"],
-                            // Labels for the ykeys -- will be displayed when you hover over the
-                            // chart.
-                            labels: ["%Cump"],
-                            resize: true,
-                            hideHover: "auto",
-                            ymax: 10
-                            });
+                                    graficoLinea("indicador".$CuadroMando['idCuadroMando'], $arrayGrafico);
+                                    break;
 
-                        </script>';
+                                case 'Barras':
+                                    graficoBarra("indicador".$CuadroMando['idCuadroMando'], $arrayGrafico);
+                                    break;
+
+                                case 'Dona':
+                                    graficoDona("indicador".$CuadroMando['idCuadroMando'], $arrayGrafico);
+                                    break;
+
+                                case 'Area':
+                                    graficoArea("indicador".$CuadroMando['idCuadroMando'], $arrayGrafico);
+                                    break;
+                                
+                                default:
+                                    graficoBarra("indicador".$CuadroMando['idCuadroMando'], $arrayGrafico);
+                                    break;
+                            }
 
                     }
                 ?>
@@ -638,9 +680,156 @@
     </div>
     <!-- /#wrapper -->
 
+<?php
+function graficoLinea($marco, $arrayGrafico)
+{
+    echo '
+    <script type="text/javascript">
+            
+            var line_data1 = {
+                data: '.$arrayGrafico.'
+            };
+            
+            $.plot("#'.$marco.'", [line_data1], {
+                grid: {
+                    hoverable: true,
+                    borderColor: "#f3f3f3",
+                    borderWidth: 1,
+                    tickColor: "#f3f3f3"
+                },
+                series: {
+                    shadowSize: 0,
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: true
+                    }
+                },
+                lines: {
+                    fill: false
+                },
+                yaxis: {
+                    show: true,
+                },
+                xaxis: {
+                    show: true
+                }
+            });
+            //Initialize tooltip on hover
+            $("<div class=\'tooltip-inner\' id=\''.$marco.'-tooltip\'></div>").css(
+            {
+                position: "absolute",
+                display: "none",
+                opacity: 0.8
+            }).appendTo("body");
+            
+            $("#'.$marco.'").bind("plothover", function(event, pos, item) {
+                if (item) {
+                    var x = item.datapoint[0].toFixed(2),
+                            y = item.datapoint[1].toFixed(2);
+                    $("#'.$marco.'-tooltip").html("Periodo " + x + " / Valor " + y)
+                            .css({top: item.pageY + 5, left: item.pageX + 5})
+                            .fadeIn(200);
+                } else {
+                    $("#'.$marco.'-tooltip").hide();
+                }
+            });
+
+        </script>';
+}
+
+function graficoArea($marco, $arrayGrafico)
+{
+    echo '
+    <script type="text/javascript">
+                var areaData = '.$arrayGrafico.';
+                $.plot("#'.$marco.'", [areaData], {
+                    grid: {
+                        borderWidth: 0
+                    },
+                    series: {
+                        shadowSize: 0, // Drawing is faster without shadows
+                        color: "#00c0ef"
+                    },
+                    lines: {
+                        fill: true //Converts the line chart to area chart                        
+                    },
+                    yaxis: {
+                        show: false
+                    },
+                    xaxis: {
+                        show: false
+                    }
+                });
+
+        </script>';
+}
 
 
+function graficoBarra($marco, $arrayGrafico)
+{
+    echo '
+    <script type="text/javascript">
+                var bar_data = {
+                    data: '.$arrayGrafico.',
+                    color: "#3c8dbc"
+                };
+                $.plot("#'.$marco.'", [bar_data], {
+                    grid: {
+                        borderWidth: 1,
+                        borderColor: "#f3f3f3",
+                        tickColor: "#f3f3f3"
+                    },
+                    series: {
+                        bars: {
+                            show: true,
+                            barWidth: 0.5,
+                            align: "center"
+                        }
+                    },
+                    xaxis: {
+                        mode: "categories",
+                        tickLength: 0
+                    }
+                });
 
+        </script>';
+}
+
+function graficoDona($marco, $arrayGrafico)
+{
+    echo '
+         <script type="text/javascript">
+                var donutData = '.$arrayGrafico.';
+                $.plot("#'.$marco.'", donutData, {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            innerRadius: 0.5,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: labelFormatter,
+                                threshold: 0.1
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true
+                    }
+                });
+        
+            function labelFormatter(label, series) {
+                    return "<div style=\'font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;\'>"
+                    + label
+                    + "<br/>"
+                    + Math.round(series.percent) + "%</div>";
+            }
+        </script>';
+}
+?>
 
 </body>
 

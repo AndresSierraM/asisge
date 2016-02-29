@@ -316,6 +316,11 @@ Route::get('datosConformacionGrupoApoyo', function()
 	include public_path().'/ajax/datosConformacionGrupoApoyo.php';
 });
 
+Route::get('datosActaGrupoApoyo', function()
+{
+	include public_path().'/ajax/datosActaGrupoApoyo.php';
+});
+
 Route::get('datosEntregaElementoProteccion', function()
 {
     include public_path().'/ajax/datosEntregaElementoProteccion.php';
@@ -340,6 +345,7 @@ Route::resource('ausentismo','AusentismoController');
 Route::resource('accidente','AccidenteController');
 Route::resource('grupoapoyo','GrupoApoyoController');
 Route::resource('conformaciongrupoapoyo','ConformacionGrupoApoyoController');
+Route::resource('actagrupoapoyo','ActaGrupoApoyoController');
 Route::resource('entregaelementoproteccion','EntregaElementoProteccionController');
 Route::resource('planauditoria','PlanAuditoriaController');
 Route::resource('preguntalistachequeo','PreguntasListaChequeoController');
