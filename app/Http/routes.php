@@ -219,6 +219,11 @@ Route::post('llenarObjetivo', function()
     include public_path().'/ajax/llenarObjetivo.php';
 });
 
+Route::post('llenarPlanCapacitacionTema', function()
+{
+    include public_path().'/ajax/llenarPlanCapacitacionTema.php';
+});
+
 Route::post('CuadroMandoConsultarCampos', function()
 {
     include public_path().'/ajax/CuadroMandoConsultarCampos.php';

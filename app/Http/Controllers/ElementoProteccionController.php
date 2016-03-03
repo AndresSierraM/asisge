@@ -53,9 +53,9 @@ class ElementoProteccionController extends Controller
             $imageName = 'proteccion/'. $request->file('imagenElementoProteccion')->getClientOriginalName();
         
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(48)->save('imagenes/'. $imageName);
-            //$manager->make($image->getRealPath())->widen(48)->save('images/'. $imageName);
-            //$manager->make($image->getRealPath())->resize(48,48)->save('images/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(200)->save('imagenes/'. $imageName);
+            //$manager->make($image->getRealPath())->widen(48)->save('imagenes/'. $imageName);
+            //$manager->make($image->getRealPath())->resize(48,48)->save('imagenes/'. $imageName);
         }
         else
         {
@@ -69,7 +69,7 @@ class ElementoProteccionController extends Controller
             'normaElementoProteccion' => $request['normaElementoProteccion'],
             'descripcionElementoProteccion' => $request['descripcionElementoProteccion'],
             'procesosElementoProteccion' => $request['procesosElementoProteccion'],
-            'imagenElementoProteccion' => $request['imagenElementoProteccion']
+            'imagenElementoProteccion' =>  $imageName
             ]);
           return redirect('/elementoproteccion');
     }
@@ -114,9 +114,9 @@ class ElementoProteccionController extends Controller
             $image = Input::file('imagenElementoProteccion');
             $imageName = $request->file('imagenElementoProteccion')->getClientOriginalName();
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(48)->save('imagenes/proteccion/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(200)->save('imagenes/proteccion/'. $imageName);
 
-            $paquete->imagenElementoProteccion = 'proteccion/'. $imageName;
+            $elementoproteccion->imagenElementoProteccion = 'proteccion/'. $imageName;
         }
 
         $elementoproteccion->save();

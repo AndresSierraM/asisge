@@ -78,7 +78,7 @@
         {!! Form::label('imagenElementoProteccion', '&nbsp;', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10" style="width:250px;">
             <div class="panel panel-default">
-              <input id="imagenElementoProteccion" name="imagenElementoProteccion" type="file" value="<?php echo (isset($elementoproteccion->imagenElementoProteccion) ? 'images/'. $elementoproteccion->imagenElementoProteccion : ''); ?>" >
+              <input id="imagenElementoProteccion" name="imagenElementoProteccion" type="file" value="<?php echo (isset($elementoproteccion->imagenElementoProteccion) ? 'imagenes/'. $elementoproteccion->imagenElementoProteccion : ''); ?>" >
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@
       allowedFileExtensions : ['jpg', 'png','gif'],
        initialPreview: [
        '<?php if(isset($elementoproteccion->imagenElementoProteccion))
-            echo Html::image("images/". $elementoproteccion->imagenElementoProteccion,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
+            echo Html::image("imagenes/". $elementoproteccion->imagenElementoProteccion,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
                            ;?>'
             ],
       dropZoneTitle: 'Seleccione',

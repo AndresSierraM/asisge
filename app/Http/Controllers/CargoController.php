@@ -36,8 +36,8 @@ class CargoController extends Controller
         $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
         $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
 
-        $idListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('idListaGeneral');
-        $nombreListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('nombreListaGeneral');
+        $idListaElemento = \App\ElementoProteccion::All()->lists('idElementoProteccion');
+        $nombreListaElemento = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
 
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
@@ -73,12 +73,12 @@ class CargoController extends Controller
 
             $cargo = \App\Cargo::All()->last();
             
-            $contadorElemento = count($request['ListaGeneral_idElementoProteccion']);
+            $contadorElemento = count($request['ElementoProteccion_idElementoProteccion']);
             for($i = 0; $i < $contadorElemento; $i++)
             {
                 \App\CargoElementoProteccion::create([
                 'Cargo_idCargo' => $cargo->idCargo,
-                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i]
+                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i]
                ]);
             }
 
@@ -146,8 +146,8 @@ class CargoController extends Controller
         $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
         $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
 
-        $idListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('idListaGeneral');
-        $nombreListaElemento = \App\ListaGeneral::where('tipoListaGeneral','ElementoProteccion')->lists('nombreListaGeneral');
+        $idListaElemento = \App\ElementoProteccion::All()->lists('idElementoProteccion');
+        $nombreListaElemento = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
 
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
@@ -164,7 +164,7 @@ class CargoController extends Controller
      */
     public function update(CargoRequest $request, $id)
     {
-        if($request['respuesta'] != 'falso')
+        // if($request['respuesta'] != 'falso')
         {    
             $cargo = \App\Cargo::find($id);
             $cargo->fill($request->all());
@@ -176,12 +176,12 @@ class CargoController extends Controller
             \App\CargoVacuna::where('Cargo_idCargo',$id)->delete();
             \App\CargoExamenMedico::where('Cargo_idCargo',$id)->delete();
 
-            $contadorElemento = count($request['ListaGeneral_idElementoProteccion']);
+            $contadorElemento = count($request['ElementoProteccion_idElementoProteccion']);
             for($i = 0; $i < $contadorElemento; $i++)
             {
                 \App\CargoElementoProteccion::create([
                 'Cargo_idCargo' => $id,
-                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i]
+                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i]
                ]);
             }
 

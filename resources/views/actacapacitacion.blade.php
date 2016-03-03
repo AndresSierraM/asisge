@@ -13,8 +13,10 @@
 		var actaCapacitacionAsistente = '<?php echo (isset($actaCapacitacion) ? json_encode($actaCapacitacion->actaCapacitacionAsistentes) : "");?>';
 		actaCapacitacionAsistente = (actaCapacitacionAsistente != '' ? JSON.parse(actaCapacitacionAsistente) : '');
 
-		var planCapacitacionTema = '';
-		planCapacitacionTema = (planCapacitacionTema != '' ? JSON.parse(planCapacitacionTema) : '');
+		var actaCapacitacionTema = '<?php echo (isset($actaCapacitacion) ? json_encode($actaCapacitacion->actaCapacitacionTemas) : "");?>';
+		actaCapacitacionTema = (actaCapacitacionTema != '' ? JSON.parse(actaCapacitacionTema) : '');
+
+		
 		var valorTema = [0,'',0,'0000-00-00','00:00',0];
 		var valorAsistente = [0,0,''];
 
@@ -28,15 +30,15 @@
 
 
 			tema = new Atributos('tema','contenedor_tema','tema');
-			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema','dictadaPlanCapacitacionTema','cumpleObjetivoPlanCapacitacionTema'];
-			tema.etiqueta = ['input','input','select','input','input','checkbox','checkbox'];
-			tema.tipo = ['hidden','text','','text','text','checkbox','checkbox'];
-			tema.estilo = ['','width: 300px;height:35px;','width: 310px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
-			tema.clase = ['','','','','',''];
-			tema.sololectura = [false,true,false,false,false,false,false];
-			tema.completar = ['off','off','off','off','off','off','off'];
-			tema.opciones = ['','',tercero,'','','',''];
-			tema.funciones  = ['','','',eventos1,'','',''];
+			tema.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
+			tema.etiqueta = ['input', 'input','input','select','input','input','checkbox','checkbox'];
+			tema.tipo = ['hidden', 'hidden','text','','text','text','checkbox','checkbox'];
+			tema.estilo = ['', '','width: 300px;height:35px;','width: 310px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
+			tema.clase = ['', '','','','','',''];
+			tema.sololectura = [false, false,true,false,false,false,false,false];
+			tema.completar = ['off', 'off','off','off','off','off','off','off'];
+			tema.opciones = ['', '','',tercero,'','','',''];
+			tema.funciones  = ['', '','','',eventos1,'','',''];
 
 			asistente = new Atributos('asistente','contenedor_asistente','asistente');
 			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'nombreCargo'];
@@ -49,9 +51,10 @@
 			asistente.opciones = ['',tercero,''];
 			asistente.funciones  = ['',eventos2,''];
 
-			for(var j=0, k = planCapacitacionTema.length; j < k; j++)
+			for(var j=0, k = actaCapacitacionTema.length; j < k; j++)
 			{
-				tema.agregarCampos(JSON.stringify(planCapacitacionTema[j]),'L');
+				tema.agregarCampos(JSON.stringify(actaCapacitacionTema[j]),'L');
+				llenarPlanCapacitacionTema(document.getElementById('PlanCapacitacionTema_idPlanCapacitacionTema'+j));
 			}
 
 			for(var j=0, k = actaCapacitacionAsistente.length; j < k; j++)
@@ -60,14 +63,15 @@
 				llenarCargo(document.getElementById('Tercero_idAsistente'+j));
 			}
 
-			consultarPlanCapacitacion();
+			// solo consulta los datos de encabezados, no los temas
+			consultarPlanCapacitacion('Basico');
 
 		});
 
 		function fechaDetalle(registro)
 		{
 			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
-			$('#fechaPlanCapacitacionTema'+posicion).datetimepicker(({
+			$('#fechaActaCapacitacionTema'+posicion).datetimepicker(({
 				format: "YYYY-MM-DD"
 			}));
 		}
@@ -116,7 +120,7 @@
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
 							{!!Form::select('PlanCapacitacion_idPlanCapacitacion',
-							$planCapacitacion, (isset($actaCapacitacion) ? $actaCapacitacion->PlanCapacitacion_idPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el plan", 'onchange'=>'consultarPlanCapacitacion();'])!!}
+							$planCapacitacion, (isset($actaCapacitacion) ? $actaCapacitacion->PlanCapacitacion_idPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el plan", 'onchange'=>'consultarPlanCapacitacion(\'Completo\');'])!!}
 						</div>
 					</div>
 				</div>
@@ -248,7 +252,7 @@
 													<div class="col-sm-12">
 														<div class="row show-grid">
 															<div class="col-md-1" style="width: 40px;height: 50px;" >
-																<span class="glyphicon glyphicon-plus"></span>
+																<span >&nbsp;</span>
 															</div>
 															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Descripci&oacute;n</div>
 															<div class="col-md-1" style="width: 310px;display:inline-block;height:50px;">Capacitador</div>

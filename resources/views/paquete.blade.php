@@ -50,7 +50,7 @@
         {!! Form::label('iconoPaquete', 'Icono', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10" style="width:250px;">
             <div class="panel panel-default">
-              <input id="iconoPaquete" name="iconoPaquete" type="file" value="<?php echo (isset($paquete->iconoPaquete) ? 'images/'. $paquete->iconoPaquete : ''); ?>" >
+              <input id="iconoPaquete" name="iconoPaquete" type="file" value="<?php echo (isset($paquete->iconoPaquete) ? 'imagenes/'. $paquete->iconoPaquete : ''); ?>" >
             </div>
           </div>
         </div>
@@ -80,7 +80,7 @@
       allowedFileExtensions : ['jpg', 'png','gif'],
        initialPreview: [
        '<?php if(isset($paquete->iconoPaquete))
-            echo Html::image("images/". $paquete->iconoPaquete,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
+            echo Html::image("imagenes/". $paquete->iconoPaquete,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
                            ;?>'
             ],
       dropZoneTitle: 'Seleccione el icono',

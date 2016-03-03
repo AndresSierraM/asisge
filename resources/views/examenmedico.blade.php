@@ -14,7 +14,8 @@
     $(document).ready(function(){
 
         // ejecutamos la funcion para llenar el cargo del empleado
-        CargarCargo(document.getElementById('Tercero_idTercero').value);
+        if(document.getElementById('Tercero_idTercero').value != 0)
+          CargarCargo(document.getElementById('Tercero_idTercero').value);
 
         // creamos los campos del detalle por cada pregunta, en los cuales solo se llenan 3 campos
         // puntuacion (digitado por el susuario de 1 a 5 )

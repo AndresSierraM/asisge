@@ -1,8 +1,9 @@
-function consultarPlanCapacitacion()
+function consultarPlanCapacitacion(tipo)
 {
     var id = (document.getElementById('idActaCapacitacion').value == '' ? 0 : document.getElementById('idActaCapacitacion').value) ;
     var dato1 = document.getElementById('PlanCapacitacion_idPlanCapacitacion').value;
-	var route = "http://localhost:8000/actacapacitacion/"+id;
+	
+    var route = "http://localhost:8000/actacapacitacion/"+id;
     var token = $("#token").val();
 
     $.ajax({
@@ -21,17 +22,17 @@ function consultarPlanCapacitacion()
             document.getElementById('tipoPlanCapacitacion').value = datosEncabezado['tipoPlanCapacitacion'];
             document.getElementById('nombreResponsable').value = tercero['nombreCompletoTercero'];
             document.getElementById('objetivoPlanCapacitacion').innerHTML = datosEncabezado['objetivoPlanCapacitacion'].replace('<p>','').replace('</p>','');
-            //document.getElementById('cumpleObjetivoPlanCapacitacion').value = datosEncabezado['cumpleObjetivoPlanCapacitacion'];
-            document.getElementById('objetivoPlanCapacitacion').value = datosEncabezado['objetivoPlanCapacitacion'].replace('<p>','').replace('</p>','');
             document.getElementById('fechaFinPlanCapacitacion').value = datosEncabezado['fechaFinPlanCapacitacion'];
             document.getElementById('fechaInicioPlanCapacitacion').value = datosEncabezado['fechaInicioPlanCapacitacion'];
             document.getElementById('metodoEficaciaPlanCapacitacion').innerHTML = datosEncabezado['metodoEficaciaPlanCapacitacion'].replace('<p>','').replace('</p>','');
             document.getElementById('personalInvolucradoPlanCapacitacion').innerHTML = datosEncabezado['personalInvolucradoPlanCapacitacion'].replace('<p>','').replace('</p>','');
            
-
-            for(var j=0,k=datosTemas.length;j<k;j++)
+            if(tipo == 'Completo')
             {
-            	tema.agregarCampos(JSON.stringify(datosTemas[j]),'L');
+                for(var j=0,k=datosTemas.length;j<k;j++)
+                {
+                	tema.agregarCampos(JSON.stringify(datosTemas[j]),'L');
+                }
             }	
         }
     });
@@ -155,6 +156,31 @@ function llenarCargo(Tercero)
                 //lo que se si el destino devuelve algo
                 $("#nombreCargo"+reg).val(respuesta); //Al input nombreCargo le envío la respuesta de la consulta
                                                   //realizada en llenarCargo
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+}
+
+function llenarPlanCapacitacionTema(Plan)
+{
+
+     var token = document.getElementById('token').value;
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idPlanCapacitacionTema': Plan.value},
+            url:   'http://localhost:8000/llenarPlanCapacitacionTema/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+            success: function(respuesta){
+                reg = Plan.id.replace('PlanCapacitacionTema_idPlanCapacitacionTema','');
+                //lo que se si el destino devuelve algo
+                $("#nombrePlanCapacitacionTema"+reg).val(respuesta); //Al input nombrePlanCapacitacionTema le envío la respuesta de la consulta
+                                                  //realizada en llenarPlanCapacitacionTema
             },
             error:    function(xhr,err){ 
                 alert("Error");

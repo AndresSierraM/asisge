@@ -69,14 +69,9 @@ class MatrizRiesgoRequest extends Request
                 $validacion['ListaGeneral_idControlAdministrativo'.$i] =  'required';
             }
 
-            if(trim($this->get('ListaGeneral_idElementoProteccion')[$i]) == '' or trim($this->get('ListaGeneral_idElementoProteccion')[$i]) == 0)
+            if(trim($this->get('ElementoProteccion_idElementoProteccion')[$i]) == '' or trim($this->get('ElementoProteccion_idElementoProteccion')[$i]) == 0)
             {    
-                $validacion['ListaGeneral_idElementoProteccion'.$i] =  'required';
-            }
-
-            if(trim($this->get('ListaGeneral_idElementoProteccion')[$i]) == '' or trim($this->get('ListaGeneral_idElementoProteccion')[$i]) == 0)
-            {    
-                $validacion['ListaGeneral_idElementoProteccion'.$i] =  'required';
+                $validacion['ElementoProteccion_idElementoProteccion'.$i] =  'required';
             }
 
             if(trim($this->get('nivelDeficienciaMatrizRiesgoDetalle')[$i]) == '' )

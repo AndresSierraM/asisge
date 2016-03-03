@@ -33,10 +33,23 @@ class MatrizRiesgoController extends Controller
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
-        $idListaGeneral = \App\ListaGeneral::All()->lists('idListaGeneral');
-        $nombreListaGeneral = \App\ListaGeneral::All()->lists('nombreListaGeneral');
+        
+        // lista de Eliminacion del riesgo (EliminacionRiesgo)
+        $idEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('idListaGeneral');
+        $nombreEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('nombreListaGeneral');
 
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'frecuenciaMedicion'));
+        // lista de Sustitucion del riesgo (SustitucionRiesgo)
+        $idSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('idListaGeneral');
+        $nombreSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('nombreListaGeneral');
+
+        // lista de Control del riesgo (ControlRiesgo)
+        $idControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('idListaGeneral');
+        $nombreControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('nombreListaGeneral');
+
+        $idElementoProteccion = \App\ElementoProteccion::All()->lists('idElementoProteccion');
+        $nombreElementoProteccion = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+
+        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'idEliminacionRiesgo', 'nombreEliminacionRiesgo' , 'idSustitucionRiesgo', 'nombreSustitucionRiesgo' , 'idControlRiesgo', 'nombreControlRiesgo', 'idElementoProteccion', 'nombreElementoProteccion','frecuenciaMedicion'));
     }
 
     /**
@@ -93,7 +106,7 @@ class MatrizRiesgoController extends Controller
                 'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
                 'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
                 'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
-                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
+                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
                 'imagenMatrizRiesgoDetalle' => $request['imagenMatrizRiesgoDetalle'][$i],
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);
@@ -125,8 +138,8 @@ class MatrizRiesgoController extends Controller
             ->leftJoin('listageneral as lse', 'mrd.ListaGeneral_idEliminacionRiesgo', '=', 'lse.idListaGeneral')
             ->leftJoin('listageneral as lss', 'mrd.ListaGeneral_idSustitucionRiesgo', '=', 'lss.idListaGeneral')
             ->leftJoin('listageneral as lsc', 'mrd.ListaGeneral_idControlAdministrativo', '=', 'lsc.idListaGeneral')
-            ->leftJoin('listageneral as lsp', 'mrd.ListaGeneral_idElementoProteccion', '=', 'lsp.idListaGeneral')
-            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.ListaGeneral_idEliminacionRiesgo, lse.nombreListaGeneral as nombreEliminacionRiesgo, mrd.ListaGeneral_idSustitucionRiesgo, lss.nombreListaGeneral as nombreSustitucionRiesgo, mrd.ListaGeneral_idControlAdministrativo, lsc.nombreListaGeneral as nombreControlAdministrativo, mrd.ListaGeneral_idElementoProteccion, lsp.nombreListaGeneral as nombreElementoProteccion, mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
+            ->leftJoin('elementoproteccion as epp', 'mrd.ElementoProteccion_idElementoProteccion', '=', 'epp.idElementoProteccion')
+            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.ListaGeneral_idEliminacionRiesgo, lse.nombreListaGeneral as nombreEliminacionRiesgo, mrd.ListaGeneral_idSustitucionRiesgo, lss.nombreListaGeneral as nombreSustitucionRiesgo, mrd.ListaGeneral_idControlAdministrativo, lsc.nombreListaGeneral as nombreControlAdministrativo, mrd.ElementoProteccion_idElementoProteccion, epp.nombreElementoProteccion, mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
             ->orderBy('idMatrizRiesgoDetalle', 'ASC')
             ->where('MatrizRiesgo_idMatrizRiesgo','=',$id)
             ->get();
@@ -210,11 +223,24 @@ class MatrizRiesgoController extends Controller
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
-        $idListaGeneral = \App\ListaGeneral::All()->lists('idListaGeneral');
-        $nombreListaGeneral = \App\ListaGeneral::All()->lists('nombreListaGeneral');
+
+        // lista de Eliminacion del riesgo (EliminacionRiesgo)
+        $idEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('idListaGeneral');
+        $nombreEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('nombreListaGeneral');
+
+        // lista de Sustitucion del riesgo (SustitucionRiesgo)
+        $idSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('idListaGeneral');
+        $nombreSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('nombreListaGeneral');
+
+        // lista de Control del riesgo (ControlRiesgo)
+        $idControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('idListaGeneral');
+        $nombreControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('nombreListaGeneral');
+
+        $idElementoProteccion = \App\ElementoProteccion::All()->lists('idElementoProteccion');
+        $nombreElementoProteccion = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
 
         $matrizRiesgo = \App\MatrizRiesgo::find($id);
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral','frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
+        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'idEliminacionRiesgo', 'nombreEliminacionRiesgo' , 'idSustitucionRiesgo', 'nombreSustitucionRiesgo' , 'idControlRiesgo', 'nombreControlRiesgo', 'idElementoProteccion', 'nombreElementoProteccion', 'frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
     }
 
     /**
@@ -278,7 +304,7 @@ class MatrizRiesgoController extends Controller
                 'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
                 'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
                 'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
-                'ListaGeneral_idElementoProteccion' => $request['ListaGeneral_idElementoProteccion'][$i],
+                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
                 'imagenMatrizRiesgoDetalle' => '',
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);

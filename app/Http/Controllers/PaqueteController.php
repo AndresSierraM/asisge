@@ -54,9 +54,9 @@ class PaqueteController extends Controller
             $imageName = 'menu/'. $request->file('iconoPaquete')->getClientOriginalName();
         
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(48)->save('images/'. $imageName);
-            //$manager->make($image->getRealPath())->widen(48)->save('images/'. $imageName);
-            //$manager->make($image->getRealPath())->resize(48,48)->save('images/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(48)->save('imagenes/'. $imageName);
+            //$manager->make($image->getRealPath())->widen(48)->save('imagenes/'. $imageName);
+            //$manager->make($image->getRealPath())->resize(48,48)->save('imagenes/'. $imageName);
         }
         else
         {
@@ -112,7 +112,7 @@ class PaqueteController extends Controller
             $imageName = $request->file('iconoPaquete')->getClientOriginalName();
 
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(48)->save('images/menu/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(48)->save('imagenes/menu/'. $imageName);
 
             $paquete->iconoPaquete = 'menu/'. $imageName;
         }
@@ -139,7 +139,7 @@ class PaqueteController extends Controller
             if($paquete) {
                 \App\Paquete::destroy($id); 
                 
-                File::Delete( 'images/' . $paquete->iconoPaquete );
+                File::Delete( 'imagenes/' . $paquete->iconoPaquete );
                 
             }
         }

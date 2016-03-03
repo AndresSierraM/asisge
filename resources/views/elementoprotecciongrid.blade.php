@@ -26,6 +26,7 @@
                             <li><a class="toggle-vis" data-column="2"><label> C&oacute;digo</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Tipo</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Imagen</label></a></li>
                         </ul>
                     </div>
                     <table id="telementoproteccion" name="telementoproteccion" class="display table-bordered" width="100%">
@@ -39,6 +40,7 @@
                                 <th><b>C&oacute;digo</b></th>
                                 <th><b>Nombre</b></th>
                                 <th><b>Tipo</b></th>
+                                <th><b>Imagen</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -50,6 +52,7 @@
                                 <th>C&oacute;digo</th>
                                 <th>Nombre</th>
                                 <th>Tipo</th>
+                                <th>Imagen</th>
                             </tr>
                         </tfoot>        
                     </table>

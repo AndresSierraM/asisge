@@ -192,7 +192,7 @@ function validarFormulario(event)
     var datoEliminacion = document.querySelectorAll("[name='ListaGeneral_idEliminacionRiesgo[]']");
     var datoSustitucion = document.querySelectorAll("[name='ListaGeneral_idSustitucionRiesgo[]']");
     var datoControl = document.querySelectorAll("[name='ListaGeneral_idControlAdministrativo[]']");
-    var datoElemento = document.querySelectorAll("[name='ListaGeneral_idElementoProteccion[]']");
+    var datoElemento = document.querySelectorAll("[name='ElementoProteccion_idElementoProteccion[]']");
     var datoDeficiencia= document.querySelectorAll("[name='nivelDeficienciaMatrizRiesgoDetalle[]']");
     var datoExposicion = document.querySelectorAll("[name='nivelExposicionMatrizRiesgoDetalle[]']");
     var datoConsecuencia = document.querySelectorAll("[name='nivelConsecuenciaMatrizRiesgoDetalle[]']");
@@ -243,7 +243,7 @@ function validarFormulario(event)
                 ListaGeneral_idEliminacionRiesgo: dato7, 
                 ListaGeneral_idSustitucionRiesgo: dato8, 
                 ListaGeneral_idControlAdministrativo: dato9, 
-                ListaGeneral_idElementoProteccion: dato10, 
+                ElementoProteccion_idElementoProteccion: dato10, 
                 TipoRiesgo_idTipoRiesgo: dato11,
                 nivelDeficienciaMatrizRiesgoDetalle: dato12,
                 nivelExposicionMatrizRiesgoDetalle: dato13,
@@ -292,7 +292,7 @@ function validarFormulario(event)
 
                     (typeof respuesta['ListaGeneral_idControlAdministrativo'+j] === "undefined" ? document.getElementById('ListaGeneral_idControlAdministrativo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idControlAdministrativo'+j).style.borderColor = '#a94442');
 
-                    (typeof respuesta['ListaGeneral_idElementoProteccion'+j] === "undefined" ? document.getElementById('ListaGeneral_idElementoProteccion'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idElementoProteccion'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['ElementoProteccion_idElementoProteccion'+j] === "undefined" ? document.getElementById('ElementoProteccion_idElementoProteccion'+j).style.borderColor = '' : document.getElementById('ElementoProteccion_idElementoProteccion'+j).style.borderColor = '#a94442');
 
                     (typeof respuesta['nivelDeficienciaMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('nivelDeficienciaMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('nivelDeficienciaMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
 

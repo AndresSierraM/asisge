@@ -44,7 +44,7 @@
 		var listaExamen = [JSON.parse(idTipoExamen),JSON.parse(nombreTipoExamen)];
 		var listaElemento = [JSON.parse(idListaElemento),JSON.parse(nombreListaElemento)];
 		var listaVacuna = [JSON.parse(idListaVacuna),JSON.parse(nombreListaVacuna)];
-		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
+		var frecuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
 		
 		$(document).ready(function()
 		{
@@ -71,7 +71,7 @@
 			vacuna.funciones  = ['',''];
 
 			elemento = new Atributos('elemento','contenedor_elemento','elemento');
-			elemento.campos = ['idCargoElementoProteccion', 'ListaGeneral_idElementoProteccion'];
+			elemento.campos = ['idCargoElementoProteccion', 'ElementoProteccion_idElementoProteccion'];
 			elemento.etiqueta = ['input','select'];
 			elemento.tipo = ['hidden',''];
 			elemento.estilo = ['','width: 900px;height:35px;'];
@@ -89,7 +89,7 @@
 			examen.clase = ['','','','','',''];
 			examen.sololectura = [false,false,false,false,false,false];
 			examen.completar = ['off','off','off','off','off','off'];
-			examen.opciones = ['',listaExamen,'','','',frencuenciaMedicion];
+			examen.opciones = ['',listaExamen,'','','',frecuenciaMedicion];
 			examen.funciones  = ['','','','','',''];
 
 

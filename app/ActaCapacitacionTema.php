@@ -9,7 +9,10 @@ class ActaCapacitacionTema extends Model
 	protected $table = 'actacapacitaciontema';
     protected $primaryKey = 'idActaCapacitacionTema';
 
-    protected $fillable = ['ActaCapacitacion_idActaCapacitacion', 'Tercero_idAsistente'];
+    protected $fillable = [
+			'ActaCapacitacion_idActaCapacitacion', 'PlanCapacitacionTema_idPlanCapacitacionTema', 'Tercero_idCapacitador',
+			'fechaActaCapacitacionTema','horaActaCapacitacionTema', 'dictadaActaCapacitacionTema', 
+			'cumpleObjetivoActaCapacitacionTema'];
 
     public $timestamps = false;
 
@@ -17,4 +20,6 @@ class ActaCapacitacionTema extends Model
     {
 		return $this->hasOne('App\ActaCapacitacion','idActaCapacitacion');
     }
+
+    
 }

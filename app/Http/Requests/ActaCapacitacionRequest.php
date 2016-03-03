@@ -37,14 +37,14 @@ class ActaCapacitacionRequest extends Request
                 $validacion['Tercero_idCapacitador'.$i] =  'required';
             }
 
-            if(trim($this->get('fechaPlanCapacitacionTema')[$i]) == '' or trim($this->get('fechaPlanCapacitacionTema')[$i]) == 0)
+            if(trim($this->get('fechaActaCapacitacionTema')[$i]) == '' or trim($this->get('fechaActaCapacitacionTema')[$i]) == 0)
             {    
-                $validacion['fechaPlanCapacitacionTema'.$i] =  'required';
+                $validacion['fechaActaCapacitacionTema'.$i] =  'required';
             }
 
-            if(trim($this->get('horaPlanCapacitacionTema')[$i]) == '' or trim($this->get('horaPlanCapacitacionTema')[$i]) == 0)
+            if(trim($this->get('horaActaCapacitacionTema')[$i]) == '' or trim($this->get('horaActaCapacitacionTema')[$i]) == 0)
             {    
-                $validacion['horaPlanCapacitacionTema'.$i] =  'required';
+                $validacion['horaActaCapacitacionTema'.$i] =  'required';
             }
         }
 

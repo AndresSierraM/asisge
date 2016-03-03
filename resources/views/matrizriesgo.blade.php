@@ -5,7 +5,6 @@
 		<center>Matriz de Riesgos</center>
 	</h3>
 @stop
-
 @section('content')
 
 	@include('alerts.request')
@@ -25,9 +24,22 @@
     	var nombreClasificacionRiesgo = '<?php echo isset($nombreClasificacionRiesgo) ? $nombreClasificacionRiesgo : "";?>';
     	var clasificacionRiesgo = [JSON.parse(idClasificacionRiesgo),JSON.parse(nombreClasificacionRiesgo)];
 
-    	var idListaGeneral = '<?php echo isset($idListaGeneral) ? $idListaGeneral : "";?>';
-    	var nombreListaGeneral = '<?php echo isset($nombreListaGeneral) ? $nombreListaGeneral : "";?>';
-    	var listaGeneral = [JSON.parse(idListaGeneral),JSON.parse(nombreListaGeneral)];
+		var idEliminacionRiesgo = '<?php echo isset($idEliminacionRiesgo) ? $idEliminacionRiesgo : "";?>';
+    	var nombreEliminacionRiesgo = '<?php echo isset($nombreEliminacionRiesgo) ? $nombreEliminacionRiesgo : "";?>';
+    	var eliminacionRiesgo = [JSON.parse(idEliminacionRiesgo),JSON.parse(nombreEliminacionRiesgo)];
+
+		var idSustitucionRiesgo = '<?php echo isset($idSustitucionRiesgo) ? $idSustitucionRiesgo : "";?>';
+    	var nombreSustitucionRiesgo = '<?php echo isset($nombreSustitucionRiesgo) ? $nombreSustitucionRiesgo : "";?>';
+    	var sustitucionRiesgo = [JSON.parse(idSustitucionRiesgo),JSON.parse(nombreSustitucionRiesgo)];
+
+    	var idControlRiesgo = '<?php echo isset($idControlRiesgo) ? $idControlRiesgo : "";?>';
+    	var nombreControlRiesgo = '<?php echo isset($nombreControlRiesgo) ? $nombreControlRiesgo : "";?>';
+    	var controlRiesgo = [JSON.parse(idControlRiesgo),JSON.parse(nombreControlRiesgo)];
+
+		var idElementoProteccion = '<?php echo isset($idElementoProteccion) ? $idElementoProteccion : "";?>';
+    	var nombreElementoProteccion = '<?php echo isset($nombreElementoProteccion) ? $nombreElementoProteccion : "";?>';
+    	var elementoProteccion = [JSON.parse(idElementoProteccion),JSON.parse(nombreElementoProteccion)];
+
 
     	var eventos1 = ['onchange','buscarTipoRiesgo(this.parentNode.id);'];
     	var eventos2 = ['onchange','buscarDetalleTipoRiesgo(this.parentNode.id);'];
@@ -48,13 +60,13 @@
     	$(document).ready(function(){
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
-			detalle.campos = ['idMatrizRiesgoDetalle', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'ListaGeneral_idEliminacionRiesgo', 'ListaGeneral_idSustitucionRiesgo', 'ListaGeneral_idControlAdministrativo', 'ListaGeneral_idElementoProteccion', 'imagenMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
+			detalle.campos = ['idMatrizRiesgoDetalle', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'ListaGeneral_idEliminacionRiesgo', 'ListaGeneral_idSustitucionRiesgo', 'ListaGeneral_idControlAdministrativo', 'ElementoProteccion_idElementoProteccion', 'imagenMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
 			detalle.etiqueta = ['input','select','checkbox','select','select','select','select','input','input','input','input','input','input','input','select','select','input','input','select','input','input','input','select','select','select','select','input','input'];
 			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','hidden','text','','hidden','text','text','','','','','file','text'];
 			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 210px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 140px;height:35px;display:inline-block;','width: 340px;height:35px;'];
 			detalle.clase = ['','','','','','','','','','','','','','','','','','','','','','','','','','','file',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false,false];
-			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','',listaGeneral,listaGeneral,listaGeneral,listaGeneral,'',''];
+			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','',eliminacionRiesgo, sustitucionRiesgo, controlRiesgo, elementoProteccion,'',''];
 			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','','',''];
 
 			for(var j=0, k = matrizRiesgoDetalle.length; j < k; j++)
@@ -156,9 +168,9 @@
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Interpretaci&oacute;n riesgo</div>
 													<div class="col-md-1" style="width: 210px;display:inline-block;height:60px;">Aceptaci&oacute;n riesgo</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Eliminaci&oacute;n</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Sustituaci&oacute;n</div>
+													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Sustituci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Controles</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Protección Persona</div>
+													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Protección Personal</div>
 													<div class="col-md-1" style="width: 140px;display:inline-block;height:60px;">Evidencia</div>
 													<div class="col-md-1" style="width: 340px;display:inline-block;height:60px;">Observaciones</div>
 													<div id="contenedor_detalle">

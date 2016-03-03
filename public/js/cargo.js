@@ -8,7 +8,7 @@ function validarFormulario(event)
     var dato3 = document.getElementById('salarioBaseCargo').value;
     var datoTarea = document.querySelectorAll("[name='ListaGeneral_idTareaAltoRiesgo[]']");
     var datoVacuna = document.querySelectorAll("[name='ListaGeneral_idVacuna[]']");
-    var datoElemento = document.querySelectorAll("[name='ListaGeneral_idElementoProteccion[]']");
+    var datoElemento = document.querySelectorAll("[name='ElementoProteccion_idElementoProteccion[]']");
     var datoExamen = document.querySelectorAll("[name='FrecuenciaMedicion_idFrecuenciaMedicion[]']");
     var dato4 = [];
     var dato5 = [];
@@ -51,7 +51,7 @@ function validarFormulario(event)
                 salarioBaseCargo: dato3,
                 ListaGeneral_idTareaAltoRiesgo: dato4, 
                 ListaGeneral_idVacuna: dato5, 
-                ListaGeneral_idElementoProteccion: dato6, 
+                ElementoProteccion_idElementoProteccion: dato6, 
                 FrecuenciaMedicion_idFrecuenciaMedicion: dato7
                 },
         success:function(){
@@ -90,7 +90,7 @@ function validarFormulario(event)
 
                 for(var j=0,i=datoElemento.length; j<i;j++)
                 {
-                    (typeof respuesta['ListaGeneral_idElementoProteccion'+j] === "undefined" ? document.getElementById('ListaGeneral_idElementoProteccion'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idElementoProteccion'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['ElementoProteccion_idElementoProteccion'+j] === "undefined" ? document.getElementById('ElementoProteccion_idElementoProteccion'+j).style.borderColor = '' : document.getElementById('ElementoProteccion_idElementoProteccion'+j).style.borderColor = '#a94442');
                 }
 
                 for(var j=0,i=datoExamen.length; j<i;j++)

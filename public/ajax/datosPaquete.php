@@ -17,7 +17,7 @@
         $row[$key][] = $value['idPaquete'];
         $row[$key][] = $value['ordenPaquete'];
         $row[$key][] = $value['nombrePaquete'];   
-        $row[$key][] = '<img src="'.$value['iconoPaquete'].'">';
+        $row[$key][] = '<img src="imagenes/'.$value['iconoPaquete'].'">';
     }
 
     $output['aaData'] = $row;

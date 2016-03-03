@@ -25,7 +25,7 @@ class CargoRequest extends Request
     {
         $tarea = count($this->get('ListaGeneral_idTareaAltoRiesgo'));
         $vacuna = count($this->get('ListaGeneral_idVacuna'));
-        $elemento = count($this->get('ListaGeneral_idElementoProteccion'));
+        $elemento = count($this->get('ElementoProteccion_idElementoProteccion'));
         $examen = count($this->get('FrecuenciaMedicion_idFrecuenciaMedicion'));
 
         $validacion = array('codigoCargo' => "required|string|max:20|unique:cargo,codigoCargo,".$this->get('idCargo') .",idCargo",
@@ -50,9 +50,9 @@ class CargoRequest extends Request
 
         for($i = 0; $i < $elemento; $i++)
         {
-            if(trim($this->get('ListaGeneral_idElementoProteccion')[$i]) == '' or trim($this->get('ListaGeneral_idElementoProteccion')[$i]) == 0)
+            if(trim($this->get('ElementoProteccion_idElementoProteccion')[$i]) == '' or trim($this->get('ElementoProteccion_idElementoProteccion')[$i]) == 0)
             {    
-                $validacion['ListaGeneral_idElementoProteccion'.$i] =  'required';
+                $validacion['ElementoProteccion_idElementoProteccion'.$i] =  'required';
             }
         }
 
