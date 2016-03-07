@@ -131,7 +131,7 @@
 								}
 								echo '<tr>
 										<td colspan="2" style="font-weight: bold;">Porcentaje de Cumplimiento '.$grupo.'</td>
-										<td align="center" style="font-weight: bold;">'.number_format(($sumadet/$conteodet),1,'.',',').'%</td>
+										<td align="center" style="font-weight: bold;">'.number_format(($sumadet/($conteodet == 0 ? 1 : $conteodet)),1,'.',',').'%</td>
 										<td style="font-weight: bold;">&nbsp;</td>
 									</tr>
 									<tr>
@@ -175,7 +175,7 @@
 
 							echo '<tr>
 									<td style="font-weight: bold;">Ejecucion Total </td>
-									<td style="font-weight: bold;">'.number_format(($suma/($conteo == 0 ? 1 : 0)),1,'.',',').'%</td>
+									<td style="font-weight: bold;">'.number_format(($suma/($conteo == 0 ? 1 : $conteo)),1,'.',',').'%</td>
 								</tr>';
 
 						?>

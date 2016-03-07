@@ -11,16 +11,16 @@
 
     foreach ($conformaciongrupoapoyo as $key => $value) 
     {  
-        $row[$key][] = '<a href="conformaciongrupoapoyo/'.$value['idConformacionGrupoApoyo'].'/edit">'.
+        $row[$key][] = '<a href="conformaciongrupoapoyo/'.$value->idConformacionGrupoApoyo.'/edit">'.
                             '<span class="glyphicon glyphicon-pencil"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="conformaciongrupoapoyo/'.$value['idConformacionGrupoApoyo'].'/edit?accion=eliminar">'.
+                        '<a href="conformaciongrupoapoyo/'.$value->idConformacionGrupoApoyo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash"></span>'.
                         '</a>';
-        $row[$key][] = $value['idConformacionGrupoApoyo'];
-        $row[$key][] = $value['nombreGrupoApoyo'];   
-        $row[$key][] = $value['nombreConformacionGrupoApoyo'];
-        $row[$key][] = $value['fechaConformacionGrupoApoyo'];
+        $row[$key][] = $value->idConformacionGrupoApoyo;
+        $row[$key][] = $value->nombreGrupoApoyo;   
+        $row[$key][] = $value->nombreConformacionGrupoApoyo;
+        $row[$key][] = $value->fechaConformacionGrupoApoyo;
     }
 
     $output['aaData'] = $row;

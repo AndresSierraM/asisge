@@ -2,6 +2,8 @@
 @section('titulo')<h3 id="titulo"><center>Ausentismos</center></h3>@stop
 
 @section('content')
+{!!Html::script('js/ausentismo.js')!!}
+
 @include('alerts.request')
 
 	@if(isset($ausentismo))
@@ -89,7 +91,7 @@
 		              <span class="input-group-addon">
 		                <i class="fa fa-calendar" ></i>
 		              </span>
-		              {!!Form::text('fechaInicioAusentismo',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Inicio', 'style'=>'width:340;'])!!}
+		              {!!Form::text('fechaInicioAusentismo',null, ['onblur' => 'calcularDiasAusencia(this.value, document.getElementById(\'fechaFinAusentismo\').value)', 'class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Inicio', 'style'=>'width:340;'])!!}
 		            </div>
 		          </div>
 		        </div>
@@ -101,16 +103,26 @@
 		              <span class="input-group-addon">
 		                <i class="fa fa-calendar" ></i>
 		              </span>
-		              {!!Form::text('fechaFinAusentismo',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Fin', 'style'=>'width:340;'])!!}
+		              {!!Form::text('fechaFinAusentismo',null, ['onblur' => 'calcularDiasAusencia( document.getElementById(\'fechaInicioAusentismo\').value,this.value)', 'class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Fin', 'style'=>'width:340;'])!!}
 		            </div>
 		          </div>
 		        </div>
-
+		        <div class="form-group" id='test'>
+					{!!Form::label('diasAusentismo', 'D&iacute;as', array('class' => 'col-sm-2 control-label'))!!}
+					<div class="col-sm-10">
+			            <div class="input-group">
+			              	<span class="input-group-addon">
+			                	<i class="fa fa-barcode"></i>
+			              	</span>
+							{!!Form::text('diasAusentismo',null,['readonly' => 'readonly', 'class'=>'form-control'])!!}
+						</div>
+					</div>
+				</div>
 		        <div class="form-group"  >
 		        {!! Form::label('archivoAusentismo', 'Soporte de la Ausencia', array('class' => 'col-sm-2 control-label')) !!}
 		          <div class="col-sm-10" >
 		            <div class="panel panel-default">
-		              <input id="archivoAusentismo" name="archivoAusentismo" type="file" value="<?php echo (isset($ausentismo->archivoAusentismo) ? 'images/'. $ausentismo->archivoAusentismo : ''); ?>" >
+		              <input id="archivoAusentismo" name="archivoAusentismo" type="file" value="<?php echo ((isset($ausentismo->archivoAusentismo) and $ausentismo->archivoAusentismo != '') ? 'images/'. $ausentismo->archivoAusentismo : ''); ?>" >
 		            </div>
 		          </div>
 		        </div>

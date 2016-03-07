@@ -165,8 +165,8 @@
 
 	{!!Form::close()!!}
 	<script type="text/javascript">
-		document.getElementById('contenedor').style.width = '1350px';
-		document.getElementById('contenedor-fin').style.width = '1350px';
+		// document.getElementById('contenedor').style.width = '1350px';
+		// document.getElementById('contenedor-fin').style.width = '1350px';
 
 		$('#fechaElaboracionMatrizLegal').datetimepicker(({
 			format: "YYYY-MM-DD"

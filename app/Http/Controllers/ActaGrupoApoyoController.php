@@ -28,7 +28,11 @@ class ActaGrupoApoyoController extends Controller
     public function create()
     {
         $grupoapoyo = \App\GrupoApoyo::All()->lists('nombreGrupoApoyo','idGrupoApoyo');
-        return view('actagrupoapoyo', compact('grupoapoyo'));
+        
+        $idTercero = \App\Tercero::All()->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+
+        return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero'));
     }
 
     /**

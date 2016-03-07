@@ -29,7 +29,7 @@
 		var eventos2 = ['onclick','fechaEstimadaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id,"A");'];
 		var eventos3 = ['onclick','fechaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id,"A");'];
 
-		var valorT = ['C','P','M'];
+		var valorT = ['Correctiva','Preventiva','Mejora'];
     	var opcionT = ['Correctiva','Preventiva','Mejora'];
     	var tipo = [valorT, opcionT];
 

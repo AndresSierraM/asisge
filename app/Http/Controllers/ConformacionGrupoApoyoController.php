@@ -134,9 +134,9 @@ class ConformacionGrupoApoyoController extends Controller
 
             $conformacionGrupoApoyo->save();
 
-            \App\ConformacionGrupoApoyoComite::where('Cargo_idCargo',$id)->delete();
-            \App\ConformacionGrupoApoyoJurado::where('Cargo_idCargo',$id)->delete();
-            \App\CargoVacuConformacionGrupoApoyoResultadona::where('Cargo_idCargo',$id)->delete();
+            \App\ConformacionGrupoApoyoComite::where('ConformacionGrupoApoyo_idConformacionGrupoApoyo',$id)->delete();
+            \App\ConformacionGrupoApoyoJurado::where('ConformacionGrupoApoyo_idConformacionGrupoApoyo',$id)->delete();
+            \App\ConformacionGrupoApoyoResultado::where('ConformacionGrupoApoyo_idConformacionGrupoApoyo',$id)->delete();
             
             $contadorComite = count($request['Tercero_idPrincipal']);
             for($i = 0; $i < $contadorComite; $i++)

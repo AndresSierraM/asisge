@@ -65,6 +65,36 @@ class ExamenMedicoController extends Controller
                 'resultadoExamenMedicoDetalle' => $request['resultadoExamenMedicoDetalle'][$i],
                 'observacionExamenMedicoDetalle' => $request['observacionExamenMedicoDetalle'][$i]
                ]);
+
+                // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['resultadoExamenMedicoDetalle'][$i] < $request['limiteInferiorTipoExamenMedico'][$i] OR 
+                    $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
+                {
+
+                        //COnsultamos el nombre del tercero empleado
+                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+                        $reporteACPM = \App\ReporteACPM::All()->last();
+                        \App\ReporteACPMDetalle::create([
+
+                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                            'ordenReporteACPMDetalle' => 0,
+                            'fechaReporteACPMDetalle' => date("Y-m-d"),
+                            'Proceso_idProceso' => NULL,
+                            'Modulo_idModulo' => 10,
+                            'tipoReporteACPMDetalle' => 'Correctiva',
+                            'descripcionReporteACPMDetalle' => 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')',
+                            'analisisReporteACPMDetalle' => '',
+                            'correccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsableCorrecion' => NULL,
+                            'planAccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsablePlanAccion' => NULL,
+                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                            'estadoActualReporteACPMDetalle' => '',
+                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                            'eficazReporteACPMDetalle' => 0
+
+                        ]);
+                }
                 
             }
 
@@ -179,6 +209,35 @@ class ExamenMedicoController extends Controller
                 'observacionExamenMedicoDetalle' => $request['observacionExamenMedicoDetalle'][$i]
                ]);
                 
+                // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['resultadoExamenMedicoDetalle'][$i] < $request['limiteInferiorTipoExamenMedico'][$i] OR 
+                    $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
+                {
+
+                        //COnsultamos el nombre del tercero empleado
+                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+                        $reporteACPM = \App\ReporteACPM::All()->last();
+                        \App\ReporteACPMDetalle::create([
+
+                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                            'ordenReporteACPMDetalle' => 0,
+                            'fechaReporteACPMDetalle' => date("Y-m-d"),
+                            'Proceso_idProceso' => NULL,
+                            'Modulo_idModulo' => 10,
+                            'tipoReporteACPMDetalle' => 'Correctiva',
+                            'descripcionReporteACPMDetalle' => 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')',
+                            'analisisReporteACPMDetalle' => '',
+                            'correccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsableCorrecion' => NULL,
+                            'planAccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsablePlanAccion' => NULL,
+                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                            'estadoActualReporteACPMDetalle' => '',
+                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                            'eficazReporteACPMDetalle' => 0
+
+                        ]);
+                }
             }
 
             return redirect('/examenmedico');

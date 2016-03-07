@@ -25,6 +25,7 @@
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> C&oacute;digo</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Frecuencia Reuniones</label></a></li>
                         </ul>
                     </div>
                     <table id="tgrupoapoyo" name="tgrupoapoyo" class="display table-bordered" width="100%">
@@ -37,6 +38,7 @@
                                 <th><b>ID</b></th>
                                 <th><b>C&oacute;digo</b></th>
                                 <th><b>Nombre</b></th>
+                                <th><b>Frecuencia Reuniones</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -47,6 +49,7 @@
                                 <th>ID</th>
                                 <th>C&oacute;digo</th>
                                 <th>Nombre</th>
+                                <th>Frecuencia Reuniones</th>
                             </tr>
                         </tfoot>        
                     </table>

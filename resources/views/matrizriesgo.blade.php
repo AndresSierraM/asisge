@@ -2,7 +2,7 @@
 
 @section('titulo')
 	<h3 id="titulo">
-		<center>Matriz de Riesgos</center>
+		Matriz de Riesgos
 	</h3>
 @stop
 @section('content')
@@ -199,8 +199,8 @@
 
 	{!!Form::close()!!}
 	<script type="text/javascript">
-		document.getElementById('contenedor').style.width = '1350px';
-		document.getElementById('contenedor-fin').style.width = '1350px';
+		// document.getElementById('contenedor').style.width = '1350px';
+		// document.getElementById('contenedor-fin').style.width = '1350px';
 
 		$('#fechaElaboracionMatrizRiesgo').datetimepicker(({
 			format: "YYYY-MM-DD"

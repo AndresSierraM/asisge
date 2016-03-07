@@ -75,6 +75,32 @@ class MatrizLegalController extends Controller
                     'accionEvidenciaMatrizLegalDetalle' => $request['accionEvidenciaMatrizLegalDetalle'][$i],
                     'controlAImplementarMatrizLegalDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i]
                 ]);
+
+                // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['cumpleMatrizLegalDetalle'][$i] == 0 )
+                {
+                        $reporteACPM = \App\ReporteACPM::All()->last();
+                        \App\ReporteACPMDetalle::create([
+
+                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                            'ordenReporteACPMDetalle' => 0,
+                            'fechaReporteACPMDetalle' => date("Y-m-d"),
+                            'Proceso_idProceso' => NULL,
+                            'Modulo_idModulo' => 4,
+                            'tipoReporteACPMDetalle' => 'Correctiva',
+                            'descripcionReporteACPMDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i],
+                            'analisisReporteACPMDetalle' => '',
+                            'correccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsableCorrecion' => NULL,
+                            'planAccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsablePlanAccion' => NULL,
+                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                            'estadoActualReporteACPMDetalle' => '',
+                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                            'eficazReporteACPMDetalle' => 0
+
+                        ]);
+                }
             }
             
             return redirect('/matrizlegal');
@@ -163,6 +189,32 @@ class MatrizLegalController extends Controller
                     'accionEvidenciaMatrizLegalDetalle' => $request['accionEvidenciaMatrizLegalDetalle'][$i],
                     'controlAImplementarMatrizLegalDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i]
                 ]);
+
+                // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['cumpleMatrizLegalDetalle'][$i] == 0 )
+                {
+                        $reporteACPM = \App\ReporteACPM::All()->last();
+                        \App\ReporteACPMDetalle::create([
+
+                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                            'ordenReporteACPMDetalle' => 0,
+                            'fechaReporteACPMDetalle' => date("Y-m-d"),
+                            'Proceso_idProceso' => NULL,
+                            'Modulo_idModulo' => 4,
+                            'tipoReporteACPMDetalle' => 'Correctiva',
+                            'descripcionReporteACPMDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i],
+                            'analisisReporteACPMDetalle' => '',
+                            'correccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsableCorrecion' => NULL,
+                            'planAccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsablePlanAccion' => NULL,
+                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                            'estadoActualReporteACPMDetalle' => '',
+                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                            'eficazReporteACPMDetalle' => 0
+
+                        ]);
+                }
             }
             
             return redirect('/matrizlegal');

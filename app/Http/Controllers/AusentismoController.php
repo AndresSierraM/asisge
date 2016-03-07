@@ -73,6 +73,7 @@ class AusentismoController extends Controller
             'tipoAusentismo' => $request['tipoAusentismo'],
             'fechaInicioAusentismo' => $request['fechaInicioAusentismo'],
             'fechaFinAusentismo' => $request['fechaFinAusentismo'],
+            'diasAusentismo' => $request['diasAusentismo'],
             'archivoAusentismo' => $imageName
             ]);
 
@@ -127,11 +128,9 @@ class AusentismoController extends Controller
             $ausentismo->archivoAusentismo = $imageName;
         }
         
-
-        
         $ausentismo->save();
 
-
+        
        return redirect('/ausentismo');
     }
 

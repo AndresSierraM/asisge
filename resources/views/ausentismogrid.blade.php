@@ -34,6 +34,7 @@
                             <li><a class="toggle-vis" data-column="3"><label> Elaboración</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Desde</label></a></li>
                             <li><a class="toggle-vis" data-column="5"><label> Hasta</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Días</label></a></li>
                             <li><a class="toggle-vis" data-column="6"><label> Tipo Ausencia</label></a></li>
                             <li><a class="toggle-vis" data-column="7"><label> Accidente Relacionado</label></a></li>
                         </ul>
@@ -50,6 +51,7 @@
                                 <th><b>Elaboración</b></th>
                                 <th><b>Desde</b></th>
                                 <th><b>Hasta</b></th>
+                                <th><b>Días</b></th>
                                 <th><b>Tipo Ausencia</b></th>
                                 <th><b>Accidente Relacionado</b></th>
                             </tr>
@@ -64,6 +66,7 @@
                                 <th>Elaboración</th>
                                 <th>Desde</th>
                                 <th>Hasta</th>
+                                <th>Días</th>
                                 <th>Tipo Ausencia</th>
                                 <th>Ausencia Relacionada</th>
                             </tr>

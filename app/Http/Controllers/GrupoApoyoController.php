@@ -27,7 +27,9 @@ class GrupoApoyoController extends Controller
      */
     public function create()
     {
-        return view('grupoapoyo');
+        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+
+        return view('grupoapoyo', compact('frecuenciaMedicion'));
     }
 
     /**
@@ -43,7 +45,8 @@ class GrupoApoyoController extends Controller
             'nombreGrupoApoyo' => $request['nombreGrupoApoyo'],
             'convocatoriaVotacionGrupoApoyo' => $request['convocatoriaVotacionGrupoApoyo'],
             'actaEscrutinioGrupoApoyo' => $request['actaEscrutinioGrupoApoyo'],
-            'actaConstitucionGrupoApoyo' => $request['actaConstitucionGrupoApoyo']
+            'actaConstitucionGrupoApoyo' => $request['actaConstitucionGrupoApoyo'],
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion']
             ]);
 
         return redirect('/grupoapoyo');
@@ -69,7 +72,9 @@ class GrupoApoyoController extends Controller
     public function edit($id)
     {
         $grupoApoyo = \App\GrupoApoyo::find($id);
-        return view('grupoapoyo',['grupoApoyo'=>$grupoApoyo]);
+        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+
+        return view('grupoapoyo', compact('frecuenciaMedicion'), ['grupoApoyo'=>$grupoApoyo]);
     }
 
     /**

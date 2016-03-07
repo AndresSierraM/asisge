@@ -50,10 +50,6 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 						<thead class="thead-inverse">
 							<tr class="table-info">
 								<th scope="col" width="30%">&nbsp;</th>
-								<th >Presupuesto</th>
-								<th >Costo Real</th>
-								<th >Cumplimiento</th>
-								<th >Responsable</th>
 								<th >Enero</th>
 								<th >Febrero</th>
 								<th >Marzo</th>
@@ -66,6 +62,10 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 								<th >Octubre</th>
 								<th >Noviembre</th>
 								<th >Diciembre</th>
+								<th >Presupuesto</th>
+								<th >Costo Real</th>
+								<th >Cumplimiento</th>
+								<th >Responsable</th>
 							</tr>
 						</thead>
 						<tbody>';
@@ -74,10 +74,6 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 							{
 								echo '<tr align="center">
 									<th scope="row">'.$dato->descripcionTarea.'</th>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
 									<td>'.colorTarea($dato->EneroT, $dato->EneroC).'</td>
 									<td>'.colorTarea($dato->FebreroT, $dato->FebreroC).'</td>
 									<td>'.colorTarea($dato->MarzoT, $dato->MarzoC).'</td>
@@ -90,6 +86,10 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 									<td>'.colorTarea($dato->OctubreT, $dato->OctubreC).'</td>
 									<td>'.colorTarea($dato->NoviembreT, $dato->NoviembreC).'</td>
 									<td>'.colorTarea($dato->DiciembreT, $dato->DiciembreC).'</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
 								</tr>';
 							}
 						
@@ -132,6 +132,7 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 		                <div class="panel-group" id="accordion">
 		                  <?php
 								imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal');
+								imprimirTabla('Grupos de Apoyo', $grupoapoyo, 'grupoapoyo');
 								imprimirTabla('Planes de Capacitación', $capacitacion, 'capacitacion');			
 								imprimirTabla('Programas / Actividades', $programa, 'programa');	
 								imprimirTabla('Examenes Médicos', $examen, 'examen');

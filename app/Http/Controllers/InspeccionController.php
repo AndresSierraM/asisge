@@ -70,6 +70,33 @@ class InspeccionController extends Controller
                 'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
                 'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
                ]);
+
+
+                // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['accionMejoraInspeccionDetalle'][$i] != '' )
+                {
+                        $reporteACPM = \App\ReporteACPM::All()->last();
+                        \App\ReporteACPMDetalle::create([
+
+                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                            'ordenReporteACPMDetalle' => 0,
+                            'fechaReporteACPMDetalle' => date("Y-m-d"),
+                            'Proceso_idProceso' => NULL,
+                            'Modulo_idModulo' => 9,
+                            'tipoReporteACPMDetalle' => 'Correctiva',
+                            'descripcionReporteACPMDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
+                            'analisisReporteACPMDetalle' => '',
+                            'correccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsableCorrecion' => NULL,
+                            'planAccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsablePlanAccion' => NULL,
+                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                            'estadoActualReporteACPMDetalle' => '',
+                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                            'eficazReporteACPMDetalle' => 0
+
+                        ]);
+                }
                 
             }
 
@@ -190,6 +217,34 @@ class InspeccionController extends Controller
                 'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
                 'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
                ]);
+
+
+
+                // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['accionMejoraInspeccionDetalle'][$i] != '' )
+                {
+                        $reporteACPM = \App\ReporteACPM::All()->last();
+                        \App\ReporteACPMDetalle::create([
+
+                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                            'ordenReporteACPMDetalle' => 0,
+                            'fechaReporteACPMDetalle' => date("Y-m-d"),
+                            'Proceso_idProceso' => NULL,
+                            'Modulo_idModulo' => 9,
+                            'tipoReporteACPMDetalle' => 'Correctiva',
+                            'descripcionReporteACPMDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
+                            'analisisReporteACPMDetalle' => '',
+                            'correccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsableCorrecion' => NULL,
+                            'planAccionReporteACPMDetalle' => '',
+                            'Tercero_idResponsablePlanAccion' => NULL,
+                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                            'estadoActualReporteACPMDetalle' => '',
+                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                            'eficazReporteACPMDetalle' => 0
+
+                        ]);
+                }
             }
 
             return redirect('/inspeccion');

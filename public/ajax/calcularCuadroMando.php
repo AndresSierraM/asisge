@@ -295,18 +295,18 @@ $semestre = date('Y-') . (date('m') <= 6 ? str_pad('6', 2, '0', STR_PAD_LEFT). '
 // por ultimo la fecha del ultimo dia del año, que siempre sera fija
 $anio = date('Y-12-31');
 
-echo $dia.'<br>';
-echo $semana.'<br>';
-echo $quincena.'<br>';
-echo $mes.'<br>';
-echo $bimestre.'<br>';
-echo $trimestre.'<br>';
-echo $semestre.'<br>';
-echo $anio.'<br>';
+	// echo $dia.'<br>';
+	// echo $semana.'<br>';
+	// echo $quincena.'<br>';
+	// echo $mes.'<br>';
+	// echo $bimestre.'<br>';
+	// echo $trimestre.'<br>';
+	// echo $semestre.'<br>';
+	// echo $anio.'<br>';
 
 $cuadroMandoObjeto = DB::table('cuadromando as CM')
     ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
-    ->select(DB::raw('idCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion'))
+    ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion, operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando, Proceso_idProceso'))
     ->get();
 
 
@@ -319,7 +319,7 @@ foreach ($cuadroMandoObjeto as $key => $value)
 // recorremos cada indicador para calcularlo y almacenar su resultado en la tabla de indicadores
 for ($i=0; $i < count($CuadroMando); $i++) 
 { 
-	echo $CuadroMando[$i]["unidadFrecuenciaMedicion"].'<br>';
+	//echo $CuadroMando[$i]["unidadFrecuenciaMedicion"].'<br>';
 	$resultado = calcularFormula($CuadroMando[$i]["idCuadroMando"]);
 
 	// verificamos la periodicidad del indicador para tomar la fecha de corte
@@ -375,6 +375,37 @@ for ($i=0; $i < count($CuadroMando); $i++)
 			break;
 	}
 
+	// Evaluamos si el resultado cumple con la meta del indicador siempre y cuando ya sea la fecha de su corte
+	// si no cumple con la meta, insertamos un registro en el ACPM (Accion Correctiva)
+	// Armamos una comparacion concatenada para luego ejecutarla con el eval
+	eval('$resp = ('. $resultado .' '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' ? "Si" : "No");');
+	echo $resp;
+
+	if($resp == 'No' )
+	{
+            $reporteACPM = \App\ReporteACPM::All()->last();
+            \App\ReporteACPMDetalle::create([
+
+                'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                'ordenReporteACPMDetalle' => 0,
+                'fechaReporteACPMDetalle' => date("Y-m-d"),
+                'Proceso_idProceso' => $CuadroMando[$i]['Proceso_idProceso'],
+                'Modulo_idModulo' => 1,
+                'tipoReporteACPMDetalle' => 'Correctiva',
+                'descripcionReporteACPMDetalle' => 'El indicador '.$CuadroMando[$i]['indicadorCuadroMando'].' no cumple la meta (Valor '.$resultado.' Meta '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' '.$CuadroMando[$i]["tipoMetaCuadroMando"].')',
+                'analisisReporteACPMDetalle' => '',
+                'correccionReporteACPMDetalle' => '',
+                'Tercero_idResponsableCorrecion' => NULL,
+                'planAccionReporteACPMDetalle' => '',
+                'Tercero_idResponsablePlanAccion' => NULL,
+                'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+                'estadoActualReporteACPMDetalle' => '',
+                'fechaCierreReporteACPMDetalle' => '0000-00-00',
+                'eficazReporteACPMDetalle' => 0
+
+            ]);
+	}
+
 	// verificamos si el resultado hay que insertarlo o actualizarlo en la tabla de indicadores
 	// esto depende de su periodicidad, por lo tanto la verificamos y tomamos la fecha del corte
 	// siya existe en la tabla el idCuadroMando con la fecha de corte, y esta es igual tambien a 
@@ -386,8 +417,8 @@ for ($i=0; $i < count($CuadroMando); $i++)
 
 	$data = array(
 		'valorIndicador' => $resultado);
-	print_r($indice);
-	print_r($data);
+	//print_r($indice);
+	//print_r($data);
     $indicador = \App\Indicador::updateOrCreate($indice, $data);
 
 }

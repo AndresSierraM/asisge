@@ -88,6 +88,7 @@ class AccidenteController extends Controller
 
         $accidente = \App\Accidente::All()->last();
         $contadorDetalle = count($request['idAccidenteRecomendacion']);
+        $causas = '';
         
         for($i = 0; $i < $contadorDetalle; $i++)
         {
@@ -102,6 +103,50 @@ class AccidenteController extends Controller
                 'fechaVerificacionAccidenteRecomendacion' => $request['fechaVerificacionAccidenteRecomendacion'][$i], 
                 'medidaEfectivaAccidenteRecomendacion' => $request['medidaEfectivaAccidenteRecomendacion'][$i], 
                 'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]
+            ]);
+
+            $causas .= $request['controlAccidenteRecomendacion'][$i].', ';
+        }
+
+        $causas = substr($causas, 0, strlen($causas)-2);
+
+        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+        //COnsultamos el nombre del tercero empleado
+        $nombreTercero = \App\Tercero::find($request['Tercero_idEmpleado']);
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        \App\ReporteACPMDetalle::create([
+
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => date("Y-m-d"),
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => 12,
+            'tipoReporteACPMDetalle' => 'Correctiva',
+            'descripcionReporteACPMDetalle' => 'Para el '.$request['clasificacionAccidente'].' de '.$nombreTercero->nombreCompletoTercero.', se recomienda implementar controles por las siguientes causas: '.$causas,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0
+
+        ]);
+
+        
+        $contadorDetalle = count($request['idAccidenteEquipo']);
+        
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            \App\AccidenteEquipo::create([
+
+                'idAccidenteEquipo' => $request['idAccidenteEquipo'][$i], 
+                'Accidente_idAccidente' => $id, 
+                'Tercero_idInvestigador' => $request['Tercero_idInvestigador'][$i]
             ]);
         }
 
@@ -136,8 +181,12 @@ class AccidenteController extends Controller
         $nombreProceso  = \App\Proceso::All()->lists('nombreProceso');
         $idTercero = \App\Tercero::All()->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        
+
+        
         return view('accidente',compact('terceroCoord','terceroEmple','ausentismo',
             'proceso','idProceso','nombreProceso','idTercero','nombreCompletoTercero'),['accidente'=>$accidente]);
+
     }
 
     /**
@@ -160,7 +209,7 @@ class AccidenteController extends Controller
         \App\AccidenteRecomendacion::where('Accidente_idAccidente',$id)->delete();
 
         $contadorDetalle = count($request['idAccidenteRecomendacion']);
-        
+        $causas = '';
         for($i = 0; $i < $contadorDetalle; $i++)
         {
             \App\AccidenteRecomendacion::create([
@@ -175,7 +224,37 @@ class AccidenteController extends Controller
                 'medidaEfectivaAccidenteRecomendacion' => $request['medidaEfectivaAccidenteRecomendacion'][$i], 
                 'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]
             ]);
+
+            $causas .= $request['controlAccidenteRecomendacion'][$i].', ';
         }
+        $causas = substr($causas, 0, strlen($causas)-2);
+
+        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+        //COnsultamos el nombre del tercero empleado
+        $nombreTercero = \App\Tercero::find($request['Tercero_idEmpleado']);
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        \App\ReporteACPMDetalle::create([
+
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => date("Y-m-d"),
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => 12,
+            'tipoReporteACPMDetalle' => 'Correctiva',
+            'descripcionReporteACPMDetalle' => 'Para el '.$request['clasificacionAccidente'].' de '.$nombreTercero->nombreCompletoTercero.', se recomienda implementar controles por las siguientes causas: '.$causas,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0
+
+        ]);
 
         \App\AccidenteEquipo::where('Accidente_idAccidente',$id)->delete();
 

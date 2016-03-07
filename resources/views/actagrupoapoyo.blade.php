@@ -87,7 +87,7 @@
 				</div>
 
 		        <div class="form-group" id='test'>
-		          {!!Form::label('fechaActaGrupoApoyo', 'Fecha Reuni&oacute;', array('class' => 'col-sm-2 control-label'))!!}
+		          {!!Form::label('fechaActaGrupoApoyo', 'Fecha Reuni&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
 		              <span class="input-group-addon">
