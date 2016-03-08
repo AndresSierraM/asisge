@@ -17,13 +17,15 @@
 
 		var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
-
 		var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 
 		var idProceso = '<?php echo isset($idProceso) ? $idProceso : "";?>';
 		var nombreProceso = '<?php echo isset($nombreProceso) ? $nombreProceso : "";?>';
-
 		var proceso = [JSON.parse(idProceso),JSON.parse(nombreProceso)];
+
+		var idModulo = '<?php echo isset($idModulo) ? $idModulo : "";?>';
+		var nombreModulo = '<?php echo isset($nombreModulo) ? $nombreModulo : "";?>';
+		var modulo = [JSON.parse(idModulo),JSON.parse(nombreModulo)];
 
 		var eventos1 = ['onclick','fechaReporte(this.parentNode.id);'];
 		var eventos2 = ['onclick','fechaEstimadaCierre(this.parentNode.id);','onblur','restarFechas(this.parentNode.id,"A");'];
@@ -37,14 +39,14 @@
 		$(document).ready(function(){
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
-			detalle.campos = ['idReporteACPMDetalle', 'ordenReporteACPMDetalle', 'fechaReporteACPMDetalle', 'Proceso_idProceso', 'Modelo_idModelo', 'tipoReporteACPMDetalle', 'descripcionReporteACPMDetalle', 'analisisReporteACPMDetalle', 'correccionReporteACPMDetalle', 'Tercero_idResponsableCorrecion', 'planAccionReporteACPMDetalle', 'Tercero_idResponsablePlanAccion', 'fechaEstimadaCierreReporteACPMDetalle', 'estadoActualReporteACPMDetalle', 'fechaCierreReporteACPMDetalle', 'eficazReporteACPMDetalle','diasAtrasoReporteACPMDetalle'];
+			detalle.campos = ['idReporteACPMDetalle', 'ordenReporteACPMDetalle', 'fechaReporteACPMDetalle', 'Proceso_idProceso', 'Modulo_idModulo', 'tipoReporteACPMDetalle', 'descripcionReporteACPMDetalle', 'analisisReporteACPMDetalle', 'correccionReporteACPMDetalle', 'Tercero_idResponsableCorrecion', 'planAccionReporteACPMDetalle', 'Tercero_idResponsablePlanAccion', 'fechaEstimadaCierreReporteACPMDetalle', 'estadoActualReporteACPMDetalle', 'fechaCierreReporteACPMDetalle', 'eficazReporteACPMDetalle','diasAtrasoReporteACPMDetalle'];
 			detalle.etiqueta = ['input','input','input','select','select','select','input','input','input','select','input','select','input','input','input','checkbox','input'];
 			detalle.tipo = ['hidden','text','text','','','','text','text','text','','text','','text','text','text','checkbox','text'];
 			detalle.estilo = ['','width: 50px;height:35px;','width: 100px;height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 400px;height:35px;','width: 400px;height:35px;','width: 400px;height:35px;','width: 150px;height:35px;','width: 400px;height:35px;','width: 150px;height:35px;','width: 100px;height:35px;','width: 400px;height:35px;','width: 100px;height:35px;','width: 100px;height:30px;display:inline-block;','width: 100px;height:35px;'];
 			detalle.clase = ['','','','','','','','','','','','','','','','',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true];
 			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
-			detalle.opciones = ['','','',proceso,'',tipo,'','','',tercero,'',tercero,'','','','',''];
+			detalle.opciones = ['','','',proceso,modulo,tipo,'','','',tercero,'',tercero,'','','','',''];
 			detalle.funciones  = ['','',eventos1,'','','','','','','','','',eventos2,'',eventos3,'',''];
 
 			for(var j=0, k = reporteACPMDetalle.length; j < k; j++)

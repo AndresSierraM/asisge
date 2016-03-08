@@ -32,7 +32,9 @@ class ReporteACPMController extends Controller
         $idProceso = \App\Proceso::All()->lists('idProceso');
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
 
-        return view('reporteacpm',compact('idTercero','nombreCompletoTercero','idProceso','nombreProceso'));
+        $idModulo = \App\Modulo::All()->lists('idModulo');
+        $nombreModulo = \App\Modulo::All()->lists('nombreModulo');
+        return view('reporteacpm',compact('idTercero','nombreCompletoTercero','idProceso','nombreProceso','idModulo','nombreModulo'));
     }
 
     /**
@@ -54,20 +56,20 @@ class ReporteACPMController extends Controller
             $contadorDetalle = count($request['ordenReporteACPMDetalle']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                \App\ListaChequeoDetalle::create([
+                \App\ReporteACPMDetalle::create([
 
-                    'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+                    'ReporteACPM_idReporteACPM' => $id,
                     'ordenReporteACPMDetalle' => $request['ordenReporteACPMDetalle'][$i],
-                    'fechaReporteReporteACPMDetalle' => $request['fechaReporteReporteACPMDetalle'][$i],
-                    'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
-                    'Modelo_idModelo' => $request['Modelo_idModelo'][$i],
+                    'fechaReporteACPMDetalle' => $request['fechaReporteACPMDetalle'][$i],
+                    'Proceso_idProceso' => ($request['Proceso_idProceso'][$i] == '' ? NULL : $request['Proceso_idProceso'][$i]),
+                    'Modulo_idModulo' => $request['Modulo_idModulo'][$i],
                     'tipoReporteACPMDetalle' => $request['tipoReporteACPMDetalle'][$i],
                     'descripcionReporteACPMDetalle' => $request['descripcionReporteACPMDetalle'][$i],
                     'analisisReporteACPMDetalle' => $request['analisisReporteACPMDetalle'][$i],
                     'correccionReporteACPMDetalle' => $request['correccionReporteACPMDetalle'][$i],
-                    'Tercero_idResponsableCorrecion' => $request['Tercero_idResponsableCorrecion'][$i],
+                    'Tercero_idResponsableCorrecion' => ($request['Tercero_idResponsableCorrecion'][$i] == '' ? NULL : $request['Tercero_idResponsableCorrecion'][$i]),
                     'planAccionReporteACPMDetalle' => $request['planAccionReporteACPMDetalle'][$i],
-                    'Tercero_idResponsablePlanAccion' => $request['Tercero_idResponsablePlanAccion'][$i],
+                    'Tercero_idResponsablePlanAccion' => ($request['Tercero_idResponsablePlanAccion'][$i] == '' ? NULL : $request['Tercero_idResponsablePlanAccion'][$i]),
                     'fechaEstimadaCierreReporteACPMDetalle' => $request['fechaEstimadaCierreReporteACPMDetalle'][$i],
                     'estadoActualReporteACPMDetalle' => $request['estadoActualReporteACPMDetalle'][$i],
                     'fechaCierreReporteACPMDetalle' => $request['fechaCierreReporteACPMDetalle'][$i],
@@ -105,7 +107,9 @@ class ReporteACPMController extends Controller
         $idProceso = \App\Proceso::All()->lists('idProceso');
         $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
 
-        return view('reporteacpm',compact('idTercero','nombreCompletoTercero','idProceso','nombreProceso'),['reporteACPM' => $reporteACPM]);
+        $idModulo = \App\Modulo::All()->lists('idModulo');
+        $nombreModulo = \App\Modulo::All()->lists('nombreModulo');
+        return view('reporteacpm',compact('idTercero','nombreCompletoTercero','idProceso','nombreProceso','idModulo','nombreModulo'),['reporteACPM' => $reporteACPM]);
     }
 
     /**
@@ -122,25 +126,25 @@ class ReporteACPMController extends Controller
 
             $reporteACPM->save();
 
-            \App\ListaChequeoDetalle::where('ReporteACPM_idReporteACPM',$id)->delete();
+            \App\ReporteACPMDetalle::where('ReporteACPM_idReporteACPM',$id)->delete();
 
             $contadorDetalle = count($request['ordenReporteACPMDetalle']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                \App\ListaChequeoDetalle::create([
+                \App\ReporteACPMDetalle::create([
 
                     'ReporteACPM_idReporteACPM' => $id,
                     'ordenReporteACPMDetalle' => $request['ordenReporteACPMDetalle'][$i],
-                    'fechaReporteReporteACPMDetalle' => $request['fechaReporteReporteACPMDetalle'][$i],
-                    'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
-                    'Modelo_idModelo' => $request['Modelo_idModelo'][$i],
+                    'fechaReporteACPMDetalle' => $request['fechaReporteACPMDetalle'][$i],
+                    'Proceso_idProceso' => ($request['Proceso_idProceso'][$i] == '' ? NULL : $request['Proceso_idProceso'][$i]),
+                    'Modulo_idModulo' => $request['Modulo_idModulo'][$i],
                     'tipoReporteACPMDetalle' => $request['tipoReporteACPMDetalle'][$i],
                     'descripcionReporteACPMDetalle' => $request['descripcionReporteACPMDetalle'][$i],
                     'analisisReporteACPMDetalle' => $request['analisisReporteACPMDetalle'][$i],
                     'correccionReporteACPMDetalle' => $request['correccionReporteACPMDetalle'][$i],
-                    'Tercero_idResponsableCorrecion' => $request['Tercero_idResponsableCorrecion'][$i],
+                    'Tercero_idResponsableCorrecion' => ($request['Tercero_idResponsableCorrecion'][$i] == '' ? NULL : $request['Tercero_idResponsableCorrecion'][$i]),
                     'planAccionReporteACPMDetalle' => $request['planAccionReporteACPMDetalle'][$i],
-                    'Tercero_idResponsablePlanAccion' => $request['Tercero_idResponsablePlanAccion'][$i],
+                    'Tercero_idResponsablePlanAccion' => ($request['Tercero_idResponsablePlanAccion'][$i] == '' ? NULL : $request['Tercero_idResponsablePlanAccion'][$i]),
                     'fechaEstimadaCierreReporteACPMDetalle' => $request['fechaEstimadaCierreReporteACPMDetalle'][$i],
                     'estadoActualReporteACPMDetalle' => $request['estadoActualReporteACPMDetalle'][$i],
                     'fechaCierreReporteACPMDetalle' => $request['fechaCierreReporteACPMDetalle'][$i],
