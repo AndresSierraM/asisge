@@ -43,13 +43,32 @@ Route::get('calcularCuadroMando', function()
 // Opciones del modulo de seguridad
 // ---------------------------------
 
-
-
-
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
  
+
+// Registration routes...
+// Route::get('auth/register', 'Auth\AuthController@getRegister');
+// Route::post('auth/register', ['as' => 'auth/register', 'uses' => 'Auth\AuthController@postRegister']);
+
+
+
+// // Nos indica que las rutas que están dentro de él sólo serán mostradas si antes el usuario se ha autenticado.
+// Route::group(array('before' => 'auth'), function()
+// {
+//     // Esta será nuestra ruta de bienvenida.
+//     Route::get('/', function()
+//     {
+//         return View::make('hello');
+//     });
+//     // Esta ruta nos servirá para cerrar sesión.
+//     Route::get('logout', 'AuthController@logOut');
+// });
+
+
+
+
 Route::get('datosUsers', function()
 {
 	include public_path().'/ajax/datosUsers.php';

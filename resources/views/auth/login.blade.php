@@ -9,6 +9,11 @@
         
         <div id="contenedor">
             {!! Form::open(['route' => 'auth/login', 'class' => 'form'])!!}
+            {{-- Preguntamos si hay algún mensaje de error y si hay lo mostramos  --}}
+        @if(Session::has('mensaje_error'))
+            {{ Session::get('mensaje_error') }}
+        @endif
+        
                 {!!Form::email('email','',['class'=> 'form-control','id'=>'nombre'])!!}
                 
                 <div class= "caja">

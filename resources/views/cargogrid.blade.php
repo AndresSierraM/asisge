@@ -20,6 +20,7 @@
                             <i class="glyphicon glyphicon-th icon-th"></i> 
                             <span class="caret"></span>
                         </button>
+                        
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>

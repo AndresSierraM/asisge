@@ -29,9 +29,21 @@
 			<div id="menuseg" class="menu">
 				{!! HTML::image('images/iconosmenu/Seguridad.png','Seguridad',array('width'=>'40','title' => 'Seguridad')) !!}
 			</div>
-			<div id="menuarch" class="menu">
+			<div id="menudash" class="menu">
 				{!! HTML::decode(HTML::link('dashboard', HTML::image('images/iconosmenu/Informes.png','Imagen no encontrada',array('width'=>'40','title' => 'Tablero de Control')))) !!}
 			</div>
+			<div id="menuuser" class="menu" style="float: right; width: 200px;">
+                <div>
+                    {{ Session::get('nombreUsuario') }}
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+					{!! HTML::decode(HTML::link('auth/logout', HTML::image('images/iconosmenu/salir.png','Imagen no encontrada',array('height'=>'28','title' => 'Salir de SiSoft')))) !!}<br>
+
+					<!-- <a style="color: white;" href="{{route('auth/logout')}}">Salir</a> -->                
+				</div>
+			</div>
+
 		</div>
 
 			<div id="arrowarch" class="arrow" style="margin-left: 25px;">
@@ -235,6 +247,20 @@
 					</ul>
 				</div>
 			</div>
+
+
+    <div class="container">
+               @if (Session::has('errors'))
+		    <div class="alert alert-warning" role="alert">
+			<ul>
+	            <strong>Oops! Something went wrong : </strong>
+			    @foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+		            @endforeach
+		        </ul>
+		    </div>
+		@endif
+    </div>
 </body>
 
 	<div id="contenedor" class="panel panel-primary">

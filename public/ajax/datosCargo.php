@@ -1,7 +1,7 @@
 <?php
 
 
-    $cargo = \App\Cargo::All();
+    $cargo = \App\Cargo::where('Compania_idCompania','=',{{ Session::get('idCompania') }});
     $row = array();
 
     foreach ($cargo as $key => $value) 

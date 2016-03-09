@@ -7,7 +7,7 @@
 	
 	{!!Html::style('CSS/centrado.css'); !!}
 	
-	<title>Asisge S.A.</title>
+	<title>SiSoft</title>
 
 </head>
 <body id='body'>
@@ -20,7 +20,7 @@
 	</div>
 
 	<div id="footer">
-	    <p>Sistema de gestion documental... Todos los derechos reservados</p>
+	    <p>SiSoft - Sistema de Gestion en Salud Ocupacional... Asisge S.A. - Todos los derechos reservados</p>
 	</div>
 </body>
 </html>
