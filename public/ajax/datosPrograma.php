@@ -3,6 +3,7 @@
     $programa = DB::table('programa')
             ->leftJoin('clasificacionriesgo', 'ClasificacionRiesgo_idClasificacionRiesgo', '=', 'idClasificacionRiesgo')
             ->select(DB::raw('idPrograma, nombrePrograma, fechaElaboracionPrograma, nombreClasificacionRiesgo'))
+            ->where('programa.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

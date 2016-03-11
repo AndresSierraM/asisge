@@ -40,7 +40,7 @@ class AusentismoController extends Controller
      */
     public function create()
     {
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         return view('ausentismo',compact('tercero'));
     }
 
@@ -74,6 +74,7 @@ class AusentismoController extends Controller
             'fechaInicioAusentismo' => $request['fechaInicioAusentismo'],
             'fechaFinAusentismo' => $request['fechaFinAusentismo'],
             'diasAusentismo' => $request['diasAusentismo'],
+            'Compania_idCompania' => \Session::get('idCompania'),
             'archivoAusentismo' => $imageName
             ]);
 
@@ -100,7 +101,7 @@ class AusentismoController extends Controller
     public function edit($id)
     {
         $ausentismo = \App\Ausentismo::find($id);
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         return view('ausentismo',compact('tercero'),['ausentismo'=>$ausentismo]);
     }
 

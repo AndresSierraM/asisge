@@ -1,7 +1,7 @@
 <?php
 
-
-    $proceso = \App\Proceso::All();
+    
+    $proceso = \App\Proceso::where("Compania_idCompania","=", \Session::get("idCompania"))->get();
     $row = array();
 
     foreach ($proceso as $key => $value) 

@@ -3,6 +3,7 @@
     $plancapacitacion = DB::table('plancapacitacion')
             ->leftJoin('tercero', 'Tercero_idResponsable', '=', 'idTercero')
             ->select(DB::raw('idPlanCapacitacion, nombrePlanCapacitacion, nombreCompletoTercero'))
+            ->where('plancapacitacion.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

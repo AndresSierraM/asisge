@@ -26,10 +26,10 @@ class ConformacionGrupoApoyoController extends Controller
      */
     public function create()
     {
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $grupoApoyo = \App\GrupoApoyo::All()->lists('nombreGrupoApoyo','idGrupoApoyo');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $grupoApoyo = \App\GrupoApoyo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoApoyo','idGrupoApoyo');
         return view('conformaciongrupoapoyo',compact('grupoApoyo','tercero','idTercero','nombreCompletoTercero'));
     }
 
@@ -55,7 +55,8 @@ class ConformacionGrupoApoyoController extends Controller
                 'fechaFinConformacionGrupoApoyo' => $request['fechaFinConformacionGrupoApoyo'],
                 'fechaConstitucionConformacionGrupoApoyo' => $request['fechaConstitucionConformacionGrupoApoyo'],
                 'Tercero_idPresidente' => $request['Tercero_idPresidente'],
-                'Tercero_idSecretario' => $request['Tercero_idSecretario']
+                'Tercero_idSecretario' => $request['Tercero_idSecretario'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             $conformacionGrupoApoyo = \App\ConformacionGrupoApoyo::All()->last();
@@ -112,10 +113,10 @@ class ConformacionGrupoApoyoController extends Controller
      */
     public function edit($id)
     {
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $grupoApoyo = \App\GrupoApoyo::All()->lists('nombreGrupoApoyo','idGrupoApoyo');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $grupoApoyo = \App\GrupoApoyo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoApoyo','idGrupoApoyo');
         $conformacionGrupoApoyo = \App\ConformacionGrupoApoyo::find($id);
         return view('conformaciongrupoapoyo',compact('grupoApoyo','tercero','idTercero','nombreCompletoTercero'),['conformacionGrupoApoyo'=>$conformacionGrupoApoyo]);
     }

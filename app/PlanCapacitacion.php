@@ -9,7 +9,7 @@ class PlanCapacitacion extends Model
 	protected $table = 'plancapacitacion';
     protected $primaryKey = 'idPlanCapacitacion';
 
-    protected $fillable = ['tipoPlanCapacitacion', 'nombrePlanCapacitacion', 'objetivoPlanCapacitacion', 'Tercero_idResponsable', 'personalInvolucradoPlanCapacitacion', 'fechaInicioPlanCapacitacion', 'fechaFinPlanCapacitacion', 'metodoEficaciaPlanCapacitacion'];
+    protected $fillable = ['tipoPlanCapacitacion', 'nombrePlanCapacitacion', 'objetivoPlanCapacitacion', 'Tercero_idResponsable', 'personalInvolucradoPlanCapacitacion', 'fechaInicioPlanCapacitacion', 'fechaFinPlanCapacitacion', 'metodoEficaciaPlanCapacitacion','Compania_idCompania'];
 
     public $timestamps = false;
 

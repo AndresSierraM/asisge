@@ -29,8 +29,8 @@ class MatrizRiesgoController extends Controller
     public function create()
     {
         $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
-        $idProceso = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
+        $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
         
@@ -46,8 +46,8 @@ class MatrizRiesgoController extends Controller
         $idControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('idListaGeneral');
         $nombreControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('nombreListaGeneral');
 
-        $idElementoProteccion = \App\ElementoProteccion::All()->lists('idElementoProteccion');
-        $nombreElementoProteccion = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+        $idElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
+        $nombreElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
 
         return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'idEliminacionRiesgo', 'nombreEliminacionRiesgo' , 'idSustitucionRiesgo', 'nombreSustitucionRiesgo' , 'idControlRiesgo', 'nombreControlRiesgo', 'idElementoProteccion', 'nombreElementoProteccion','frecuenciaMedicion'));
     }
@@ -73,6 +73,7 @@ class MatrizRiesgoController extends Controller
               'fechaElaboracionMatrizRiesgo' => $request['fechaElaboracionMatrizRiesgo'],
               'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
               'fechaActualizacionMatrizRiesgo' => date("Y-m-d"),
+              'Compania_idCompania' => \Session::get('idCompania'),
               'Users_id' => 1
               ]);
           
@@ -219,8 +220,8 @@ class MatrizRiesgoController extends Controller
     public function edit($id)
     {
         $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
-        $idProceso = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
+        $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
 
@@ -236,8 +237,8 @@ class MatrizRiesgoController extends Controller
         $idControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('idListaGeneral');
         $nombreControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('nombreListaGeneral');
 
-        $idElementoProteccion = \App\ElementoProteccion::All()->lists('idElementoProteccion');
-        $nombreElementoProteccion = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+        $idElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
+        $nombreElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
 
         $matrizRiesgo = \App\MatrizRiesgo::find($id);
         return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'idEliminacionRiesgo', 'nombreEliminacionRiesgo' , 'idSustitucionRiesgo', 'nombreSustitucionRiesgo' , 'idControlRiesgo', 'nombreControlRiesgo', 'idElementoProteccion', 'nombreElementoProteccion', 'frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);

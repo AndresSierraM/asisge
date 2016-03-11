@@ -35,7 +35,7 @@ class ElementoProteccionController extends Controller
      */
     public function create()
     {
-        $tipoelementoproteccion = \App\TipoElementoProteccion::All()->lists('nombreTipoElementoProteccion','idTipoElementoProteccion');
+        $tipoelementoproteccion = \App\TipoElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoElementoProteccion','idTipoElementoProteccion');
         return view('elementoproteccion',compact('tipoelementoproteccion'));
     }
 
@@ -69,7 +69,8 @@ class ElementoProteccionController extends Controller
             'normaElementoProteccion' => $request['normaElementoProteccion'],
             'descripcionElementoProteccion' => $request['descripcionElementoProteccion'],
             'procesosElementoProteccion' => $request['procesosElementoProteccion'],
-            'imagenElementoProteccion' =>  $imageName
+            'imagenElementoProteccion' =>  $imageName,
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
           return redirect('/elementoproteccion');
     }
@@ -94,7 +95,7 @@ class ElementoProteccionController extends Controller
     public function edit($id)
     {   
         $elementoproteccion = \App\ElementoProteccion::find($id);
-        $tipoelementoproteccion = \App\TipoElementoProteccion::All()->lists('nombreTipoElementoProteccion','idTipoElementoProteccion');
+        $tipoelementoproteccion = \App\TipoElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoElementoProteccion','idTipoElementoProteccion');
         return view('elementoproteccion',compact('tipoelementoproteccion'),['elementoproteccion'=>$elementoproteccion]);
     }
 

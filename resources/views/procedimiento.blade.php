@@ -63,7 +63,6 @@
                       </span>
               {!!Form::select('Proceso_idProceso',$procesos, (isset($procedimiento) ? $procedimiento->Proceso_idProceso : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Proceso"])!!}
               {!! Form::hidden('idProcedimiento', null, array('id' => 'idProcedimiento')) !!}
-              {!! Form::hidden('Compania_idCompania', null, array('id' => 'Compania_idCompania')) !!}
               {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
 
             </div>
@@ -72,7 +71,7 @@
 
 
         <div class="form-group" id='test'>
-          {!!Form::label('nombreProcedimiento', 'Nombre del Procedimiento', array('class' => 'col-sm-2 control-label'))!!}
+          {!!Form::label('nombreProcedimiento', 'Procedimiento', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
               <span class="input-group-addon">

@@ -9,7 +9,7 @@ class ConformacionGrupoApoyo extends Model
     protected $table = 'conformaciongrupoapoyo';
     protected $primaryKey = 'idConformacionGrupoApoyo';
 
-    protected $fillable = ['GrupoApoyo_idGrupoApoyo','nombreConformacionGrupoApoyo','fechaConformacionGrupoApoyo','fechaConvocatoriaConformacionGrupoApoyo','Tercero_idRepresentante','fechaVotacionConformacionGrupoApoyo','Tercero_idGerente','fechaActaConformacionGrupoApoyo','horaActaConformacionGrupoApoyo','fechaInicioConformacionGrupoApoyo','fechaFinConformacionGrupoApoyo','fechaConstitucionConformacionGrupoApoyo','Tercero_idPresidente','Tercero_idSecretario'];
+    protected $fillable = ['GrupoApoyo_idGrupoApoyo','nombreConformacionGrupoApoyo','fechaConformacionGrupoApoyo','fechaConvocatoriaConformacionGrupoApoyo','Tercero_idRepresentante','fechaVotacionConformacionGrupoApoyo','Tercero_idGerente','fechaActaConformacionGrupoApoyo','horaActaConformacionGrupoApoyo','fechaInicioConformacionGrupoApoyo','fechaFinConformacionGrupoApoyo','fechaConstitucionConformacionGrupoApoyo','Tercero_idPresidente','Tercero_idSecretario', 'Compania_idCompania'];
 
     public $timestamps = false;
 

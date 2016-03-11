@@ -3,6 +3,7 @@
     $elementoproteccion = DB::table('elementoproteccion')
     ->leftJoin('tipoelementoproteccion', 'TipoElementoProteccion_idTipoElementoProteccion', '=', 'idTipoElementoProteccion')
     ->select(DB::raw('idElementoProteccion, codigoElementoProteccion, nombreElementoProteccion, nombreTipoElementoProteccion, imagenElementoProteccion'))
+    ->where('elementoproteccion.Compania_idCompania','=', \Session::get('idCompania'))
     ->get();
 
     $row = array();

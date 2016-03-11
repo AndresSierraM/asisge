@@ -3,6 +3,7 @@
     $procedimiento = DB::table('procedimiento')
             ->leftJoin('proceso', 'Proceso_idProceso', '=', 'idProceso')
             ->select(DB::raw('idProcedimiento, nombreProcedimiento, nombreProceso, fechaElaboracionProcedimiento'))
+            ->where('procedimiento.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

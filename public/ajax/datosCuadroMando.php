@@ -8,6 +8,7 @@
             ->select(DB::raw('idCuadroMando, numeroCuadroMando , nombreCompaniaObjetivo, 
             objetivoEspecificoCuadroMando, indicadorCuadroMando, nombreProceso, formulaCuadroMando, 
             visualizacionCuadroMando, concat(operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando) as tipoMetaCuadroMando, nombreFrecuenciaMedicion, nombreCompletoTercero'))
+            ->where('cuadromando.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

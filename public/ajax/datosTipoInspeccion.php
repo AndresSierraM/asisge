@@ -3,6 +3,7 @@
     $tipoinspeccion = DB::table('tipoinspeccion')
             ->leftJoin('frecuenciamedicion', 'FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'idFrecuenciaMedicion')
             ->select(DB::raw('idTipoInspeccion, codigoTipoInspeccion, nombreTipoInspeccion, nombreFrecuenciaMedicion'))
+            ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

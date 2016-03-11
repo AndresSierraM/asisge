@@ -4,6 +4,7 @@
     $actagrupoapoyo = DB::table('actagrupoapoyo')
             ->leftJoin('grupoapoyo', 'GrupoApoyo_idGrupoApoyo', '=', 'idGrupoApoyo')
             ->select(DB::raw('idActaGrupoApoyo, nombreGrupoApoyo, fechaActaGrupoApoyo, horaInicioActaGrupoApoyo, horaFinActaGrupoApoyo'))
+            ->where('actagrupoapoyo.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

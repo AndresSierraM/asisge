@@ -26,11 +26,11 @@ class ReporteACPMController extends Controller
      */
     public function create()
     {
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idProceso = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
+        $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
 
         $idModulo = \App\Modulo::All()->lists('idModulo');
         $nombreModulo = \App\Modulo::All()->lists('nombreModulo');
@@ -49,7 +49,8 @@ class ReporteACPMController extends Controller
             \App\ReporteACPM::create([
                 'numeroReporteACPM' => $request['numeroReporteACPM'],
                 'fechaElaboracionReporteACPM' => $request['fechaElaboracionReporteACPM'],
-                'descripcionReporteACPM' => $request['descripcionReporteACPM']
+                'descripcionReporteACPM' => $request['descripcionReporteACPM'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             $reporteACPM = \App\ReporteACPM::All()->last();
@@ -101,11 +102,11 @@ class ReporteACPMController extends Controller
     public function edit($id)
     {
         $reporteACPM = \App\ReporteACPM::find($id);
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idProceso = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
+        $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
 
         $idModulo = \App\Modulo::All()->lists('idModulo');
         $nombreModulo = \App\Modulo::All()->lists('nombreModulo');

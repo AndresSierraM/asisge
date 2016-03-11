@@ -16,7 +16,8 @@ class PreguntasListaChequeoController extends Controller
      */
     public function index()
     {
-        $preguntaListaChequeo = \App\PreguntasListaChequeo::All();
+        $preguntaListaChequeo = \App\PreguntasListaChequeo::where('Compania_idCompania','=', \Session::get('idCompania'))
+->get();
         return view('preguntaslistachequeo',compact('preguntaListaChequeo'));
     }
 
@@ -27,7 +28,8 @@ class PreguntasListaChequeoController extends Controller
      */
     public function create()
     {
-        $preguntaListaChequeo = \App\PreguntasListaChequeo::All();
+        $preguntaListaChequeo = \App\PreguntasListaChequeo::where('Compania_idCompania','=', \Session::get('idCompania'))
+->get();
         return view('preguntaslistachequeo',compact('preguntaListaChequeo'));
     }
 
@@ -46,11 +48,14 @@ class PreguntasListaChequeoController extends Controller
 
              $data = array(
              'ordenPreguntaListaChequeo' => $request['ordenPreguntaListaChequeo'][$i],
-             'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i]);
+             'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i],
+             'Compania_idCompania' => \Session::get('idCompania'));
 
             $preguntas = \App\PreguntasListaChequeo::updateOrCreate($indice, $data);
         }
-        return view('preguntaslistachequeo');
+         $preguntaListaChequeo = \App\PreguntasListaChequeo::where('Compania_idCompania','=', \Session::get('idCompania'))
+->get();
+        return view('preguntaslistachequeo',compact('preguntaListaChequeo'));
     }
 
     /**
@@ -92,11 +97,14 @@ class PreguntasListaChequeoController extends Controller
 
              $data = array(
              'ordenPreguntaListaChequeo' => $request['ordenPreguntaListaChequeo'][$i],
-             'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i]);
+             'descripcionPreguntaListaChequeo' => $request['descripcionPreguntaListaChequeo'][$i],
+             'Compania_idCompania' => \Session::get('idCompania'));
 
             $preguntas = \App\PreguntasListaChequeo::updateOrCreate($indice, $data);
         }
-        return view('preguntaslistachequeo');
+        $preguntaListaChequeo = \App\PreguntasListaChequeo::where('Compania_idCompania','=', \Session::get('idCompania'))
+->get();
+        return view('preguntaslistachequeo',compact('preguntaListaChequeo'));
     }
 
     /**

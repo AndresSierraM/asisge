@@ -4,6 +4,7 @@
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
             ->leftJoin('accidente', 'Ausentismo_idAusentismo', '=', 'idAusentismo')
             ->select(DB::raw('idAusentismo, nombreCompletoTercero, fechaElaboracionAusentismo, tipoAusentismo, fechaInicioAusentismo, fechaFinAusentismo, nombreAccidente, diasAusentismo'))
+            ->where('ausentismo.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

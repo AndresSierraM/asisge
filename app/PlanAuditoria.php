@@ -9,7 +9,7 @@ class PlanAuditoria extends Model
     protected $table = 'planauditoria';
     protected $primaryKey = 'idPlanAuditoria';
 
-    protected $fillable = ['numeroPlanAuditoria', 'fechaInicioPlanAuditoria', 'fechaFinPlanAuditoria', 'organismoPlanAuditoria', 'Tercero_AuditorLider', 'objetivoPlanAuditoria', 'alcancePlanAuditoria', 'criterioPlanAuditoria','criterioPlanAuditoria','recursosPlanAuditoria','observacionesPlanAuditoria','aprobacionPlanAuditoria','fechaEntregaPlanAuditoria'];
+    protected $fillable = ['numeroPlanAuditoria', 'fechaInicioPlanAuditoria', 'fechaFinPlanAuditoria', 'organismoPlanAuditoria', 'Tercero_AuditorLider', 'objetivoPlanAuditoria', 'alcancePlanAuditoria', 'criterioPlanAuditoria','criterioPlanAuditoria','recursosPlanAuditoria','observacionesPlanAuditoria','aprobacionPlanAuditoria','fechaEntregaPlanAuditoria','Compania_idCompania'];
 
     public $timestamps = false;
 

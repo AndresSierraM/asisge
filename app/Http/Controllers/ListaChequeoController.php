@@ -28,12 +28,13 @@ class ListaChequeoController extends Controller
     {
         $preguntaListaChequeo = DB::table('preguntalistachequeo')
             ->select(DB::raw('idPreguntaListaChequeo as PreguntaListaChequeo_idPreguntaListaChequeo, ordenPreguntaListaChequeo, descripcionPreguntaListaChequeo'))
+            ->where('preguntalistachequeo.Compania_idCompania','=', \Session::get('idCompania'))
             ->orderBy('ordenPreguntaListaChequeo', 'ASC')
             ->get();
 
-        $planAuditoria = \App\PlanAuditoria::All()->lists('numeroPlanAuditoria','idPlanAuditoria');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $planAuditoria = \App\PlanAuditoria::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('numeroPlanAuditoria','idPlanAuditoria');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         return view('listachequeo',compact('planAuditoria','preguntaListaChequeo','idTercero','nombreCompletoTercero'));
     }
 
@@ -50,8 +51,8 @@ class ListaChequeoController extends Controller
                     'fechaElaboracionListaChequeo' => $request['fechaElaboracionListaChequeo'],
                     'PlanAuditoria_idPlanAuditoria' => $request['PlanAuditoria_idPlanAuditoria'],
                     'Proceso_idProceso' => $request['Proceso_idProceso'],
-                    'observacionesListaChequeo' => $request['observacionesListaChequeo']
-
+                    'observacionesListaChequeo' => $request['observacionesListaChequeo'],
+                    'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             $listaChequeo = \App\listaChequeo::All()->last();
@@ -178,11 +179,12 @@ class ListaChequeoController extends Controller
             ->select(DB::raw('lcd.idListaChequeoDetalle, PreguntaListaChequeo_idPreguntaListaChequeo, plc.ordenPreguntaListaChequeo, plc.descripcionPreguntaListaChequeo,lcd.Tercero_idTercero, lcd.respuestaListaChequeoDetalle, lcd.conformeListaChequeoDetalle, lcd.hallazgoListaChequeoDetalle,lcd.observacionListaChequeoDetalle'))
             ->orderBy('ordenPreguntaListaChequeo', 'ASC')
             ->where('ListaChequeo_idListaChequeo','=',$id)
+            ->where('preguntalistachequeo.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
-        $planAuditoria = \App\PlanAuditoria::All()->lists('numeroPlanAuditoria','idPlanAuditoria');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $planAuditoria = \App\PlanAuditoria::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('numeroPlanAuditoria','idPlanAuditoria');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         $listaChequeo = \App\ListaChequeo::find($id);
         return view('listachequeo',compact('planAuditoria','preguntaListaChequeo','idTercero','nombreCompletoTercero'),['listaChequeo'=>$listaChequeo]);
     }

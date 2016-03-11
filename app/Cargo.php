@@ -8,7 +8,7 @@ class Cargo extends Model
 {
     protected $table = 'cargo';
     protected $primaryKey = 'idCargo';
-    protected $fillable = ['codigoCargo', 'nombreCargo', 'salarioBaseCargo', 'nivelRiesgoCargo', 'objetivoCargo', 'educacionCargo', 'experienciaCargo', 'formacionCargo', 'posicionPredominanteCargo', 'restriccionesCargo', 'habilidadesCargo', 'responsabilidadesCargo', 'autoridadesCargo'];
+    protected $fillable = ['codigoCargo', 'nombreCargo', 'salarioBaseCargo', 'nivelRiesgoCargo', 'objetivoCargo', 'educacionCargo', 'experienciaCargo', 'formacionCargo', 'posicionPredominanteCargo', 'restriccionesCargo', 'habilidadesCargo', 'responsabilidadesCargo', 'autoridadesCargo', 'Compania_idCompania'];
     public $timestamps = false;
 
     public function cargoElementoProtecciones()

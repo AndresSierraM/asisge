@@ -26,11 +26,11 @@ class PlanAuditoriaController extends Controller
      */
     public function create()
     {
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
-        $idProceso = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
+        $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
         return view('planauditoria',compact('tercero','idTercero','nombreCompletoTercero','idProceso','nombreProceso'));
     }
 
@@ -55,8 +55,8 @@ class PlanAuditoriaController extends Controller
                     'recursosPlanAuditoria' => $request['recursosPlanAuditoria'],
                     'observacionesPlanAuditoria' => $request['observacionesPlanAuditoria'],
                     'aprobacionPlanAuditoria' => $request['aprobacionPlanAuditoria'],
-                    'fechaEntregaPlanAuditoria' => $request['fechaEntregaPlanAuditoria']
-
+                    'fechaEntregaPlanAuditoria' => $request['fechaEntregaPlanAuditoria'],
+                    'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             $planAuditoria = \App\PlanAuditoria::All()->last();
@@ -118,11 +118,11 @@ class PlanAuditoriaController extends Controller
      */
     public function edit($id)
     {
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
-        $idProceso = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso = \App\Proceso::All()->lists('nombreProceso');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
+        $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
 
         $planAuditoria = \App\PlanAuditoria::find($id);
         

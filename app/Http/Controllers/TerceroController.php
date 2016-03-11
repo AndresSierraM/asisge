@@ -38,7 +38,7 @@ class TerceroController extends Controller
         $frecuenciaAlcohol = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
-        $cargo = \App\Cargo::All()->lists('nombreCargo','idCargo');
+        $cargo = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCargo','idCargo');
         return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'));
     }
     /**
@@ -83,7 +83,7 @@ class TerceroController extends Controller
             'correoElectronicoTercero' => $request['correoElectronicoTercero'],
             'paginaWebTercero' => $request['paginaWebTercero'],
             'Cargo_idCargo' => $request['Cargo_idCargo'],
-            'Compania_idCompania' => 1
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
         
         $tercero = \App\Tercero::All()->last();
@@ -187,7 +187,7 @@ class TerceroController extends Controller
         $frecuenciaAlcohol = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
-        $cargo = \App\Cargo::All()->lists('nombreCargo','idCargo');
+        $cargo = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCargo','idCargo');
         $tercero = \App\Tercero::find($id);
         return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'),['tercero'=>$tercero]);
     }

@@ -52,7 +52,8 @@ class MatrizLegalController extends Controller
                 'origenMatrizLegal' => $request['origenMatrizLegal'],
                 'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
                 'fechaActualizacionMatrizLegal' => date("Y-m-d"),
-                'Users_id' => 1
+                'Compania_idCompania' => \Session::get('idCompania'),
+                'Users_id' => \Session::get('idUsuario')
                 ]);
             
             $matrizLegal = \App\MatrizLegal::All()->last();

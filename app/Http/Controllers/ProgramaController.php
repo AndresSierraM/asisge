@@ -31,11 +31,11 @@ class ProgramaController extends Controller
     {
         // cuando se crea un nuevo programa, enviamos los maestros requeridos para el encabezado         
         $clasificacionriesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
-        $terceros = \App\Tercero::All()->lists('nombreCompletoTercero', 'idTercero');
+        $terceros = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero');
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
 
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         $idDocumento = \App\Documento::All()->lists('idDocumento');
         $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
@@ -59,7 +59,8 @@ class ProgramaController extends Controller
             'alcancePrograma' => $request['alcancePrograma'],
             'CompaniaObjetivo_idCompaniaObjetivo' => $request['CompaniaObjetivo_idCompaniaObjetivo'],
             'objetivoEspecificoPrograma' => $request['objetivoEspecificoPrograma'],
-            'Tercero_idElabora' => $request['Tercero_idElabora']
+            'Tercero_idElabora' => $request['Tercero_idElabora'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]); 
 
         $programa = \App\Programa::All()->last();
@@ -108,11 +109,11 @@ class ProgramaController extends Controller
 
         // cuando se modifica  un programa, enviamos los maestros requeridos para el encabezado         
         $clasificacionriesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
-        $terceros = \App\Tercero::All()->lists('nombreCompletoTercero', 'idTercero');
+        $terceros = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero');
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
 
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         $idDocumento = \App\Documento::All()->lists('idDocumento');
         $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
@@ -135,7 +136,6 @@ class ProgramaController extends Controller
         
         $programa = \App\Programa::find($id);
         $programa->fill($request->all());
-        //$programa->Compania_idCompania = 1;
         $programa->save();
 
         \App\ProgramaDetalle::where('Programa_idPrograma',$id)->delete();

@@ -4,6 +4,7 @@
     $grupoapoyo = DB::table('grupoapoyo')
             ->leftJoin('frecuenciamedicion', 'FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'idFrecuenciaMedicion')
             ->select(DB::raw('idGrupoApoyo, codigoGrupoApoyo, nombreGrupoApoyo, nombreFrecuenciaMedicion'))
+            ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
 

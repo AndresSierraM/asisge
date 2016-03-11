@@ -33,11 +33,11 @@ class CuadroMandoController extends Controller
         $cuadromandoformula = DB::table('cuadromandoformula as CF')
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula');
 
-        $indicador = \App\CuadroMando::All()->lists('indicadorCuadroMando','idCuadroMando');;
+        $indicador = \App\CuadroMando::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
-        $proceso = \App\Proceso::All()->lists('nombreProceso','idProceso');
+        $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
         return view('cuadromando',compact('cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'));
@@ -55,7 +55,7 @@ class CuadroMandoController extends Controller
         \App\CuadroMando::create([
             'numeroCuadroMando'=> $request['numeroCuadroMando'],
             'CompaniaObjetivo_idCompaniaObjetivo'=> $request['CompaniaObjetivo_idCompaniaObjetivo'],
-            'Compania_idCompania' => 1,
+            'Compania_idCompania' => \Session::get('idCompania'),
             'Proceso_idProceso' =>$request['Proceso_idProceso'],
             'objetivoEspecificoCuadroMando' => $request['objetivoEspecificoCuadroMando'],
             'indicadorCuadroMando' => $request['indicadorCuadroMando'],
@@ -182,11 +182,11 @@ class CuadroMandoController extends Controller
             ->where('CF.CuadroMando_idCuadroMando','=',$id);
 
         //$cuadromandoformula = \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->list();
-        $indicador = \App\CuadroMando::where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
+        $indicador = \App\CuadroMando::where('Compania_idCompania','=', \Session::get('idCompania'))->where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
-        $proceso = \App\Proceso::All()->lists('nombreProceso','idProceso');
+        $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
         return view('cuadromando',compact('cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);

@@ -11,7 +11,8 @@ class TipoElementoProteccion extends Model
 
     protected $fillable = ['codigoTipoElementoProteccion',
 							'nombreTipoElementoProteccion',
-							'observacionTipoElementoProteccion'];
+							'observacionTipoElementoProteccion',
+							'Compania_idCompania'];
 
     public $timestamps = false;
 

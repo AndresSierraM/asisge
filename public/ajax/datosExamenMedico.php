@@ -3,6 +3,7 @@
     $examenmedico = DB::table('examenmedico')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
             ->select(DB::raw('idExamenMedico, nombreCompletoTercero, fechaExamenMedico, tipoExamenMedico'))
+            ->where('examenmedico.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

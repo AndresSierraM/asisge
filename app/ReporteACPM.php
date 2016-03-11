@@ -9,7 +9,7 @@ class ReporteACPM extends Model
     protected $table = 'reporteacpm';
     protected $primaryKey = 'idReporteACPM';
 
-    protected $fillable = ['numeroReporteACPM', 'fechaElaboracionReporteACPM', 'descripcionReporteACPM'];
+    protected $fillable = ['numeroReporteACPM', 'fechaElaboracionReporteACPM', 'descripcionReporteACPM', 'Compania_idCompania'];
 
     public $timestamps = false;
 

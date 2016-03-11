@@ -9,7 +9,7 @@ class ExamenMedico extends Model
     protected $table = 'examenmedico';
     protected $primaryKey = 'idExamenMedico';
 
-    protected $fillable = ['Tercero_idTercero', 'fechaExamenMedico', 'tipoExamenMedico'];
+    protected $fillable = ['Tercero_idTercero', 'fechaExamenMedico', 'tipoExamenMedico', 'Compania_idCompania'];
 
     public $timestamps = false;
 

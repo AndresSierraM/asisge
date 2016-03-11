@@ -3,6 +3,7 @@
     $tercero = DB::table('tercero')
             ->leftJoin('tipoidentificacion', 'TipoIdentificacion_idTipoIdentificacion', '=', 'idTipoIdentificacion')
             ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero'))
+            ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

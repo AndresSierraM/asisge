@@ -3,6 +3,7 @@
     $matrizlegal = DB::table('matrizlegal')
             ->leftJoin('users', 'Users_id', '=', 'id')
             ->select(DB::raw('idMatrizLegal, nombreMatrizLegal, fechaElaboracionMatrizLegal, origenMatrizLegal, name'))
+            ->where('matrizlegal.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

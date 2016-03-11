@@ -93,8 +93,6 @@ class UsersController extends Controller
         
         $usuario = \App\User::find($id);
         $usuario->fill($request->all());
-        $usuario->Compania_idCompania = 1;
-        //$usuario->password = Hash::make($request['password']);
         $usuario->save();
 
 

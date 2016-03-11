@@ -33,7 +33,7 @@ class ExamenMedicoController extends Controller
         $idTipoExamenMedico = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
         $nombreTipoExamenMedico = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
 
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
 
         return view('examenmedico',compact('idTipoExamenMedico','nombreTipoExamenMedico','tercero'));
@@ -52,7 +52,8 @@ class ExamenMedicoController extends Controller
             \App\ExamenMedico::create([
                 'Tercero_idTercero' => $request['Tercero_idTercero'],
                 'fechaExamenMedico' => $request['fechaExamenMedico'],
-                'tipoExamenMedico' => $request['tipoExamenMedico']
+                'tipoExamenMedico' => $request['tipoExamenMedico'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]); 
 
             $examenmedico = \App\ExamenMedico::All()->last();
@@ -168,7 +169,7 @@ class ExamenMedicoController extends Controller
         $idTipoExamenMedico = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
         $nombreTipoExamenMedico = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
 
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
         $examenmedico = \App\ExamenMedico::find($id);
         $examenesmedicos = DB::table('examenmedicodetalle')
@@ -194,7 +195,6 @@ class ExamenMedicoController extends Controller
         {
             $examenmedico = \App\ExamenMedico::find($id);
             $examenmedico->fill($request->all());
-            //$examenmedico->Compania_idCompania = 1;
             $examenmedico->save();
 
             \App\ExamenMedicoDetalle::where('ExamenMedico_idExamenMedico',$id)->delete();

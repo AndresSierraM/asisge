@@ -15,7 +15,8 @@ class ElementoProteccion extends Model
 						    'normaElementoProteccion', 
 						    'descripcionElementoProteccion', 
 						    'procesosElementoProteccion', 
-						    'imagenElementoProteccion'
+						    'imagenElementoProteccion',
+						    'Compania_idCompania'
 						  ];
 
     public $timestamps = false;

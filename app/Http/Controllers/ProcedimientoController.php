@@ -32,10 +32,10 @@ class ProcedimientoController extends Controller
         // cuando se crea un nuevo procedimiento, enviamos los procesos para el encabezado y los documentos 
         //  y los terceros que son la base para el llenado del detalle
         
-        $procesos = \App\Proceso::All()->lists('nombreProceso','idProceso');
+        $procesos = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
 
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         $idDocumento = \App\Documento::All()->lists('idDocumento');
         $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
@@ -59,7 +59,7 @@ class ProcedimientoController extends Controller
             'objetivoProcedimiento' => $request['objetivoProcedimiento'],
             'alcanceProcedimiento' => $request['alcanceProcedimiento'],
             'responsabilidadProcedimiento' => $request['responsabilidadProcedimiento'],
-            'Compania_idCompania' => 1
+            'Compania_idCompania' => \Session::get('idCompania')
             ]); 
 
         $procedimiento = \App\Procedimiento::All()->last();
@@ -101,10 +101,10 @@ class ProcedimientoController extends Controller
         // cuando se modifica un procedimiento, enviamos los procesos para el encabezado y los documentos 
         //  y los terceros que son la base para el llenado del detalle
         $procedimiento = \App\Procedimiento::find($id);
-        $procesos = \App\Proceso::All()->lists('nombreProceso','idProceso');
+        $procesos = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
 
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         $idDocumento = \App\Documento::All()->lists('idDocumento');
         $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
@@ -124,7 +124,6 @@ class ProcedimientoController extends Controller
         
         $procedimiento = \App\Procedimiento::find($id);
         $procedimiento->fill($request->all());
-        //$procedimiento->Compania_idCompania = 1;
         $procedimiento->save();
 
         \App\ProcedimientoDetalle::where('Procedimiento_idProcedimiento',$id)->delete();

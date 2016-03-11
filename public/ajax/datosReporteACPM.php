@@ -2,6 +2,7 @@
 
     $reporteACPM = DB::table('reporteacpm')
             ->select(DB::raw('idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM'))
+            ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

@@ -12,7 +12,7 @@ class Programa extends Model
     protected $fillable = ['nombrePrograma', 'fechaElaboracionPrograma', 
     						'ClasificacionRiesgo_idClasificacionRiesgo', 'alcancePrograma', 
     						'CompaniaObjetivo_idCompaniaObjetivo', 'objetivoEspecificoPrograma',
-                            'Tercero_idElabora'];
+                            'Tercero_idElabora', 'Compania_idCompania'];
 
     public $timestamps = false;
 

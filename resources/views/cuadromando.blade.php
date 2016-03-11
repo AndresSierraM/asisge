@@ -98,7 +98,6 @@
 <div id='form-section' >
 
 	<fieldset id="cuadromando-form-fieldset">	
-  {!! Form::hidden('Compania_idCompania', 1, array('Compania_idCompania' => 'Compania_idCompania')) !!}
 
 		<div class="form-group" id='test'>
           {!! Form::label('numeroCuadroMando', 'N&uacute;mero', array('class' => 'col-sm-2 control-label')) !!}

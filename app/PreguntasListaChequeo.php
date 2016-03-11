@@ -9,7 +9,7 @@ class PreguntasListaChequeo extends Model
     protected $table = 'preguntalistachequeo';
     protected $primaryKey = 'idPreguntaListaChequeo';
 
-    protected $fillable = ['ordenPreguntaListaChequeo', 'descripcionPreguntaListaChequeo'];
+    protected $fillable = ['ordenPreguntaListaChequeo', 'descripcionPreguntaListaChequeo', 'Compania_idCompania'];
 
     public $timestamps = false;
 

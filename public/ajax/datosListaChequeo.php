@@ -4,6 +4,7 @@
             ->leftJoin('proceso as p', 'lc.Proceso_idProceso', '=', 'p.idProceso')
             ->leftJoin('planauditoria as pa', 'lc.PlanAuditoria_idPlanAuditoria', '=', 'pa.idPlanAuditoria')
             ->select(DB::raw('idListaChequeo, numeroListaChequeo, fechaElaboracionListaChequeo, numeroPlanAuditoria, nombreProceso'))
+            ->where('lc.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
     $row = array();
 

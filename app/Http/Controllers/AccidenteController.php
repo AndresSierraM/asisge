@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AccidenteRequest;
 
 use Illuminate\Routing\Route;
+use DB;
 
 class AccidenteController extends Controller
 {
@@ -37,14 +38,23 @@ class AccidenteController extends Controller
      */
     public function create()
     {
-        $terceroCoord = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $terceroEmple = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $ausentismo  = \App\Ausentismo::All()->lists('nombreAusentismo','idAusentismo');
-        $proceso  = \App\Proceso::All()->lists('nombreProceso','idProceso');
-        $idProceso  = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso  = \App\Proceso::All()->lists('nombreProceso');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $terceroCoord = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $terceroEmple = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        
+
+        $ausentismo  = \App\Ausentismo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreAusentismo','idAusentismo');
+         // $ausentismo = DB::table('ausentismo')
+         //    ->leftJoin('accidente', 'Ausentismo_idAusentismo', '=', 'idAusentismo')
+         //    ->select(DB::raw('nombreAusentismo, idAusentismo'))
+         //    ->where('ausentismo.Compania_idCompania','=', \Session::get('idCompania'))
+         //    ->whereNull('Ausentismo_idAusentismo')
+         //    ->get();
+
+        $proceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
+        $idProceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         return view('accidente',compact('terceroCoord','terceroEmple','ausentismo',
             'proceso','idProceso','nombreProceso','idTercero','nombreCompletoTercero'));
     }
@@ -82,7 +92,8 @@ class AccidenteController extends Controller
             'naturalezaLesionAccidente' => $request['naturalezaLesionAccidente'],
             'parteCuerpoAfectadaAccidente' => $request['parteCuerpoAfectadaAccidente'],
             'tipoAccidente' => $request['tipoAccidente'],
-            'observacionAccidente'  => $request['observacionAccidente']
+            'observacionAccidente'  => $request['observacionAccidente'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
 
@@ -173,14 +184,14 @@ class AccidenteController extends Controller
     public function edit($id)
     {
         $accidente = \App\Accidente::find($id);
-        $terceroCoord = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $terceroEmple = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $ausentismo  = \App\Ausentismo::All()->lists('nombreAusentismo','idAusentismo');
-        $proceso  = \App\Proceso::All()->lists('nombreProceso','idProceso');
-        $idProceso  = \App\Proceso::All()->lists('idProceso');
-        $nombreProceso  = \App\Proceso::All()->lists('nombreProceso');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $terceroCoord = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $terceroEmple = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $ausentismo  = \App\Ausentismo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreAusentismo','idAusentismo');
+        $proceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
+        $idProceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
+        $nombreProceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         
 
         

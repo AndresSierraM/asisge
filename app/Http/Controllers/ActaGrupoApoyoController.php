@@ -27,10 +27,10 @@ class ActaGrupoApoyoController extends Controller
      */
     public function create()
     {
-        $grupoapoyo = \App\GrupoApoyo::All()->lists('nombreGrupoApoyo','idGrupoApoyo');
+        $grupoapoyo = \App\GrupoApoyo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoApoyo','idGrupoApoyo');
         
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero'));
     }
@@ -48,7 +48,8 @@ class ActaGrupoApoyoController extends Controller
                 'fechaActaGrupoApoyo' => $request['fechaActaGrupoApoyo'],
                 'horaInicioActaGrupoApoyo' => $request['horaInicioActaGrupoApoyo'],
                 'horaFinActaGrupoApoyo' => $request['horaFinActaGrupoApoyo'],
-                'observacionActaGrupoApoyo' => $request['observacionActaGrupoApoyo']
+                'observacionActaGrupoApoyo' => $request['observacionActaGrupoApoyo'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             
@@ -78,10 +79,10 @@ class ActaGrupoApoyoController extends Controller
     {
         
         $actaGrupoApoyo = \App\ActaGrupoApoyo::find($id);
-        $grupoapoyo = \App\GrupoApoyo::All()->lists('nombreGrupoApoyo','idGrupoApoyo');
+        $grupoapoyo = \App\GrupoApoyo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoApoyo','idGrupoApoyo');
         
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero'), ['actaGrupoApoyo'=>$actaGrupoApoyo])
         ;

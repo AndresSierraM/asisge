@@ -36,8 +36,8 @@ class CargoController extends Controller
         $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
         $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
 
-        $idListaElemento = \App\ElementoProteccion::All()->lists('idElementoProteccion');
-        $nombreListaElemento = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+        $idListaElemento = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
+        $nombreListaElemento = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
 
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
@@ -68,7 +68,8 @@ class CargoController extends Controller
                 'restriccionesCargo' => $request['restriccionesCargo'],
                 'habilidadesCargo' => $request['habilidadesCargo'],
                 'responsabilidadesCargo' => $request['responsabilidadesCargo'],
-                'autoridadesCargo' => $request['autoridadesCargo']
+                'autoridadesCargo' => $request['autoridadesCargo'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             $cargo = \App\Cargo::All()->last();
@@ -146,8 +147,8 @@ class CargoController extends Controller
         $idListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('idListaGeneral');
         $nombreListaVacuna = \App\ListaGeneral::where('tipoListaGeneral','Vacuna')->lists('nombreListaGeneral');
 
-        $idListaElemento = \App\ElementoProteccion::All()->lists('idElementoProteccion');
-        $nombreListaElemento = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+        $idListaElemento = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
+        $nombreListaElemento = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
 
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');

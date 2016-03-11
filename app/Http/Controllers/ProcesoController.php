@@ -41,7 +41,7 @@ class ProcesoController extends Controller
         \App\Proceso::create([
             'codigoProceso' => $request['codigoProceso'],
             'nombreProceso' => $request['nombreProceso'],
-            'Compania_idCompania' => 1
+            'Compania_idCompania' => \Session::get("idCompania")
             ]);
 
         return redirect('/proceso');

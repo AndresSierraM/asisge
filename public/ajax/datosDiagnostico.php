@@ -3,6 +3,7 @@
     $diagnostico = DB::table('diagnostico')
             ->leftJoin('diagnosticodetalle', 'idDiagnostico', '=', 'Diagnostico_idDiagnostico')
             ->select(DB::raw('idDiagnostico, codigoDiagnostico, nombreDiagnostico, fechaElaboracionDiagnostico, AVG(resultadoDiagnosticoDetalle) as resultadoDiagnosticoDetalle'))
+            ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->groupby('idDiagnostico')
             ->get();
 

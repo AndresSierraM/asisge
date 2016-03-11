@@ -29,11 +29,11 @@ class InspeccionController extends Controller
      */
     public function create()
     {
-        $tipoinspeccion = \App\TipoInspeccion::All()->lists('nombreTipoInspeccion','idTipoInspeccion');
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tipoinspeccion = \App\TipoInspeccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoInspeccion','idTipoInspeccion');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         return view('inspeccion',compact('tipoinspeccion','tercero','idTercero','nombreCompletoTercero'));
     }
@@ -52,7 +52,8 @@ class InspeccionController extends Controller
                 'TipoInspeccion_idTipoInspeccion' => $request['TipoInspeccion_idTipoInspeccion'],
                 'Tercero_idRealizadaPor' => $request['Tercero_idRealizadaPor'],
                 'fechaElaboracionInspeccion' => $request['fechaElaboracionInspeccion'],
-                'observacionesInspeccion' => $request['observacionesInspeccion']
+                'observacionesInspeccion' => $request['observacionesInspeccion'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]); 
 
             $inspeccion = \App\Inspeccion::All()->last();
@@ -162,11 +163,11 @@ class InspeccionController extends Controller
     public function edit($id)
     {
 
-        $tipoinspeccion = \App\TipoInspeccion::All()->lists('nombreTipoInspeccion','idTipoInspeccion');
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
+        $tipoinspeccion = \App\TipoInspeccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoInspeccion','idTipoInspeccion');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
 
         $inspeccion = \App\Inspeccion::find($id);
@@ -198,7 +199,6 @@ class InspeccionController extends Controller
         {
             $inspeccion = \App\Inspeccion::find($id);
             $inspeccion->fill($request->all());
-            //$inspeccion->Compania_idCompania = 1;
             $inspeccion->save();
 
             \App\InspeccionDetalle::where('Inspeccion_idInspeccion',$id)->delete();

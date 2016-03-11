@@ -4,6 +4,7 @@
     $users = DB::table('users')
             ->leftJoin('compania', 'Compania_idCompania', '=', 'idCompania')
             ->select(DB::raw('id, name, email, nombreCompania'))
+            ->where('users.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     //print_r($users);

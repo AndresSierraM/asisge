@@ -36,8 +36,8 @@ class ActaCapacitacionController extends Controller
             ->lists('nombrePlanCapacitacion', 'idPlanCapacitacion');
 
 //            print_r($planCapacitacion);
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         return view('actacapacitacion',compact('planCapacitacion','idTercero','nombreCompletoTercero'));
     }
 
@@ -55,7 +55,8 @@ class ActaCapacitacionController extends Controller
                 'numeroActaCapacitacion' => $request['numeroActaCapacitacion'],
                 'fechaElaboracionActaCapacitacion' => $request['fechaElaboracionActaCapacitacion'],
                 'PlanCapacitacion_idPlanCapacitacion' => $request['PlanCapacitacion_idPlanCapacitacion'],
-                'observacionesActaCapacitacion' => $request['observacionesActaCapacitacion']
+                'observacionesActaCapacitacion' => $request['observacionesActaCapacitacion'],
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]);
 
             $actaCapacitacion = \App\ActaCapacitacion::All()->last();
@@ -158,9 +159,14 @@ class ActaCapacitacionController extends Controller
      */
     public function edit($id)
     {
-        $planCapacitacion = \App\PlanCapacitacion::All()->lists('nombrePlanCapacitacion','idPlanCapacitacion');
-        $idTercero = \App\Tercero::All()->lists('idTercero');
-        $nombreCompletoTercero = \App\Tercero::All()->lists('nombreCompletoTercero');
+        $planCapacitacion = DB::table('plancapacitacion as PC')
+            ->leftJoin('plancapacitaciontema as PCT', 'PC.idPlanCapacitacion', '=', 'PCT.PlanCapacitacion_idPlanCapacitacion')
+            ->where('dictadaPlanCapacitacionTema','=',0)
+            ->groupBy('idPlanCapacitacion')
+            ->lists('nombrePlanCapacitacion', 'idPlanCapacitacion');
+            
+        $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
+        $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         $actaCapacitacion = \App\ActaCapacitacion::find($id);
         return view('actacapacitacion',compact('planCapacitacion','idTercero','nombreCompletoTercero'),['actaCapacitacion'=>$actaCapacitacion]);

@@ -43,6 +43,7 @@ class TipoInspeccionController extends Controller
             'codigoTipoInspeccion' => $request['codigoTipoInspeccion'],
             'nombreTipoInspeccion' => $request['nombreTipoInspeccion'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
         $tipoInspeccion = \App\TipoInspeccion::All()->last();

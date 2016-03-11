@@ -1,8 +1,9 @@
 <?php
 
-    $planAuditoria = DB::table('planAuditoria')
+    $planAuditoria = DB::table('planauditoria')
             ->leftJoin('tercero', 'Tercero_AuditorLider', '=', 'idTercero')
             ->select(DB::raw('idPlanAuditoria, numeroPlanAuditoria,fechaInicioPlanAuditoria,fechaFinPlanAuditoria,organismoPlanAuditoria,nombreCompletoTercero'))
+            ->where('planauditoria.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

@@ -1,7 +1,8 @@
 <?php
 
 
-    $tipoelementoproteccion = \App\TipoElementoProteccion::All();
+    $tipoelementoproteccion = \App\TipoElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))
+->get();
     $row = array();
 
     foreach ($tipoelementoproteccion as $key => $value) 

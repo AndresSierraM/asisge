@@ -28,9 +28,9 @@ class EntregaElementoProteccionController extends Controller
      */
     public function create()
     {
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $idElementoProteccion = \App\ElementoProteccion::All()->lists('idElementoProteccion');
-        $nombreElementoProteccion = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $idElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
+        $nombreElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
         return view('entregaelementoproteccion',compact('tercero','idElementoProteccion','nombreElementoProteccion'));
     }
 
@@ -44,7 +44,8 @@ class EntregaElementoProteccionController extends Controller
     {
         \App\EntregaElementoProteccion::create([
         'Tercero_idTercero' => $request['Tercero_idTercero'],
-        'fechaEntregaElementoProteccion' => $request['fechaEntregaElementoProteccion']
+        'fechaEntregaElementoProteccion' => $request['fechaEntregaElementoProteccion'],
+        'Compania_idCompania' => \Session::get('idCompania')
         ]);
 
         $entregaelementoproteccion = \App\EntregaElementoProteccion::All()->last();
@@ -80,9 +81,9 @@ class EntregaElementoProteccionController extends Controller
     public function edit($id)
     {
         $entregaelementoproteccion = \App\EntregaElementoProteccion::find($id);
-        $tercero = \App\Tercero::All()->lists('nombreCompletoTercero','idTercero');
-        $idElementoProteccion = \App\ElementoProteccion::All()->lists('idElementoProteccion');
-        $nombreElementoProteccion = \App\ElementoProteccion::All()->lists('nombreElementoProteccion');
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $idElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
+        $nombreElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
         return view('entregaelementoproteccion',compact('tercero','idElementoProteccion','nombreElementoProteccion'),['entregaelementoproteccion'=>$entregaelementoproteccion]);
     }
 

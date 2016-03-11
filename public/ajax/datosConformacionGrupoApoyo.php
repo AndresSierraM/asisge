@@ -3,6 +3,7 @@
     $conformaciongrupoapoyo = DB::table('conformaciongrupoapoyo')
             ->leftJoin('grupoapoyo', 'GrupoApoyo_idGrupoApoyo', '=', 'idGrupoApoyo')
             ->select(DB::raw('idConformacionGrupoApoyo, nombreGrupoApoyo, nombreConformacionGrupoApoyo, fechaConformacionGrupoApoyo'))
+            ->where('conformaciongrupoapoyo.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     // print_r($conformaciongrupoapoyo);

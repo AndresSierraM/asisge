@@ -1,7 +1,7 @@
 <?php
 
 
-    $accidente = \App\accidente::All();
+    $accidente = \App\accidente::where('Compania_idCompania','=', \Session::get('idCompania'))->get();
     $row = array();
 
     foreach ($accidente as $key => $value) 

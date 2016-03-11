@@ -10,7 +10,7 @@ class Inspeccion extends Model
     protected $primaryKey = 'idInspeccion';
 
     protected $fillable = ['TipoInspeccion_idTipoInspeccion', 'Tercero_idRealizadaPor', 'fechaElaboracionInspeccion', 
-    						'observacionesInspeccion'];
+    						'observacionesInspeccion', 'Compania_idCompania'];
 
     public $timestamps = false;
 

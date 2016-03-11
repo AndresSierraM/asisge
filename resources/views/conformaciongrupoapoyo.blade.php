@@ -103,7 +103,7 @@
 		<div id="form_section">
 			<fieldset id="cargo-form-fieldset">
 				<div class="form-group" id='test'>
-					{!!Form::label('GrupoApoyo_idGrupoApoyo', 'Pais', array('class' => 'col-sm-2 control-label'))!!}
+					{!!Form::label('GrupoApoyo_idGrupoApoyo', 'Grupo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
@@ -116,7 +116,7 @@
 					
 				</div>
 				<div class="form-group" id='test'>
-					{!!Form::label('nombreConformacionGrupoApoyo', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
+					{!!Form::label('nombreConformacionGrupoApoyo', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon">

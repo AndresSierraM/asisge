@@ -105,7 +105,6 @@
               </span>
               {!!Form::select('ClasificacionRiesgo_idClasificacionRiesgo',$clasificacionriesgo, (isset($programa) ? $programa->ClasificacionRiesgo_idClasificacionRiesgo : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la clasificacion de riesgo"])!!}
               {!! Form::hidden('idPrograma', 0, array('id' => 'idPrograma')) !!}
-              {!! Form::hidden('Compania_idCompania', 0, array('id' => 'Compania_idCompania')) !!}
               {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
 
             </div>

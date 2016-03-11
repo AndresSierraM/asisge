@@ -41,7 +41,8 @@ class TipoElementoProteccionController extends Controller
         \App\TipoElementoProteccion::create([
             'codigoTipoElementoProteccion' => $request['codigoTipoElementoProteccion'],
             'nombreTipoElementoProteccion' => $request['nombreTipoElementoProteccion'],
-            'observacionTipoElementoProteccion' => $request['observacionTipoElementoProteccion']
+            'observacionTipoElementoProteccion' => $request['observacionTipoElementoProteccion'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
         return redirect('/tipoelementoproteccion');

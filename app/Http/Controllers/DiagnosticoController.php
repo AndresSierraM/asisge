@@ -59,7 +59,7 @@ class DiagnosticoController extends Controller
                 'equiposCriticosDiagnostico' => $request['equiposCriticosDiagnostico'],
                 'herramientasCriticasDiagnostico' => $request['herramientasCriticasDiagnostico'],
                 'observacionesDiagnostico' => $request['observacionesDiagnostico'],
-                'Compania_idCompania' => 1
+                'Compania_idCompania' => \Session::get('idCompania')
                 ]); 
 
             $diagnostico = \App\Diagnostico::All()->last();
@@ -152,7 +152,6 @@ class DiagnosticoController extends Controller
         {
             $diagnostico = \App\Diagnostico::find($id);
             $diagnostico->fill($request->all());
-            //$diagnostico->Compania_idCompania = 1;
             $diagnostico->save();
 
             \App\DiagnosticoDetalle::where('Diagnostico_idDiagnostico',$id)->delete();

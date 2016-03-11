@@ -46,7 +46,8 @@ class GrupoApoyoController extends Controller
             'convocatoriaVotacionGrupoApoyo' => $request['convocatoriaVotacionGrupoApoyo'],
             'actaEscrutinioGrupoApoyo' => $request['actaEscrutinioGrupoApoyo'],
             'actaConstitucionGrupoApoyo' => $request['actaConstitucionGrupoApoyo'],
-            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion']
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
         return redirect('/grupoapoyo');

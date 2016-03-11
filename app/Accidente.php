@@ -32,7 +32,8 @@ class Accidente extends Model
 							'naturalezaLesionAccidente',
 							'parteCuerpoAfectadaAccidente',
 							'tipoAccidente',
-							'observacionAccidente'];
+							'observacionAccidente',
+							'Compania_idCompania'];
 
     public $timestamps = false;
 
