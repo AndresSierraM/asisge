@@ -3,7 +3,7 @@
 
     $opcion = DB::table('opcion')
             ->leftJoin('paquete', 'Paquete_idPaquete', '=', 'idPaquete')
-            ->select(DB::raw('idOpcion, ordenOpcion, nombreOpcion, rutaOpcion, nombrePaquete'))
+            ->select(DB::raw('idOpcion, ordenOpcion, nombreOpcion, rutaOpcion, nombrePaquete, iconoOpcion'))
             ->get();
 
  //   print_r($opcion);
@@ -23,6 +23,7 @@
         $row[$key][] = $value->nombreOpcion; 
         $row[$key][] = $value->rutaOpcion;    
         $row[$key][] = $value->nombrePaquete;
+        $row[$key][] = '<img src="imagenes/'.$value->iconoOpcion.'">';
     }
     //  print_r($row);
     // exit;

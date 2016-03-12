@@ -25,7 +25,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::text('ordenOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el orden del opcion en el menu'])!!}
+              {!!Form::text('ordenOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el orden de la opcion en el menu'])!!}
               {!! Form::hidden('idOpcion', null, array('id' => 'idOpcion')) !!}
             </div>
           </div>
@@ -40,7 +40,19 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-      				{!!Form::text('nombreOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del opcion'])!!}
+      				{!!Form::text('nombreOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la opcion'])!!}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id='test'>
+          {!! Form::label('nombreCortoOpcion', 'Nombre Corto', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-pencil-square-o "></i>
+              </span>
+              {!!Form::text('nombreCortoOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre corto de la opcion'])!!}
             </div>
           </div>
         </div>

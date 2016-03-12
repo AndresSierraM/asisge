@@ -12,7 +12,8 @@
 	{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
 	{!!Html::script('js/menu.js'); !!}
 
-	<title>Asisge S.A.</title>
+
+	<title>Sisoft</title>
 </head>
 <body id='body' >
 

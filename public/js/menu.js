@@ -1,3 +1,25 @@
+function abreMenu(numeroMenu, total)
+{
+	total = Math.ceil(total/5) * 100;
+	
+	$('#arrow'+numeroMenu).slideToggle('slow');
+	$('#gridbox'+numeroMenu).slideToggle('slow',function(){
+		$('ul').animate({marginTop:'0'});
+		$('#gridbox'+numeroMenu).animate({height: total+'px'});
+	});
+	event.stopPropagation();
+}
+
+
+function cierraMenu(numeroMenu) 
+{
+	
+	$('#arrow'+numeroMenu).hide();
+	$('#gridbox'+numeroMenu).hide();
+	$('ul').animate({marginTop:'0'});
+	$('#gridbox'+numeroMenu).animate();
+}
+
 $(document).ready(function(){
 
 	$('#menuarch').click(function(event){

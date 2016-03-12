@@ -60,7 +60,7 @@ class OpcionController extends Controller
             $imageName = 'menu/'.$request->file('iconoOpcion')->getClientOriginalName();
             
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(48)->save('images/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(48)->save('imagenes/'. $imageName);
             //$manager->make($image->getRealPath())->widen(48)->save('images/'. $imageName);
             //$manager->make($image->getRealPath())->resize(48,48)->save('images/'. $imageName);
         }
@@ -71,6 +71,7 @@ class OpcionController extends Controller
         \App\Opcion::create([
             'ordenOpcion' => $request['ordenOpcion'],
             'nombreOpcion' => $request['nombreOpcion'],
+            'nombreCortoOpcion' => $request['nombreCortoOpcion'],
             'rutaOpcion' => $request['rutaOpcion'],
             'Paquete_idPaquete' => $request['Paquete_idPaquete'],
             'iconoOpcion' =>  $imageName
@@ -121,7 +122,7 @@ class OpcionController extends Controller
             $imageName = $request->file('iconoOpcion')->getClientOriginalName();
 
             $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(48)->save('images/menu/'. $imageName);
+            $manager->make($image->getRealPath())->heighten(48)->save('imagenes/menu/'. $imageName);
 
             $opcion->iconoOpcion = 'menu/'. $imageName;
         }
@@ -150,7 +151,7 @@ class OpcionController extends Controller
                 //Todo::find($id)->delete();
                 \App\Opcion::destroy($id); 
                 
-                File::Delete( 'images/' . $opcion->iconoOpcion );
+                File::Delete( 'imagenes/' . $opcion->iconoOpcion );
                 
             }
         }

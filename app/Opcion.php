@@ -9,7 +9,7 @@ class Opcion extends Model
     protected $table = 'opcion';
     protected $primaryKey = 'idOpcion';
 
-    protected $fillable = ['ordenOpcion', 'nombreOpcion', 'iconoOpcion', 'rutaOpcion', 'Paquete_idPaquete'];
+    protected $fillable = ['ordenOpcion', 'nombreOpcion', 'nombreCortoOpcion', 'iconoOpcion', 'rutaOpcion', 'Paquete_idPaquete'];
 
     public $timestamps = false;
 }

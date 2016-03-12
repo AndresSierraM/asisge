@@ -1,5 +1,5 @@
-< @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center></center></h3>@stop
+@extends('layouts.grid')
+@section('titulo')<h3 id="titulo"><center>Opciones del Menú</center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -27,6 +27,7 @@
                             <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Ruta</label></a></li>
                             <li><a class="toggle-vis" data-column="5"><label> Paquete</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Icono</label></a></li>
                         </ul>
                     </div>
                     <table id="topcion" name="topcion" class="display table-bordered" width="100%">
@@ -41,6 +42,7 @@
                                 <th><b>Nombre</b></th>
                                 <th><b>Ruta</b></th>
                                 <th><b>Paquete</b></th>
+                                <th><b>Icono</b></th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -53,6 +55,7 @@
                                 <th>Nombre</th>
                                 <th>Ruta</th>
                                 <th>Paquete</th>
+                                <th>Icono</th>
                             </tr>
                         </tfoot>
                     </table>

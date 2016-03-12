@@ -1,4 +1,4 @@
-@extends('layouts.menu')
+@extends('layouts.menudinamico')
 
     @section('clases')
 
@@ -74,9 +74,5 @@
         </script>
         <body id='formulario' onbeforeunload="VerificarAbandono()" >
         -->
-
         
-
-
-
      @stop
