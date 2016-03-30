@@ -36,7 +36,8 @@ class UsersController extends Controller
     public function create()
     {
         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
-        return view('users',compact('compania','selected'));
+        $rol = \App\Rol::All()->lists('nombreRol','idRol');
+        return view('users',compact('compania','selected','rol'));
     }
 
     /**
@@ -78,7 +79,8 @@ class UsersController extends Controller
     {
         $usuario = \App\User::find($id);
         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
-        return view('users',compact('compania'),['usuario'=>$usuario]);
+        $rol = \App\Rol::All()->lists('nombreRol','idRol');
+        return view('users',compact('compania', 'rol'),['usuario'=>$usuario]);
     }
 
     /**

@@ -18,6 +18,10 @@
       {!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
       {!!Html::style('sb-admin/bower_components/select2/css/select2.min.css'); !!}
+
+      <!-- estilos para el PAD de Firmas -->
+      {!!Html::style('css/signature-pad.css'); !!}
+
       <!--{!!Html::style('sb-admin/bower_components/ckeditor/sample.css'); !!}-->
       <!-- {!!Html::style('css/menu.css'); !!} -->
       {!!Html::style('CSS/menu.css'); !!}

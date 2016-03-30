@@ -8,9 +8,47 @@
 
 @section('content')
 	@include('alerts.request')
-	{!!Html::script('js/actacapacitacion.js')!!}
+
+{!!Html::script('js/actacapacitacion.js')!!}
+
+{!!Html::style('css/signature-pad.css'); !!} 
+
+
+<?php
+
+$firmas = $actaCapacitacion->actaCapacitacionAsistentes;
+
+for ($i=0; $i < count($firmas); $i++) 
+{ 
+
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+  
+  // al array de la consulta, le adicionamos 2 valores mas que representan la firma como imagen y como dato base 64, este array lo usamos para llenar el detalle de terceros participantes
+
+  $firmas[$i]["firma"] = ''; 
+  $firmas[$i]["firmabase64"] = ''; 
+  if(isset($firmas))
+  {
+    $path = 'imagenes/'.$firmas[$i]["firmaActaCapacitacionAsistente"];
+  
+    if($firmas[$i]["firmaActaCapacitacionAsistente"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $firmas[$i]["firma"] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+      $firmas[$i]["firmabase64"] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+      
+    }
+  }
+
+}
+
+?>
+
+
 	<script>
-		var actaCapacitacionAsistente = '<?php echo (isset($actaCapacitacion) ? json_encode($actaCapacitacion->actaCapacitacionAsistentes) : "");?>';
+		var actaCapacitacionAsistente = '<?php echo (isset($firmas) ? json_encode($firmas) : "");?>';
 		actaCapacitacionAsistente = (actaCapacitacionAsistente != '' ? JSON.parse(actaCapacitacionAsistente) : '');
 
 		var actaCapacitacionTema = '<?php echo (isset($actaCapacitacion) ? json_encode($actaCapacitacion->actaCapacitacionTemas) : "");?>';
@@ -18,7 +56,7 @@
 
 		
 		var valorTema = [0,'',0,'0000-00-00','00:00',0];
-		var valorAsistente = [0,0,''];
+		var valorAsistente = [0,0,'','',''];
 
 		var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
@@ -30,9 +68,14 @@
 
 
 			tema = new Atributos('tema','contenedor_tema','tema');
+
+			tema.altura = '36px;';
+			tema.campoid = 'idActaCapacitacionTema';
+			tema.campoEliminacion = 'eliminarTema';
+
 			tema.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
 			tema.etiqueta = ['input', 'input','input','select','input','input','checkbox','checkbox'];
-			tema.tipo = ['hidden', 'hidden','text','','text','text','checkbox','checkbox'];
+			tema.tipo = ['hidden', 'hidden','text','','date','time','checkbox','checkbox'];
 			tema.estilo = ['', '','width: 300px;height:35px;','width: 310px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
 			tema.clase = ['', '','','','','',''];
 			tema.sololectura = [false, false,true,false,false,false,false,false];
@@ -41,15 +84,20 @@
 			tema.funciones  = ['', '','','',eventos1,'','',''];
 
 			asistente = new Atributos('asistente','contenedor_asistente','asistente');
-			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'nombreCargo'];
-			asistente.etiqueta = ['input','select','input'];
-			asistente.tipo = ['hidden','','text'];
-			asistente.estilo = ['','width: 500px;height:35px;','width: 400px;height:35px; background-color:rgb(238, 238, 238);'];
-			asistente.clase = ['','',''];
-			asistente.sololectura = [false,false,true];
-			asistente.completar = ['off','off','off'];
-			asistente.opciones = ['',tercero,''];
-			asistente.funciones  = ['',eventos2,''];
+
+			asistente.altura = '65px;';
+			asistente.campoid = 'idActaCapacitacionAsistente';
+			asistente.campoEliminacion = 'eliminarAsistente';
+
+			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'nombreCargo','firma','firmabase64'];
+			asistente.etiqueta = ['input','select','input','firma','input'];
+			asistente.tipo = ['hidden','','text','','hidden'];
+			asistente.estilo = ['','width: 500px;height:35px;','width: 400px;height:35px; background-color:rgb(238, 238, 238);', 'width:80px; height: 60px; border: 1px solid; display: inline-block', ''];
+			asistente.clase = ['','','','',''];
+			asistente.sololectura = [false,false,true,false,false];
+			asistente.completar = ['off','off','off','off','off'];
+			asistente.opciones = ['',tercero,'', '' ,''];
+			asistente.funciones  = ['',eventos2,'', '' ,''];
 
 			for(var j=0, k = actaCapacitacionTema.length; j < k; j++)
 			{
@@ -85,6 +133,19 @@
 	@else
 		{!!Form::open(['route'=>'actacapacitacion.store','method'=>'POST'])!!}
 	@endif
+
+	<div id="signature-pad" class="m-signature-pad">
+		<input type="hidden" id="signature-reg" value="">
+	    <div class="m-signature-pad--body">
+	      <canvas></canvas>
+	    </div>
+	    <div class="m-signature-pad--footer">
+	      <div class="description">Firme sobre el recuadro</div>
+	      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+	      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+	    </div>
+	</div>
+
 		<div id="form_section">
 			<fieldset id="matrizLegal-form-fieldset">
 				<div class="form-group" id='test'>
@@ -98,6 +159,8 @@
 							{!!Form::text('numeroActaCapacitacion',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero'])!!}
 							{!!Form::hidden('idActaCapacitacion', null, array('id' => 'idActaCapacitacion'))!!}
 							{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
+							{!!Form::hidden('eliminarTema', '', array('id' => 'eliminarTema'))!!}
+					      	{!!Form::hidden('eliminarAsistente', '', array('id' => 'eliminarAsistente'))!!}
 						</div>
 					</div>
 				</div>
@@ -284,6 +347,7 @@
 															</div>
 															<div class="col-md-1" style="width: 500px;display:inline-block;height:50px;">Nombre</div>
 															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Cargo</div>
+															<div class="col-md-1" style="width: 315px;display:inline-block;height:50px;">Firma</div>
 															<div id="contenedor_asistente">
 															</div>
 														</div>
@@ -317,6 +381,17 @@
 			format: "YYYY-MM-DD"
 		}));
 
-		
-    </script>
+
+	  $(document).ready(function()
+	  {
+	    mostrarFirma();
+	  });
+		    
+
+	</script>
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
+
+
+
 @stop

@@ -19,10 +19,15 @@
   $(document).ready(function(){
     
     detalle = new Atributos('detalle','contenedor_detalle','detalle_');
+
+    detalle.altura = '36px;';
+    detalle.campoid = 'idTipoInspeccionPregunta';
+    detalle.campoEliminacion = 'eliminarDetalle';
+
     detalle.campos = ['idTipoInspeccionPregunta','numeroTipoInspeccionPregunta','contenidoTipoInspeccionPregunta'];
     detalle.etiqueta = ['input','input','input'];
     detalle.tipo = ['hidden','text','text'];
-    detalle.estilo = ['','width: 60px;height:35px;','width: 1035px;height:35px;'];
+    detalle.estilo = ['','width: 5%;height:35px;','width: 90%;height:35px;'];
     detalle.clase = ['','',''];
     detalle.sololectura = [false,false,false];
 
@@ -60,6 +65,7 @@
               {!!Form::text('codigoTipoInspeccion',null,['class'=>'form-control','placeholder'=>'Ingresa el código del tipo de Inspecci&oacute;n'])!!}
               {!!Form::hidden('idTipoInspeccion', null, array('id' => 'idTipoInspeccion')) !!}
               {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
+              {!!Form::hidden('eliminarDetalle', '', array('id' => 'eliminarDetalle'))!!}
             </div>
           </div>
     </div>
@@ -92,8 +98,8 @@
               <div class="col-md-1" style="width: 40px;" onclick="detalle.agregarCampos(valorDetalle,'A')">
                 <span class="glyphicon glyphicon-plus"></span>
               </div>
-              <div class="col-md-1" style="width: 60px;">No.</div>
-              <div class="col-md-1" style="width: 1035px;">Pregunta</div>
+              <div class="col-md-1" style="width: 5%;">No.</div>
+              <div class="col-md-1" style="width: 90%;">Pregunta</div>
               <div id="contenedor_detalle">
               </div>
           </div>

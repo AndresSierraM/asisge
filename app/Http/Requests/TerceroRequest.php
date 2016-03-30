@@ -34,8 +34,7 @@ class TerceroRequest extends Request
             'tipoTercero' => 'required',
             'direccionTercero' => 'required|max:200',
             'Ciudad_idCiudad' => 'required',
-            'telefonoTercero' => 'required|max:20',
-            'fechaNacimientoTercero' => 'required'
-        ];
+            'telefonoTercero' => 'required|max:20'
+                    ];
     }
 }

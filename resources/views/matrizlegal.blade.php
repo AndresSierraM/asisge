@@ -23,19 +23,21 @@
     	var idExpideNormaLegal = '<?php echo isset($idExpideNormaLegal) ? $idExpideNormaLegal : "";?>';
     	var nombreExpideNormaLegal = '<?php echo isset($nombreExpideNormaLegal) ? $nombreExpideNormaLegal : "";?>';
     	var expideNormaLegal = [JSON.parse(idExpideNormaLegal),JSON.parse(nombreExpideNormaLegal)];
-    	var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);']
+    	//var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);']
 		$(document).ready(function(){
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
+
+			detalle.altura = '36px;';
 			detalle.campos = ['idMatrizLegalDetalle', 'TipoNormaLegal_idTipoNormaLegal', 'articuloAplicableMatrizLegalDetalle', 'ExpideNormaLegal_idExpideNormaLegal', 'exigenciaMatrizLegalDetalle', 'fuenteMatrizLegalDetalle', 'medioMatrizLegalDetalle', 'personaMatrizLegalDetalle', 'herramientaSeguimientoMatrizLegalDetalle', 'cumpleMatrizLegalDetalle', 'fechaVerificacionMatrizLegalDetalle', 'accionEvidenciaMatrizLegalDetalle', 'controlAImplementarMatrizLegalDetalle'];
 			detalle.etiqueta = ['input','select','input','select','input','input','input','input','input','checkbox','input','input','input'];
-			detalle.tipo = ['hidden','','text','','text','text','text','text','text','checkbox','text','text','text'];
-			detalle.estilo = ['','width: 160px;height:35px;','width: 250px;height:35px;','width: 160px;height:35px;','width: 400px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 300px;height:35px;','width: 80px;height:32px;display:inline-block;','width: 100px;height:35px;','width: 120px;height:35px;','width: 350px;height:35px;'];
+			detalle.tipo = ['hidden','','text','','text','text','text','text','text','checkbox','date','text','text'];
+			detalle.estilo = ['','width: 160px;height:35px;','width: 250px;height:35px;','width: 160px;height:35px;','width: 400px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 300px;height:35px;','width: 80px;height:30px;display:inline-block;','width: 150px;height:35px;','width: 120px;height:35px;','width: 350px;height:35px;'];
 			detalle.clase = ['','','','','','','','','','','','','',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false];
 			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off'];
 			detalle.opciones = ['',tipoNormaLegal,'',expideNormaLegal,'','','','','','','','',''];
-			detalle.funciones  = ['','','','','','','','','','',eventos1,'',''];
+			detalle.funciones  = ['','','','','','','','','','','','',''];
 			for(var j=0, k = matrizLegalDetalle.length; j < k; j++)
 			{
 				detalle.agregarCampos(JSON.stringify(matrizLegalDetalle[j]),'L');
@@ -43,13 +45,13 @@
 
 		});
 	
-		function fechaDetalle(registro)
-		{
-			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
-			$('#fechaVerificacionMatrizLegalDetalle'+posicion).datetimepicker(({
-				format: "YYYY-MM-DD"
-			}));
-		}
+		// function fechaDetalle(registro)
+		// {
+		// 	var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+		// 	$('#fechaVerificacionMatrizLegalDetalle'+posicion).datetimepicker(({
+		// 		format: "YYYY-MM-DD"
+		// 	}));
+		// }
 	</script>
 	@if(isset($matrizLegal))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -119,10 +121,10 @@
 									<div class="col-sm-12">
 						              <div class="row show-grid">
 						                <div style="overflow: auto; width: 100%;">
-						                  <div style="width: 2310px; height: 300px; display: inline-block; ">
+						                  <div style="width: 2360px; height: 300px; display: inline-block; ">
 						                    <div class="col-md-1" style="width: 1010px;">&nbsp;</div>
 						                    <div class="col-md-1" style="width: 330px; text-align:center;">Controles Existentes</div>
-						                    <div class="col-md-1" style="width: 950px;">&nbsp;</div>
+						                    <div class="col-md-1" style="width: 1000px;">&nbsp;</div>
 						                    
 						                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 												<span class="glyphicon glyphicon-plus"></span>
@@ -136,7 +138,7 @@
 											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
 											<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Herramienta de seguimiento</div>
 											<div class="col-md-1" style="width: 80px;display:inline-block;height:60px;">Se cumple</div>
-											<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Fecha verificaci&oacute;n</div>
+											<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha verificaci&oacute;n</div>
 											<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Acci&oacute;n / Evidencia</div>
 											<div class="col-md-1" style="width: 350px;display:inline-block;height:60px;">Control a implementar</div>
 											<div id="contenedor_detalle">

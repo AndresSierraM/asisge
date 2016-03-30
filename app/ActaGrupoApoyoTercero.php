@@ -10,7 +10,7 @@ class ActaGrupoApoyoTercero extends Model
     protected $primaryKey = 'idActaGrupoApoyoTercero';
 
     protected $fillable = [
-					   'Tercero_idParticipante', 'ActaGrupoApoyo_idActaGrupoApoyo'
+					   'Tercero_idParticipante', 'firmaActaGrupoApoyoTercero', 'ActaGrupoApoyo_idActaGrupoApoyo'
 					    ];
 
     public $timestamps = false;

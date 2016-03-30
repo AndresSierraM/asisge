@@ -57,6 +57,27 @@ class InspeccionController extends Controller
                 ]); 
 
             $inspeccion = \App\Inspeccion::All()->last();
+
+            // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+            // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+            $ruta = 'inspeccion/firmainspeccion_'.$inspeccion->idInspeccion.'.png';
+            $inspeccion->firmaRealizadaPorInspeccion = $ruta;
+
+            $inspeccion->save();
+
+            //----------------------------
+            // Guardamos la imagen de la firma como un archivo en disco
+            $data = $request['firmabase64'];
+
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
+
+            file_put_contents('imagenes/'.$ruta, $data);
+
+            //----------------------------
+
+
             $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
@@ -199,7 +220,25 @@ class InspeccionController extends Controller
         {
             $inspeccion = \App\Inspeccion::find($id);
             $inspeccion->fill($request->all());
+
+            // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+            // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+            $ruta = 'inspeccion/firmainspeccion_'.$inspeccion->idInspeccion.'.png';
+            $inspeccion->firmaRealizadaPorInspeccion = $ruta;
+
             $inspeccion->save();
+
+            //----------------------------
+            // Guardamos la imagen de la firma como un archivo en disco
+            $data = $request['firmabase64'];
+
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
+
+            file_put_contents('imagenes/'.$ruta, $data);
+
+            //----------------------------
 
             \App\InspeccionDetalle::where('Inspeccion_idInspeccion',$id)->delete();
 

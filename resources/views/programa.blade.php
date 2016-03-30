@@ -9,9 +9,11 @@
   <script>
     var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
     var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
+    var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 
     var idDocumento = '<?php echo isset($idDocumento) ? $idDocumento : "";?>';
     var nombreDocumento = '<?php echo isset($nombreDocumento) ? $nombreDocumento : "";?>';
+    var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
 
     var programaDetalle = '<?php echo (isset($programa) ? json_encode($programa->programaDetalle) : "");?>';
     programaDetalle = (programaDetalle != '' ? JSON.parse(programaDetalle) : '');
@@ -25,23 +27,33 @@
                             'fechaPlaneadaProgramaDetalle', 'recursoPlaneadoProgramaDetalle', 
                             'fechaEjecucionProgramaDetalle','recursoEjecutadoProgramaDetalle', 
                              'observacionProgramaDetalle'];
-      programa.etiqueta  = ['input', 'select1','select2',  
+      programa.etiqueta  = ['input', 'select','select',  
                             'input', 'input',
                             'input', 'input', 
                             'input'];
       programa.tipo      = ['text', '', '',
-                            'text', 'text', 
-                            'text', 'text', 
+                            'date', 'number', 
+                            'date', 'number', 
                             'text'];
-      programa.estilo    = ['width: 400px; height:35px; display:inline-block;', 'width: 200px; height:35px; display:inline-block;', 'width: 200px; height:35px; display:inline-block;', 
-                            'width: 200px; height:35px; display:inline-block;', 'width: 100px; height:35px; display:inline-block;', 
-                            'width: 200px; height:35px; display:inline-block;', 'width: 100px; height:35px; display:inline-block;', 
-                            'width: 300px; height:35px; display:inline-block;'];
+      programa.estilo    = ['width: 400px; height:35px; ', 
+                            'width: 200px; height:35px; ', 
+                            'width: 200px; height:35px; ', 
+                            'width: 200px; height:35px; ', 
+                            'width: 100px; height:35px; text-align: right;', 
+                            'width: 200px; height:35px; ', 
+                            'width: 100px; height:35px; text-align: right;', 
+                            'width: 300px; height:35px; '];
       programa.clase     = ['', 'chosen-select', 'chosen-select', 
                             '', '',
                             '', '',
                             ''];
       programa.sololectura = [false,false,false,false,false,false,false,false];
+      programa.completar = ['off', 'off','off','off','off','off','off','off'];
+      programa.opciones = ['', tercero, documento,'','','','',''];
+      programa.funciones  = ['', '','','','','','',''];
+
+
+
       programa.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
       programa.idTercero =  JSON.parse(idTercero);
       programa.nombreDocumento =  JSON.parse(nombreDocumento);
@@ -91,7 +103,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-calendar" ></i>
               </span>
-              {!!Form::text('fechaElaboracionPrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Elaboracion', 'style'=>'width:340;'])!!}
+              {!!Form::date('fechaElaboracionPrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Elaboracion', 'style'=>'width:340;'])!!}
             </div>
           </div>
         </div>
@@ -179,9 +191,9 @@
                     <div class="col-md-2" style="width: 200px;">Responsable</div>
                     <div class="col-md-3" style="width: 200px;">Documento</div>
                     <div class="col-md-4" style="width: 200px;">Fecha</div>
-                    <div class="col-md-5" style="width: 100px;">Recurso</div>
+                    <div class="col-md-5" style="width: 100px;">Recurso $</div>
                     <div class="col-md-6" style="width: 200px;">Fecha</div>
-                    <div class="col-md-7" style="width: 100px;">Recurso</div>
+                    <div class="col-md-7" style="width: 100px;">Recurso $</div>
                     <div class="col-md-8" style="width: 300px;">Observaci&oacute;n</div>
                     <div id="contenedor_programa">
                     </div>
@@ -206,9 +218,10 @@
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
     document.getElementById('contenedor-fin').style.width = '1250px';
-        $('#fechaElaboracionPrograma').datetimepicker(({
-      format: "YYYY-MM-DD"
-    }));
+    
+    // $('#fechaElaboracionPrograma').datetimepicker(({
+    //   format: "YYYY-MM-DD"
+    // }));
 
     
     CKEDITOR.replace(('objetivoEspecificoPrograma'), {

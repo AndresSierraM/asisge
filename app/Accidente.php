@@ -14,6 +14,7 @@ class Accidente extends Model
 							'clasificacionAccidente',
 							'Ausentismo_idAusentismo',
 							'Tercero_idCoordinador',
+							'firmaCoordinadorAccidente',
 							'Tercero_idEmpleado',
 							'edadEmpleadoAccidente',
 							'tiempoServicioAccidente',

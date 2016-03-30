@@ -110,7 +110,7 @@
         		         '.\Session::get("nombreUsuario").'
 
                 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="auth/logout"> <img src="images/iconosmenu/salir.png" title="Salir de SiSoft" style="width:32px; height:32px;">
+						<a href="auth/logout"> <img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de SiSoft" style="width:32px; height:32px;">
 						</a>
 					</div>
 				</div>

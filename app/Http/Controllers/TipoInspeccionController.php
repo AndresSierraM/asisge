@@ -47,15 +47,11 @@ class TipoInspeccionController extends Controller
             ]);
 
         $tipoInspeccion = \App\TipoInspeccion::All()->last();
-        $contadorDetalle = count($request['numeroTipoInspeccionPregunta']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\tipoInspeccionPregunta::create([
-            'TipoInspeccion_idTipoInspeccion' => $tipoInspeccion->idTipoInspeccion,
-            'numeroTipoInspeccionPregunta' => $request['numeroTipoInspeccionPregunta'][$i],
-            'contenidoTipoInspeccionPregunta' => $request['contenidoTipoInspeccionPregunta'][$i]
-           ]);
-        }
+        
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($tipoInspeccion->idTipoInspeccion, $request);
         
         return redirect('/tipoinspeccion');
     }
@@ -97,18 +93,11 @@ class TipoInspeccionController extends Controller
         $tipoInspeccion->fill($request->all());
         $tipoInspeccion->save();
 
-        \App\tipoInspeccionPregunta::where('TipoInspeccion_idTipoInspeccion',$id)->delete();
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($tipoInspeccion->idTipoInspeccion, $request);
         
-        $contadorDetalle = count($request['numeroTipoInspeccionPregunta']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\tipoInspeccionPregunta::create([
-            'TipoInspeccion_idTipoInspeccion' => $id,
-            'numeroTipoInspeccionPregunta' => $request['numeroTipoInspeccionPregunta'][$i],
-            'contenidoTipoInspeccionPregunta' => $request['contenidoTipoInspeccionPregunta'][$i]
-           ]);
-        }
-
         return redirect('/tipoinspeccion');
     }
 
@@ -122,5 +111,29 @@ class TipoInspeccionController extends Controller
     {
         \App\TipoInspeccion::destroy($id);
         return redirect('/tipoinspeccion');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarDetalle']);
+        \App\tipoInspeccionPregunta::whereIn('idTipoInspeccionPregunta',$idsEliminar)->delete();
+
+        $contadorDetalle = count($request['numeroTipoInspeccionPregunta']);
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            $indice = array(
+             'idTipoInspeccionPregunta' => $request['idTipoInspeccionPregunta'][$i]);
+
+            $data = array(
+             'TipoInspeccion_idTipoInspeccion' => $id,
+            'numeroTipoInspeccionPregunta' => $request['numeroTipoInspeccionPregunta'][$i],
+            'contenidoTipoInspeccionPregunta' => $request['contenidoTipoInspeccionPregunta'][$i] );
+
+            $preguntas = \App\tipoInspeccionPregunta::updateOrCreate($indice, $data);
+
+        }
     }
 }

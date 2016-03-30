@@ -179,7 +179,7 @@ class ListaChequeoController extends Controller
             ->select(DB::raw('lcd.idListaChequeoDetalle, PreguntaListaChequeo_idPreguntaListaChequeo, plc.ordenPreguntaListaChequeo, plc.descripcionPreguntaListaChequeo,lcd.Tercero_idTercero, lcd.respuestaListaChequeoDetalle, lcd.conformeListaChequeoDetalle, lcd.hallazgoListaChequeoDetalle,lcd.observacionListaChequeoDetalle'))
             ->orderBy('ordenPreguntaListaChequeo', 'ASC')
             ->where('ListaChequeo_idListaChequeo','=',$id)
-            ->where('preguntalistachequeo.Compania_idCompania','=', \Session::get('idCompania'))
+            ->where('plc.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
         $planAuditoria = \App\PlanAuditoria::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('numeroPlanAuditoria','idPlanAuditoria');

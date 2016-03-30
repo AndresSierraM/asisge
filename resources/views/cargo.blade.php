@@ -49,6 +49,11 @@
 		$(document).ready(function()
 		{
 			tarea = new Atributos('tarea','contenedor_tarea','tarea');
+
+			tarea.altura = '35px;';
+			tarea.campoid = 'idCargoTareaRiesgo';
+			tarea.campoEliminacion = 'eliminarTarea';
+
 			tarea.campos = ['idCargoTareaRiesgo', 'ListaGeneral_idTareaAltoRiesgo'];
 			tarea.etiqueta = ['input','select'];
 			tarea.tipo = ['hidden',''];
@@ -60,6 +65,11 @@
 			tarea.funciones  = ['',''];
 
 			vacuna = new Atributos('vacuna','contenedor_vacuna','vacuna');
+			
+			vacuna.altura = '35px;';
+			vacuna.campoid = 'idCargoVacuna';
+			vacuna.campoEliminacion = 'eliminarVacuna';
+
 			vacuna.campos = ['idCargoVacuna', 'ListaGeneral_idVacuna'];
 			vacuna.etiqueta = ['input','select'];
 			vacuna.tipo = ['hidden',''];
@@ -71,6 +81,11 @@
 			vacuna.funciones  = ['',''];
 
 			elemento = new Atributos('elemento','contenedor_elemento','elemento');
+
+			elemento.altura = '35px;';
+			elemento.campoid = 'idCargoElementoProteccion';
+			elemento.campoEliminacion = 'eliminarElemento';
+
 			elemento.campos = ['idCargoElementoProteccion', 'ElementoProteccion_idElementoProteccion'];
 			elemento.etiqueta = ['input','select'];
 			elemento.tipo = ['hidden',''];
@@ -82,10 +97,15 @@
 			elemento.funciones  = ['',''];
 
 			examen = new Atributos('examen','contenedor_examen','examen');
+
+			examen.altura = '36px;';
+			examen.campoid = 'idCargoExamenMedico';
+			examen.campoEliminacion = 'eliminarExamen';
+
 			examen.campos = ['idCargoExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoCargoExamenMedico','retiroCargoExamenMedico','periodicoCargoExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
 			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
 			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
-			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
+			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:30px;display:inline-block;','width: 90px;height:30px;display:inline-block;','width: 90px;height:30px;display:inline-block;','width: 300px;height:35px;'];
 			examen.clase = ['','','','','',''];
 			examen.sololectura = [false,false,false,false,false,false];
 			examen.completar = ['off','off','off','off','off','off'];
@@ -141,6 +161,10 @@
 							<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::text('codigoCargo', null, ['class'=>'form-control','placeholder'=>'Ingresa el c&oacute;digo','id' => 'codigoCargo'])!!}
 							{!!Form::hidden('idCargo', null, array('id' => 'idCargo'))!!}
+							{!!Form::hidden('eliminarTarea', '', array('id' => 'eliminarTarea'))!!}
+					      	{!!Form::hidden('eliminarVacuna', '', array('id' => 'eliminarVacuna'))!!}
+					      	{!!Form::hidden('eliminarElemento', '', array('id' => 'eliminarElemento'))!!}
+					      	{!!Form::hidden('eliminarExamen', '', array('id' => 'eliminarExamen'))!!}
 						</div>
 					</div>
 				</div>

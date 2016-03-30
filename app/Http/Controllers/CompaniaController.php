@@ -52,15 +52,10 @@ class CompaniaController extends Controller
 
         $compania = \App\Compania::All()->last();
 
-        $contador = count($request['nombreCompaniaObjetivo']);
-
-        for($i = 0; $i < $contador; $i++)
-        {
-            \App\CompaniaObjetivo::create([
-            'Compania_idCompania' => $compania->idCompania,
-            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i]
-           ]);
-        }
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($compania->idCompania, $request);
 
         return redirect('/compania');
     }
@@ -103,17 +98,10 @@ class CompaniaController extends Controller
         $compania->fill($request->all());
         $compania->save();
         
-        \App\CompaniaObjetivo::where('Compania_idCompania',$id)->delete();
-        
-        $contador = count($request['nombreCompaniaObjetivo']);
-
-        for($i = 0; $i < $contador; $i++)
-        {
-            \App\CompaniaObjetivo::create([
-            'Compania_idCompania' => $id,
-            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i]
-           ]);
-        }
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($compania->idCompania, $request);
         
         return redirect('/compania');
     }
@@ -130,5 +118,31 @@ class CompaniaController extends Controller
     {
         \App\Compania::destroy($id);
         return redirect('/compania');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarObjetivo']);
+        \App\CompaniaObjetivo::whereIn('idCompaniaObjetivo',$idsEliminar)->delete();
+
+        $contador = count($request['nombreCompaniaObjetivo']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+
+            $indice = array(
+             'idCompaniaObjetivo' => $request['idCompaniaObjetivo'][$i]);
+
+            $data = array(
+             'Compania_idCompania' => $id,
+            'nombreCompaniaObjetivo' => $request['nombreCompaniaObjetivo'][$i] );
+
+            $preguntas = \App\CompaniaObjetivo::updateOrCreate($indice, $data);
+
+        }
+
     }
 }

@@ -108,7 +108,6 @@ class MatrizRiesgoController extends Controller
                 'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
                 'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
                 'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
-                'imagenMatrizRiesgoDetalle' => $request['imagenMatrizRiesgoDetalle'][$i],
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);
           }
@@ -306,7 +305,6 @@ class MatrizRiesgoController extends Controller
                 'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
                 'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
                 'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
-                'imagenMatrizRiesgoDetalle' => '',
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);
           }

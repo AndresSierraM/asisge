@@ -3,7 +3,6 @@
 
 @section('content')
 @include('alerts.request')
-{!!Html::script('js/compania.js')!!}
 
 <script>
 
@@ -14,10 +13,15 @@
   $(document).ready(function(){
     
     objetivos = new Atributos('objetivos','contenedor_objetivos','objetivos_');
+
+    objetivos.altura = '82px;';
+    objetivos.campoid = 'idCompaniaObjetivo';
+    objetivos.campoEliminacion = 'eliminarObjetivo';
+
     objetivos.campos = ['idCompaniaObjetivo','nombreCompaniaObjetivo'];
     objetivos.etiqueta = ['input','textarea'];
     objetivos.tipo = ['hidden',''];
-    objetivos.estilo = ['','width: 950px; height: 80px;'];
+    objetivos.estilo = ['','width: 1160px; height: 80px;'];
     objetivos.clase = ['','form-control'];
     objetivos.sololectura = [false,false];
 
@@ -51,6 +55,7 @@
               </span>
               {!!Form::text('codigoCompania',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la compania'])!!}
               {!! Form::hidden('idCompania', null, array('id' => 'idCompania')) !!}
+              {!!Form::hidden('eliminarObjetivo', '', array('id' => 'eliminarObjetivo'))!!}
             </div>
           </div>
         </div>
@@ -197,7 +202,7 @@
                                 <div class="col-md-1" style="width: 40px;" onclick="objetivos.agregarCampos(valor,'A')">
                                   <span class="glyphicon glyphicon-plus"></span>
                                 </div>
-                                <div class="col-md-1" style="width: 950px;">Objetivos</div>
+                                <div class="col-md-1" style="width: 1215px;">Objetivos</div>
                                 <div id="contenedor_objetivos">
                                 </div>
                             </div>

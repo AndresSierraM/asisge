@@ -355,18 +355,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('fechaNacimientoTercero', 'Fecha Nacimiento', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
-													<div class="col-sm-10" style="width:400px;">
-														<div class="input-group">
-															<span class="input-group-addon">
-																<i class="fa fa-calendar" style="width: 14px;"></i>
-															</span>
-															{!!Form::text('fechaNacimientoTercero',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de nacimiento', 'style'=>'width:340px;'])!!}
-														</div>
-													</div>
-												</div>
-												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('correoElectronicoTercero', 'Correo Electr&oacute;nico', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													{!!Form::label('correoElectronicoTercero', 'E-Mail', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -416,7 +405,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-phone" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero de tel&eacute;fono','style'=>'width:340px;'])!!}
+															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingrese la fecha de nacimiento','style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -802,7 +791,7 @@
 		 
 		//mostrarPestanas();
 
-        $('#fechaNacimientoTercero').datetimepicker(({
+        $('#fechaNacimientoTerceroInformacion').datetimepicker(({
 			format: "YYYY-MM-DD"
 		}));
 

@@ -14,7 +14,7 @@
 		var matrizRiesgoDetalle = '<?php echo (isset($matrizRiesgo) ? json_encode($matrizRiesgo->matrizRiesgoDetalles) : "");?>';
 		matrizRiesgoDetalle = (matrizRiesgoDetalle != '' ? JSON.parse(matrizRiesgoDetalle) : '');
 
-		var valor = [0,'','','','','','',0,0,0,0,'','','','','','','','','','','','','','','','',''];
+		var valor = [0,'','','','','','',0,0,0,0,'','','','','','','','','','','','','','','',''];
 
 		var idProceso = '<?php echo isset($idProceso) ? $idProceso : "";?>';
     	var nombreProceso = '<?php echo isset($nombreProceso) ? $nombreProceso : "";?>';
@@ -60,14 +60,16 @@
     	$(document).ready(function(){
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
-			detalle.campos = ['idMatrizRiesgoDetalle', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'ListaGeneral_idEliminacionRiesgo', 'ListaGeneral_idSustitucionRiesgo', 'ListaGeneral_idControlAdministrativo', 'ElementoProteccion_idElementoProteccion', 'imagenMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
-			detalle.etiqueta = ['input','select','checkbox','select','select','select','select','input','input','input','input','input','input','input','select','select','input','input','select','input','input','input','select','select','select','select','input','input'];
-			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','hidden','text','','hidden','text','text','','','','','file','text'];
-			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 210px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 140px;height:35px;display:inline-block;','width: 340px;height:35px;'];
-			detalle.clase = ['','','','','','','','','','','','','','','','','','','','','','','','','','','file',''];
-			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false,false];
-			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','',eliminacionRiesgo, sustitucionRiesgo, controlRiesgo, elementoProteccion,'',''];
-			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','','',''];
+			detalle.altura = '36px;';
+
+			detalle.campos = ['idMatrizRiesgoDetalle', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'ListaGeneral_idEliminacionRiesgo', 'ListaGeneral_idSustitucionRiesgo', 'ListaGeneral_idControlAdministrativo', 'ElementoProteccion_idElementoProteccion', 'observacionMatrizRiesgoDetalle'];
+			detalle.etiqueta = ['input','select','checkbox','select','select','select','select','input','input','input','input','input','input','input','select','select','input','input','select','input','input','input','select','select','select','select','input'];
+			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','hidden','text','','hidden','text','text','','','','','text'];
+			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 210px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 340px;height:35px;'];
+			detalle.clase = ['','','','','','','','','','','','','','','','','','','','','','','','','','',''];
+			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false];
+			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','',eliminacionRiesgo, sustitucionRiesgo, controlRiesgo, elementoProteccion,''];
+			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','',''];
 
 			for(var j=0, k = matrizRiesgoDetalle.length; j < k; j++)
 			{
@@ -137,7 +139,7 @@
 									<div class="col-sm-12">
 										<div class="row show-grid">
 											<div style="overflow: auto; width: 100%;">
-												<div style="width: 3000px; height: 300px; display: inline-block; ">
+												<div style="width: 2860px; height: 300px; display: inline-block; ">
 													<div class="col-md-1" style="width: 250px;height:40px;">&nbsp;</div>
 													<div class="col-md-1" style="width: 440px;height:40px;">Peligro</div>
 													<div class="col-md-1" style="width: 270px;height:40px;">Expuestos</div>
@@ -145,7 +147,7 @@
 													<div class="col-md-1" style="width: 550px;height:40px;">Evaluaci&oacute;n de riesgos</div>
 													<div class="col-md-1" style="width: 210px;height:40px;">Valoraci&oacute;n</div>
 													<div class="col-md-1" style="width: 440px;height:40px;">Medidas de Intervenci&oacute;n</div>
-													<div class="col-md-1" style="width: 480px;height:40px;">&nbsp;</div>
+													<div class="col-md-1" style="width: 340px;height:40px;">&nbsp;</div>
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
@@ -171,7 +173,6 @@
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Sustituci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Controles</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Protección Personal</div>
-													<div class="col-md-1" style="width: 140px;display:inline-block;height:60px;">Evidencia</div>
 													<div class="col-md-1" style="width: 340px;display:inline-block;height:60px;">Observaciones</div>
 													<div id="contenedor_detalle">
 													</div>

@@ -29,8 +29,8 @@
 		var nombreProceso = '<?php echo isset($nombreProceso) ? $nombreProceso : "";?>';
 		var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 		var proceso = [JSON.parse(idProceso),JSON.parse(nombreProceso)];
-		var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
-		var eventos2 = ['onclick','horaDetalle(this.parentNode.id);'];
+		// var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
+		// var eventos2 = ['onclick','horaDetalle(this.parentNode.id);'];
 
 		$(document).ready(function(){
 
@@ -59,13 +59,13 @@
 			agenda = new Atributos('agenda','contenedor_agenda','agenda_');
 			agenda.campos = ['idPlanAuditoriaAgenda', 'Proceso_idProceso','Tercero_Auditado','Tercero_Auditor','fechaPlanAuditoriaAgenda','horaInicioPlanAuditoriaAgenda','horaFinPlanAuditoriaAgenda','lugarPlanAuditoriaAgenda'];
 			agenda.etiqueta = ['input','select','select','select','input','input','input','input'];
-			agenda.tipo = ['hidden','','','','text','text','text','text'];
-			agenda.estilo = ['','width: 150px;height:35px;','width: 190px;height:35px;','width: 190px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 150px;height:35px;'];
+			agenda.tipo = ['hidden','','','','date','time','time','text'];
+			agenda.estilo = ['','width: 150px;height:35px;','width: 190px;height:35px;','width: 190px;height:35px;','width: 150px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 150px;height:35px;'];
 			agenda.clase = ['','','','','','','',''];
 			agenda.sololectura = [false,false,false,false,false,false,false,false];
 			agenda.completar = ['off','off','off','off','off','off','off','off'];
 			agenda.opciones = ['',proceso,tercero,tercero,'','','','',''];
-			agenda.funciones  = ['','','','',eventos1,eventos2,eventos2,''];
+			agenda.funciones  = ['','','','','','','',''];
 
 			for(var j=0, k = planAuditoriaAcompanante.length; j < k; j++)
 			{
@@ -300,7 +300,7 @@
 															<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Proceso</div>
 															<div class="col-md-1" style="width: 190px;display:inline-block;height:60px;">Auditado</div>
 															<div class="col-md-1" style="width: 190px;display:inline-block;height:60px;">Auditor</div>
-															<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fecha</div>
+															<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha</div>
 															<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Hora Inicio</div>
 															<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Hora Fin</div>
 															<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Lugar</div>

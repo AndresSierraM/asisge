@@ -43,13 +43,7 @@ class AccidenteController extends Controller
         
 
         $ausentismo  = \App\Ausentismo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreAusentismo','idAusentismo');
-         // $ausentismo = DB::table('ausentismo')
-         //    ->leftJoin('accidente', 'Ausentismo_idAusentismo', '=', 'idAusentismo')
-         //    ->select(DB::raw('nombreAusentismo, idAusentismo'))
-         //    ->where('ausentismo.Compania_idCompania','=', \Session::get('idCompania'))
-         //    ->whereNull('Ausentismo_idAusentismo')
-         //    ->get();
-
+         
         $proceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $idProceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
         $nombreProceso  = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
@@ -98,68 +92,29 @@ class AccidenteController extends Controller
 
 
         $accidente = \App\Accidente::All()->last();
-        $contadorDetalle = count($request['idAccidenteRecomendacion']);
-        $causas = '';
+
+        // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+        // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+        $accidente->firmaCoordinadorAccidente = 'accidente/firmaaccidente_'.$accidente->idAccidente.'.png';
+
+        $accidente->save();
+
+        //----------------------------
+        // Guardamos la imagen de la firma como un archivo en disco
+        $data = $request['firmabase64'];
+
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        file_put_contents('imagenes/accidente/firmaaccidente_'.$accidente->idAccidente.'.png', $data);
+        //----------------------------
+
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($accidente->idAccidente, $request);
         
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\AccidenteRecomendacion::create([
-
-                'idAccidenteRecomendacion' => $request['idAccidenteRecomendacion'][$i], 
-                'Accidente_idAccidente' => $accidente->idAccidente, 
-                'controlAccidenteRecomendacion' => $request['controlAccidenteRecomendacion'][$i], 
-                'fuenteAccidenteRecomendacion' => $request['fuenteAccidenteRecomendacion'][$i], 
-                'medioAccidenteRecomendacion' => $request['medioAccidenteRecomendacion'][$i], 
-                'personaAccidenteRecomendacion' => $request['personaAccidenteRecomendacion'][$i], 
-                'fechaVerificacionAccidenteRecomendacion' => $request['fechaVerificacionAccidenteRecomendacion'][$i], 
-                'medidaEfectivaAccidenteRecomendacion' => $request['medidaEfectivaAccidenteRecomendacion'][$i], 
-                'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]
-            ]);
-
-            $causas .= $request['controlAccidenteRecomendacion'][$i].', ';
-        }
-
-        $causas = substr($causas, 0, strlen($causas)-2);
-
-        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
-
-        //COnsultamos el nombre del tercero empleado
-        $nombreTercero = \App\Tercero::find($request['Tercero_idEmpleado']);
-
-        $reporteACPM = \App\ReporteACPM::All()->last();
-        \App\ReporteACPMDetalle::create([
-
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-            'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => date("Y-m-d"),
-            'Proceso_idProceso' => NULL,
-            'Modulo_idModulo' => 12,
-            'tipoReporteACPMDetalle' => 'Correctiva',
-            'descripcionReporteACPMDetalle' => 'Para el '.$request['clasificacionAccidente'].' de '.$nombreTercero->nombreCompletoTercero.', se recomienda implementar controles por las siguientes causas: '.$causas,
-            'analisisReporteACPMDetalle' => '',
-            'correccionReporteACPMDetalle' => '',
-            'Tercero_idResponsableCorrecion' => NULL,
-            'planAccionReporteACPMDetalle' => '',
-            'Tercero_idResponsablePlanAccion' => NULL,
-            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-            'estadoActualReporteACPMDetalle' => '',
-            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-            'eficazReporteACPMDetalle' => 0
-
-        ]);
-
-        
-        $contadorDetalle = count($request['idAccidenteEquipo']);
-        
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\AccidenteEquipo::create([
-
-                'idAccidenteEquipo' => $request['idAccidenteEquipo'][$i], 
-                'Accidente_idAccidente' => $id, 
-                'Tercero_idInvestigador' => $request['Tercero_idInvestigador'][$i]
-            ]);
-        }
 
         return redirect('/accidente');
     }
@@ -214,18 +169,61 @@ class AccidenteController extends Controller
         $accidente->enSuLaborAccidente = (($request['enSuLaborAccidente'] !== null) ? 1 : 0);
         $accidente->enLaEmpresaAccidente = (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0);
         $accidente->Ausentismo_idAusentismo = (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']);
+        $accidente->firmaCoordinadorAccidente = 'accidente/firmaaccidente_'.$id.'.png';
 
         $accidente->save();
 
-        \App\AccidenteRecomendacion::where('Accidente_idAccidente',$id)->delete();
+        //----------------------------
+        // Guardamos la imagen de la firma como un archivo en disco
+        $data = $request['firmabase64'];
+
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        file_put_contents('imagenes/accidente/firmaaccidente_'.$id.'.png', $data);
+
+        //----------------------------
+
+
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($id, $request);
+       
+
+       return redirect('/accidente');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        \App\Accidente::destroy($id);
+        return redirect('/accidente');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarRecomendacion']);
+        \App\AccidenteRecomendacion::whereIn('idAccidenteRecomendacion',$idsEliminar)->delete();
 
         $contadorDetalle = count($request['idAccidenteRecomendacion']);
         $causas = '';
+        
         for($i = 0; $i < $contadorDetalle; $i++)
         {
-            \App\AccidenteRecomendacion::create([
 
-                'idAccidenteRecomendacion' => $request['idAccidenteRecomendacion'][$i], 
+            $indice = array(
+                'idAccidenteRecomendacion' => $request['idAccidenteRecomendacion'][$i]);
+
+            $data = array(
                 'Accidente_idAccidente' => $id, 
                 'controlAccidenteRecomendacion' => $request['controlAccidenteRecomendacion'][$i], 
                 'fuenteAccidenteRecomendacion' => $request['fuenteAccidenteRecomendacion'][$i], 
@@ -233,11 +231,13 @@ class AccidenteController extends Controller
                 'personaAccidenteRecomendacion' => $request['personaAccidenteRecomendacion'][$i], 
                 'fechaVerificacionAccidenteRecomendacion' => $request['fechaVerificacionAccidenteRecomendacion'][$i], 
                 'medidaEfectivaAccidenteRecomendacion' => $request['medidaEfectivaAccidenteRecomendacion'][$i], 
-                'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]
-            ]);
+                'Proceso_idResponsable' => $request['Proceso_idResponsable'][$i]);
+
+            $respuesta = \App\AccidenteRecomendacion::updateOrCreate($indice, $data);
 
             $causas .= $request['controlAccidenteRecomendacion'][$i].', ';
         }
+
         $causas = substr($causas, 0, strlen($causas)-2);
 
         // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
@@ -267,32 +267,24 @@ class AccidenteController extends Controller
 
         ]);
 
-        \App\AccidenteEquipo::where('Accidente_idAccidente',$id)->delete();
-
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarEquipo']);
+        \App\AccidenteEquipo::whereIn('idAccidenteEquipo',$idsEliminar)->delete();
+        
         $contadorDetalle = count($request['idAccidenteEquipo']);
         
         for($i = 0; $i < $contadorDetalle; $i++)
         {
-            \App\AccidenteEquipo::create([
+            $indice = array(
+                'idAccidenteEquipo' => $request['idAccidenteEquipo'][$i]);
 
-                'idAccidenteEquipo' => $request['idAccidenteEquipo'][$i], 
+            $data = array(
                 'Accidente_idAccidente' => $id, 
-                'Tercero_idInvestigador' => $request['Tercero_idInvestigador'][$i]
-            ]);
+                'Tercero_idInvestigador' => $request['Tercero_idInvestigador'][$i]);
+
+            $respuesta = \App\AccidenteEquipo::updateOrCreate($indice, $data);
+
         }
-
-       return redirect('/accidente');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        \App\Accidente::destroy($id);
-        return redirect('/accidente');
     }
 }

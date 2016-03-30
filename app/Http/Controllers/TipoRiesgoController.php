@@ -47,23 +47,11 @@ class TipoRiesgoController extends Controller
             ]);
 
         $tipoRiesgo = \App\TipoRiesgo::All()->last();
-        $contadorDetalle = count($request['nombreTipoRiesgoDetalle']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\TipoRiesgoDetalle::create([
-            'TipoRiesgo_idTipoRiesgo' => $tipoRiesgo->idTipoRiesgo,
-            'nombreTipoRiesgoDetalle' => $request['nombreTipoRiesgoDetalle'][$i]
-           ]);
-        }
         
-        $contadorSalud = count($request['nombreTipoRiesgoSalud']);
-        for($i = 0; $i < $contadorSalud; $i++)
-        {
-            \App\TipoRiesgoSalud::create([
-            'TipoRiesgo_idTipoRiesgo' => $tipoRiesgo->idTipoRiesgo,
-            'nombreTipoRiesgoSalud' => $request['nombreTipoRiesgoSalud'][$i]
-           ]);
-        }
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($tipoRiesgo->idTipoRiesgo, $request);
 
         return redirect('/tiporiesgo');
     }
@@ -105,27 +93,11 @@ class TipoRiesgoController extends Controller
         $tipoRiesgo->fill($request->all());
         $tipoRiesgo->save();
 
-        \App\TipoRiesgoDetalle::where('TipoRiesgo_idTipoRiesgo',$id)->delete();
-        \App\TipoRiesgoSalud::where('TipoRiesgo_idTipoRiesgo',$id)->delete();
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($tipoRiesgo->idTipoRiesgo, $request);
         
-        $contadorDetalle = count($request['nombreTipoRiesgoDetalle']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\TipoRiesgoDetalle::create([
-            'TipoRiesgo_idTipoRiesgo' => $id,
-            'nombreTipoRiesgoDetalle' => $request['nombreTipoRiesgoDetalle'][$i]
-           ]);
-        }
-        
-        $contadorSalud = count($request['nombreTipoRiesgoSalud']);
-        for($i = 0; $i < $contadorSalud; $i++)
-        {
-            \App\TipoRiesgoSalud::create([
-            'TipoRiesgo_idTipoRiesgo' => $id,
-            'nombreTipoRiesgoSalud' => $request['nombreTipoRiesgoSalud'][$i]
-           ]);
-        }
-
         return redirect('/tiporiesgo');
     }
 
@@ -139,5 +111,51 @@ class TipoRiesgoController extends Controller
     {
         \App\TipoRiesgo::destroy($id);
         return redirect('/tiporiesgo');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarDetalle']);
+        \App\TipoRiesgoDetalle::whereIn('idTipoRiesgoDetalle',$idsEliminar)->delete();
+
+        $contadorDetalle = count($request['nombreTipoRiesgoDetalle']);
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+
+            $indice = array(
+             'idTipoRiesgoDetalle' => $request['idTipoRiesgoDetalle'][$i]);
+
+            $data = array(
+            'TipoRiesgo_idTipoRiesgo' => $id,
+            'nombreTipoRiesgoDetalle' => $request['nombreTipoRiesgoDetalle'][$i] );
+
+            $preguntas = \App\TipoRiesgoDetalle::updateOrCreate($indice, $data);
+
+        }
+        
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarSalud']);
+        \App\TipoRiesgoSalud::whereIn('idTipoRiesgoSalud',$idsEliminar)->delete();
+
+        $contadorSalud = count($request['nombreTipoRiesgoSalud']);
+        for($i = 0; $i < $contadorSalud; $i++)
+        {
+
+            $indice = array(
+             'idTipoRiesgoSalud' => $request['idTipoRiesgoSalud'][$i]);
+
+            $data = array(
+            'TipoRiesgo_idTipoRiesgo' => $id,
+            'nombreTipoRiesgoSalud' => $request['nombreTipoRiesgoSalud'][$i] );
+
+            $preguntas = \App\TipoRiesgoSalud::updateOrCreate($indice, $data);
+
+        }
+
     }
 }

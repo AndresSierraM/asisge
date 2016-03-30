@@ -9,7 +9,7 @@ class ActaCapacitacionAsistente extends Model
 	protected $table = 'actacapacitacionasistente';
     protected $primaryKey = 'idActaCapacitacionAsistente';
 
-    protected $fillable = ['ActaCapacitacion_idActaCapacitacion', 'Tercero_idAsistente'];
+    protected $fillable = ['ActaCapacitacion_idActaCapacitacion', 'Tercero_idAsistente', 'firmaActaCapacitacionAsistente'];
 
     public $timestamps = false;
 

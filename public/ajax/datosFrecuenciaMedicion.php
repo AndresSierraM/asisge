@@ -13,8 +13,8 @@
                             '<span class="glyphicon glyphicon-trash"></span>'.
                         '</a>';
         $row[$key][] = $value['idFrecuenciaMedicion'];
-        $row[$key][] = $value['codigofrecuenciamedicion'];
-        $row[$key][] = $value['nombrefrecuenciamedicion'];   
+        $row[$key][] = $value['codigoFrecuenciaMedicion'];
+        $row[$key][] = $value['nombreFrecuenciaMedicion'];   
         $row[$key][] = $value['valorFrecuenciaMedicion'];
         $row[$key][] = $value['unidadFrecuenciaMedicion'];
     }

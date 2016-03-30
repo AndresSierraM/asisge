@@ -9,7 +9,7 @@ class Inspeccion extends Model
     protected $table = 'inspeccion';
     protected $primaryKey = 'idInspeccion';
 
-    protected $fillable = ['TipoInspeccion_idTipoInspeccion', 'Tercero_idRealizadaPor', 'fechaElaboracionInspeccion', 
+    protected $fillable = ['TipoInspeccion_idTipoInspeccion', 'Tercero_idRealizadaPor', 'firmaRealizadaPorInspeccion','fechaElaboracionInspeccion', 
     						'observacionesInspeccion', 'Compania_idCompania'];
 
     public $timestamps = false;

@@ -26,7 +26,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::text('codigoTipoExamenMedico',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la frecuencia'])!!}
+              {!!Form::text('codigoTipoExamenMedico',null,['class'=>'form-control','placeholder'=>'Ingresa el código del Exámen médico'])!!}
               {!! Form::hidden('idTipoExamenMedico', null, array('id' => 'idTipoExamenMedico')) !!}
             </div>
           </div>

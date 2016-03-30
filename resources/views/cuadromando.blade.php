@@ -113,7 +113,7 @@
         </div>
 
           <div class="form-group" id='test'>
-            {!!Form::label('CompaniaObjetivo_idCompaniaObjetivo', 'Objetivo de la Calidad', array('class' => 'col-sm-2 control-label'))!!}
+            {!!Form::label('CompaniaObjetivo_idCompaniaObjetivo', 'Objetivo Estratégico', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
@@ -229,7 +229,7 @@
                         <span class="input-group-addon">
                           <i class="fa fa-exchange"></i>
                         </span>
-                {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciamedicion, (isset($cuadromando) ? $cuadromando->FrecuenciaMedicion_idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medeci&oacute;n"])!!}
+                {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciamedicion, (isset($cuadromando) ? $cuadromando->FrecuenciaMedicion_idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
               </div>
             </div>
           </div> 
@@ -290,7 +290,7 @@
         {!! HTML::image('images/indicador.png','indicador',array('width' => '32', 'height' => '32','title' => 'Indicador')) !!}
       </span>
       <span id="constanteformula" class="btn btn-warning"  style="height:52px; width:108px;" onclick="mostrarDiv('formConstante')">
-        {!! HTML::image('images/pi.png','constante',array('width'=>'32', 'height' => '32','title' => 'Pi')) !!}
+        {!! HTML::image('images/pi.png','constante',array('width'=>'32', 'height' => '32','title' => 'Constante')) !!}
       </span>
       <span id="variableformula" class="btn btn-info"  style="height:52px; width:108px;" onclick="mostrarDiv('formVariable')">
         {!! HTML::image('images/funcion.png','variable',array('width'=>'32', 'height' => '32','title' => 'Variable')) !!}

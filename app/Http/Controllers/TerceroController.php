@@ -79,7 +79,6 @@ class TerceroController extends Controller
             'movil1Tercero' => $request['movil1Tercero'],
             'movil2Tercero' => $request["movil2Tercero"],
             'sexoTercero' => $request['sexoTercero'],
-            'fechaNacimientoTercero' => $request['fechaNacimientoTercero'],
             'correoElectronicoTercero' => $request['correoElectronicoTercero'],
             'paginaWebTercero' => $request['paginaWebTercero'],
             'Cargo_idCargo' => $request['Cargo_idCargo'],

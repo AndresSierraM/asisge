@@ -68,6 +68,17 @@
           </div>
         </div>
 
+        <div class="form-group" >
+          {!!Form::label('Rol_idRol', 'Rol', array('class' => 'col-sm-2 control-label'))!!}
+          <div class="col-sm-10" >
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-credit-card" ></i>
+              </span>
+              {!!Form::select('Rol_idRol',$rol, (isset($usuario) ? $usuario->Rol_idRol : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Rol"])!!}
+            </div>
+          </div>
+        </div>
         <div class="form-group" id='test'>
             {!!Form::label('Compania_idCompania', 'Compa&ntilde;&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">

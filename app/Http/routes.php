@@ -21,7 +21,10 @@ Route::get('dashboard', function()
 	return view('layouts.tablero');
 });
 
-
+Route::get('firma', function()
+{
+	return view('signaturepad');
+});
 
 Route::get('calcularCuadroMando', function()
 {

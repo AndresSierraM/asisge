@@ -42,6 +42,8 @@ class EntregaElementoProteccionController extends Controller
      */
     public function store(Request $request)
     {
+       
+
         \App\EntregaElementoProteccion::create([
         'Tercero_idTercero' => $request['Tercero_idTercero'],
         'fechaEntregaElementoProteccion' => $request['fechaEntregaElementoProteccion'],
@@ -49,15 +51,30 @@ class EntregaElementoProteccionController extends Controller
         ]);
 
         $entregaelementoproteccion = \App\EntregaElementoProteccion::All()->last();
-        $contadorelementoproteccion = count($request['cantidadEntregaElementoProteccionDetalle']);
-        for($i = 0; $i < $contadorelementoproteccion; $i++)
-        {
-            \App\EntregaElementoProteccionDetalle::create([
-            'EntregaElementoProteccion_idEntregaElementoProteccion' => $entregaelementoproteccion->idEntregaElementoProteccion,
-            'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
-            'cantidadEntregaElementoProteccionDetalle' => $request['cantidadEntregaElementoProteccionDetalle'][$i],
-            ]);
-        }
+        
+        // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+        // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+        $ruta = 'entregaepp/firmaentregaepp_'.$entregaelementoproteccion->idEntregaElementoProteccion.'.png';
+        $entregaelementoproteccion->firmaTerceroEntregaElementoProteccion = $ruta;
+
+        $entregaelementoproteccion->save();
+
+        //----------------------------
+        // Guardamos la imagen de la firma como un archivo en disco
+        $data = $request['firmabase64'];
+
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        file_put_contents('imagenes/'.$ruta, $data);
+
+        //----------------------------
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($entregaelementoproteccion->idEntregaElementoProteccion, $request);
+
         return redirect('/entregaelementoproteccion');    
     }
 
@@ -98,19 +115,30 @@ class EntregaElementoProteccionController extends Controller
     {
         $entregaelementoproteccion = \App\EntregaElementoProteccion::find($id);
         $entregaelementoproteccion->fill($request->all());
+        
+        // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+        // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+        $ruta = 'entregaepp/firmaentregaepp_'.$entregaelementoproteccion->idEntregaElementoProteccion.'.png';
+        $entregaelementoproteccion->firmaTerceroEntregaElementoProteccion = $ruta;
+
         $entregaelementoproteccion->save();
 
-        \App\EntregaElementoProteccionDetalle::where('EntregaElementoProteccion_idEntregaElementoProteccion',$id)->delete();
+        //----------------------------
+        // Guardamos la imagen de la firma como un archivo en disco
+        $data = $request['firmabase64'];
 
-        $contadorelementoproteccion = count($request['cantidadEntregaElementoProteccionDetalle']);
-        for($i = 0; $i < $contadorelementoproteccion; $i++)
-        {
-            \App\EntregaElementoProteccionDetalle::create([
-            'EntregaElementoProteccion_idEntregaElementoProteccion' => $id,
-            'cantidadEntregaElementoProteccionDetalle' => $request['cantidadEntregaElementoProteccionDetalle'][$i],
-            'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
-            ]);
-        }
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        file_put_contents('imagenes/'.$ruta, $data);
+
+        //----------------------------
+
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($entregaelementoproteccion->idEntregaElementoProteccion, $request);
 
         return redirect('/entregaelementoproteccion');
     }
@@ -126,4 +154,33 @@ class EntregaElementoProteccionController extends Controller
         \App\EntregaElementoProteccion::destroy($id);
         return redirect('/entregaelementoproteccion');
     }
+
+
+    protected function grabarDetalle($id, $request)
+    {
+        
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarElemento']);
+        \App\EntregaElementoProteccionDetalle::whereIn('idEntregaElementoProteccionDetalle',$idsEliminar)->delete();
+
+
+        $contadorelementoproteccion = count($request['cantidadEntregaElementoProteccionDetalle']);
+        for($i = 0; $i < $contadorelementoproteccion; $i++)
+        {
+
+            $indice = array(
+             'idEntregaElementoProteccionDetalle' => $request['idEntregaElementoProteccionDetalle'][$i]);
+
+            $data = array(
+             'EntregaElementoProteccion_idEntregaElementoProteccion' => $id,
+            'cantidadEntregaElementoProteccionDetalle' => $request['cantidadEntregaElementoProteccionDetalle'][$i],
+            'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i] );
+
+            $preguntas = \App\EntregaElementoProteccionDetalle::updateOrCreate($indice, $data);
+
+        }
+    }
 }
+

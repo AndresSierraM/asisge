@@ -60,34 +60,12 @@ class ActaCapacitacionController extends Controller
                 ]);
 
             $actaCapacitacion = \App\ActaCapacitacion::All()->last();
-            $contadorDetalle = count($request['Tercero_idAsistente']);
             
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\ActaCapacitacionAsistente::create([
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($actaCapacitacion->idActaCapacitacion, $request);
 
-                    'ActaCapacitacion_idActaCapacitacion' => $actaCapacitacion->idActaCapacitacion,
-                    'Tercero_idAsistente' => $request['Tercero_idAsistente'][$i]
-                ]);
-            }
-
-            
-            for($i = 0; $i < count($request['Tercero_idCapacitador']); $i++)
-            {
-                $indice = array(
-                 'idActaCapacitacionTema' => $request['idActaCapacitacionTema'][$i]);
-
-                 $data = array(
-                    'ActaCapacitacion_idActaCapacitacion' => $actaCapacitacion->idActaCapacitacion,
-                    'PlanCapacitacionTema_idPlanCapacitacionTema' => $request['PlanCapacitacionTema_idPlanCapacitacionTema'][$i],
-                    'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
-                     'fechaActaCapacitacionTema' => $request['fechaActaCapacitacionTema'][$i],
-                     'horaActaCapacitacionTema' => $request['horaActaCapacitacionTema'][$i],
-                     'dictadaActaCapacitacionTema' => $request['dictadaActaCapacitacionTema'][$i],
-                     'cumpleObjetivoActaCapacitacionTema' => $request['cumpleObjetivoActaCapacitacionTema'][$i]);
-
-                $respuesta = \App\ActaCapacitacionTema::updateOrCreate($indice, $data);
-            }
             return redirect('/actacapacitacion');
         }
     }
@@ -135,7 +113,7 @@ class ActaCapacitacionController extends Controller
         {
 
             $plan = DB::select(
-                'SELECT idPlanCapacitacionTema, 0 as idActaCapacitacionTema, nombrePlanCapacitacionTema, PCT.Tercero_idCapacitador, fechaPlanCapacitacionTema, horaPlanCapacitacionTema, 1 as dictadaPlanCapacitacionTema,  0 as cumpleObjetivoPlanCapacitacionTema
+                'SELECT idPlanCapacitacionTema as PlanCapacitacionTema_idPlanCapacitacionTema, 0 as idActaCapacitacionTema, nombrePlanCapacitacionTema, PCT.Tercero_idCapacitador, fechaPlanCapacitacionTema, horaPlanCapacitacionTema, 1 as dictadaPlanCapacitacionTema,  0 as cumpleObjetivoPlanCapacitacionTema
                 FROM plancapacitaciontema PCT
                 LEFT JOIN actacapacitaciontema ACT
                     ON PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema
@@ -161,7 +139,7 @@ class ActaCapacitacionController extends Controller
     {
         $planCapacitacion = DB::table('plancapacitacion as PC')
             ->leftJoin('plancapacitaciontema as PCT', 'PC.idPlanCapacitacion', '=', 'PCT.PlanCapacitacion_idPlanCapacitacion')
-            ->where('dictadaPlanCapacitacionTema','=',0)
+            //->where('dictadaPlanCapacitacionTema','=',0)
             ->groupBy('idPlanCapacitacion')
             ->lists('nombrePlanCapacitacion', 'idPlanCapacitacion');
             
@@ -190,37 +168,11 @@ class ActaCapacitacionController extends Controller
 
             \App\ActaCapacitacionAsistente::where('ActaCapacitacion_idActaCapacitacion',$id)->delete();
 
-            $contadorDetalle = count($request['Tercero_idAsistente']);
-            
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\ActaCapacitacionAsistente::create([
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($id, $request);
 
-                    'ActaCapacitacion_idActaCapacitacion' => $actaCapacitacion->idActaCapacitacion,
-                    'Tercero_idAsistente' => $request['Tercero_idAsistente'][$i]
-                ]);
-            }
-
-
-            for($i = 0; $i < count($request['Tercero_idCapacitador']); $i++)
-            {
-                $indice = array(
-                 'idActaCapacitacionTema' => $request['idActaCapacitacionTema'][$i]);
-
-                 $data = array(
-                    'ActaCapacitacion_idActaCapacitacion' =>$id,
-                    'PlanCapacitacionTema_idPlanCapacitacionTema' => $request['PlanCapacitacionTema_idPlanCapacitacionTema'][$i],
-                    'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
-                     'fechaActaCapacitacionTema' => $request['fechaActaCapacitacionTema'][$i],
-                     'horaActaCapacitacionTema' => $request['horaActaCapacitacionTema'][$i],
-                     'dictadaActaCapacitacionTema' => $request['dictadaActaCapacitacionTema'][$i],
-                     'cumpleObjetivoActaCapacitacionTema' => $request['cumpleObjetivoActaCapacitacionTema'][$i]);
-
-                $respuesta = \App\ActaCapacitacionTema::updateOrCreate($indice, $data);
-            }
-
-
-           
             return redirect('/actacapacitacion');
         }
     }
@@ -235,5 +187,69 @@ class ActaCapacitacionController extends Controller
     {
         \App\ActaCapacitacion::destroy($id);
         return redirect('/actacapacitacion');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarAsistente']);
+        \App\ActaCapacitacionAsistente::whereIn('idActaCapacitacionAsistente',$idsEliminar)->delete();
+
+        $contadorDetalle = count($request['Tercero_idAsistente']);
+            
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+            // esto es porque la creamos con el ID del acta y el id del asistente y debiamos grabar primero para obtenerlo
+            $ruta = 'actacapacitacion/firmaactacapacitacion_'.$id.'_'.$request['Tercero_idAsistente'][$i].'.png';
+
+
+            $indice = array(
+             'idActaCapacitacionAsistente' => $request['idActaCapacitacionAsistente'][$i]);
+
+             $data = array(
+             'Tercero_idAsistente' => $request['Tercero_idAsistente'][$i],
+             'ActaCapacitacion_idActaCapacitacion' => $id,
+             'firmaActaCapacitacionAsistente' => $ruta);
+
+            $preguntas = \App\ActaCapacitacionAsistente::updateOrCreate($indice, $data);
+            
+            //----------------------------
+            // Guardamos la imagen de la firma como un archivo en disco
+            $data = $request['firmabase64'][$i];
+            if($data != '')
+            {
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
+
+                file_put_contents('imagenes/'.$ruta, $data);
+            }
+            //----------------------------
+        }
+
+        
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarTema']);
+        \App\ActaCapacitacionTema::whereIn('idActaCapacitacionTema',$idsEliminar)->delete();
+
+        for($i = 0; $i < count($request['Tercero_idCapacitador']); $i++)
+        {
+            $indice = array(
+             'idActaCapacitacionTema' => $request['idActaCapacitacionTema'][$i]);
+
+             $data = array(
+                'ActaCapacitacion_idActaCapacitacion' => $id,
+                'PlanCapacitacionTema_idPlanCapacitacionTema' => $request['PlanCapacitacionTema_idPlanCapacitacionTema'][$i],
+                'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
+                 'fechaActaCapacitacionTema' => $request['fechaActaCapacitacionTema'][$i],
+                 'horaActaCapacitacionTema' => $request['horaActaCapacitacionTema'][$i],
+                 'dictadaActaCapacitacionTema' => $request['dictadaActaCapacitacionTema'][$i],
+                 'cumpleObjetivoActaCapacitacionTema' => $request['cumpleObjetivoActaCapacitacionTema'][$i]);
+
+            $respuesta = \App\ActaCapacitacionTema::updateOrCreate($indice, $data);
+        }
     }
 }

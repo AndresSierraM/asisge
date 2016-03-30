@@ -61,35 +61,10 @@ class ConformacionGrupoApoyoController extends Controller
 
             $conformacionGrupoApoyo = \App\ConformacionGrupoApoyo::All()->last();
             
-            $contadorComite = count($request['Tercero_idPrincipal']);
-            for($i = 0; $i < $contadorComite; $i++)
-            {
-                \App\ConformacionGrupoApoyoComite::create([
-                'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $conformacionGrupoApoyo->idConformacionGrupoApoyo,
-                'nombradoPorConformacionGrupoApoyoComite' => $request['nombradoPorConformacionGrupoApoyoComite'][$i],
-                'Tercero_idPrincipal' => $request['Tercero_idPrincipal'][$i],
-                'Tercero_idSuplente' => $request['Tercero_idSuplente'][$i]
-               ]);
-            }
-
-            $contadorJurado = count($request['Tercero_idJurado']);
-            for($i = 0; $i < $contadorJurado; $i++)
-            {
-                \App\ConformacionGrupoApoyoJurado::create([
-                'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $conformacionGrupoApoyo->idConformacionGrupoApoyo,
-                'Tercero_idJurado' => $request['Tercero_idJurado'][$i]
-               ]);
-            }
-
-            $contadorResultado = count($request['Tercero_idCandidato']);
-            for($i = 0; $i < $contadorResultado; $i++)
-            {
-                \App\ConformacionGrupoApoyoResultado::create([
-                'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $conformacionGrupoApoyo->idConformacionGrupoApoyo,
-                'Tercero_idCandidato' => $request['Tercero_idCandidato'][$i],
-                'votosConformacionGrupoApoyoResultado' => $request['votosConformacionGrupoApoyoResultado'][$i]
-               ]);
-            }
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($conformacionGrupoApoyo->idConformacionGrupoApoyo, $request);
 
             return redirect('/conformaciongrupoapoyo');
     }
@@ -135,39 +110,10 @@ class ConformacionGrupoApoyoController extends Controller
 
             $conformacionGrupoApoyo->save();
 
-            \App\ConformacionGrupoApoyoComite::where('ConformacionGrupoApoyo_idConformacionGrupoApoyo',$id)->delete();
-            \App\ConformacionGrupoApoyoJurado::where('ConformacionGrupoApoyo_idConformacionGrupoApoyo',$id)->delete();
-            \App\ConformacionGrupoApoyoResultado::where('ConformacionGrupoApoyo_idConformacionGrupoApoyo',$id)->delete();
-            
-            $contadorComite = count($request['Tercero_idPrincipal']);
-            for($i = 0; $i < $contadorComite; $i++)
-            {
-                \App\ConformacionGrupoApoyoComite::create([
-                'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
-                'nombradoPorConformacionGrupoApoyoComite' => $request['nombradoPorConformacionGrupoApoyoComite'][$i],
-                'Tercero_idPrincipal' => $request['Tercero_idPrincipal'][$i],
-                'Tercero_idSuplente' => $request['Tercero_idSuplente'][$i]
-               ]);
-            }
-
-            $contadorJurado = count($request['Tercero_idJurado']);
-            for($i = 0; $i < $contadorJurado; $i++)
-            {
-                \App\ConformacionGrupoApoyoJurado::create([
-                'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
-                'Tercero_idJurado' => $request['Tercero_idJurado'][$i]
-               ]);
-            }
-
-            $contadorResultado = count($request['Tercero_idCandidato']);
-            for($i = 0; $i < $contadorResultado; $i++)
-            {
-                \App\ConformacionGrupoApoyoResultado::create([
-                'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
-                'Tercero_idCandidato' => $request['Tercero_idCandidato'][$i],
-                'votosConformacionGrupoApoyoResultado' => $request['votosConformacionGrupoApoyoResultado'][$i]
-               ]);
-            }
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($conformacionGrupoApoyo->idConformacionGrupoApoyo, $request);
 
             return redirect('/conformaciongrupoapoyo');
     }
@@ -182,5 +128,73 @@ class ConformacionGrupoApoyoController extends Controller
     {
         \App\ConformacionGrupoApoyo::destroy($id);
         return redirect('/conformaciongrupoapoyo');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarComite']);
+        \App\ConformacionGrupoApoyoComite::whereIn('idConformacionGrupoApoyoComite',$idsEliminar)->delete();
+
+        $contadorComite = count($request['Tercero_idPrincipal']);
+        for($i = 0; $i < $contadorComite; $i++)
+        {
+
+            $indice = array(
+             'idConformacionGrupoApoyoComite' => $request['idConformacionGrupoApoyoComite'][$i]);
+
+            $data = array(
+             'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
+            'nombradoPorConformacionGrupoApoyoComite' => $request['nombradoPorConformacionGrupoApoyoComite'][$i],
+            'Tercero_idPrincipal' => $request['Tercero_idPrincipal'][$i],
+            'Tercero_idSuplente' => $request['Tercero_idSuplente'][$i] );
+
+            $preguntas = \App\ConformacionGrupoApoyoComite::updateOrCreate($indice, $data);
+        }
+
+        
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarJurado']);
+        \App\ConformacionGrupoApoyoJurado::whereIn('idConformacionGrupoApoyoJurado',$idsEliminar)->delete();
+
+        $contadorJurado = count($request['Tercero_idJurado']);
+        for($i = 0; $i < $contadorJurado; $i++)
+        {
+
+            $indice = array(
+             'idConformacionGrupoApoyoJurado' => $request['idConformacionGrupoApoyoJurado'][$i]);
+
+            $data = array(
+             'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
+            'Tercero_idJurado' => $request['Tercero_idJurado'][$i] );
+
+            $preguntas = \App\ConformacionGrupoApoyoJurado::updateOrCreate($indice, $data);
+
+ 
+        }
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarResultado']);
+        \App\ConformacionGrupoApoyoResultado::whereIn('idConformacionGrupoApoyoResultado',$idsEliminar)->delete();
+
+        $contadorResultado = count($request['Tercero_idCandidato']);
+        for($i = 0; $i < $contadorResultado; $i++)
+        {
+
+            $indice = array(
+             'idConformacionGrupoApoyoResultado' => $request['idConformacionGrupoApoyoResultado'][$i]);
+
+            $data = array(
+             'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
+            'Tercero_idCandidato' => $request['Tercero_idCandidato'][$i],
+            'votosConformacionGrupoApoyoResultado' => $request['votosConformacionGrupoApoyoResultado'][$i] );
+
+            $preguntas = \App\ConformacionGrupoApoyoResultado::updateOrCreate($indice, $data);
+
+        }
+
     }
 }

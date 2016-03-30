@@ -4,14 +4,51 @@
 @section('content')
 @include('alerts.request')
 
+{!!Html::style('css/signature-pad.css'); !!} 
+
+
+<?php
+
+$firmas=$actaGrupoApoyo->actaGrupoApoyoTercero;
+
+for ($i=0; $i < count($firmas); $i++) 
+{ 
+
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+  
+  // al array de la consulta, le adicionamos 2 valores mas que representan la firma como imagen y como dato base 64, este array lo usamos para llenar el detalle de terceros participantes
+
+  $firmas[$i]["firma"] = ''; 
+  $firmas[$i]["firmabase64"] = ''; 
+  if(isset($firmas))
+  {
+    $path = 'imagenes/'.$firmas[$i]["firmaActaGrupoApoyoTercero"];
+  
+    if($firmas[$i]["firmaActaGrupoApoyoTercero"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $firmas[$i]["firma"] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+      $firmas[$i]["firmabase64"] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+      
+    }
+  }
+
+}
+
+?>
+
+
 	<script>
 		var actaGrupoApoyoTema = '<?php echo (isset($actaGrupoApoyo) ? json_encode($actaGrupoApoyo->actaGrupoApoyoTema) : "");?>';
 		actaGrupoApoyoTema = (actaGrupoApoyoTema != '' ? JSON.parse(actaGrupoApoyoTema) : '');
 
-		var actaGrupoApoyoTercero = '<?php echo (isset($actaGrupoApoyo) ? json_encode($actaGrupoApoyo->actaGrupoApoyoTercero) : "");?>';
+		// usamos el array de participantes que llenamos al principio de esta vista en un segmento de PHP
+		var actaGrupoApoyoTercero = '<?php echo (isset($firmas) ? json_encode($firmas) : "");?>';
 		actaGrupoApoyoTercero = (actaGrupoApoyoTercero != '' ? JSON.parse(actaGrupoApoyoTercero) : '');
 
-		var valorTercero = [0,0];
+		var valorTercero = [0,0,'',''];
 		var valorTema = [0,'','',0,''];
 
 		var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
@@ -21,23 +58,34 @@
 
 		$(document).ready(function(){
 
+
 			participante = new Atributos('participante','contenedor_participante','participante_');
-			participante.campos = ['idActaGrupoApoyoTercero', 'Tercero_idParticipante'];
-			participante.etiqueta = ['input','select'];
-			participante.tipo = ['hidden',''];
-			participante.estilo = ['','width: 1010px;height:35px;'];
-			participante.clase = ['',''];
-			participante.sololectura = [false,false];
-			participante.completar = ['off','off'];
-			participante.opciones = ['',tercero];
-			participante.funciones  = ['',''];
+
+			participante.altura = '65px;';
+			participante.campoid = 'idActaGrupoApoyoTercero';
+			participante.campoEliminacion = 'eliminarTercero';
+
+			participante.campos = ['idActaGrupoApoyoTercero', 'Tercero_idParticipante','firma','firmabase64'];
+			participante.etiqueta = ['input','select','firma','input'];
+			participante.tipo = ['hidden','','','hidden'];
+			participante.estilo = ['','width: 1115px;height:60px;', 'width:80px; height: 60px; border: 1px solid; display: inline-block', ''];
+			participante.clase = ['','','',''];
+			participante.sololectura = [false,false,false,false];
+			participante.completar = ['off','off','off','off'];
+			participante.opciones = ['',tercero,'',''];
+			participante.funciones  = ['','', '' ,''];
 
 				
 			tema = new Atributos('tema','contenedor_tema','tema_');
+
+			tema.altura = '36px;';
+			tema.campoid = 'idActaGrupoApoyoTema';
+			tema.campoEliminacion = 'eliminarTema';
+
 			tema.campos = ['idActaGrupoApoyoTema', 'temaActaGrupoApoyoTema', 'desarrolloActaGrupoApoyoTema','Tercero_idResponsable','observacionActaGrupoApoyoTema'];
 			tema.etiqueta = ['input', 'input','input','select','input'];
 			tema.tipo = ['hidden','','','',''];
-			tema.estilo = ['','width: 300px;height:35px;','width: 300px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;'];
+			tema.estilo = ['','width: 300px;height:35px;','width: 300px;height:35px;','width: 200px;height:35px;','width: 400px;height:35px;'];
 			tema.clase = ['','','','',''];
 			tema.sololectura = [false,false,false,false,false];
 			tema.completar = ['off','off','off','off','off'];
@@ -50,7 +98,7 @@
 				participante.agregarCampos(JSON.stringify(actaGrupoApoyoTercero[j]),'L');
 			}
 
-				
+					
 			for(var j=0, k = actaGrupoApoyoTema.length; j < k; j++)
 			{
 				tema.agregarCampos(JSON.stringify(actaGrupoApoyoTema[j]),'L');
@@ -71,6 +119,19 @@
 	@endif
 
 	<?php $mytime = Carbon\Carbon::now();?>
+
+	<div id="signature-pad" class="m-signature-pad">
+		<input type="hidden" id="signature-reg" value="">
+	    <div class="m-signature-pad--body">
+	      <canvas></canvas>
+	    </div>
+	    <div class="m-signature-pad--footer">
+	      <div class="description">Firme sobre el recuadro</div>
+	      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+	      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+	    </div>
+	</div>
+
 		<div id='form-section' >
 				<fieldset id="actagrupoapoyo-form-fieldset">	
 
@@ -82,6 +143,10 @@
 			                	<i class="fa fa-flag"></i>
 			              	</span>
 							{!!Form::select('GrupoApoyo_idGrupoApoyo',$grupoapoyo, (isset($actaGrupoApoyo) ? $actaGrupoApoyo->GrupoApoyo_idGrupoApoyo : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Grupo de Apoyo"])!!}
+
+							{!!Form::hidden('idActaGrupoApoyo', null, array('id' => 'idActaGrupoApoyo'))!!}
+							{!!Form::hidden('eliminarTema', '', array('id' => 'eliminarTema'))!!}
+					      	{!!Form::hidden('eliminarTercero', '', array('id' => 'eliminarTercero'))!!}
 						</div>
 					</div>
 				</div>
@@ -142,7 +207,7 @@
 		                                                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="participante.agregarCampos(valorTercero,'A')">
 		                                                        <span class="glyphicon glyphicon-plus"></span>
 		                                                    </div>
-		                                                    <div class="col-md-1" style="width: 1010px;display:inline-block;height:60px;">Empleados</div>
+		                                                    <div class="col-md-1" style="width: 1200px;display:inline-block;height:60px;">Empleados</div>
 		                                                    <div id="contenedor_participante">
 		                                                    </div>
 		                                                </div>
@@ -168,8 +233,8 @@
 		                                                    </div>
 		                                                    <div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Tema</div>
 		                                                    <div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Desarrollo del Tema</div>
-		                                                    <div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Respoonsable</div>
-		                                                    <div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Observaciones</div>
+		                                                    <div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Responsable</div>
+		                                                    <div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Observaciones</div>
 		                                                    <div id="contenedor_tema">
 		                                                    </div>
 		                                                </div>
@@ -225,6 +290,19 @@
         fullPage: true,
         allowedContent: true
       });  
+
+
+
+  $(document).ready(function()
+  {
+    mostrarFirma();
+  });
+    
+
 </script>
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
+
+
 
 @stop

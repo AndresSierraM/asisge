@@ -4,7 +4,39 @@
 @section('content')
 @include('alerts.request')
 
-<script>
+{!!Html::style('css/signature-pad.css'); !!} 
+
+
+<?php
+	// tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+	// al cuadro de imagen y al input oculto de firmabase64
+	$base64 = '';	
+	if(isset($accidente))
+	{
+		$path = 'imagenes/'.$accidente["firmaCoordinadorAccidente"];
+		
+		if($accidente["firmaCoordinadorAccidente"] != "" and file_exists($path))
+		{
+			$type = pathinfo($path, PATHINFO_EXTENSION);
+			$data = file_get_contents($path);
+			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+		}
+	}
+?>
+
+
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-39365077-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	
 	
 	var accidenteRecomendacion = '<?php echo (isset($accidente) ? json_encode($accidente->accidenteRecomendacion) : "");?>';
 	accidenteRecomendacion = (accidenteRecomendacion != '' ? JSON.parse(accidenteRecomendacion) : '');
@@ -30,6 +62,11 @@
 	$(document).ready(function(){
 
 		recomendacion = new Atributos('recomendacion','contenedor_recomendacion','recomendacion_');
+		
+		recomendacion.altura = '36px;';
+		recomendacion.campoid = 'idAccidenteRecomendacion';
+		recomendacion.campoEliminacion = 'eliminarRecomendacion';
+
 		recomendacion.campos = [
 				'idAccidenteRecomendacion', 
 				'controlAccidenteRecomendacion', 
@@ -40,17 +77,17 @@
 				'medidaEfectivaAccidenteRecomendacion',
 				'Proceso_idResponsable'
 				];
-
+		
 		recomendacion.etiqueta 	= ['input','input','checkbox','checkbox','checkbox','input','select','select'];
-		recomendacion.tipo 		= ['hidden','text','checkbox','checkbox','checkbox','text','',''];
-		recomendacion.estilo = ['',
-				'width: 300px; height:35px;',
-				'width: 110px;height:32px;display:inline-block;',
+		recomendacion.tipo 		= ['hidden','text','checkbox','checkbox','checkbox','date','',''];
+		recomendacion.estilo = ['display:inline-block;',
+				'width: 400px;height:35px;display:inline-block;',
+				'width: 110px;height:30px;display:inline-block;',
+				'width: 110px;height:30px;display:inline-block;',
+				'width: 110px;height:30px;display:inline-block;',
+				'width: 150px;height:35px;display:inline-block;',
 				'width: 110px;height:35px;display:inline-block;',
-				'width: 110px;height:35px;display:inline-block;',
-				'width: 110px;height:35px;',
-				'width: 110px;height:35px;',
-				'width: 300px;height:35px;'
+				'width: 400px;height:35px;display:inline-block;'
 				];
 		recomendacion.clase = ['','','','','','','',''];
 		recomendacion.sololectura = [false,false,false,false,false,false,false,false];
@@ -66,6 +103,11 @@
 
 
 		equipo = new Atributos('equipo','contenedor_equipo','equipo_');
+		
+		equipo.altura = '36px;';
+		equipo.campoid = 'idAccidenteEquipo';
+		equipo.campoEliminacion = 'eliminarEquipo';
+
 		equipo.campos = [
 				'idAccidenteEquipo', 
 				'Tercero_idInvestigador'
@@ -101,7 +143,17 @@
 	@endif
 
 	<?php $mytime = Carbon\Carbon::now();?>
-
+		<div id="signature-pad" class="m-signature-pad">
+			<input type="hidden" id="signature-reg" value="">
+		    <div class="m-signature-pad--body">
+		      <canvas></canvas>
+		    </div>
+		    <div class="m-signature-pad--footer">
+		      <div class="description">Firme sobre el recuadro</div>
+		      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+		      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+		    </div>
+		</div>
 		<div id='form-section' >
 				<fieldset id="accidente-form-fieldset">	
 
@@ -114,6 +166,8 @@
 			              	</span>
 							{!!Form::text('numeroAccidente',null,['class'=>'form-control','placeholder'=>'Ingresa el número del accidente'])!!}
 					      	{!!Form::hidden('idAccidente', null, array('id' => 'idAccidente'))!!}
+					      	{!!Form::hidden('eliminarRecomendacion', '', array('id' => 'eliminarRecomendacion'))!!}
+					      	{!!Form::hidden('eliminarEquipo', '', array('id' => 'eliminarEquipo'))!!}
 						</div>
 					</div>
 				</div>
@@ -162,9 +216,18 @@
 			                	<i class="fa fa-flag"></i>
 			              	</span>
 							{!!Form::select('Tercero_idCoordinador',$terceroCoord, (isset($accidente) ? $accidente->Tercero_idCoordinador : 0),["class" => "form-control", "placeholder" =>"Seleccione el Coordinador del equipo de investigaci&oacute;n"])!!}
+
+							<div class="col-sm-10">
+								<img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
+								{!!Form::hidden('firmabase64', $base64, array('id' => 'firmabase64'))!!}
+							</div>
 						</div>
 					</div>
+					
 				</div>
+
+				
+
 
 				<div class="form-group" id='test'>
 					{!!Form::label('Ausentismo_idAusentismo', 'Ausencia Relacionada', array('class' => 'col-sm-2 control-label'))!!}
@@ -447,20 +510,20 @@
 								<div class="col-sm-12">
 									<div class="row show-grid">
 										<div style="overflow: auto; width: 100%;">
-											<div style="width: 1190px; height: 300px; display: inline-block; ">
-												<div class="col-md-1" style="width: 340px;height:40px;">Controles a Implementar</div>
+											<div style="width: 1450px; height: 300px; display: inline-block; ">
+												<div class="col-md-1" style="width: 440px;height:40px;">Controles a Implementar</div>
 												<div class="col-md-1" style="width: 330px;height:40px; text-align: center;">Tipo de Control</div>
-												<div class="col-md-1" style="width: 520px;height:40px;">&nbsp;</div>
+												<div class="col-md-1" style="width: 670px;height:40px;">&nbsp;</div>
 												<div class="col-md-1" style="width: 40px;height: 60px;" onclick="recomendacion.agregarCampos(valorRecomendacion,'A')">
 													<span class="glyphicon glyphicon-plus"></span>
 												</div>
-												<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Segun Lista de Causas</div>
+												<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Segun Lista de Causas</div>
 												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>
 												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medio</div>
 												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
-												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fecha Verificaci&oacute;n</div>
+												<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha Verificaci&oacute;n</div>
 												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medida Efectiva</div>
-												<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Area Responsable</div>
+												<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Area Responsable</div>
 												<div id="contenedor_recomendacion">
 												</div>
 											</div>
@@ -483,7 +546,7 @@
 								<div class="col-sm-12">
 									<div class="row show-grid">
 										<div style="overflow: auto; width: 100%;">
-											<div style="width: 1190px; height: 300px; display: inline-block; ">
+											<div style="width: 1450px; height: 300px; display: inline-block; ">
 												
 												<div class="col-md-1" style="width: 40px;height: 60px;" onclick="equipo.agregarCampos(valorRecomendacion,'A')">
 													<span class="glyphicon glyphicon-plus"></span>
@@ -538,6 +601,17 @@
     $('#fechaOcurrenciaAccidente').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
+
+
+ 	$(document).ready(function()
+	{
+		mostrarFirma();
+	});
+    
+
 </script>
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
+
 
 @stop

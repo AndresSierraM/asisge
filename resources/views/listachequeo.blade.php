@@ -26,7 +26,7 @@
 			detalle.campos = ['idListaChequeoDetalle', 'PreguntaListaChequeo_idPreguntaListaChequeo','ordenPreguntaListaChequeo','descripcionPreguntaListaChequeo','Tercero_idTercero','respuestaListaChequeoDetalle','conformeListaChequeoDetalle','hallazgoListaChequeoDetalle','observacionListaChequeoDetalle'];
 			detalle.etiqueta = ['input','input','input','input','select','input','checkbox','input','input'];
 			detalle.tipo = ['hidden','hidden','text','text','','text','checkbox','text','text'];
-			detalle.estilo = ['','','width: 50px;height:35px;','width: 250px;height:35px;','width: 150px;height:35px;','width: 200px;height:35px;','width: 90px;height:30px;display:inline-block','width: 120px;height:35px;','width: 150px;height:35px;'];
+			detalle.estilo = ['','','width: 50px;height:35px;','width: 250px;height:35px;','width: 150px;height:35px;','width: 200px;height:35px;','width: 90px;height:30px;display:inline-block','width: 120px;height:35px;','width: 210px;height:35px;'];
 			detalle.clase = ['','','','','','','','',''];
 			detalle.sololectura = [false,false,true,true,false,false,true,false,false];
 			detalle.completar = ['off','off','off','off','off','off','off','off'];
@@ -130,7 +130,7 @@
 															<div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Respuesta</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Conforme</div>
 															<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Hallazgo</div>
-															<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Observaci&oacute;n</div>
+															<div class="col-md-1" style="width: 210px;display:inline-block;height:60px;">Observaci&oacute;n</div>
 															<div id="contenedor_detalle">
 															</div>
 														</div>

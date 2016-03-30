@@ -4,6 +4,28 @@
 @section('content')
 @include('alerts.request')
 {!!Html::script('js/elementoproteccion.js')!!}
+
+
+{!!Html::style('css/signature-pad.css'); !!} 
+
+
+<?php
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+  $base64 = ''; 
+  if(isset($entregaelementoproteccion))
+  {
+    $path = 'imagenes/'.$entregaelementoproteccion["firmaTerceroEntregaElementoProteccion"];
+    
+    if($entregaelementoproteccion["firmaTerceroEntregaElementoProteccion"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
+  }
+?>
+
 <script>
 
     var idElementoProteccion = '<?php echo isset($idElementoProteccion) ? $idElementoProteccion : "";?>';
@@ -12,25 +34,33 @@
 
     var entregaelementoprotecciondetalle = '<?php echo (isset($entregaelementoproteccion) ? json_encode($entregaelementoproteccion->entregaelementoprotecciondetalles) : "");?>';
     entregaelementoprotecciondetalle = (entregaelementoprotecciondetalle != '' ? JSON.parse(entregaelementoprotecciondetalle) : '');
-    var valorEntregaElemento = ['','',0];
+    var valorEntregaElemento = [0,'','',0];
 
     $(document).ready(function(){
 
       entregaelementoproteccion = new Atributos('entregaelementoproteccion','contenedor_entregaelementoproteccion','entregaelementoproteccion_');
-      entregaelementoproteccion.campos   = ['ElementoProteccion_idElementoProteccion', 'descripcionElementoProteccion', 'cantidadEntregaElementoProteccionDetalle'];
-      entregaelementoproteccion.etiqueta = ['select', 'input', 'input'];
-      entregaelementoproteccion.tipo     = ['', 'text', 'text'];
-      entregaelementoproteccion.estilo   = ['width: 200px;height:35px;','width: 700px;height:35px;','width:150px;height:35px;','width:250px;height:35px;'];
-      entregaelementoproteccion.clase    = ['chosen-select','',''];
-      entregaelementoproteccion.nombreElementoProteccion =  JSON.parse(nombreElementoProteccion);
-      entregaelementoproteccion.idElementoProteccion =  JSON.parse(idElementoProteccion);
-      entregaelementoproteccion.sololectura = [false,true,false];
-      entregaelementoproteccion.eventochange = ['llenarDescripcion(this.value, this.id)','',''];
-      entregaelementoproteccion.opciones = ['ElementoProteccion','',''];
+
+      entregaelementoproteccion.altura = '36px;';
+      entregaelementoproteccion.campoid = 'idEntregaElementoProteccionDetalle';
+      entregaelementoproteccion.campoEliminacion = 'eliminarElemento';
+
+      entregaelementoproteccion.campos   = ['idEntregaElementoProteccionDetalle', 'ElementoProteccion_idElementoProteccion', 'descripcionElementoProteccion', 'cantidadEntregaElementoProteccionDetalle'];
+      entregaelementoproteccion.etiqueta = ['input', 'select', 'input', 'input'];
+      entregaelementoproteccion.tipo     = ['hidden', '', 'text', 'text'];
+      entregaelementoproteccion.estilo   = ['', 'width: 200px;height:35px;','width: 700px;height:35px;','width:150px;height:35px;','width:250px;height:35px;'];
+      entregaelementoproteccion.clase    = ['', 'chosen-select','',''];
+      entregaelementoproteccion.sololectura = [false, false,true,false];
+
+      var eventochange = ['onchange','llenarDescripcion(this.value, this.id);'];
+      entregaelementoproteccion.funciones = ['', eventochange,'',''];
+      entregaelementoproteccion.opciones = ['',ElementoProteccion,'',''];
+      
+
 
       for(var j=0, k = entregaelementoprotecciondetalle.length; j < k; j++)
       {
         entregaelementoproteccion.agregarCampos(JSON.stringify(entregaelementoprotecciondetalle[j]),'L');
+        llenarDescripcion(document.getElementById('ElementoProteccion_idElementoProteccion'+j).value, document.getElementById('ElementoProteccion_idElementoProteccion'+j).id);
       }
 
       //En el momento de editar
@@ -56,23 +86,39 @@
 		{!!Form::open(['route'=>'entregaelementoproteccion.store','method'=>'POST'])!!}
 	@endif
 
-
+<div id="signature-pad" class="m-signature-pad">
+    <input type="hidden" id="signature-reg" value="">
+    <div class="m-signature-pad--body">
+      <canvas></canvas>
+    </div>
+    <div class="m-signature-pad--footer">
+      <div class="description">Firme sobre el recuadro</div>
+      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+    </div>
+</div>
 <div id='form-section' >
 
 	<fieldset id="entregaelementoproteccion-form-fieldset">
 
-   <div class="form-group" id='test'>
-            {!!Form::label('Tercero_idTercero', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}
-            <div class="col-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                          <i class="fa fa-user"></i>
-                        </span>
-                {!!Form::select('Tercero_idTercero',$tercero, (isset($entregaelementoproteccion) ? $entregaelementoproteccion->Tercero_idTercero : 0),["class" => "chosen-select form-control",'onchange'=>'llenarCargo(this.value)', "placeholder" =>"Seleccione el empleado"])!!}
+        <div class="form-group" id='test'>
+              {!!Form::label('Tercero_idTercero', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}          
+              <div class="col-sm-10">
+                  <div class="input-group">
+                      <span class="input-group-addon">
+                        <i class="fa fa-flag"></i>
+                      </span>
+              {!!Form::select('Tercero_idTercero',$tercero, (isset($entregaelementoproteccion) ? $entregaelementoproteccion->Tercero_idTercero : 0),["class" => "chosen-select form-control",'onchange'=>'llenarCargo(this.value)', "placeholder" =>"Seleccione el empleado"])!!}
+
+              <div class="col-sm-10">
+                <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
+                {!!Form::hidden('firmabase64', $base64, array('id' => 'firmabase64'))!!}
               </div>
             </div>
           </div>
-          <input type="hidden" id="token" value="{{csrf_token()}}"/>
+          
+        </div>
+        <input type="hidden" id="token" value="{{csrf_token()}}"/>
 
 		
 		<div class="form-group" id='test'>
@@ -83,6 +129,7 @@
                 <i class="fa fa-pencil-square-o "></i>
               </span>
       				{!!Form::text('nombreCargo',null,['class'=>'form-control', 'id'=>'nombreCargo', 'readonly','placeholder'=>''])!!}
+              {!!Form::hidden('eliminarElemento', '', array('id' => 'eliminarElemento'))!!}
             </div>
           </div>
 
@@ -142,4 +189,17 @@
 	{!! Form::close() !!}
 	</div>
 </div>
+
+<script type="text/javascript">
+
+  $(document).ready(function()
+  {
+    mostrarFirma();
+  });
+    
+
+</script>
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
+
 @stop

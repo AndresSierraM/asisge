@@ -49,7 +49,10 @@ Titulos.prototype.agregarTitulos = function(grupo, nombreGrupo){
 
 
 var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
-
+    this.altura = '35px;';
+    this.campoid = '';
+    this.campoEliminacion = '';
+    
     this.nombre = nombreObjeto;
     this.contenedor = nombreContenedor;
     this.contenido = nombreDiv;
@@ -83,7 +86,17 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
     var img = document.createElement('i');
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
-    div.setAttribute("width", '100%');
+    div.setAttribute("class", "col-sm-12");
+    div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
+    
+    caneca.id = 'eliminarRegistro'+ this.contador;
+    caneca.setAttribute('onclick',this.nombre+'.borrarCampos('+this.contenido+this.contador+',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+    caneca.setAttribute("class","col-md-1");
+    caneca.setAttribute("style","width:40px; height:35px;");
+    img.setAttribute("class","glyphicon glyphicon-trash");
+
+    caneca.appendChild(img);
+    div.appendChild(caneca);
 
     for (var i = 0,  e = this.campos.length; i < e ; i++)
     {
@@ -187,18 +200,33 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             divCheck.appendChild(input);
  
             div.appendChild(divCheck);
+
+        }
+        else if(this.etiqueta[i] == 'firma')
+        {
+            // conlos campos de firma creamos 
+            // un img para mostrar la firma en base64 y desde la vista
+            // tambien debe crear un input hidden para 
+            // guardar el dato base64 para que el controlador lo guarde
+            var firma = document.createElement('img');
+            firma.id =  this.campos[i] + this.contador;
+            firma.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+            firma.setAttribute("class", this.clase[i]);
+            firma.setAttribute("style", this.estilo[i]);
+            firma.setAttribute("onclick", "mostrarFirma("+this.contador+")");
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    firma.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+                }
+            }
+            div.appendChild(firma);
         }
 
     }
 
-    caneca.id = 'eliminarRegistro'+ this.contador;
-    caneca.setAttribute('onclick',this.nombre+'.borrarCampos('+this.contenido+this.contador+')');
-    caneca.setAttribute("class","col-md-1");
-    caneca.setAttribute("style","width:40px; height: 35px;");
-    img.setAttribute("class","glyphicon glyphicon-trash");
-
-    caneca.appendChild(img);
-    div.appendChild(caneca);
+    
     espacio.appendChild(div);
 
     this.contador++;
@@ -216,7 +244,9 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
 
 }
 
-Atributos.prototype.borrarCampos = function(elemento){
+Atributos.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
+    if(campoEliminacion && document.getElementById(campoEliminacion))
+        document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
 
     aux = elemento.parentNode;
     aux.removeChild(elemento);

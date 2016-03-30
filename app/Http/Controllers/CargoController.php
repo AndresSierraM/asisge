@@ -74,46 +74,11 @@ class CargoController extends Controller
 
             $cargo = \App\Cargo::All()->last();
             
-            $contadorElemento = count($request['ElementoProteccion_idElementoProteccion']);
-            for($i = 0; $i < $contadorElemento; $i++)
-            {
-                \App\CargoElementoProteccion::create([
-                'Cargo_idCargo' => $cargo->idCargo,
-                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i]
-               ]);
-            }
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($cargo->idCargo, $request);
 
-            $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
-            for($i = 0; $i < $contadorRiesgo; $i++)
-            {
-                \App\CargoTareaRiesgo::create([
-                'Cargo_idCargo' => $cargo->idCargo,
-                'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]
-               ]);
-            }
-
-            $contadorVacuna = count($request['ListaGeneral_idVacuna']);
-            for($i = 0; $i < $contadorVacuna; $i++)
-            {
-                \App\CargoVacuna::create([
-                'Cargo_idCargo' => $cargo->idCargo,
-                'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]
-               ]);
-            }
-
-            $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
-            
-            for($i = 0; $i < $contadorExamen; $i++)
-            {
-                \App\CargoExamenMedico::create([
-                'Cargo_idCargo' => $cargo->idCargo,
-                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
-                'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
-                'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
-                'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
-                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
-               ]);
-            }
             return redirect('/cargo');
         }
 
@@ -172,50 +137,11 @@ class CargoController extends Controller
 
             $cargo->save();
 
-            \App\CargoElementoProteccion::where('Cargo_idCargo',$id)->delete();
-            \App\CargoTareaRiesgo::where('Cargo_idCargo',$id)->delete();
-            \App\CargoVacuna::where('Cargo_idCargo',$id)->delete();
-            \App\CargoExamenMedico::where('Cargo_idCargo',$id)->delete();
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($cargo->idCargo, $request);
 
-            $contadorElemento = count($request['ElementoProteccion_idElementoProteccion']);
-            for($i = 0; $i < $contadorElemento; $i++)
-            {
-                \App\CargoElementoProteccion::create([
-                'Cargo_idCargo' => $id,
-                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i]
-               ]);
-            }
-
-            $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
-            for($i = 0; $i < $contadorRiesgo; $i++)
-            {
-                \App\CargoTareaRiesgo::create([
-                'Cargo_idCargo' => $id,
-                'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]
-               ]);
-            }
-
-            $contadorVacuna = count($request['ListaGeneral_idVacuna']);
-            for($i = 0; $i < $contadorVacuna; $i++)
-            {
-                \App\CargoVacuna::create([
-                'Cargo_idCargo' => $id,
-                'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]
-               ]);
-            }
-
-            $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
-            for($i = 0; $i < $contadorExamen; $i++)
-            {
-                \App\CargoExamenMedico::create([
-                'Cargo_idCargo' => $cargo->idCargo,
-                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
-                'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
-                'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
-                'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
-                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
-               ]);
-            }
             return redirect('/cargo');
         }
 
@@ -231,5 +157,96 @@ class CargoController extends Controller
     {
         \App\Cargo::destroy($id);
         return redirect('/cargo');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarElemento']);
+        \App\CargoElementoProteccion::whereIn('idCargoElementoProteccion',$idsEliminar)->delete();
+
+        $contadorElemento = count($request['ElementoProteccion_idElementoProteccion']);
+        for($i = 0; $i < $contadorElemento; $i++)
+        {
+
+            $indice = array(
+             'idCargoElementoProteccion' => $request['idCargoElementoProteccion'][$i]);
+
+            $data = array(
+             'Cargo_idCargo' => $id,
+             'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i]);
+
+            $preguntas = \App\CargoElementoProteccion::updateOrCreate($indice, $data);
+
+        }
+
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarTarea']);
+        \App\CargoTareaRiesgo::whereIn('idCargoTareaRiesgo',$idsEliminar)->delete();
+        
+        $contadorRiesgo = count($request['ListaGeneral_idTareaAltoRiesgo']);
+        for($i = 0; $i < $contadorRiesgo; $i++)
+        {
+            $indice = array(
+             'idCargoTareaRiesgo' => $request['idCargoTareaRiesgo'][$i]);
+
+            $data = array(
+             'Cargo_idCargo' => $id,
+             'ListaGeneral_idTareaAltoRiesgo' => $request['ListaGeneral_idTareaAltoRiesgo'][$i]);
+
+            $preguntas = \App\CargoTareaRiesgo::updateOrCreate($indice, $data);
+
+        }
+
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarVacuna']);
+        \App\CargoVacuna::whereIn('idCargoVacuna',$idsEliminar)->delete();
+        
+        $contadorVacuna = count($request['ListaGeneral_idVacuna']);
+        for($i = 0; $i < $contadorVacuna; $i++)
+        {
+
+            $indice = array(
+             'idCargoVacuna' => $request['idCargoVacuna'][$i]);
+
+            $data = array(
+             'Cargo_idCargo' => $id,
+             'ListaGeneral_idVacuna' => $request['ListaGeneral_idVacuna'][$i]);
+
+            $preguntas = \App\CargoVacuna::updateOrCreate($indice, $data);
+
+        }
+
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarExamen']);
+        \App\CargoExamenMedico::whereIn('idCargoExamenMedico',$idsEliminar)->delete();
+
+        $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
+        
+        for($i = 0; $i < $contadorExamen; $i++)
+        {
+
+            $indice = array(
+             'idCargoExamenMedico' => $request['idCargoExamenMedico'][$i]);
+
+            $data = array(
+             'Cargo_idCargo' => $id,
+            'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
+            'ingresoCargoExamenMedico' => $request['ingresoCargoExamenMedico'][$i], 
+            'retiroCargoExamenMedico' => $request['retiroCargoExamenMedico'][$i], 
+            'periodicoCargoExamenMedico' => $request['periodicoCargoExamenMedico'][$i], 
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i] );
+
+            $preguntas = \App\CargoExamenMedico::updateOrCreate($indice, $data);
+
+           
+        }
     }
 }

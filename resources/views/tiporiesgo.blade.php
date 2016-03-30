@@ -8,7 +8,6 @@
 @section('content')
 @include('alerts.request')
 
-{!!Html::script('js/tiporiesgo.js')!!}
 
 <script>
   var tipoRiesgoDetalle = '<?php echo (isset($tipoRiesgo) ? json_encode($tipoRiesgo->tipoRiesgoDetalles) : "");?>';
@@ -21,6 +20,11 @@
   $(document).ready(function(){
     
     detalle = new Atributos('detalle','contenedor_detalle','detalle_');
+    
+    detalle.altura = '36px;';
+    detalle.campoid = 'idTipoRiesgoDetalle';
+    detalle.campoEliminacion = 'eliminarDetalle';
+
     detalle.campos = ['idTipoRiesgoDetalle','nombreTipoRiesgoDetalle'];
     detalle.etiqueta = ['input','input'];
     detalle.tipo = ['hidden','text'];
@@ -29,6 +33,11 @@
     detalle.sololectura = [false,false];
 
     salud = new Atributos('salud','contenedor_salud','salud_');
+
+    salud.altura = '36px;';
+    salud.campoid = 'idTipoRiesgoSalud';
+    salud.campoEliminacion = 'eliminarSalud';
+    
     salud.campos = ['idTipoRiesgoSalud','nombreTipoRiesgoSalud'];
     salud.etiqueta = ['input','input'];
     salud.tipo = ['hidden','text'];
@@ -71,6 +80,8 @@
               </span>
               {!!Form::text('codigoTipoRiesgo',null,['class'=>'form-control','placeholder'=>'Ingresa el código del tipo de riesgo'])!!}
               {!!Form::hidden('idTipoRiesgo', null, array('id' => 'idTipoRiesgo')) !!}
+              {!!Form::hidden('eliminarDetalle', '', array('id' => 'eliminarDetalle'))!!}
+              {!!Form::hidden('eliminarSalud', '', array('id' => 'eliminarSalud'))!!}
             </div>
           </div>
     </div>

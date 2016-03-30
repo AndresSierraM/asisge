@@ -9,7 +9,7 @@ class EntregaElementoProteccion extends Model
 	protected $table ='entregaelementoproteccion';
 	protected $primaryKey = 'idEntregaElementoProteccion';
 	
-	protected $fillable = ['Tercero_idTercero', 'fechaEntregaElementoProteccion', 'Compania_idCompania'];
+	protected $fillable = ['Tercero_idTercero', 'firmaTerceroEntregaElementoProtecion', 'fechaEntregaElementoProteccion', 'Compania_idCompania'];
 
 	public $timestamps = false;
 

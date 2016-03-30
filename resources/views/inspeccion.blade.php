@@ -5,6 +5,29 @@
 
 
 {!!Html::script('js/inspeccion.js')!!} 
+
+{!!Html::style('css/signature-pad.css'); !!} 
+
+
+<?php
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+  $base64 = ''; 
+  if(isset($inspeccion))
+  {
+    $path = 'imagenes/'.$inspeccion["firmaRealizadaPorInspeccion"];
+    
+    if($inspeccion["firmaRealizadaPorInspeccion"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
+  }
+?>
+
+
+
   <script>
 
   function CargarPreguntas(id)
@@ -66,9 +89,7 @@
         // resultado, calculado por el sistema (resultado = puntuacion * 20  expresado como porcentaje)
         // mejora (digitado por le usuario, editor de texto libre)
         inspeccion = new Atributos('detalle','contenedor_detalle','detalle_');
-        inspeccion.campos   = ['TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta', 
-                              'situacionInspeccionDetalle',   'fotoInspeccionDetalle','ubicacionInspeccionDetalle',
-                              'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
+        inspeccion.campos   = ['TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'fotoInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
                               'observacionInspeccionDetalle'];
         inspeccion.etiqueta = ['input', 'input', 'textarea',
                                'textarea', 'input', 'textarea',
@@ -76,7 +97,7 @@
                                'textarea'];
         inspeccion.tipo     = ['hidden', 'text', 'textarea', 
                                'textarea', 'text', 'textarea',
-                               'textarea', '', 'text',
+                               'textarea', '', 'date',
                                'textarea'];
         inspeccion.estilo   = ['',
                                 'vertical-align:top; resize:none; width: 60px; height:60px;', 
@@ -86,7 +107,7 @@
                                 'vertical-align:top; resize:none; width: 100px; height:60px;',
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
-                                'vertical-align:top; resize:none; width: 100px; height:60px;',
+                                'vertical-align:top; resize:none; width: 150px; height:60px;',
                                 'vertical-align:top; resize:none; width: 300px; height:60px;'];
         inspeccion.clase    = ['','','','','','','','','',''];
         inspeccion.sololectura = [false,true,true,false,false,false,false,false,false,false];
@@ -115,7 +136,17 @@
 		{!!Form::open(['route'=>'inspeccion.store','method'=>'POST', 'files' => true])!!}
 	@endif
 
-
+<div id="signature-pad" class="m-signature-pad">
+  <input type="hidden" id="signature-reg" value="">
+    <div class="m-signature-pad--body">
+      <canvas></canvas>
+    </div>
+    <div class="m-signature-pad--footer">
+      <div class="description">Firme sobre el recuadro</div>
+      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+    </div>
+</div>
 <div id='form-section' >
 
 	<fieldset id="inspeccion-form-fieldset">	
@@ -136,17 +167,23 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
-          {!!Form::label('Tercero_idRealizadaPor', 'Realizada Por', array('class' => 'col-sm-2 control-label'))!!}
-          <div class="col-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-flag"></i>
-              </span>
+          <div class="form-group" id='test'>
+              {!!Form::label('Tercero_idRealizadaPor', 'Realizada Por', array('class' => 'col-sm-2 control-label'))!!}       
+              <div class="col-sm-10">
+                  <div class="input-group">
+                      <span class="input-group-addon">
+                        <i class="fa fa-flag"></i>
+                      </span>
               {!!Form::select('Tercero_idRealizadaPor',$tercero, (isset($inspeccion) ? $inspeccion->Tercero_idRealizadaPor : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tercero de quien realiza la inspecci&oacute;n"])!!}
+
+              <div class="col-sm-10">
+                <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
+                {!!Form::hidden('firmabase64', $base64, array('id' => 'firmabase64'))!!}
+              </div>
             </div>
           </div>
-        </div>
+
+        
 
         <div class="form-group" id='test'>
           {!!Form::label('fechaElaboracionInspeccion', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
@@ -202,9 +239,9 @@
             <div class="col-sm-12">
               <div class="row show-grid">
                 <div style="overflow: auto; width: 100%;">
-                  <div style="width: 1800px; height: 300px; display: inline-block; ">
+                  <div style="width: 1850px; height: 300px; display: inline-block; ">
                     <div class="col-md-1" style="width: 1160px;">&nbsp;</div>
-                    <div class="col-md-1" style="width: 600px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
+                    <div class="col-md-1" style="width: 650px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
                           
                     <div class="col-md-1" style="width: 60px;">No.</div>
                     <div class="col-md-2" style="width: 300px;">Pregunta</div>
@@ -213,7 +250,7 @@
                     <div class="col-md-5" style="width: 100px;">Ubicaci&oacute;n</div>
                     <div class="col-md-6" style="width: 200px;">Acci&oacute;n de Mejora</div>
                     <div class="col-md-7" style="width: 200px;">Responsable</div>
-                    <div class="col-md-8" style="width: 100px;">Fecha</div>
+                    <div class="col-md-8" style="width: 150px;">Fecha</div>
                     <div class="col-md-8" style="width: 300px;">Observaciones</div>
                     
                     <div id="contenedor_detalle">
@@ -243,6 +280,10 @@
 
 	{!! Form::close() !!}
 
+  </div>
+</div>
+
+
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
     document.getElementById('contenedor-fin').style.width = '1250px';
@@ -250,9 +291,16 @@
       format: "YYYY-MM-DD"
     }));
 
-  </script>
+
+  $(document).ready(function()
+  {
+    mostrarFirma();
+  });
+    
+
+</script>
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
 
 
-	</div>
-</div>
 @stop

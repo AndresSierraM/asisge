@@ -28,9 +28,9 @@ class CargoRequest extends Request
         $elemento = count($this->get('ElementoProteccion_idElementoProteccion'));
         $examen = count($this->get('FrecuenciaMedicion_idFrecuenciaMedicion'));
 
-        $validacion = array('codigoCargo' => "required|string|max:20|unique:cargo,codigoCargo,".$this->get('idCargo') .",idCargo",
+        $validacion = array('codigoCargo' => "required|numeric|max:20|unique:cargo,codigoCargo,".$this->get('idCargo') .",idCargo",
             'nombreCargo' => "required|string|max:80|unique:cargo,nombreCargo,".$this->get('idCargo') .",idCargo",
-            'salarioBaseCargo' => 'integer');
+            'salarioBaseCargo' => 'required|integer');
         
         for($i = 0; $i < $tarea; $i++)
         {
