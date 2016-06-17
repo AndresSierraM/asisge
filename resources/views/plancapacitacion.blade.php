@@ -19,21 +19,21 @@
 		var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
 		var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
-		var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
-		var eventos2 = ['onclick','horaDetalle(this.parentNode.id);'];
+		// var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
+		// var eventos2 = ['onclick','horaDetalle(this.parentNode.id);'];
 
 		$(document).ready(function(){
 
 			tema = new Atributos('tema','contenedor_tema','tema_');
 			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema'];
 			tema.etiqueta = ['input','input','select','input','input'];
-			tema.tipo = ['hidden','text','','text','text'];
-			tema.estilo = ['','width: 350px;height:35px;','width: 400px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;'];
+			tema.tipo = ['hidden','text','','date','time'];
+			tema.estilo = ['','width: 300px;height:35px;','width: 300px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;'];
 			tema.clase = ['','','','',''];
 			tema.sololectura = [false,false,false,false,false];
 			tema.completar = ['off','off','off','off','off'];
 			tema.opciones = ['','',tercero,'',''];
-			tema.funciones  = ['','','',eventos1,eventos2];
+			tema.funciones  = ['','','','',''];
 
 			for(var j=0, k = planCapacitacionTema.length; j < k; j++)
 			{
@@ -42,20 +42,20 @@
 
 		});
 
-		function fechaDetalle(registro)
-		{
-			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
-			$('#fechaPlanCapacitacionTema'+posicion).datetimepicker(({
-				format: "YYYY-MM-DD"
-			}));
-		}
-		function horaDetalle(registro)
-		{
-			var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
-			$('#horaPlanCapacitacionTema'+posicion).datetimepicker(({
-				format: "hh:mm"
-			}));
-		}
+		// function fechaDetalle(registro)
+		// {
+		// 	var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+		// 	$('#fechaPlanCapacitacionTema'+posicion).datetimepicker(({
+		// 		format: "YYYY-MM-DD"
+		// 	}));
+		// }
+		// function horaDetalle(registro)
+		// {
+		// 	var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
+		// 	$('#horaPlanCapacitacionTema'+posicion).datetimepicker(({
+		// 		format: "hh:mm"
+		// 	}));
+		// }
 	</script>
 
 	
@@ -205,7 +205,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="panel panel-default">
+									<div class="panel panel-default" style="overflow:auto;">
 										<div class="panel-heading">
 											<h4 class="panel-title">
 												<a data-toggle="collapse" data-parent="#accordion" href="#tema">Temas</a>
@@ -219,8 +219,8 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="tema.agregarCampos(valor,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 350px;display:inline-block;height:60px;">Descripci&oacute;n</div>
-															<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Capacitador</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Capacitador</div>
 															<div class="col-md-1" style="width: 140px;display:inline-block;height:60px;">Fecha</div>
 															<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Hora</div>
 															<div id="contenedor_tema">

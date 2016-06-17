@@ -6,7 +6,7 @@ function llenarCargo(idTercero)
                 headers: {'X-CSRF-TOKEN': token},
                 dataType: "json",
                 data: {'idTercero': idTercero},
-                url:   'http://localhost:8000/llenarCargo/',
+                url:   'http://'+location.host+'/llenarCargo/',
                 type:  'post',
                 beforeSend: function(){
                     //Lo que se hace antes de enviar el formulario
@@ -35,7 +35,7 @@ function llenarDescripcion(idElementoProteccion,nombreCampo)
                 headers: {'X-CSRF-TOKEN': token},
                 dataType: "json",
                 data: {'ElementoProteccion_idElementoProteccion': idElementoProteccion},
-                url:   'http://localhost:8000/llenarDescripcion/',
+                url:   'http://'+location.host+'/llenarDescripcion/',
                 type:  'post',
                 beforeSend: function(){
                     //Lo que se hace antes de enviar el formulario

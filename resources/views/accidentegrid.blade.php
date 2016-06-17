@@ -24,9 +24,10 @@
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> Número</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Descripción</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Fecha Ocurrencia</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Clasificación</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Empleado</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Descripción</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Fecha Ocurrencia</label></a></li>
+                            <li><a class="toggle-vis" data-column="6"><label> Clasificación</label></a></li>
                         </ul>
                     </div>
                     <table id="taccidente" name="taccidente" class="display table-bordered" width="100%">
@@ -38,8 +39,9 @@
                                 </th>
                                 <th><b>ID</b></th>
                                 <th><b>Número</b></th>
+                                <th><b>Empleado</b></th>
                                 <th><b>Descripción</b></th>
-                                <th><b>País</b></th>
+                                <th><b>Fecha Ocurrencia</b></th>
                                 <th><b>Clasificación</b></th>
                             </tr>
                         </thead>
@@ -50,6 +52,7 @@
                                 </th>
                                 <th>ID</th>
                                 <th>Número</th>
+                                <th>Empleado</th>
                                 <th>Descripción</th>
                                 <th>Fecha Ocurrencia</th>
                                 <th>Clasificación</th>

@@ -47,7 +47,7 @@
       entregaelementoproteccion.campos   = ['idEntregaElementoProteccionDetalle', 'ElementoProteccion_idElementoProteccion', 'descripcionElementoProteccion', 'cantidadEntregaElementoProteccionDetalle'];
       entregaelementoproteccion.etiqueta = ['input', 'select', 'input', 'input'];
       entregaelementoproteccion.tipo     = ['hidden', '', 'text', 'text'];
-      entregaelementoproteccion.estilo   = ['', 'width: 200px;height:35px;','width: 700px;height:35px;','width:150px;height:35px;','width:250px;height:35px;'];
+      entregaelementoproteccion.estilo   = ['', 'width: 200px;height:35px;','width: 500px;height:35px;','width:100px;height:35px;','width:250px;height:35px;'];
       entregaelementoproteccion.clase    = ['', 'chosen-select','',''];
       entregaelementoproteccion.sololectura = [false, false,true,false];
 
@@ -165,8 +165,8 @@
                   <span class="glyphicon glyphicon-plus"></span>
                 </div>
                 <div class="col-md-1" style="width: 200px;">Elemento</div>
-                <div class="col-md-1" style="width: 700px;">Descripci&oacute;n</div>
-                <div class="col-md-1" style="width: 150px;">Cantidad</div>
+                <div class="col-md-1" style="width: 500px;">Descripci&oacute;n</div>
+                <div class="col-md-1" style="width: 100px;">Cantidad</div>
                 <div id="contenedor_entregaelementoproteccion">
                 </div>
               </div>

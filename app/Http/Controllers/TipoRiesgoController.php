@@ -27,7 +27,7 @@ class TipoRiesgoController extends Controller
      */
     public function create()
     {
-        $clasificacionRiesgo = \App\clasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
+        $clasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
         return view('tiporiesgo',compact('clasificacionRiesgo'));
     }
 
@@ -39,21 +39,24 @@ class TipoRiesgoController extends Controller
      */
     public function store(TipoRiesgoRequest $request)
     {
-        \App\TipoRiesgo::create([
+        if($request['respuesta'] != 'falso')
+        {
+            \App\TipoRiesgo::create([
             'codigoTipoRiesgo' => $request['codigoTipoRiesgo'],
             'nombreTipoRiesgo' => $request['nombreTipoRiesgo'],
             'origenTipoRiesgo' => $request['origenTipoRiesgo'],
             'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'],
             ]);
 
-        $tipoRiesgo = \App\TipoRiesgo::All()->last();
-        
-        //---------------------------------
-        // guardamos las tablas de detalle
-        //---------------------------------
-        $this->grabarDetalle($tipoRiesgo->idTipoRiesgo, $request);
+            $tipoRiesgo = \App\TipoRiesgo::All()->last();
+            
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($tipoRiesgo->idTipoRiesgo, $request);
 
-        return redirect('/tiporiesgo');
+            return redirect('/tiporiesgo');
+        }
     }
 
     /**
@@ -75,7 +78,7 @@ class TipoRiesgoController extends Controller
      */
     public function edit($id)
     {
-        $clasificacionRiesgo = \App\clasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
+        $clasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
         $tipoRiesgo = \App\TipoRiesgo::find($id);
         return view('tiporiesgo',compact('clasificacionRiesgo'),['tipoRiesgo'=>$tipoRiesgo]);
     }
@@ -89,16 +92,19 @@ class TipoRiesgoController extends Controller
      */
     public function update(TipoRiesgoRequest $request, $id)
     {
-        $tipoRiesgo = \App\TipoRiesgo::find($id);
-        $tipoRiesgo->fill($request->all());
-        $tipoRiesgo->save();
+        if($request['respuesta'] != 'falso')
+        {
+            $tipoRiesgo = \App\TipoRiesgo::find($id);
+            $tipoRiesgo->fill($request->all());
+            $tipoRiesgo->save();
 
-        //---------------------------------
-        // guardamos las tablas de detalle
-        //---------------------------------
-        $this->grabarDetalle($tipoRiesgo->idTipoRiesgo, $request);
-        
-        return redirect('/tiporiesgo');
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($tipoRiesgo->idTipoRiesgo, $request);
+            
+            return redirect('/tiporiesgo');
+        }
     }
 
     /**

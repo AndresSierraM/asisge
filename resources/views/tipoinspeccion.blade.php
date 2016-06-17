@@ -9,7 +9,6 @@
 @include('alerts.request')
 
 {!!Html::script('js/tipoinspeccion.js')!!}
-
 <script>
   var tipoInspeccionPregunta = '<?php echo (isset($tipoInspeccion) ? json_encode($tipoInspeccion->tipoInspeccionPreguntas) : "");?>';
   tipoInspeccionPregunta = (tipoInspeccionPregunta != '' ? JSON.parse(tipoInspeccionPregunta) : '');
@@ -62,6 +61,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
+              <input type="hidden" id="token" value="{{csrf_token()}}"/>
               {!!Form::text('codigoTipoInspeccion',null,['class'=>'form-control','placeholder'=>'Ingresa el código del tipo de Inspecci&oacute;n'])!!}
               {!!Form::hidden('idTipoInspeccion', null, array('id' => 'idTipoInspeccion')) !!}
               {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
@@ -70,7 +70,7 @@
           </div>
     </div>
     <div class="form-group" id='test'>
-        {!!Form::label('nombretipoInspeccion', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+        {!!Form::label('nombreTipoInspeccion', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
             <span class="input-group-addon">
@@ -106,17 +106,14 @@
         </div>
       </div> 
     </fieldset>
-    
-  @if(isset($tipoInspeccion))
-    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-         {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
-      @else
-         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
-      @endif
-  @else
-         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
-  @endif
   
+      @if(isset($tipoInspeccion))
+      {!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @else
+      {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @endif
+
+   
 
 	{!! Form::close() !!}
 	</div>

@@ -57,12 +57,7 @@
 
     });
 
-    function calcularResultado()
-    {
-      var cambio = "document.getElementById('"+this.id.replace('puntuacionDiagnosticoDetalle','resultadoDiagnosticoDetalle') + "').value = "+this.value+" * 20;";
-      eval(cambio);
-    }
-
+    
   </script>
 
 	@if(isset($diagnostico))

@@ -52,9 +52,6 @@
 				              	</span>
 				              	{!!Form::select('tipoListaGeneral',
             					array(
-            					'EliminacionRiesgo'=>'Eliminaci&oacute;n de Riesgo',
-            					'SustitucionRiesgo'=>'Sustituci&oacute;n del Riesgo',
-            					'ControlRiesgo'=>'Control del Riesgo',
             					'TareaAltoRiesgo'=>'Tarea de Alto Riesgo',
             					'Vacuna'=>'Vacuna'), (isset($listaGeneral) ? $listaGeneral->tipoListaGeneral : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo"])!!}
 							</div>

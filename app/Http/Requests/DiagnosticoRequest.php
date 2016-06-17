@@ -26,7 +26,7 @@ class DiagnosticoRequest extends Request
        
         $puntuacion = count($this->get('puntuacionDiagnosticoDetalle'));
         
-        $validacion = array('codigoDiagnostico' => "required|string|max:20|unique:diagnostico,codigoDiagnostico,".$this->get('idDiagnostico') .",idDiagnostico",
+        $validacion = array('codigoDiagnostico' => "required|string|max:20|unique:diagnostico,codigoDiagnostico,".$this->get('idDiagnostico') .",idDiagnostico,Compania_idCompania,".(\Session::get('idCompania')),
                             'nombreDiagnostico' => 'required|string|max:80',
                             'fechaElaboracionDiagnostico' => 'required|date');
 

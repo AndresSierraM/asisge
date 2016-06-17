@@ -16,7 +16,7 @@
 
 <?php
 
-$firmas = $actaCapacitacion->actaCapacitacionAsistentes;
+$firmas = isset($actaCapacitacion->actaCapacitacionAsistentes) ? $actaCapacitacion->actaCapacitacionAsistentes : null;
 
 for ($i=0; $i < count($firmas); $i++) 
 { 
@@ -76,7 +76,7 @@ for ($i=0; $i < count($firmas); $i++)
 			tema.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
 			tema.etiqueta = ['input', 'input','input','select','input','input','checkbox','checkbox'];
 			tema.tipo = ['hidden', 'hidden','text','','date','time','checkbox','checkbox'];
-			tema.estilo = ['', '','width: 300px;height:35px;','width: 310px;height:35px;','width: 140px;height:35px;','width: 120px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
+			tema.estilo = ['', '','width: 250px;height:35px;','width: 250px;height:35px;','width: 130px;height:35px;','width: 110px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
 			tema.clase = ['', '','','','','',''];
 			tema.sololectura = [false, false,true,false,false,false,false,false];
 			tema.completar = ['off', 'off','off','off','off','off','off','off'];
@@ -92,7 +92,7 @@ for ($i=0; $i < count($firmas); $i++)
 			asistente.campos = ['idActaCapacitacionAsistente', 'Tercero_idAsistente', 'nombreCargo','firma','firmabase64'];
 			asistente.etiqueta = ['input','select','input','firma','input'];
 			asistente.tipo = ['hidden','','text','','hidden'];
-			asistente.estilo = ['','width: 500px;height:35px;','width: 400px;height:35px; background-color:rgb(238, 238, 238);', 'width:80px; height: 60px; border: 1px solid; display: inline-block', ''];
+			asistente.estilo = ['','width: 400px;height:35px;','width: 300px;height:35px; background-color:rgb(238, 238, 238);', 'width:80px; height: 60px; border: 1px solid; display: inline-block', ''];
 			asistente.clase = ['','','','',''];
 			asistente.sololectura = [false,false,true,false,false];
 			asistente.completar = ['off','off','off','off','off'];
@@ -317,10 +317,10 @@ for ($i=0; $i < count($firmas); $i++)
 															<div class="col-md-1" style="width: 40px;height: 50px;" >
 																<span >&nbsp;</span>
 															</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Descripci&oacute;n</div>
-															<div class="col-md-1" style="width: 310px;display:inline-block;height:50px;">Capacitador</div>
-															<div class="col-md-1" style="width: 140px;display:inline-block;height:50px;">Fecha</div>
-															<div class="col-md-1" style="width: 120px;display:inline-block;height:50px;">Hora</div>
+															<div class="col-md-1" style="width: 250px;display:inline-block;height:50px;">Descripci&oacute;n</div>
+															<div class="col-md-1" style="width: 250px;display:inline-block;height:50px;">Capacitador</div>
+															<div class="col-md-1" style="width: 130px;display:inline-block;height:50px;">Fecha</div>
+															<div class="col-md-1" style="width: 110px;display:inline-block;height:50px;">Hora</div>
 															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Dictado</div>
 															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Cumple Objetivo</div>
 															<div id="contenedor_tema">
@@ -340,14 +340,14 @@ for ($i=0; $i < count($firmas); $i++)
 										<div id="asistentes" class="panel-collapse collapse">
 											<div class="panel-body">
 												<div class="form-group" id='test'>
-													<div class="col-sm-12">
+													<div class="col-sm-12" >
 														<div class="row show-grid">
 															<div class="col-md-1" style="width: 40px;height: 50px;"  onclick="asistente.agregarCampos(valorAsistente,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 500px;display:inline-block;height:50px;">Nombre</div>
-															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Cargo</div>
-															<div class="col-md-1" style="width: 315px;display:inline-block;height:50px;">Firma</div>
+															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Nombre</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Cargo</div>
+															<div class="col-md-1" style="width: 80px;display:inline-block;height:50px;">Firma</div>
 															<div id="contenedor_asistente">
 															</div>
 														</div>

@@ -9,6 +9,14 @@ use App\Http\Requests\InspeccionRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
+use Input;
+use File;
+// include composer autoload
+// require '../vendor/autoload.php';
+// import the Intervention Image Manager Class
+use Intervention\Image\ImageManager ;
+
+
 class InspeccionController extends Controller
 {
     /**
@@ -97,27 +105,21 @@ class InspeccionController extends Controller
                 // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['accionMejoraInspeccionDetalle'][$i] != '' )
                 {
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 9,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
-
-                        ]);
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 24, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
+                                );   
                 }
                 
             }
@@ -232,60 +234,109 @@ class InspeccionController extends Controller
             // Guardamos la imagen de la firma como un archivo en disco
             $data = $request['firmabase64'];
 
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $data = base64_decode($data);
+            if($data != '')
+            {
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
 
-            file_put_contents('imagenes/'.$ruta, $data);
+                file_put_contents('imagenes/'.$ruta, $data);
+            }
 
             //----------------------------
 
             \App\InspeccionDetalle::where('Inspeccion_idInspeccion',$id)->delete();
+             $files = Input::file('fotoInspeccionDetalle');
 
             $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
+                
+
+               
+                $file = $files[$i] ;
+                $rutaImagen = '';
+                $destinationPath = 'imagenes/inspeccion/';
+                if(isset($file))
+                {
+                    $filename = $destinationPath . $file->getClientOriginalName();
+                     
+                    $manager = new ImageManager();
+                    $manager->make($file->getRealPath())->save($filename);
+                    $rutaImagen = 'inspeccion/'.$file->getClientOriginalName();
+
+
+                    // recorrer todos los archivos para guardarlos en la carpeta
+                    // luego de almacenar la información, guardamos los archivos en la carpeta de inpecciones
+                    // $files = Input::file('fotoInspeccionDetalle');
+                    // foreach($files as $file) {
+
+                    //     $destinationPath = 'imagenes/inspeccion/';
+                    //     if(isset($file))
+                    //     {
+                    //         $filename = $destinationPath . $file->getClientOriginalName();
+                             
+                    //         $manager = new ImageManager();
+                    //         $manager->make($file->getRealPath())->save($filename);
+                    //         echo 'Si entra ' . $filename.'<br>';
+                    //     }
+                    // }
+
+
+                    // mostrar los archivos en un formulario
+                    //  Route::get('storage/{id}/{archivo}', function ($archivo) {
+                    //  $public_path = public_path();
+                    //  $url = $public_path.'/storage/id/'.$archivo;
+
+                    // //verificamos si el archivo existe y lo retornamos
+                    //  if (Storage::exists($archivo))
+                    //  {
+                    //  return response()->download($url);
+                    //  }
+                    //  //si no se encuentra lanzamos un error 404.
+                    //  abort(404);
+                    //  });
+
+                }
+                
+            
                 \App\InspeccionDetalle::create([
                 'Inspeccion_idInspeccion' => $id,
                 'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
                 'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
-                'fotoInspeccionDetalle' => $request['fotoInspeccionDetalle'][$i],
                 'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
                 'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
                 'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
                 'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
-                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
+                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i],
+                'fotoInspeccionDetalle' =>  $rutaImagen
                ]);
 
-
-
+                
                 // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['accionMejoraInspeccionDetalle'][$i] != '' )
                 {
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 9,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 24, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
+                                );   
 
-                        ]);
+                        
                 }
             }
 
+            
             return redirect('/inspeccion');
         }    
     }
@@ -303,5 +354,39 @@ class InspeccionController extends Controller
 
         \App\Inspeccion::destroy($id);
         return redirect('/inspeccion');
+    }
+
+
+    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
+    {   
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        
+        $indice = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion);
+
+        $data = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0);
+
+        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
     }
 }

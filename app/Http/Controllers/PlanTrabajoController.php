@@ -16,6 +16,9 @@ class PlanTrabajoController extends Controller
      */
     public function index()
     {
+
+        $idCompania = \Session::get("idCompania");
+
         // -------------------------------------------
         // A C C I D E N T E S / I N C I D E N T E S
         // -------------------------------------------
@@ -50,7 +53,8 @@ class PlanTrabajoController extends Controller
             on Aus.idAusentismo = Acc.Ausentismo_idAusentismo
             left join tercero T
             on Aus.Tercero_idTercero = T.idTercero
-            Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%") 
+            Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
+                Aus.Compania_idCompania = '.$idCompania .' 
             group by Aus.Tercero_idTercero;');
         
 
@@ -90,6 +94,7 @@ class PlanTrabajoController extends Controller
             on PA.idPlanAuditoria = LC.PlanAuditoria_idPlanAuditoria and PAA.Proceso_idProceso = LC.Proceso_idProceso
             left join proceso P
             on PAA.Proceso_idProceso = P.idProceso
+            Where  PA.Compania_idCompania = '.$idCompania .' 
             group by idPlanAuditoriaAgenda;');
 
         // -------------------------------------------
@@ -126,9 +131,17 @@ class PlanTrabajoController extends Controller
             on PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
             left join actacapacitacion AC
             on PC.idPlanCapacitacion = AC.PlanCapacitacion_idPlanCapacitacion
-            left join actacapacitaciontema ACT
+            left join 
+            (
+                SELECT * 
+                FROM  actacapacitaciontema ACT
+                left join actacapacitacion AC
+                on ACT.ActaCapacitacion_idActaCapacitacion = AC.idActaCapacitacion
+                where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
+            )  ACT
             on AC.idActaCapacitacion = ACT.ActaCapacitacion_idActaCapacitacion and 
             PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
+            WHere  PC.Compania_idCompania = '.$idCompania .' 
             group by idPlanCapacitacion');
 
 
@@ -164,6 +177,7 @@ class PlanTrabajoController extends Controller
             From programa P
             left join programadetalle PD
             on P.idPrograma = PD.Programa_idPrograma
+            Where  P.Compania_idCompania = '.$idCompania .' 
             Group by idPrograma');
 
 
@@ -216,7 +230,8 @@ class PlanTrabajoController extends Controller
                 on T.idTercero = EM.Tercero_idTercero
                 left join examenmedicodetalle EMD
                 on EM.idExamenMedico = EMD.ExamenMedico_idExamenMedico and EMD.TipoExamenMedico_idTipoExamenMedico = TEM.TipoExamenMedico_idTipoExamenMedico
-                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL
+                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL and 
+                    T.Compania_idCompania = '.$idCompania .' 
                 group by idTercero, idTipoExamenMedico
              
             UNION
@@ -239,7 +254,8 @@ class PlanTrabajoController extends Controller
                 on T.idTercero = EM.Tercero_idTercero
                 left join examenmedicodetalle EMD
                 on EM.idExamenMedico = EMD.ExamenMedico_idExamenMedico and EMD.TipoExamenMedico_idTipoExamenMedico = CE.TipoExamenMedico_idTipoExamenMedico
-                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL
+                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL  and 
+                    T.Compania_idCompania = '.$idCompania .' 
                 group by idTercero, idTipoExamenMedico
             ) Examen
             group by idTercero');
@@ -279,6 +295,7 @@ class PlanTrabajoController extends Controller
             on TI.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
             left join inspeccion I
             on TI.idTipoInspeccion = I.TipoInspeccion_idTipoInspeccion
+            Where TI.Compania_idCompania = '.$idCompania .' 
             group by idTipoInspeccion');
 
 
@@ -314,6 +331,7 @@ class PlanTrabajoController extends Controller
             FROM matrizlegal ML
             left join frecuenciamedicion FM
             on ML.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+            Where ML.Compania_idCompania = '.$idCompania .' 
             group by idMatrizLegal
             
             UNION
@@ -346,6 +364,7 @@ class PlanTrabajoController extends Controller
             FROM matrizriesgo MR
             left join frecuenciamedicion FM
             on MR.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+            Where MR.Compania_idCompania = '.$idCompania .' 
             group by idMatrizRiesgo
             ');
 
@@ -384,6 +403,7 @@ class PlanTrabajoController extends Controller
             on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
             left join actagrupoapoyo AGA
             on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
+            Where GA.Compania_idCompania = '.$idCompania .' 
             group by idGrupoApoyo');
 
         return view('plantrabajo', compact('accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo'));

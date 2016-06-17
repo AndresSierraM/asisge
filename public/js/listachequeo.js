@@ -7,7 +7,7 @@ function buscarProceso(){
 	$.ajax({
 		async: true,
 		headers: {'X-CSRF-TOKEN': token},
-		url: 'http://localhost:8000/listachequeo/'+id,
+		url: 'http://'+location.host+'/listachequeo/'+id,
 		type: 'POST',
 		dataType: 'JSON',
 		method: 'GET',

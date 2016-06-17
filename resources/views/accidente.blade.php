@@ -4,6 +4,8 @@
 @section('content')
 @include('alerts.request')
 
+{!!Html::script('js/accidente.js')!!}
+
 {!!Html::style('css/signature-pad.css'); !!} 
 
 
@@ -164,6 +166,7 @@
 			              	<span class="input-group-addon">
 			                	<i class="fa fa-barcode"></i>
 			              	</span>
+			              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::text('numeroAccidente',null,['class'=>'form-control','placeholder'=>'Ingresa el número del accidente'])!!}
 					      	{!!Form::hidden('idAccidente', null, array('id' => 'idAccidente'))!!}
 					      	{!!Form::hidden('eliminarRecomendacion', '', array('id' => 'eliminarRecomendacion'))!!}
@@ -227,20 +230,6 @@
 				</div>
 
 				
-
-
-				<div class="form-group" id='test'>
-					{!!Form::label('Ausentismo_idAusentismo', 'Ausencia Relacionada', array('class' => 'col-sm-2 control-label'))!!}
-					<div class="col-sm-10">
-			            <div class="input-group">
-			              	<span class="input-group-addon">
-			                	<i class="fa fa-flag"></i>
-			              	</span>
-							{!!Form::select('Ausentismo_idAusentismo',$ausentismo, (isset($accidente) ? $accidente->Ausentismo_idAusentismo : 0),["class" => "form-control", "placeholder" =>"Seleccione el Ausentismo Relacionado al Accidente"])!!}
-						</div>
-					</div>
-				</div>
-
 		<div class="form-group">
           <div class="col-lg-12">
             <div class="panel panel-default">
@@ -262,7 +251,7 @@
 						              	<span class="input-group-addon">
 						                	<i class="fa fa-flag"></i>
 						              	</span>
-										{!!Form::select('Tercero_idEmpleado',$terceroEmple, (isset($accidente) ? $accidente->Tercero_idEmpleado : 0),["class" => "form-control", "placeholder" =>"Seleccione el Empleado Accidentado"])!!}
+										{!!Form::select('Tercero_idEmpleado',$terceroEmple, (isset($accidente) ? $accidente->Tercero_idEmpleado : 0),["onchange" => "buscarAusentismo();","class" => "form-control", "placeholder" =>"Seleccione el Empleado Accidentado"])!!}
 									</div>
 								</div>
 							</div>
@@ -279,6 +268,17 @@
 					          </div>
 					        </div>
 					        
+					        <div class="form-group" id='test'>
+								{!!Form::label('Ausentismo_idAusentismo', 'Ausencia', array('class' => 'col-sm-2 control-label'))!!}
+								<div class="col-sm-10">
+						            <div class="input-group">
+						              	<span class="input-group-addon">
+						                	<i class="fa fa-flag"></i>
+						              	</span>
+										{!!Form::select('Ausentismo_idAusentismo',$ausentismo, (isset($accidente) ? $accidente->Ausentismo_idAusentismo : 0),["class" => "form-control", "placeholder" =>"Seleccione el Ausentismo Relacionado al Accidente"])!!}
+									</div>
+								</div>
+							</div>
 					        <div class="form-group" id='test'>
 					          {!!Form::label('tiempoServicioAccidente', 'Tiempo Servicio', array('class' => 'col-sm-2 control-label'))!!}
 					          <div class="col-sm-10" >

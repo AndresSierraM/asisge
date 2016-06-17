@@ -1,4 +1,4 @@
-< @extends('layouts.grid')
+@extends('layouts.grid')
 @section('titulo')<h3 id="titulo"><center>Usuarios</center></h3>@stop
 @section('content')
 <style>

@@ -28,28 +28,13 @@ class MatrizRiesgoController extends Controller
      */
     public function create()
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
         $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
         
-        // lista de Eliminacion del riesgo (EliminacionRiesgo)
-        $idEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('idListaGeneral');
-        $nombreEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('nombreListaGeneral');
-
-        // lista de Sustitucion del riesgo (SustitucionRiesgo)
-        $idSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('idListaGeneral');
-        $nombreSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('nombreListaGeneral');
-
-        // lista de Control del riesgo (ControlRiesgo)
-        $idControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('idListaGeneral');
-        $nombreControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('nombreListaGeneral');
-
-        $idElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
-        $nombreElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
-
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'idEliminacionRiesgo', 'nombreEliminacionRiesgo' , 'idSustitucionRiesgo', 'nombreSustitucionRiesgo' , 'idControlRiesgo', 'nombreControlRiesgo', 'idElementoProteccion', 'nombreElementoProteccion','frecuenciaMedicion'));
+        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','frecuenciaMedicion'));
     }
 
     /**
@@ -104,14 +89,71 @@ class MatrizRiesgoController extends Controller
                 'nivelRiesgoMatrizRiesgoDetalle' => $request['nivelRiesgoMatrizRiesgoDetalle'][$i],
                 'nombreRiesgoMatrizRiesgoDetalle' => $request['nombreRiesgoMatrizRiesgoDetalle'][$i],
                 'aceptacionRiesgoMatrizRiesgoDetalle' => $request['aceptacionRiesgoMatrizRiesgoDetalle'][$i],
-                'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
-                'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
-                'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
-                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
+                'eliminacionMatrizRiesgoDetalle' => $request['eliminacionMatrizRiesgoDetalle'][$i],
+                'sustitucionMatrizRiesgoDetalle' => $request['sustitucionMatrizRiesgoDetalle'][$i],
+                'controlMatrizRiesgoDetalle' => $request['controlMatrizRiesgoDetalle'][$i],
+                'elementoProteccionMatrizRiesgoDetalle' => $request['elementoProteccionMatrizRiesgoDetalle'][$i],
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);
+
+              //************************************************
+              //
+              //  R E P O R T E   A C C I O N E S   
+              //  C O R R E C T I V A S,  P R E V E N T I V A S 
+              //  Y   D E   M E J O R A 
+              //
+              //************************************************
+              // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+              //COnsultamos el nombre del tercero empleado
+              $nombreClasificacion = \App\ClasificacionRiesgo::find($request['ClasificacionRiesgo_idClasificacionRiesgo'][$i]);
+              $nombreRiesgo = \App\TipoRiesgo::find($request['TipoRiesgo_idTipoRiesgo'][$i]);
+              $nombreDescripcion = \App\TipoRiesgoDetalle::find($request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i]);
+              
+
+              if($request['eliminacionMatrizRiesgoDetalle'][$i] != '')
+              {
+                  $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i];
+                  $this->guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              if($request['sustitucionMatrizRiesgoDetalle'][$i] != '')
+              {
+                  $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i];
+                  $this->guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              if($request['controlMatrizRiesgoDetalle'][$i] != '')
+              {
+                  $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  $this->guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+
           }
         
+
           return redirect('/matrizriesgo');
         }
     }
@@ -135,11 +177,7 @@ class MatrizRiesgoController extends Controller
             ->leftJoin('tiporiesgo as tr', 'mrd.TipoRiesgo_idTipoRiesgo', '=', 'tr.idTipoRiesgo')
             ->leftJoin('tiporiesgodetalle as trd', 'mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle', '=', 'trd.idTipoRiesgoDetalle')
             ->leftJoin('tiporiesgosalud as trs', 'mrd.TipoRiesgoSalud_idTipoRiesgoSalud', '=', 'trs.idTipoRiesgoSalud')
-            ->leftJoin('listageneral as lse', 'mrd.ListaGeneral_idEliminacionRiesgo', '=', 'lse.idListaGeneral')
-            ->leftJoin('listageneral as lss', 'mrd.ListaGeneral_idSustitucionRiesgo', '=', 'lss.idListaGeneral')
-            ->leftJoin('listageneral as lsc', 'mrd.ListaGeneral_idControlAdministrativo', '=', 'lsc.idListaGeneral')
-            ->leftJoin('elementoproteccion as epp', 'mrd.ElementoProteccion_idElementoProteccion', '=', 'epp.idElementoProteccion')
-            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.ListaGeneral_idEliminacionRiesgo, lse.nombreListaGeneral as nombreEliminacionRiesgo, mrd.ListaGeneral_idSustitucionRiesgo, lss.nombreListaGeneral as nombreSustitucionRiesgo, mrd.ListaGeneral_idControlAdministrativo, lsc.nombreListaGeneral as nombreControlAdministrativo, mrd.ElementoProteccion_idElementoProteccion, epp.nombreElementoProteccion, mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
+            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.eliminacionMatrizRiesgoDetalle, mrd.sustitucionMatrizRiesgoDetalle, mrd.controlMatrizRiesgoDetalle, mrd.elementoProteccionMatrizRiesgoDetalle,  mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
             ->orderBy('idMatrizRiesgoDetalle', 'ASC')
             ->where('MatrizRiesgo_idMatrizRiesgo','=',$id)
             ->get();
@@ -218,29 +256,15 @@ class MatrizRiesgoController extends Controller
      */
     public function edit($id)
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
         $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
 
-        // lista de Eliminacion del riesgo (EliminacionRiesgo)
-        $idEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('idListaGeneral');
-        $nombreEliminacionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','EliminacionRiesgo')->lists('nombreListaGeneral');
-
-        // lista de Sustitucion del riesgo (SustitucionRiesgo)
-        $idSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('idListaGeneral');
-        $nombreSustitucionRiesgo = \App\ListaGeneral::where('tipoListaGeneral','SustitucionRiesgo')->lists('nombreListaGeneral');
-
-        // lista de Control del riesgo (ControlRiesgo)
-        $idControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('idListaGeneral');
-        $nombreControlRiesgo = \App\ListaGeneral::where('tipoListaGeneral','ControlRiesgo')->lists('nombreListaGeneral');
-
-        $idElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idElementoProteccion');
-        $nombreElementoProteccion = \App\ElementoProteccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreElementoProteccion');
-
+        
         $matrizRiesgo = \App\MatrizRiesgo::find($id);
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','idListaGeneral','nombreListaGeneral', 'idEliminacionRiesgo', 'nombreEliminacionRiesgo' , 'idSustitucionRiesgo', 'nombreSustitucionRiesgo' , 'idControlRiesgo', 'nombreControlRiesgo', 'idElementoProteccion', 'nombreElementoProteccion', 'frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
+        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
     }
 
     /**
@@ -301,12 +325,68 @@ class MatrizRiesgoController extends Controller
                 'nivelRiesgoMatrizRiesgoDetalle' => $request['nivelRiesgoMatrizRiesgoDetalle'][$i],
                 'nombreRiesgoMatrizRiesgoDetalle' => $request['nombreRiesgoMatrizRiesgoDetalle'][$i],
                 'aceptacionRiesgoMatrizRiesgoDetalle' => $request['aceptacionRiesgoMatrizRiesgoDetalle'][$i],
-                'ListaGeneral_idEliminacionRiesgo' => $request['ListaGeneral_idEliminacionRiesgo'][$i],
-                'ListaGeneral_idSustitucionRiesgo' => $request['ListaGeneral_idSustitucionRiesgo'][$i],
-                'ListaGeneral_idControlAdministrativo' => $request['ListaGeneral_idControlAdministrativo'][$i],
-                'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
+                'eliminacionMatrizRiesgoDetalle' => $request['eliminacionMatrizRiesgoDetalle'][$i],
+                'sustitucionMatrizRiesgoDetalle' => $request['sustitucionMatrizRiesgoDetalle'][$i],
+                'controlMatrizRiesgoDetalle' => $request['controlMatrizRiesgoDetalle'][$i],
+                'elementoProteccionMatrizRiesgoDetalle' => $request['elementoProteccionMatrizRiesgoDetalle'][$i],
                 'observacionMatrizRiesgoDetalle' => $request['observacionMatrizRiesgoDetalle'][$i]   
               ]);
+
+              //************************************************
+              //
+              //  R E P O R T E   A C C I O N E S   
+              //  C O R R E C T I V A S,  P R E V E N T I V A S 
+              //  Y   D E   M E J O R A 
+              //
+              //************************************************
+              // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+              //COnsultamos el nombre del tercero empleado
+              $nombreClasificacion = \App\ClasificacionRiesgo::find($request['ClasificacionRiesgo_idClasificacionRiesgo'][$i]);
+              $nombreRiesgo = \App\TipoRiesgo::find($request['TipoRiesgo_idTipoRiesgo'][$i]);
+              $nombreDescripcion = \App\TipoRiesgoDetalle::find($request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i]);
+              
+
+              if($request['eliminacionMatrizRiesgoDetalle'][$i] != '')
+              {
+                  $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i];
+                  $this->guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              if($request['sustitucionMatrizRiesgoDetalle'][$i] != '')
+              {
+                  $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i];
+                  $this->guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              if($request['controlMatrizRiesgoDetalle'][$i] != '')
+              {
+                  $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  $this->guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+
           }
           
           return redirect('/matrizriesgo');
@@ -323,5 +403,38 @@ class MatrizRiesgoController extends Controller
     {
         \App\MatrizRiesgo::destroy($id);
         return redirect('/matrizriesgo');
+    }
+
+    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
+    {   
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        
+        $indice = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion);
+
+        $data = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0);
+
+        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
     }
 }

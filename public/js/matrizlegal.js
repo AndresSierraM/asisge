@@ -1,6 +1,6 @@
 function validarFormulario(event)
 {
-    var route = "http://localhost:8000/matrizlegal";
+    var route = "http://"+location.host+"/matrizlegal";
     var token = $("#token").val();
     var dato1 = document.getElementById('nombreMatrizLegal').value;
     var dato2 = document.getElementById('fechaElaboracionMatrizLegal').value;

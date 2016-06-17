@@ -38,7 +38,7 @@
 			acompanante.campos = ['idPlanAuditoriaAcompanante', 'Tercero_idAcompanante'];
 			acompanante.etiqueta = ['input','select'];
 			acompanante.tipo = ['hidden',''];
-			acompanante.estilo = ['','width: 1010px;height:35px;'];
+			acompanante.estilo = ['','width: 800px;height:35px;'];
 			acompanante.clase = ['',''];
 			acompanante.sololectura = [false,false];
 			acompanante.completar = ['off','off'];
@@ -49,7 +49,7 @@
 			notificado.campos = ['idPlanAuditoriaNotificado', 'Tercero_idNotificado'];
 			notificado.etiqueta = ['input','select'];
 			notificado.tipo = ['hidden',''];
-			notificado.estilo = ['','width: 1010px;height:35px;'];
+			notificado.estilo = ['','width: 800px;height:35px;'];
 			notificado.clase = ['',''];
 			notificado.sololectura = [false,false];
 			notificado.completar = ['off','off'];
@@ -197,7 +197,7 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="acompanante.agregarCampos(valorAcompanante,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 1010px;display:inline-block;height:60px;">Auditores</div>
+															<div class="col-md-1" style="width: 800px;display:inline-block;height:60px;">Auditores</div>
 															<div id="contenedor_acompanante">
 															</div>
 														</div>
@@ -220,7 +220,7 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="notificado.agregarCampos(valorNotificado,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 1010px;display:inline-block;height:60px;">Notificados</div>
+															<div class="col-md-1" style="width: 800px;display:inline-block;height:60px;">Notificados</div>
 															<div id="contenedor_notificado">
 															</div>
 														</div>

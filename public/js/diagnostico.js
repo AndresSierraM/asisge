@@ -125,7 +125,7 @@ Titulos.prototype.agregarTitulos = function(grupo, nombreGrupo){
 
 function validarFormularioREQUEST(event)
 {
-    var route = "http://localhost:8000/diagnostico";
+    var route = "http://"+location.host+"/diagnostico";
     var token = $("#token").val();
     var dato0 = document.getElementById('idDiagnostico').value;
     var dato1 = document.getElementById('codigoDiagnostico').value;
@@ -195,6 +195,14 @@ function validarFormularioREQUEST(event)
     //if(sw === true)
         event.preventDefault();
 }
+
+
+function calcularResultado()
+{
+  var cambio = "document.getElementById('"+this.id.replace('puntuacionDiagnosticoDetalle','resultadoDiagnosticoDetalle') + "').value = "+this.value+" * 20;";
+  eval(cambio);
+}
+
 
 function habilitarSubmit(event)
 {

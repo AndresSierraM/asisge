@@ -25,7 +25,7 @@ class TerceroRequest extends Request
     {
         return [
             'TipoIdentificacion_idTipoIdentificacion' => 'required',
-            "documentoTercero" => "required|string|max:30|unique:tercero,documentoTercero,".$this->get('idTercero') .",idTercero",
+            "documentoTercero" => "required|string|max:30|unique:tercero,documentoTercero,".$this->get('idTercero') .",idTercero,Compania_idCompania,".(\Session::get('idCompania')),
             'nombre1Tercero' => 'required|string|max:20',
             'apellido1Tercero' => 'required|string|max:20',
             'nombre2Tercero' => 'string|max:20',

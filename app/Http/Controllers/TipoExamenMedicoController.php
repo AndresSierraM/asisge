@@ -17,7 +17,7 @@ class TipoExamenMedicoController extends Controller
      */
     public function index()
     {
-        return view('TipoExamenMedicoGrid');
+        return view('tipoexamenmedicogrid');
     }
 
     /**

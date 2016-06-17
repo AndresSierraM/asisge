@@ -109,58 +109,47 @@
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
-							<div class="panel-heading">Detalles</div>
+							<div class="panel-heading">Detalle de Acciones Correctivas, Preventivas y de Mejora</div>
 							<div class="panel-body">
-								<div class="panel-group" id="accordion">
-									<div class="panel panel-default">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#detalle">Preguntas</a>
-											</h4>
-										</div>
-										<div id="detalle" class="panel-collapse collapse in">
-											<div class="panel-body">
-												<div class="form-group" id='test'>
-													<div class="col-sm-12">
-														<div class="row show-grid">
-															<div style="overflow: auto; width: 100%;">
-																<div style="width: 3350px; height: 300px; display: inline-block; ">
-																	<div class="col-md-1" style="width: 1040px;height:40px;">Reporte</div>
-																	<div class="col-md-1" style="width: 400px;height:40px;">An&aacute;lisis</div>
-																	<div class="col-md-1" style="width: 1200px;height:40px;">Acci&oacute;n a seguir</div>
-																	<div class="col-md-1" style="width: 400px;height:40px;">Seguimiento</div>
-																	<div class="col-md-1" style="width: 100px;height:40px;">Cierre</div>
-																	<div class="col-md-1" style="width: 200px;height:40px;">Verificaci&oacute;n</div>
-																	<div class="col-md-1" style="width: 40px;height: 70px;" onclick="detalle.agregarCampos(valorDetalle,'A')">
-																		<span class="glyphicon glyphicon-plus"></span>
-																	</div>
-																	<div class="col-md-1" style="width: 50px;display:inline-block;height:70px;">N°</div>
-																	<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha reporte</div>
-																	<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Proceso</div>
-																	<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Fuente</div>
-																	<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Tipo</div>
-																	<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Descripci&oacute;n no conformidad</div>
-																	<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">An&aacute;lisis causa</div>
-																	<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Correcci&oacute;n</div>
-																	<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Responsable</div>
-																	<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Plan de acci&oacute;n</div>
-																	<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Responsable</div>
-																	<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha estimada cierre</div>
-																	<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Estado Actual</div>
-																	<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha Cierre</div>
-																	<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Eficaz</div>
-																	<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">D&iacute;as Atraso</div>
-																	<div id="contenedor_detalle">
-																	</div>
-																</div>
-															</div>
-														</div>
+								
+								<div class="form-group" id='test'>
+									<div class="col-sm-12">
+										<div class="row show-grid">
+											<div style="overflow: auto; width: 100%; height: 600px;">
+												<div style="width: 3350px; height: 300px; display: inline-block; ">
+													<div class="col-md-1" style="width: 1040px;height:40px;">Reporte</div>
+													<div class="col-md-1" style="width: 400px;height:40px;">An&aacute;lisis</div>
+													<div class="col-md-1" style="width: 1200px;height:40px;">Acci&oacute;n a seguir</div>
+													<div class="col-md-1" style="width: 400px;height:40px;">Seguimiento</div>
+													<div class="col-md-1" style="width: 100px;height:40px;">Cierre</div>
+													<div class="col-md-1" style="width: 200px;height:40px;">Verificaci&oacute;n</div>
+													<div class="col-md-1" style="width: 40px;height: 70px;" onclick="detalle.agregarCampos(valorDetalle,'A')">
+														<span class="glyphicon glyphicon-plus"></span>
+													</div>
+													<div class="col-md-1" style="width: 50px;display:inline-block;height:70px;">N°</div>
+													<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha reporte</div>
+													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Proceso</div>
+													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Fuente</div>
+													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Tipo</div>
+													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Descripci&oacute;n no conformidad</div>
+													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">An&aacute;lisis causa</div>
+													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Correcci&oacute;n</div>
+													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Responsable</div>
+													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Plan de acci&oacute;n</div>
+													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Responsable</div>
+													<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha estimada cierre</div>
+													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Estado Actual</div>
+													<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha Cierre</div>
+													<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Eficaz</div>
+													<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">D&iacute;as Atraso</div>
+													<div id="contenedor_detalle">
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+											
 							</div>
 						</div>
 					</div>

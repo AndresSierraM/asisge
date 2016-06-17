@@ -1,6 +1,6 @@
 function validarFormulario(event)
 {
-    var route = "http://localhost:8000/cargo";
+    var route = "http://"+location.host+"/cargo";
     var token = $("#token").val();
     var dato0 = document.getElementById('idCargo').value;
     var dato1 = document.getElementById('codigoCargo').value;

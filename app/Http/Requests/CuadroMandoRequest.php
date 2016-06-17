@@ -23,8 +23,18 @@ class CuadroMandoRequest extends Request
      */
     public function rules()
     {
-        return [
-            
+         return [
+            "numeroCuadroMando" => "required|string|unique:cuadromando,numeroCuadroMando,".$this->get('idCuadroMando') .",idCuadroMando,Compania_idCompania,".(\Session::get('idCompania')),
+            "CompaniaObjetivo_idCompaniaObjetivo" => "required",
+            "Proceso_idProceso" => "required",
+            "indicadorCuadroMando" => "required",
+            "formulaCuadroMando" => "required",
+            "operadorMetaCuadroMando" => "required",
+            "valorMetaCuadroMando" => "required",
+            "tipoMetaCuadroMando" => "required",
+            "FrecuenciaMedicion_idFrecuenciaMedicion" => "required",
+            "Tercero_idResponsable" => "required"
+
         ];
     }
 }

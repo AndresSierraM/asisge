@@ -1,9 +1,12 @@
 function consultarPlanCapacitacion(tipo)
 {
+    if(document.getElementById('PlanCapacitacion_idPlanCapacitacion').value == '')
+        return;
+
     var id = (document.getElementById('idActaCapacitacion').value == '' ? 0 : document.getElementById('idActaCapacitacion').value) ;
     var dato1 = document.getElementById('PlanCapacitacion_idPlanCapacitacion').value;
-	
-    var route = "http://localhost:8000/actacapacitacion/"+id;
+    
+    var route = "http://"+location.host+"/actacapacitacion/"+id;
     var token = $("#token").val();
 
     $.ajax({
@@ -19,6 +22,7 @@ function consultarPlanCapacitacion(tipo)
             var datosTemas = data[1];
             var tercero = data[2];
             
+
             document.getElementById('tipoPlanCapacitacion').value = datosEncabezado['tipoPlanCapacitacion'];
             document.getElementById('nombreResponsable').value = tercero['nombreCompletoTercero'];
             document.getElementById('objetivoPlanCapacitacion').innerHTML = datosEncabezado['objetivoPlanCapacitacion'].replace('<p>','').replace('</p>','');
@@ -27,20 +31,24 @@ function consultarPlanCapacitacion(tipo)
             document.getElementById('metodoEficaciaPlanCapacitacion').innerHTML = datosEncabezado['metodoEficaciaPlanCapacitacion'].replace('<p>','').replace('</p>','');
             document.getElementById('personalInvolucradoPlanCapacitacion').innerHTML = datosEncabezado['personalInvolucradoPlanCapacitacion'].replace('<p>','').replace('</p>','');
            
+            // primero eliminamos los registros actuales, para qu eno se combinen temas de diferentes planes cuando el usuario cambie de plan
+            tema.borrarTodosCampos();
+
             if(tipo == 'Completo')
             {
                 for(var j=0,k=datosTemas.length;j<k;j++)
                 {
                 	tema.agregarCampos(JSON.stringify(datosTemas[j]),'L');
                 }
-            }	
+            }	 
+
         }
     });
 }
 
 function validarFormulario(event)
 {
-    var route = "http://localhost:8000/actacapacitacion";
+    var route = "http://"+location.host+"/actacapacitacion";
     var token = $("#token").val();
     var dato0 = document.getElementById('idActaCapacitacion').value;
     var dato1 = document.getElementById('numeroActaCapacitacion').value;
@@ -146,7 +154,7 @@ function llenarCargo(Tercero)
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
             data: {'idTercero': Tercero.value},
-            url:   'http://localhost:8000/llenarCargo/',
+            url:   'http://'+location.host+'/llenarCargo/',
             type:  'post',
             beforeSend: function(){
                 //Lo que se hace antes de enviar el formulario
@@ -171,7 +179,7 @@ function llenarPlanCapacitacionTema(Plan)
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
             data: {'idPlanCapacitacionTema': Plan.value},
-            url:   'http://localhost:8000/llenarPlanCapacitacionTema/',
+            url:   'http://'+location.host+'/llenarPlanCapacitacionTema/',
             type:  'post',
             beforeSend: function(){
                 //Lo que se hace antes de enviar el formulario

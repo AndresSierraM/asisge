@@ -26,7 +26,7 @@ class ActaCapacitacionRequest extends Request
         $tema = count($this->get('Tercero_idCapacitador'));
         $asistente = count($this->get('Tercero_idAsistente'));
 
-        $validacion = array('numeroActaCapacitacion' => 'required|max:200|unique:actacapacitacion,numeroActaCapacitacion,'.$this->get('idActaCapacitacion').',idActaCapacitacion',
+        $validacion = array('numeroActaCapacitacion' => 'required|max:200|unique:actacapacitacion,numeroActaCapacitacion,'.$this->get('idActaCapacitacion').',idActaCapacitacion,Compania_idCompania,'.(\Session::get('idCompania')),
             'fechaElaboracionActaCapacitacion' => 'required',
             'PlanCapacitacion_idPlanCapacitacion' => 'required');
 

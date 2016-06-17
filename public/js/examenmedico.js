@@ -6,7 +6,7 @@ function CargarExamenes(idTercero, idCargo, tipo)
     $.ajax({
       async: true,
       headers: {'X-CSRF-TOKEN': token},
-      url: 'http://localhost:8000/examenmedico/'+idTercero,
+      url: 'http://'+location.host+'/examenmedico/'+idTercero,
       type: 'POST',
       dataType: 'JSON',
       method: 'GET',
@@ -62,7 +62,7 @@ function CargarCargo(idTercero)
     $.ajax({
       async: true,
       headers: {'X-CSRF-TOKEN': token},
-      url: 'http://localhost:8000/examenmedico/'+idTercero,
+      url: 'http://'+location.host+'/examenmedico/'+idTercero,
       type: 'POST',
       dataType: 'JSON',
       method: 'GET',

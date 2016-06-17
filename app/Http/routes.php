@@ -246,6 +246,13 @@ Route::post('llenarPlanCapacitacionTema', function()
     include public_path().'/ajax/llenarPlanCapacitacionTema.php';
 });
 
+Route::post('llenarAusentismo', function()
+{
+    include public_path().'/ajax/llenarAusentismo.php';
+});
+
+
+
 Route::post('CuadroMandoConsultarCampos', function()
 {
     include public_path().'/ajax/CuadroMandoConsultarCampos.php';

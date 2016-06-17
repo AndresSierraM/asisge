@@ -23,7 +23,7 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> N&uacute;mero</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Objetivo de la calidad</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Objetivo Estratégico</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Objetivos de los procesos</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Nombre del indicador</label></a></li>
                             <li><a class="toggle-vis" data-column="5"><label> Procesos involucrados</label></a></li>

@@ -32,6 +32,7 @@ class ActaCapacitacionController extends Controller
         $planCapacitacion = DB::table('plancapacitacion as PC')
             ->leftJoin('plancapacitaciontema as PCT', 'PC.idPlanCapacitacion', '=', 'PCT.PlanCapacitacion_idPlanCapacitacion')
             ->where('dictadaPlanCapacitacionTema','=',0)
+            ->where('Compania_idCompania','=',\Session::get("idCompania"))
             ->groupBy('idPlanCapacitacion')
             ->lists('nombrePlanCapacitacion', 'idPlanCapacitacion');
 
@@ -140,6 +141,7 @@ class ActaCapacitacionController extends Controller
         $planCapacitacion = DB::table('plancapacitacion as PC')
             ->leftJoin('plancapacitaciontema as PCT', 'PC.idPlanCapacitacion', '=', 'PCT.PlanCapacitacion_idPlanCapacitacion')
             //->where('dictadaPlanCapacitacionTema','=',0)
+            ->where('Compania_idCompania','=',\Session::get("idCompania"))
             ->groupBy('idPlanCapacitacion')
             ->lists('nombrePlanCapacitacion', 'idPlanCapacitacion');
             

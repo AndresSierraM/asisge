@@ -15,7 +15,7 @@ $tipocampo = DB::table('information_schema.COLUMNS')
 ->select(DB::raw('TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION, COLUMN_TYPE, COLUMN_COMMENT'))
 ->where('TABLE_NAME', "=", $nombretabla["tablaModulo"])
 ->where('COLUMN_NAME', "=", $nombreCampo)
-->where('TABLE_SCHEMA', "=", 'asisge')
+->where('TABLE_SCHEMA', "=", env('DB_DATABASE', 'sisoft'))
 ->get();
 
 // devolvemos al ajax los registros de campos, con estos se creara una lista de seleccion

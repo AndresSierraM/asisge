@@ -34,7 +34,7 @@ class CuadroMandoController extends Controller
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula');
 
         $indicador = \App\CuadroMando::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('indicadorCuadroMando','idCuadroMando');;
-        $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
+        $companiaobjetivo = \App\CompaniaObjetivo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
         $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
@@ -173,7 +173,7 @@ class CuadroMandoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id, CuadroMandoRequest $request)
+    public function edit($id)
     {
         $cuadromando = \App\CuadroMando::find($id);
 
@@ -183,7 +183,7 @@ class CuadroMandoController extends Controller
 
         //$cuadromandoformula = \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->list();
         $indicador = \App\CuadroMando::where('Compania_idCompania','=', \Session::get('idCompania'))->where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
-        $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
+        $companiaobjetivo = \App\CompaniaObjetivo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
         $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');

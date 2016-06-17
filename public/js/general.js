@@ -52,6 +52,7 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.altura = '35px;';
     this.campoid = '';
     this.campoEliminacion = '';
+    this.botonEliminacion = true;
     
     this.nombre = nombreObjeto;
     this.contenedor = nombreContenedor;
@@ -82,21 +83,28 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
         valor = $.parseJSON(datos);
     
     var espacio = document.getElementById(this.contenedor);
-    var caneca = document.createElement('div');
-    var img = document.createElement('i');
+   
+    
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
     div.setAttribute("class", "col-sm-12");
     div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
     
-    caneca.id = 'eliminarRegistro'+ this.contador;
-    caneca.setAttribute('onclick',this.nombre+'.borrarCampos('+this.contenido+this.contador+',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
-    caneca.setAttribute("class","col-md-1");
-    caneca.setAttribute("style","width:40px; height:35px;");
-    img.setAttribute("class","glyphicon glyphicon-trash");
+    // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
+    if(this.botonEliminacion)
+    {
+        var img = document.createElement('i');
+        var caneca = document.createElement('div');
+        caneca.id = 'eliminarRegistro'+ this.contador;
+        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+        caneca.setAttribute("class","col-md-1");
+        caneca.setAttribute("style","width:40px; height:35px;");
+        img.setAttribute("class","glyphicon glyphicon-trash");
 
-    caneca.appendChild(img);
-    div.appendChild(caneca);
+        caneca.appendChild(img);
+        div.appendChild(caneca);
+    }
+
 
     for (var i = 0,  e = this.campos.length; i < e ; i++)
     {
@@ -121,6 +129,48 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             }
 
             div.appendChild(input);
+
+            // este codigo es despues de que se cree espacio (div contenedor)
+            //  $('#fotoInspeccionDetalle0').fileinput({
+            //   language: 'es',
+            //   uploadUrl: '#',
+            //   allowedFileExtensions : ['jpg', 'png','gif'],
+            //    initialPreview: 
+            //     [               
+            //         '<img style="width:60px; height:60px;" src="imagenes/accidente/firmaaccidente_1.png">'
+            //     ],
+            //   dropZoneTitle: 'Seleccione la imagen',
+            //   removeLabel: '',
+            //   uploadLabel: '',
+            //   browseLabel: '',
+            //   uploadClass: "",
+            //   uploadLabel: "",
+            //   uploadIcon: "",
+            // });
+        }
+        if(this.etiqueta[i] == 'file')
+        {
+            var input = document.createElement('input');
+            input.type =  'file';
+            input.id =  this.campos[i] + this.contador;
+            input.name =  this.campos[i]+'[]';
+
+            input.filename = '';
+            input.setAttribute("class", this.clase[i]);
+            input.setAttribute("style", this.estilo[i]);
+            input.readOnly = this.sololectura[i];
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    input.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+                }
+            }
+
+            div.appendChild(input);
+
+           
+
         }
         else if(this.etiqueta[i] == 'textarea')
         {
@@ -245,12 +295,25 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
 }
 
 Atributos.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
-    if(campoEliminacion && document.getElementById(campoEliminacion))
+   
+    if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
         document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
 
-    aux = elemento.parentNode;
-    aux.removeChild(elemento);
+    // aux = elemento.parentNode;
+    // alert(aux);
+    // if(aux );
+        $("#"+elemento).remove();
 
+}
+
+Atributos.prototype.borrarTodosCampos = function(){
+    
+    
+    for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
+    {
+        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
+    }
+    this.contador = 0;
 }
 
 Atributos.prototype.cambiarCheckbox = function(campo, registro)

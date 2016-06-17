@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class tipoInspeccionPregunta extends Model
+class TipoInspeccionPregunta extends Model
 {
     protected $table = 'tipoinspeccionpregunta';
     protected $primaryKey = 'idtipoInspeccionPregunta';

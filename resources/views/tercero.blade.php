@@ -7,7 +7,11 @@
 @stop
 @section('content')
 @include('alerts.request')
-	{!!Html::script('js/tercero.js')!!}
+{!!Html::script('js/tercero.js')!!}
+
+<?php
+	$terceroinformacion = (isset($tercero) ? $tercero->terceroInformaciones : "");
+?>
 	<script>
 		
 		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroContactos) : "");?>';
@@ -350,12 +354,12 @@
 															</span>
 															{!!Form::select('sexoTercero',
 															array('F'=>'Femenino','M'=>'Masculino'), 
-															(isset($tercero) ? $tercero->sexoTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el sexo del tercero",'style'=>'width:340px;'])!!}
+															(isset($tercero) ? $tercero->sexoTercero : 0),["class" => "form-control", "placeholder" =>"Seleccione el sexo del tercero",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('correoElectronicoTercero', 'E-Mail', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													{!!Form::label('correoElectronicoTercero', 'E-Mail', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -366,7 +370,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('paginaWebTercero', 'P&aacute;gina Web', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('paginaWebTercero', 'P&aacute;gina Web', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -398,19 +402,9 @@
 										</div>
 										<div id="laboral" class="panel-collapse collapse">
 											<div class="panel-body">
+												
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('fechaNacimientoTerceroInformacion', 'Fecha Nacimiento', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
-													<div class="col-sm-10" style="width:400px;">
-														<div class="input-group">
-															<span class="input-group-addon">
-																<i class="fa fa-phone" style="width: 14px;"></i>
-															</span>
-															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingrese la fecha de nacimiento','style'=>'width:340px;'])!!}
-														</div>
-													</div>
-												</div>
-												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('fechaIngresoTerceroInformacion', 'Fecha Ingreso', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('fechaIngresoTerceroInformacion', 'Fecha Ingreso', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -421,7 +415,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('fechaRetiroTerceroInformacion', 'Fecha Retiro', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('fechaRetiroTerceroInformacion', 'Fecha Retiro', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -519,6 +513,17 @@
 										</div>
 										<div id="personal" class="panel-collapse collapse">
 											<div class="panel-body">
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('fechaNacimientoTerceroInformacion', 'Fecha Nacimiento', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-phone" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('fechaNacimientoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaNacimientoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Ingrese la fecha de nacimiento','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
 												<div class="form-group" style="width:600px; display: inline;">
 													{!!Form::label('estadoCivilTerceroInformacion', 'Estado Civil', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
@@ -795,6 +800,15 @@
 			format: "YYYY-MM-DD"
 		}));
 
+		$('#fechaIngresoTerceroInformacion').datetimepicker(({
+			format: "YYYY-MM-DD"
+		}));
+
+		$('#fechaRetiroTerceroInformacion').datetimepicker(({
+			format: "YYYY-MM-DD"
+		}));
+
+		
 		$('#imagenTercero').fileinput({
 			language: 'es',
 			uploadUrl: '#',

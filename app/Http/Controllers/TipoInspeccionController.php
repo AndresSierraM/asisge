@@ -27,7 +27,7 @@ class TipoInspeccionController extends Controller
      */
     public function create()
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         return view('tipoinspeccion',compact('frecuenciaMedicion'));
     }
 
@@ -39,21 +39,24 @@ class TipoInspeccionController extends Controller
      */
     public function store(TipoInspeccionRequest $request)
     {
-        \App\TipoInspeccion::create([
+        if($request['respuesta'] != 'falso')
+        {
+            \App\TipoInspeccion::create([
             'codigoTipoInspeccion' => $request['codigoTipoInspeccion'],
             'nombreTipoInspeccion' => $request['nombreTipoInspeccion'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
-        $tipoInspeccion = \App\TipoInspeccion::All()->last();
-        
-        //---------------------------------
-        // guardamos las tablas de detalle
-        //---------------------------------
-        $this->grabarDetalle($tipoInspeccion->idTipoInspeccion, $request);
-        
-        return redirect('/tipoinspeccion');
+            $tipoInspeccion = \App\TipoInspeccion::All()->last();
+            
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($tipoInspeccion->idTipoInspeccion, $request);
+            
+             return redirect('/tipoinspeccion');
+         }
     }
 
     /**
@@ -75,7 +78,7 @@ class TipoInspeccionController extends Controller
      */
     public function edit($id)
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $tipoInspeccion = \App\TipoInspeccion::find($id);
         return view('tipoinspeccion',compact('frecuenciaMedicion'),['tipoInspeccion'=>$tipoInspeccion]);
     }
@@ -89,16 +92,19 @@ class TipoInspeccionController extends Controller
      */
     public function update(TipoInspeccionRequest $request, $id)
     {
-        $tipoInspeccion = \App\TipoInspeccion::find($id);
-        $tipoInspeccion->fill($request->all());
-        $tipoInspeccion->save();
+        if($request['respuesta'] != 'falso')
+        {
+            $tipoInspeccion = \App\TipoInspeccion::find($id);
+            $tipoInspeccion->fill($request->all());
+            $tipoInspeccion->save();
 
-        //---------------------------------
-        // guardamos las tablas de detalle
-        //---------------------------------
-        $this->grabarDetalle($tipoInspeccion->idTipoInspeccion, $request);
-        
-        return redirect('/tipoinspeccion');
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($tipoInspeccion->idTipoInspeccion, $request);
+            
+            return redirect('/tipoinspeccion');
+        }
     }
 
     /**

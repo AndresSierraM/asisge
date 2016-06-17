@@ -24,7 +24,7 @@ class GrupoApoyoRequest extends Request
     public function rules()
     {
         return[
-            "codigoGrupoApoyo" => "required|string|max:20|unique:grupoapoyo,codigoGrupoApoyo,".$this->get('idGrupoApoyo') .",idGrupoApoyo",
+            "codigoGrupoApoyo" => "required|string|max:20|unique:grupoapoyo,codigoGrupoApoyo,".$this->get('idGrupoApoyo') .",idGrupoApoyo,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreGrupoApoyo" => "required|string|max:80"
         ];
     }

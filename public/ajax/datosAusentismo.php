@@ -3,7 +3,7 @@
     $ausentismo = DB::table('ausentismo')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
             ->leftJoin('accidente', 'Ausentismo_idAusentismo', '=', 'idAusentismo')
-            ->select(DB::raw('idAusentismo, nombreCompletoTercero, fechaElaboracionAusentismo, tipoAusentismo, fechaInicioAusentismo, fechaFinAusentismo, nombreAccidente, diasAusentismo'))
+            ->select(DB::raw('idAusentismo, nombreAusentismo, nombreCompletoTercero, fechaElaboracionAusentismo, tipoAusentismo, fechaInicioAusentismo, fechaFinAusentismo, nombreAccidente, diasAusentismo'))
             ->where('ausentismo.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
@@ -18,6 +18,7 @@
                             '<span class="glyphicon glyphicon-trash"></span>'.
                         '</a>';
         $row[$key][] = $value->idAusentismo;
+        $row[$key][] = $value->nombreAusentismo;
         $row[$key][] = $value->nombreCompletoTercero;
         $row[$key][] = $value->fechaElaboracionAusentismo; 
         $row[$key][] = $value->fechaInicioAusentismo;

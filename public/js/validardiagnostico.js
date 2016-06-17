@@ -1,7 +1,7 @@
 
 $("#Grabar").click(function(){
     var dato = $("#puntuacionDiagnosticoDetalle0").val();
-    var route = "http://localhost:8000/diagnostico";
+    var route = "http://"+location.host+"/diagnostico";
     var token = $("#token").val();
 
     $.ajax({

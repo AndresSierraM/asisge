@@ -54,24 +54,24 @@ class MatrizRiesgoRequest extends Request
                 $validacion['TipoRiesgoSalud_idTipoRiesgoSalud'.$i] =  'required';
             }
 
-            if(trim($this->get('ListaGeneral_idEliminacionRiesgo')[$i]) == '' or trim($this->get('ListaGeneral_idEliminacionRiesgo')[$i]) == 0)
-            {    
-                $validacion['ListaGeneral_idEliminacionRiesgo'.$i] =  'required';
-            }
+            // if(trim($this->get('eliminacionMatrizRiesgoDetalle')[$i]) == '' )
+            // {    
+            //     $validacion['eliminacionMatrizRiesgoDetalle'.$i] =  'required';
+            // }
 
-            if(trim($this->get('ListaGeneral_idSustitucionRiesgo')[$i]) == '' or trim($this->get('ListaGeneral_idSustitucionRiesgo')[$i]) == 0)
-            {    
-                $validacion['ListaGeneral_idSustitucionRiesgo'.$i] =  'required';
-            }
+            // if(trim($this->get('sustitucionMatrizRiesgoDetalle')[$i]) == '' )
+            // {    
+            //     $validacion['sustitucionMatrizRiesgoDetalle'.$i] =  'required';
+            // }
 
-            if(trim($this->get('ListaGeneral_idControlAdministrativo')[$i]) == '' or trim($this->get('ListaGeneral_idControlAdministrativo')[$i]) == 0)
-            {    
-                $validacion['ListaGeneral_idControlAdministrativo'.$i] =  'required';
-            }
+            // if(trim($this->get('controlMatrizRiesgoDetalle')[$i]) == '' )
+            // {    
+            //     $validacion['controlMatrizRiesgoDetalle'.$i] =  'required';
+            // }
 
-            if(trim($this->get('ElementoProteccion_idElementoProteccion')[$i]) == '' or trim($this->get('ElementoProteccion_idElementoProteccion')[$i]) == 0)
+            if(trim($this->get('elementoProteccionMatrizRiesgoDetalle')[$i]) == '' )
             {    
-                $validacion['ElementoProteccion_idElementoProteccion'.$i] =  'required';
+                $validacion['elementoProteccionMatrizRiesgoDetalle'.$i] =  'required';
             }
 
             if(trim($this->get('nivelDeficienciaMatrizRiesgoDetalle')[$i]) == '' )

@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccidenteRequest;
+use App\Http\Controllers\ReporteACPMController;
 
 use Illuminate\Routing\Route;
 use DB;
+
+// use traitSisoft;
+
 
 class AccidenteController extends Controller
 {
@@ -176,13 +180,14 @@ class AccidenteController extends Controller
         //----------------------------
         // Guardamos la imagen de la firma como un archivo en disco
         $data = $request['firmabase64'];
+        if($data != '')
+        {
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
 
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
-        $data = base64_decode($data);
-
-        file_put_contents('imagenes/accidente/firmaaccidente_'.$id.'.png', $data);
-
+            file_put_contents('imagenes/accidente/firmaaccidente_'.$id.'.png', $data);
+        }
         //----------------------------
 
 
@@ -240,33 +245,27 @@ class AccidenteController extends Controller
 
         $causas = substr($causas, 0, strlen($causas)-2);
 
+        
+        //************************************************
+        //
+        //  R E P O R T E   A C C I O N E S   
+        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+        //  Y   D E   M E J O R A 
+        //
+        //************************************************
         // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
         //COnsultamos el nombre del tercero empleado
         $nombreTercero = \App\Tercero::find($request['Tercero_idEmpleado']);
 
-        $reporteACPM = \App\ReporteACPM::All()->last();
-        \App\ReporteACPMDetalle::create([
+        $this->guardarReporteACPM(
+                $fechaAccion = date("Y-m-d"), 
+                $idModulo = 3, 
+                $tipoAccion = 'Correctiva', 
+                $descripcionAccion = 'Para el '.$request['clasificacionAccidente'].' de '.$nombreTercero->nombreCompletoTercero.', se recomienda implementar controles por las siguientes causas: '.$causas
+                );   
 
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-            'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => date("Y-m-d"),
-            'Proceso_idProceso' => NULL,
-            'Modulo_idModulo' => 12,
-            'tipoReporteACPMDetalle' => 'Correctiva',
-            'descripcionReporteACPMDetalle' => 'Para el '.$request['clasificacionAccidente'].' de '.$nombreTercero->nombreCompletoTercero.', se recomienda implementar controles por las siguientes causas: '.$causas,
-            'analisisReporteACPMDetalle' => '',
-            'correccionReporteACPMDetalle' => '',
-            'Tercero_idResponsableCorrecion' => NULL,
-            'planAccionReporteACPMDetalle' => '',
-            'Tercero_idResponsablePlanAccion' => NULL,
-            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-            'estadoActualReporteACPMDetalle' => '',
-            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-            'eficazReporteACPMDetalle' => 0
-
-        ]);
-
+                
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
         $idsEliminar = explode(',', $request['eliminarEquipo']);
@@ -286,5 +285,38 @@ class AccidenteController extends Controller
             $respuesta = \App\AccidenteEquipo::updateOrCreate($indice, $data);
 
         }
+    }
+
+    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
+    {   
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        
+        $indice = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion);
+
+        $data = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0);
+
+        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
     }
 }

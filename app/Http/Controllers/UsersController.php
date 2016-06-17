@@ -52,7 +52,8 @@ class UsersController extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => $request['password'],
-             'Compania_idCompania'=> $request['Compania_idCompania']
+             'Compania_idCompania'=> $request['Compania_idCompania'],
+             'Rol_idRol' => $request['Rol_idRol']
             ]);
         
         return redirect('/users');

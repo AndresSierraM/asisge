@@ -24,7 +24,7 @@ class ProcesoRequest extends Request
     public function rules()
     {
         return [
-            "codigoProceso" => "required|string|max:20|unique:proceso,codigoProceso,".$this->get('idProceso') .",idProceso",
+            "codigoProceso" => "required|string|max:20|unique:proceso,codigoProceso,".$this->get('idProceso') .",idProceso,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreProceso" => "required|string|max:80"
         ];
     }

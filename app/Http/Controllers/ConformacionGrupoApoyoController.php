@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\ConformacionGrupoApoyoRequest;
+
 use App\Http\Controllers\Controller;
 
 class ConformacionGrupoApoyoController extends Controller
@@ -39,7 +41,7 @@ class ConformacionGrupoApoyoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(ConformacionGrupoApoyoRequest $request)
     {
             \App\ConformacionGrupoApoyo::create([
                 'GrupoApoyo_idGrupoApoyo' => $request['GrupoApoyo_idGrupoApoyo'],
@@ -103,7 +105,7 @@ class ConformacionGrupoApoyoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(ConformacionGrupoApoyoRequest $request, $id)
     {
             $conformacionGrupoApoyo = \App\ConformacionGrupoApoyo::find($id);
             $conformacionGrupoApoyo->fill($request->all());

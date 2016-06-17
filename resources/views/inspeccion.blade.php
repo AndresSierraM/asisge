@@ -38,7 +38,7 @@
     $.ajax({
       async: true,
       headers: {'X-CSRF-TOKEN': token},
-      url: 'http://localhost:8000/inspeccion/'+id,
+      url: 'http://'+location.host+'/inspeccion/'+id,
       type: 'POST',
       dataType: 'JSON',
       method: 'GET',
@@ -49,12 +49,16 @@
             var data = $.map(data, function(el) { return el });
             // hacemos un rompimiento de control para agrupar las preguntas
             document.getElementById('registros').value = 0;
+
+            // primero eliminamos los registros actuales, para que no se combinen preguntas de inspecciones diferentes planes cuando el usuario cambie de tipo de inspeccion
+            inspeccion.borrarTodosCampos();
+
             for(var j=0, k = data.length; j < k; j++)
             {
               var dataIns = $.map(data[j], function(el) { return el });
               // llena los campos de preguntas
 
-              var valorInspeccion = [dataIns[0],dataIns[01],dataIns[2],'','','','',0,'',''];
+              var valorInspeccion = [0, dataIns[0],dataIns[01],dataIns[2],'','','','',0,'',''];
               inspeccion.agregarCampos(valorInspeccion,'A');
             }
             document.getElementById('registros').value = j ;
@@ -79,7 +83,7 @@
     var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
 
     inspeccionDetalle = (inspeccionDetalle != '' ? JSON.parse(inspeccionDetalle) : '');
-    var valorInspeccion = [0,'','','','','','',0,'',''];
+    var valorInspeccion = [0,0,'','','','','','',0,'',''];
 
     $(document).ready(function(){
 
@@ -89,30 +93,38 @@
         // resultado, calculado por el sistema (resultado = puntuacion * 20  expresado como porcentaje)
         // mejora (digitado por le usuario, editor de texto libre)
         inspeccion = new Atributos('detalle','contenedor_detalle','detalle_');
-        inspeccion.campos   = ['TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'fotoInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
+
+        // como este formulario no lleva caneca para eliminar registros de detalle, no llenamos las
+        // propiedades correspondientes
+        inspeccion.altura = '62px;';
+        inspeccion.campoid = '';
+        inspeccion.campoEliminacion = '';
+        inspeccion.botonEliminacion = false;
+
+        inspeccion.campos   = ['idInspeccionDetalle', 'TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'fotoInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
                               'observacionInspeccionDetalle'];
-        inspeccion.etiqueta = ['input', 'input', 'textarea',
-                               'textarea', 'input', 'textarea',
+        inspeccion.etiqueta = ['input', 'input', 'input', 'textarea',
+                               'textarea', 'file', 'textarea',
                                'textarea', 'select', 'input',
                                'textarea'];
-        inspeccion.tipo     = ['hidden', 'text', 'textarea', 
-                               'textarea', 'text', 'textarea',
+        inspeccion.tipo     = ['hidden','hidden', 'text', 'textarea', 
+                               'textarea', '', 'textarea',
                                'textarea', '', 'date',
                                'textarea'];
-        inspeccion.estilo   = ['',
+        inspeccion.estilo   = ['','',
                                 'vertical-align:top; resize:none; width: 60px; height:60px;', 
                                 'vertical-align:top; resize:none; font-size:10px; width: 300px; height:60px;', 
                                 'vertical-align:top; width: 300px;  height:60px;',
-                                'vertical-align:top; width: 200px;  height:60px;',
+                                'vertical-align:top; width: 200px;  height:60px; display: inline-block;',
                                 'vertical-align:top; resize:none; width: 100px; height:60px;',
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
                                 'vertical-align:top; resize:none; width: 150px; height:60px;',
                                 'vertical-align:top; resize:none; width: 300px; height:60px;'];
-        inspeccion.clase    = ['','','','','','','','','',''];
-        inspeccion.sololectura = [false,true,true,false,false,false,false,false,false,false];
+        inspeccion.clase    = ['','','','','','','','','','',''];
+        inspeccion.sololectura = [false,false,true,true,false,false,false,false,false,false,false];
       
-        inspeccion.opciones = ['','','','','','','',terceroResponsable,'',''];
+        inspeccion.opciones = ['','','','','','','','',terceroResponsable,'',''];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas
@@ -287,15 +299,20 @@
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
     document.getElementById('contenedor-fin').style.width = '1250px';
-        $('#fechaElaboracionInspeccion').datetimepicker(({
+    
+    $('#fechaElaboracionInspeccion').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
 
+    CKEDITOR.replace(('observacionesInspeccion'), {
+        fullPage: true,
+        allowedContent: true
+      });  
 
-  $(document).ready(function()
-  {
-    mostrarFirma();
-  });
+    $(document).ready(function()
+    {
+      mostrarFirma();
+    });
     
 
 </script>

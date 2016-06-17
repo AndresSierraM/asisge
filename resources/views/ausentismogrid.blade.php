@@ -30,6 +30,7 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
+                            <li><a class="toggle-vis" data-column="1"><label> Descripción Ausencia</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> Empleado</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Elaboración</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Desde</label></a></li>
@@ -47,6 +48,7 @@
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
+                                <th><b>Descripción Ausencia</b></th>
                                 <th><b>Empleado</b></th>
                                 <th><b>Elaboración</b></th>
                                 <th><b>Desde</b></th>
@@ -62,6 +64,7 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
+                                <th>Descripción Ausencia</th>
                                 <th>Empleado</th>
                                 <th>Elaboración</th>
                                 <th>Desde</th>

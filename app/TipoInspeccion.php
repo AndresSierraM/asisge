@@ -15,7 +15,7 @@ class TipoInspeccion extends Model
 
     public function tipoInspeccionPreguntas()
     {
-		return $this->hasMany('App\tipoInspeccionPregunta','TipoInspeccion_idTipoInspeccion');
+		return $this->hasMany('App\TipoInspeccionPregunta','TipoInspeccion_idTipoInspeccion');
     }
 
     

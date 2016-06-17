@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	@yield('clases')
-	{!!Html::style('CSS/menu.css'); !!}
+	{!!Html::style('css/menu.css'); !!}
 	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
 	
 	{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
@@ -110,7 +110,7 @@
         		         '.\Session::get("nombreUsuario").'
 
                 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="auth/logout"> <img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de SiSoft" style="width:32px; height:32px;">
+						<a href="http://'.$_SERVER["HTTP_HOST"].'/auth/logout"> <img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de SiSoft" style="width:32px; height:32px;">
 						</a>
 					</div>
 				</div>

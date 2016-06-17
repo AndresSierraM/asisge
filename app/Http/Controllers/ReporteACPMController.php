@@ -59,7 +59,7 @@ class ReporteACPMController extends Controller
             {
                 \App\ReporteACPMDetalle::create([
 
-                    'ReporteACPM_idReporteACPM' => $id,
+                    'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
                     'ordenReporteACPMDetalle' => $request['ordenReporteACPMDetalle'][$i],
                     'fechaReporteACPMDetalle' => $request['fechaReporteACPMDetalle'][$i],
                     'Proceso_idProceso' => ($request['Proceso_idProceso'][$i] == '' ? NULL : $request['Proceso_idProceso'][$i]),
@@ -157,6 +157,7 @@ class ReporteACPMController extends Controller
             return redirect('/reporteacpm');
     }
 
+   
     /**
      * Remove the specified resource from storage.
      *

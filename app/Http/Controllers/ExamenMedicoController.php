@@ -74,27 +74,26 @@ class ExamenMedicoController extends Controller
 
                         //COnsultamos el nombre del tercero empleado
                         $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 10,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')',
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                        ]);
+                        //COnsultamos el nombre del tercero empleado
+                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 22, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')'
+                                );   
+
                 }
                 
             }
@@ -214,29 +213,33 @@ class ExamenMedicoController extends Controller
                     $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
                 {
 
+
                         //COnsultamos el nombre del tercero empleado
                         $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 10,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')',
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
+                        //COnsultamos el nombre del tercero empleado
+                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
 
-                        ]);
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+                        //COnsultamos el nombre del tercero empleado
+                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 22, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')'
+                                );   
+
+                        
                 }
             }
 
@@ -257,5 +260,38 @@ class ExamenMedicoController extends Controller
 
         \App\ExamenMedico::destroy($id);
         return redirect('/examenmedico');
+    }
+
+     protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
+    {   
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        
+        $indice = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion);
+
+        $data = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0);
+
+        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
     }
 }

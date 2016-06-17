@@ -45,29 +45,31 @@ class RolController extends Controller
      */
     public function store(RolRequest $request)
     {
-        
-        \App\Rol::create([
-            'codigoRol' => $request['codigoRol'],
-            'nombreRol' => $request['nombreRol']
-            ]); 
+        if($request['respuesta'] != 'falso')
+        { 
+            \App\Rol::create([
+                'codigoRol' => $request['codigoRol'],
+                'nombreRol' => $request['nombreRol']
+                ]); 
 
-        $rol = \App\Rol::All()->last();
-        $contadorPermiso = count($request['Opcion_idOpcion']);
-        
+            $rol = \App\Rol::All()->last();
+            $contadorPermiso = count($request['Opcion_idOpcion']);
+            
 
-        for($i = 0; $i < $contadorPermiso; $i++)
-        {
-            \App\RolOpcion::create([
-            'Rol_idRol' => $rol->idRol,
-            'Opcion_idOpcion' => $request['Opcion_idOpcion'][$i],
-            'adicionarRolOpcion' => $request['adicionarRolOpcion'][$i],
-            'modificarRolOpcion' => $request['modificarRolOpcion'][$i],
-            'eliminarRolOpcion' => $request['eliminarRolOpcion'][$i],
-            'consultarRolOpcion' => $request['consultarRolOpcion'][$i]
-           ]);
+            for($i = 0; $i < $contadorPermiso; $i++)
+            {
+                \App\RolOpcion::create([
+                'Rol_idRol' => $rol->idRol,
+                'Opcion_idOpcion' => $request['Opcion_idOpcion'][$i],
+                'adicionarRolOpcion' => $request['adicionarRolOpcion'][$i],
+                'modificarRolOpcion' => $request['modificarRolOpcion'][$i],
+                'eliminarRolOpcion' => $request['eliminarRolOpcion'][$i],
+                'consultarRolOpcion' => $request['consultarRolOpcion'][$i]
+               ]);
+            }
+
+            return redirect('/rol');
         }
-
-        return redirect('/rol');
     }
 
 
@@ -105,29 +107,31 @@ class RolController extends Controller
      */
     public function update($id,RolRequest $request)
     {
-        
-        $rol = \App\Rol::find($id);
-        $rol->fill($request->all());
+        if($request['respuesta'] != 'falso')
+        { 
+            $rol = \App\Rol::find($id);
+            $rol->fill($request->all());
 
-        $rol->save();
+            $rol->save();
 
-        \App\RolOpcion::where('Rol_idRol',$id)->delete();
+            \App\RolOpcion::where('Rol_idRol',$id)->delete();
 
-        $contadorPermiso = count($request['Opcion_idOpcion']);
-        for($i = 0; $i < $contadorPermiso; $i++)
-        {
-            \App\RolOpcion::create([
-            'Rol_idRol' => $id,
-            'Opcion_idOpcion' => $request['Opcion_idOpcion'][$i],
-            'adicionarRolOpcion' => $request['adicionarRolOpcion'][$i],
-            'modificarRolOpcion' => $request['modificarRolOpcion'][$i],
-            'eliminarRolOpcion' => $request['eliminarRolOpcion'][$i],
-            'consultarRolOpcion' => $request['consultarRolOpcion'][$i]
-           ]);
+            $contadorPermiso = count($request['Opcion_idOpcion']);
+            for($i = 0; $i < $contadorPermiso; $i++)
+            {
+                \App\RolOpcion::create([
+                'Rol_idRol' => $id,
+                'Opcion_idOpcion' => $request['Opcion_idOpcion'][$i],
+                'adicionarRolOpcion' => $request['adicionarRolOpcion'][$i],
+                'modificarRolOpcion' => $request['modificarRolOpcion'][$i],
+                'eliminarRolOpcion' => $request['eliminarRolOpcion'][$i],
+                'consultarRolOpcion' => $request['consultarRolOpcion'][$i]
+               ]);
+            }
+
+
+            return redirect('/rol');
         }
-
-
-        return redirect('/rol');
 
     }
 

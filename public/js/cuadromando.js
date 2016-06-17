@@ -231,7 +231,7 @@ function llenarObjetivo(idObjetivo)
                 headers: {'X-CSRF-TOKEN': token},
                 dataType: "json",
                 data: {'CompaniaObjetivo_idCompaniaObjetivo': idObjetivo},
-                url:   'http://localhost:8000/llenarObjetivo/',
+                url:   'http://'+location.host+'/llenarObjetivo/',
                 type:  'post',
                 beforeSend: function(){
                     //Lo que se hace antes de enviar el formulario
@@ -550,7 +550,7 @@ function llenarObjetivo(idObjetivo)
         $.ajax({
             async: true,
             headers: {'X-CSRF-TOKEN': token},
-            url: 'http://localhost:8000/CuadroMandoConsultarCampos',
+            url: 'http://'+location.host+'/CuadroMandoConsultarCampos',
             method: 'POST',
             data: {idModulo: idModulo},
 
@@ -604,7 +604,7 @@ function llenarObjetivo(idObjetivo)
         $.ajax({
             async: true,
             headers: {'X-CSRF-TOKEN': token},
-            url: 'http://localhost:8000/CuadroMandoConsultarCalculos',
+            url: 'http://'+location.host+'/CuadroMandoConsultarCalculos',
             method: 'POST',
             data: { idModulo: idModulo, 
                     nombreCampo: Campo},

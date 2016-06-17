@@ -9,7 +9,7 @@
 
 <?php
 
-$firmas=$actaGrupoApoyo->actaGrupoApoyoTercero;
+$firmas = isset($actaGrupoApoyo->actaGrupoApoyoTercero) ? $actaGrupoApoyo->actaGrupoApoyoTercero : null;
 
 for ($i=0; $i < count($firmas); $i++) 
 { 
@@ -68,7 +68,7 @@ for ($i=0; $i < count($firmas); $i++)
 			participante.campos = ['idActaGrupoApoyoTercero', 'Tercero_idParticipante','firma','firmabase64'];
 			participante.etiqueta = ['input','select','firma','input'];
 			participante.tipo = ['hidden','','','hidden'];
-			participante.estilo = ['','width: 1115px;height:60px;', 'width:80px; height: 60px; border: 1px solid; display: inline-block', ''];
+			participante.estilo = ['','width: 700px;height:60px;', 'width:100px; height: 60px; border: 1px solid; display: inline-block', ''];
 			participante.clase = ['','','',''];
 			participante.sololectura = [false,false,false,false];
 			participante.completar = ['off','off','off','off'];
@@ -85,7 +85,7 @@ for ($i=0; $i < count($firmas); $i++)
 			tema.campos = ['idActaGrupoApoyoTema', 'temaActaGrupoApoyoTema', 'desarrolloActaGrupoApoyoTema','Tercero_idResponsable','observacionActaGrupoApoyoTema'];
 			tema.etiqueta = ['input', 'input','input','select','input'];
 			tema.tipo = ['hidden','','','',''];
-			tema.estilo = ['','width: 300px;height:35px;','width: 300px;height:35px;','width: 200px;height:35px;','width: 400px;height:35px;'];
+			tema.estilo = ['','width: 250px;height:35px;','width: 250px;height:35px;','width: 150px;height:35px;','width: 200px;height:35px;'];
 			tema.clase = ['','','','',''];
 			tema.sololectura = [false,false,false,false,false];
 			tema.completar = ['off','off','off','off','off'];
@@ -164,7 +164,7 @@ for ($i=0; $i < count($firmas); $i++)
 		        </div>
 
 		        <div class="form-group" id='test'>
-		          {!!Form::label('horaInicioActaGrupoApoyo', 'Fecha Inicio', array('class' => 'col-sm-2 control-label'))!!}
+		          {!!Form::label('horaInicioActaGrupoApoyo', 'Hora Inicio', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
 		              <span class="input-group-addon">
@@ -176,7 +176,7 @@ for ($i=0; $i < count($firmas); $i++)
 		        </div>
 
 		        <div class="form-group" id='test'>
-		          {!!Form::label('horaFinActaGrupoApoyo', 'Fecha Fin', array('class' => 'col-sm-2 control-label'))!!}
+		          {!!Form::label('horaFinActaGrupoApoyo', 'Hora Fin', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
 		              <span class="input-group-addon">
@@ -207,7 +207,8 @@ for ($i=0; $i < count($firmas); $i++)
 		                                                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="participante.agregarCampos(valorTercero,'A')">
 		                                                        <span class="glyphicon glyphicon-plus"></span>
 		                                                    </div>
-		                                                    <div class="col-md-1" style="width: 1200px;display:inline-block;height:60px;">Empleados</div>
+		                                                    <div class="col-md-1" style="width: 700px;display:inline-block;height:60px;">Empleados</div>
+		                                                    <div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Firma</div>
 		                                                    <div id="contenedor_participante">
 		                                                    </div>
 		                                                </div>
@@ -231,10 +232,10 @@ for ($i=0; $i < count($firmas); $i++)
 		                                                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="tema.agregarCampos(valorTema,'A')">
 		                                                        <span class="glyphicon glyphicon-plus"></span>
 		                                                    </div>
-		                                                    <div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Tema</div>
-		                                                    <div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Desarrollo del Tema</div>
-		                                                    <div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Responsable</div>
-		                                                    <div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Observaciones</div>
+		                                                    <div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Tema</div>
+		                                                    <div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Desarrollo del Tema</div>
+		                                                    <div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Responsable</div>
+		                                                    <div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Observaciones</div>
 		                                                    <div id="contenedor_tema">
 		                                                    </div>
 		                                                </div>

@@ -23,9 +23,22 @@ class RolRequest extends Request
      */
     public function rules()
     {
-        return [
-            "codigoRol" => "required|string|max:20|unique:rol,codigoRol,".$this->get('idRol') .",idRol",
-            "nombreRol" => "required|string|max:80"
-        ];
+        
+        $opcion = count($this->get('Opcion_idOpcion'));
+        
+        $validacion = array(
+            "nombreRol" => "required|string|max:80");
+
+        //"codigoRol" => "required|string|unique:rol,codigoRol,".$this->get('idRol') .",idRol",        
+        for($i = 0; $i < $opcion; $i++)
+        {
+            if(trim($this->get('Opcion_idOpcion')[$i]) == 0)
+            {    
+                $validacion['Opcion_idOpcion'.$i] =  'required';
+            }
+        }
+
+        return $validacion;
+
     }
 }

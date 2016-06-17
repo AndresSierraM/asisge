@@ -1,7 +1,7 @@
 <?php
 
 
-    $tipoexamenmedico = \App\TipoExaMenmedico::All();
+    $tipoexamenmedico = \App\TipoExamenMedico::All();
     // print_r($tipoexamenmedico);
     // exit;
     $row = array();

@@ -23,12 +23,32 @@ class TipoRiesgoRequest extends Request
      */
     public function rules()
     {
-        return [
-            "codigoTipoRiesgo" => "required|string|max:20|unique:tiporiesgo,codigoTipoRiesgo,".$this->get('idTipoRiesgo') .",idTipoRiesgo",
-            "nombreTipoRiesgo" => "required|string|max:80"
-        ];
-        return [
-            //
-        ];
+
+        $detalle = count($this->get('nombreTipoRiesgoDetalle'));
+        $salud = count($this->get('nombreTipoRiesgoSalud'));
+        
+        $validacion = array(
+             "codigoTipoRiesgo" => "required|string|max:20|unique:tiporiesgo,codigoTipoRiesgo,".$this->get('idTipoRiesgo') .",idTipoRiesgo",
+            "nombreTipoRiesgo" => "required|string|max:80",
+            "origenTipoRiesgo" => "required|string",
+            "ClasificacionRiesgo_idClasificacionRiesgo" => "required|numeric");
+
+        for($i = 0; $i < $detalle; $i++)
+        {
+            if(trim($this->get('nombreTipoRiesgoDetalle')[$i]) == '' )
+            {    
+                $validacion['nombreTipoRiesgoDetalle'.$i] =  'required';
+            }
+        }
+
+        for($i = 0; $i < $salud; $i++)
+        {
+            if(trim($this->get('nombreTipoRiesgoSalud')[$i]) == '')
+            {    
+                $validacion['nombreTipoRiesgoSalud'.$i] =  'required';
+            }
+        }
+        return $validacion;
+
     }
 }

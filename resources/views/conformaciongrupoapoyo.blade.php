@@ -9,6 +9,8 @@
 @section('content')
 
 	@include('alerts.request')
+	{!!Html::script('js/conformaciongrupoapoyo.js')!!}
+
 	<script>
 
 		var conformacionGrupoApoyoComite = '<?php echo (isset($conformacionGrupoApoyo) ? json_encode($conformacionGrupoApoyo->conformacionGrupoApoyoComites) : "");?>';
@@ -44,7 +46,7 @@
 			jurado.campos = ['idConformacionGrupoApoyoJurado', 'Tercero_idJurado'];
 			jurado.etiqueta = ['input','select'];
 			jurado.tipo = ['hidden',''];
-			jurado.estilo = ['','width:1060px;height:35px;'];
+			jurado.estilo = ['','width:1000px;height:35px;'];
 			jurado.clase = ['',''];
 			jurado.sololectura = [false,false];
 			jurado.completar = ['off','off'];
@@ -60,7 +62,7 @@
 			resultado.campos = ['idConformacionGrupoApoyoResultado', 'Tercero_idCandidato','votosConformacionGrupoApoyoResultado'];
 			resultado.etiqueta = ['input','select','input'];
 			resultado.tipo = ['hidden','','text'];
-			resultado.estilo = ['','width: 860px;height:35px;','width:200px;height:35px;'];
+			resultado.estilo = ['','width: 800px;height:35px;','width:200px;height:35px;'];
 			resultado.clase = ['','',''];
 			resultado.sololectura = [false,false,false];
 			resultado.completar = ['off','off','off'];
@@ -76,7 +78,7 @@
 			comite.campos = ['idConformacionGrupoApoyoComite', 'nombradoPorConformacionGrupoApoyoComite','Tercero_idPrincipal','Tercero_idSuplente'];
 			comite.etiqueta = ['input','select','select','select'];
 			comite.tipo = ['hidden','','',''];
-			comite.estilo = ['','width: 260px;height:35px;','width: 400px;height:35px;','width: 400px;height:35px;'];
+			comite.estilo = ['','width: 260px;height:35px;','width: 380px;height:35px;','width: 380px;height:35px;'];
 			comite.clase = ['','','',''];
 			comite.sololectura = [false,false,false,false];
 			comite.completar = ['off','off','off','off'];
@@ -124,6 +126,7 @@
 			              	<span class="input-group-addon">
 			                	<i class="fa fa-flag"></i>
 			              	</span>
+			              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 			             	{!!Form::select('GrupoApoyo_idGrupoApoyo',$grupoApoyo, (isset($conformacionGrupoApoyo) ? $conformacionGrupoApoyo->GrupoApoyo_idGrupoApoyo : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el Grupo de Apoyo"])!!}
 			              	
 			              	{!!Form::hidden('idConformacionGrupoApoyo', null, array('id' => 'idConformacionGrupoApoyo'))!!}
@@ -193,7 +196,7 @@
 													</div>
 												</div>
 												<div class="form-group" id='test'>
-													{!!Form::label('fechaVotacionConformacionGrupoApoyo', 'Fecha de Votaci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
+													{!!Form::label('fechaVotacionConformacionGrupoApoyo', 'Fecha Votaci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -276,7 +279,7 @@
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="jurado.agregarCampos(valorJurado,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 1060px;display:inline-block;height:50px;">Jurado</div>
+															<div class="col-md-1" style="width: 1000px;display:inline-block;height:50px;">Jurado</div>
 															<div id="contenedor_jurado">
 															</div>
 														</div>
@@ -285,11 +288,11 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 1100px;display:inline-block;height:40px;">Resultado de la Votaci&oacute;n</div>
+															<div class="col-md-12" style="display:inline-block;height:40px;">Resultado de la Votaci&oacute;n</div>
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="resultado.agregarCampos(valorResultado,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 860px;display:inline-block;height:50px;">Nombre</div>
+															<div class="col-md-1" style="width: 800px;display:inline-block;height:50px;">Nombre</div>
 															<div class="col-md-1" style="width: 200px;display:inline-block;height:50px;">Votos</div>
 															<div id="contenedor_resultado">
 															</div>
@@ -343,13 +346,13 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 1100px;display:inline-block;height:40px;">Integrantes del Comit&eacute;</div>
+															<div class="col-md-12" style="display:inline-block;height:40px;">Integrantes del Comit&eacute;</div>
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="comite.agregarCampos(valorComite,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1" style="width: 260px;display:inline-block;height:50px;">Nombrado por</div>
-															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Principal</div>
-															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Suplentes</div>
+															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Principal</div>
+															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Suplentes</div>
 															<div id="contenedor_comite">
 															</div>
 														</div>

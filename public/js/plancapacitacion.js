@@ -1,6 +1,6 @@
 function validarFormulario(event)
 {
-    var route = "http://localhost:8000/plancapacitacion";
+    var route = "http://"+location.host+"/plancapacitacion";
     var token = $("#token").val();
     var dato1 = document.getElementById('tipoPlanCapacitacion').value;
     var dato2 = document.getElementById('nombrePlanCapacitacion').value;

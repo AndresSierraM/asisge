@@ -76,27 +76,21 @@ class ListaChequeoController extends Controller
                 // verificamos si no tiene el chulo CONFORME, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['conformeListaChequeoDetalle'][$i] == 0 )
                 {
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 16,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => $request['hallazgoListaChequeoDetalle'][$i],
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
-
-                        ]);
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 26, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['hallazgoListaChequeoDetalle'][$i]
+                                );   
                 }
             }
 
@@ -225,27 +219,21 @@ class ListaChequeoController extends Controller
                 // verificamos si no tiene el chulo CONFORME, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['conformeListaChequeoDetalle'][$i] == 0 )
                 {
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 16,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => $request['hallazgoListaChequeoDetalle'][$i],
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
-
-                        ]);
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 26, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['hallazgoListaChequeoDetalle'][$i]
+                                );   
                 }
             }
 
@@ -263,4 +251,40 @@ class ListaChequeoController extends Controller
         \App\ListaChequeo::destroy($id);
         return redirect('/listachequeo');
     }
+
+
+
+    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
+    {   
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        
+        $indice = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion);
+
+        $data = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0);
+
+        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
+    }
+
 }

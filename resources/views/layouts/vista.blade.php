@@ -12,9 +12,9 @@
       {!!Html::style('choosen/docsupport/prism.css'); !!}
       {!!Html::style('choosen/chosen.css'); !!}
       
-      {!!Html::style('sb-admin/bower_components/metisMenu/dist/metisMenu.min.css'); !!}
+      <!-- {!!Html::style('sb-admin/bower_components/metisMenu/dist/metisMenu.min.css'); !!} -->
       {!!Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
-      {!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
+      <!-- {!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!} -->
       {!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
       {!!Html::style('sb-admin/bower_components/select2/css/select2.min.css'); !!}
@@ -24,7 +24,7 @@
 
       <!--{!!Html::style('sb-admin/bower_components/ckeditor/sample.css'); !!}-->
       <!-- {!!Html::style('css/menu.css'); !!} -->
-      {!!Html::style('CSS/menu.css'); !!}
+      {!!Html::style('css/menu.css'); !!}
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
   
       <style type="text/css" media="all">
@@ -49,6 +49,11 @@
       {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
       {!!Html::script('js/general.js')!!}
 
+      <!-- Librerías de graficos morris y flot -->
+      {!!Html::script('sb-admin/bower_components/morrisjs/morris.js'); !!}
+      {!!Html::script('sb-admin/bower_components/morrisjs/morris.css'); !!}
+      {!!Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
+      
         <script type="text/javascript">
           $(document).ready(function (){
             var config = {

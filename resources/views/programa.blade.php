@@ -219,9 +219,9 @@
     document.getElementById('contenedor').style.width = '1250px';
     document.getElementById('contenedor-fin').style.width = '1250px';
     
-    // $('#fechaElaboracionPrograma').datetimepicker(({
-    //   format: "YYYY-MM-DD"
-    // }));
+    $('#fechaElaboracionPrograma').datetimepicker(({
+      format: "YYYY-MM-DD"
+    }));
 
     
     CKEDITOR.replace(('objetivoEspecificoPrograma'), {

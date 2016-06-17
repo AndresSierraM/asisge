@@ -130,7 +130,7 @@ class CargoController extends Controller
      */
     public function update(CargoRequest $request, $id)
     {
-        // if($request['respuesta'] != 'falso')
+        if($request['respuesta'] != 'falso')
         {    
             $cargo = \App\Cargo::find($id);
             $cargo->fill($request->all());

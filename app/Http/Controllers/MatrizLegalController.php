@@ -27,7 +27,7 @@ class MatrizLegalController extends Controller
      */
     public function create()
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idTipoNormaLegal = \App\TipoNormaLegal::All()->lists('idTipoNormaLegal');
         $nombreTipoNormaLegal = \App\TipoNormaLegal::All()->lists('nombreTipoNormaLegal');
         $idExpideNormaLegal = \App\ExpideNormaLegal::All()->lists('idExpideNormaLegal');
@@ -80,27 +80,21 @@ class MatrizLegalController extends Controller
                 // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['cumpleMatrizLegalDetalle'][$i] == 0 )
                 {
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 4,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i],
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
-
-                        ]);
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 30, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['controlAImplementarMatrizLegalDetalle'][$i]
+                                ); 
                 }
             }
             
@@ -141,7 +135,7 @@ class MatrizLegalController extends Controller
      */
     public function edit($id)
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idTipoNormaLegal = \App\TipoNormaLegal::All()->lists('idTipoNormaLegal');
         $nombreTipoNormaLegal = \App\TipoNormaLegal::All()->lists('nombreTipoNormaLegal');
         $idExpideNormaLegal = \App\ExpideNormaLegal::All()->lists('idExpideNormaLegal');
@@ -194,27 +188,21 @@ class MatrizLegalController extends Controller
                 // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['cumpleMatrizLegalDetalle'][$i] == 0 )
                 {
-                        $reporteACPM = \App\ReporteACPM::All()->last();
-                        \App\ReporteACPMDetalle::create([
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-                            'ordenReporteACPMDetalle' => 0,
-                            'fechaReporteACPMDetalle' => date("Y-m-d"),
-                            'Proceso_idProceso' => NULL,
-                            'Modulo_idModulo' => 4,
-                            'tipoReporteACPMDetalle' => 'Correctiva',
-                            'descripcionReporteACPMDetalle' => $request['controlAImplementarMatrizLegalDetalle'][$i],
-                            'analisisReporteACPMDetalle' => '',
-                            'correccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsableCorrecion' => NULL,
-                            'planAccionReporteACPMDetalle' => '',
-                            'Tercero_idResponsablePlanAccion' => NULL,
-                            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                            'estadoActualReporteACPMDetalle' => '',
-                            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                            'eficazReporteACPMDetalle' => 0
-
-                        ]);
+                        $this->guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 30, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['controlAImplementarMatrizLegalDetalle'][$i]
+                                );   
                 }
             }
             
@@ -232,5 +220,38 @@ class MatrizLegalController extends Controller
     {
         \App\MatrizLegal::destroy($id);
         return redirect('/matrizlegal');
+    }
+
+    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
+    {   
+
+        $reporteACPM = \App\ReporteACPM::All()->last();
+        
+        $indice = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion);
+
+        $data = array(
+            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
+            'ordenReporteACPMDetalle' => 0,
+            'fechaReporteACPMDetalle' => $fechaAccion,
+            'Proceso_idProceso' => NULL,
+            'Modulo_idModulo' => $idModulo,
+            'tipoReporteACPMDetalle' => $tipoAccion,
+            'descripcionReporteACPMDetalle' => $descripcionAccion,
+            'analisisReporteACPMDetalle' => '',
+            'correccionReporteACPMDetalle' => '',
+            'Tercero_idResponsableCorrecion' => NULL,
+            'planAccionReporteACPMDetalle' => '',
+            'Tercero_idResponsablePlanAccion' => NULL,
+            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+            'estadoActualReporteACPMDetalle' => '',
+            'fechaCierreReporteACPMDetalle' => '0000-00-00',
+            'eficazReporteACPMDetalle' => 0);
+
+        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
     }
 }

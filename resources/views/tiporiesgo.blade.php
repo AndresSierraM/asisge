@@ -8,7 +8,7 @@
 @section('content')
 @include('alerts.request')
 
-
+{!!Html::script('js/tiporiesgo.js')!!}
 <script>
   var tipoRiesgoDetalle = '<?php echo (isset($tipoRiesgo) ? json_encode($tipoRiesgo->tipoRiesgoDetalles) : "");?>';
   tipoRiesgoDetalle = (tipoRiesgoDetalle != '' ? JSON.parse(tipoRiesgoDetalle) : '');
@@ -68,6 +68,7 @@
 	@endif
 
 
+
 <div id='form-section' >
 
 	<fieldset id="clasificacionRiesgo-form-fieldset">	
@@ -78,6 +79,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
+              <input type="hidden" id="token" value="{{csrf_token()}}"/>
               {!!Form::text('codigoTipoRiesgo',null,['class'=>'form-control','placeholder'=>'Ingresa el código del tipo de riesgo'])!!}
               {!!Form::hidden('idTipoRiesgo', null, array('id' => 'idTipoRiesgo')) !!}
               {!!Form::hidden('eliminarDetalle', '', array('id' => 'eliminarDetalle'))!!}
@@ -86,7 +88,7 @@
           </div>
     </div>
     <div class="form-group" id='test'>
-        {!!Form::label('nombretipoRiesgo', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+        {!!Form::label('nombreTipoRiesgo', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
             <span class="input-group-addon">
@@ -179,15 +181,12 @@
         </div>
     </fieldset>
     
-	@if(isset($tipoRiesgo))
- 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
-  		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
-  		@endif
- 	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
- 	@endif
+	 @if(isset($tipoRiesgo))
+      {!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @else
+      {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @endif
+
 
 	{!! Form::close() !!}
 	</div>

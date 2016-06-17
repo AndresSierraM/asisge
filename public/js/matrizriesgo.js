@@ -8,7 +8,7 @@ function buscarTipoRiesgo(registro){
 	$.ajax({
 		async: true,
 		headers: {'X-CSRF-TOKEN': token},
-		url: 'http://localhost:8000/matrizriesgo/'+id,
+		url: 'http://'+location.host+'/matrizriesgo/'+id,
 		type: 'POST',
 		dataType: 'JSON',
 		method: 'GET',
@@ -52,7 +52,7 @@ function buscarDetalleTipoRiesgo(registro){
 	$.ajax({
 		async: true,
 		headers: {'X-CSRF-TOKEN': token},
-		url: 'http://localhost:8000/matrizriesgo/'+id,
+		url: 'http://'+location.host+'/matrizriesgo/'+id,
 		type: 'POST',
 		dataType: 'JSON',
 		method: 'GET',
@@ -110,7 +110,15 @@ function calcularNiveles(registro){
 
     var posicion = registro.length > 0 ? registro.substring(registro.indexOf('_') + 1) : '';
     
-    var campos = document.querySelectorAll(" div#detalle_"+posicion+"  select[name='nivelDeficienciaMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" select[name='nivelExposicionMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nivelProbabilidadMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nombreProbabilidadMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" select[name='nivelConsecuenciaMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nivelRiesgoMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='nombreRiesgoMatrizRiesgoDetalle[]'], div#detalle_"+posicion+" input[name='aceptacionRiesgoMatrizRiesgoDetalle[]']");
+    var campos = document.querySelectorAll(
+        " div#detalle_"+posicion+"  select[name='nivelDeficienciaMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" select[name='nivelExposicionMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" input[name='nivelProbabilidadMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" input[name='nombreProbabilidadMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" select[name='nivelConsecuenciaMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" input[name='nivelRiesgoMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" input[name='nombreRiesgoMatrizRiesgoDetalle[]'], "+
+        " div#detalle_"+posicion+" input[name='aceptacionRiesgoMatrizRiesgoDetalle[]']");
     
     var nivelDeficiencia = campos[0];
     var nivelExposicion = campos[1];
@@ -180,7 +188,7 @@ function calcularExpuestos(registro)
 
 function validarFormulario(event)
 {
-    var route = "http://localhost:8000/matrizriesgo";
+    var route = "http://"+location.host+"/matrizriesgo";
     var token = $("#token").val();
     var dato1 = document.getElementById('nombreMatrizRiesgo').value;
     var dato2 = document.getElementById('fechaElaboracionMatrizRiesgo').value;
@@ -189,10 +197,10 @@ function validarFormulario(event)
     var datoRiesgo = document.querySelectorAll("[name='TipoRiesgo_idTipoRiesgo[]']");
     var datoDetalle = document.querySelectorAll("[name='TipoRiesgoDetalle_idTipoRiesgoDetalle[]']");
     var datoSalud = document.querySelectorAll("[name='TipoRiesgoSalud_idTipoRiesgoSalud[]']");
-    var datoEliminacion = document.querySelectorAll("[name='ListaGeneral_idEliminacionRiesgo[]']");
-    var datoSustitucion = document.querySelectorAll("[name='ListaGeneral_idSustitucionRiesgo[]']");
-    var datoControl = document.querySelectorAll("[name='ListaGeneral_idControlAdministrativo[]']");
-    var datoElemento = document.querySelectorAll("[name='ElementoProteccion_idElementoProteccion[]']");
+    var datoEliminacion = document.querySelectorAll("[name='eliminacionMatrizRiesgoDetalle[]']");
+    var datoSustitucion = document.querySelectorAll("[name='sustitucionMatrizRiesgoDetalle[]']");
+    var datoControl = document.querySelectorAll("[name='controlMatrizRiesgoDetalle[]']");
+    var datoElemento = document.querySelectorAll("[name='elementoProteccionMatrizRiesgoDetalle[]']");
     var datoDeficiencia= document.querySelectorAll("[name='nivelDeficienciaMatrizRiesgoDetalle[]']");
     var datoExposicion = document.querySelectorAll("[name='nivelExposicionMatrizRiesgoDetalle[]']");
     var datoConsecuencia = document.querySelectorAll("[name='nivelConsecuenciaMatrizRiesgoDetalle[]']");
@@ -240,10 +248,10 @@ function validarFormulario(event)
                 ClasificacionRiesgo_idClasificacionRiesgo: dato4, 
                 TipoRiesgoDetalle_idTipoRiesgoDetalle: dato5, 
                 TipoRiesgoSalud_idTipoRiesgoSalud: dato6, 
-                ListaGeneral_idEliminacionRiesgo: dato7, 
-                ListaGeneral_idSustitucionRiesgo: dato8, 
-                ListaGeneral_idControlAdministrativo: dato9, 
-                ElementoProteccion_idElementoProteccion: dato10, 
+                eliminacionMatrizRiesgoDetalle: dato7, 
+                sustitucionMatrizRiesgoDetalle: dato8, 
+                controlMatrizRiesgoDetalle: dato9, 
+                elementoProteccionMatrizRiesgoDetalle: dato10, 
                 TipoRiesgo_idTipoRiesgo: dato11,
                 nivelDeficienciaMatrizRiesgoDetalle: dato12,
                 nivelExposicionMatrizRiesgoDetalle: dato13,
@@ -286,13 +294,13 @@ function validarFormulario(event)
 
                     (typeof respuesta['TipoRiesgo_idTipoRiesgo'+j] === "undefined" ? document.getElementById('TipoRiesgo_idTipoRiesgo'+j).style.borderColor = '' : document.getElementById('TipoRiesgo_idTipoRiesgo'+j).style.borderColor = '#a94442');
 
-                    (typeof respuesta['ListaGeneral_idEliminacionRiesgo'+j] === "undefined" ? document.getElementById('ListaGeneral_idEliminacionRiesgo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idEliminacionRiesgo'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['eliminacionMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('eliminacionMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('eliminacionMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
 
-                    (typeof respuesta['ListaGeneral_idSustitucionRiesgo'+j] === "undefined" ? document.getElementById('ListaGeneral_idSustitucionRiesgo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idSustitucionRiesgo'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['sustitucionMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('sustitucionMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('sustitucionMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
 
-                    (typeof respuesta['ListaGeneral_idControlAdministrativo'+j] === "undefined" ? document.getElementById('ListaGeneral_idControlAdministrativo'+j).style.borderColor = '' : document.getElementById('ListaGeneral_idControlAdministrativo'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['controlMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('controlMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('controlMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
 
-                    (typeof respuesta['ElementoProteccion_idElementoProteccion'+j] === "undefined" ? document.getElementById('ElementoProteccion_idElementoProteccion'+j).style.borderColor = '' : document.getElementById('ElementoProteccion_idElementoProteccion'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['elementoProteccionMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('elementoProteccionMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('elementoProteccionMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
 
                     (typeof respuesta['nivelDeficienciaMatrizRiesgoDetalle'+j] === "undefined" ? document.getElementById('nivelDeficienciaMatrizRiesgoDetalle'+j).style.borderColor = '' : document.getElementById('nivelDeficienciaMatrizRiesgoDetalle'+j).style.borderColor = '#a94442');
 

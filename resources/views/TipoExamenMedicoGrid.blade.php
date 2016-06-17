@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Tipo examen medico</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Tipo Examen Medico</center></h3>@stop
 @section('content')
 <style>
     tfoot input {

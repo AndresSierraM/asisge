@@ -23,13 +23,25 @@ class TipoInspeccionRequest extends Request
      */
     public function rules()
     {
-        return [
-            "codigoTipoInspeccion" => "required|string|max:20|unique:tipoinspeccion,codigoTipoInspeccion,".$this->get('idTipoInspeccion') .",idTipoInspeccion",
+        $pregunta = count($this->get('numeroTipoInspeccionPregunta'));
+        
+        $validacion = array(
+            "codigoTipoInspeccion" => "required|numeric|unique:tipoinspeccion,codigoTipoInspeccion,".$this->get('idTipoInspeccion') .",idTipoInspeccion,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreTipoInspeccion" => "required|string|max:80",
-            "FrecuenciaMedicion_idFrecuenciaMedicion" => "required"
-        ];
-        return [
-            //
-        ];
+            "FrecuenciaMedicion_idFrecuenciaMedicion" => "required");
+
+        for($i = 0; $i < $pregunta; $i++)
+        {
+            if(trim($this->get('numeroTipoInspeccionPregunta')[$i]) == '' or trim($this->get('numeroTipoInspeccionPregunta')[$i]) == 0)
+            {    
+                $validacion['numeroTipoInspeccionPregunta'.$i] =  'required';
+            }
+
+            if(trim($this->get('contenidoTipoInspeccionPregunta')[$i]) == '')
+            {    
+                $validacion['contenidoTipoInspeccionPregunta'.$i] =  'required';
+            }
+        }
+        return $validacion;
     }
 }

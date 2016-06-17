@@ -27,7 +27,7 @@ class GrupoApoyoController extends Controller
      */
     public function create()
     {
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
 
         return view('grupoapoyo', compact('frecuenciaMedicion'));
     }
@@ -73,7 +73,7 @@ class GrupoApoyoController extends Controller
     public function edit($id)
     {
         $grupoApoyo = \App\GrupoApoyo::find($id);
-        $frecuenciaMedicion = \App\frecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
+        $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
 
         return view('grupoapoyo', compact('frecuenciaMedicion'), ['grupoApoyo'=>$grupoApoyo]);
     }

@@ -10,20 +10,24 @@
     var nombreOpcion = '<?php echo isset($nombreOpcion) ? $nombreOpcion : "";?>';
     var rolOpcion = '<?php echo (isset($rol) ? json_encode($rol->rolOpcion) : "");?>';
     rolOpcion = (rolOpcion != '' ? JSON.parse(rolOpcion) : '');
-    var valorPermisos = ['',0,0,0,0];
+    var valorPermisos = ['',1,1,0,1];
 
     $(document).ready(function(){
 
 
       permisos = new Atributos('permisos','contenedor_permisos','permisos_');
+
       permisos.campos   = ['Opcion_idOpcion',   'adicionarRolOpcion','modificarRolOpcion','eliminarRolOpcion','consultarRolOpcion'];
       permisos.etiqueta = ['select',          'checkbox',          'checkbox',          'checkbox',         'checkbox'];
       permisos.tipo     = ['',                'checkbox',           'checkbox',          'checkbox',         'checkbox'];
       permisos.estilo   = ['width: 600px;height:35px;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;'];
       permisos.clase = ['chosen-select form-control','','','',''];
       permisos.sololectura = [false,false,false,false,false];
-      permisos.nombreOpcion =  JSON.parse(nombreOpcion);
-      permisos.valorOpcion =  JSON.parse(idOpcion);
+      permisos.completar = ['off', 'off','off','off','off','off','off','off'];
+      opcion = [JSON.parse(idOpcion), JSON.parse(nombreOpcion) ];
+      permisos.opciones = [opcion, '', '','',''];
+      permisos.funciones  = ['', '','','',''];
+
       for(var j=0, k = rolOpcion.length; j < k; j++)
       {
         permisos.agregarCampos(JSON.stringify(rolOpcion[j]),'L');
@@ -53,6 +57,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
+              <input type="hidden" id="token" value="{{csrf_token()}}"/>
               {!!Form::text('codigoRol',null,['class'=>'form-control','placeholder'=>'Ingresa el codigo del rol'])!!}
               {!! Form::hidden('idRol', null, array('id' => 'idRol')) !!}
             </div>
@@ -91,15 +96,11 @@
           </div>
         </div>
     </fieldset>
-	@if(isset($rol))
- 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
-  		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
-  		@endif
- 	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
- 	@endif
+	  @if(isset($rol))
+      {!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @else
+      {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @endif
 	{!! Form::close() !!}
 	</div>
 </div>

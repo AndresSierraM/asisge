@@ -85,10 +85,10 @@
 									  	: '' ))))}}</td>
 								<td>{{$dato->nombreRiesgoMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->aceptacionRiesgoMatrizRiesgoDetalle}}</td>
-								<td>{{$dato->nombreEliminacionRiesgo}}</td>
-								<td>{{$dato->nombreSustitucionRiesgo}}</td>
-								<td>{{$dato->nombreControlAdministrativo}}</td>
-								<td>{{$dato->nombreElementoProteccion}}</td>
+								<td>{{$dato->eliminacionMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->sustitucionMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->controlMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->elementoProteccionMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->imagenMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->observacionMatrizRiesgoDetalle}}</td>
 							</tr>
