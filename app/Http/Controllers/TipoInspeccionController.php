@@ -125,7 +125,7 @@ class TipoInspeccionController extends Controller
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
         $idsEliminar = explode(',', $request['eliminarDetalle']);
-        \App\tipoInspeccionPregunta::whereIn('idTipoInspeccionPregunta',$idsEliminar)->delete();
+        \App\TipoInspeccionPregunta::whereIn('idTipoInspeccionPregunta',$idsEliminar)->delete();
 
         $contadorDetalle = count($request['numeroTipoInspeccionPregunta']);
         for($i = 0; $i < $contadorDetalle; $i++)
@@ -138,7 +138,7 @@ class TipoInspeccionController extends Controller
             'numeroTipoInspeccionPregunta' => $request['numeroTipoInspeccionPregunta'][$i],
             'contenidoTipoInspeccionPregunta' => $request['contenidoTipoInspeccionPregunta'][$i] );
 
-            $preguntas = \App\tipoInspeccionPregunta::updateOrCreate($indice, $data);
+            $preguntas = \App\TipoInspeccionPregunta::updateOrCreate($indice, $data);
 
         }
     }

@@ -59,7 +59,7 @@ class MatrizRiesgoController extends Controller
               'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
               'fechaActualizacionMatrizRiesgo' => date("Y-m-d"),
               'Compania_idCompania' => \Session::get('idCompania'),
-              'Users_id' => 1
+              'Users_id' => \Session::get('idUsuario')
               ]);
           
           $matrizRiesgo = \App\MatrizRiesgo::All()->last();
