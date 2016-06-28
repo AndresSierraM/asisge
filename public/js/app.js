@@ -43,7 +43,7 @@ clearButton.addEventListener("click", function (event) {
 
 saveButton.addEventListener("click", function (event) {
     if (signaturePad.isEmpty()) {
-        alert("Please provide signature first.");
+        alert("Por Favor Registre Su Firma.");
     } else {
         //window.open(signaturePad.toDataURL());
         reg = '';
