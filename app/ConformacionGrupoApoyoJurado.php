@@ -9,7 +9,7 @@ class ConformacionGrupoApoyoJurado extends Model
     protected $table = 'conformaciongrupoapoyojurado';
     protected $primaryKey = 'idConformacionGrupoApoyoJurado';
 
-    protected $fillable = ['ConformacionGrupoApoyo_idConformacionGrupoApoyo', 'Tercero_idJurado'];
+    protected $fillable = ['ConformacionGrupoApoyo_idConformacionGrupoApoyo', 'Tercero_idJurado', 'firmaActaConformacionGrupoApoyoTercero'];
 
     public $timestamps = false;
 

@@ -92,7 +92,8 @@ class CuadroMandoController extends Controller
                 'nombreCuadroMandoFormula' => $datoFormula[4],
                 'Modulo_idModulo' => $datoFormula[5],
                 'campoCuadroMandoFormula' => $datoFormula[6],
-                'calculoCuadroMandoFormula' => $datoFormula[7]
+                'calculoCuadroMandoFormula' => $datoFormula[7],
+                'fechaCorteCuadroMandoFormula' => $datoFormula[8]
                  ]);
 
                 // Obtenemos el ultimo ID insertado para relacionarlo con las condiciones y agrupaciones
@@ -220,7 +221,7 @@ class CuadroMandoController extends Controller
             foreach ($registroFormula as $regF => $datosF) 
             {
                 $datoFormula = explode(',', $datosF) ;
-            
+           
                 \App\CuadroMandoFormula::create([
                 'CuadroMando_idCuadroMando' => $id,
                 'tipoCuadroMandoFormula' => $datoFormula[2],
@@ -228,7 +229,8 @@ class CuadroMandoController extends Controller
                 'nombreCuadroMandoFormula' => $datoFormula[4],
                 'Modulo_idModulo' => $datoFormula[5],
                 'campoCuadroMandoFormula' => $datoFormula[6],
-                'calculoCuadroMandoFormula' => $datoFormula[7]
+                'calculoCuadroMandoFormula' => $datoFormula[7],
+                'fechaCorteCuadroMandoFormula' => $datoFormula[8]
                  ]);
 
                 // Obtenemos el ultimo ID insertado para relacionarlo con las condiciones y agrupaciones
@@ -288,9 +290,6 @@ class CuadroMandoController extends Controller
 
             }
         }
-
-
-        
 
        return redirect('/cuadromando');
     }

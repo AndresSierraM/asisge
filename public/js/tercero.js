@@ -82,3 +82,43 @@ function mostrarPestanas()
         document.getElementById('pestanaLaboral').style.display = 'block';
     }*/    
 }
+
+
+
+function abrirModal(file)
+{
+    // $("#myModal").modal("show");
+    if(file != '')
+    {
+        PreviewImage(file); //Vista previa en tamaño mayor
+
+         $("input[id='archivoTercero']").each(function() 
+        {
+            $(this).val(file["name"]);
+        });
+    }
+    else
+    {
+      $("input[id='archivoTercero']").each(function() 
+        {
+            $(this).val('');
+        });
+    }           
+}
+
+function PreviewImage(archivo) 
+{
+    pdffile=archivo;
+    pdffile_url=URL.createObjectURL(pdffile);
+    $('#viewer').attr('src',pdffile_url);
+}
+
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}

@@ -203,6 +203,42 @@ Route::get('datosElementoProteccion', function()
 });
 
 
+
+
+Route::post('dashboardConsultarProgramas', function()
+{
+    include public_path().'/ajax/dashboardConsultarProgramas.php';
+});
+Route::post('dashboardConsultarCapacitaciones', function()
+{
+    include public_path().'/ajax/dashboardConsultarCapacitaciones.php';
+});
+Route::post('dashboardConsultarInspecciones', function()
+{
+    include public_path().'/ajax/dashboardConsultarInspecciones.php';
+});
+Route::post('dashboardConsultarExamenes', function()
+{
+    include public_path().'/ajax/dashboardConsultarExamenes.php';
+});
+Route::post('dashboardConsultarActas', function()
+{
+    include public_path().'/ajax/dashboardConsultarActas.php';
+});
+Route::post('dashboardConsultarAccidentes', function()
+{
+    include public_path().'/ajax/dashboardConsultarAccidentes.php';
+});
+Route::post('dashboardConsultarGrupos', function()
+{
+    include public_path().'/ajax/dashboardConsultarGrupos.php';
+});
+
+Route::post('consultarPermisos', function()
+{
+    include public_path().'/ajax/consultarPermisos.php';
+});
+
 Route::resource('dashboard','DashboardController');
 Route::resource('pais','PaisController');
 Route::resource('departamento','DepartamentoController');
@@ -257,7 +293,10 @@ Route::post('CuadroMandoConsultarCampos', function()
 {
     include public_path().'/ajax/CuadroMandoConsultarCampos.php';
 });
-
+Route::post('CuadroMandoConsultarCamposFecha', function()
+{
+    include public_path().'/ajax/CuadroMandoConsultarCamposFecha.php';
+});
 Route::post('CuadroMandoConsultarCalculos', function()
 {
     include public_path().'/ajax/CuadroMandoConsultarCalculos.php';
@@ -386,3 +425,8 @@ Route::resource('preguntalistachequeo','PreguntasListaChequeoController');
 Route::resource('listachequeo','ListaChequeoController');
 Route::resource('reporteacpm','ReporteACPMController');
 Route::resource('plantrabajo','PlanTrabajoController');
+
+
+
+Route::get('dropzone','TerceroController@indexdropzone');
+Route::post('dropzone/uploadFiles', 'TerceroController@uploadFiles'); 

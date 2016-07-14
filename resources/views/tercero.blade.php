@@ -9,8 +9,14 @@
 @include('alerts.request')
 {!!Html::script('js/tercero.js')!!}
 
+{!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
+{!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
+{!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
+
 <?php
 	$terceroinformacion = (isset($tercero) ? $tercero->terceroInformaciones : "");
+
+	$idTerceroA = (isset($_GET['accion']) ? $_GET['idTercero'] : '');
 ?>
 	<script>
 		
@@ -67,16 +73,16 @@
 			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
 			examen.funciones  = ['','','','','',''];
 
-			archivo = new Atributos('archivo','contenedor_archivo','archivo');
-			archivo.campos = ['idTerceroArchivo', 'tituloTerceroArchivo','fechaTerceroArchivo','rutaTerceroArchivo'];
-			archivo.etiqueta = ['input','input','input','input'];
-			archivo.tipo = ['hidden','text','text','text'];
-			archivo.estilo = ['','width: 300px;height:35px;','width: 200px;height:35px;','width: 600px;height:35px;'];
-			archivo.clase = ['','','','',];
-			archivo.sololectura = [false,false,false,false];
-			archivo.completar = ['off','off','off','off'];
-			archivo.opciones = ['','','',''];
-			archivo.funciones  = ['','','',''];
+			// archivo = new Atributos('archivo','contenedor_archivo','archivo');
+			// archivo.campos = ['idTerceroArchivo', 'tituloTerceroArchivo','fechaTerceroArchivo','rutaTerceroArchivo'];
+			// archivo.etiqueta = ['input','input','input','input'];
+			// archivo.tipo = ['hidden','text','text','text'];
+			// archivo.estilo = ['','width: 300px;height:35px;','width: 200px;height:35px;','width: 600px;height:35px;'];
+			// archivo.clase = ['','','','',];
+			// archivo.sololectura = [false,false,false,false];
+			// archivo.completar = ['off','off','off','off'];
+			// archivo.opciones = ['','','',''];
+			// archivo.funciones  = ['','','',''];
 
 
 			for(var j=0, k = terceroContactos.length; j < k; j++)
@@ -756,7 +762,7 @@
 											<div class="panel-body">
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
-														<div class="row show-grid">
+														<!-- <div class="row show-grid">
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="archivo.agregarCampos(valorArchivo,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
@@ -765,10 +771,52 @@
 															<div class="col-md-1" style="width: 600px;display:inline-block;height:60px;">Ruta</div>
 															<div id="contenedor_archivo">
 															</div>
-														</div>
+														</div> -->
+
+														<div id="upload" class="col-md-4">
+															<div class="input-group">  
+															   <div class="form-group">
+														        	<div class="input-group">
+														            	<div class="dropzone dropzone-previews" id="dropzoneTerceroArchivo"></div>  
+														        	</div>
+														    	</div>
+															</div>
+														</div>	
 													</div>
 												</div>
 											</div>
+											<center>
+												<div style="border: 1px solid; width:80%; height:300px;">		
+												<?php
+												if ($idTerceroA != '') 
+												{
+													$eliminar = '';
+													$archivoSave = DB::Select('SELECT * from terceroarchivo where Tercero_idTercero = '.$idTerceroA);
+													for ($i=0; $i <count($archivoSave) ; $i++) 
+													{ 
+														$archivoS = get_object_vars($archivoSave[$i]);
+
+														echo '<div id="'.$archivoS['idTerceroArchivo'].'" style="width:50%; height:50%; border:1px solid; float:left;"> <center><img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'" width="25%"></center>'; 
+														$eliminar .=$archivoS['idTerceroArchivo'].','; 
+														echo' <a style="cursor:pointer;" onclick="eliminarDiv(document.getElementById('.$archivoS['idTerceroArchivo'].').id);">Borrar archivo</a>
+
+														<input type="hidden" id="idTerceroArchivo[]" name="idTerceroArchivo[]" value="'.$archivoS['idTerceroArchivo'].'" >
+
+														<input type="hidden" id="tituloTerceroArchivo[]" name="tituloTerceroArchivo[]" value="'.$archivoS['tituloTerceroArchivo'].'" >
+
+														<input type="hidden" id="fechaTerceroArchivo[]" name="fechaTerceroArchivo[]" value="'.$archivoS['fechaTerceroArchivo'].'" >
+
+														<input type="hidden" id="descripcionTerceroArchivo[]" name="descripcionTerceroArchivo[]" value="'.$archivoS['descripcionTerceroArchivo'].'" >
+
+														<input type="hidden" id="rutaTerceroArchivo[]" name="rutaTerceroArchivo[]" value="'.$archivoS['rutaTerceroArchivo'].'" ></div>';
+													}
+
+													echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
+												}
+												
+												 ?>							
+												</div>
+											</center>
 										</div>
 									</div>
 								</div>
@@ -784,10 +832,70 @@
 							{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
 						@endif
 					</div>
-				</div>
+				</div>			
 			</fieldset>
 		</br></br></br></br>
 		</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="form-group" style="width:565px; display: inline;">
+			{!!Form::label('tituloTerceroArchivo', 'Titulo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+			<div class="col-sm-10" style="width:340px;">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+					</span>
+					{!!Form::text('tituloTerceroArchivo',null,['class'=>'form-control','placeholder'=>'Ingresa el titulo del archivo','style'=>'width:300px;','id'=>'tituloTerceroArchivo'])!!}
+				</div>
+			</div>
+		</div>
+		<?php $fechahoy = Carbon\Carbon::now();?>
+		<div class="form-group" style="width:565px; display: inline;">
+			{!!Form::label('fechaTerceroArchivo', 'Fecha', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+			<div class="col-sm-10" style="width:340px;">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+					</span>
+					{!!Form::text('fechaTerceroArchivo',$fechahoy->toDateTimeString() ,['class'=>'form-control','readonly','style'=>'width:300px;','id'=>'fechaTerceroArchivo'])!!}
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group" style="width:565px; display: inline;">
+			{!!Form::label('descripcionTerceroArchivo', 'Descripción', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+			<div class="col-sm-10" style="width:340px;">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+					</span>
+					{!!Form::textarea('descripcionTerceroArchivo',null,['class'=>'form-control','style'=>'height:50px; width:300px;','placeholder'=>'Ingresa la descripci&oacute;n del archivo','id'=>'descripcionTerceroArchivo'])!!}
+				</div>
+			</div>
+		</div>
+		{!!Form::hidden('archivoTercero', 0, array('id' => 'archivoTercero'))!!}
+		{!!Form::hidden('archivoTerceroArray', '', array('id' => 'archivoTerceroArray'))!!}
+
+        <div id="preview">
+       		<center><img id="viewer" frameborder="0" scrolling="no" width="60%" height="60%"></center>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>			
 	{!!Form::close()!!}
 	
 	<script type="text/javascript">
@@ -826,5 +934,65 @@
 			uploadLabel: "",
 			uploadIcon: "",
 		});
+
+	//--------------------------------- DROPZONE ---------------------------------------
+	var baseUrl = "{{ url("/") }}";
+    var token = "{{ Session::getToken() }}";
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#dropzoneTerceroArchivo", {
+        url: baseUrl + "/dropzone/uploadFiles",
+        params: {
+            _token: token
+        },
+        
+    });
+
+   	 fileList = Array();
+   	var i = 0;
+
+    //Configuro el dropzone
+    myDropzone.options.myAwesomeDropzone =  {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 40, // MB
+    addRemoveLinks: true,
+    clickable: true,
+    previewsContainer: ".dropzone-previews",
+    clickable: false,
+    uploadMultiple: true,
+    accept: function(file, done) {
+
+      }
+    };
+    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+     myDropzone.on("addedfile", function(file) {
+          file.previewElement.addEventListener("click", function(reg) {
+            // abrirModal(file);
+            // pos = fileList.indexOf(file["name"]);
+            // alert(pos);
+            // console.log(fileList[pos]);
+            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+          });
+        });
+
+    document.getElementById('archivoTerceroArray').value = '';
+    myDropzone.on("success", function(file, serverFileName) {
+    					abrirModal(file);
+                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+						// console.log(fileList);
+
+                        document.getElementById('archivoTerceroArray').value += file.name+',';
+                        console.log(document.getElementById('archivoTerceroArray').value);
+                        i++;
+                    });
+
+
     </script>
+
+<style>
+#dropzoneTerceroArchivo {
+width: 1150px;
+height: 200px;
+min-height: 0px !important;
+}   
+</style>    
 @stop

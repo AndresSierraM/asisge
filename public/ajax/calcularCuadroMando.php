@@ -58,16 +58,36 @@ function obtenerGroupBy($idFormula)
 
 // Consultamos la tabla de condicion y la recorremos concatenando los campos 
 // para la clausula WHERE
-function obtenerWhere($idFormula)
+function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin)
 {
-	$condicion = DB::table('cuadromandocondicion')
-	->select(DB::raw('parentesisInicioCuadroMandoCondicion, campoCuadroMandoCondicion,
-						operadorCuadroMandoCondicion, valorCuadroMandoCondicion, 
-						parentesisFinCuadroMandoCondicion, conectorCuadroMandoCondicion'))
-	->where ('CuadroMandoFormula_idCuadroMandoFormula', "=", $idFormula)
-	->get();
 
+	// a la condicion de la consulta le debemos adicionar una fecha de corte
+	// y el id de la compañia actual
+	// para adicionar el id de la compania, primero verificamos si en la tabla existe ese campo
+	$consulta = DB::table('information_schema.COLUMNS')
+				->select(DB::raw('COLUMN_NAME'))
+				->where('TABLE_SCHEMA', '=', ENV('DB_DATABASE','sisoft'))
+				->where('TABLE_NAME', '=', $tabla)
+				->where('COLUMN_NAME', 'like', '%idCompania%') 
+				->get();
 	$datowhere = '';
+	// si la tabla tiene campo de id de compania, armamos una condicion con el id de compania de la session actual sino la dejamos en blanco
+	$datowhere = isset(get_object_vars($consulta[0])["COLUMN_NAME"]) 
+		? get_object_vars($consulta[0])["COLUMN_NAME"] .' = '. \Session::get("idCompania"). ' AND '
+		: '';
+	
+	// Si el usuario asocio una fecha de corte, la aplicamos en la condicion
+	$datowhere .= ($campoFecha != null and $campoFecha != '')
+		? '('. $campoFecha . ' >= "'. $fechaInicio . '" and '.
+		$campoFecha . ' <= "'. $fechaFin . '") AND '
+		: '';
+
+	$condicion = DB::table('cuadromandocondicion')
+				->select(DB::raw('parentesisInicioCuadroMandoCondicion, campoCuadroMandoCondicion, operadorCuadroMandoCondicion, valorCuadroMandoCondicion, parentesisFinCuadroMandoCondicion, conectorCuadroMandoCondicion'))
+				->where ('CuadroMandoFormula_idCuadroMandoFormula', "=", $idFormula)
+				->get();
+
+	
 	foreach ($condicion as $cond => $where) 
 	{
 		// cada valor es un nuevo array de tipo StdClass, el cual debemos convertir en array php
@@ -85,11 +105,11 @@ function obtenerWhere($idFormula)
 						
 	}
 	// quitamos el conector logico (AND , OR) final si existe
-	$datowhere = substr($datowhere, 0, strlen($datowhere)-4);echo $datowhere;
+	$datowhere = substr($datowhere, 0, strlen($datowhere)-4);
 	return $datowhere;
 }
 
-function calcularFormula($idCuadroMando)
+function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 {
 	//********************************************************
 	// Proceso de Calculo de las formulas del cuadro de mando
@@ -103,10 +123,10 @@ function calcularFormula($idCuadroMando)
 	->select(DB::raw('idCuadroMandoFormula, tipoCuadroMandoFormula, 
 					CuadroMando_idIndicador, nombreCuadroMandoFormula, 
 					Modulo_idModulo, nombreModulo, tablaModulo, 
-					campoCuadroMandoFormula, calculoCuadroMandoFormula'))
+					campoCuadroMandoFormula, calculoCuadroMandoFormula,
+					fechaCorteCuadroMandoFormula'))
 	->where ('CuadroMando_idCuadroMando', "=", $idCuadroMando)
 	->get();
-
 
 	/*
 	2. Recorremos Cada uno de los componentes de la formula, teniendo en cuenta que 
@@ -139,7 +159,6 @@ function calcularFormula($idCuadroMando)
 	{
 		// cada valor es un nuevo array de tipo StdClass, el cual debemos convertir en array php
 		$datosFormula = get_object_vars($valor); 
-		
 
 		// hacemos una estructura CASE con la variable de tipo para saber el 
 		// proceso a seguir con cada componente
@@ -177,13 +196,15 @@ function calcularFormula($idCuadroMando)
 				$groupby = obtenerGroupBy($datosFormula["idCuadroMandoFormula"]);
 
 				// 3.3. CONDICION (Where)
-				$datowhere = obtenerWhere($datosFormula["idCuadroMandoFormula"]);
+				$datowhere = obtenerWhere($datosFormula["idCuadroMandoFormula"], $datosFormula["tablaModulo"], $datosFormula["fechaCorteCuadroMandoFormula"], $fechaInicio, $fechaFin);
 
 				// creamos una sentencia de SQL con los componentes mencionados
 				$sql = 'SELECT '.str_replace('valor', $datosFormula["campoCuadroMandoFormula"], $funcion).
 						' FROM '.$datosFormula["tablaModulo"].
 						($datowhere != '' ? ' WHERE '.$datowhere : '').
 						($groupby != '' ? ' GROUP BY '.$groupby : '');
+
+//						' WHERE '.$datosFormula["fechaCorteCuadroMandoFormula"].' = '
 
 				// ejecutamos la consulta con QueryBuilder
 				$resultado = DB::select($sql);
@@ -198,7 +219,7 @@ function calcularFormula($idCuadroMando)
 			case 'Indicador':
 				// 4. Cuando la formula contiene un INDICADOR implicito, debemos llamar esta misma funcion recursivamente 
 				// pero con el ID del indicador a calcular
-				$valorIndicador = calcularFormula($datosFormula["CuadroMando_idIndicador"]);
+				$valorIndicador = calcularFormula($datosFormula["CuadroMando_idIndicador"], $fechaInicio, $fechaFin);
 
 				// concatenamos a la formula el valor calculado para el indicador
 				$formula .= " ".$valorIndicador." ";
@@ -211,8 +232,8 @@ function calcularFormula($idCuadroMando)
 		}
 		
 	}
-
-	eval('$resultado = '.$formula.';');
+	
+	eval('$resultado = "'.$formula.'";');
 
 	// echo 'Resultado Indicador con ID '.$idCuadroMando.'<br>'.$formula.' = '. $resultado.'<br>';
 	return  $resultado;
@@ -251,32 +272,37 @@ function calcularIndicadores($fecha)
 	//la semana tiene 7 dias, si tomamos 7 - dia actual tendremos los dias que faltan para domingo
 	// luego sumamos a la fecha de hoy esos dias 
 	$dias = 7 - date("w", $fecha);
-	$semana = date ( 'Y-m-d' , strtotime ( "+ $dias day" , $fecha) );
+	$semanaFin = date ( 'Y-m-d' , strtotime ( "+ $dias day" , $fecha) );
+	$semanaIni = date ( 'Y-m-d' , strtotime ( "- 6 day" , strtotime($semanaFin)) );
 
 	// consultamos la fecha de la proxima Quincena
 	// por lo tanto asumimos que sera los dias 15 o el ultimo dia del mes
 	// miramos cual es el mas cerca y tomamos ese
 	// verificamos si la fecha actual es menor a 15, entonces tomamos 15, sino buscamos ultimo dia del mes
-	$quincena = date('Y-m',$fecha) . '-' . (date('d',$fecha) <= 15 ? '15' : date("t",strtotime(date("Y-m",$fecha))));
+	$quincenaFin = date('Y-m',$fecha) . '-' . (date('d',$fecha) <= 15 ? '15' : date("t",strtotime(date("Y-m",$fecha))));
+	$quincenaIni = date('Y-m',strtotime($quincenaFin)) . '-' . (date('d',strtotime($quincenaFin)) <= 15 ? '01' : date("t",strtotime(date("Y-m",strtotime($quincenaFin)))));
+
 
 	// Consultamos la fecha del ultimo dia del mes
-	$mes = date('Y-m',$fecha) . '-' . date("t",strtotime(date("Y-m",$fecha)));
+	$mesFin = date('Y-m',$fecha) . '-' . date("t",strtotime(date("Y-m",$fecha)));
+	$mesIni = date('Y-m',strtotime($mesFin)) . '-01';
 
-	// Para el bimestre verificamos si el mes actual es PAR, sino entonces le sumamos 1 al mes para obtenerlo
+	// Para el bimestreFin verificamos si el mes actual es PAR, sino entonces le sumamos 1 al mes para obtenerlo
 	if(intval(date('m',$fecha))%2 == 0)
 	{
-		$bimestre = date('Y-m',$fecha) . '-' . date("t",strtotime(date("Y-m",$fecha)));
+		$bimestreFin = date('Y-m',$fecha) . '-' . date("t",strtotime(date("Y-m",$fecha)));
 	}
 	else
 	{
 		$proximoMes = date ( 'Y-m' , strtotime ("+ 1 month" , $fecha) );
-		$bimestre = date('Y-m',$fecha) . '-' . date("t",strtotime($proximoMes));
+		$bimestreFin = date('Y-m',$fecha) . '-' . date("t",strtotime($proximoMes));
 	}
+	$bimestreIni = date('Y-m',strtotime ( "- 2 months" , strtotime($bimestreFin))) . '-01';
 
-	// Para el Trimestre verificamos si el mes actual es multiplo de 3, sino entonces debemos llegar hasta el multiplo de 3
+	// Para el trimestreFin verificamos si el mes actual es multiplo de 3, sino entonces debemos llegar hasta el multiplo de 3
 	if(intval(date('m',$fecha))%3 == 0)
 	{
-		$trimestre = date('Y-m',$fecha) . '-' . date("t",strtotime(date("Y-m",$fecha)));
+		$trimestreFin = date('Y-m',$fecha) . '-' . date("t",strtotime(date("Y-m",$fecha)));
 	}
 	else
 	{
@@ -286,35 +312,40 @@ function calcularIndicadores($fecha)
 			$numeroMes++;
 		}	
 		$proximoMes = date ( 'Y-' . $numeroMes,$fecha);
-		$trimestre = date('Y-',$fecha). str_pad($numeroMes, 2, '0', STR_PAD_LEFT) . '-' . date("t",strtotime($proximoMes));
+		$trimestreFin = date('Y-',$fecha). str_pad($numeroMes, 2, '0', STR_PAD_LEFT) . '-' . date("t",strtotime($proximoMes));
 	}
+	$trimestreIni = date('Y-m',strtotime ( "- 3 months" , strtotime($trimestreFin))) . '-01';
+	
 
-	// consultamos la fecha del proximo semestre
+	// consultamos la fecha del proximo semestreFin
 	// por lo tanto asumimos que sera en junio o Diciembre, miramos cual es el mas cerca y tomamos ese
 	// verificamos si la fecha actual es menor a JUNIO, entonces tomamos ese, sino Tomamos Diciembre
-	$semestre = date('Y-',$fecha) . (date('m',$fecha) <= 6 ? str_pad('6', 2, '0', STR_PAD_LEFT). '-30' : str_pad('12', 2, '0', STR_PAD_LEFT). '-31');
-
+	$semestreFin = date('Y-',$fecha) . (date('m',$fecha) <= 6 ? str_pad('6', 2, '0', STR_PAD_LEFT). '-30' : str_pad('12', 2, '0', STR_PAD_LEFT). '-31');
+	$semestreIni = date('Y-m',strtotime ( "- 6 months" , strtotime($semestreFin))) . '-01';
 
 	// por ultimo la fecha del ultimo dia del año, que siempre sera fija
-	$anio = date('Y-12-31',$fecha);
+	$anioFin = date('Y-12-31',$fecha);
+	$anioIni = date('Y-01-01',$fecha);
 
 		// echo $dia.'<br>';
-		// echo $semana.'<br>';
-		// echo $quincena.'<br>';
-		// echo $mes.'<br>';
-		// echo $bimestre.'<br>';
-		// echo $trimestre.'<br>';
-		// echo $semestre.'<br>';
-		// echo $anio.'<br>';
+		// echo $semanaIni.' - '.$semanaFin.'<br>';
+		// echo $quincenaIni.' - '.$quincenaFin.'<br>';
+		// echo $mesIni.' - '.$mesFin.'<br>';
+		// echo $bimestreIni.' - '.$bimestreFin.'<br>';
+		// echo $trimestreIni.' - '.$trimestreFin.'<br>';
+		// echo $semestreIni.' - '.$semestreFin.'<br>';
+		// echo $anioIni.' - '.$anioFin.'<br>';
 
 	$cuadroMandoObjeto = DB::table('cuadromando as CM')
 	    ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
 	    ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion, operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando, Proceso_idProceso'))
 	    ->where('CM.Compania_idCompania','=', \Session::get('idCompania'))
+	    ->orderby('idCuadroMando')
 	    ->get();
-	// print_r($cuadroMandoObjeto);
+	 
 
 	// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+	$CuadroMando = array();
 	foreach ($cuadroMandoObjeto as $key => $value) 
 	{
 	    $CuadroMando[] = (array) $value;
@@ -323,14 +354,15 @@ function calcularIndicadores($fecha)
 	// recorremos cada indicador para calcularlo y almacenar su resultado en la tabla de indicadores
 	for ($i=0; $i < count($CuadroMando); $i++) 
 	{ 
-		//echo $CuadroMando[$i]["unidadFrecuenciaMedicion"].'<br>';
-		$resultado = calcularFormula($CuadroMando[$i]["idCuadroMando"]);
+		// echo $CuadroMando[$i]["idCuadroMando"].'<br>';
+		
 
 		// verificamos la periodicidad del indicador para tomar la fecha de corte
 		// este dato depende del valor y la unidad de frecuencia
 		switch ($CuadroMando[$i]["unidadFrecuenciaMedicion"]) 
 		{
 			case 'Dias':
+				$fechaIni = $dia;
 				$fechaCorte = $dia;
 				break;
 
@@ -338,14 +370,17 @@ function calcularIndicadores($fecha)
 				switch ($CuadroMando[$i]["valorFrecuenciaMedicion"]) 
 				{
 					case 1:
-						$fechaCorte = $semana;
+						$fechaIni = $semanaIni;
+						$fechaCorte = $semanaFin;
 						break;
 					case 2:
-						$fechaCorte = $quincena;
+						$fechaIni = $quincenaIni;
+						$fechaCorte = $quincenaFin;
 						break;
 					
 					default:
-						$fechaCorte = $semana;
+						$fechaIni = $semanaIni;
+						$fechaCorte = $semanaFin;
 						break;
 				}
 				break;
@@ -353,35 +388,44 @@ function calcularIndicadores($fecha)
 				switch ($CuadroMando[$i]["valorFrecuenciaMedicion"]) 
 				{
 					case 1:
-						$fechaCorte = $mes;
+						$fechaIni = $mesIni;
+						$fechaCorte = $mesFin;
 						break;
 					case 2:
-						$fechaCorte = $bimestre;
+						$fechaIni = $bimestreIni;
+						$fechaCorte = $bimestreFin;
 						break;
 					case 3:
-						$fechaCorte = $trimestre;
+						$fechaIni = $trimestreIni;
+						$fechaCorte = $trimestreFin;
 						break;
 					case 6:
-						$fechaCorte = $semestre;
+						$fechaIni = $semestreIni;
+						$fechaCorte = $semestreFin;
 						break;
 					
 					default:
-						$fechaCorte = $mes;
+						$fechaIni = $mesIni;
+						$fechaCorte = $mesFin;
 						break;
 				}
 				break;
 			case 'Años':
-				$fechaCorte = $anio;
+				$fechaIni = $anioIni;
+				$fechaCorte = $anioFin;
 				break;
 			
 			default:
+				$fechaIni = $dia;
 				$fechaCorte = $dia;
 				break;
 		}
-
+		$resultado = calcularFormula($CuadroMando[$i]["idCuadroMando"], $fechaIni, $fechaCorte);
 		// Evaluamos si el resultado cumple con la meta del indicador siempre y cuando ya sea la fecha de su corte
 		// si no cumple con la meta, insertamos un registro en el ACPM (Accion Correctiva)
-		// Armamos una comparacion concatenada para luego ejecutarla con el eval
+		// Armamos una comparacion concatenada para luego ejecutarla con el evalecho 
+
+		
 		$resp = '';
 		eval('$resp = ('. $resultado .' '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' ? "Si" : "No");');
 		// echo $resp;
@@ -422,8 +466,7 @@ function calcularIndicadores($fecha)
 		$data = array(
 			'fechaCalculoIndicador' => date("Y-m-d", $fecha),
 			'valorIndicador' => $resultado);
-		print_r($indice);
-		print_r($data);
+		
 	    $indicador = \App\Indicador::updateOrCreate($indice, $data);
 
 	}
@@ -433,7 +476,7 @@ function calcularIndicadores($fecha)
 }
 
 // echo $_GET["fecha"].'<br>';
-// tomamos una fecha inicial para el proceso, que viene como paremetro en la variable fecha
+// tomamos una fecha inicial para el proceso, que viene como parametro en la variable fecha
 // si no existe, tomamos el dia de hoy
 $fecha = isset($_GET["fecha"]) ? $_GET["fecha"] : date("Y-m-d");
 

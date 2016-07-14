@@ -50,7 +50,8 @@
               cuadromandoFormula[j].nombreCuadroMandoFormula+','+
               cuadromandoFormula[j].Modulo_idModulo+','+
               cuadromandoFormula[j].campoCuadroMandoFormula+','+
-              cuadromandoFormula[j].calculoCuadroMandoFormula+'|';
+              cuadromandoFormula[j].calculoCuadroMandoFormula+','+
+              cuadromandoFormula[j].fechaCorteCuadroMandoFormula+'|';
           
           concatenarFormula(dato, cuadromandoFormula[j].nombreCuadroMandoFormula);
 
@@ -349,7 +350,7 @@
           {!! Form::label('Modulo_idModulo', 'Modulo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
-            {!!Form::select('Modulo_idModulo',$modulo, (isset($cuadromando) ? $cuadromando->Modulo_idModulo : 0),["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCampos(this.value)',"placeholder" =>"Seleccione el Modulo"])!!}
+            {!!Form::select('Modulo_idModulo',$modulo, (isset($cuadromando) ? $cuadromando->Modulo_idModulo : 0),["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCampos(this.value); consultarCamposFecha(this.value)',"placeholder" =>"Seleccione el Modulo"])!!}
             </div>
           </div>
           </div>
@@ -361,6 +362,15 @@
           <div class="col-sm-10">
             <div class="input-group">
             {!!Form::select('campoCuadroMandoFormula',array(), '',["class" => "select form-control", 'style' => 'width:258px;', 'onchange' => 'consultarCalculos(document.getElementById(\'Modulo_idModulo\').value, this.value)', "placeholder" =>"Seleccione..."])!!}
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group" id='test'>
+          {!! Form::label('fechaCorteCuadroMandoFormula', 'F. Corte', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group">
+            {!!Form::select('fechaCorteCuadroMandoFormula',array(), '',["class" => "select form-control", 'style' => 'width:258px;', "placeholder" =>"Seleccione..."])!!}
             </div>
           </div>
           </div>

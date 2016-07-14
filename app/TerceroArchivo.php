@@ -9,7 +9,7 @@ class TerceroArchivo extends Model
     protected $table = 'terceroarchivo';
     protected $primaryKey = 'idTerceroArchivo';
 
-    protected $fillable = ['Tercero_idTercero', 'tituloTerceroArchivo', 'fechaTerceroArchivo', 'rutaTerceroArchivo'];
+    protected $fillable = ['Tercero_idTercero', 'tituloTerceroArchivo', 'fechaTerceroArchivo', 'descripcionTerceroArchivo', 'rutaTerceroArchivo'];
 
     public $timestamps = false;
 

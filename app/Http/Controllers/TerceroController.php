@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 //use Intervention\Image\ImageManagerStatic as Image;
 use Input;
 use File;
+use Validator;
+use Response;
+use DB;
 // include composer autoload
 //require '../vendor/autoload.php';
 // import the Intervention Image Manager Class
@@ -23,6 +26,40 @@ class TerceroController extends Controller
     public function index()
     {
         return view('tercerogrid');
+    }
+
+    public function indexdropzone() 
+    {
+        return view('dropzone');
+    }
+
+    //Funcion para subir archivos con dropzone
+    public function uploadFiles(Request $request) 
+    {
+ 
+        $input = Input::all();
+ 
+        $rules = array(
+        );
+ 
+        $validation = Validator::make($input, $rules);
+ 
+        if ($validation->fails()) {
+            return Response::make($validation->errors->first(), 400);
+        }
+        
+        $destinationPath = public_path() . '/imagenes/repositorio/temporal'; //Guardo en la carpeta  temporal
+
+        $extension = Input::file('file')->getClientOriginalExtension(); 
+        $fileName = Input::file('file')->getClientOriginalName(); // nombre de archivo
+        $upload_success = Input::file('file')->move($destinationPath, $fileName);
+ 
+        if ($upload_success) {
+            return Response::json('success', 200);
+        } 
+        else {
+            return Response::json('error', 400);
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -161,16 +198,38 @@ class TerceroController extends Controller
            ]);
         }
 
-        $contadorArchivo = count($request['tituloTerceroArchivo']);
-        for($i = 0; $i < $contadorArchivo; $i++)
-        {
+        $arrayImage = $request['archivoTerceroArray'];
+        $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+        $arrayImage = explode(",", $arrayImage);
+        
+        for ($i=0; $i <count($arrayImage) ; $i++) 
+        { 
+            if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+            {
+                $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                $destinationPath = public_path() . '/imagenes/tercero/'.$arrayImage[$i];
+                $ruta = '/tercero/'.$arrayImage[$i];
+               
+                if (file_exists($origen))
+                {
+                    copy($origen, $destinationPath);
+                    unlink($origen);
+                }   
+                else
+                {
+                    echo "No existe el archivo";
+                }
+            }
+
             \App\TerceroArchivo::create([
             'Tercero_idTercero' => $tercero->idTercero,
-            'tituloTerceroArchivo' => $request['tituloTerceroArchivo'][$i],
-            'fechaTerceroArchivo' => $request['fechaTerceroArchivo'][$i],
-            'rutaTerceroArchivo' => $request['rutaTerceroArchivo'][$i]
+            'tituloTerceroArchivo' => $request['tituloTerceroArchivo'],
+            'fechaTerceroArchivo' => $request['fechaTerceroArchivo'],
+            'descripcionTerceroArchivo' => $request['descripcionTerceroArchivo'],
+            'rutaTerceroArchivo' => $ruta
            ]);
         }
+        
         return redirect('/tercero');
     }
     
@@ -212,10 +271,9 @@ class TerceroController extends Controller
      */
     public function update(TerceroRequest $request, $id)
     {
-
-
         $tercero = \App\Tercero::find($id);
         $tercero->fill($request->all());
+        $tercero->Cargo_idCargo = (($request['Cargo_idCargo'] == '' or $request['Cargo_idCargo'] == 0) ? null : $request['Cargo_idCargo']);
 
         if(null !== Input::file('imagenTercero') )
         {
@@ -264,7 +322,7 @@ class TerceroController extends Controller
         \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
         \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
         \App\TerceroExamenMedico::where('Tercero_idTercero',$id)->delete();
-        \App\TerceroArchivo::where('Tercero_idTercero',$id)->delete();
+        // \App\TerceroArchivo::where('Tercero_idTercero',$id)->delete();
         
         $contadorContacto = count($request['nombreTerceroContacto']);
         for($i = 0; $i < $contadorContacto; $i++)
@@ -301,15 +359,62 @@ class TerceroController extends Controller
            ]);
         }
 
-        $contadorArchivo = count($request['tituloTerceroArchivo']);
-        for($i = 0; $i < $contadorArchivo; $i++)
+        
+        // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
+        if ($request['archivoTerceroArray'] != '') 
         {
-            \App\TerceroArchivo::create([
-            'Tercero_idTercero' => $tercero->idTercero,
-            'tituloTerceroArchivo' => $request['tituloTerceroArchivo'][$i],
-            'fechaTerceroArchivo' => $request['fechaTerceroArchivo'][$i],
-            'rutaTerceroArchivo' => $request['rutaTerceroArchivo'][$i]
-           ]);
+            $arrayImage = $request['archivoTerceroArray'];
+            $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+            $arrayImage = explode(",", $arrayImage);
+
+            for($i = 0; $i < count($arrayImage); $i++)
+            {
+                if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                {
+                    $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                    $destinationPath = public_path() . '/imagenes/tercero/'.$arrayImage[$i];
+                    
+                    if (file_exists($origen))
+                    {
+                        copy($origen, $destinationPath);
+                        unlink($origen);
+                        $ruta = '/tercero/'.$arrayImage[$i];
+
+                        DB::table('terceroarchivo')->insert(['idTerceroArchivo' => '0', 'Tercero_idTercero' =>$tercero->idTercero,'fechaTerceroArchivo' => $request['fechaTerceroArchivo'],'rutaTerceroArchivo' => $ruta]);
+                    }   
+                    else
+                    {
+                        echo "No existe el archivo";
+                    }
+                }
+            }
+        }
+        
+
+        // HAGO UN UPDATE DE LOS DATOS
+            // $index = array(
+            //     'idTerceroArchivo' => $request['idTerceroArchivo'][$i]);
+
+            // $data= array(
+            //     'Tercero_idTercero' => $tercero->idTercero,
+            //     'tituloTerceroArchivo' => '',
+            //     'fechaTerceroArchivo' => $request['fechaTerceroArchivo'][$i],
+            //     'descripcionTerceroArchivo' => '',
+            //     'rutaTerceroArchivo' => '');
+            
+            // $save = \App\TerceroArchivo::updateOrCreate($index, $data);
+        // for ($i=0; $i < ; $i++) 
+        // { 
+        //     DB::table('terceroarchivo')->update(['idTerceroArchivo' => '', 'Tercero_idTercero' =>$tercero->idTercero,'fechaTerceroArchivo' => '', 'descripcionTerceroArchivo' => '','rutaTerceroArchivo' => '']);
+        // }
+
+        // ELIMINO LOS ARCHIVOS
+        $idsEliminar = $request['eliminarArchivo'];
+        $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+        if($idsEliminar != '')
+        {
+            $idsEliminar = explode(',',$idsEliminar);
+            \App\TerceroArchivo::whereIn('idTerceroArchivo',$idsEliminar)->delete();
         }
         return redirect('/tercero');
     }

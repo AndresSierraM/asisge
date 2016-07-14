@@ -310,6 +310,7 @@ function llenarObjetivo(idObjetivo)
         var Modulo_idModulo = 0;
         var campoCuadroMandoFormula = '';
         var calculoCuadroMandoFormula = '';
+        var fechaCorteCuadroMandoFormula = '';
 
         componente =  parseFloat(document.getElementById("contadorFormula").value)+1;
         var datos = '';
@@ -324,13 +325,15 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = document.getElementById('Modulo_idModulo').value;
                 campoCuadroMandoFormula = document.getElementById('campoCuadroMandoFormula').value;
                 calculoCuadroMandoFormula = document.getElementById('calculoCuadroMandoFormula').value;
+                fechaCorteCuadroMandoFormula = document.getElementById('fechaCorteCuadroMandoFormula').value;
 
                 // limpiamos los campos
                 document.getElementById('nombreVariable').value = '';
                 document.getElementById('Modulo_idModulo').value = '';
                 document.getElementById('campoCuadroMandoFormula').value = '';
                 document.getElementById('calculoCuadroMandoFormula').value = '';
-                
+                document.getElementById('fechaCorteCuadroMandoFormula').value = '';
+
             break;
 
             case 'formIndicador':
@@ -342,6 +345,7 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = 0;
                 campoCuadroMandoFormula = '';
                 calculoCuadroMandoFormula = '';
+                fechaCorteCuadroMandoFormula = '';
 
                 // limpiamos los campos
                 document.getElementById('Indicador').value = '';
@@ -356,6 +360,7 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = 0;
                 campoCuadroMandoFormula = '';
                 calculoCuadroMandoFormula = '';
+                fechaCorteCuadroMandoFormula = '';
 
                  // limpiamos los campos
                 document.getElementById('valorConstante').value = '';
@@ -370,11 +375,12 @@ function llenarObjetivo(idObjetivo)
                 Modulo_idModulo = 0;
                 campoCuadroMandoFormula = '';
                 calculoCuadroMandoFormula = '';
+                fechaCorteCuadroMandoFormula = '';
 
             break;
         }
         
-        datos += idCuadroMandoFormula+','+CuadroMando_idCuadroMando+','+tipoCuadroMandoFormula+','+CuadroMando_idIndicador+','+nombreCuadroMandoFormula+','+Modulo_idModulo+','+campoCuadroMandoFormula+','+calculoCuadroMandoFormula+'|';
+        datos += idCuadroMandoFormula+','+CuadroMando_idCuadroMando+','+tipoCuadroMandoFormula+','+CuadroMando_idIndicador+','+nombreCuadroMandoFormula+','+Modulo_idModulo+','+campoCuadroMandoFormula+','+calculoCuadroMandoFormula+','+fechaCorteCuadroMandoFormula+'|';
 
         concatenarFormula(datos, nombreCuadroMandoFormula);
     }
@@ -590,6 +596,52 @@ function llenarObjetivo(idObjetivo)
                 cuadromandocondicion.opciones[1] = [valores,nombres];
                 // y los mismos campos para el multiregistro de agrupadores
                 cuadromandoagrupador.opciones[0] = [valores,nombres];
+
+            }
+        });
+    }
+
+
+    function consultarCamposFecha(idModulo)
+    {
+
+        var token = document.getElementById('token').value;
+
+        $.ajax({
+            async: true,
+            headers: {'X-CSRF-TOKEN': token},
+            url: 'http://'+location.host+'/CuadroMandoConsultarCamposFecha',
+            method: 'POST',
+            data: {idModulo: idModulo},
+
+
+            success: function(data){
+                
+                // los datos recibidos en formato JSON desde el ajax son de tipo 
+                // string, para trabajar con ellos debemos convertirlos a JSON
+                var data = JSON.parse(data);
+                
+                var select = document.getElementById('fechaCorteCuadroMandoFormula');
+
+                select.options.length = 0;
+                var option = '';
+
+                option = document.createElement('option');
+                option.value = '';
+                option.text = 'Seleccione el campo';
+                select.appendChild(option);
+                
+                for(var j=0; j < data.length; j++)
+                {
+                    option = document.createElement('option');
+
+                    option.value = data[j].COLUMN_NAME;
+                    option.text = data[j].COLUMN_COMMENT;
+                    select.appendChild(option);
+
+                }
+
+                
 
             }
         });

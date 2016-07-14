@@ -164,17 +164,32 @@ class ConformacionGrupoApoyoController extends Controller
         $contadorJurado = count($request['Tercero_idJurado']);
         for($i = 0; $i < $contadorJurado; $i++)
         {
+            // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+            // esto es porque la creamos con el ID del acta y el id del participante y debiamos grabar primero para obtenerlo
+            $ruta = 'conformaciongrupoapoyo/firmaconformaciongrupoapoyo'.$id.'_'.$request['Tercero_idJurado'][$i].'.png';
 
             $indice = array(
              'idConformacionGrupoApoyoJurado' => $request['idConformacionGrupoApoyoJurado'][$i]);
 
             $data = array(
              'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
-            'Tercero_idJurado' => $request['Tercero_idJurado'][$i] );
+            'Tercero_idJurado' => $request['Tercero_idJurado'][$i],
+            'firmaActaConformacionGrupoApoyoTercero' => $ruta);
 
             $preguntas = \App\ConformacionGrupoApoyoJurado::updateOrCreate($indice, $data);
 
- 
+            //----------------------------
+            // Guardamos la imagen de la firma como un archivo en disco
+            $data = $request['firmabase64'][$i];
+            if($data != '')
+            {
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
+
+                file_put_contents('imagenes/'.$ruta, $data);
+            }
+            //---------------------------- 
         }
 
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma

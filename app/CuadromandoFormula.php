@@ -9,7 +9,7 @@ class CuadroMandoFormula extends Model
     protected $table = 'cuadromandoformula';
     protected $primaryKey = 'idCuadroMandoFormula';
 
-    protected $fillable = ['CuadroMando_idCuadroMando', 'tipoCuadroMandoFormula', 'CuadroMando_idIndicador', 'nombreCuadroMandoFormula', 'Modulo_idModulo', 'campoCuadroMandoFormula', 'calculoCuadroMandoFormula'];
+    protected $fillable = ['CuadroMando_idCuadroMando', 'tipoCuadroMandoFormula', 'CuadroMando_idIndicador', 'nombreCuadroMandoFormula', 'Modulo_idModulo', 'campoCuadroMandoFormula', 'calculoCuadroMandoFormula', 'fechaCorteCuadroMandoFormula'];
 
     public $timestamps = false;
 

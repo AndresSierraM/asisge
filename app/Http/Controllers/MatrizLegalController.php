@@ -159,6 +159,7 @@ class MatrizLegalController extends Controller
         {
             $matrizLegal = \App\MatrizLegal::find($id);
             $matrizLegal->fill($request->all());
+            $matrizLegal->Users_id = \Session::get('idUsuario');
             $matrizLegal->fechaActualizacionMatrizLegal = date("Y-m-d");
 
             $matrizLegal->save();

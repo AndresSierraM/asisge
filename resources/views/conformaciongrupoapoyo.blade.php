@@ -9,6 +9,58 @@
 @section('content')
 
 	@include('alerts.request')
+
+{!!Html::style('css/signature-pad.css'); !!} 
+
+
+<?php
+
+$firmas = isset($actaGrupoApoyo->actaGrupoApoyoTercero) ? $actaGrupoApoyo->actaGrupoApoyoTercero : null;
+
+for ($i=0; $i < count($firmas); $i++) 
+{ 
+
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+  
+  // al array de la consulta, le adicionamos 2 valores mas que representan la firma como imagen y como dato base 64, este array lo usamos para llenar el detalle de terceros participantes
+
+  $firmas[$i]["firma"] = ''; 
+  $firmas[$i]["firmabase64"] = ''; 
+  if(isset($firmas))
+  {
+    $path = 'imagenes/'.$firmas[$i]["firmaConformacionGrupoApoyoJurado"];
+  
+    if($firmas[$i]["firmaConformacionGrupoApoyoJurado"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $firmas[$i]["firma"] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+      $firmas[$i]["firmabase64"] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+      
+    }
+  }
+
+}
+
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+$base64 = ''; 
+  if(isset($entregaelementoproteccion))
+  {
+    $path = 'imagenes/'.$entregaelementoproteccion["firmaTerceroEntregaElementoProteccion"];
+    
+    if($entregaelementoproteccion["firmaTerceroEntregaElementoProteccion"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
+  }
+
+?>
+
+
 	{!!Html::script('js/conformaciongrupoapoyo.js')!!}
 
 	<script>
@@ -22,7 +74,7 @@
 		var conformacionGrupoApoyoResultado = '<?php echo (isset($conformacionGrupoApoyo) ? json_encode($conformacionGrupoApoyo->conformacionGrupoApoyoResultados) : "");?>';
 		conformacionGrupoApoyoResultado = (conformacionGrupoApoyoResultado != '' ? JSON.parse(conformacionGrupoApoyoResultado) : '');
 
-		var valorJurado = [0,''];
+		var valorJurado = [0,'','',''];
 		var valorResultado = [0,'',0];
 		var valorElemento = [0,''];
 		var valorExamen = [0,'',0,0,0,''];
@@ -43,15 +95,15 @@
 		    jurado.campoid = 'idConformacionGrupoApoyoJurado';
 		    jurado.campoEliminacion = 'eliminarJurado';
 
-			jurado.campos = ['idConformacionGrupoApoyoJurado', 'Tercero_idJurado'];
-			jurado.etiqueta = ['input','select'];
-			jurado.tipo = ['hidden',''];
-			jurado.estilo = ['','width:1000px;height:35px;'];
-			jurado.clase = ['',''];
-			jurado.sololectura = [false,false];
-			jurado.completar = ['off','off'];
-			jurado.opciones = ['',listaTercero];
-			jurado.funciones  = ['',''];
+			jurado.campos = ['idConformacionGrupoApoyoJurado', 'Tercero_idJurado','firma','firmabase64'];
+			jurado.etiqueta = ['input','select','firma','input'];
+			jurado.tipo = ['hidden','','','hidden'];
+			jurado.estilo = ['','width:900px;height:35px;', 'width:100px; height: 35px; border: 1px solid; display: inline-block', ''];
+			jurado.clase = ['','','',''];
+			jurado.sololectura = [false,false,false,false];
+			jurado.completar = ['off','off','off','off'];
+			jurado.opciones = ['',listaTercero,'',''];
+			jurado.funciones  = ['','','',''];
 
 			resultado = new Atributos('resultado','contenedor_resultado','resultado');
 
@@ -116,6 +168,18 @@
 	@else
 		{!!Form::open(['route'=>'conformaciongrupoapoyo.store','method'=>'POST'])!!}
 	@endif
+
+	<div id="signature-pad" class="m-signature-pad">
+		<input type="hidden" id="signature-reg" value="">
+	    <div class="m-signature-pad--body">
+	      <canvas></canvas>
+	    </div>
+	    <div class="m-signature-pad--footer">
+	      <div class="description">Firme sobre el recuadro</div>
+	      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+	      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+	    </div>
+	</div>
 
 		<div id="form_section">
 			<fieldset id="cargo-form-fieldset">
@@ -279,7 +343,8 @@
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="jurado.agregarCampos(valorJurado,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 1000px;display:inline-block;height:50px;">Jurado</div>
+															<div class="col-md-1" style="width: 900px;display:inline-block;height:50px;">Jurado</div>
+															<div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Firma</div>
 															<div id="contenedor_jurado">
 															</div>
 														</div>
@@ -332,6 +397,7 @@
 														</div>
 													</div>
 												</div>
+
 												<div class="form-group" id='test'>
 													{!!Form::label('Tercero_idSecretario', 'Secretario', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
@@ -343,6 +409,7 @@
 														</div>
 													</div>
 												</div>
+
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
@@ -401,5 +468,12 @@
 		$('#fechaConstitucionConformacionGrupoApoyo').datetimepicker(({
 			format: "YYYY-MM-DD"
 		}));
+
+	  $(document).ready(function()
+	  {
+	    mostrarFirma();
+	  });
 	</script>
+	{!!Html::script('js/signature_pad.js'); !!}
+	{!!Html::script('js/app.js'); !!}
 @stop

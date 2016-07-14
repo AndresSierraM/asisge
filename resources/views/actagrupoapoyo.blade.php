@@ -108,6 +108,70 @@ for ($i=0; $i < count($firmas); $i++)
 
 	</script>
 
+
+	<script>
+    var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
+    var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
+    var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
+
+    var idDocumento = '<?php echo isset($idDocumento) ? $idDocumento : "";?>';
+    var nombreDocumento = '<?php echo isset($nombreDocumento) ? $nombreDocumento : "";?>';
+    var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
+
+    var actaGrupoApoyoDetalle = '<?php echo (isset($actagrupoapoyo) ? json_encode($actagrupoapoyo->actaGrupoApoyoDetalle) : "");?>';
+    actaGrupoApoyoDetalle = (actaGrupoApoyoDetalle != '' ? JSON.parse(actaGrupoApoyoDetalle) : '');
+    var valorActaGrupoApoyo = ['',0,0,'',0,'',0,''];
+
+    $(document).ready(function(){
+
+
+      actagrupoapoyo = new Atributos('actagrupoapoyo','contenedor_actagrupoapoyo','actagrupoapoyo_');
+      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsable', 'Documento_idDocumento',
+                            'fechaPlaneadaActaGrupoApoyoDetalle', 'recursoPlaneadoActaGrupoApoyoDetalle', 
+                            'fechaEjecucionGrupoApoyoDetalle','recursoEjecutadoActaGrupoApoyoDetalle', 
+                             'observacionGrupoApoyoDetalle'];
+      actagrupoapoyo.etiqueta  = ['input', 'select','select',  
+                            'input', 'input',
+                            'input', 'input', 
+                            'input'];
+      actagrupoapoyo.tipo      = ['text', '', '',
+                            'date', 'number', 
+                            'date', 'number', 
+                            'text'];
+      actagrupoapoyo.estilo    = ['width: 400px; height:35px; ', 
+                            'width: 200px; height:35px; ', 
+                            'width: 200px; height:35px; ', 
+                            'width: 200px; height:35px; ', 
+                            'width: 100px; height:35px; text-align: right;', 
+                            'width: 200px; height:35px; ', 
+                            'width: 100px; height:35px; text-align: right;', 
+                            'width: 300px; height:35px; '];
+      actagrupoapoyo.clase     = ['', 'chosen-select', 'chosen-select', 
+                            '', '',
+                            '', '',
+                            ''];
+      actagrupoapoyo.sololectura = [false,false,false,false,false,false,false,false];
+      actagrupoapoyo.completar = ['off', 'off','off','off','off','off','off','off'];
+      actagrupoapoyo.opciones = ['', tercero, documento,'','','','',''];
+      actagrupoapoyo.funciones  = ['', '','','','','','',''];
+
+
+
+      actagrupoapoyo.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
+      actagrupoapoyo.idTercero =  JSON.parse(idTercero);
+      actagrupoapoyo.nombreDocumento =  JSON.parse(nombreDocumento);
+      actagrupoapoyo.idDocumento =  JSON.parse(idDocumento);
+
+
+      for(var j=0, k = actaGrupoApoyoDetalle.length; j < k; j++)
+      {
+        actagrupoapoyo.agregarCampos(JSON.stringify(actaGrupoApoyoDetalle[j]),'L');
+      }
+      document.getElementById('registros').value = j ;
+    });
+
+  </script>
+
 	@if(isset($actaGrupoApoyo))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($actaGrupoApoyo,['route'=>['actagrupoapoyo.destroy',$actaGrupoApoyo->idActaGrupoApoyo],'method'=>'DELETE'])!!}
@@ -147,6 +211,7 @@ for ($i=0; $i < count($firmas); $i++)
 							{!!Form::hidden('idActaGrupoApoyo', null, array('id' => 'idActaGrupoApoyo'))!!}
 							{!!Form::hidden('eliminarTema', '', array('id' => 'eliminarTema'))!!}
 					      	{!!Form::hidden('eliminarTercero', '', array('id' => 'eliminarTercero'))!!}
+					      	{!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
 						</div>
 					</div>
 				</div>
@@ -259,6 +324,38 @@ for ($i=0; $i < count($firmas); $i++)
 		              </span>
           		        {!!Form::textarea('observacionActaGrupoApoyo',null,['class'=>'ckeditor','placeholder'=>'Ingresa las observaciones generales de la reunión'])!!}
 
+		            </div>
+		          </div>
+		        </div>
+
+		        <div class="panel-body">
+		          <div class="form-group" id='test'>
+		            <div class="col-sm-12">
+		              <div class="row show-grid">
+		                <div style="overflow: auto; width: 100%;">
+		                  <div style="width: 1750px; height: 300px; display: inline-block; ">
+		                    <div class="col-md-1" style="width: 840px;">&nbsp;</div>
+		                    <div class="col-md-1" style="width: 300px;">Planeaci&oacute;n</div>
+		                    <div class="col-md-1" style="width: 300px;">Ejecuci&oacute;n</div>
+		                    <div class="col-md-1" style="width: 300px;">&nbsp;</div>
+		                    
+		                    <div class="col-md-1" style="width: 40px;" onclick="actagrupoapoyo.agregarCampos(valorActaGrupoApoyo,'A')">
+		                      <span class="glyphicon glyphicon-plus"></span>
+		                    </div>
+		                      
+		                    <div class="col-md-1" style="width: 400px;">Actividad</div>
+		                    <div class="col-md-2" style="width: 200px;">Responsable</div>
+		                    <div class="col-md-3" style="width: 200px;">Documento</div>
+		                    <div class="col-md-4" style="width: 200px;">Fecha</div>
+		                    <div class="col-md-5" style="width: 100px;">Recurso $</div>
+		                    <div class="col-md-6" style="width: 200px;">Fecha</div>
+		                    <div class="col-md-7" style="width: 100px;">Recurso $</div>
+		                    <div class="col-md-8" style="width: 300px;">Observaci&oacute;n</div>
+		                    <div id="contenedor_actagrupoapoyo">
+		                    </div>
+		                  </div>
+		                </div>
+		              </div>
 		            </div>
 		          </div>
 		        </div>
