@@ -24,4 +24,9 @@ class ActaGrupoApoyo extends Model
         return $this->hasMany('App\ActaGrupoApoyoTercero','ActaGrupoApoyo_idActaGrupoApoyo');
     }
 
+    public function actaGrupoApoyoDetalle()
+    {
+        return $this->hasMany('App\ActaGrupoApoyoDetalle','ActaGrupoApoyo_idActaGrupoApoyo');
+    }
+
 }
