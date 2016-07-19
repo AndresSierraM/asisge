@@ -19,7 +19,7 @@ class TipoRiesgoController extends Controller
      */
     public function index()
     {
-
+        $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
         return view('tiporiesgogrid', compact('datos'));
