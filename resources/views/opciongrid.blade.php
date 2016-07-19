@@ -11,6 +11,15 @@
                 border-radius: 4px;
             }
 </style> 
+<?php 
+    $visible = '';
+
+    $dato = get_object_vars($datos[0]);
+    if ($dato['adicionarRolOpcion'] == 1) 
+        $visible = 'inline-block;';
+    else
+        $visible = 'none;';
+?>
         <div class="container">
             <div class="row">
                 <div class="container">
@@ -34,7 +43,7 @@
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                {!!Html::link('opcion/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
+                                 <a href="opcion/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
@@ -76,12 +85,14 @@
             "ajax": "{!! URL::to ('/datosOpcion')!!}",
         });*/
         var lastIdx = null;
+        var modificar = '<?php echo $dato["modificarRolOpcion"];?>';
+        var eliminar = '<?php echo $dato["eliminarRolOpcion"];?>';
         var table = $('#topcion').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosOpcion')!!}",
+            "ajax": "{!! URL::to ('/datosOpcion?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

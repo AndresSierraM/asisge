@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\ProcesoRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ProcesoController extends Controller
 {
@@ -17,7 +19,10 @@ class ProcesoController extends Controller
      */
     public function index()
     {
-        return view('procesogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('procesogrid', compact('datos'));
     }
 
     /**

@@ -118,7 +118,7 @@ for ($i=0; $i < count($firmas); $i++)
     var nombreDocumento = '<?php echo isset($nombreDocumento) ? $nombreDocumento : "";?>';
     var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
 
-    var actaGrupoApoyoDetalle = '<?php echo (isset($actagrupoapoyo) ? json_encode($actagrupoapoyo->actaGrupoApoyoDetalle) : "");?>';
+    var actaGrupoApoyoDetalle = '<?php echo (isset($actaGrupoApoyo) ? json_encode($actaGrupoApoyo->actaGrupoApoyoDetalle) : "");?>';
     actaGrupoApoyoDetalle = (actaGrupoApoyoDetalle != '' ? JSON.parse(actaGrupoApoyoDetalle) : '');
     var valorActaGrupoApoyo = ['',0,0,'',0,'',0,''];
 

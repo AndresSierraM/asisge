@@ -15,6 +15,8 @@ use Hash;
  
 // Redireccionamientos.
 use Redirect;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class UsersController extends Controller
 {
@@ -25,7 +27,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return view('usersgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('usersgrid', compact('datos'));
     }
 
     /**

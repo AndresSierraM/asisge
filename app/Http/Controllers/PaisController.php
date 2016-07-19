@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\PaisRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class PaisController extends Controller
 {
@@ -17,7 +19,10 @@ class PaisController extends Controller
      */
     public function index()
     {
-        return view('paisgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('paisgrid', compact('datos'));
     }
 
     /**

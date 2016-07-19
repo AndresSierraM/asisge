@@ -11,6 +11,7 @@ use File;
 use Validator;
 use Response;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 // include composer autoload
 //require '../vendor/autoload.php';
 // import the Intervention Image Manager Class
@@ -25,7 +26,10 @@ class TerceroController extends Controller
      */
     public function index()
     {
-        return view('tercerogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('tercerogrid', compact('datos'));
     }
 
     public function indexdropzone() 

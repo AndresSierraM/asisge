@@ -14,6 +14,8 @@ use File;
 require '../vendor/autoload.php';
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManager ;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 
 
@@ -26,7 +28,10 @@ class OpcionController extends Controller
      */
     public function index()
     {
-        return view('opciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('opciongrid', compact('datos'));
     }
 
     public function select()

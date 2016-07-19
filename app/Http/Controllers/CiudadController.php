@@ -10,6 +10,8 @@ use App\Http\Controllers\Departamento;
 use App\Http\Requests\CiudadRequest;
 
 use Illuminate\Routing\Route;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class CiudadController extends Controller
 {
@@ -28,7 +30,10 @@ class CiudadController extends Controller
 
     public function index()
     {
-        return view('ciudadgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('ciudadgrid', compact('datos'));
     }
 
     /**

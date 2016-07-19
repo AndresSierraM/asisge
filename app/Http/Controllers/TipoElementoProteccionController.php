@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipoElementoProteccionRequest;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class TipoElementoProteccionController extends Controller
 {
@@ -17,7 +19,10 @@ class TipoElementoProteccionController extends Controller
      */
     public function index()
     {
-        return view('tipoelementoprotecciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('tipoelementoprotecciongrid', compact('datos'));
     }
 
     /**

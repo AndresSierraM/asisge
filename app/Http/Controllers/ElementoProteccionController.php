@@ -15,6 +15,8 @@ use File;
 require '../vendor/autoload.php';
 // // import the Intervention Image Manager Class
 use Intervention\Image\ImageManager;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ElementoProteccionController extends Controller
 {
@@ -25,7 +27,10 @@ class ElementoProteccionController extends Controller
      */
     public function index()
     {
-        return view('elementoprotecciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('elementoprotecciongrid', compact('datos'));
     }
 
     /**

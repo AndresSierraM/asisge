@@ -69,10 +69,10 @@ class MatrizRiesgoRequest extends Request
             //     $validacion['controlMatrizRiesgoDetalle'.$i] =  'required';
             // }
 
-            if(trim($this->get('elementoProteccionMatrizRiesgoDetalle')[$i]) == '' )
-            {    
-                $validacion['elementoProteccionMatrizRiesgoDetalle'.$i] =  'required';
-            }
+            // if(trim($this->get('elementoProteccionMatrizRiesgoDetalle')[$i]) == '' )
+            // {    
+            //     $validacion['elementoProteccionMatrizRiesgoDetalle'.$i] =  'required';
+            // }
 
             if(trim($this->get('nivelDeficienciaMatrizRiesgoDetalle')[$i]) == '' )
             {    

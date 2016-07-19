@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EntregaElementoProteccionRequest;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class EntregaElementoProteccionController extends Controller
 {
@@ -18,7 +19,10 @@ class EntregaElementoProteccionController extends Controller
      */
     public function index()
     {
-        return view('entregaelementoprotecciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('entregaelementoprotecciongrid', compact('datos')); 
     }
 
     /**

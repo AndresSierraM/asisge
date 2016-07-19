@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DepartamentoRequest;
 
 use App\Http\Controllers\PaisController;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class DepartamentoController extends Controller
 {
@@ -20,7 +22,10 @@ class DepartamentoController extends Controller
 
     public function index()
     {
-        return view('departamentogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('departamentogrid', compact('datos'));
     }
 
     /**

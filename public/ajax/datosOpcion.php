@@ -1,5 +1,18 @@
 <?php
+    $modificar = $_GET['modificar'];
+    $eliminar = $_GET['eliminar'];
 
+    $visibleM = '';
+    $visibleE = '';
+    if ($modificar == 1) 
+        $visibleM = 'inline-block;';
+    else
+        $visibleM = 'none;';
+
+    if ($eliminar == 1) 
+        $visibleE = 'inline-block;';
+    else
+        $visibleE = 'none;';
 
     $opcion = DB::table('opcion')
             ->leftJoin('paquete', 'Paquete_idPaquete', '=', 'idPaquete')
@@ -13,10 +26,10 @@
     foreach ($opcion as $key => $value) 
     {  
         $row[$key][] = '<a href="opcion/'.$value->idOpcion.'/edit">'.
-                            '<span class="glyphicon glyphicon-pencil"></span>'.
+                            '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
                         '<a href="opcion/'.$value->idOpcion.'/edit?accion=eliminar">'.
-                            '<span class="glyphicon glyphicon-trash"></span>'.
+                            '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idOpcion;
         $row[$key][] = $value->ordenOpcion;

@@ -12,6 +12,8 @@ use File;
 use Intervention\Image\ImageManager ;
 
 use Illuminate\Routing\Route;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class AusentismoController extends Controller
 {
@@ -30,7 +32,10 @@ class AusentismoController extends Controller
 
     public function index()
     {
-        return view('ausentismogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('ausentismogrid', compact('datos'));
     }
 
     /**

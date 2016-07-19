@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\InspeccionRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 use Input;
 use File;
@@ -26,8 +27,10 @@ class InspeccionController extends Controller
      */
     public function index()
     {
-        
-        return view('inspecciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('inspecciongrid', compact('datos'));
     }
 
     /**

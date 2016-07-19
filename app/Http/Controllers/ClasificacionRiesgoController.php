@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\ClasificacionRiesgoRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ClasificacionRiesgoController extends Controller
 {
@@ -17,7 +19,10 @@ class ClasificacionRiesgoController extends Controller
      */
     public function index()
     {
-        return view('clasificacionriesgogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('clasificacionriesgogrid', compact('datos'));
     }
 
     /**

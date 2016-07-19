@@ -7,6 +7,8 @@ use App\Rol;
 use App\Http\Requests;
 use App\Http\Requests\RolRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 
 
@@ -19,7 +21,10 @@ class RolController extends Controller
      */
     public function index()
     {
-        return view('rolgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('rolgrid', compact('datos'));
     }
 
     /**

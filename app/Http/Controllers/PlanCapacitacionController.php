@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\PlanCapacitacionRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class PlanCapacitacionController extends Controller
 {
@@ -18,7 +19,10 @@ class PlanCapacitacionController extends Controller
      */
     public function index()
     {
-        return view('plancapacitaciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('plancapacitaciongrid', compact('datos'));
     }
 
     /**

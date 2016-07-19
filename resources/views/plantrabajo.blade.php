@@ -80,8 +80,8 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 									<td>'.colorTarea($dato->OctubreT, $dato->OctubreC).'</td>
 									<td>'.colorTarea($dato->NoviembreT, $dato->NoviembreC).'</td>
 									<td>'.colorTarea($dato->DiciembreT, $dato->DiciembreC).'</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
+									<td>'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'</td>
+         							<td>'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'</td>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
 								</tr>';

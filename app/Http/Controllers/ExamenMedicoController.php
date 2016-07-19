@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Requests\ExamenMedicoRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
+
 
 class ExamenMedicoController extends Controller
 {
@@ -18,8 +20,10 @@ class ExamenMedicoController extends Controller
      */
     public function index()
     {
-        
-        return view('examenmedicogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('examenmedicogrid', compact('datos'));
     }
 
     /**

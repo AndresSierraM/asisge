@@ -1,28 +1,36 @@
 <?php
 
-    $matrizlegal = DB::table('matrizlegal')
-            ->leftJoin('users', 'Users_id', '=', 'id')
-            ->select(DB::raw('idMatrizLegal, nombreMatrizLegal, fechaElaboracionMatrizLegal, origenMatrizLegal, name'))
-            ->where('matrizlegal.Compania_idCompania','=', \Session::get('idCompania'))
-            ->get();
+    $modificar = $_GET['modificar'];
+    $eliminar = $_GET['eliminar'];
 
+    $visibleM = '';
+    $visibleE = '';
+    if ($modificar == 1) 
+        $visibleM = 'inline-block;';
+    else
+        $visibleM = 'none;';
+
+    if ($eliminar == 1) 
+        $visibleE = 'inline-block;';
+    else
+        $visibleE = 'none;';
+    $listageneral = \App\ListaGeneral::All();
     $row = array();
 
-    foreach ($matrizlegal as $key => $value) 
+    foreach ($listageneral as $key => $value) 
     {  
-        $row[$key][] = '<a href="matrizlegal/'.$value->idMatrizLegal.'/edit">'.
-                            '<span class="glyphicon glyphicon-pencil"></span>'.
+        $row[$key][] = '<a href="listageneral/'.$value['idListaGeneral'].'/edit">'.
+                            '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="matrizlegal/'.$value->idMatrizLegal.'/edit?accion=eliminar">'.
-                            '<span class="glyphicon glyphicon-trash"></span>'.
+                        '<a href="listageneral/'.$value['idListaGeneral'].'/edit?accion=eliminar">'.
+                            '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>';
-        $row[$key][] = $value->idMatrizLegal;
-        $row[$key][] = $value->nombreMatrizLegal;
-        $row[$key][] = $value->fechaElaboracionMatrizLegal; 
-        $row[$key][] = $value->origenMatrizLegal;    
-        $row[$key][] = $value->name;  
+        $row[$key][] = $value['idListaGeneral'];
+        $row[$key][] = $value['codigoListaGeneral'];
+        $row[$key][] = $value['nombreListaGeneral'];   
+        $row[$key][] = $value['tipoListaGeneral'];   
     }
 
     $output['aaData'] = $row;
     echo json_encode($output);
-?>
+?>  

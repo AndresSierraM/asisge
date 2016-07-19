@@ -80,8 +80,8 @@ function consultarPlanTrabajo(idCompania, proceso, titulo)
                     '<td>'+colorTarea(data[i]["OctubreT"],data[i]["OctubreC"])+'</td>'+
                     '<td>'+colorTarea(data[i]["NoviembreT"],data[i]["NoviembreC"])+'</td>'+
                     '<td>'+colorTarea(data[i]["DiciembreT"],data[i]["DiciembreC"])+'</td>'+
-                    '<td>&nbsp;</td>'+
-                    '<td>&nbsp;</td>'+
+                    '<td>'+(data[i]["PresupuestoT"] ? data[i]["PresupuestoT"] : "&nbsp;")+'</td>'+
+                    '<td>'+(data[i]["PresupuestoC"] ? data[i]["PresupuestoC"] : "&nbsp;")+'</td>'+
                     '<td>&nbsp;</td>'+
                     '<td>&nbsp;</td>'+
                 '</tr>';

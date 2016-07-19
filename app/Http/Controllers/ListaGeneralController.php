@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ListaGeneralController extends Controller
 {
@@ -16,7 +18,10 @@ class ListaGeneralController extends Controller
      */
     public function index()
     {
-        return view('listageneralgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('listageneralgrid', compact('datos'));
     }
 
     /**

@@ -1,4 +1,18 @@
 <?php
+    $modificar = $_GET['modificar'];
+    $eliminar = $_GET['eliminar'];
+
+    $visibleM = '';
+    $visibleE = '';
+    if ($modificar == 1) 
+        $visibleM = 'inline-block;';
+    else
+        $visibleM = 'none;';
+
+    if ($eliminar == 1) 
+        $visibleE = 'inline-block;';
+    else
+        $visibleE = 'none;';
 
     $tercero = DB::table('tercero')
             ->leftJoin('tipoidentificacion', 'TipoIdentificacion_idTipoIdentificacion', '=', 'idTipoIdentificacion')
@@ -10,11 +24,11 @@
 
     foreach ($tercero as $key => $value) 
     {  
-        $row[$key][] = '<a href="tercero/'.$value->idTercero.'/edit">'.
-                            '<span class="glyphicon glyphicon-pencil"></span>'.
+        $row[$key][] = '<a href="tercero/'.$value->idTercero.'/edit?idTercero='.$value->idTercero.'&accion=editar">'.
+                            '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
                         '<a href="tercero/'.$value->idTercero.'/edit?accion=eliminar">'.
-                            '<span class="glyphicon glyphicon-trash"></span>'.
+                            '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idTercero;
         $row[$key][] = $value->nombreTipoIdentificacion;

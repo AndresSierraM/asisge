@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\DiagnosticoRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class DiagnosticoController extends Controller
 {
@@ -18,8 +19,10 @@ class DiagnosticoController extends Controller
      */
     public function index()
     {
-        
-        return view('diagnosticogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('diagnosticogrid', compact('datos'));
     }
 
     /**

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\GrupoApoyoRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class GrupoApoyoController extends Controller
 {
@@ -17,7 +19,10 @@ class GrupoApoyoController extends Controller
      */
     public function index()
     {
-        return view('grupoapoyogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('grupoapoyogrid', compact('datos'));
     }
 
     /**

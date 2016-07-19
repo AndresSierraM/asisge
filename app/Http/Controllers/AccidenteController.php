@@ -11,6 +11,7 @@ use App\Http\Controllers\ReporteACPMController;
 
 use Illuminate\Routing\Route;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 // use traitSisoft;
 
@@ -32,7 +33,11 @@ class AccidenteController extends Controller
 
     public function index()
     {
-        return view('accidentegrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('accidentegrid', compact('datos'));
+
     }
 
     /**

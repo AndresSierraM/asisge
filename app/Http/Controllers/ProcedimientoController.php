@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\ProcedimientoRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ProcedimientoController extends Controller
 {
@@ -18,8 +19,10 @@ class ProcedimientoController extends Controller
      */
     public function index()
     {
-        
-        return view('procedimientogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('procedimientogrid', compact('datos'));
     }
 
     /**

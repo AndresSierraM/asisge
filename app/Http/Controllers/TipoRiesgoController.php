@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\TipoRiesgoRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class TipoRiesgoController extends Controller
 {
@@ -17,7 +19,10 @@ class TipoRiesgoController extends Controller
      */
     public function index()
     {
-        return view('tiporiesgogrid');
+
+        $datos = consultarPermisos($vista);
+
+        return view('tiporiesgogrid', compact('datos'));
     }
 
     /**

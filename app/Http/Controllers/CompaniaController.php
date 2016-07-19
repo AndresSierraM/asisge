@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Requests\CompaniaRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CompaniaObjetivo;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class CompaniaController extends Controller
 {
@@ -18,7 +20,10 @@ class CompaniaController extends Controller
      */
     public function index()
     {
-        return view('companiagrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('companiagrid', compact('datos'));
     }
 
     /**

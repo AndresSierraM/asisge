@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\MatrizRiesgoRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 class MatrizRiesgoController extends Controller
 {
     /**
@@ -18,7 +19,10 @@ class MatrizRiesgoController extends Controller
     
     public function index()
     {
-        return view('matrizriesgogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('matrizriesgogrid', compact('datos'));
     }
 
     /**

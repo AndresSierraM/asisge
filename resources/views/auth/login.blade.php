@@ -14,16 +14,17 @@
             {{ Session::get('mensaje_error') }}
         @endif
         
-                {!!Form::email('email','',['class'=> 'form-control','id'=>'nombre'])!!}
+                {!!Form::email('email','',['class'=> 'form-control','id'=>'nombre','placeholder'=>'Digite su correo'])!!}
                 
+                {!!Form::password('password', ['class'=> 'form-control','id'=>'password','placeholder'=>'Digite su contraseña'])!!}
+
                 <div class= "caja">
                     {!!Form::select('Compania_idCompania',$compania, 0,["placeholder" =>"Seleccione la Compañía"])!!}
                 </div>
-                    {!!Form::password('password', ['class'=> 'form-control','id'=>'password'])!!}
                
                 <input type="checkbox" name="recordarme" id="recordarme">
                 <label for="recordarme"></label>
-                <p id="tex-recordarme">Recordame</p>
+                <p id="tex-recordarme">Recuérdame</p>
                 {!! Form::submit('',['id' => 'enviar']) !!}
             {!!Form::close()!!}
         </div>

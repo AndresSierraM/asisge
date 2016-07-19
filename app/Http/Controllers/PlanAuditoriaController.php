@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class PlanAuditoriaController extends Controller
 {
@@ -16,7 +18,10 @@ class PlanAuditoriaController extends Controller
      */
     public function index()
     {
-        return view('planauditoriagrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('planauditoriagrid', compact('datos'));
     }
 
     /**

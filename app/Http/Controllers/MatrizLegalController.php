@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Requests\MatrizLegalRequest;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
+
 class MatrizLegalController extends Controller
 {
     /**
@@ -17,7 +19,10 @@ class MatrizLegalController extends Controller
      */
     public function index()
     {
-        return view('matrizlegalgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('matrizlegalgrid', compact('datos'));
     }
 
     /**

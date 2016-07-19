@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\FrecuenciaMedicionRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class FrecuenciaMedicionController extends Controller
 {
@@ -17,7 +19,10 @@ class FrecuenciaMedicionController extends Controller
      */
     public function index()
     {
-        return view('frecuenciamediciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('frecuenciamediciongrid', compact('datos'));
     }
 
     /**

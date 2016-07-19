@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\TipoNormaLegalRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class TipoNormaLegalController extends Controller
 {
@@ -17,7 +19,10 @@ class TipoNormaLegalController extends Controller
      */
     public function index()
     {
-        return view('tiponormalegalgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('tiponormalegalgrid', compact('datos'));
     }
 
     /**

@@ -1,5 +1,18 @@
 <?php
+    $modificar = $_GET['modificar'];
+    $eliminar = $_GET['eliminar'];
 
+    $visibleM = '';
+    $visibleE = '';
+    if ($modificar == 1) 
+        $visibleM = 'inline-block;';
+    else
+        $visibleM = 'none;';
+
+    if ($eliminar == 1) 
+        $visibleE = 'inline-block;';
+    else
+        $visibleE = 'none;';
     $entregaelementoproteccion = DB::table('entregaelementoproteccion')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
             ->select(DB::raw('idEntregaElementoProteccion,nombreCompletoTercero, fechaEntregaElementoProteccion'))
@@ -11,10 +24,10 @@
     foreach ($entregaelementoproteccion as $key => $value) 
     {  
         $row[$key][] = '<a href="entregaelementoproteccion/'.$value->idEntregaElementoProteccion.'/edit">'.
-                            '<span class="glyphicon glyphicon-pencil"></span>'.
+                            '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
                         '<a href="entregaelementoproteccion/'.$value->idEntregaElementoProteccion.'/edit?accion=eliminar">'.
-                            '<span class="glyphicon glyphicon-trash"></span>'.
+                            '<span class="glyphicon glyphicon-trash"  style = "display:'.$visibleE.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idEntregaElementoProteccion;
         $row[$key][] = $value->nombreCompletoTercero;

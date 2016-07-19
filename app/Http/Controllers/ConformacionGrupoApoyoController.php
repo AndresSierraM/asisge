@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Requests\ConformacionGrupoApoyoRequest;
 
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ConformacionGrupoApoyoController extends Controller
 {
@@ -18,7 +20,10 @@ class ConformacionGrupoApoyoController extends Controller
      */
     public function index()
     {
-        return view('conformaciongrupoapoyogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('conformaciongrupoapoyogrid', compact('datos'));
     }
 
     /**

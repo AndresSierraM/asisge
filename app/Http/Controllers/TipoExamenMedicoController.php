@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\TipoExamenMedicoRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class TipoExamenMedicoController extends Controller
 {
@@ -17,7 +19,10 @@ class TipoExamenMedicoController extends Controller
      */
     public function index()
     {
-        return view('tipoexamenmedicogrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('tipoexamenmedicogrid', compact('datos'));
     }
 
     /**

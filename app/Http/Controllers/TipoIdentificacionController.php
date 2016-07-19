@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\TipoIdentificacionRequest;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class TipoIdentificacionController extends Controller
 {
@@ -17,7 +19,10 @@ class TipoIdentificacionController extends Controller
      */
     public function index()
     {
-        return view('tipoidentificaciongrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        return view('tipoidentificaciongrid', compact('datos'));
     }
 
     /**

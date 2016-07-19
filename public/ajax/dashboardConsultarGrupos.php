@@ -29,12 +29,16 @@ $datos = DB::select(
         SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
         SUM(IF(MONTH(fechaActaGrupoApoyo) = 11, 1, 0 )) as NoviembreC,
         SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-        SUM(IF(MONTH(fechaActaGrupoApoyo) = 12, 1, 0 )) as DiciembreC
+        SUM(IF(MONTH(fechaActaGrupoApoyo) = 12, 1, 0 )) as DiciembreC,
+        SUM(recursoPlaneadoActaGrupoApoyoDetalle) as PresupuestoT,
+        SUM(recursoEjecutadoActaGrupoApoyoDetalle) as PresupuestoC
     FROM grupoapoyo GA
     left join frecuenciamedicion FM
     on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
     left join actagrupoapoyo AGA
     on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
+    left join actagrupoapoyodetalle AGAD
+    on AGAD.ActaGrupoApoyo_idActaGrupoApoyo = AGA.idActaGrupoApoyo
     Where GA.Compania_idCompania = '.$idCompania .' 
     group by idGrupoApoyo');
 

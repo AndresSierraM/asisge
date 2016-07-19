@@ -1,22 +1,30 @@
-<?php 
-$idCompania = \Session::get("idCompania");
-$idUsuario = \Session::get("idUsuario");
+<?php
 
-$vista = (isset($_POST['vista']) ? $_POST['vista'] : 0);
-$permiso = (isset($_POST['permiso']) ? $_POST['permiso'] : 0);
+function ConsultarPermisos($vista)
+{
+  	$permiso = DB::Select('
+    SELECT 
+        nombreOpcion,
+        nombreRol,
+        adicionarRolOpcion,
+        modificarRolOpcion,
+        eliminarRolOpcion,
+        consultarRolOpcion,
+        rutaOpcion
+    FROM
+        rol AS r
+            LEFT JOIN
+        rolopcion AS ro ON ro.Rol_idRol = r.idRol
+            LEFT JOIN
+        users AS u ON u.Rol_idRol = r.idRol
+            LEFT JOIN
+        opcion AS o ON ro.Opcion_idOpcion = o.idOpcion
+            LEFT JOIN
+        paquete AS p ON o.Paquete_idPaquete = p.idPaquete
+    WHERE
+        Compania_idCompania = '.\Session::get("idCompania").' AND id = '.\Session::get("idUsuario"). ' AND rutaOpcion = "'.$vista.'"');
 
-$datos = DB::select(
-    'SELECT '.$permiso.'RolOpcion 
-    FROM rolopcion RO
-    left join opcion O
-    on RO.Opcion_idOpcion = O.idOpcion
-    left join users U
-    on RO.Rol_idRol = U.Rol_idRol
-    where   U.id = '.$idUsuario.' and 
-            O.rutaOpcion = "'.$vista.'" and 
-            '.$permiso.'RolOpcion = 1 and 
-            U.Compania_idCompania = '.$idCompania .';');
+    return($permiso);
+}
 
-
-echo (count($datos) > 0 ? 1 : 0);
 ?>
