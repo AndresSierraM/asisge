@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class ZonaRequest extends Request
+class EventoCRMRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class ZonaRequest extends Request
     {
         
         return[
-            "codigoZona" => "required|string|max:20|unique:zona,codigoZona,".$this->get('idZona') .",idZona",
-            "nombreZona" => "required|string|max:80"
+            "codigoEventoCRM" => "required|string|max:20|unique:eventocrm,codigoEventoCRM,".$this->get('idEventoCRM') .",idEventoCRM",
+            "nombreEventoCRM" => "required|string|max:80"
         ];
     }
 }

@@ -26,8 +26,7 @@ class OrigenCRMRequest extends Request
         
         return[
             "codigoOrigenCRM" => "required|string|max:20|unique:origencrm,codigoOrigenCRM,".$this->get('idOrigenCRM') .",idOrigenCRM",
-            "nombreOrigenCRM" => "required|string|max:80",
-            "Departamento_idDepartamento" => "required"
+            "nombreOrigenCRM" => "required|string|max:80"
         ];
     }
 }

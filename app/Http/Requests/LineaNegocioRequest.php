@@ -26,8 +26,7 @@ class LineaNegocioRequest extends Request
         
         return[
             "codigoLineaNegocio" => "required|string|max:20|unique:lineanegocio,codigoLineaNegocio,".$this->get('idLineaNegocio') .",idLineaNegocio",
-            "nombreLineaNegocio" => "required|string|max:80",
-            "Departamento_idDepartamento" => "required"
+            "nombreLineaNegocio" => "required|string|max:80"
         ];
     }
 }

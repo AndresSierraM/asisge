@@ -26,8 +26,7 @@ class CategoriaCRMRequest extends Request
         
         return[
             "codigoCategoriaCRM" => "required|string|max:20|unique:categoriacrm,codigoCategoriaCRM,".$this->get('idCategoriaCRM') .",idCategoriaCRM",
-            "nombreCategoriaCRM" => "required|string|max:80",
-            "Departamento_idDepartamento" => "required"
+            "nombreCategoriaCRM" => "required|string|max:80"
         ];
     }
 }

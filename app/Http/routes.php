@@ -427,6 +427,57 @@ Route::resource('reporteacpm','ReporteACPMController');
 Route::resource('plantrabajo','PlanTrabajoController');
 
 
+// *************************************
+// Rutas del CRM
+// *************************************
+Route::resource('sectorempresa','SectorEmpresaController');
+Route::resource('lineanegocio','LineaNegocioController');
+Route::resource('origencrm','OrigenCRMController');
+Route::resource('zona','ZonaController');
+Route::resource('categoriacrm','CategoriaCRMController');
+Route::resource('eventocrm','EventoCRMController');
+Route::resource('acuerdoservicio','AcuerdoServicioController');
+Route::resource('documentocrm','DocumentoCRMController');
+
+Route::get('datosSectorEmpresa', function()
+{
+    include public_path().'/ajax/datosSectorEmpresa.php';
+});
+Route::get('datosLineaNegocio', function()
+{
+    include public_path().'/ajax/datosLineaNegocio.php';
+});
+Route::get('datosOrigenCRM', function()
+{
+    include public_path().'/ajax/datosOrigenCRM.php';
+});
+Route::get('datosZona', function()
+{
+    include public_path().'/ajax/datosZona.php';
+});
+Route::get('datosCategoriaCRM', function()
+{
+    include public_path().'/ajax/datosCategoriaCRM.php';
+});
+Route::get('datosEventoCRM', function()
+{
+    include public_path().'/ajax/datosEventoCRM.php';
+});
+Route::get('datosAcuerdoServicio', function()
+{
+    include public_path().'/ajax/datosAcuerdoServicio.php';
+});
+
+Route::get('datosDocumentoCRM', function()
+{
+    include public_path().'/ajax/datosDocumentoCRM.php';
+});
+Route::get('datosCampoCRMSelect', function()
+{
+    include public_path().'/ajax/datosCampoCRMSelect.php';
+});
+
+Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
 
 Route::get('dropzone','TerceroController@indexdropzone');
 Route::post('dropzone/uploadFiles', 'TerceroController@uploadFiles'); 

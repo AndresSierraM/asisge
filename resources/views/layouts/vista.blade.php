@@ -54,6 +54,10 @@
       {!!Html::script('sb-admin/bower_components/morrisjs/morris.css'); !!}
       {!!Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
       
+      <!-- Radio buttons y checkbox con estilo  -->
+      {!! Html::style('css/segmented-controls.css'); !!}
+
+
         <script type="text/javascript">
           $(document).ready(function (){
             var config = {

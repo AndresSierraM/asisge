@@ -9,7 +9,7 @@ class DocumentoCRM extends Model
     protected $table = 'documentocrm';
     protected $primaryKey = 'idDocumentoCRM';
 
-    protected $fillable = ['codigoDocumentoCRM', 'nombreDocumentoCRM', 'numeracionDocumentoCRM', 'longitudDocumentoCRM', 'desdeDocumentoCRM', 'hastaDocumentoCRM', 'actualDocumentoCRM', 'Compania_idCompania', 'GrupoEstado_idGrupoEstado'];
+    protected $fillable = ['codigoDocumentoCRM', 'nombreDocumentoCRM', 'tipoDocumentoCRM', 'numeracionDocumentoCRM', 'longitudDocumentoCRM', 'desdeDocumentoCRM', 'hastaDocumentoCRM', 'actualDocumentoCRM', 'Compania_idCompania', 'GrupoEstado_idGrupoEstado'];
 
     public $timestamps = false;
 

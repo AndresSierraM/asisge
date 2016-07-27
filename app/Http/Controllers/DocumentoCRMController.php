@@ -21,6 +21,13 @@ class DocumentoCRMController extends Controller
         return view('documentocrmgrid');
     }
 
+
+    public function indexCampoCRMGrid()
+    {
+        return view('campocrmgridselect'); 
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -42,6 +49,7 @@ class DocumentoCRMController extends Controller
         \App\DocumentoCRM::create([
             'codigoDocumentoCRM' => $request['codigoDocumentoCRM'], 
             'nombreDocumentoCRM' => $request['nombreDocumentoCRM'], 
+            'tipoDocumentoCRM' => $request['tipoDocumentoCRM'], 
             'numeracionDocumentoCRM' => $request['numeracionDocumentoCRM'], 
             'longitudDocumentoCRM' => $request['longitudDocumentoCRM'], 
             'desdeDocumentoCRM' => $request['desdeDocumentoCRM'], 
@@ -185,8 +193,8 @@ class DocumentoCRMController extends Controller
             'Rol_idRol' => $request['Rol_idRol'][$i],
             'adicionarDocumentoCRMRol' => $request['adicionarDocumentoCRMRol'][$i],
             'modificarDocumentoCRMRol' => $request['modificarDocumentoCRMRol'][$i],
-            'eliminarDocumentoCRMRol' => $request['eliminarDocumentoCRMRol'][$i], );
-            'consultarDocumentoCRMRol' => $request['consultarDocumentoCRMRol'][$i]
+            'eliminarDocumentoCRMRol' => $request['eliminarDocumentoCRMRol'][$i],
+            'consultarDocumentoCRMRol' => $request['consultarDocumentoCRMRol'][$i]);
             $preguntas = \App\DocumentoCRMRol::updateOrCreate($indice, $data);
 
         }
