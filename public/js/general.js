@@ -273,6 +273,27 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             }
             div.appendChild(firma);
         }
+        else if(this.etiqueta[i] == 'button')
+        {
+            var button = document.createElement('button');
+            button.type =  this.tipo[i];
+            button.id =  this.campos[i] + this.contador;
+            button.name =  this.campos[i]+'[]';
+
+            button.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+            button.setAttribute("class", this.clase[i]);
+            button.setAttribute("style", this.estilo[i]);
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    button.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+                }
+            }
+
+            div.appendChild(button);
+        }
+
 
     }
 

@@ -8,8 +8,11 @@
 
 <script>
 
-    var documentocrm = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcampo) : "");?>';
-    documentocrm = (documentocrm != '' ? JSON.parse(documentocrm) : '');
+    var documentocrmcampo = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcampo) : "");?>';
+    documentocrmcampo = (documentocrmcampo != '' ? JSON.parse(documentocrmcampo) : '');
+
+    var documentocrmcompania = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcompania) : "");?>';
+    documentocrmcompania = (documentocrmcompania != '' ? JSON.parse(documentocrmcompania) : '');
 
     $(document).ready(function(){
 
@@ -21,7 +24,7 @@
 
       protCampos.campos   = [
       'idDocumentoCRMCampo',
-      'idCampoCRM',
+      'CampoCRM_idCampoCRM',
       'descripcionCampoCRM',
       'mostrarGridDocumentoCRMCampo', 
       'mostrarVistaDocumentoCRMCampo', 
@@ -61,10 +64,57 @@
       protCampos.completar = ['off','off','off','off','off','off'];
       protCampos.opciones = ['','','','','','']
 
-      for(var j=0, k = documentocrm.length; j < k; j++)
+      for(var j=0, k = documentocrmcampo.length; j < k; j++)
       {
-        protCampos.agregarCampos(JSON.stringify(documentocrm[j]),'L');
-        llenarDatosCampo($('#idCampoCRM'+j));
+        protCampos.agregarCampos(JSON.stringify(documentocrmcampo[j]),'L');
+
+        llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
+      }
+
+
+
+
+      protCompania = new Atributos('protCompania','contenedor_protCompania','documentocrmcampo');
+
+      protCompania.altura = '35px';
+      protCompania.campoid = 'idDocumentoCRMCompania';
+      protCompania.campoEliminacion = 'eliminarDocumentoCRMCompania';
+
+      protCompania.campos   = [
+      'idDocumentoCRMCompania',
+      'Compania_idCompania',
+      'nombreCompania'
+      ];
+
+      protCompania.etiqueta = [
+      'input',
+      'input',
+      'input'
+      ];
+
+      protCompania.tipo = [
+      'hidden',
+      'hidden',
+      'text'
+      ];
+
+      protCompania.estilo = [
+      '',
+      '',
+      'width: 860px;height:35px;'
+      ];
+
+      protCompania.clase    = ['','',''];
+      protCompania.sololectura = [true,true,true];  
+      protCompania.funciones = ['','',''];
+      protCompania.completar = ['off','off','off'];
+      protCompania.opciones = ['','','']
+
+      for(var j=0, k = documentocrmcompania.length; j < k; j++)
+      {
+        protCompania.agregarCampos(JSON.stringify(documentocrmcompania[j]),'L');
+
+        llenarDatosCompania($('#Compania_idCompania'+j).val(), j);
       }
         
     });
@@ -89,6 +139,7 @@
 				              	<span class="input-group-addon">
 				                	<i class="fa fa-barcode"></i>
 				              	</span>
+				              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 								{!!Form::text('codigoDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
 						      	{!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
 							</div>
@@ -126,7 +177,7 @@
 			                <i class="fa fa-credit-card" ></i>
 			              </span>
 			              {!!Form::select('GrupoEstado_idGrupoEstado',
-            				array('1'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de estados"])!!}
+            				array('1'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana'), (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de estados"])!!}
 			            </div>
 			          </div>
 			        </div>
@@ -251,7 +302,31 @@
 			                    <div id="permisos" class="panel-collapse collapse in">
 			                      <div class="panel-body">
 			                        
-			                        
+			                        <div class="panel-body">
+								      <div class="form-group" id='test'>
+								        <div class="col-sm-12">
+								          <div class="panel-body" >
+								            <div class="form-group" id='test'>
+								              <div class="col-sm-12">
+								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+								                  <div style="overflow:auto; height:350px;">
+								                    <div style="width: 100%; display: inline-block;">
+								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCompania();">
+								                        <span class="glyphicon glyphicon-plus"></span>
+								                      </div>
+								                      <div class="col-md-1" style="width: 860px;" >Compania</div>
+								                      
+								                      <div id="contenedor_protCompania">
+								                      </div>
+								                    </div>
+								                  </div>
+								                </div>
+								              </div>
+								            </div>
+								          </div>
+								        </div>
+								      </div>  
+								    </div>
 		                         
 			                         
 			                      </div> 
@@ -296,6 +371,42 @@
       <div class="modal-body">
       <?php 
         echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/campocrmgridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ModalCompanias" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Compañías</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="companias" name="companias" src="http://'.$_SERVER["HTTP_HOST"].'/companiacrmgridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ModalRoles" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Roles</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolcrmgridselect"></iframe>'
       ?>
       </div>
     </div>

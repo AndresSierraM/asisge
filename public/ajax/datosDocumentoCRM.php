@@ -16,6 +16,7 @@
                             '<span class="glyphicon glyphicon-trash"></span>'.
                         '</a>';
         $row[$key][] = $value->idDocumentoCRM;
+        $row[$key][] = $value->codigoDocumentoCRM;
         $row[$key][] = $value->nombreDocumentoCRM;
         $row[$key][] = $value->numeracionDocumentoCRM;
         $row[$key][] = $value->longitudDocumentoCRM;   

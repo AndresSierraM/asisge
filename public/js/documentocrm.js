@@ -5,22 +5,81 @@ function abrirModalCampos()
 
 }
 
-function llenarDatosCampo(Objeto)
+
+function abrirModalCompania()
+{
+    $('#ModalCompania').modal('show');
+
+}
+
+function abrirModalRol()
+{
+    $('#ModalRol').modal('show');
+
+}
+
+
+function llenarDatosCampo(id, reg)
 {
     var token = document.getElementById('token').value;
     $.ajax({
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
-            data: {'idCampo': Objeto.value},
-            url:   ip+'/consultarCampo/',
+            data: {idCampoCRM: id},
+            url:   'http://'+location.host+'/llenarCampo/',
             type:  'post',
             beforeSend: function(){
                 },
             success: function(respuesta)
             {
-                reg = Objeto.id.replace('idCampoCRM','');
+                $('#descripcionCampoCRM'+reg).val(respuesta);
+                
+            },
+            error: function(xhr,err)
+            { 
+                alert("Error");
+            }
+        });
+}
 
-                $('#descripcionCampoCRM'+reg).val(respuesta['descripcionCampoCRM']);
+
+function llenarDatosCompania(id, reg)
+{
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {idCompania: id},
+            url:   'http://'+location.host+'/llenarCompania/',
+            type:  'post',
+            beforeSend: function(){
+                },
+            success: function(respuesta)
+            {
+                $('#nombreCompania'+reg).val(respuesta);
+                
+            },
+            error: function(xhr,err)
+            { 
+                alert("Error");
+            }
+        });
+}
+
+function llenarDatosRol(id, reg)
+{
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {idRol: id},
+            url:   'http://'+location.host+'/llenarRol/',
+            type:  'post',
+            beforeSend: function(){
+                },
+            success: function(respuesta)
+            {
+                $('#nombreRol'+reg).val(respuesta);
                 
             },
             error: function(xhr,err)

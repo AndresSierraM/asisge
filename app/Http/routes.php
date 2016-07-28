@@ -472,9 +472,32 @@ Route::get('datosDocumentoCRM', function()
 {
     include public_path().'/ajax/datosDocumentoCRM.php';
 });
+
 Route::get('datosCampoCRMSelect', function()
 {
     include public_path().'/ajax/datosCampoCRMSelect.php';
+});
+Route::get('datosCompaniaSelect', function()
+{
+    include public_path().'/ajax/datosCompaniaSelect.php';
+});
+Route::get('datosRolSelect', function()
+{
+    include public_path().'/ajax/datosRolSelect.php';
+});
+
+
+Route::post('llenarCampo', function()
+{
+    include public_path().'/ajax/llenarCampo.php';
+});
+Route::post('llenarCompania', function()
+{
+    include public_path().'/ajax/llenarCompania.php';
+});
+Route::post('llenarRol', function()
+{
+    include public_path().'/ajax/llenarRol.php';
 });
 
 Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
