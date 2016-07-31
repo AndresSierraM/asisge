@@ -23,16 +23,14 @@ class TipoRiesgoRequest extends Request
      */
     public function rules()
     {
-        $model = \App\TipoRiesgo::find($this->idTipoRiesgo);
+       
+        $id = ($this->get('idTipoRiesgo') != null) ? $this->get('idTipoRiesgo') : 0;
+        
         $detalle = count($this->get('nombreTipoRiesgoDetalle'));
         $salud = count($this->get('nombreTipoRiesgoSalud'));
-        print_r($model);
 
-        $this->get('idTipoRiesgo');
-        return;
         $validacion = array(
-            'codigoTipoRiesgo' => 'required|string|max:20|unique:tiporiesgo,codigoTipoRiesgo,' . $model[0]["idTipoRiesgo"] . ',idTipoRiesgo',
-             // "codigoTipoRiesgo" => "required|string|max:20|unique:tiporiesgo,codigoTipoRiesgo,".$this->get('idTipoRiesgo') .",idTipoRiesgo",
+            'codigoTipoRiesgo' => 'required|string|unique:tiporiesgo,codigoTipoRiesgo,' . $id. ',idTipoRiesgo',
             "nombreTipoRiesgo" => "required|string|max:80",
             "origenTipoRiesgo" => "required|string",
             "ClasificacionRiesgo_idClasificacionRiesgo" => "required|numeric");

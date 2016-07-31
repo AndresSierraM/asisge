@@ -9,6 +9,7 @@ use App\Http\Requests\InspeccionRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
+include public_path().'/ajax/guardarReporteAcpm.php';
 
 use Input;
 use File;
@@ -78,13 +79,16 @@ class InspeccionController extends Controller
 
             //----------------------------
             // Guardamos la imagen de la firma como un archivo en disco
-            $data = $request['firmabase64'];
+            if (isset($request['firmabase64']) and $request['firmabase64'] != '') 
+            {
+                $data = $request['firmabase64'];
 
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $data = base64_decode($data);
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
 
-            file_put_contents('imagenes/'.$ruta, $data);
+                file_put_contents('imagenes/'.$ruta, $data);
+            }
 
             //----------------------------
 
@@ -117,7 +121,7 @@ class InspeccionController extends Controller
                         //************************************************
                         // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                        $this->guardarReporteACPM(
+                        guardarReporteACPM(
                                 $fechaAccion = date("Y-m-d"), 
                                 $idModulo = 24, 
                                 $tipoAccion = 'Correctiva', 
@@ -328,7 +332,7 @@ class InspeccionController extends Controller
                         //************************************************
                         // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                        $this->guardarReporteACPM(
+                        guardarReporteACPM(
                                 $fechaAccion = date("Y-m-d"), 
                                 $idModulo = 24, 
                                 $tipoAccion = 'Correctiva', 
@@ -359,37 +363,4 @@ class InspeccionController extends Controller
         return redirect('/inspeccion');
     }
 
-
-    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
-    {   
-
-        $reporteACPM = \App\ReporteACPM::All()->last();
-        
-        $indice = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion);
-
-        $data = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-            'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Proceso_idProceso' => NULL,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion,
-            'analisisReporteACPMDetalle' => '',
-            'correccionReporteACPMDetalle' => '',
-            'Tercero_idResponsableCorrecion' => NULL,
-            'planAccionReporteACPMDetalle' => '',
-            'Tercero_idResponsablePlanAccion' => NULL,
-            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-            'estadoActualReporteACPMDetalle' => '',
-            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-            'eficazReporteACPMDetalle' => 0);
-
-        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
-    }
 }

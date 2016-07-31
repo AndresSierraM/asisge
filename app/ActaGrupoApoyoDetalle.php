@@ -10,7 +10,7 @@ class ActaGrupoApoyoDetalle extends Model
     protected $primaryKey = 'idActaGrupoApoyoDetalle';
 
     protected $fillable = ['ActaGrupoApoyo_idActaGrupoApoyo', 'actividadGrupoApoyoDetalle', 
-                            'Tercero_idResponsable', 'fechaPlaneadaActaGrupoApoyoDetalle',
+                            'Tercero_idResponsableDetalle', 'fechaPlaneadaActaGrupoApoyoDetalle',
                             'Documento_idDocumento', 'recursoPlaneadoActaGrupoApoyoDetalle',
                             'recursoEjecutadoActaGrupoApoyoDetalle', 'fechaEjecucionGrupoApoyoDetalle',
                             'observacionGrupoApoyoDetalle'];

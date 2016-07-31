@@ -10,10 +10,12 @@ function validarFormulario(event)
     var datoVacuna = document.querySelectorAll("[name='ListaGeneral_idVacuna[]']");
     var datoElemento = document.querySelectorAll("[name='ElementoProteccion_idElementoProteccion[]']");
     var datoExamen = document.querySelectorAll("[name='FrecuenciaMedicion_idFrecuenciaMedicion[]']");
+    var datoTipoExamen = document.querySelectorAll("[name='TipoExamenMedico_idTipoExamenMedico[]']");
     var dato4 = [];
     var dato5 = [];
     var dato6 = [];
     var dato7 = [];
+    var dato8 = [];
     
     var valor = '';
     var sw = true;
@@ -38,6 +40,11 @@ function validarFormulario(event)
         dato7[j] = datoExamen[j].value;
     }
 
+    for(var j=0,i=datoTipoExamen.length; j<i;j++)
+    {
+        dato8[j] = datoTipoExamen[j].value;
+    }
+
     $.ajax({
         async: false,
         url:route,
@@ -52,7 +59,8 @@ function validarFormulario(event)
                 ListaGeneral_idTareaAltoRiesgo: dato4, 
                 ListaGeneral_idVacuna: dato5, 
                 ElementoProteccion_idElementoProteccion: dato6, 
-                FrecuenciaMedicion_idFrecuenciaMedicion: dato7
+                FrecuenciaMedicion_idFrecuenciaMedicion: dato7,
+                TipoExamenMedico_idTipoExamenMedico: dato8
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -108,6 +116,11 @@ function validarFormulario(event)
                 for(var j=0,i=datoExamen.length; j<i;j++)
                 {
                     (typeof respuesta['FrecuenciaMedicion_idFrecuenciaMedicion'+j] === "undefined" ? document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion'+j).style.borderColor = '' : document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=datoTipoExamen.length; j<i;j++)
+                {
+                    (typeof respuesta['TipoExamenMedico_idTipoExamenMedico'+j] === "undefined" ? document.getElementById('TipoExamenMedico_idTipoExamenMedico'+j).style.borderColor = '' : document.getElementById('TipoExamenMedico_idTipoExamenMedico'+j).style.borderColor = '#a94442');
                 }
 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';

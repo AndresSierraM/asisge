@@ -216,6 +216,7 @@ function validarFormulario(event)
     var dato12 = [];
     var dato13 = [];
     var dato14 = [];
+    var dato15 = document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion').value;
     
     var valor = '';
     var sw = true;
@@ -232,6 +233,7 @@ function validarFormulario(event)
         dato11[j] = datoRiesgo[j].value;
         dato12[j] = datoDeficiencia[j].value;
         dato13[j] = datoExposicion[j].value;
+        dato14[j] = datoConsecuencia[j].value;
         dato14[j] = datoConsecuencia[j].value;
     }
 
@@ -255,7 +257,8 @@ function validarFormulario(event)
                 TipoRiesgo_idTipoRiesgo: dato11,
                 nivelDeficienciaMatrizRiesgoDetalle: dato12,
                 nivelExposicionMatrizRiesgoDetalle: dato13,
-                nivelConsecuenciaMatrizRiesgoDetalle: dato14
+                nivelConsecuenciaMatrizRiesgoDetalle: dato14,
+                FrecuenciaMedicion_idFrecuenciaMedicion: dato15
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -281,6 +284,8 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.nombreMatrizRiesgo === "undefined" ? document.getElementById('nombreMatrizRiesgo').style.borderColor = '' : document.getElementById('nombreMatrizRiesgo').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.fechaElaboracionMatrizRiesgo === "undefined" ? document.getElementById('fechaElaboracionMatrizRiesgo').style.borderColor = '' : document.getElementById('fechaElaboracionMatrizRiesgo').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.FrecuenciaMedicion_idFrecuenciaMedicion === "undefined" ? document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion').style.borderColor = '' : document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion').style.borderColor = '#a94442');
 
                 for(var j=0,i=datoProceso.length; j<i;j++)
                 {

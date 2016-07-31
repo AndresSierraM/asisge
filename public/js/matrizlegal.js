@@ -9,6 +9,7 @@ function validarFormulario(event)
     var datoClasificacion = document.querySelectorAll("[name='ExpideNormaLegal_idExpideNormaLegal[]']");
     var dato4 = [];
     var dato5 = [];
+    var dato6 = document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion').value;
 
     
     var valor = '';
@@ -30,7 +31,8 @@ function validarFormulario(event)
                 fechaElaboracionMatrizLegal: dato2,
                 origenMatrizLegal: dato3,
                 TipoNormaLegal_idTipoNormaLegal: dato4,
-                ExpideNormaLegal_idExpideNormaLegal: dato5
+                ExpideNormaLegal_idExpideNormaLegal: dato5,
+                FrecuenciaMedicion_idFrecuenciaMedicion: dato6
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -56,6 +58,7 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.nombreMatrizLegal === "undefined" ? document.getElementById('nombreMatrizLegal').style.borderColor = '' : document.getElementById('nombreMatrizLegal').style.borderColor = '#a94442');
                 (typeof msj.responseJSON.origenMatrizLegal === "undefined" ? document.getElementById('origenMatrizLegal').style.borderColor = '' : document.getElementById('origenMatrizLegal').style.borderColor = '#a94442');
                 (typeof msj.responseJSON.fechaElaboracionMatrizLegal === "undefined" ? document.getElementById('fechaElaboracionMatrizLegal').style.borderColor = '' : document.getElementById('fechaElaboracionMatrizLegal').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.FrecuenciaMedicion_idFrecuenciaMedicion === "undefined" ? document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion').style.borderColor = '' : document.getElementById('FrecuenciaMedicion_idFrecuenciaMedicion').style.borderColor = '#a94442');
 
                 for(var j=0,i=datoProceso.length; j<i;j++)
                 {

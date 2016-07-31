@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\PlanAuditoriaRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
@@ -45,9 +46,10 @@ class PlanAuditoriaController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(PlanAuditoriaRequest $request)
     {
-
+        if($request['respuesta'] != 'falso')
+        { 
             \App\PlanAuditoria::create([
                     'numeroPlanAuditoria' => $request['numeroPlanAuditoria'],
                     'fechaInicioPlanAuditoria' => $request['fechaInicioPlanAuditoria'],
@@ -102,6 +104,7 @@ class PlanAuditoriaController extends Controller
             }
 
             return redirect('/planauditoria');
+        }
     }
 
     /**
@@ -141,8 +144,10 @@ class PlanAuditoriaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(PlanAuditoriaRequest $request, $id)
     {
+        if($request['respuesta'] != 'falso')
+        { 
 
             $planAuditoria = \App\PlanAuditoria::find($id);
             $planAuditoria->fill($request->all());
@@ -190,6 +195,7 @@ class PlanAuditoriaController extends Controller
             }
 
             return redirect('/planauditoria');
+        }
     }
 
     /**

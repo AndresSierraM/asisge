@@ -9,6 +9,7 @@
 @section('content')
 
 	@include('alerts.request')
+	{!!Html::script('js/planauditoria.js')!!}
 	<script>
 		var planAuditoriaAcompanante = '<?php echo (isset($planAuditoria) ? json_encode($planAuditoria->planAuditoriaAcompanantes) : "");?>';
 		planAuditoriaAcompanante = (planAuditoriaAcompanante != '' ? JSON.parse(planAuditoriaAcompanante) : '');

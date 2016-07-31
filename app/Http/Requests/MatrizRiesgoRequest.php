@@ -25,7 +25,9 @@ class MatrizRiesgoRequest extends Request
     {
         $proceso = count($this->get('Proceso_idProceso'));
         $validacion = array('nombreMatrizRiesgo' => 'required|max:200',
-            'fechaElaboracionMatrizRiesgo' => 'required');
+            'fechaElaboracionMatrizRiesgo' => 'required',
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => 'required'
+            );
 
         for($i = 0; $i < $proceso; $i++)
         {

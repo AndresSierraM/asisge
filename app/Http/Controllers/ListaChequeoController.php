@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\ListaChequeoRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
+include public_path().'/ajax/guardarReporteAcpm.php';
 class ListaChequeoController extends Controller
 {
     /**
@@ -48,8 +50,10 @@ class ListaChequeoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(ListaChequeoRequest $request)
     {
+        if($request['respuesta'] != 'falso')
+        { 
             \App\ListaChequeo::create([
                     'numeroListaChequeo' => $request['numeroListaChequeo'],
                     'fechaElaboracionListaChequeo' => $request['fechaElaboracionListaChequeo'],
@@ -89,7 +93,7 @@ class ListaChequeoController extends Controller
                         //************************************************
                         // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                        $this->guardarReporteACPM(
+                        guardarReporteACPM(
                                 $fechaAccion = date("Y-m-d"), 
                                 $idModulo = 26, 
                                 $tipoAccion = 'Correctiva', 
@@ -99,6 +103,7 @@ class ListaChequeoController extends Controller
             }
 
             return redirect('/listachequeo');
+        }
     }
 
     /**
@@ -194,8 +199,10 @@ class ListaChequeoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(ListaChequeoRequest $request, $id)
     {
+        if($request['respuesta'] != 'falso')
+        { 
             $listaChequeo = \App\ListaChequeo::find($id);
             $listaChequeo->fill($request->all());
 
@@ -232,7 +239,7 @@ class ListaChequeoController extends Controller
                         //************************************************
                         // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-                        $this->guardarReporteACPM(
+                        guardarReporteACPM(
                                 $fechaAccion = date("Y-m-d"), 
                                 $idModulo = 26, 
                                 $tipoAccion = 'Correctiva', 
@@ -242,6 +249,7 @@ class ListaChequeoController extends Controller
             }
 
             return redirect('/listachequeo');
+        }
     }
 
     /**
@@ -256,39 +264,5 @@ class ListaChequeoController extends Controller
         return redirect('/listachequeo');
     }
 
-
-
-    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
-    {   
-
-        $reporteACPM = \App\ReporteACPM::All()->last();
-        
-        $indice = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion);
-
-        $data = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-            'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Proceso_idProceso' => NULL,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion,
-            'analisisReporteACPMDetalle' => '',
-            'correccionReporteACPMDetalle' => '',
-            'Tercero_idResponsableCorrecion' => NULL,
-            'planAccionReporteACPMDetalle' => '',
-            'Tercero_idResponsablePlanAccion' => NULL,
-            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-            'estadoActualReporteACPMDetalle' => '',
-            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-            'eficazReporteACPMDetalle' => 0);
-
-        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
-    }
 
 }

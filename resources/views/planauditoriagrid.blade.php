@@ -47,7 +47,7 @@
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                <a href="planauditoria/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a> {!!Html::link('planauditoria/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
+                                <a href="planauditoria/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>

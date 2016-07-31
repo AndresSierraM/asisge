@@ -23,8 +23,7 @@ class TerceroRequest extends Request
      */
     public function rules()
     {
-        return [
-            'TipoIdentificacion_idTipoIdentificacion' => 'required',
+        $validacion = array('TipoIdentificacion_idTipoIdentificacion' => 'required',
             "documentoTercero" => "required|string|max:30|unique:tercero,documentoTercero,".$this->get('idTercero') .",idTercero,Compania_idCompania,".(\Session::get('idCompania')),
             'nombre1Tercero' => 'required|string|max:20',
             'apellido1Tercero' => 'required|string|max:20',
@@ -34,7 +33,8 @@ class TerceroRequest extends Request
             'tipoTercero' => 'required',
             'direccionTercero' => 'required|max:200',
             'Ciudad_idCiudad' => 'required',
-            'telefonoTercero' => 'required|max:20'
-                    ];
+            'telefonoTercero' => 'required|max:20');
+
+        return $validacion;                    
     }
 }

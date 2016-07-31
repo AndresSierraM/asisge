@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\ReporteACPMRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
@@ -48,9 +49,10 @@ class ReporteACPMController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(ReporteACPMRequest $request)
     {
-
+        if($request['respuesta'] != 'falso')
+        { 
             \App\ReporteACPM::create([
                 'numeroReporteACPM' => $request['numeroReporteACPM'],
                 'fechaElaboracionReporteACPM' => $request['fechaElaboracionReporteACPM'],
@@ -85,6 +87,7 @@ class ReporteACPMController extends Controller
             }
 
             return redirect('/reporteacpm');
+        }
     }
 
     /**
@@ -125,8 +128,10 @@ class ReporteACPMController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(ReporteACPMRequest $request, $id)
     {
+        if($request['respuesta'] != 'falso')
+        { 
             $reporteACPM = \App\ReporteACPM::find($id);
             $reporteACPM->fill($request->all());
 
@@ -160,6 +165,7 @@ class ReporteACPMController extends Controller
             }
 
             return redirect('/reporteacpm');
+        }
     }
 
    

@@ -4,6 +4,7 @@
 @section('content')
 @include('alerts.request')
 
+{!!Html::script('js/actagrupoapoyo.js')!!}
 {!!Html::style('css/signature-pad.css'); !!} 
 
 
@@ -119,6 +120,7 @@ for ($i=0; $i < count($firmas); $i++)
     var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
 
     var actaGrupoApoyoDetalle = '<?php echo (isset($actaGrupoApoyo) ? json_encode($actaGrupoApoyo->actaGrupoApoyoDetalle) : "");?>';
+    console.log(actaGrupoApoyoDetalle);
     actaGrupoApoyoDetalle = (actaGrupoApoyoDetalle != '' ? JSON.parse(actaGrupoApoyoDetalle) : '');
     var valorActaGrupoApoyo = ['',0,0,'',0,'',0,''];
 
@@ -126,7 +128,13 @@ for ($i=0; $i < count($firmas); $i++)
 
 
       actagrupoapoyo = new Atributos('actagrupoapoyo','contenedor_actagrupoapoyo','actagrupoapoyo_');
-      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsable', 'Documento_idDocumento',
+
+      actagrupoapoyo.altura = '36px;';
+	  actagrupoapoyo.campoid = 'idActaGrupoApoyoDetalle';
+	  actagrupoapoyo.campoEliminacion = 'eliminarActividad';
+
+
+      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsableDetalle', 'Documento_idDocumento',
                             'fechaPlaneadaActaGrupoApoyoDetalle', 'recursoPlaneadoActaGrupoApoyoDetalle', 
                             'fechaEjecucionGrupoApoyoDetalle','recursoEjecutadoActaGrupoApoyoDetalle', 
                              'observacionGrupoApoyoDetalle'];
@@ -161,7 +169,6 @@ for ($i=0; $i < count($firmas); $i++)
       actagrupoapoyo.idTercero =  JSON.parse(idTercero);
       actagrupoapoyo.nombreDocumento =  JSON.parse(nombreDocumento);
       actagrupoapoyo.idDocumento =  JSON.parse(idDocumento);
-
 
       for(var j=0, k = actaGrupoApoyoDetalle.length; j < k; j++)
       {
@@ -211,6 +218,7 @@ for ($i=0; $i < count($firmas); $i++)
 							{!!Form::hidden('idActaGrupoApoyo', null, array('id' => 'idActaGrupoApoyo'))!!}
 							{!!Form::hidden('eliminarTema', '', array('id' => 'eliminarTema'))!!}
 					      	{!!Form::hidden('eliminarTercero', '', array('id' => 'eliminarTercero'))!!}
+					      	{!!Form::hidden('eliminarActividad', '', array('id' => 'eliminarActividad'))!!}
 					      	{!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
 						</div>
 					</div>
@@ -360,12 +368,13 @@ for ($i=0; $i < count($firmas); $i++)
 		          </div>
 		        </div>
 
+		        <input type="hidden" id="token" value="{{csrf_token()}}"/>
 
 				</fieldset>	
 				@if(isset($actaGrupoApoyo))
-					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 				@else
-  					{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  					{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
  				@endif
 		</div>
 	{!!Form::close()!!}	

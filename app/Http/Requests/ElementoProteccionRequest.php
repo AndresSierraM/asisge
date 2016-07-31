@@ -25,7 +25,8 @@ class ElementoProteccionRequest extends Request
     {
         return [
             "codigoElementoProteccion" => "required|string|max:80",
-            "nombreElementoProteccion" => "required|string|max:80"
+            "nombreElementoProteccion" => "required|string|max:80",
+            "TipoElementoProteccion_idTipoElementoProteccion" => "required"
         ];
         //"normaElementoProteccion" => "required|string|max:500"
     }

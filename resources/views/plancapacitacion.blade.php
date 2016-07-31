@@ -169,7 +169,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-calendar" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaInicioPlanCapacitacion',date('Y-m-d'),['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
+															{!!Form::text('fechaInicioPlanCapacitacion',null,['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
 														</div>
 													</div>
 												</div>
@@ -180,7 +180,7 @@
 															<span class="input-group-addon">
 																<i class="fa fa-calendar" style="width: 14px;"></i>
 															</span>
-															{!!Form::text('fechaFinPlanCapacitacion',date('Y-m-d'),['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
+															{!!Form::text('fechaFinPlanCapacitacion',null,['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
 														</div>
 													</div>
 												</div>

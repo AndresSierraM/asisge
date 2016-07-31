@@ -12,6 +12,7 @@ use App\Http\Controllers\ReporteACPMController;
 use Illuminate\Routing\Route;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
+include public_path().'/ajax/guardarReporteAcpm.php';
 
 // use traitSisoft;
 
@@ -263,7 +264,7 @@ class AccidenteController extends Controller
         //COnsultamos el nombre del tercero empleado
         $nombreTercero = \App\Tercero::find($request['Tercero_idEmpleado']);
 
-        $this->guardarReporteACPM(
+        guardarReporteACPM(
                 $fechaAccion = date("Y-m-d"), 
                 $idModulo = 3, 
                 $tipoAccion = 'Correctiva', 
@@ -292,36 +293,4 @@ class AccidenteController extends Controller
         }
     }
 
-    protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
-    {   
-
-        $reporteACPM = \App\ReporteACPM::All()->last();
-        
-        $indice = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion);
-
-        $data = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-            'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Proceso_idProceso' => NULL,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion,
-            'analisisReporteACPMDetalle' => '',
-            'correccionReporteACPMDetalle' => '',
-            'Tercero_idResponsableCorrecion' => NULL,
-            'planAccionReporteACPMDetalle' => '',
-            'Tercero_idResponsablePlanAccion' => NULL,
-            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-            'estadoActualReporteACPMDetalle' => '',
-            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-            'eficazReporteACPMDetalle' => 0);
-
-        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
-    }
 }

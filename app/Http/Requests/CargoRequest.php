@@ -27,9 +27,10 @@ class CargoRequest extends Request
         $vacuna = count($this->get('ListaGeneral_idVacuna'));
         $elemento = count($this->get('ElementoProteccion_idElementoProteccion'));
         $examen = count($this->get('FrecuenciaMedicion_idFrecuenciaMedicion'));
+        $tipoexamen = count($this->get('TipoExamenMedico_idTipoExamenMedico'));
 
         $validacion = array('codigoCargo' => "required|numeric|unique:cargo,codigoCargo,".$this->get('idCargo') .",idCargo,Compania_idCompania,".(\Session::get('idCompania')),
-            'nombreCargo' => "required|string|max:80|unique:cargo,nombreCargo,".$this->get('idCargo') .",idCargo",
+            'nombreCargo' => "required|string|max:80|unique:cargo,nombreCargo,".$this->get('idCargo') .",idCargo,Compania_idCompania,".(\Session::get('idCompania')),
             'salarioBaseCargo' => 'required|numeric');
         
         for($i = 0; $i < $tarea; $i++)
@@ -61,6 +62,14 @@ class CargoRequest extends Request
             if(trim($this->get('FrecuenciaMedicion_idFrecuenciaMedicion')[$i]) == '' or trim($this->get('FrecuenciaMedicion_idFrecuenciaMedicion')[$i]) == 0)
             {    
                 $validacion['FrecuenciaMedicion_idFrecuenciaMedicion'.$i] =  'required';
+            }
+        }
+
+        for($i = 0; $i < $examen; $i++)
+        {
+            if(trim($this->get('TipoExamenMedico_idTipoExamenMedico')[$i]) == '' or trim($this->get('TipoExamenMedico_idTipoExamenMedico')[$i]) == 0)
+            {    
+                $validacion['TipoExamenMedico_idTipoExamenMedico'.$i] =  'required';
             }
         }    
 

@@ -24,12 +24,18 @@ class ConformacionGrupoApoyoRequest extends Request
     public function rules()
     {
         $jurado = count($this->get('Tercero_idJurado'));
+        $candidato = count($this->get('Tercero_idCandidato'));
+        $principal = count($this->get('Tercero_idPrincipal'));
+        $suplente = count($this->get('Tercero_idSuplente'));
        
         $validacion = array(
             'nombreConformacionGrupoApoyo' => "required|string|max:80",
             'GrupoApoyo_idGrupoApoyo' => 'required',
             'fechaConformacionGrupoApoyo' => 'required',
-            'Tercero_idRepresentante' => 'required'
+            'Tercero_idRepresentante' => 'required',
+            'Tercero_idPresidente' => 'required',
+            'Tercero_idSecretario' => 'required',
+            'Tercero_idGerente' => 'required',
             );
         
         for($i = 0; $i < $jurado; $i++)
@@ -40,7 +46,29 @@ class ConformacionGrupoApoyoRequest extends Request
             }
         }
 
-         
+        for($i = 0; $i < $candidato; $i++)
+        {
+            if(trim($this->get('Tercero_idCandidato')[$i]) == '' or trim($this->get('Tercero_idCandidato')[$i]) == 0)
+            {    
+                $validacion['Tercero_idCandidato'.$i] =  'required';
+            }
+        }
+
+        for($i = 0; $i < $principal; $i++)
+        {
+            if(trim($this->get('Tercero_idPrincipal')[$i]) == '' or trim($this->get('Tercero_idPrincipal')[$i]) == 0)
+            {    
+                $validacion['Tercero_idPrincipal'.$i] =  'required';
+            }
+        }
+
+        for($i = 0; $i < $suplente; $i++)
+        {
+            if(trim($this->get('Tercero_idSuplente')[$i]) == '' or trim($this->get('Tercero_idSuplente')[$i]) == 0)
+            {    
+                $validacion['Tercero_idSuplente'.$i] =  'required';
+            }
+        }
 
         return $validacion;
     }

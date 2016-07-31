@@ -54,36 +54,38 @@ class ProgramaController extends Controller
      */
     public function store(ProgramaRequest $request)
     {
-        
-        \App\Programa::create([
-            'nombrePrograma' => $request['nombrePrograma'],
-            'fechaElaboracionPrograma' => $request['fechaElaboracionPrograma'],
-            'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'],
-            'alcancePrograma' => $request['alcancePrograma'],
-            'CompaniaObjetivo_idCompaniaObjetivo' => $request['CompaniaObjetivo_idCompaniaObjetivo'],
-            'objetivoEspecificoPrograma' => $request['objetivoEspecificoPrograma'],
-            'Tercero_idElabora' => $request['Tercero_idElabora'],
-            'Compania_idCompania' => \Session::get('idCompania')
-            ]); 
+        if($request['respuesta'] != 'falso')
+        { 
+            \App\Programa::create([
+                'nombrePrograma' => $request['nombrePrograma'],
+                'fechaElaboracionPrograma' => $request['fechaElaboracionPrograma'],
+                'ClasificacionRiesgo_idClasificacionRiesgo' => $request['ClasificacionRiesgo_idClasificacionRiesgo'],
+                'alcancePrograma' => $request['alcancePrograma'],
+                'CompaniaObjetivo_idCompaniaObjetivo' => $request['CompaniaObjetivo_idCompaniaObjetivo'],
+                'objetivoEspecificoPrograma' => $request['objetivoEspecificoPrograma'],
+                'Tercero_idElabora' => $request['Tercero_idElabora'],
+                'Compania_idCompania' => \Session::get('idCompania')
+                ]); 
 
-        $programa = \App\Programa::All()->last();
-        $contadorDetalle = count($request['actividadProgramaDetalle']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\ProgramaDetalle::create([
-            'Programa_idPrograma' => $programa->idPrograma,
-            'actividadProgramaDetalle' => $request['actividadProgramaDetalle'][$i],
-            'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
-            'fechaPlaneadaProgramaDetalle' => $request['fechaPlaneadaProgramaDetalle'][$i],
-            'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
-            'recursoPlaneadoProgramaDetalle' => $request['recursoPlaneadoProgramaDetalle'][$i],
-            'recursoEjecutadoProgramaDetalle' => $request['recursoEjecutadoProgramaDetalle'][$i],
-            'fechaEjecucionProgramaDetalle' => $request['fechaEjecucionProgramaDetalle'][$i],
-            'observacionProgramaDetalle' => $request['observacionProgramaDetalle'][$i]
-           ]);
+            $programa = \App\Programa::All()->last();
+            $contadorDetalle = count($request['actividadProgramaDetalle']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\ProgramaDetalle::create([
+                'Programa_idPrograma' => $programa->idPrograma,
+                'actividadProgramaDetalle' => $request['actividadProgramaDetalle'][$i],
+                'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
+                'fechaPlaneadaProgramaDetalle' => $request['fechaPlaneadaProgramaDetalle'][$i],
+                'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
+                'recursoPlaneadoProgramaDetalle' => $request['recursoPlaneadoProgramaDetalle'][$i],
+                'recursoEjecutadoProgramaDetalle' => $request['recursoEjecutadoProgramaDetalle'][$i],
+                'fechaEjecucionProgramaDetalle' => $request['fechaEjecucionProgramaDetalle'][$i],
+                'observacionProgramaDetalle' => $request['observacionProgramaDetalle'][$i]
+               ]);
+            }
+
+            return redirect('/programa');
         }
-
-        return redirect('/programa');
     }
 
 
@@ -93,7 +95,7 @@ class ProgramaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id, Request $request)
+    public function show($id)
     {
         //
         
@@ -134,32 +136,34 @@ class ProgramaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id,ProgramaRequest $request)
+    public function update(ProgramaRequest $request, $id)
     {
-        
-        $programa = \App\Programa::find($id);
-        $programa->fill($request->all());
-        $programa->save();
+        if($request['respuesta'] != 'falso')
+        { 
+            $programa = \App\Programa::find($id);
+            $programa->fill($request->all());
+            $programa->save();
 
-        \App\ProgramaDetalle::where('Programa_idPrograma',$id)->delete();
+            \App\ProgramaDetalle::where('Programa_idPrograma',$id)->delete();
 
-        $contadorDetalle = count($request['actividadProgramaDetalle']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            \App\ProgramaDetalle::create([
-            'Programa_idPrograma' => $id,
-            'actividadProgramaDetalle' => $request['actividadProgramaDetalle'][$i],
-            'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
-            'fechaPlaneadaProgramaDetalle' => $request['fechaPlaneadaProgramaDetalle'][$i],
-            'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
-            'recursoPlaneadoProgramaDetalle' => $request['recursoPlaneadoProgramaDetalle'][$i],
-            'recursoEjecutadoProgramaDetalle' => $request['recursoEjecutadoProgramaDetalle'][$i],
-            'fechaEjecucionProgramaDetalle' => $request['fechaEjecucionProgramaDetalle'][$i],
-            'observacionProgramaDetalle' => $request['observacionProgramaDetalle'][$i]
-           ]);
+            $contadorDetalle = count($request['actividadProgramaDetalle']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\ProgramaDetalle::create([
+                'Programa_idPrograma' => $id,
+                'actividadProgramaDetalle' => $request['actividadProgramaDetalle'][$i],
+                'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
+                'fechaPlaneadaProgramaDetalle' => $request['fechaPlaneadaProgramaDetalle'][$i],
+                'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
+                'recursoPlaneadoProgramaDetalle' => $request['recursoPlaneadoProgramaDetalle'][$i],
+                'recursoEjecutadoProgramaDetalle' => $request['recursoEjecutadoProgramaDetalle'][$i],
+                'fechaEjecucionProgramaDetalle' => $request['fechaEjecucionProgramaDetalle'][$i],
+                'observacionProgramaDetalle' => $request['observacionProgramaDetalle'][$i]
+               ]);
+            }
+
+            return redirect('/programa');
         }
-
-        return redirect('/programa');
 
     }
 

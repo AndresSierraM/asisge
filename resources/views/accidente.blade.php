@@ -590,9 +590,9 @@
 
 				</fieldset>	
 				@if(isset($accidente))
-					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 				@else
-  					{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  					{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
  				@endif
 		</div>
 	{!!Form::close()!!}	

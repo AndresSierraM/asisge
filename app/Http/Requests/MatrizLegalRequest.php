@@ -28,7 +28,8 @@ class MatrizLegalRequest extends Request
         
         $validacion = array('nombreMatrizLegal' => 'required|max:200',
             'fechaElaboracionMatrizLegal' => 'required',
-            'origenMatrizLegal' => 'required');
+            'origenMatrizLegal' => 'required',
+            'FrecuenciaMedicion_idFrecuenciaMedicion' => 'required');
 
         for($i = 0; $i < $tipoNorma; $i++)
         {

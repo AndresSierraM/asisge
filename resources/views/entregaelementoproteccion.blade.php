@@ -113,6 +113,7 @@
               <div class="col-sm-10">
                 <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
                 {!!Form::hidden('firmabase64', $base64, array('id' => 'firmabase64'))!!}
+                {!!Form::hidden('idEntregaElementoProteccion', null, array('id' => 'idEntregaElementoProteccion'))!!}
               </div>
             </div>
           </div>
@@ -180,10 +181,10 @@
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
   		@endif
  	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
  	@endif
 
 	{!! Form::close() !!}

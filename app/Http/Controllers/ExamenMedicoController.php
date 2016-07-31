@@ -9,6 +9,7 @@ use App\Http\Requests\ExamenMedicoRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
+include public_path().'/ajax/guardarReporteAcpm.php';
 
 
 class ExamenMedicoController extends Controller
@@ -91,7 +92,7 @@ class ExamenMedicoController extends Controller
                         //COnsultamos el nombre del tercero empleado
                         $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
 
-                        $this->guardarReporteACPM(
+                        guardarReporteACPM(
                                 $fechaAccion = date("Y-m-d"), 
                                 $idModulo = 22, 
                                 $tipoAccion = 'Correctiva', 
@@ -236,7 +237,7 @@ class ExamenMedicoController extends Controller
                         //COnsultamos el nombre del tercero empleado
                         $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
 
-                        $this->guardarReporteACPM(
+                        guardarReporteACPM(
                                 $fechaAccion = date("Y-m-d"), 
                                 $idModulo = 22, 
                                 $tipoAccion = 'Correctiva', 
@@ -266,36 +267,4 @@ class ExamenMedicoController extends Controller
         return redirect('/examenmedico');
     }
 
-     protected function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAccion)
-    {   
-
-        $reporteACPM = \App\ReporteACPM::All()->last();
-        
-        $indice = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM, 
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion);
-
-        $data = array(
-            'ReporteACPM_idReporteACPM' => $reporteACPM->idReporteACPM,
-            'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => $fechaAccion,
-            'Proceso_idProceso' => NULL,
-            'Modulo_idModulo' => $idModulo,
-            'tipoReporteACPMDetalle' => $tipoAccion,
-            'descripcionReporteACPMDetalle' => $descripcionAccion,
-            'analisisReporteACPMDetalle' => '',
-            'correccionReporteACPMDetalle' => '',
-            'Tercero_idResponsableCorrecion' => NULL,
-            'planAccionReporteACPMDetalle' => '',
-            'Tercero_idResponsablePlanAccion' => NULL,
-            'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-            'estadoActualReporteACPMDetalle' => '',
-            'fechaCierreReporteACPMDetalle' => '0000-00-00',
-            'eficazReporteACPMDetalle' => 0);
-
-        $respuesta = \App\ReporteACPMDetalle::updateOrCreate($indice, $data);
-    }
 }

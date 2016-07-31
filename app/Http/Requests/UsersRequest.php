@@ -28,6 +28,8 @@ class UsersRequest extends Request
             "email" => "required|email|max:255|unique:users,email,".$this->get('id') .",id",
             "password" => "required|min:4|max:20|confirmed",
             "password_confirmation" => "required|min:4|max:20",
+            "password_confirmation" => "required",
+            "Rol_idRol" => 'required',
             "Compania_idCompania" => "required"
         ];
     }

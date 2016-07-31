@@ -17,6 +17,7 @@
     $actacapacitacion = DB::table('actacapacitacion')
             ->leftJoin('plancapacitacion', 'PlanCapacitacion_idPlanCapacitacion', '=', 'idPlanCapacitacion')
             ->select(DB::raw('idActaCapacitacion, numeroActaCapacitacion, fechaElaboracionActaCapacitacion, nombrePlanCapacitacion'))
+            ->where('actacapacitacion.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();

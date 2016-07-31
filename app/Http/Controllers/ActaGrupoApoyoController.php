@@ -51,6 +51,8 @@ class ActaGrupoApoyoController extends Controller
      */
     public function store(ActaGrupoApoyoRequest $request)
     {
+        if($request['respuesta'] != 'falso')
+        { 
             \App\ActaGrupoApoyo::create([
                 'GrupoApoyo_idGrupoApoyo' => $request['GrupoApoyo_idGrupoApoyo'],
                 'fechaActaGrupoApoyo' => $request['fechaActaGrupoApoyo'],
@@ -67,23 +69,8 @@ class ActaGrupoApoyoController extends Controller
             //---------------------------------
             $this->grabarDetalle($actagrupoapoyo->idActaGrupoApoyo, $request);
 
-            $contadorDetalle = count($request['actividadGrupoApoyoDetalle']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\ActaGrupoApoyoDetalle::create([
-                'ActaGrupoApoyo_idActaGrupoApoyo' => $actagrupoapoyo->idActaGrupoApoyo,
-                'actividadGrupoApoyoDetalle' => $request['actividadGrupoApoyoDetalle'][$i],
-                'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
-                'fechaPlaneadaActaGrupoApoyoDetalle' => $request['fechaPlaneadaActaGrupoApoyoDetalle'][$i],
-                'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
-                'recursoPlaneadoActaGrupoApoyoDetalle' => $request['recursoPlaneadoActaGrupoApoyoDetalle'][$i],
-                'recursoEjecutadoActaGrupoApoyoDetalle' => $request['recursoEjecutadoActaGrupoApoyoDetalle'][$i],
-                'fechaEjecucionGrupoApoyoDetalle' => $request['fechaEjecucionGrupoApoyoDetalle'][$i],
-                'observacionGrupoApoyoDetalle' => $request['observacionGrupoApoyoDetalle'][$i]
-               ]);
-            }
-
             return redirect('/actagrupoapoyo');
+        }
         
 
     }
@@ -130,7 +117,8 @@ class ActaGrupoApoyoController extends Controller
      */
     public function update(ActaGrupoApoyoRequest $request, $id)
     {
-           
+        if($request['respuesta'] != 'falso')
+        {    
             $actagrupoapoyo = \App\ActaGrupoApoyo::find($id);
             $actagrupoapoyo->fill($request->all());
 
@@ -140,27 +128,9 @@ class ActaGrupoApoyoController extends Controller
             // guardamos las tablas de detalle
             //---------------------------------
             $this->grabarDetalle($actagrupoapoyo->idActaGrupoApoyo, $request);
-
-            \App\ActaGrupoApoyoDetalle::where('ActaGrupoApoyo_idActaGrupoApoyo',$id)->delete();
-
-            $contadorDetalle = count($request['actividadGrupoApoyoDetalle']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\ActaGrupoApoyoDetalle::create([
-                'ActaGrupoApoyo_idActaGrupoApoyo' => $actagrupoapoyo->idActaGrupoApoyo,
-                'actividadGrupoApoyoDetalle' => $request['actividadGrupoApoyoDetalle'][$i],
-                'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
-                'fechaPlaneadaActaGrupoApoyoDetalle' => $request['fechaPlaneadaActaGrupoApoyoDetalle'][$i],
-                'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
-                'recursoPlaneadoActaGrupoApoyoDetalle' => $request['recursoPlaneadoActaGrupoApoyoDetalle'][$i],
-                'recursoEjecutadoActaGrupoApoyoDetalle' => $request['recursoEjecutadoActaGrupoApoyoDetalle'][$i],
-                'fechaEjecucionGrupoApoyoDetalle' => $request['fechaEjecucionGrupoApoyoDetalle'][$i],
-                'observacionGrupoApoyoDetalle' => $request['observacionGrupoApoyoDetalle'][$i]
-               ]);
-            }
-
             
             return redirect('/actagrupoapoyo');
+        }
     }
 
     /**
@@ -233,5 +203,30 @@ class ActaGrupoApoyoController extends Controller
 
             $preguntas = \App\ActaGrupoApoyoTema::updateOrCreate($indice, $data);
         }
+
+
+            $idsEliminar = explode(',', $request['eliminarActividad']);
+            \App\ActaGrupoApoyoDetalle::where('ActaGrupoApoyo_idActaGrupoApoyo',$id)->delete();
+
+            $contadorDetalle = count($request['actividadGrupoApoyoDetalle']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                 $indice = array(
+             'idActaGrupoApoyoDetalle' => $request['idActaGrupoApoyoDetalle'][$i]);
+
+             $data = array(
+                'ActaGrupoApoyo_idActaGrupoApoyo' => $id,
+                'actividadGrupoApoyoDetalle' => $request['actividadGrupoApoyoDetalle'][$i],
+                'Tercero_idResponsableDetalle' => $request['Tercero_idResponsableDetalle'][$i],
+                'fechaPlaneadaActaGrupoApoyoDetalle' => $request['fechaPlaneadaActaGrupoApoyoDetalle'][$i],
+                'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
+                'recursoPlaneadoActaGrupoApoyoDetalle' => $request['recursoPlaneadoActaGrupoApoyoDetalle'][$i],
+                'recursoEjecutadoActaGrupoApoyoDetalle' => $request['recursoEjecutadoActaGrupoApoyoDetalle'][$i],
+                'fechaEjecucionGrupoApoyoDetalle' => $request['fechaEjecucionGrupoApoyoDetalle'][$i],
+                'observacionGrupoApoyoDetalle' => $request['observacionGrupoApoyoDetalle'][$i]);
+
+                $preguntas = \App\ActaGrupoApoyoDetalle::updateOrCreate($indice, $data);
+
+            }
     }
 }
