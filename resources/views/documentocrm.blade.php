@@ -14,6 +14,9 @@
     var documentocrmcompania = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcompania) : "");?>';
     documentocrmcompania = (documentocrmcompania != '' ? JSON.parse(documentocrmcompania) : '');
 
+    var documentocrmrol = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmrol) : "");?>';
+    documentocrmrol = (documentocrmrol != '' ? JSON.parse(documentocrmrol) : '');
+
     $(document).ready(function(){
 
       protCampos = new Atributos('protCampos','contenedor_protCampos','documentocrmcampo');
@@ -73,8 +76,7 @@
 
 
 
-
-      protCompania = new Atributos('protCompania','contenedor_protCompania','documentocrmcampo');
+      protCompania = new Atributos('protCompania','contenedor_protCompania','documentocrmcompania');
 
       protCompania.altura = '35px';
       protCompania.campoid = 'idDocumentoCRMCompania';
@@ -116,6 +118,70 @@
 
         llenarDatosCompania($('#Compania_idCompania'+j).val(), j);
       }
+
+
+      protRol = new Atributos('protRol','contenedor_protRol','documentocrmrol');
+
+      protRol.altura = '35px';
+      protRol.campoid = 'idDocumentoCRMRol';
+      protRol.campoEliminacion = 'eliminarDocumentoCRMRol';
+
+      protRol.campos   = [
+      'idDocumentoCRMRol',
+      'Rol_idRol',
+      'nombreRol',
+      'adicionarDocumentoCRMRol',
+      'modificarDocumentoCRMRol',
+      'consultarDocumentoCRMRol',
+      'anularDocumentoCRMRol',
+      'aprobarDocumentoCRMRol'
+      ];
+
+      protRol.etiqueta = [
+      'input',
+      'input',
+      'input',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox'
+      ];
+
+      protRol.tipo = [
+      'hidden',
+      'hidden',
+      'text',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox'
+      ];
+
+      protRol.estilo = [
+      '',
+      '',
+      'width: 530px;height:35px;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;'
+      ];
+
+      protRol.clase    = ['','','','','','','',''];
+      protRol.sololectura = [true,true,true,true,true,true,true,true];  
+      protRol.funciones = ['','','','','','','',''];
+      protRol.completar = ['off','off','off','off','off','off','off','off'];
+      protRol.opciones = ['','','','','','','','']
+
+      for(var j=0, k = documentocrmrol.length; j < k; j++)
+      {
+        protRol.agregarCampos(JSON.stringify(documentocrmrol[j]),'L');
+
+        llenarDatosRol($('#Rol_idRol'+j).val(), j);
+      }
         
     });
 
@@ -142,6 +208,11 @@
 				              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 								{!!Form::text('codigoDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
 						      	{!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
+
+						      	{!!Form::hidden('eliminarDocumentoCRMCampo', '', array('id' => 'eliminarDocumentoCRMCampo'))!!}
+						      	{!!Form::hidden('eliminarDocumentoCRMCompania', '', array('id' => 'eliminarDocumentoCRMCompania'))!!}
+						      	{!!Form::hidden('eliminarDocumentoCRMRol', '', array('id' => 'eliminarDocumentoCRMRol'))!!}
+
 							</div>
 						</div>
 					</div>
@@ -302,7 +373,16 @@
 			                    <div id="permisos" class="panel-collapse collapse in">
 			                      <div class="panel-body">
 			                        
-			                        <div class="panel-body">
+
+			                <ul class="nav nav-tabs">
+							  <li class="active"><a data-toggle="tab" href="#permCompania">Compañías</a></li>
+							  <li><a data-toggle="tab" href="#permRol">Roles</a></li>
+							</ul>
+
+
+							<div class="tab-content">
+								<div id="permCompania" class="tab-pane fade in active">
+			                        <div class="panel-body" id="permCompania">
 								      <div class="form-group" id='test'>
 								        <div class="col-sm-12">
 								          <div class="panel-body" >
@@ -327,8 +407,44 @@
 								        </div>
 								      </div>  
 								    </div>
+								</div>
 		                         
-			                         
+			                        
+							
+  								<div id="permRol" class="tab-pane fade">
+			                        <div class="panel-body" >
+								      <div class="form-group" id='test'>
+								        <div class="col-sm-12">
+								          <div class="panel-body" >
+								            <div class="form-group" id='test'>
+								              <div class="col-sm-12">
+								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+								                  <div style="overflow:auto; height:350px;">
+								                    <div style="width: 100%; display: inline-block;">
+								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalRol();">
+								                        <span class="glyphicon glyphicon-plus"></span>
+								                      </div>
+								                      <div class="col-md-1" style="width: 530px;" >Rol</div>
+								                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
+									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
+									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Consultar" class="fa fa-search"></span></center></div>
+									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Anular" class="fa fa-trash"></span></center></div>
+									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Aprobar" class="fa fa-check"></span></center></div>
+								                      
+								                      <div id="contenedor_protRol">
+								                      </div>
+								                    </div>
+								                  </div>
+								                </div>
+								              </div>
+								            </div>
+								          </div>
+								        </div>
+								      </div>  
+								    </div>
+								</div>  
+							</div>
+
 			                      </div> 
 			                    </div>
 			                  </div>
@@ -388,7 +504,7 @@
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="companias" name="companias" src="http://'.$_SERVER["HTTP_HOST"].'/companiacrmgridselect"></iframe>'
+        echo '<iframe style="width:100%; height:400px; " id="companias" name="companias" src="http://'.$_SERVER["HTTP_HOST"].'/companiagridselect"></iframe>'
       ?>
       </div>
     </div>
@@ -406,7 +522,7 @@
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolcrmgridselect"></iframe>'
+        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
       ?>
       </div>
     </div>

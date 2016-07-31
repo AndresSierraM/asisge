@@ -437,6 +437,7 @@ Route::resource('zona','ZonaController');
 Route::resource('categoriacrm','CategoriaCRMController');
 Route::resource('eventocrm','EventoCRMController');
 Route::resource('acuerdoservicio','AcuerdoServicioController');
+Route::resource('grupoestado','GrupoEstadoController');
 Route::resource('documentocrm','DocumentoCRMController');
 
 Route::get('datosSectorEmpresa', function()
@@ -467,6 +468,11 @@ Route::get('datosAcuerdoServicio', function()
 {
     include public_path().'/ajax/datosAcuerdoServicio.php';
 });
+Route::get('datosGrupoEstado', function()
+{
+    include public_path().'/ajax/datosGrupoEstado.php';
+});
+
 
 Route::get('datosDocumentoCRM', function()
 {
@@ -501,6 +507,8 @@ Route::post('llenarRol', function()
 });
 
 Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
+Route::get('companiagridselect','DocumentoCRMController@indexCompaniaGrid');
+Route::get('rolgridselect','DocumentoCRMController@indexRolGrid');
 
 Route::get('dropzone','TerceroController@indexdropzone');
 Route::post('dropzone/uploadFiles', 'TerceroController@uploadFiles'); 

@@ -16,7 +16,7 @@ class DocumentoCRMCampo extends Model
 
     public function documentocrm()
     {
-    	return $this->hasOne('App\DocumentoCRM','idDocumentoCRMCampo');
+    	return $this->hasOne('App\DocumentoCRM','DocumentoCRM_idDocumentoCRM');
     }
 
 }

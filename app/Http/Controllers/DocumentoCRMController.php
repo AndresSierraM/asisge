@@ -27,6 +27,16 @@ class DocumentoCRMController extends Controller
         return view('campocrmgridselect'); 
     }
 
+    public function indexCompaniaGrid()
+    {
+        return view('companiagridselect'); 
+    }
+
+    public function indexRolGrid()
+    {
+        return view('rolgridselect'); 
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +65,6 @@ class DocumentoCRMController extends Controller
             'desdeDocumentoCRM' => $request['desdeDocumentoCRM'], 
             'hastaDocumentoCRM' => $request['hastaDocumentoCRM'], 
             'actualDocumentoCRM' => $request['desdeDocumentoCRM']-1, 
-            'Compania_idCompania' => \Session::get("idCompania"), 
             'GrupoEstado_idGrupoEstado' => $request['GrupoEstado_idGrupoEstado']
             ]);
 
@@ -134,7 +143,7 @@ class DocumentoCRMController extends Controller
 
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        $idsEliminar = explode(',', $request['eliminarCampo']);
+        $idsEliminar = explode(',', $request['eliminarDocumentoCRMCampo']);
         \App\DocumentoCRMCampo::whereIn('idDocumentoCRMCampo',$idsEliminar)->delete();
 
         $contador = count($request['idDocumentoCRMCampo']);
@@ -157,50 +166,51 @@ class DocumentoCRMController extends Controller
         }
 
 
-        // // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
-        // // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        // $idsEliminar = explode(',', $request['eliminarCompania']);
-        // \App\DocumentoCRMCompania::whereIn('idDocumentoCRMCompania',$idsEliminar)->delete();
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarDocumentoCRMCompania']);
+        \App\DocumentoCRMCompania::whereIn('idDocumentoCRMCompania',$idsEliminar)->delete();
 
-        // $contador = count($request['idDocumentoCRMCompania']);
+        $contador = count($request['idDocumentoCRMCompania']);
 
-        // for($i = 0; $i < $contador; $i++)
-        // {
+        for($i = 0; $i < $contador; $i++)
+        {
 
-        //     $indice = array(
-        //      'idDocumentoCRMCompania' => $request['idDocumentoCRMCompania'][$i]);
+            $indice = array(
+             'idDocumentoCRMCompania' => $request['idDocumentoCRMCompania'][$i]);
 
-        //     $data = array(
-        //      'DocumentoCRM_idDocumentoCRM' => $id,
-        //     'Compania_idCompania' => $request['Compania_idCompania'][$i] );
+            $data = array(
+             'DocumentoCRM_idDocumentoCRM' => $id,
+            'Compania_idCompania' => $request['Compania_idCompania'][$i] );
 
-        //     $preguntas = \App\DocumentoCRMCompania::updateOrCreate($indice, $data);
+            $preguntas = \App\DocumentoCRMCompania::updateOrCreate($indice, $data);
 
-        // }
+        }
 
-        // // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
-        // // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        // $idsEliminar = explode(',', $request['eliminarRol']);
-        // \App\DocumentoCRMRol::whereIn('idDocumentoCRMRol',$idsEliminar)->delete();
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarDocumentoCRMRol']);
+        \App\DocumentoCRMRol::whereIn('idDocumentoCRMRol',$idsEliminar)->delete();
 
-        // $contador = count($request['idDocumentoCRMRol']);
+        $contador = count($request['idDocumentoCRMRol']);
 
-        // for($i = 0; $i < $contador; $i++)
-        // {
+        for($i = 0; $i < $contador; $i++)
+        {
 
-        //     $indice = array(
-        //      'idDocumentoCRMRol' => $request['idDocumentoCRMRol'][$i]);
+            $indice = array(
+             'idDocumentoCRMRol' => $request['idDocumentoCRMRol'][$i]);
 
-        //     $data = array(
-        //     'DocumentoCRM_idDocumentoCRM' => $id,
-        //     'Rol_idRol' => $request['Rol_idRol'][$i],
-        //     'adicionarDocumentoCRMRol' => $request['adicionarDocumentoCRMRol'][$i],
-        //     'modificarDocumentoCRMRol' => $request['modificarDocumentoCRMRol'][$i],
-        //     'eliminarDocumentoCRMRol' => $request['eliminarDocumentoCRMRol'][$i],
-        //     'consultarDocumentoCRMRol' => $request['consultarDocumentoCRMRol'][$i]);
-        //     $preguntas = \App\DocumentoCRMRol::updateOrCreate($indice, $data);
+            $data = array(
+            'DocumentoCRM_idDocumentoCRM' => $id,
+            'Rol_idRol' => $request['Rol_idRol'][$i],
+            'adicionarDocumentoCRMRol' => $request['adicionarDocumentoCRMRol'][$i],
+            'modificarDocumentoCRMRol' => $request['modificarDocumentoCRMRol'][$i],
+            'consultarDocumentoCRMRol' => $request['consultarDocumentoCRMRol'][$i],
+            'anularDocumentoCRMRol' => $request['anularDocumentoCRMRol'][$i],
+            'aprobarDocumentoCRMRol' => $request['aprobarDocumentoCRMRol'][$i]);
+            $preguntas = \App\DocumentoCRMRol::updateOrCreate($indice, $data);
 
-        // }
+        }
 
     }
 }

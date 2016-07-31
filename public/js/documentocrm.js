@@ -8,13 +8,13 @@ function abrirModalCampos()
 
 function abrirModalCompania()
 {
-    $('#ModalCompania').modal('show');
+    $('#ModalCompanias').modal('show');
 
 }
 
 function abrirModalRol()
 {
-    $('#ModalRol').modal('show');
+    $('#ModalRoles').modal('show');
 
 }
 

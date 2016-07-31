@@ -1,8 +1,8 @@
 <?php
 
     $consulta = DB::Select(
-        'SELECT idCampoCRM, descripcionCampoCRM 
-        FROM campocrm');
+        'SELECT idCompania, nombreCompania 
+        FROM compania');
 
     $row = array();
 

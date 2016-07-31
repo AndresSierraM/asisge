@@ -2,7 +2,6 @@
 
     $documentocrm = DB::table('documentocrm')
             ->select(DB::raw('idDocumentoCRM, codigoDocumentoCRM, nombreDocumentoCRM, numeracionDocumentoCRM, longitudDocumentoCRM, desdeDocumentoCRM, hastaDocumentoCRM, actualDocumentoCRM'))
-            ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();
