@@ -31,6 +31,11 @@ Route::get('calcularCuadroMando', function()
 	include public_path().'/ajax/calcularCuadroMando.php';
 });
 
+Route::get('importarTerceroProveedor', function()
+{
+	include public_path().'/ajax/importarTerceroProveedor.php';
+});
+
 
 // Creamos un Controlador para gestionar la autenticación en HomeController.
 //Route::controller('/','HomeController');

@@ -806,8 +806,7 @@
 
 														<input type="hidden" id="fechaTerceroArchivo[]" name="fechaTerceroArchivo[]" value="'.$archivoS['fechaTerceroArchivo'].'" >
 
-														<input type="hidden" id="descripcionTerceroArchivo[]" name="descripcionTerceroArchivo[]" value="'.$archivoS['descripcionTerceroArchivo'].'" >
-
+														
 														<input type="hidden" id="rutaTerceroArchivo[]" name="rutaTerceroArchivo[]" value="'.$archivoS['rutaTerceroArchivo'].'" ></div>';
 													}
 
@@ -873,17 +872,7 @@
 			</div>
 		</div>
 
-		<div class="form-group" style="width:565px; display: inline;">
-			{!!Form::label('descripcionTerceroArchivo', 'Descripción', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
-			<div class="col-sm-10" style="width:340px;">
-				<div class="input-group">
-					<span class="input-group-addon">
-						<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
-					</span>
-					{!!Form::textarea('descripcionTerceroArchivo',null,['class'=>'form-control','style'=>'height:50px; width:300px;','placeholder'=>'Ingresa la descripci&oacute;n del archivo','id'=>'descripcionTerceroArchivo'])!!}
-				</div>
-			</div>
-		</div>
+		
 		{!!Form::hidden('archivoTercero', 0, array('id' => 'archivoTercero'))!!}
 		{!!Form::hidden('archivoTerceroArray', '', array('id' => 'archivoTerceroArray'))!!}
 
@@ -924,7 +913,7 @@
 			allowedFileExtensions : ['jpg', 'png','gif'],
 			 initialPreview: [
 			 '<?php if(isset($tercero->imagenTercero))
-						echo Html::image("images/". $tercero->imagenTercero,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
+						echo Html::image("imagenes/". $tercero->imagenTercero,"Imagen no encontrada",array("style"=>"width:148px;height:158px;"));
 							             ;?>'
             ],
 			dropZoneTitle: 'Seleccione su foto',

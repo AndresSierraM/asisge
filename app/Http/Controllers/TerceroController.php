@@ -97,9 +97,9 @@ class TerceroController extends Controller
             if(null !== Input::file('imagenTercero') )
             {
                 $image = Input::file('imagenTercero');
-                $imageName = 'terceros/'.$request->file('imagenTercero')->getClientOriginalName();
+                $imageName = 'tercero/'.$request->file('imagenTercero')->getClientOriginalName();
                 $manager = new ImageManager();
-                $manager->make($image->getRealPath())->heighten(500)->save('images/'. $imageName);
+                $manager->make($image->getRealPath())->heighten(500)->save('imagenes/'. $imageName);
             }
             else
             {
@@ -121,7 +121,7 @@ class TerceroController extends Controller
                 'nombreCompletoTercero' => $request['nombreCompletoTercero'],
                 'fechaCreacionTercero' => $request['fechaCreacionTercero'],
                 'estadoTercero' => $request['estadoTercero'],
-                'imagenTercero' => 'terceros/'. $imageName,
+                'imagenTercero' => 'tercero/'. $imageName,
                 'tipoTercero' => $request['tipoTercero'],
                 'direccionTercero' => $request['direccionTercero'],
                 'Ciudad_idCiudad' => $request['Ciudad_idCiudad'],
@@ -289,9 +289,9 @@ class TerceroController extends Controller
                 $image = Input::file('imagenTercero');
                 $imageName = $request->file('imagenTercero')->getClientOriginalName();
                 $manager = new ImageManager();
-                $manager->make($image->getRealPath())->heighten(500)->save('images/terceros/'. $imageName);
+                $manager->make($image->getRealPath())->heighten(500)->save('imagenes/tercero/'. $imageName);
 
-                $tercero->imagenTercero = 'terceros/'. $imageName;
+                $tercero->imagenTercero = 'tercero/'. $imageName;
             }   
 
             $tercero->save();

@@ -23,6 +23,7 @@ class TerceroRequest extends Request
      */
     public function rules()
     {
+        
         $validacion = array('TipoIdentificacion_idTipoIdentificacion' => 'required',
             "documentoTercero" => "required|string|max:30|unique:tercero,documentoTercero,".$this->get('idTercero') .",idTercero,Compania_idCompania,".(\Session::get('idCompania')),
             'nombre1Tercero' => 'required|string|max:20',

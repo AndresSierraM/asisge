@@ -11,6 +11,7 @@ function validarFormulario(event)
     var dato6 = document.getElementById('direccionTercero').value;
     var dato7 = document.getElementById('Ciudad_idCiudad').value;
     var dato8 = document.getElementById('telefonoTercero').value;
+    var dato9 = document.getElementById('TipoIdentificacion_idTipoIdentificacion').value;
    
     var valor = '';
     var sw = true;
@@ -30,7 +31,9 @@ function validarFormulario(event)
                 tipoTercero: dato5, 
                 direccionTercero: dato6, 
                 Ciudad_idCiudad: dato7,
-                telefonoTercero: dato8
+                telefonoTercero: dato8,
+                TipoIdentificacion_idTipoIdentificacion: dato9
+                
                 },
         success:function(){
             //$("#msj-success").fadeIn();
