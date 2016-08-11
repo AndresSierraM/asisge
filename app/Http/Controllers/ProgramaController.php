@@ -84,8 +84,9 @@ class ProgramaController extends Controller
                ]);
             }
 
-            return redirect('/programa');
+            
         }
+        return redirect('/programa');
     }
 
 

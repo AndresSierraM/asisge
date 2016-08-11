@@ -266,7 +266,7 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-html, body {
+/*html, body {
   min-height: 100%;
   height: 100%;
   padding: 0;
@@ -286,7 +286,7 @@ h1, h2, h3, p {
   margin: 0;
   margin-bottom: .3em;
 }
-
+*/
 a {
   color: inherit;
   text-decoration: none;
