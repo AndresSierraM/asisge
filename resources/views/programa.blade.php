@@ -91,7 +91,7 @@
                 <i class="fa fa-calendar" ></i>
               </span>
               {!!Form::text('nombrePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del programa', 'style'=>'width:340;'])!!}
-              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
             </div>
           </div>
         </div>
@@ -206,12 +206,12 @@
     </fieldset>
   @if(isset($diagnostico))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-         {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+         {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
       @else
-         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarformulario(event);"])!!}
       @endif
   @else
-         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
+         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarformulario(event);'])!!}
   @endif
 	{!! Form::close() !!}
 

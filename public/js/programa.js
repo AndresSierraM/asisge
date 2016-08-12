@@ -1,12 +1,12 @@
-function habilitarSubmit(event)
-{
-    event.preventDefault();
+// function habilitarSubmit(event)
+// {
+//     event.preventDefault();
     
 
-    validarformulario();
-}
+//     validarformulario();
+// }
 
-function validarformulario()
+function validarformulario(event)
 {
     var route = "http://"+location.host+"/programa";
     var token = $("#token").val();
@@ -55,19 +55,18 @@ function validarformulario()
             //console.log(' sin errores');
         },
         error:function(msj){
-console.log(msj);
+
             var mensaje = '';
             var respuesta = JSON.stringify(msj.responseJSON); 
             if(typeof respuesta === "undefined")
             {
-                alert('und');
+
                 sw = false;
                 $("#msj").html('');
                 $("#msj-error").fadeOut();
             }
             else
             {
-                alert('si');
                 sw = true;
                 respuesta = JSON.parse(respuesta);
 
@@ -75,9 +74,9 @@ console.log(msj);
 
                 (typeof msj.responseJSON.fechaElaboracionPrograma === "undefined" ? document.getElementById('fechaElaboracionPrograma').style.borderColor = '' : document.getElementById('fechaElaboracionPrograma').style.borderColor = '#a94442');
 
-                (typeof msj.responseJSON.ClasificacionRiesgo_idClasificacionRiesgo === "ClasificacionRiesgo_idClasificacionRiesgo" ? document.getElementById('ClasificacionRiesgo_idClasificacionRiesgo').style.borderColor = '' : document.getElementById('salarioBaseCargo').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.ClasificacionRiesgo_idClasificacionRiesgo === "ClasificacionRiesgo_idClasificacionRiesgo" ? document.getElementById('ClasificacionRiesgo_idClasificacionRiesgo').style.borderColor = '' : document.getElementById('ClasificacionRiesgo_idClasificacionRiesgo').style.borderColor = '#a94442');
 
-                (typeof msj.responseJSON.CompaniaObjetivo_idCompaniaObjetivo === "CompaniaObjetivo_idCompaniaObjetivo" ? document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').style.borderColor = '' : document.getElementById('salarioBaseCargo').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.CompaniaObjetivo_idCompaniaObjetivo === "CompaniaObjetivo_idCompaniaObjetivo" ? document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').style.borderColor = '' : document.getElementById('CompaniaObjetivo_idCompaniaObjetivo').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.Tercero_idElabora === "Tercero_idElabora" ? document.getElementById('Tercero_idElabora').style.borderColor = '' : document.getElementById('Tercero_idElabora').style.borderColor = '#a94442');
                 
@@ -92,13 +91,11 @@ console.log(msj);
                 {
                     (typeof respuesta['Documento_idDocumento'+j] === "undefined" ? document.getElementById('Documento_idDocumento'+j).style.borderColor = '' : document.getElementById('Documento_idDocumento'+j).style.borderColor = '#a94442');
                 }
-alert('1');
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
                     mensaje +='<li>' +value+'</li><br>';
                 });
                 mensaje +='</ul>';
-               alert('2');
                 $("#msj").html(mensaje);
                 $("#msj-error").fadeIn();
             }
@@ -107,5 +104,5 @@ alert('1');
     });
 
     if(sw === true)
-        event.preventDefault();
+         event.preventDefault();
 }
