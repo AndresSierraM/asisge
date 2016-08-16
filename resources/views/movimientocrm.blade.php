@@ -336,6 +336,26 @@ for($i = 0; $i < count($campos); $i++)
 						<?php
 							}
 
+							if(strpos($camposVista, 'EventoCRM_idEventoCRM') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('EventoCRM_idEventoCRM', 'Evento / Campaña', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	{!!Form::select('EventoCRM_idEventoCRM',$evento, (isset($movimientocrm) ? $movimientocrm->EventoCRM_idEventoCRM : 0),["class" => "chosen-select form-control"])!!}
+
+								</div>
+							</div>
+						</div>
+						<?php
+							}
+
 							if(strpos($camposVista, 'AcuerdoServicio_idAcuerdoServicio') !== false)
 							{ 
 						?>

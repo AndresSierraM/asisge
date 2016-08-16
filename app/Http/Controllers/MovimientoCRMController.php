@@ -46,6 +46,7 @@ class MovimientoCRMController extends Controller
         $origen = \App\OrigenCRM::All()->lists('nombreOrigenCRM','idOrigenCRM');
         $estado = \App\EstadoCRM::All()->lists('nombreEstadoCRM','idEstadoCRM');
         $acuerdoservicio = \App\AcuerdoServicio::All()->lists('nombreAcuerdoServicio','idAcuerdoServicio');
+        $evento = \App\EventoCRM::All()->lists('nombreEventoCRM','idEventoCRM');
 
        return view('movimientocrm',compact('solicitante','supervisor','asesor','categoria','documento','lineanegocio','origen','estado','acuerdoservicio'));
     }
