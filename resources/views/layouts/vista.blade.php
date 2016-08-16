@@ -50,9 +50,9 @@
       {!!Html::script('js/general.js')!!}
 
       <!-- Librerías de graficos morris y flot -->
-      {!!Html::script('sb-admin/bower_components/morrisjs/morris.js'); !!}
+      <!-- {!!Html::script('sb-admin/bower_components/morrisjs/morris.js'); !!}
       {!!Html::script('sb-admin/bower_components/morrisjs/morris.css'); !!}
-      {!!Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!}
+      {!!Html::script('sb-admin/bower_components/flot/jquery.flot.js'); !!} -->
       
       <!-- Radio buttons y checkbox con estilo  -->
       {!! Html::style('css/segmented-controls.css'); !!}
