@@ -796,7 +796,8 @@
 													{ 
 														$archivoS = get_object_vars($archivoSave[$i]);
 
-														echo '<div id="'.$archivoS['idTerceroArchivo'].'" style="width:50%; height:50%; border:1px solid; float:left;"> <center><img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'" width="25%"></center>'; 
+														echo '<div id="'.$archivoS['idTerceroArchivo'].'" style="width:50%; height:50%; border:1px solid; float:left;"> <center>
+														<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'"><img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'"  width="25%"></a></center>';
 														$eliminar .=$archivoS['idTerceroArchivo'].','; 
 														echo' <a style="cursor:pointer;" onclick="eliminarDiv(document.getElementById('.$archivoS['idTerceroArchivo'].').id);">Borrar archivo</a>
 

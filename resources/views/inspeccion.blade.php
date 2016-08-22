@@ -58,7 +58,7 @@
               var dataIns = $.map(data[j], function(el) { return el });
               // llena los campos de preguntas
 
-              var valorInspeccion = [0, dataIns[0],dataIns[01],dataIns[2],'','','','',0,'',''];
+              var valorInspeccion = [0, dataIns[0],dataIns[01],dataIns[2],'','','','','','',0,'',''];
               inspeccion.agregarCampos(valorInspeccion,'A');
             }
             document.getElementById('registros').value = j ;
@@ -79,11 +79,13 @@
     var nombreCompletoTerceroResponsable = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
     var terceroResponsable = [JSON.parse(idTerceroResponsable),JSON.parse(nombreCompletoTerceroResponsable)];
 
+    var onclick = ['onclick','visualizarArchivoInspeccion(visualizarInspeccionDetalle0.value)']
 
-    var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
+    // var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
+    var inspeccionDetalle = '<?php echo (isset($inspeccion) ? json_encode($inspeccion->inspeccionDetalle) : "");?>';
 
     inspeccionDetalle = (inspeccionDetalle != '' ? JSON.parse(inspeccionDetalle) : '');
-    var valorInspeccion = [0,0,'','','','','','',0,'',''];
+    var valorInspeccion = [0,0,'','','','','','','',0,'',''];
 
     $(document).ready(function(){
 
@@ -101,14 +103,14 @@
         inspeccion.campoEliminacion = '';
         inspeccion.botonEliminacion = false;
 
-        inspeccion.campos   = ['idInspeccionDetalle', 'TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'fotoInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
+        inspeccion.campos   = ['idInspeccionDetalle', 'TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'fotoInspeccionDetalle','visualizarInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
                               'observacionInspeccionDetalle'];
         inspeccion.etiqueta = ['input', 'input', 'input', 'textarea',
-                               'textarea', 'file', 'textarea',
+                               'textarea', 'file', 'button', 'textarea',
                                'textarea', 'select', 'input',
                                'textarea'];
         inspeccion.tipo     = ['hidden','hidden', 'text', 'textarea', 
-                               'textarea', '', 'textarea',
+                               'textarea', '', 'button', 'textarea',
                                'textarea', '', 'date',
                                'textarea'];
         inspeccion.estilo   = ['','',
@@ -116,15 +118,18 @@
                                 'vertical-align:top; resize:none; font-size:10px; width: 300px; height:60px;', 
                                 'vertical-align:top; width: 300px;  height:60px;',
                                 'vertical-align:top; width: 200px;  height:60px; display: inline-block;',
+                                'vertical-align:top; width: 60px;  height:60px; display: inline-block;',
                                 'vertical-align:top; resize:none; width: 100px; height:60px;',
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
                                 'vertical-align:top; resize:none; width: 150px; height:60px;',
                                 'vertical-align:top; resize:none; width: 300px; height:60px;'];
-        inspeccion.clase    = ['','','','','','','','','','',''];
-        inspeccion.sololectura = [false,false,true,true,false,false,false,false,false,false,false];
+        inspeccion.clase    = ['','','','','','','fa fa-external-link btn btn-primary','','','','',''];
+        inspeccion.sololectura = [false,false,true,true, false,false,false,false,false,false,false,false];
       
-        inspeccion.opciones = ['','','','','','','','',terceroResponsable,'',''];
+        inspeccion.opciones = ['','','','','','','','','',terceroResponsable,'',''];
+
+        inspeccion.funciones = ['','','','','','',onclick,'','','','',''];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas
@@ -132,6 +137,8 @@
         {
           // llena los campos de preguntas
           inspeccion.agregarCampos(JSON.stringify(inspeccionDetalle[j]),'L', inspeccionDetalle[j]["idInspeccionGrupo"]);
+          cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
+          console.log(inspeccionDetalle[j]);
         }
         document.getElementById('registros').value = j ;
     });
@@ -251,14 +258,14 @@
             <div class="col-sm-12">
               <div class="row show-grid">
                 <div style="overflow: auto; width: 100%;">
-                  <div style="width: 1850px; height: 300px; display: inline-block; ">
-                    <div class="col-md-1" style="width: 1160px;">&nbsp;</div>
+                  <div style="width: 1910px; height: 300px; display: inline-block; ">
+                    <div class="col-md-1" style="width: 1220px;">&nbsp;</div>
                     <div class="col-md-1" style="width: 650px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
                           
                     <div class="col-md-1" style="width: 60px;">No.</div>
                     <div class="col-md-2" style="width: 300px;">Pregunta</div>
                     <div class="col-md-3" style="width: 300px;">Situaci&oacute;n Identificada</div>
-                    <div class="col-md-4" style="width: 200px;">Evidencia Fotogr&aacute;fica</div>
+                    <div class="col-md-4" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
                     <div class="col-md-5" style="width: 100px;">Ubicaci&oacute;n</div>
                     <div class="col-md-6" style="width: 200px;">Acci&oacute;n de Mejora</div>
                     <div class="col-md-7" style="width: 200px;">Responsable</div>
@@ -280,7 +287,7 @@
     </fieldset>
 	@if(isset($inspeccion))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-         {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+         {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
       @else
          {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
       @endif

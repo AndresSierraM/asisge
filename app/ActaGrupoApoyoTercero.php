@@ -15,9 +15,9 @@ class ActaGrupoApoyoTercero extends Model
 
     public $timestamps = false;
 
-    public function actaGrupoApoyo()
+    public function actagrupoapoyo()
     {
-    	return $this->hasOne('App\ActaGrupoApoyo','ActaGrupoApoyo_idActaGrupoApoyo');
+    	return $this->hasOne('App\ActaGrupoApoyo','idActaGrupoApoyo');
     }
 
 }

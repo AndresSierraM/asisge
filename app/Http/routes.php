@@ -315,6 +315,17 @@ Route::group(['middleware' => 'auth'], function ()
 	{
 	    include public_path().'/ajax/CuadroMandoConsultarCalculos.php';
 	});
+
+
+	// ---------------------------------
+	// Inspecciones
+	// ---------------------------------
+
+	Route::post('consultarImagenInspeccion', function()
+	{
+	    include public_path().'/ajax/consultarImagenInspeccion.php';
+	});
+
 	// ---------------------------------
 	// Documentos
 	// ---------------------------------

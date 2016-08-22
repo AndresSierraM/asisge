@@ -48,6 +48,7 @@ for ($i=0; $i < count($firmas); $i++)
 		// usamos el array de participantes que llenamos al principio de esta vista en un segmento de PHP
 		var actaGrupoApoyoTercero = '<?php echo (isset($firmas) ? json_encode($firmas) : "");?>';
 		actaGrupoApoyoTercero = (actaGrupoApoyoTercero != '' ? JSON.parse(actaGrupoApoyoTercero) : '');
+		console.log(actaGrupoApoyoTercero);
 
 		var valorTercero = [0,0,'',''];
 		var valorTema = [0,'','',0,''];
@@ -120,7 +121,7 @@ for ($i=0; $i < count($firmas); $i++)
     var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
 
     var actaGrupoApoyoDetalle = '<?php echo (isset($actaGrupoApoyo) ? json_encode($actaGrupoApoyo->actaGrupoApoyoDetalle) : "");?>';
-    console.log(actaGrupoApoyoDetalle);
+
     actaGrupoApoyoDetalle = (actaGrupoApoyoDetalle != '' ? JSON.parse(actaGrupoApoyoDetalle) : '');
     var valorActaGrupoApoyo = ['',0,0,'',0,'',0,''];
 

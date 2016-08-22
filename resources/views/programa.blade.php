@@ -204,7 +204,7 @@
           </div>
         </div>
     </fieldset>
-  @if(isset($diagnostico))
+  @if(isset($programa))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
       @else

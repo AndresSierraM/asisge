@@ -36,3 +36,39 @@ function validarformulario()
 
     return true;
 }
+
+function cargarArchivoInspeccion(registro, idInspeccionDetalle)
+{
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idInspeccionDetalle': idInspeccionDetalle},
+            url:   'http://'+location.host+'/consultarImagenInspeccion/',
+            type:  'post',
+            beforeSend: function(){
+                },
+            success: function(respuesta)
+            {
+                reg = registro.replace('fotoInspeccionDetalle','');
+
+                $('#visualizarInspeccionDetalle'+reg).val(respuesta["fotoInspeccionDetalle"]);
+            },
+            error: function(xhr,err)
+            { 
+                alert("Error");
+            }
+        }); 
+}
+
+function visualizarArchivoInspeccion(rutaImagen)
+{
+    if (rutaImagen != "") 
+    {
+        window.open(location.host+'/imagenes/'+rutaImagen, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1000,height=1000");
+    }
+    else
+    {
+        alert("No hay imagen cargada.");
+    }
+}

@@ -87,7 +87,6 @@
 			              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 			              	{!!Form::text('fechaElaboracionMatrizRiesgo',null,['class'=>'form-control','placeholder'=>'Seleccione la fecha'])!!}
 					      	{!!Form::hidden('idMatrizRiesgo', 0, array('id' => 'idMatrizRiesgo'))!!}
-					      	{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
 						</div>
 					</div>
 				</div>

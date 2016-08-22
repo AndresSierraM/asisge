@@ -12,6 +12,7 @@ function validarFormulario(event)
     var dato7 = document.getElementById('Ciudad_idCiudad').value;
     var dato8 = document.getElementById('telefonoTercero').value;
     var dato9 = document.getElementById('TipoIdentificacion_idTipoIdentificacion').value;
+    var dato10 = document.getElementById('Cargo_idCargo').value;
    
     var valor = '';
     var sw = true;
@@ -32,8 +33,7 @@ function validarFormulario(event)
                 direccionTercero: dato6, 
                 Ciudad_idCiudad: dato7,
                 telefonoTercero: dato8,
-                TipoIdentificacion_idTipoIdentificacion: dato9
-                
+                TipoIdentificacion_idTipoIdentificacion: dato9                
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -68,7 +68,9 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.Ciudad_idCiudad === "undefined" ? document.getElementById('Ciudad_idCiudad').style.borderColor = '' : document.getElementById('Ciudad_idCiudad').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.telefonoTercero === "undefined" ? document.getElementById('telefonoTercero').style.borderColor = '' : document.getElementById('telefonoTercero').style.borderColor = '#a94442');
-            
+
+                (typeof msj.responseJSON.TipoIdentificacion_idTipoIdentificacion === "undefined" ? document.getElementById('TipoIdentificacion_idTipoIdentificacion').style.borderColor = '' : document.getElementById('TipoIdentificacion_idTipoIdentificacion').style.borderColor = '#a94442');
+
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
                     mensaje +='<li>' +value+'</li><br>';

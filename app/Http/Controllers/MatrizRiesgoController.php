@@ -282,7 +282,6 @@ class MatrizRiesgoController extends Controller
     public function update(MatrizRiesgoRequest $request, $id)
     {
 
-
         if($request['respuesta'] != 'falso')
         {
           $matrizRiesgo = \App\MatrizRiesgo::find($id);
