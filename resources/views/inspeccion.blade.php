@@ -81,8 +81,8 @@
 
     var onclick = ['onclick','visualizarArchivoInspeccion(visualizarInspeccionDetalle0.value)']
 
-    // var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
-    var inspeccionDetalle = '<?php echo (isset($inspeccion) ? json_encode($inspeccion->inspeccionDetalle) : "");?>';
+    var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
+    // var inspeccionDetalle = '<?php echo (isset($inspeccion) ? json_encode($inspeccion->inspeccionDetalle) : "");?>';
 
     inspeccionDetalle = (inspeccionDetalle != '' ? JSON.parse(inspeccionDetalle) : '');
     var valorInspeccion = [0,0,'','','','','','','',0,'',''];
@@ -137,8 +137,8 @@
         {
           // llena los campos de preguntas
           inspeccion.agregarCampos(JSON.stringify(inspeccionDetalle[j]),'L', inspeccionDetalle[j]["idInspeccionGrupo"]);
-          cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
-          console.log(inspeccionDetalle[j]);
+          // cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
+          // console.log(inspeccionDetalle[j]);
         }
         document.getElementById('registros').value = j ;
     });
