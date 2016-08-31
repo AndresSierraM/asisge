@@ -53,6 +53,10 @@ Route::group(['middleware' => 'auth'], function ()
 		'as' => 'importarTerceroProveedor', 
 		'uses' => 'TerceroController@importarTerceroProveedor']);
 
+	Route::post('importarMatrizRiesgo', [
+		'as' => 'importarMatrizRiesgo', 
+		'uses' => 'MatrizRiesgoController@importarMatrizRiesgo']);
+
 	// Creamos un Controlador para gestionar la autenticación en HomeController.
 	//Route::controller('/','HomeController');
 
@@ -465,6 +469,7 @@ Route::group(['middleware' => 'auth'], function ()
 	Route::resource('grupoestado','GrupoEstadoController');
 	Route::resource('documentocrm','DocumentoCRMController');
 	Route::resource('movimientocrm','MovimientoCRMController');
+	Route::resource('presupuesto','PresupuestoController');
 
 	Route::get('datosSectorEmpresa', function()
 	{
@@ -522,6 +527,11 @@ Route::group(['middleware' => 'auth'], function ()
 	    include public_path().'/ajax/datosRolSelect.php';
 	});
 
+	Route::get('datosPresupuesto', function()
+	{
+	    include public_path().'/ajax/datosPresupuesto.php';
+	});
+
 
 	Route::post('llenarCampo', function()
 	{
@@ -543,3 +553,6 @@ Route::group(['middleware' => 'auth'], function ()
 
 Route::get('dropzone','TerceroController@indexdropzone');
 Route::post('dropzone/uploadFiles', 'TerceroController@uploadFiles'); 
+
+Route::get('dropzone','MatrizRiesgoController@indexdropzone');
+Route::post('dropzone/uploadFiles', 'MatrizRiesgoController@uploadFiles'); 

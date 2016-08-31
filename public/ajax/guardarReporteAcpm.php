@@ -37,7 +37,7 @@ function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAc
     }
     else
     {
-        DB::Select('INSERT into reporteacpm (idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM, Compania_idCompania) values (0, 1, "0000-00-00", "", '.\Session::get("idCompania").')');
+        DB::statement('INSERT into reporteacpm (idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM, Compania_idCompania) values (0, 1, "0000-00-00", "Acciones correctivas, preventivas y de mejora", '.\Session::get("idCompania").')');
 
         $reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
           From reporteacpm 

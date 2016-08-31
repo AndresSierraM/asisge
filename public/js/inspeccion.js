@@ -56,7 +56,7 @@ function cargarArchivoInspeccion(registro, idInspeccionDetalle)
             },
             error: function(xhr,err)
             { 
-                alert("Error");
+                // alert("Error");
             }
         }); 
 }
@@ -66,9 +66,5 @@ function visualizarArchivoInspeccion(rutaImagen)
     if (rutaImagen != "") 
     {
         window.open(location.host+'/imagenes/'+rutaImagen, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1000,height=1000");
-    }
-    else
-    {
-        alert("No hay imagen cargada.");
     }
 }

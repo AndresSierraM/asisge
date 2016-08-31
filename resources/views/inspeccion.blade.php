@@ -137,7 +137,7 @@
         {
           // llena los campos de preguntas
           inspeccion.agregarCampos(JSON.stringify(inspeccionDetalle[j]),'L', inspeccionDetalle[j]["idInspeccionGrupo"]);
-          // cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
+          cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
           // console.log(inspeccionDetalle[j]);
         }
         document.getElementById('registros').value = j ;
