@@ -12,7 +12,8 @@ class PresupuestoDetalle extends Model
     protected $fillable = [
 					    'Tercero_idVendedor', 
 					    'valorLineaNegocio',
-                        'Presupuesto_idPresupuesto'
+                        'Presupuesto_idPresupuesto',
+                        'LineaNegocio_idLineaNegocio'
 					    ];
 
     public $timestamps = false;

@@ -34,16 +34,10 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Vendedor</label></a></li>
-                            <?php 
-                            for($i = 0; $i < count($lineaNegocio); $i++)
-                            {
-                              $data = $i + 3;
-                              $lineaN = get_object_vars($lineaNegocio[$i]);
-                              echo '<li><a class="toggle-vis" data-column="'.$data.'"><label>'.$lineaN["nombreLineaNegocio"].'</label></a></li>';
-                            }
-                            echo'</ul>';
-                            ?>
+                            <li><a class="toggle-vis" data-column="2"><label> Fecha Inicial</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Fecha Final</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Documento CRM</label></a></li>
+                        </ul>
                         </ul>
                     </div>
                     <table id="tpresupuesto" name="tpresupuesto" class="display table-bordered" width="100%">
@@ -55,14 +49,9 @@
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Vendedor</b></th>
-                                <?php
-                                for($i = 0; $i < count($lineaNegocio); $i++)
-                                {
-                                  $lineaN = get_object_vars($lineaNegocio[$i]);
-                                  echo'<th><b>'.$lineaN["nombreLineaNegocio"].'</b></th>';
-                                }
-                                ?>
+                                <th><b>Fecha Inicial</b></th>
+                                <th><b>Fecha Final</b></th>
+                                <th><b>Documento CRM</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -71,14 +60,9 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Vendedor</th>
-                                <?php
-                                for($i = 0; $i < count($lineaNegocio); $i++)
-                                 {
-                                  $lineaN = get_object_vars($lineaNegocio[$i]);
-                                   echo'<th>'.$lineaN["nombreLineaNegocio"].'</th>';
-                                 }
-                                ?>
+                                <th>Fecha Inicial</th>
+                                <th>Fecha Final</th>
+                                <th>Documento CRM</th>
                             </tr>
                         </tfoot>        
                     </table>

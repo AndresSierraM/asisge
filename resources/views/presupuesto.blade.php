@@ -15,6 +15,33 @@
 	{!!Form::open(['route'=>'presupuesto.store','method'=>'POST'])!!}
 @endif
 
+<?php 
+
+$consulta = DB::Select('Select idLineaNegocio
+						from lineanegocio');
+
+
+$campos = '';
+
+for ($i=0; $i <count($consulta) ; $i++) 
+{
+	$consultalinea = get_object_vars($consulta[$i]);
+
+	$campos .= 'SUM(IF(LineaNegocio_idLineaNegocio = '.$consultalinea["idLineaNegocio"].', valorLineaNegocio, 0)) as LineaNegocio_'.$consultalinea["idLineaNegocio"].'_,';
+}
+
+$campos = substr($campos, 0,strlen($campos)-1);
+
+$id = isset($presupuesto->idPresupuesto) ? $presupuesto->idPresupuesto : 0; 
+
+
+$consultadetalle = DB::Select('SELECT 
+Tercero_idVendedor, '.$campos.' 
+FROM presupuestodetalle
+left join lineanegocio on presupuestodetalle.LineaNegocio_idLineaNegocio = lineanegocio.idLineaNegocio
+where Presupuesto_idPresupuesto = '.$id.'
+group by Tercero_idVendedor');
+?>
 
 <script>
     var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
@@ -22,7 +49,7 @@
 
     var Tercero = [JSON.parse(idTercero), JSON.parse(nombreTercero)];
 
-    var Presupuestos = '<?php echo (isset($presupuesto) ? json_encode($presupuesto->lineaNegocio) : "");?>';
+    var Presupuestos = '<?php echo (isset($presupuesto) ? json_encode($consultadetalle) : "");?>';
     Presupuestos = (Presupuestos != '' ? JSON.parse(Presupuestos) : '');
     var valorPresupuesto = ['',0,0,0,0,0,0];
 
@@ -129,7 +156,7 @@
 		              <span class="input-group-addon">
 		                <i class="fa fa-file" ></i>
 		              </span>
-		              {!!Form::select('DocumentoCRM_idDocumentoCRM',$documentocrm, (isset($presupuesto) ? $presupuesto->DocumentoCRM_idDocumentoCRM : 0),["class" => "chosen-select form-control", 'onchange' => 'cuerpoGrid(this.value);',"placeholder" =>"Seleccione un documento"])!!}
+		              {!!Form::select('DocumentoCRM_idDocumentoCRM',$documentocrm, (isset($presupuesto) ? $presupuesto->DocumentoCRM_idDocumentoCRM : 0),["class" => "chosen-select form-control","placeholder" =>"Seleccione un documento"])!!}
 		            </div>
 		          </div>
 		        </div>
