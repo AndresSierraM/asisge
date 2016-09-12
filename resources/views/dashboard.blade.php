@@ -591,7 +591,7 @@
                                         </div>
                                         <div class="panel-body">
                                           <div id="indicador'.$CuadroMando['idCuadroMando'].'" style="height: 300px;">
-                                              <canvas id="'.$CuadroMando['idCuadroMando'].'" width="800" height="300"></canvas>
+                                              <canvas id="'.$CuadroMando['idCuadroMando'].'" height="300px" width="500px"></canvas>
                                           </div>
                                         </div>
                                       </div>

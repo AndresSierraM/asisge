@@ -30,6 +30,9 @@
                         '</a>&nbsp;'.
                         '<a href="actagrupoapoyo/'.$value->idActaGrupoApoyo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="firmarGrupoApoyo('.$value->idActaGrupoApoyo.')">'.
+                            '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
                         '</a>';
                          
         $row[$key][] = $value->idActaGrupoApoyo;
