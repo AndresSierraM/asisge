@@ -20,8 +20,8 @@
       font-size: 10px;
       width: 100%;
       height: 100%;
-      top: 10%;
-      left: 0%;
+      top: -17%;
+      left: -3%;
       margin-left: 0px;
       margin-top: 0px;
       border: 1px solid #e8e8e8;
