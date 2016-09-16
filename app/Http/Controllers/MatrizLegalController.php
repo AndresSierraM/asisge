@@ -381,6 +381,7 @@ class MatrizLegalController extends Controller
                 }
 
                 
+                
                 //*****************************
                 // Tipo de norma
                 //*****************************
@@ -448,7 +449,7 @@ class MatrizLegalController extends Controller
                 }
 
             $totalErrores = count($errores);
-            if($totalErrores > 1)
+            if($totalErrores > 0)
             {
                 $mensaje = '<table cellspacing="0" cellpadding="1" style="width:100%;">'.
                         '<tr>'.
@@ -503,7 +504,7 @@ class MatrizLegalController extends Controller
                     $data = array(
                         'MatrizLegal_idMatrizLegal' => $matrizlegal,
                         'TipoNormaLegal_idTipoNormaLegal' => $matriz[$reg]['TipoNormaLegal_idTipoNormaLegal'],
-                        'articuloAplicableMatrizlegalDetalle' => $matriz[$reg]['articuloAplicableMatrizlegalDetalle'],
+                        'articuloAplicableMatrizLegalDetalle' => $matriz[$reg]['articuloAplicableMatrizLegalDetalle'],
                         'ExpideNormaLegal_idExpideNormaLegal' => $matriz[$reg]['ExpideNormaLegal_idExpideNormaLegal'],
                         'exigenciaMatrizLegalDetalle' => $matriz[$reg]['exigenciaMatrizLegalDetalle'],
                         'fuenteMatrizLegalDetalle' => $matriz[$reg]['fuenteMatrizLegalDetalle'],

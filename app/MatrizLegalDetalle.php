@@ -9,7 +9,8 @@ class MatrizLegalDetalle extends Model
     protected $table = 'matrizlegaldetalle';
     protected $primaryKey = 'idMatrizLegalDetalle';
 
-    protected $fillable = ['MatrizLegal_idMatrizLegal', 'TipoNormaLegal_idTipoNormaLegal', 'articuloAplicableMatrizLegalDetalle', 'ExpideNormaLegal_idExpideNormaLegal', 'exigenciaMatrizLegalDetalle', 'fuenteMatrizLegalDetalle', 'medioMatrizLegalDetalle', 'personaMatrizLegalDetalle', 'herramientaSeguimientoMatrizLegalDetalle', 'cumpleMatrizLegalDetalle', 'fechaVerificacionMatrizLegalDetalle', 'accionEvidenciaMatrizLegalDetalle', 'controlAImplementarMatrizLegalDetalle'];
+    protected $fillable = ['MatrizLegal_idMatrizLegal', 'TipoNormaLegal_idTipoNormaLegal', 
+    'articuloAplicableMatrizLegalDetalle', 'ExpideNormaLegal_idExpideNormaLegal', 'exigenciaMatrizLegalDetalle', 'fuenteMatrizLegalDetalle', 'medioMatrizLegalDetalle', 'personaMatrizLegalDetalle', 'herramientaSeguimientoMatrizLegalDetalle', 'cumpleMatrizLegalDetalle', 'fechaVerificacionMatrizLegalDetalle', 'accionEvidenciaMatrizLegalDetalle', 'controlAImplementarMatrizLegalDetalle'];
 
     public $timestamps = false;
 

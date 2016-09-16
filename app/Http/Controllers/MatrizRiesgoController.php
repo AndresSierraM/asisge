@@ -768,7 +768,7 @@ class MatrizRiesgoController extends Controller
             }
 
             $totalErrores = count($errores);
-            if($totalErrores > 1)
+            if($totalErrores > 0)
             {
                 $mensaje = '<table cellspacing="0" cellpadding="1" style="width:100%;">'.
                         '<tr>'.

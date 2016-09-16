@@ -93,7 +93,7 @@ function ejecutarInterface(ruta)
                 if(respuesta[0] == true)
                 {
                     alert(respuesta[1]);
-                    $("#modalMatrizlegal").modal("hide");
+                    $("#modalMatrizLegal").modal("hide");
                 }
                 else
                 {
