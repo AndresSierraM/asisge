@@ -430,6 +430,10 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     {
         include public_path().'/ajax/datosActaGrupoApoyoSelect.php';
     });
+    Route::get('datosActaCapacitacionSelect', function()
+    {
+        include public_path().'/ajax/datosActaCapacitacionSelect.php';
+    });
 
     Route::get('datosEntregaElementoProteccion', function()
     {
@@ -557,6 +561,10 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     Route::post('actualizarFirmaActaGrupoApoyo', function()
     {
         include public_path().'/ajax/actualizarFirmaActaGrupoApoyo.php';
+    });
+    Route::post('actualizarFirmaActaCapacitacion', function()
+    {
+        include public_path().'/ajax/actualizarFirmaActaCapacitacion.php';
     });
 
     Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
