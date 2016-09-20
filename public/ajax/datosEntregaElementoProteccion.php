@@ -28,7 +28,11 @@
                         '</a>&nbsp;'.
                         '<a href="entregaelementoproteccion/'.$value->idEntregaElementoProteccion.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash"  style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="firmarEntregaElemento('.$value->idEntregaElementoProteccion.')">'.
+                            '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
                         '</a>';
+
         $row[$key][] = $value->idEntregaElementoProteccion;
         $row[$key][] = $value->nombreCompletoTercero;
         $row[$key][] = $value->fechaEntregaElementoProteccion; 

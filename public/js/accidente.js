@@ -146,3 +146,119 @@ function validarFormulario(event)
 }
 
 
+function firmarAccidente(idAccidente)
+{
+        var lastIdx = null;
+        window.parent.$("#taccidenteselect").DataTable().ajax.url("http://"+location.host+"/datosAccidenteSelect?idAccidente="+idAccidente).load();
+         // Abrir modal
+        window.parent.$("#modalAccidente").modal()
+
+        $("a.toggle-vis").on( "click", function (e) {
+            e.preventDefault();
+     
+            // Get the column API object
+            var column = table.column( $(this).attr("data-column") );
+     
+            // Toggle the visibility
+            column.visible( ! column.visible() );
+        } );
+
+        window.parent.$("#taccidenteselect tbody").on( "mouseover", "td", function () 
+        {
+            var colIdx = table.cell(this).index().column;
+
+            if ( colIdx !== lastIdx ) {
+                $( table.cells().nodes() ).removeClass( "highlight" );
+                $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+            }
+        }).on( "mouseleave", function () {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+        });
+
+
+        // Setup - add a text input to each footer cell
+        window.parent.$("#taccidenteselect tfoot th").each( function () 
+        {
+            var title = window.parent.$("#taccidenteselect thead th").eq( $(this).index() ).text();
+            $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+        });
+     
+        // DataTable
+        var table = window.parent.$("#taccidenteselect").DataTable();
+     
+        // Apply the search
+        table.columns().every( function () 
+        {
+            var that = this;
+     
+            $( "input", this.footer() ).on( "blur change", function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        })
+
+        $("#taccidenteselect tbody").on( "click", "tr", function () 
+        {
+        if ( $(this).hasClass("selected") ) {
+            $(this).removeClass("selected");
+        }
+        else {
+            table.$("tr.selected").removeClass("selected");
+            $(this).addClass("selected");
+        }
+
+        var datos = table.rows('.selected').data();
+
+            if (datos.length > 0) 
+            {
+                $("#idCoordinador").val(datos[0][1]);
+                signaturePad.clear();
+                mostrarFirma();
+            }
+
+        });
+}
+
+function cerrarDivFirma()
+{
+    document.getElementById("signature-pad").style.display = "none";
+}
+
+function actualizarFirma()
+{
+    if (signaturePad.isEmpty()) 
+    {
+        alert("Por Favor Registre Su Firma.");
+    } else 
+    {
+        //window.open(signaturePad.toDataURL());
+        reg = '';
+        if(document.getElementById("signature-reg").value != 'undefined')
+            reg = document.getElementById("signature-reg").value;
+        
+
+        document.getElementById("firma"+reg).src = signaturePad.toDataURL() ;
+        document.getElementById("firmabase64"+reg).value = signaturePad.toDataURL();
+        mostrarFirma();
+
+        var idCoordinador = $("#idCoordinador").val();
+        var firma = $("#firmabase64").val();
+
+        var token = document.getElementById('token').value;
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+                dataType: "json",
+                data: {'idCoordinador' : idCoordinador, 'firma': firma},
+                url:   'http://'+location.host+'/actualizarFirmaAccidente/',
+                type:  'post',
+            success: function(respuesta)
+            {
+                alert(respuesta);
+            }
+        });
+    
+    }
+}

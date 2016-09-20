@@ -370,6 +370,11 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     	include public_path().'/ajax/datosActaCapacitacion.php';
     });
 
+    Route::get('datosActaCapacitacionSelect', function()
+    {
+        include public_path().'/ajax/datosActaCapacitacionSelect.php';
+    });
+
     Route::get('datosPlanCapacitacion', function()
     {
     	include public_path().'/ajax/datosPlanCapacitacion.php';
@@ -395,6 +400,11 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     	include public_path().'/ajax/datosInspeccion.php';
     });
 
+    Route::get('datosInspeccionSelect', function()
+    {
+        include public_path().'/ajax/datosInspeccionSelect.php';
+    });
+
     Route::get('datosExamenMedico', function()
     {
     	include public_path().'/ajax/datosExamenMedico.php';
@@ -410,6 +420,11 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     	include public_path().'/ajax/datosAccidente.php';
     });
 
+    Route::get('datosAccidenteSelect', function()
+    {
+        include public_path().'/ajax/datosAccidenteSelect.php';
+    });
+
 
     Route::get('datosGrupoApoyo', function()
     {
@@ -421,6 +436,11 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     	include public_path().'/ajax/datosConformacionGrupoApoyo.php';
     });
 
+    Route::get('datosConformacionGrupoApoyoSelect', function()
+    {
+        include public_path().'/ajax/datosConformacionGrupoApoyoSelect.php';
+    });
+
     Route::get('datosActaGrupoApoyo', function()
     {
     	include public_path().'/ajax/datosActaGrupoApoyo.php';
@@ -430,14 +450,15 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     {
         include public_path().'/ajax/datosActaGrupoApoyoSelect.php';
     });
-    Route::get('datosActaCapacitacionSelect', function()
-    {
-        include public_path().'/ajax/datosActaCapacitacionSelect.php';
-    });
 
     Route::get('datosEntregaElementoProteccion', function()
     {
         include public_path().'/ajax/datosEntregaElementoProteccion.php';
+    });
+
+    Route::get('datosEntregaElementoProteccionSelect', function()
+    {
+        include public_path().'/ajax/datosEntregaElementoProteccionSelect.php';
     });
 
     Route::get('datosCuadroMando', function()
@@ -562,9 +583,30 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
     {
         include public_path().'/ajax/actualizarFirmaActaGrupoApoyo.php';
     });
+    
     Route::post('actualizarFirmaActaCapacitacion', function()
     {
         include public_path().'/ajax/actualizarFirmaActaCapacitacion.php';
+    });
+
+    Route::post('actualizarFirmaEntregaElementoProteccion', function()
+    {
+        include public_path().'/ajax/actualizarFirmaEntregaElementoProteccion.php';
+    });
+
+    Route::post('actualizarFirmaAccidente', function()
+    {
+        include public_path().'/ajax/actualizarFirmaAccidente.php';
+    });
+
+    Route::post('actualizarFirmaInspeccion', function()
+    {
+        include public_path().'/ajax/actualizarFirmaInspeccion.php';
+    });
+
+    Route::post('actualizarFirmaConformacionGrupoApoyo', function()
+    {
+        include public_path().'/ajax/actualizarFirmaConformacionGrupoApoyo.php';
     });
 
     Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');

@@ -29,6 +29,9 @@
                         '</a>&nbsp;'.
                         '<a href="inspeccion/'.$value->idInspeccion.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="firmarInspeccion('.$value->idInspeccion.')">'.
+                            '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idInspeccion;
         $row[$key][] = $value->fechaElaboracionInspeccion;

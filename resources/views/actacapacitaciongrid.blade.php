@@ -62,7 +62,7 @@
                     <table id="tactacapacitacion" name="tactacapacitacion" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:70px;padding: 1px 8px;" data-orderable="false">
                                  <a href="actacapacitacion/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -92,7 +92,7 @@
 <script type="text/javascript">
 
     $(document).ready( function () {
-
+        mostrarFirma();
         
         /*$('#tactacapacitacion').DataTable({
             "aProcessing": true,
