@@ -14,11 +14,22 @@
 <?php 
     $visible = '';
 
-    $dato = get_object_vars($datos[0]);
-    if ($dato['adicionarRolOpcion'] == 1) 
-        $visible = 'inline-block;';
+    if (isset($datos[0])) 
+    {
+        $dato = get_object_vars($datos[0]);
+        if ($dato['adicionarRolOpcion'] == 1) 
+        {
+            $visible = 'inline-block;';    
+        }
+        else
+        {
+            $visible = 'none;';
+        }
+    }
     else
+    {
         $visible = 'none;';
+    }
 
     $lineaNegocio = DB::Select('SELECT idLineaNegocio, nombreLineaNegocio from lineanegocio');
 ?>
@@ -83,8 +94,8 @@
             "ajax": "{!! URL::to ('/datosPresupuesto')!!}",
         });*/
         var lastIdx = null;
-        var modificar = '<?php echo $dato["modificarRolOpcion"];?>';
-        var eliminar = '<?php echo $dato["eliminarRolOpcion"];?>';
+        var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
+        var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         
         var table = $('#tpresupuesto').DataTable( {
             "order": [[ 1, "asc" ]],

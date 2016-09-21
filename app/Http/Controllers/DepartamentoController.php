@@ -25,7 +25,10 @@ class DepartamentoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('departamentogrid', compact('datos'));
+        if($datos != null)
+            return view('departamentogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

@@ -22,7 +22,10 @@ class DiagnosticoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('diagnosticogrid', compact('datos'));
+        if($datos != null)
+            return view('diagnosticogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

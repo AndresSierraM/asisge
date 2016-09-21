@@ -30,7 +30,10 @@ class TerceroController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('tercerogrid', compact('datos'));
+        if($datos != null)
+            return view('tercerogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     public function indexdropzone() 

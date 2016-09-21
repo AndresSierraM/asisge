@@ -22,7 +22,10 @@ class ExpideNormaLegalController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('expidenormalegalgrid', compact('datos'));
+        if($datos != null)
+            return view('expidenormalegalgrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

@@ -22,7 +22,10 @@ class DocumentoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('documentogrid', compact('datos'));
+        if($datos != null)
+            return view('documentogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

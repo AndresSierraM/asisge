@@ -22,7 +22,10 @@ class CargoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('cargogrid', compact('datos'));
+        if($datos != null)
+            return view('cargogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

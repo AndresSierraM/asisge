@@ -22,7 +22,10 @@ class ReporteACPMController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('reporteacpmgrid', compact('datos'));
+        if($datos != null)
+            return view('reporteacpmgrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

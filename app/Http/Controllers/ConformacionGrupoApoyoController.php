@@ -23,7 +23,10 @@ class ConformacionGrupoApoyoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('conformaciongrupoapoyogrid', compact('datos'));
+        if($datos != null)
+            return view('conformaciongrupoapoyogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

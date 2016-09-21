@@ -22,7 +22,10 @@ class TipoInspeccionController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('tipoinspecciongrid', compact('datos'));
+        if($datos != null)
+            return view('tipoinspecciongrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

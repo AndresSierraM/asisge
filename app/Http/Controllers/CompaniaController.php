@@ -23,7 +23,10 @@ class CompaniaController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('companiagrid', compact('datos'));
+        if($datos != null)
+            return view('companiagrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

@@ -22,7 +22,10 @@ class PresupuestoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('presupuestogrid', compact('datos'));
+        if($datos != null)
+            return view('presupuestogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

@@ -22,7 +22,10 @@ class ProgramaController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('programagrid', compact('datos'));
+        if($datos != null)
+            return view('programagrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

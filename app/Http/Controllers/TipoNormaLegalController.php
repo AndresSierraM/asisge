@@ -22,7 +22,10 @@ class TipoNormaLegalController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('tiponormalegalgrid', compact('datos'));
+        if($datos != null)
+            return view('tiponormalegalgrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

@@ -22,7 +22,10 @@ class EntregaElementoProteccionController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('entregaelementoprotecciongrid', compact('datos')); 
+        if($datos != null)
+            return view('entregaelementoprotecciongrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

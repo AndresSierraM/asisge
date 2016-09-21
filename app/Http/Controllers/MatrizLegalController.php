@@ -28,7 +28,10 @@ class MatrizLegalController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('matrizlegalgrid', compact('datos'));
+        if($datos != null)
+            return view('matrizlegalgrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     public function indexdropzone() 

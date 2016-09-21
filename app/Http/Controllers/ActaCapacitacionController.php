@@ -22,7 +22,10 @@ class ActaCapacitacionController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('actacapacitaciongrid', compact('datos'));
+        if($datos != null)
+            return view('actacapacitaciongrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**
