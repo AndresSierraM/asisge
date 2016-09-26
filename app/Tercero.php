@@ -33,4 +33,9 @@ class Tercero extends Model
     {
         return $this->hasOne('App\TerceroInformacion','Tercero_idTercero');
     }
+
+    public function presupuesto()
+    {
+        return $this->hasMany('App\Presupuesto','Tercero_idTercero');
+    }
 }

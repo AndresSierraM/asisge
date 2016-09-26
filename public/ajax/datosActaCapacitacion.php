@@ -29,6 +29,9 @@
                         '</a>&nbsp;'.
                         '<a href="actacapacitacion/'.$value->idActaCapacitacion.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="firmarActaCapacitacion('.$value->idActaCapacitacion.')">'.
+                            '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idActaCapacitacion;
         $row[$key][] = $value->numeroActaCapacitacion;

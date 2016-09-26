@@ -31,7 +31,10 @@ class OpcionController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('opciongrid', compact('datos'));
+        if($datos != null)
+            return view('opciongrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     public function select()

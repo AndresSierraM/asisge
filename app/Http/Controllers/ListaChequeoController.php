@@ -22,7 +22,10 @@ class ListaChequeoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('listachequeogrid', compact('datos'));
+        if($datos != null)
+            return view('listachequeogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

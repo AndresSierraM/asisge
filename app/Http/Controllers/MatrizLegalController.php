@@ -8,6 +8,11 @@ use App\Http\Requests;
 use App\Http\Requests\MatrizLegalRequest;
 use App\Http\Controllers\Controller;
 use DB;
+use Input;
+use File;
+use Validator;
+use Response;
+use Excel; 
 include public_path().'/ajax/consultarPermisos.php';
 include public_path().'/ajax/guardarReporteAcpm.php';
 
@@ -23,7 +28,44 @@ class MatrizLegalController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('matrizlegalgrid', compact('datos'));
+        if($datos != null)
+            return view('matrizlegalgrid', compact('datos'));
+        else
+            return view('accesodenegado');
+    }
+
+    public function indexdropzone() 
+    {
+        return view('dropzone');
+    }
+
+    //Funcion para subir archivos con dropzone
+    public function uploadFiles(Request $request) 
+    {
+ 
+        $input = Input::all();
+ 
+        $rules = array(
+        );
+ 
+        $validation = Validator::make($input, $rules);
+ 
+        if ($validation->fails()) {
+            return Response::make($validation->errors->first(), 400);
+        }
+        
+        $destinationPath = public_path() . '/imagenes/repositorio/temporal'; //Guardo en la carpeta  temporal
+
+        $extension = Input::file('file')->getClientOriginalExtension(); 
+        $fileName = Input::file('file')->getClientOriginalName(); // nombre de archivo
+        $upload_success = Input::file('file')->move($destinationPath, $fileName);
+ 
+        if ($upload_success) {
+            return Response::json('success', 200);
+        } 
+        else {
+            return Response::json('error', 400);
+        }
     }
 
     /**
@@ -229,4 +271,264 @@ class MatrizLegalController extends Controller
         return redirect('/matrizlegal');
     }
 
+
+
+    public function importarMatrizLegal()
+    {
+      $destinationPath = public_path() . '/imagenes/repositorio/temporal'; 
+        Excel::load($destinationPath.'/Plantilla Matriz Legal.xlsx', function($reader) {
+
+            $datos = $reader->getActiveSheet();
+
+            $matriz = array();
+            $errores = array();
+            $fila = 10;
+            $posMatriz = 0;
+            $posErr = 0;            
+
+            //*****************************
+            // Fecha 
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $fechaMatriz = $datos->getCellByColumnAndRow(0, 5)->getValue();
+            if($fechaMatriz == '' or 
+                    $fechaMatriz == null)
+            {
+                $fechaMatriz = date("Y-m-d");
+            }
+
+            //*****************************
+            // Nombre
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $nombreMatriz = $datos->getCellByColumnAndRow(1, 5)->getValue();
+            if($nombreMatriz == '' or 
+                    $nombreMatriz == null)
+            {
+                $errores[$posErr]["linea"] = 5;
+                // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                $errores[$posErr]["mensaje"] = 'Debe diligenciar el nombre de la matriz';
+                
+                $posErr++;
+            }
+
+            //*****************************
+            // Origen
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $origenMatriz = $datos->getCellByColumnAndRow(2, 5)->getValue();
+            if($origenMatriz == '' or 
+                    $origenMatriz == null)
+            {
+                $errores[$posErr]["linea"] = 5;
+                // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                $errores[$posErr]["mensaje"] = 'Debe diligenciar el origen de la matriz';
+                
+                $posErr++;
+            }
+
+            //*****************************
+            // Frecuencia Medicion
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $frecuenciaMedicion = $datos->getCellByColumnAndRow(3, 5)->getValue();
+            if($frecuenciaMedicion == '' or 
+                $frecuenciaMedicion == null)
+            {
+                $errores[$posErr]["linea"] = 5;
+                // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                $errores[$posErr]["mensaje"] = 'Debe diligenciar la Frecuencia de Medición';
+                
+                $posErr;
+            }
+            else
+            {
+                $consulta = \App\FrecuenciaMedicion::where('codigoFrecuenciaMedicion','=', $frecuenciaMedicion)->lists('idFrecuenciaMedicion');
+
+                // si se encuentra el id lo guardamos en el array
+                if(isset($consulta[0]))
+                    $frecuenciaMedicion = $consulta[0];
+                else
+                {
+                    $errores[$posErr]["linea"] = 5;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Frecuencia '. $frecuenciaMedicion. ' no existe';
+                    
+                    $posErr;
+                }
+            }
+
+            while ($datos->getCellByColumnAndRow(0, $fila)->getValue() != '' and
+                    $datos->getCellByColumnAndRow(0, $fila)->getValue() != NULL)    {
+                
+
+                // para cada registro de matriz recorremos las columnas desde la 0 hasta la 11
+                $matriz[$posMatriz]["idMatrizLegalDetalle"] = 0;
+                $matriz[$posMatriz]["Compania_idCompania"] = 0;
+                for ($columna = 0; $columna <= 11; $columna++) 
+                {
+                    // en la fila 9 del archivo de excel (oculta) estan los nombres de los campos de la tabla
+                    $campo = $datos->getCellByColumnAndRow($columna, 9)->getValue();
+
+                    // si es una celda calculada, la ejeutamos, sino tomamos su valor
+                    if ($datos->getCellByColumnAndRow($columna, $fila)->getDataType() == 'f')
+                        $matriz[$posMatriz][$campo] = $datos->getCellByColumnAndRow($columna, $fila)->getCalculatedValue();
+                    else
+                    {
+                        $matriz[$posMatriz][$campo] = 
+                            ($datos->getCellByColumnAndRow($columna, $fila)->getValue() == null 
+                                ? ''
+                                : $datos->getCellByColumnAndRow($columna, $fila)->getValue());
+                    }
+
+                }
+
+                
+                
+                //*****************************
+                // Tipo de norma
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["TipoNormaLegal_idTipoNormaLegal"] == '' or 
+                    $matriz[ $posMatriz]["TipoNormaLegal_idTipoNormaLegal"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el tipo de norma';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\TipoNormaLegal::where('codigoTipoNormaLegal','=', $matriz[ $posMatriz]["TipoNormaLegal_idTipoNormaLegal"])->lists('idTipoNormaLegal');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["TipoNormaLegal_idTipoNormaLegal"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Tipo Norma Legal '. $matriz[ $posMatriz]["TipoNormaLegal_idTipoNormaLegal"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+   
+
+                //*****************************
+                // Expedida por
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["ExpideNormaLegal_idExpideNormaLegal"] == '' or 
+                    $matriz[ $posMatriz]["ExpideNormaLegal_idExpideNormaLegal"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar expedido por';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\ExpideNormaLegal::where('codigoExpideNormaLegal','=', $matriz[ $posMatriz]["ExpideNormaLegal_idExpideNormaLegal"])->lists('idExpideNormaLegal');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["ExpideNormaLegal_idExpideNormaLegal"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Expide Norma Legal '. $matriz[ $posMatriz]["ExpideNormaLegal_idExpideNormaLegal"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+                
+
+                $posMatriz++;
+                $fila++;
+                }
+
+            $totalErrores = count($errores);
+            if($totalErrores > 0)
+            {
+                $mensaje = '<table cellspacing="0" cellpadding="1" style="width:100%;">'.
+                        '<tr>'.
+                            '<td colspan="3">'.
+                                '<h3>Informe de inconsistencias en Importacion de matriz</h3>'.
+                            '</td>'.
+                        '</tr>'.
+                        '<tr>'.
+                            '<td >No. Línea</td>'.
+                            // '<td >Nombre</td>'.
+                            '<td >Mensaje</td>'.
+                        '</tr>';
+
+                for($regErr = 0; $regErr < $totalErrores; $regErr++)
+                {
+                     $mensaje .= '<tr>'.
+                                '<td >'.$errores[$regErr]["linea"].'</td>'.
+                                // '<td >'.$errores[$regErr]["nombre"].'</td>'.
+                                '<td >'.$errores[$regErr]["mensaje"].'</td>'.
+                            '</tr>';
+                }
+                $mensaje .= '</table>';
+                echo json_encode(array(false, $mensaje));
+            }
+            else
+            {
+
+              $indice = array(
+                        'idMatrizLegal' => 0);
+
+              $data = array(
+                  'fechaElaboracionMatrizLegal' => $fechaMatriz,
+                  'nombreMatrizLegal' => $nombreMatriz,
+                  'origenMatrizLegal' => $origenMatriz,
+                  'Users_id' => \Session::get("idUsuario"),
+                  'FrecuenciaMedicion_idFrecuenciaMedicion' => $frecuenciaMedicion,
+                  'Compania_idCompania' => \Session::get("idCompania")
+              );
+
+              $matrizlegal = \App\MatrizLegal::updateOrCreate($indice, $data);
+
+              // Consultamos el ultimo id insertado en la matriz legal
+              $ultmatrizLegal = \App\MatrizLegal::All()->last();              
+              $matrizlegal = $ultmatrizLegal->idMatrizLegal;
+                // recorremos el array recibido para insertar o actualizar cada registro
+                for($reg = 0; $reg < count($matriz); $reg++)
+                {
+                    
+                    $indice = array(
+                          'idMatrizLegalDetalle' => $matriz[$reg]["idMatrizLegalDetalle"]);
+
+                    $data = array(
+                        'MatrizLegal_idMatrizLegal' => $matrizlegal,
+                        'TipoNormaLegal_idTipoNormaLegal' => $matriz[$reg]['TipoNormaLegal_idTipoNormaLegal'],
+                        'articuloAplicableMatrizLegalDetalle' => $matriz[$reg]['articuloAplicableMatrizLegalDetalle'],
+                        'ExpideNormaLegal_idExpideNormaLegal' => $matriz[$reg]['ExpideNormaLegal_idExpideNormaLegal'],
+                        'exigenciaMatrizLegalDetalle' => $matriz[$reg]['exigenciaMatrizLegalDetalle'],
+                        'fuenteMatrizLegalDetalle' => $matriz[$reg]['fuenteMatrizLegalDetalle'],
+                        'medioMatrizLegalDetalle' => $matriz[$reg]['medioMatrizLegalDetalle'],
+                        'personaMatrizLegalDetalle' => $matriz[$reg]['personaMatrizLegalDetalle'],
+                        'herramientaSeguimientoMatrizLegalDetalle' => $matriz[$reg]['herramientaSeguimientoMatrizLegalDetalle'],
+                        'cumpleMatrizLegalDetalle' => $matriz[$reg]['cumpleMatrizLegalDetalle'],
+                        'fechaVerificacionMatrizLegalDetalle' => $matriz[$reg]['fechaVerificacionMatrizLegalDetalle'],
+                        'accionEvidenciaMatrizLegalDetalle' => $matriz[$reg]['accionEvidenciaMatrizLegalDetalle'],
+                        'controlAImplementarMatrizLegalDetalle' => $matriz[$reg]['controlAImplementarMatrizLegalDetalle'],
+                        'Compania_idCompania' => \Session::get("idCompania")
+                    );
+
+                    $matrizlegaldetalle = \App\MatrizLegalDetalle::updateOrCreate($indice, $data);
+                }
+                echo json_encode(array(true, 'Importacion Exitosa, por favor verifique'));
+            }
+
+
+        });
+        unlink ($destinationPath.'/Plantilla Matriz Legal.xlsx');
+
+    }
 }

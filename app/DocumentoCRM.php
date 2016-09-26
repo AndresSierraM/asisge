@@ -28,4 +28,9 @@ class DocumentoCRM extends Model
         return $this->hasMany('App\DocumentoCRMRol','DocumentoCRM_idDocumentoCRM');
     }
 
+    public function presupuesto()
+    {
+        return $this->hasMany('App\Presupuesto','DocumentoCRM_idDocumentoCRM');
+    }
+
 }

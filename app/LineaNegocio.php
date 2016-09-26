@@ -12,4 +12,9 @@ class LineaNegocio extends Model
     protected $fillable = ['codigoLineaNegocio', 'nombreLineaNegocio'];
 
     public $timestamps = false;
+
+    function presupuesto()
+    {
+		return $this->hasMany('App\Presupuesto','LineaNegocio_idLineaNegocio');
+    }
 }

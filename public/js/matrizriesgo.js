@@ -324,3 +324,37 @@ function validarFormulario(event)
     if(sw === true)
         event.preventDefault();
 }
+
+function ejecutarInterface(ruta)
+{
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            url:   'http://'+location.host+'/importarMatrizRiesgo',
+            type:  'post',
+            beforeSend: function(){
+                
+                },
+            success: function(respuesta)
+            {
+                if(respuesta[0] == true)
+                {
+                    alert(respuesta[1]);
+                    $("#modalMatrizRiesgo").modal("hide");
+                }
+                else
+                {
+                    $("#reporteErrorMatrizRiesgo").html(respuesta[1]);
+                    $("#ModalErroresMatrizRiesgo").modal("show");
+                }
+            },
+            error: function(xhr,err)
+            { 
+                console.log(err);
+                alert("Error "+err);
+            }
+        });
+    $("#dropzoneMatrizRiesgoArchivo .dz-preview").remove();
+    $("#dropzoneMatrizRiesgoArchivo .dz-message").html('Seleccione o arrastre los archivos a subir.');
+}

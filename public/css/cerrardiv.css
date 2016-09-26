@@ -26,4 +26,36 @@
         border-left: 1px solid red;
         }
         .oculto {-webkit-transition:1s;-moz-transition:1s;-o-transition:1s;-ms-transition:1s;opacity:0;-ms-opacity:0;-moz-opacity:0;display:none;}
+
+
+  #signature-pad .cerrar {
+        float: right;
+        border-bottom: 1px solid #bbb;
+        border: 1px solid #bbb;
+        color: #999;
+        background: white;
+        line-height: 17px;
+        text-decoration: none;
+        padding: 0px 14px;
+        font-family: Arial;
+        border-radius: 0 0 0 5px;
+        box-shadow: -1px 1px white;
+        font-size: 18px;
+        -webkit-transition: .3s;
+        -moz-transition: .3s;
+        -o-transition: .3s;
+        -ms-transition: .3s;
+        }
+        #signature-pad .cerrar:hover {
+        background: #ff6868;
+        color: white;
+        text-decoration: none;
+        text-shadow: -1px -1px red;
+        border-bottom: 1px solid red;
+        border-left: 1px solid red;
+        }
+        .oculto {-webkit-transition:1s;-moz-transition:1s;-o-transition:1s;-ms-transition:1s;opacity:0;-ms-opacity:0;-moz-opacity:0;display:none;}
+
+
+          
         

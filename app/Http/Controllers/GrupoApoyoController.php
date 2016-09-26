@@ -22,7 +22,10 @@ class GrupoApoyoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('grupoapoyogrid', compact('datos'));
+        if($datos != null)
+            return view('grupoapoyogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

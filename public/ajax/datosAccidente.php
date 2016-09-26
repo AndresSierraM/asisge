@@ -31,6 +31,9 @@
                         '</a>&nbsp;'.
                         '<a href="accidente/'.$value->idAccidente.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="firmarAccidente('.$value->idAccidente.')">'.
+                            '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idAccidente;
         $row[$key][] = $value->numeroAccidente;

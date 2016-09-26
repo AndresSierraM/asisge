@@ -22,7 +22,10 @@ class TipoElementoProteccionController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('tipoelementoprotecciongrid', compact('datos'));
+        if($datos != null)
+            return view('tipoelementoprotecciongrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

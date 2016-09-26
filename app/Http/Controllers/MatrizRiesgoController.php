@@ -8,6 +8,11 @@ use App\Http\Requests;
 use App\Http\Requests\MatrizRiesgoRequest;
 use App\Http\Controllers\Controller;
 use DB;
+use Input;
+use File;
+use Validator;
+use Response;
+use Excel;
 include public_path().'/ajax/consultarPermisos.php';
 include public_path().'/ajax/guardarReporteAcpm.php';
 class MatrizRiesgoController extends Controller
@@ -23,7 +28,44 @@ class MatrizRiesgoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('matrizriesgogrid', compact('datos'));
+        if($datos != null)
+            return view('matrizriesgogrid', compact('datos'));
+        else
+            return view('accesodenegado');
+    }
+
+    public function indexdropzone() 
+    {
+        return view('dropzone');
+    }
+
+    //Funcion para subir archivos con dropzone
+    public function uploadFiles(Request $request) 
+    {
+ 
+        $input = Input::all();
+ 
+        $rules = array(
+        );
+ 
+        $validation = Validator::make($input, $rules);
+ 
+        if ($validation->fails()) {
+            return Response::make($validation->errors->first(), 400);
+        }
+        
+        $destinationPath = public_path() . '/imagenes/repositorio/temporal'; //Guardo en la carpeta  temporal
+
+        $extension = Input::file('file')->getClientOriginalExtension(); 
+        $fileName = Input::file('file')->getClientOriginalName(); // nombre de archivo
+        $upload_success = Input::file('file')->move($destinationPath, $fileName);
+ 
+        if ($upload_success) {
+            return Response::json('success', 200);
+        } 
+        else {
+            return Response::json('error', 400);
+        }
     }
 
     /**
@@ -53,7 +95,7 @@ class MatrizRiesgoController extends Controller
         /*$image = Input::file('imagenTercero');
         $imageName = $request->file('imagenTercero')->getClientOriginalName();
         $manager = new ImageManager();
-        $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);*/
+        $manager->make($image->getRealPath())->heighten(56)->save('images/matriz/'. $imageName);*/
 
         if($request['respuesta'] != 'falso')
         {  
@@ -294,9 +336,9 @@ class MatrizRiesgoController extends Controller
               $image = Input::file('imagenTercero');
               $imageName = $request->file('imagenTercero')->getClientOriginalName();
               $manager = new ImageManager();
-              $manager->make($image->getRealPath())->heighten(56)->save('images/terceros/'. $imageName);
+              $manager->make($image->getRealPath())->heighten(56)->save('images/matriz/'. $imageName);
 
-              $tercero->imagenTercero = 'terceros\\'. $imageName;
+              $tercero->imagenTercero = 'matriz\\'. $imageName;
           } */  
 
           $matrizRiesgo->save();
@@ -408,4 +450,417 @@ class MatrizRiesgoController extends Controller
         \App\MatrizRiesgo::destroy($id);
         return redirect('/matrizriesgo');
     }
+
+    public function importarMatrizRiesgo()
+    {
+      $destinationPath = public_path() . '/imagenes/repositorio/temporal'; 
+        Excel::load($destinationPath.'/Plantilla Matriz Riesgo.xlsx', function($reader) {
+
+            $datos = $reader->getActiveSheet();
+
+            $matriz = array();
+            $errores = array();
+            $fila = 10;
+            $posMatriz = 0;
+            $posErr = 0;            
+
+            //*****************************
+            // Fecha 
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $fechaMatriz = $datos->getCellByColumnAndRow(0, 5)->getValue();
+            if($fechaMatriz == '' or 
+                    $fechaMatriz == null)
+            {
+                $fechaMatriz = date("Y-m-d");
+            }
+
+            //*****************************
+            // Nombre
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $nombreMatriz = $datos->getCellByColumnAndRow(1, 5)->getValue();
+            if($nombreMatriz == '' or 
+                    $nombreMatriz == null)
+            {
+                $errores[$posErr]["linea"] = 5;
+                // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                $errores[$posErr]["mensaje"] = 'Debe diligenciar el nombre de la matriz';
+                
+                $posErr++;
+            }
+
+            //*****************************
+            // Frecuencia Medicion
+            //*****************************
+            // si la celda esta en blanco, reportamos error de obligatoriedad
+            $frecuenciaMedicion = $datos->getCellByColumnAndRow(2, 5)->getValue();
+            if($frecuenciaMedicion == '' or 
+                $frecuenciaMedicion == null)
+            {
+                $errores[$posErr]["linea"] = 5;
+                // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                $errores[$posErr]["mensaje"] = 'Debe diligenciar la Frecuencia de Medición';
+                
+                $posErr;
+            }
+            else
+            {
+                $consulta = \App\FrecuenciaMedicion::where('codigoFrecuenciaMedicion','=', $frecuenciaMedicion)->lists('idFrecuenciaMedicion');
+
+                // si se encuentra el id lo guardamos en el array
+                if(isset($consulta[0]))
+                    $frecuenciaMedicion = $consulta[0];
+                else
+                {
+                    $errores[$posErr]["linea"] = 5;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Frecuencia '. $frecuenciaMedicion. ' no existe';
+                    
+                    $posErr;
+                }
+            }
+
+            while ($datos->getCellByColumnAndRow(0, $fila)->getValue() != '' and
+                    $datos->getCellByColumnAndRow(0, $fila)->getValue() != NULL) {
+                
+
+                // para cada registro de matriz recorremos las columnas desde la 0 hasta la 24
+                $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = 0;
+                $matriz[$posMatriz]["Compania_idCompania"] = 0;
+                for ($columna = 0; $columna <= 24; $columna++) {
+                    // en la fila 9 del archivo de excel (oculta) estan los nombres de los campos de la tabla
+                    $campo = $datos->getCellByColumnAndRow($columna, 9)->getValue();
+
+                    // si es una celda calculada, la ejeutamos, sino tomamos su valor
+                    if ($datos->getCellByColumnAndRow($columna, $fila)->getDataType() == 'f')
+                        $matriz[$posMatriz][$campo] = $datos->getCellByColumnAndRow($columna, $fila)->getCalculatedValue();
+                    else
+                    {
+                        $matriz[$posMatriz][$campo] = 
+                            ($datos->getCellByColumnAndRow($columna, $fila)->getValue() == null 
+                                ? ''
+                                : $datos->getCellByColumnAndRow($columna, $fila)->getValue());
+                    }
+
+                }
+
+                
+                //*****************************
+                // Proceso
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["Proceso_idProceso"] == '' or 
+                    $matriz[ $posMatriz]["Proceso_idProceso"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Proceso';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\Proceso::where('codigoProceso','=', $matriz[ $posMatriz]["Proceso_idProceso"])->lists('idProceso');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["Proceso_idProceso"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Proceso '. $matriz[ $posMatriz]["Proceso_idProceso"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+
+                //*****************************
+                // Clasificación
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["ClasificacionRiesgo_idClasificacionRiesgo"] == '' or 
+                    $matriz[ $posMatriz]["ClasificacionRiesgo_idClasificacionRiesgo"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar la Clasificación';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\ClasificacionRiesgo::where('codigoClasificacionRiesgo','=', $matriz[ $posMatriz]["ClasificacionRiesgo_idClasificacionRiesgo"])->lists('idClasificacionRiesgo');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["ClasificacionRiesgo_idClasificacionRiesgo"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Clasificación '. $matriz[ $posMatriz]["ClasificacionRiesgo_idClasificacionRiesgo"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+
+                //*****************************
+                // Tipo Riesgo
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["TipoRiesgo_idTipoRiesgo"] == '' or 
+                    $matriz[ $posMatriz]["TipoRiesgo_idTipoRiesgo"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Tipo de Riesgo';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\TipoRiesgo::where('codigoTipoRiesgo','=', $matriz[ $posMatriz]["TipoRiesgo_idTipoRiesgo"])->lists('idTipoRiesgo');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["TipoRiesgo_idTipoRiesgo"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Tipo Riesgo '. $matriz[ $posMatriz]["TipoRiesgo_idTipoRiesgo"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+
+                //*****************************
+                // Tipo Riesgo Detalle
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["TipoRiesgoDetalle_idTipoRiesgoDetalle"] == '' or 
+                    $matriz[ $posMatriz]["TipoRiesgoDetalle_idTipoRiesgoDetalle"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Tipo de Riesgo';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\TipoRiesgoDetalle::where('nombreTipoRiesgoDetalle','=', $matriz[ $posMatriz]["TipoRiesgoDetalle_idTipoRiesgoDetalle"])->lists('idTipoRiesgoDetalle');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["TipoRiesgoDetalle_idTipoRiesgoDetalle"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Tipo Riesgo Detalle '. $matriz[ $posMatriz]["TipoRiesgoDetalle_idTipoRiesgoDetalle"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+
+                //*****************************
+                // Tipo Riesgo Salud
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["TipoRiesgoSalud_idTipoRiesgoSalud"] == '' or 
+                    $matriz[ $posMatriz]["TipoRiesgoSalud_idTipoRiesgoSalud"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Tipo de Riesgo ';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\TipoRiesgoSalud::where('nombreTipoRiesgoSalud','=', $matriz[ $posMatriz]["TipoRiesgoSalud_idTipoRiesgoSalud"])->lists('idTipoRiesgoSalud');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["TipoRiesgoSalud_idTipoRiesgoSalud"] = $consulta[0];
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Tipo Riesgo Salud '. $matriz[ $posMatriz]["TipoRiesgoSalud_idTipoRiesgoSalud"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+
+                //*****************************
+                // Nivel Deficiencia
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["nivelDeficienciaMatrizRiesgoDetalle"] == '' or 
+                    $matriz[ $posMatriz]["nivelDeficienciaMatrizRiesgoDetalle"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Nivel de Deficiencia';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    //buscamos el id en el modelo correspondiente
+                    $consulta = \App\MatrizRiesgoDetalle::where('nivelDeficienciaMatrizRiesgoDetalle','=', $matriz[ $posMatriz]["nivelDeficienciaMatrizRiesgoDetalle"])->lists('idMatrizRiesgoDetalle');
+                    // si se encuentra el id lo guardamos en el array
+
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = $consulta[0];
+                }
+
+                //*****************************
+                // Nivel Exposición
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["nivelExposicionMatrizRiesgoDetalle"] == '' or 
+                    $matriz[ $posMatriz]["nivelExposicionMatrizRiesgoDetalle"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Nivel de Exposición';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    //buscamos el id en el modelo correspondiente
+                    $consulta = \App\MatrizRiesgoDetalle::where('nivelExposicionMatrizRiesgoDetalle','=', $matriz[ $posMatriz]["nivelExposicionMatrizRiesgoDetalle"])->lists('idMatrizRiesgoDetalle');
+                    // si se encuentra el id lo guardamos en el array
+
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = $consulta[0];
+                }
+
+                //*****************************
+                // Nivel Consecuencia
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($matriz[ $posMatriz]["nivelConsecuenciaMatrizRiesgoDetalle"] == '' or 
+                    $matriz[ $posMatriz]["nivelConsecuenciaMatrizRiesgoDetalle"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $matriz[ $posMatriz]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Nivel de Consecuencia';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    //buscamos el id en el modelo correspondiente
+                    $consulta = \App\MatrizRiesgoDetalle::where('nivelConsecuenciaMatrizRiesgoDetalle','=', $matriz[ $posMatriz]["nivelConsecuenciaMatrizRiesgoDetalle"])->lists('idMatrizRiesgoDetalle');
+                    // si se encuentra el id lo guardamos en el array
+
+                    if(isset($consulta[0]))
+                        $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = $consulta[0];
+                }
+
+                $posMatriz++;
+                $fila++;
+                
+            }
+
+            $totalErrores = count($errores);
+            if($totalErrores > 0)
+            {
+                $mensaje = '<table cellspacing="0" cellpadding="1" style="width:100%;">'.
+                        '<tr>'.
+                            '<td colspan="3">'.
+                                '<h3>Informe de inconsistencias en Importacion de matriz</h3>'.
+                            '</td>'.
+                        '</tr>'.
+                        '<tr>'.
+                            '<td >No. Línea</td>'.
+                            // '<td >Nombre</td>'.
+                            '<td >Mensaje</td>'.
+                        '</tr>';
+
+                for($regErr = 0; $regErr < $totalErrores; $regErr++)
+                {
+                     $mensaje .= '<tr>'.
+                                '<td >'.$errores[$regErr]["linea"].'</td>'.
+                                // '<td >'.$errores[$regErr]["nombre"].'</td>'.
+                                '<td >'.$errores[$regErr]["mensaje"].'</td>'.
+                            '</tr>';
+                }
+                $mensaje .= '</table>';
+                echo json_encode(array(false, $mensaje));
+            }
+            else
+            {
+
+              $indice = array(
+                        'idMatrizRiesgo' => 0);
+
+              $data = array(
+                  'fechaElaboracionMatrizRiesgo' => $fechaMatriz,
+                  'nombreMatrizRiesgo' => $nombreMatriz,
+                  'Users_id' => \Session::get("idUsuario"),
+                  'FrecuenciaMedicion_idFrecuenciaMedicion' => $frecuenciaMedicion,
+                  'Compania_idCompania' => \Session::get("idCompania")
+              );
+
+              $matrizriesgo = \App\MatrizRiesgo::updateOrCreate($indice, $data);
+
+              // Consultamos el ultimo id insertado en la matriz de riesgo
+              $ultmatrizRiesgo = \App\MatrizRiesgo::All()->last();              
+              $matrizriesgo = $ultmatrizRiesgo->idMatrizRiesgo;
+                // recorremos el array recibido para insertar o actualizar cada registro
+                for($reg = 0; $reg < count($matriz); $reg++)
+                {
+                    
+                    $indice = array(
+                          'idMatrizRiesgoDetalle' => $matriz[$reg]["idMatrizRiesgoDetalle"]);
+
+                    $data = array(
+                        'MatrizRiesgo_idMatrizRiesgo' => $matrizriesgo,
+                        'Proceso_idProceso' => $matriz[$reg]['Proceso_idProceso'],
+                        'rutinariaMatrizRiesgoDetalle' => $matriz[$reg]['rutinariaMatrizRiesgoDetalle'],
+                        'ClasificacionRiesgo_idClasificacionRiesgo' => $matriz[$reg]['ClasificacionRiesgo_idClasificacionRiesgo'],
+                        'TipoRiesgo_idTipoRiesgo' => $matriz[$reg]['TipoRiesgo_idTipoRiesgo'],
+                        'TipoRiesgoDetalle_idTipoRiesgoDetalle' => $matriz[$reg]['TipoRiesgoDetalle_idTipoRiesgoDetalle'],
+                        'TipoRiesgoSalud_idTipoRiesgoSalud' => $matriz[$reg]['TipoRiesgoSalud_idTipoRiesgoSalud'],
+                        'vinculadosMatrizRiesgoDetalle' => $matriz[$reg]['vinculadosMatrizRiesgoDetalle'],
+                        'temporalesMatrizRiesgoDetalle' => $matriz[$reg]['temporalesMatrizRiesgoDetalle'],
+                        'totalExpuestosMatrizRiesgoDetalle' => $matriz[$reg]['totalExpuestosMatrizRiesgoDetalle'],
+                        'fuenteMatrizRiesgoDetalle' => $matriz[$reg]['fuenteMatrizRiesgoDetalle'],
+                        'medioMatrizRiesgoDetalle' => $matriz[$reg]['medioMatrizRiesgoDetalle'],
+                        'personaMatrizRiesgoDetalle' => $matriz[$reg]['personaMatrizRiesgoDetalle'],
+                        'nivelDeficienciaMatrizRiesgoDetalle' => $matriz[$reg]['nivelDeficienciaMatrizRiesgoDetalle'],
+                        'nivelExposicionMatrizRiesgoDetalle' => $matriz[$reg]['nivelExposicionMatrizRiesgoDetalle'],
+                        'nivelProbabilidadMatrizRiesgoDetalle' => $matriz[$reg]['nivelProbabilidadMatrizRiesgoDetalle'],
+                        'nombreProbabilidadMatrizRiesgoDetalle' => $matriz[$reg]['nombreProbabilidadMatrizRiesgoDetalle'],
+                        'nivelConsecuenciaMatrizRiesgoDetalle' => $matriz[$reg]['nivelConsecuenciaMatrizRiesgoDetalle'],
+                        'nivelRiesgoMatrizRiesgoDetalle' => $matriz[$reg]['nivelRiesgoMatrizRiesgoDetalle'],
+                        'nombreRiesgoMatrizRiesgoDetalle' => $matriz[$reg]['nombreRiesgoMatrizRiesgoDetalle'],
+                        'aceptacionRiesgoMatrizRiesgoDetalle' => $matriz[$reg]['aceptacionRiesgoMatrizRiesgoDetalle'],
+                        'eliminacionMatrizRiesgoDetalle' => $matriz[$reg]['eliminacionMatrizRiesgoDetalle'],
+                        'sustitucionMatrizRiesgoDetalle' => $matriz[$reg]['sustitucionMatrizRiesgoDetalle'],
+                        'controlMatrizRiesgoDetalle' => $matriz[$reg]['controlMatrizRiesgoDetalle'],
+                        'elementoProteccionMatrizRiesgoDetalle' => $matriz[$reg]['elementoProteccionMatrizRiesgoDetalle'],
+                        'observacionMatrizRiesgoDetalle' => $matriz[$reg]['observacionMatrizRiesgoDetalle'],
+                        'Compania_idCompania' => \Session::get("idCompania")
+                    );
+
+                    $matrizriesgodetalle = \App\MatrizRiesgoDetalle::updateOrCreate($indice, $data);
+                }
+                echo json_encode(array(true, 'Importacion Exitosa, por favor verifique'));
+            }
+
+
+        });
+        unlink ( $destinationPath.'/Plantilla Matriz Riesgo.xlsx');
+
+    }
 }
+

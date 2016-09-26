@@ -22,7 +22,10 @@ class TipoExamenMedicoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('tipoexamenmedicogrid', compact('datos'));
+        if($datos != null)
+            return view('tipoexamenmedicogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

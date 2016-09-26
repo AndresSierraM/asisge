@@ -22,7 +22,10 @@ class ProcedimientoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('procedimientogrid', compact('datos'));
+        if($datos != null)
+            return view('procedimientogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

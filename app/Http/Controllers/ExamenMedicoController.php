@@ -24,7 +24,10 @@ class ExamenMedicoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('examenmedicogrid', compact('datos'));
+        if($datos != null)
+            return view('examenmedicogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

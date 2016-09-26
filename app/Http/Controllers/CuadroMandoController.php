@@ -22,7 +22,10 @@ class CuadroMandoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('cuadromandogrid', compact('datos'));
+        if($datos != null)
+            return view('cuadromandogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

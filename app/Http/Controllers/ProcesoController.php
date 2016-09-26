@@ -22,7 +22,10 @@ class ProcesoController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('procesogrid', compact('datos'));
+        if($datos != null)
+            return view('procesogrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

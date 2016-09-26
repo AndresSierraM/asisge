@@ -24,7 +24,7 @@ function resizeCanvas() {
 }
 
 function mostrarFirma(reg)
-{
+{   
     if(document.getElementById("signature-pad").style.display == "block" || 
         document.getElementById("signature-pad").style.display == "")
         document.getElementById("signature-pad").style.display = "none";
@@ -35,6 +35,8 @@ function mostrarFirma(reg)
         document.getElementById("signature-reg").value = reg;
     else
         document.getElementById("signature-reg").value = '';
+
+    resizeCanvas() ;
 }
 
 

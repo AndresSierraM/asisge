@@ -24,7 +24,10 @@ class RolController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('rolgrid', compact('datos'));
+        if($datos != null)
+            return view('rolgrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**

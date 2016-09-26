@@ -37,7 +37,11 @@ class AccidenteController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('accidentegrid', compact('datos'));
+        if($datos != null)
+            return view('accidentegrid', compact('datos'));
+        else
+            return view('accesodenegado');
+
 
     }
 
