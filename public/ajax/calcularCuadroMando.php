@@ -70,6 +70,7 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin)
 				->where('TABLE_NAME', '=', $tabla)
 				->where('COLUMN_NAME', 'like', '%idCompania%') 
 				->get();
+
 	$datowhere = '';
 	// si la tabla tiene campo de id de compania, armamos una condicion con el id de compania de la session actual sino la dejamos en blanco
 	$datowhere = isset(get_object_vars($consulta[0])["COLUMN_NAME"]) 
@@ -166,12 +167,12 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 		{
 			case 'Operador':
 				// si es un operador matemático, simplemente lo concatenamos con espacio a los lados
-				$formula .= " ".$datosFormula["nombreCuadroMandoFormula"]." ";
+				$formula .= $datosFormula["nombreCuadroMandoFormula"];
 				break;
 
 			case 'Constante':
 				// si es un valor constante, simplemente lo concatenamos con espacio a los lados
-				$formula .= " ".$datosFormula["nombreCuadroMandoFormula"]." ";
+				$formula .= $datosFormula["nombreCuadroMandoFormula"];
 				break;
 
 			case 'Variable':
@@ -211,9 +212,16 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 				
 				// convertimos el objeto stdClass en array para acceder a sus datos
 				$datosresultado = get_object_vars($resultado[0]); 
-
+				echo $sql .'<br>';
+				
+				echo '<br>';
+				echo 'valor = '.$datosresultado[$datosFormula["campoCuadroMandoFormula"]].'<br>';
 				// concatenamos a la formula el valor calculado para la variable
-				$formula .= " ".$datosresultado[$datosFormula["campoCuadroMandoFormula"]]." ";
+				if($datosresultado[$datosFormula["campoCuadroMandoFormula"]] == null)
+					$formula .= 0;
+				else
+					$formula .= $datosresultado[$datosFormula["campoCuadroMandoFormula"]];
+
 				break;
 
 			case 'Indicador':
@@ -222,7 +230,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 				$valorIndicador = calcularFormula($datosFormula["CuadroMando_idIndicador"], $fechaInicio, $fechaFin);
 
 				// concatenamos a la formula el valor calculado para el indicador
-				$formula .= " ".$valorIndicador." ";
+				$formula .= $valorIndicador;
 				
 				break;
 
@@ -233,9 +241,16 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 		
 	}
 	
-	eval('$resultado = "'.$formula.'";');
+	//eval('$resultado = "'.$formula.'";');
+	try {
+		$resultado = eval('return '.$formula.';');
+	} catch (Exception $e) {
+		echo 'error de division por cero <br>';
+		$resultado = 0;
+	}
+	
 
-	// echo 'Resultado Indicador con ID '.$idCuadroMando.'<br>'.$formula.' = '. $resultado.'<br>';
+	echo 'Resultado Indicador con ID '.$idCuadroMando.'<br>'.$formula.' = '. $resultado.'<br>';
 	return  $resultado;
 }
 

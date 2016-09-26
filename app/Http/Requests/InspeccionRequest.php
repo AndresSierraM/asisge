@@ -23,8 +23,6 @@ class InspeccionRequest extends Request
      */
     public function rules()
     {
-       
-        
         $validacion = array('TipoInspeccion_idTipoInspeccion' => "required|integer",
                             'Tercero_idRealizadaPor' => 'required|integer',
                             'fechaElaboracionInspeccion' => 'required|date');

@@ -2,7 +2,7 @@
 // Realizo una consulta trayendo el idRol por post para poder mediante un ajax llenar el campo 
 $idRol = $_POST['idRol'];
 
-$consulta = DB::table('Rol')
+$consulta = DB::table('rol')
 ->select(DB::raw('nombreRol'))
 ->where ('idRol', "=", $idRol)
 ->get();

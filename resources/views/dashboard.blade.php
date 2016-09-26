@@ -8,6 +8,7 @@
 
 <?php 
     $idCompania = \Session::get("idCompania");
+    $mes = date("m");
 ?>
 <!-- Token para ejecuciones de ajax -->
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
@@ -55,12 +56,12 @@
 
                                     $dato = DB::select(
                                         'SELECT 
-                                            SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = '.date("m").', 1 , 0)) as Tarea,
-                                            SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = '.date("m").', IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as Ejecutado
+                                            SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = '.$mes.', 1 , 0)) as Tarea,
+                                            SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = '.$mes.', IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as Ejecutado
                                         From programa P
                                         left join programadetalle PD
                                         on P.idPrograma = PD.Programa_idPrograma
-                                        Where   (MONTH(fechaPlaneadaProgramaDetalle) = '.date("m").' or MONTH(fechaEjecucionProgramaDetalle) = '.date("m").') and 
+                                        Where   (MONTH(fechaPlaneadaProgramaDetalle) = '.$mes.' or MONTH(fechaEjecucionProgramaDetalle) = '.$mes.') and 
                                                 P.Compania_idCompania = '.$idCompania .' ');
                                     
                                     // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
@@ -96,7 +97,8 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                 <?php 
-                                    $dato = DB::select("Select count(idActaCapacitacion) as total From actacapacitacion Where MONTH(fechaElaboracionActaCapacitacion) = ".date("m")." and Compania_idCompania = ".$idCompania);
+
+                                    // $dato = DB::select("Select count(idActaCapacitacion) as total From actacapacitacion Where MONTH(fechaElaboracionActaCapacitacion) = ".$mes." and Compania_idCompania = ".$idCompania);
 
                                     // -------------------------------------------
                                     //  P L A N   D E   C A P A C I T A C I O N
@@ -108,8 +110,6 @@
                                         From plancapacitacion PC
                                         left join plancapacitaciontema PCT
                                         on PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
-                                        left join actacapacitacion AC
-                                        on PC.idPlanCapacitacion = AC.PlanCapacitacion_idPlanCapacitacion
                                         left join 
                                         (
                                             SELECT * 
@@ -118,19 +118,17 @@
                                             on ACT.ActaCapacitacion_idActaCapacitacion = AC.idActaCapacitacion
                                             where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
                                         )  ACT
-                                        on AC.idActaCapacitacion = ACT.ActaCapacitacion_idActaCapacitacion and 
+                                        on PC.idPlanCapacitacion = ACT.PlanCapacitacion_idPlanCapacitacion and 
                                         PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
                                         WHere  PC.Compania_idCompania = '.$idCompania );
 
                                     $dato = DB::select(
                                         'SELECT 
-                                            SUM(IF(MONTH(fechaPlanCapacitacionTema) = '.date("m").', 1 , 0)) as Tarea,
-                                            SUM(IF(MONTH(fechaPlanCapacitacionTema) = '.date("m").', IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as Ejecutado
+                                            SUM(IF(MONTH(fechaPlanCapacitacionTema) = '.$mes.', 1 , 0)) as Tarea,
+                                            SUM(IF(MONTH(fechaPlanCapacitacionTema) = '.$mes.', IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as Ejecutado
                                         From plancapacitacion PC
                                         left join plancapacitaciontema PCT
                                         on PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
-                                        left join actacapacitacion AC
-                                        on PC.idPlanCapacitacion = AC.PlanCapacitacion_idPlanCapacitacion
                                         left join 
                                         (
                                             SELECT * 
@@ -139,9 +137,11 @@
                                             on ACT.ActaCapacitacion_idActaCapacitacion = AC.idActaCapacitacion
                                             where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
                                         )  ACT
-                                        on AC.idActaCapacitacion = ACT.ActaCapacitacion_idActaCapacitacion and 
+                                        on 
+                                            PC.idPlanCapacitacion = ACT.PlanCapacitacion_idPlanCapacitacion
+                                         and 
                                         PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
-                                        WHere  MONTH(fechaPlanCapacitacionTema) = '.date("m").' and 
+                                        WHere  MONTH(fechaPlanCapacitacionTema) = '.$mes.' and 
                                                 PC.Compania_idCompania = '.$idCompania );
                                     
                                     // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
@@ -180,28 +180,80 @@
                                     // -------------------------------------------
                                     //  I N S P E C C I O N E S   D E   S E G U R I D A D
                                     // -------------------------------------------
+                                    $factor = "IF(
+                                                unidadFrecuenciaMedicion = 'Dias', 
+                                                1 * 30, 
+                                                IF(
+                                                    unidadFrecuenciaMedicion = 'Semanas', 
+                                                    1 * 4, 
+                                                    IF(
+                                                        unidadFrecuenciaMedicion = 'Años', 
+                                                        1 * 4, 
+                                                        valorFrecuenciaMedicion
+                                                    )
+                                                )
+                                            )";
+                                    
+                                    $preguntaMes = "MOD($mes, 
+                                              IF(
+                                                unidadFrecuenciaMedicion = 'Dias' OR 
+                                                unidadFrecuenciaMedicion = 'Semanas' , $mes, 
+                                                    IF(
+                                                        unidadFrecuenciaMedicion = 'Meses', 
+                                                        valorFrecuenciaMedicion, 
+                                                        IF(
+                                                            unidadFrecuenciaMedicion = 'Años', 
+                                                            $mes, $mes
+                                                        )
+                                                    )
+                                                )
+                                            ) = 0";
+
                                     $total = DB::select(
-                                        'SELECT
-                                            SUM(IF(unidadFrecuenciaMedicion IN ("Meses"), 1 , 0)) as Tarea,
-                                            SUM(1) as Ejecutado
+                                        'Select SUM(Tarea) as Tarea, 
+                                                SUM(Ejecutado) as Ejecutado
+                                        FROM 
+                                        (SELECT
+                                            SUM(IF(1
+                                                    ,
+                                                    (1 * '.$factor.' / valorFrecuenciaMedicion) , 0)) as Tarea, 
+                                            0 as Ejecutado
                                         FROM tipoinspeccion TI
                                         left join frecuenciamedicion FM
                                         on TI.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                                        left join inspeccion I
-                                        on TI.idTipoInspeccion = I.TipoInspeccion_idTipoInspeccion
-                                        Where TI.Compania_idCompania = '.$idCompania);
+                                        Where TI.Compania_idCompania = '.$idCompania.'
+                                        
+                                        UNION 
+
+                                        SELECT
+                                            0 as Tarea,
+                                            SUM(1) as Ejecutado
+                                        FROM inspeccion I
+                                        Where I.Compania_idCompania = '.$idCompania.'
+                                        ) INS ');
 
                                     $dato = DB::select(
-                                        'SELECT
-                                            SUM(IF((MOD('.date("m").',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as Tarea,
-                                            SUM(IF(MONTH(fechaElaboracionInspeccion) = '.date("m").', 1, 0 )) as Ejecutado
+                                        'Select SUM(Tarea) as Tarea, 
+                                                SUM(Ejecutado) as Ejecutado
+                                        FROM 
+                                        (SELECT
+                                            SUM(IF('.$preguntaMes.'
+                                                    ,
+                                                    (1 * '.$factor.' / valorFrecuenciaMedicion) , 0)) as Tarea, 
+                                            0 as Ejecutado
                                         FROM tipoinspeccion TI
                                         left join frecuenciamedicion FM
                                         on TI.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                                        left join inspeccion I
-                                        on TI.idTipoInspeccion = I.TipoInspeccion_idTipoInspeccion
-                                        Where MONTH(fechaElaboracionInspeccion) = '.date("m").' and 
-                                                TI.Compania_idCompania = '.$idCompania);
+                                        Where TI.Compania_idCompania = '.$idCompania.'
+                                        
+                                        UNION 
+
+                                        SELECT
+                                            0 as Tarea,
+                                            SUM(IF(MONTH(fechaElaboracionInspeccion) = '.$mes.', 1, 0 )) as Ejecutado
+                                        FROM inspeccion I
+                                        Where MONTH(fechaElaboracionInspeccion) = '.$mes.' and I.Compania_idCompania = '.$idCompania.'
+                                        ) INS ');
 
                                         
                                     // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
@@ -209,10 +261,10 @@
                                     foreach ($dato as $key => $value){$datos = (array) $value;}
                                 ?>
                                     
-                                    <div title="Acumulado total: Ejecutado / Total Tareas">{{$totales["Ejecutado"].' / '.$totales["Tarea"]}}<span >
+                                    <div title="Acumulado total: Ejecutado / Total Tareas">{{number_format($totales["Ejecutado"],0,'.',',').' / '.number_format($totales["Tarea"],0,'.',',')}}<span >
                                     ({{number_format($totales["Ejecutado"]/($totales["Tarea"] == 0 ? 1 : $totales["Tarea"])*100,1,'.',',')}}%)</span></div>
 
-                                    <div class="huge" title="Acumulado Mes: Ejecutado / Total Tareas">{{$datos["Ejecutado"].' / '.$datos["Tarea"]}}</div>
+                                    <div class="huge" title="Acumulado Mes: Ejecutado / Total Tareas">{{number_format($datos["Ejecutado"],0,'.',',').' / '.number_format($datos["Tarea"],0,'.',',')}}</div>
                                     <div >
                                     ({{number_format($datos["Ejecutado"]/($datos["Tarea"] == 0 ? 1 : $datos["Tarea"])*100,1,'.',',')}}%)</div>                                    
                                     <div>Inspecciones</div>
@@ -242,8 +294,8 @@
         // -------------------------------------------
             $total = DB::select(
             'SELECT 
-                SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '.date("m").' AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = '.date("m").' AND RET = 1) OR (MOD('.date("m").',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0) OR (unidadFrecuenciaMedicion IN ("Años"))) as Tarea,
-                SUM(IF(MONTH(fechaExamenMedico) = '.date("m").', 1, 0 )) as Ejecutado
+                SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '.$mes.' AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = '.$mes.' AND RET = 1) OR (MOD('.$mes.',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")) , 1 , 0) ) as Tarea,
+                SUM(IF(MONTH(fechaExamenMedico) = '.$mes.', 1, 0 )) as Ejecutado
             FROM
             (
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
@@ -295,9 +347,9 @@
             ');
 
         $dato = DB::select(
-            'SELECT 
-                SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '.date("m").' AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = '.date("m").' AND RET = 1) OR (MOD('.date("m").',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0) OR (unidadFrecuenciaMedicion IN ("Años"))) as Tarea,
-                SUM(IF(MONTH(fechaExamenMedico) = '.date("m").', 1, 0 )) as Ejecutado
+            'SELECT  
+                SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '.$mes.' AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = '.$mes.' AND RET = 1) OR (MOD('.$mes.',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")) OR (unidadFrecuenciaMedicion IN ("Años")), 1 , 0) ) as Tarea,
+                SUM(IF(MONTH(fechaExamenMedico) = '.$mes.', 1, 0 )) as Ejecutado
             FROM
             (
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
@@ -402,15 +454,15 @@
 
                                     $dato = DB::select(
                                         'SELECT 
-                                            SUM(IF(MONTH(fechaElaboracionAusentismo) = '.date("m").', 1 , 0)) as Tarea,
-                                            SUM(IF(MONTH(fechaOcurrenciaAccidente) = '.date("m").', IF(Acc.idAccidente IS NULL, 0, 1), 0)) as Ejecutado
+                                            SUM(IF(MONTH(fechaElaboracionAusentismo) = '.$mes.', 1 , 0)) as Tarea,
+                                            SUM(IF(MONTH(fechaOcurrenciaAccidente) = '.$mes.', IF(Acc.idAccidente IS NULL, 0, 1), 0)) as Ejecutado
                                         FROM ausentismo Aus
                                         left join accidente Acc
                                         on Aus.idAusentismo = Acc.Ausentismo_idAusentismo
                                         left join tercero T
                                         on Aus.Tercero_idTercero = T.idTercero
-                                        Where (MONTH(fechaElaboracionAusentismo) = '.date("m").' or
-                                            MONTH(fechaOcurrenciaAccidente) = '.date("m").') and 
+                                        Where (MONTH(fechaElaboracionAusentismo) = '.$mes.' or
+                                            MONTH(fechaOcurrenciaAccidente) = '.$mes.') and 
                                             (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
                                             Aus.Compania_idCompania = '.$idCompania .';');
 
@@ -447,33 +499,63 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <?php 
-                                        $dato = DB::select("Select count(idConformacionGrupoApoyo) as total From conformaciongrupoapoyo Where MONTH(fechaConformacionGrupoApoyo) = ".date("m")." and Compania_idCompania = ".$idCompania);
+                                        $dato = DB::select("Select count(idConformacionGrupoApoyo) as total From conformaciongrupoapoyo Where MONTH(fechaConformacionGrupoApoyo) = ".$mes." and Compania_idCompania = ".$idCompania);
 
                                         // -------------------------------------------
                                         //  G R U P O S   D E   A P O Y O
                                         // -------------------------------------------
                                         $total = DB::select(
-                                            'SELECT 
-                                                SUM(IF((MOD('.date("m").',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as Tarea,
-                                                SUM(IF(MONTH(fechaActaGrupoApoyo) = '.date("m").', 1, 0 )) as Ejecutado
-                                            FROM grupoapoyo GA
-                                            left join frecuenciamedicion FM
-                                            on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                                            left join actagrupoapoyo AGA
-                                            on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
-                                            Where GA.Compania_idCompania = '.$idCompania .' ');
+                                            'SELECT SUM(Tarea) as Tarea, SUM(Ejecutado) as Ejecutado
+                                            FROM 
+                                            (
+                                                SELECT 
+                                                    SUM(1) as Tarea, 
+                                                    0 as Ejecutado 
+                                                FROM 
+                                                    grupoapoyo GA 
+                                                    left join frecuenciamedicion FM on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion 
+                                                Where 
+                                                     GA.Compania_idCompania = '.$idCompania .'
+                                                 
+                                            UNION
+                                                 
+                                                SELECT 
+                                                    0 as Tarea, 
+                                                    SUM(1) as Ejecutado 
+                                                FROM 
+                                                    grupoapoyo GA 
+                                                    left join frecuenciamedicion FM on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion 
+                                                    right join actagrupoapoyo AGA on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo 
+                                                Where 
+                                                     GA.Compania_idCompania = '.$idCompania .'
+                                            ) res');
 
                                         $dato = DB::select(
-                                            'SELECT 
-                                                SUM(IF((MOD('.date("m").',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as Tarea,
-                                                SUM(IF(MONTH(fechaActaGrupoApoyo) = '.date("m").', 1, 0 )) as Ejecutado
-                                            FROM grupoapoyo GA
-                                            left join frecuenciamedicion FM
-                                            on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                                            left join actagrupoapoyo AGA
-                                            on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
-                                            Where MONTH(fechaActaGrupoApoyo) = '.date("m").' and 
-                                                    GA.Compania_idCompania = '.$idCompania .' ');
+                                            'SELECT SUM(Tarea) as Tarea, SUM(Ejecutado) as Ejecutado
+                                            FROM 
+                                            (
+                                                SELECT 
+                                                    SUM(IF((MOD('.$mes.', valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")) OR 
+                                                            (valorFrecuenciaMedicion = 1 and unidadFrecuenciaMedicion IN ("Meses")), 1, 0)) as Tarea, 
+                                                    0 as Ejecutado 
+                                                FROM 
+                                                    grupoapoyo GA 
+                                                    left join frecuenciamedicion FM on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion 
+                                                Where 
+                                                     GA.Compania_idCompania = '.$idCompania .'
+                                                 
+                                            UNION
+                                                 
+                                                SELECT 
+                                                    0 as Tarea, 
+                                                    SUM(IF(MONTH(fechaActaGrupoApoyo) = '.$mes.', 1, 0)) as Ejecutado 
+                                                FROM 
+                                                    grupoapoyo GA 
+                                                    left join frecuenciamedicion FM on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion 
+                                                    left join actagrupoapoyo AGA on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo 
+                                                Where MONTH(fechaActaGrupoApoyo) = '.$mes.' and 
+                                                     GA.Compania_idCompania = '.$idCompania .'
+                                            ) res');
                                         
                                     // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
                                     foreach ($total as $key => $value){$totales = (array) $value;}
@@ -583,16 +665,14 @@
                         $arrayDatos .= "]";
 
                         echo '                                        
-                                    <div class="col-lg-6 col-sm-6 col-md-6">
-                                      <div class="panel panel-primary">
+                                    <div class="col-lg-6 col-sm-12 col-md-6">
+                                      <div class="panel panel-primary" >
                                         <div class="panel-heading">
                                          <i class="fa fa-pie-chart fa-fw"></i> '.$CuadroMando['indicadorCuadroMando'].'<br>
                                         <i class="fa fa-superscript fa-fw"></i> '.$CuadroMando['formulaCuadroMando'].'
                                         </div>
-                                        <div class="panel-body">
-                                          <div id="indicador'.$CuadroMando['idCuadroMando'].'" style="height: 300px;">
-                                              <canvas id="'.$CuadroMando['idCuadroMando'].'" width="800" height="300"></canvas>
-                                          </div>
+                                        <div class="panel-body" style="min-height: 300px; max-height: 500px;">
+                                              <canvas id="'.$CuadroMando['idCuadroMando'].'" ></canvas>
                                         </div>
                                       </div>
                                     </div>';

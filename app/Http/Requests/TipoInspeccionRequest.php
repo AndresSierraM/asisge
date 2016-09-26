@@ -26,7 +26,7 @@ class TipoInspeccionRequest extends Request
         $pregunta = count($this->get('numeroTipoInspeccionPregunta'));
         
         $validacion = array(
-            "codigoTipoInspeccion" => "required|numeric|unique:tipoinspeccion,codigoTipoInspeccion,".$this->get('idTipoInspeccion') .",idTipoInspeccion,Compania_idCompania,".(\Session::get('idCompania')),
+            "codigoTipoInspeccion" => "required|unique:tipoinspeccion,codigoTipoInspeccion,".$this->get('idTipoInspeccion') .",idTipoInspeccion,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreTipoInspeccion" => "required|string|max:80",
             "FrecuenciaMedicion_idFrecuenciaMedicion" => "required");
 

@@ -100,6 +100,7 @@ class PlanTrabajoController extends Controller
         // -------------------------------------------
         //  P L A N   D E   C A P A C I T A C I O N
         // -------------------------------------------
+        
         $capacitacion = DB::select(
             'SELECT nombrePlanCapacitacion  as descripcionTarea,
                 SUM(IF(MONTH(fechaPlanCapacitacionTema) = 1, 1 , 0)) as EneroT,
@@ -129,8 +130,6 @@ class PlanTrabajoController extends Controller
             From plancapacitacion PC
             left join plancapacitaciontema PCT
             on PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
-            left join actacapacitacion AC
-            on PC.idPlanCapacitacion = AC.PlanCapacitacion_idPlanCapacitacion
             left join 
             (
                 SELECT * 
@@ -139,9 +138,8 @@ class PlanTrabajoController extends Controller
                 on ACT.ActaCapacitacion_idActaCapacitacion = AC.idActaCapacitacion
                 where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
             )  ACT
-            on AC.idActaCapacitacion = ACT.ActaCapacitacion_idActaCapacitacion and 
-            PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
-            WHere  PC.Compania_idCompania = '.$idCompania .' 
+            on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
+            Where  PC.Compania_idCompania = '.$idCompania .' 
             group by idPlanCapacitacion');
 
 
@@ -375,41 +373,88 @@ class PlanTrabajoController extends Controller
         //  G R U P O S   D E   A P O Y O
         // -------------------------------------------
         $grupoapoyo = DB::select(
-            'SELECT nombreGrupoApoyo as descripcionTarea, 
-                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 1, 1, 0 )) as EneroC,
-                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 2, 1, 0 )) as FebreroC,
-                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 3, 1, 0 )) as MarzoC,
-                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 4, 1, 0 )) as AbrilC,
-                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 5, 1, 0 )) as MayoC,
-                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 6, 1, 0 )) as JunioC,
-                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 7, 1, 0 )) as JulioC,
-                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 8, 1, 0 )) as AgostoC,
-                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 9, 1, 0 )) as SeptiembreC,
-                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 10, 1, 0 )) as OctubreC,
-                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 11, 1, 0 )) as NoviembreC,
-                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaActaGrupoApoyo) = 12, 1, 0 )) as DiciembreC,
+            'SELECT 
+                nombreGrupoApoyo as descripcionTarea, 
+                IF(MOD(1,GA.multiploMes) = 0, numeroTareas, 0) as EneroT,
+                SUM(IF(AGA.mesActa = 1, numeroCumplidas, 0)) as EneroC,
+                IF(MOD(2,GA.multiploMes) = 0, numeroTareas, 0) as FebreroT,
+                SUM(IF(AGA.mesActa = 2, numeroCumplidas, 0)) as FebreroC,
+                IF(MOD(3,GA.multiploMes) = 0, numeroTareas, 0) as MarzoT,
+                SUM(IF(AGA.mesActa = 3, numeroCumplidas, 0)) as MarzoC,
+                IF(MOD(4,GA.multiploMes) = 0, numeroTareas, 0) as AbrilT,
+                SUM(IF(AGA.mesActa = 4, numeroCumplidas, 0)) as AbrilC,
+                IF(MOD(5,GA.multiploMes) = 0, numeroTareas, 0) as MayoT,
+                SUM(IF(AGA.mesActa = 5, numeroCumplidas, 0)) as MayoC,
+                IF(MOD(6,GA.multiploMes) = 0, numeroTareas, 0) as JunioT,
+                SUM(IF(AGA.mesActa = 6, numeroCumplidas, 0)) as JunioC,
+                IF(MOD(7,GA.multiploMes) = 0, numeroTareas, 0) as JulioT,
+                SUM(IF(AGA.mesActa = 7, numeroCumplidas, 0)) as JulioC,
+                IF(MOD(8,GA.multiploMes) = 0, numeroTareas, 0) as AgostoT,
+                SUM(IF(AGA.mesActa = 8, numeroCumplidas, 0)) as AgostoC,
+                IF(MOD(9,GA.multiploMes) = 0, numeroTareas, 0) as SeptiembreT,
+                SUM(IF(AGA.mesActa = 9, numeroCumplidas, 0)) as SeptiembreC,
+                IF(MOD(10,GA.multiploMes) = 0, numeroTareas, 0) as OctubreT,
+                SUM(IF(AGA.mesActa = 10, numeroCumplidas, 0)) as OctubreC,
+                IF(MOD(11,GA.multiploMes) = 0, numeroTareas, 0) as NoviembreT,
+                SUM(IF(AGA.mesActa = 11, numeroCumplidas, 0)) as NoviembreC,
+                IF(MOD(12,GA.multiploMes) = 0, numeroTareas, 0) as DiciembreT,
+                SUM(IF(AGA.mesActa = 12, numeroCumplidas, 0)) as DiciembreC,
                 SUM(recursoPlaneadoActaGrupoApoyoDetalle) as PresupuestoT,
                 SUM(recursoEjecutadoActaGrupoApoyoDetalle) as PresupuestoC
-            FROM grupoapoyo GA
-            left join frecuenciamedicion FM
-            on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-            left join actagrupoapoyo AGA
+
+            FROM 
+            (
+                SELECT 
+                    idGrupoApoyo,
+                    nombreGrupoApoyo,
+                    IF(unidadFrecuenciaMedicion = \'Dias\',
+                        30 / valorFrecuenciaMedicion,
+                        IF(unidadFrecuenciaMedicion = \'Semanas\',
+                            4 / valorFrecuenciaMedicion,
+                            1)) AS numeroTareas,
+                    IF(unidadFrecuenciaMedicion IN (\'Dias\' , \'Semanas\'),
+                        1,
+                        valorFrecuenciaMedicion) AS multiploMes
+                FROM
+                    grupoapoyo GA
+                        LEFT JOIN
+                    frecuenciamedicion FM ON GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+                WHERE
+                    Compania_idCompania = '.$idCompania .' 
+            ) GA
+            Left join 
+            (
+                SELECT 
+                    GrupoApoyo_idGrupoApoyo,
+                    MONTH(fechaActaGrupoApoyo) AS mesActa,
+                    COUNT(idActaGrupoApoyo) as numeroCumplidas
+                FROM
+                    actagrupoapoyo AGA
+                WHERE
+                    AGA.Compania_idCompania = '.$idCompania .' 
+                GROUP BY GrupoApoyo_idGrupoApoyo , mesActa
+            ) AGA
             on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
-            left join actagrupoapoyodetalle AGAD
-            on AGAD.ActaGrupoApoyo_idActaGrupoApoyo = AGA.idActaGrupoApoyo
-            Where GA.Compania_idCompania = '.$idCompania .' 
+            left join 
+            (
+                SELECT 
+                    GrupoApoyo_idGrupoApoyo,
+                    MONTH(fechaActaGrupoApoyo) AS mesActa,
+                    SUM(recursoPlaneadoActaGrupoApoyoDetalle) AS recursoPlaneadoActaGrupoApoyoDetalle,
+                    SUM(recursoEjecutadoActaGrupoApoyoDetalle) AS recursoEjecutadoActaGrupoApoyoDetalle
+                FROM
+                    grupoapoyo GA
+                        LEFT JOIN
+                    frecuenciamedicion FM ON GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+                        LEFT JOIN
+                    actagrupoapoyo AGA ON GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
+                        LEFT JOIN
+                    actagrupoapoyodetalle AGAD ON AGAD.ActaGrupoApoyo_idActaGrupoApoyo = AGA.idActaGrupoApoyo
+                WHERE
+                    AGA.Compania_idCompania = '.$idCompania .'
+                GROUP BY GrupoApoyo_idGrupoApoyo , mesActa
+            ) AGAD
+            on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
             group by idGrupoApoyo');
 
         return view('plantrabajo', compact('accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo'));

@@ -11,6 +11,8 @@ $campos = DB::select(
     on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
     where documentocrm.idDocumentoCRM = '.$id.' and mostrarVistaDocumentoCRMCampo = 1');
 
+
+$datos = array();
 $camposVista = '';
 for($i = 0; $i < count($campos); $i++)
 {
@@ -19,6 +21,7 @@ for($i = 0; $i < count($campos); $i++)
     $camposVista .= $datos["nombreCampoCRM"].',';
 }
 
+	$idMovimientoCRMA = (isset($movimientocrm->idMovimientoCRM) ? $movimientocrm->idMovimientoCRM : 0);
 
 ?>
 @extends('layouts.vista')
@@ -26,6 +29,50 @@ for($i = 0; $i < count($campos); $i++)
 
 @section('content')
 @include('alerts.request')
+
+{!!Html::script('js/movimientocrm.js'); !!}
+
+{!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
+{!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
+{!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
+
+
+<script>
+	
+	var movimientoCRMAsistentes = '<?php echo (isset($movimientocrm) ? json_encode($movimientocrm->movimientoCRMAsistentes) : "");?>';
+
+	movimientoCRMAsistentes = (movimientoCRMAsistentes != '' ? JSON.parse(movimientoCRMAsistentes) : '');
+
+	var movimientoCRMArchivo = '<?php echo (isset($movimientocrm) ? json_encode($movimientocrm->movimientoCRMArchivos) : "");?>';
+		movimientoCRMArchivo = (movimientoCRMArchivo != '' ? JSON.parse(movimientoCRMArchivo) : '');
+
+	var valorAsistentes = [0,'','','','',''];
+	var valorArchivo = [0,'','',''];
+
+	$(document).ready(function(){
+
+		asistentes = new Atributos('asistentes','contenedor_asistentes','asistentes_');
+		asistentes.campos = ['idMovimientoCRMAsistente','nombreMovimientoCRMAsistente','cargoMovimientoCRMAsistente','telefonoMovimientoCRMAsistente','correoElectronicoMovimientoCRMAsistente'];
+		asistentes.etiqueta = ['input','input','input','input','input'];
+		asistentes.tipo = ['hidden','text','text','text','text'];
+		asistentes.estilo = ['','width: 330px; height:35px;','width: 270px;height:35px;','width: 150px;height:35px;','width: 230px;height:35px;'];
+		asistentes.clase = ['','','','',''];
+		asistentes.sololectura = [false,false,false,false,false];
+
+		
+		for(var j=0, k = movimientoCRMAsistentes.length; j < k; j++)
+		{
+			asistentes.agregarCampos(JSON.stringify(movimientoCRMAsistentes[j]),'L');
+		}
+
+		// for(var j=0, k = movimientoCRMArchivo.length; j < k; j++)
+		// {
+		// 	archivo.agregarCampos(JSON.stringify(movimientoCRMArchivo[j]),'L');
+		// }
+
+	});
+</script>
+
 
 	@if(isset($movimientocrm))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -67,6 +114,28 @@ for($i = 0; $i < count($campos); $i++)
 					    		</div>
 					    	</div>
 					    </div>
+					    <?php
+						
+							if(strpos($camposVista, 'OrigenCRM_idOrigenCRM') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('OrigenCRM_idOrigenCRM', 'Origen', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	{!!Form::select('OrigenCRM_idOrigenCRM',$origen, (isset($movimientocrm) ? $movimientocrm->OrigenCRM_idOrigenCRM : 0),["class" => "chosen-select form-control"])!!}
+
+								</div>
+							</div>
+						</div>
+						<?php
+							}
+						?>
 					    <div class="col-sm-6">
 							<div class="col-sm-4">
 								{!!Form::label('fechaSolicitudMovimientoCRM', 'F. Elaboración', array())!!}
@@ -80,6 +149,11 @@ for($i = 0; $i < count($campos); $i++)
 								</div>
 							</div>
 						</div>
+						<script type="text/javascript">
+							$('#fechaSolicitudMovimientoCRM').datetimepicker(({
+								format: "YYYY-MM-DD"
+							}));
+						</script>
 						<?php 
 							if(strpos($camposVista, 'fechaEstimadaSolucionMovimientoCRM') !== false)
 							{ 
@@ -97,6 +171,11 @@ for($i = 0; $i < count($campos); $i++)
 								</div>
 							</div>
 						</div>
+						<script type="text/javascript">
+							$('#fechaEstimadaSolucionMovimientoCRM').datetimepicker(({
+								format: "YYYY-MM-DD"
+							}));
+						</script>
 						<?php
 							}
 
@@ -116,6 +195,11 @@ for($i = 0; $i < count($campos); $i++)
 								</div>
 							</div>
 						</div>
+						<script type="text/javascript">
+							$('#fechaVencimientoMovimientoCRM').datetimepicker(({
+								format: "YYYY-MM-DD"
+							}));
+						</script>
 						<?php
 							}
 
@@ -132,6 +216,26 @@ for($i = 0; $i < count($campos); $i++)
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
 									{!!Form::text('fechaRealSolucionMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa la Fecha Real de Solución', 'readonly'=>'readonly'])!!}
+								</div>
+							</div>
+						</div>
+						<?php
+							}
+
+							if(strpos($camposVista, 'AcuerdoServicio_idAcuerdoServicio') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('AcuerdoServicio_idAcuerdoServicio', 'Acuerdo de Servicio', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	{!!Form::select('AcuerdoServicio_idAcuerdoServicio',$acuerdoservicio, (isset($movimientocrm) ? $movimientocrm->AcuerdoServicio_idAcuerdoServicio : 0),["class" => "chosen-select form-control"])!!}
+
 								</div>
 							</div>
 						</div>
@@ -276,66 +380,6 @@ for($i = 0; $i < count($campos); $i++)
 						<?php
 							}
 
-							if(strpos($camposVista, 'LineaNegocio_idLineaNegocio') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('LineaNegocio_idLineaNegocio', 'Línea de Negocio', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-					              	{!!Form::select('LineaNegocio_idLineaNegocio',$lineanegocio, (isset($movimientocrm) ? $movimientocrm->LineaNegocio_idLineaNegocio : 0),["class" => "chosen-select form-control"])!!}
-
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
-							if(strpos($camposVista, 'OrigenCRM_idOrigenCRM') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('OrigenCRM_idOrigenCRM', 'Origen', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-					              	{!!Form::select('OrigenCRM_idOrigenCRM',$origen, (isset($movimientocrm) ? $movimientocrm->OrigenCRM_idOrigenCRM : 0),["class" => "chosen-select form-control"])!!}
-
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
-							if(strpos($camposVista, 'EstadoCRM_idEstadoCRM') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('EstadoCRM_idEstadoCRM', 'Estado', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-					              	{!!Form::select('EstadoCRM_idEstadoCRM',$estado, (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : 0),["class" => "chosen-select form-control"])!!}
-
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
 							if(strpos($camposVista, 'EventoCRM_idEventoCRM') !== false)
 							{ 
 						?>
@@ -356,19 +400,19 @@ for($i = 0; $i < count($campos); $i++)
 						<?php
 							}
 
-							if(strpos($camposVista, 'AcuerdoServicio_idAcuerdoServicio') !== false)
+							if(strpos($camposVista, 'LineaNegocio_idLineaNegocio') !== false)
 							{ 
 						?>
 						<div class="col-sm-6">
 							<div class="col-sm-4">
-								{!!Form::label('AcuerdoServicio_idAcuerdoServicio', 'Acuerdo de Servicio', array())!!}
+								{!!Form::label('LineaNegocio_idLineaNegocio', 'Línea de Negocio', array())!!}
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('AcuerdoServicio_idAcuerdoServicio',$acuerdoservicio, (isset($movimientocrm) ? $movimientocrm->AcuerdoServicio_idAcuerdoServicio : 0),["class" => "chosen-select form-control"])!!}
+					              	{!!Form::select('LineaNegocio_idLineaNegocio',$lineanegocio, (isset($movimientocrm) ? $movimientocrm->LineaNegocio_idLineaNegocio : 0),["class" => "chosen-select form-control"])!!}
 
 								</div>
 							</div>
@@ -376,30 +420,114 @@ for($i = 0; $i < count($campos); $i++)
 						<?php
 							}
 
-							if(strpos($camposVista, 'detallesMovimientoCRM') !== false)
+							if(strpos($camposVista, 'valorMovimientoCRM') !== false)
 							{ 
 						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('valorMovimientoCRM', 'Valor', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+									{!!Form::text('valorMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el valor del documento'])!!}
+
+								</div>
+							</div>
+						</div>
+						
+						<?php
+							}
+
+							if(strpos($camposVista, 'EstadoCRM_idEstadoCRM') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('EstadoCRM_idEstadoCRM', 'Estado', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	{!!Form::select('EstadoCRM_idEstadoCRM',$estado, (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : 0),["class" => "chosen-select form-control"])!!}
+
+								</div>
+							</div>
+						</div>
+						
+						<?php
+							}
+						?>
+
 						<div class="col-sm-12">
+						<ul class="nav nav-tabs">
+						<?php
+
+						if(strpos($camposVista, 'detallesMovimientoCRM') !== false)
+						{ 
+						?>
+							<li class="active"><a data-toggle="tab" href="#detalles">Detalles</a></li>
+
+						<?php
+						}
+						
+						if(strpos($camposVista, 'solucionMovimientoCRM') !== false)
+						{ 
+						?>
+							<li><a data-toggle="tab" href="#solucion">Solución</a></li>
+						<?php
+						}
+
+						if(strpos($camposVista, 'asistentesMovimientoCRM') !== false)
+						{ 
+						?>
+					  		<li><a data-toggle="tab" href="#asistentes">Asistentes</a></li>
+						<?php
+						}
+
+						if(strpos($camposVista, 'documentosMovimientoCRM') !== false)
+						{ 
+						?>
+					  		<li><a data-toggle="tab" href="#documentos">Documentos</a></li>
+						<?php
+						}
+						?>
+					</ul>
+					</div>
+
+					<div class="tab-content">
+					<?php
+						if(strpos($camposVista, 'detallesMovimientoCRM') !== false)
+						{ 
+					?>
+					  <div id="detalles" class="tab-pane fade in active">
+					    <div class="col-sm-12">
 							<div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <i class="fa fa-pencil-square-o"></i> {!!Form::label('detallesMovimientoCRM', 'Detalles', array())!!}
-                                </div>
-                                <div class="panel-body">
-                                    
+					            <div class="panel-heading">
+					                <i class="fa fa-pencil-square-o"></i> {!!Form::label('detallesMovimientoCRM', 'Detalles', array())!!}
+					            </div>
+					            <div class="panel-body">
+					                
 									<div class="col-sm-12">
 							              {!!Form::textarea('detallesMovimientoCRM',null,['class'=>'ckeditor','placeholder'=>'Ingresa los detalles del documento'])!!}
 									</div>
 
-                                </div>
-                            </div>
+					            </div>
+					        </div>
 						</div>
-						<?php
-							}
-
-							if(strpos($camposVista, 'solucionMovimientoCRM') !== false)
-							{ 
-						?>
-						<div class="col-sm-12">
+					  </div>
+					<?php
+						}
+					
+						if(strpos($camposVista, 'solucionMovimientoCRM') !== false)
+						{ 
+					?>
+					  <div id="solucion" class="tab-pane fade">
+					  	<div class="col-sm-12">
 							<div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <i class="fa fa-pencil-square-o"></i> {!!Form::label('solucionMovimientoCRM', 'Solución', array())!!}
@@ -413,11 +541,115 @@ for($i = 0; $i < count($campos); $i++)
                                 </div>
                             </div>
 						</div>
-						<?php
-							}
-						?>
+					</div>
+					<?php
+						}
+					if(strpos($camposVista, 'asistentesMovimientoCRM') !== false)
+						{ 
+					?>
+					  <div id="asistentes" class="tab-pane fade">
+					    <div class="panel-body">
+							<div class="form-group" id='test'>
+								<div class="col-sm-12">
+									<div class="row show-grid">
+										<div class="col-md-1" style="width: 40px;" onclick="asistentes.agregarCampos(valorAsistentes,'A')">
+											<span class="glyphicon glyphicon-plus"></span>
+										</div>
+										<div class="col-md-1" style="width: 330px;">Nombre</div>
+										<div class="col-md-1" style="width: 270px;">Cargo</div>
+										<div class="col-md-1" style="width: 150px;">Tel&eacute;fono</div>
+										<div class="col-md-1" style="width: 230px;">Correo</div>
+										<div id="contenedor_asistentes">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
+					  </div>
+					<?php
+						}
+					if(strpos($camposVista, 'documentosMovimientoCRM') !== false)
+						{ 
+					?>
+					  <div id="documentos" class="tab-pane fade">
+					  	<div class="col-sm-12">
+							<div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <i class="fa fa-pencil-square-o"></i> {!!Form::label('', 'Documentos', array())!!}
+                                </div>
+                                <div class="panel-body">
+									<div class="col-sm-12">
+										<div id="upload" class="col-md-12">
+										    <div class="dropzone dropzone-previews" id="dropzonemovimientoCRMArchivo">
+										    </div>  
+										</div>	
+ 									
+										
+										<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;">		
+										{!!Form::hidden('archivoMovimientoCRMArray', '', array('id' => 'archivoMovimientoCRMArray'))!!}
+											<?php
+											if ($idMovimientoCRMA != '') 
+											{
+												$eliminar = '';
+												$archivoSave = DB::Select('SELECT * from movimientocrmarchivo where MovimientoCRM_idMovimientoCRM = '.$idMovimientoCRMA);
 
+												for ($i=0; $i <count($archivoSave) ; $i++) 
+												{ 
+													$archivoS = get_object_vars($archivoSave[$i]);
+
+													echo '<div id="'.$archivoS['idMovimientoCRMArchivo'].'" class="col-lg-4 col-md-4">
+									                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+									                        <div class="panel-heading">
+									                            <div class="row">
+									                                <div class="col-xs-3">
+									                                    <a target="_blank" 
+									                                    	href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaMovimientoCRMArchivo'].'">
+									                                    	<i class="fa fa-book fa-5x" style="color: gray;"></i>
+									                                    </a>
+									                                </div>
+									                                <div class="col-xs-9 text-right">
+									                                    <div>'.str_replace('/movimientocrm/','',$archivoS['rutaMovimientoCRMArchivo']).'
+									                                    </div>
+									                                </div>
+									                            </div>
+									                        </div>
+									                        <a target="_blank" href="javascript:eliminarDiv('.$archivoS['idMovimientoCRMArchivo'].');">
+									                            <div class="panel-footer">
+									                                <span class="pull-left">Eliminar Documento</span>
+									                                <span class="pull-right"><i class="fa fa-times"></i></span>
+									                                <div class="clearfix"></div>
+									                            </div>
+									                        </a>
+									                    </div>
+									                </div>';
+
+													echo '<input type="hidden" id="idMovimientoCRMArchivo[]" name="idMovimientoCRMArchivo[]" value="'.$archivoS['idMovimientoCRMArchivo'].'" >
+
+													<input type="hidden" id="rutaMovimientoCRMArchivo[]" name="rutaMovimientoCRMArchivo[]" value="'.$archivoS['rutaMovimientoCRMArchivo'].'" >';
+												}
+
+												echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
+											}
+											
+											 ?>							
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					  </div>
+
+					</div>
+					<?php
+						}
+					?>
+					</div>
+
+						
+						
+
+						
 						
                               
 
@@ -439,6 +671,57 @@ for($i = 0; $i < count($campos); $i++)
         fullPage: true,
         allowedContent: true
       });  
+
+
+    //--------------------------------- DROPZONE ---------------------------------------
+	var baseUrl = "{{ url("/") }}";
+    var token = "{{ Session::getToken() }}";
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#dropzonemovimientoCRMArchivo", {
+        url: baseUrl + "/dropzone/uploadFiles",
+        params: {
+            _token: token
+        },
+        
+    });
+
+   	 fileList = Array();
+   	var i = 0;
+
+    //Configuro el dropzone
+    myDropzone.options.myAwesomeDropzone =  {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 40, // MB
+    addRemoveLinks: true,
+    clickable: true,
+    previewsContainer: ".dropzone-previews",
+    clickable: false,
+    uploadMultiple: true,
+    accept: function(file, done) {
+
+      }
+    };
+    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+     myDropzone.on("addedfile", function(file) {
+          file.previewElement.addEventListener("click", function(reg) {
+            // abrirModal(file);
+            // pos = fileList.indexOf(file["name"]);
+            // alert(pos);
+            // console.log(fileList[pos]);
+            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+          });
+        });
+
+    document.getElementById('archivoMovimientoCRMArray').value = '';
+    myDropzone.on("success", function(file, serverFileName) {
+    					//abrirModal(file);
+                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+						// console.log(fileList);
+                        document.getElementById('archivoMovimientoCRMArray').value += file.name+',';
+                        // console.log(document.getElementById('archivoMovimientoCRMArray').value);
+                        i++;
+                    });
+
 </script>
 
 @stop

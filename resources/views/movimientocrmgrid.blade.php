@@ -9,7 +9,9 @@ $campos = DB::select(
     on documentocrm.idDocumentoCRM = documentocrmcampo.DocumentoCRM_idDocumentoCRM
     left join campocrm
     on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
-    where documentocrm.idDocumentoCRM = '.$id.' and mostrarGridDocumentoCRMCampo = 1');
+    where   documentocrm.idDocumentoCRM = '.$id.' and
+            relacionTablaCampoCRM != "" and 
+            mostrarGridDocumentoCRMCampo = 1');
 
 $camposGrid = 'idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM';
 $camposBase = 'idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM';
@@ -48,8 +50,14 @@ for($i = 0; $i < count($campos); $i++)
         <div class="container">
             <div class="row">
                 <div class="container">
-                    <br>
+                    {!!Html::image('images/iconoscrm/estado_nuevo.png', 'Nuevos', array('style' => 'height: 24px; width:24px;')) !!}
+                    {!!Html::image('images/iconoscrm/estado_pendiente.png', 'Pendientes', array('style' => 'height: 24px; width:24px;')) !!}
+                    {!!Html::image('images/iconoscrm/estado_proceso.png', 'En Proceso', array('style' => 'height: 24px; width:24px;')) !!}
+                    {!!Html::image('images/iconoscrm/estado_cancelado.png', 'Cancelados', array('style' => 'height: 24px; width:24px;')) !!}
+                    {!!Html::image('images/iconoscrm/estado_fallido.png', 'Fallidos', array('style' => 'height: 24px; width:24px;')) !!}
+                    {!!Html::image('images/iconoscrm/estado_exitoso.png', 'Exitosos', array('style' => 'height: 24px; width:24px;')) !!}
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
+
                         <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
                             <i class="glyphicon glyphicon-th icon-th"></i> 
                             <span class="caret"></span>
@@ -67,6 +75,7 @@ for($i = 0; $i < count($campos); $i++)
                            
                         </ul>
                     </div>
+                    <div class="col-md-12" style="overflow: auto;">
                     <table id="tmovimientocrm" name="tmovimientocrm" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
@@ -96,6 +105,7 @@ for($i = 0; $i < count($campos); $i++)
                             </tr>
                         </tfoot>        
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

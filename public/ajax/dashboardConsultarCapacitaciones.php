@@ -33,8 +33,6 @@ $datos = DB::select(
     From plancapacitacion PC
     left join plancapacitaciontema PCT
     on PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
-    left join actacapacitacion AC
-    on PC.idPlanCapacitacion = AC.PlanCapacitacion_idPlanCapacitacion
     left join 
     (
         SELECT * 
@@ -43,8 +41,7 @@ $datos = DB::select(
         on ACT.ActaCapacitacion_idActaCapacitacion = AC.idActaCapacitacion
         where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
     )  ACT
-    on AC.idActaCapacitacion = ACT.ActaCapacitacion_idActaCapacitacion and 
-    PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
+    on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
     WHere  PC.Compania_idCompania = '.$idCompania .' 
     group by idPlanCapacitacion');
 

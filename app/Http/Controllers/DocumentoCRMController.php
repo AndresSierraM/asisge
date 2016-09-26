@@ -45,7 +45,9 @@ class DocumentoCRMController extends Controller
      */
     public function create()
     {
-        return view('documentocrm');
+       $grupoestado = \App\GrupoEstado::All()->lists('nombreGrupoEstado','idGrupoEstado');
+
+        return view('documentocrm', compact('grupoestado'));
     }
 
     /**
@@ -98,8 +100,8 @@ class DocumentoCRMController extends Controller
     public function edit($id)
     {
         $documentocrm = \App\DocumentoCRM::find($id);
-        
-        return view('documentocrm',['documentocrm'=>$documentocrm]);
+        $grupoestado = \App\GrupoEstado::All()->lists('nombreGrupoEstado','idGrupoEstado');
+        return view('documentocrm',compact('grupoestado'),['documentocrm'=>$documentocrm]);
     }
 
     /**

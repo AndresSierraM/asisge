@@ -107,10 +107,15 @@
       </div> 
     </fieldset>
   
-      @if(isset($tipoInspeccion))
-      {!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+
+    @if(isset($tipoInspeccion))
+      @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+         {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
+      @else
+         {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+      @endif
     @else
-      {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+      {!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
     @endif
 
    

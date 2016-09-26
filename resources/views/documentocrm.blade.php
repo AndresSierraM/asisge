@@ -248,7 +248,7 @@
 			                <i class="fa fa-credit-card" ></i>
 			              </span>
 			              {!!Form::select('GrupoEstado_idGrupoEstado',
-            				array('1'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana'), (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de estados"])!!}
+            				$grupoestado, (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de estados"])!!}
 			            </div>
 			          </div>
 			        </div>

@@ -47,46 +47,92 @@
 				
 				foreach ($paquetes as $idP => $datosP) 
 				{
-					
-					// -------------------------------------------
-					// O P C I O N E S   S E G U N   E L   R O L 
-					// D E L   U S U A R I O 
-					// -------------------------------------------
-					$opciones = DB::select(
-					    'SELECT O.idOpcion,
-						    P.nombrePaquete,
-						    P.iconoPaquete,
-						    O.nombreOpcion,
-						    O.nombreCortoOpcion,
-						    O.iconoOpcion,
-						    O.rutaOpcion
-						FROM users U
-						left join rol R
-						on U.Rol_idRol = R.idRol
-						left join rolopcion RO
-						on U.Rol_idRol = RO.Rol_idRol
-						left join opcion O
-						on RO.Opcion_idOpcion = O.idOpcion
-						left join paquete P
-						on O.Paquete_idPaquete = P.idPaquete
-						where 	U.id = '.\Session::get("idUsuario").' and
-						 		O.Paquete_idPaquete = '.$datosP->idPaquete.'
-						order by O.ordenOpcion, O.nombreOpcion;');
 
+					// si el paquete comienza por CRM,consultamos los Movimientos que tiene permisos, de lo contrario consultamos opciones generales con permiso
+					if(substr($datosP->nombrePaquete,0,3) == 'CRM')
+					{
+						// -------------------------------------------
+						// O P C I O N E S  D E  C R M   S E G U N   E L   R O L 
+						// D E L   U S U A R I O  Y   L A   C O M P A N I A
+						// -------------------------------------------
+						$opciones = DB::select(
+						'Select
+						  CONCAT("movimientocrm?idDocumentoCRM=", idDocumentoCRM) as rutaOpcion,
+						  "menu/casocrm.png" as iconoOpcion,
+						  documentocrm.nombreDocumentoCRM as nombreOpcion,
+						  documentocrm.nombreDocumentoCRM as nombreCortoOpcion
+						From
+						  documentocrm Inner Join
+						  documentocrmcompania
+						    On documentocrmcompania.DocumentoCRM_idDocumentoCRM =
+						    documentocrm.idDocumentoCRM Inner Join
+						  documentocrmrol
+						    On documentocrmrol.DocumentoCRM_idDocumentoCRM = documentocrm.idDocumentoCRM
+						  Inner Join
+						  rol
+						    On documentocrmrol.Rol_idRol = rol.idRol Inner Join
+						  users
+						    On users.Rol_idRol = rol.idRol
+						Where
+						  users.id = '.\Session::get("idUsuario").' And
+						  documentocrmcompania.Compania_idCompania = '.\Session::get("idCompania"));
+
+						// foreach ($opciones as $idO => $datosO) 
+						// {
+
+						// 	echo 
+						// 	'
+						// 	<li>
+						// 		<a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm?idDocumentoCRM='.$datosO->idDocumentoCRM.'"> <img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/menu/casocrm.png" title="'.$datosO->nombreDocumentoCRM.'" style="width:48px; height:48px;"><br>
+						// 			'.$datosO->nombreDocumentoCRM.'
+						// 		</a>
+						// 	</li>';
+						// }
+					}
+					else
+					{
+						// -------------------------------------------
+						// O P C I O N E S   S E G U N   E L   R O L 
+						// D E L   U S U A R I O 
+						// -------------------------------------------
+						$opciones = DB::select(
+						    'SELECT O.idOpcion,
+							    P.nombrePaquete,
+							    P.iconoPaquete,
+							    O.nombreOpcion,
+							    O.nombreCortoOpcion,
+							    O.iconoOpcion,
+							    O.rutaOpcion
+							FROM users U
+							left join rol R
+							on U.Rol_idRol = R.idRol
+							left join rolopcion RO
+							on U.Rol_idRol = RO.Rol_idRol
+							left join opcion O
+							on RO.Opcion_idOpcion = O.idOpcion
+							left join paquete P
+							on O.Paquete_idPaquete = P.idPaquete
+							where 	U.id = '.\Session::get("idUsuario").' and
+							 		O.Paquete_idPaquete = '.$datosP->idPaquete.'
+							order by O.ordenOpcion, O.nombreOpcion;');
+
+
+						
+					}
+					
+
+					// Creamos el icono del paquete
 					echo 
 					'<div id="menu'.$datosP->idPaquete.'" class="menu">
 						<img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$datosP->iconoPaquete.'" title="'.$datosP->nombrePaquete.'" style="width:40px;" onclick="abreMenu('.$datosP->idPaquete.', '.count($opciones).');">
 					</div>';
 
-					// echo 
-					// '<div id="arrow'.$datosP->idPaquete.'" class="arrow" style="margin-left: 25px; width:15px;">
-					// </div>';
-
+					// Creamos el marco para las opciones del paquete
 					echo 
 					'<div id="gridbox'.$datosP->idPaquete.'" class="gridbox" style="margin-left: 15px;">
 						<div id="innergrid'.$datosP->idPaquete.'" class="innergrid">
 							<ul id="icons'.$datosP->idPaquete.'" class="icons">';
-				
+
 					foreach ($opciones as $idO => $datosO) 
 					{
 					
@@ -98,6 +144,8 @@
 							</a>
 						</li>';
 					}
+					
+					// Cerramos el marco de opciones del paquete					
 					echo 
 					'		</ul>
 						</div>

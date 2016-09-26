@@ -273,6 +273,26 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             }
             div.appendChild(firma);
         }
+        else if(this.etiqueta[i] == 'imagen')
+        {
+            // conlos campos de imagen creamos 
+            // un img para mostrarla  en base64
+            var imagen = document.createElement('img');
+            imagen.id =  this.campos[i] + this.contador;
+            imagen.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+            imagen.setAttribute("placeholder", 'Vista previa de la imagen');
+            imagen.setAttribute("class", this.clase[i]);
+            imagen.setAttribute("style", this.estilo[i]);
+            imagen.setAttribute("onclick", "mostrarImagen('"+valor[this.campos[i]]+"')");
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    imagen.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+                }
+            }
+            div.appendChild(imagen);
+        }
         else if(this.etiqueta[i] == 'button')
         {
             var button = document.createElement('button');

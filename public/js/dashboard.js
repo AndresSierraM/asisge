@@ -6,11 +6,11 @@ function colorTarea(valorTarea, valorCumplido)
     if(valorTarea != valorCumplido && valorCumplido != 0)
     {
      
-        tool = 'Tareas Pendientes : '+valorTarea+'  /  Tareas Realizadas : '+valorCumplido;
+        tool = 'Tareas Pendientes : '+parseFloat(valorTarea).toFixed(0)+"\n"+'Tareas Realizadas : '+parseFloat(valorCumplido).toFixed(0);
         icono =   '<a href="#" data-toggle="tooltip" data-placement="right" title="'+tool+'">'+
                   '     <img src="http://'+location.host+'/images/iconosmenu/Amarillo.png"  width="30">'+
                   '</a>'+
-                  '<label>'+(valorCumplido / (valorTarea == 0 ? 1 : valorTarea) * 100)+'%</label>';      
+                  '<label>'+parseFloat(valorCumplido / (valorTarea == 0 ? 1 : valorTarea) * 100).toFixed(1)+'%</label>';      
     }else if(valorTarea == valorCumplido && valorTarea != 0)
     {
         icono = '<img src="http://'+location.host+'/images/iconosmenu/Verde.png" width="30">';

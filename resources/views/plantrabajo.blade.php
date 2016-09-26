@@ -6,26 +6,29 @@
 function colorTarea($valorTarea, $valorCumplido)
 {
 
-	$icono = '';		
+	$icono = '';	
+	$tool = 'Tareas Pendientes : '.number_format($valorTarea,0,'.',',')."\n".
+			'Tareas Realizadas : '.number_format($valorCumplido,0,'.',',');	
+	$etiqueta = '';
 	if($valorTarea != $valorCumplido and $valorCumplido != 0)
 	{
-	    
-
-		$tool = 'Tareas Pendientes : '.$valorTarea.'  /  Tareas Realizadas : '.
-$valorCumplido;
-		$icono = 	'<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
-						<img src="images/iconosmenu/Amarillo.png"  width="30">
-					</a>
-					<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';		
+		$icono = 'Amarillo.png';
+		$etiqueta = '<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';
 	}elseif($valorTarea == $valorCumplido and $valorTarea != 0)
 	{
-		$icono = '<img src="images/iconosmenu/Verde.png" width="30">';
+		$icono = 'Verde.png';
 	}
 	elseif($valorTarea > 0 and $valorCumplido == 0)
 	{
-		$icono = '<img src="images/iconosmenu/Rojo.png" width="30">';		
+		$icono = 'Rojo.png';		
 	}
 
+	if($valorTarea != 0 or $valorCumplido != 0)
+	{
+		$icono = 	'<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
+							<img src="images/iconosmenu/'.$icono.'"  width="30">
+						</a>'.$etiqueta;	
+	}
 	//$valorTarea .' '. $valorCumplido. 
 	return $icono;
 }

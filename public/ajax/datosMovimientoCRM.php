@@ -32,7 +32,9 @@
           Left Join origencrm
             On movimientocrm.OrigenCRM_idOrigenCRM = origencrm.idOrigenCRM 
           Left Join estadocrm
-            On movimientocrm.EstadoCRM_idEstadoCRM = estadocrm.idEstadoCRM 
+            On movimientocrm.EstadoCRM_idEstadoCRM = estadocrm.idEstadoCRM
+          Left Join eventocrm
+            On movimientocrm.EventoCRM_idEventoCRM = eventocrm.idEventoCRM 
           Left Join acuerdoservicio
             On movimientocrm.AcuerdoServicio_idAcuerdoServicio =
             acuerdoservicio.idAcuerdoServicio
@@ -54,7 +56,11 @@
         $campos = explode(',', $camposBase);
         for($j = 0; $j < count($campos); $j++)
         {
-            $row[$i][] = $datoValor[trim($campos[$j])];
+          // if(trim($campos[$j]) == 'asuntoMovimientoCRM')
+          //     $row[$i][] = '<p title="'.$datoValor['detallesMovimientoCRM'].'">'.$datoValor[trim($campos[$j])].'</p>';
+          // else
+              $row[$i][] = $datoValor[trim($campos[$j])];
+          
         }
 
     }

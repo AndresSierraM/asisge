@@ -59,7 +59,7 @@
                     <table id="ttercero" name="ttercero" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:60px;padding: 1px 8px;" data-orderable="false">
                                  <a href="tercero/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="javascript:mostrarModalInterface();"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-cloud-upload"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
@@ -244,7 +244,7 @@
                         // console.log(fileList);
 
                         document.getElementById('archivoTerceroArray').value += file.name+',';
-                        console.log(document.getElementById('archivoTerceroArray').value);
+                        // console.log(document.getElementById('archivoTerceroArray').value);
                         i++;
                     });
 
@@ -287,7 +287,8 @@
       </div>
        <div class="modal-footer">
         
-            <button type="button"   onclick="ejecutarInterface();" >Ejecutar</button>
+            <button type="button"   onclick="ejecutarInterface('importarTerceroProveedor');" >Importar Proveedores</button>
+            <button type="button"   onclick="ejecutarInterface('importarTerceroEmpleado');" >Importar Empleados</button>
             <button type="button"  data-dismiss="modal">Cancelar</button>
 
       </div>

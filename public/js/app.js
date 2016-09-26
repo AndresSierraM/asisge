@@ -1,9 +1,15 @@
 var wrapper = document.getElementById("signature-pad"),
     clearButton = wrapper.querySelector("[data-action=clear]"),
     saveButton = wrapper.querySelector("[data-action=save]"),
+    closeButton = wrapper.querySelector("[data-action=close]"),
     canvas = wrapper.querySelector("canvas"),
     signaturePad;
 
+if(document.getElementById("image-pad"))
+{
+    var wrapper2 = document.getElementById("image-pad"),
+     closeImageButton = wrapper2.querySelector("[data-action=close]");
+}
 // Adjust canvas coordinate space taking into account pixel ratio,
 // to make it look crisp on mobile devices.
 // This also causes canvas to be cleared.
@@ -32,6 +38,21 @@ function mostrarFirma(reg)
 }
 
 
+function mostrarImagen(ruta)
+{
+
+    if(document.getElementById("image-pad").style.display == "block" || 
+        document.getElementById("image-pad").style.display == "")
+        document.getElementById("image-pad").style.display = "none";
+    else
+        document.getElementById("image-pad").style.display = "block";
+
+    if(ruta != 'undefined')
+        document.getElementById("image-src").src = ruta;
+    else
+        document.getElementById("image-src").src = '';
+}
+
 window.onresize = resizeCanvas;
 resizeCanvas();
 
@@ -55,4 +76,12 @@ saveButton.addEventListener("click", function (event) {
         document.getElementById("firmabase64"+reg).value = signaturePad.toDataURL() ;
         mostrarFirma();
     }
+});
+
+closeButton.addEventListener("click", function (event) {
+    document.getElementById("signature-pad").style.display = "none";
+});
+
+closeImageButton.addEventListener("click", function (event) {
+    document.getElementById("image-pad").style.display = "none";
 });

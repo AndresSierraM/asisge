@@ -44,6 +44,8 @@ for ($i=0; $i < count($firmas); $i++)
 
 }
 
+
+
 ?>
 
 
@@ -51,7 +53,7 @@ for ($i=0; $i < count($firmas); $i++)
 		var actaCapacitacionAsistente = '<?php echo (isset($firmas) ? json_encode($firmas) : "");?>';
 		actaCapacitacionAsistente = (actaCapacitacionAsistente != '' ? JSON.parse(actaCapacitacionAsistente) : '');
 
-		var actaCapacitacionTema = '<?php echo (isset($actaCapacitacion) ? json_encode($actaCapacitacion->actaCapacitacionTemas) : "");?>';
+		var actaCapacitacionTema = '<?php echo (isset($firmas) ? json_encode($actaCapacitacion->actaCapacitacionTemas) : "");?>';
 		actaCapacitacionTema = (actaCapacitacionTema != '' ? JSON.parse(actaCapacitacionTema) : '');
 
 		
@@ -101,6 +103,7 @@ for ($i=0; $i < count($firmas); $i++)
 
 			for(var j=0, k = actaCapacitacionTema.length; j < k; j++)
 			{
+
 				tema.agregarCampos(JSON.stringify(actaCapacitacionTema[j]),'L');
 				llenarPlanCapacitacionTema(document.getElementById('PlanCapacitacionTema_idPlanCapacitacionTema'+j));
 			}

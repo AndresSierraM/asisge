@@ -26,12 +26,12 @@ class GrupoEstadoRequest extends Request
         $detalle = count($this->get('nombreEstadoCRM'));
         
         $validacion = array(
-            "codigoGrupoEstado" => "required|numeric|unique:grupoestado,codigoGrupoEstado,".$this->get('idGrupoEstado') .",idGrupoEstado",
+            "codigoGrupoEstado" => "required|unique:grupoestado,codigoGrupoEstado,".$this->get('idGrupoEstado') .",idGrupoEstado",
             "nombreGrupoEstado" => "required|string|max:80");
 
         for($i = 0; $i < $detalle; $i++)
         {
-            if(trim($this->get('nombreEstadoCRM')[$i]) == '' or trim($this->get('nombreEstadoCRM')[$i]) == 0)
+            if(trim($this->get('nombreEstadoCRM')[$i]) == '')
             {    
                 $validacion['nombreEstadoCRM'.$i] =  'required';
             }

@@ -53,6 +53,15 @@ Route::group(['middleware' => 'auth'], function ()
 		'as' => 'importarTerceroProveedor', 
 		'uses' => 'TerceroController@importarTerceroProveedor']);
 
+	Route::post('importarTerceroEmpleado', [
+        'as' => 'importarTerceroEmpleado', 
+        'uses' => 'TerceroController@importarTerceroEmpleado']);
+
+	Route::post('importarMatrizRiesgo', [
+        'as' => 'importarMatrizRiesgo', 
+        'uses' => 'MatrizRiesgoController@importarMatrizRiesgo']);
+
+
 	// Creamos un Controlador para gestionar la autenticación en HomeController.
 	//Route::controller('/','HomeController');
 

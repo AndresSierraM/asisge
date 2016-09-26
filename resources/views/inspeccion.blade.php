@@ -3,10 +3,10 @@
 @section('content')
 @include('alerts.request')
 
-
 {!!Html::script('js/inspeccion.js')!!} 
 
 {!!Html::style('css/signature-pad.css'); !!} 
+{!!Html::style('css/image-pad.css'); !!} 
 
 
 <?php
@@ -79,9 +79,9 @@
     var nombreCompletoTerceroResponsable = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
     var terceroResponsable = [JSON.parse(idTerceroResponsable),JSON.parse(nombreCompletoTerceroResponsable)];
 
-    var onclick = ['onclick','visualizarArchivoInspeccion(visualizarInspeccionDetalle0.value)']
+    //var onclick = ['onclick','visualizarArchivoInspeccion(this.value)']
 
-    var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
+     var inspeccionDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
     // var inspeccionDetalle = '<?php echo (isset($inspeccion) ? json_encode($inspeccion->inspeccionDetalle) : "");?>';
 
     inspeccionDetalle = (inspeccionDetalle != '' ? JSON.parse(inspeccionDetalle) : '');
@@ -103,14 +103,14 @@
         inspeccion.campoEliminacion = '';
         inspeccion.botonEliminacion = false;
 
-        inspeccion.campos   = ['idInspeccionDetalle', 'TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'fotoInspeccionDetalle','visualizarInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
+        inspeccion.campos   = ['idInspeccionDetalle', 'TipoInspeccionPregunta_idTipoInspeccionPregunta',  'numeroTipoInspeccionPregunta', 'contenidoTipoInspeccionPregunta',  'situacionInspeccionDetalle',   'archivoInspeccionDetalle','fotoInspeccionDetalle','ubicacionInspeccionDetalle', 'accionMejoraInspeccionDetalle','Tercero_idResponsable','fechaInspeccionDetalle',
                               'observacionInspeccionDetalle'];
         inspeccion.etiqueta = ['input', 'input', 'input', 'textarea',
-                               'textarea', 'file', 'button', 'textarea',
+                               'textarea', 'file', 'imagen', 'textarea',
                                'textarea', 'select', 'input',
                                'textarea'];
         inspeccion.tipo     = ['hidden','hidden', 'text', 'textarea', 
-                               'textarea', '', 'button', 'textarea',
+                               'textarea', '', 'imagen', 'textarea',
                                'textarea', '', 'date',
                                'textarea'];
         inspeccion.estilo   = ['','',
@@ -124,12 +124,12 @@
                                 'vertical-align:top; resize:none; width: 200px; height:60px;',
                                 'vertical-align:top; resize:none; width: 150px; height:60px;',
                                 'vertical-align:top; resize:none; width: 300px; height:60px;'];
-        inspeccion.clase    = ['','','','','','','fa fa-external-link btn btn-primary','','','','',''];
+        inspeccion.clase    = ['','','','','','','btn btn-primary','','','','',''];
         inspeccion.sololectura = [false,false,true,true, false,false,false,false,false,false,false,false];
       
         inspeccion.opciones = ['','','','','','','','','',terceroResponsable,'',''];
 
-        inspeccion.funciones = ['','','','','','',onclick,'','','','',''];
+        inspeccion.funciones = ['','','','','','','','','','','',''];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas
@@ -137,8 +137,7 @@
         {
           // llena los campos de preguntas
           inspeccion.agregarCampos(JSON.stringify(inspeccionDetalle[j]),'L', inspeccionDetalle[j]["idInspeccionGrupo"]);
-          // cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
-          // console.log(inspeccionDetalle[j]);
+          
         }
         document.getElementById('registros').value = j ;
     });
@@ -166,6 +165,20 @@
       <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
     </div>
 </div>
+
+
+<div id="image-pad" class="m-image-pad">
+    <input type="hidden" id="image-reg" value="">
+      <div class="m-image-pad--body">
+        <img id="image-src"></img>
+      </div>
+      <div class="m-image-pad--footer">
+        <div class="description">Vista previa de la imagen</div>
+        <button type="button" class="button clear btn btn-primary" data-action="close">Cerrar</button>
+      </div>
+  </div>
+
+
 <div id='form-section' >
 
 	<fieldset id="inspeccion-form-fieldset">	
@@ -319,6 +332,7 @@
     $(document).ready(function()
     {
       mostrarFirma();
+      mostrarImagen();
     });
     
 

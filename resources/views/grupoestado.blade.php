@@ -7,13 +7,14 @@
 
 @section('content')
 @include('alerts.request')
-{{$grupoEstado->estadoCRM}}
+
 {!!Html::script('js/grupoestado.js')!!}
 <script>
   var estadoCRM = '<?php echo (isset($grupoEstado) ? json_encode($grupoEstado->estadoCRM) : "");?>';
   estadoCRM = (estadoCRM != '' ? JSON.parse(estadoCRM) : '');
   var valorDetalle = [0,'', ''];
   
+  var tipoestado = [["Nuevo","Pendiente","En Proceso","Cancelado","Fallido","Exitoso"], ["Nuevo","Pendiente","En Proceso","Cancelado","Fallido","Exitoso"]];
 
   $(document).ready(function(){
     
@@ -29,7 +30,8 @@
     detalle.estilo = ['','width: 400px;height:35px;','width: 400px;height:35px;'];
     detalle.clase = ['','',''];
     detalle.sololectura = [false,false,false];
-
+    detalle.opciones = ['','',tipoestado];
+    detalle.completar = ['off', 'off','off'];
    
     for(var j=0, k = estadoCRM.length; j < k; j++)
     {

@@ -31,11 +31,13 @@ function consultarPlanCapacitacion(tipo)
             document.getElementById('metodoEficaciaPlanCapacitacion').innerHTML = datosEncabezado['metodoEficaciaPlanCapacitacion'].replace('<p>','').replace('</p>','');
             document.getElementById('personalInvolucradoPlanCapacitacion').innerHTML = datosEncabezado['personalInvolucradoPlanCapacitacion'].replace('<p>','').replace('</p>','');
            
-            // primero eliminamos los registros actuales, para qu eno se combinen temas de diferentes planes cuando el usuario cambie de plan
-            tema.borrarTodosCampos();
-
+            
             if(tipo == 'Completo')
             {
+                // primero eliminamos los registros actuales, para qu eno se combinen temas de diferentes planes cuando el usuario cambie de plan
+                tema.borrarTodosCampos();
+
+
                 for(var j=0,k=datosTemas.length;j<k;j++)
                 {
                 	tema.agregarCampos(JSON.stringify(datosTemas[j]),'L');
