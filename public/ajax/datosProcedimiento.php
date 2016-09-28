@@ -1,18 +1,25 @@
 <?php
+
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
-        $visibleM = 'inline-block;';
+            $visibleM = 'inline-block;';
     else
-        $visibleM = 'none;';
+            $visibleM = 'none;';
 
     if ($eliminar == 1) 
-        $visibleE = 'inline-block;';
+            $visibleE = 'inline-block;';
     else
-        $visibleE = 'none;';
+            $visibleE = 'none;';
+        if ($imprimir == 1) 
+            $visibleI = 'inline-block;';
+        else
+            $visibleI = 'none';
 
     $procedimiento = DB::table('procedimiento')
             ->leftJoin('proceso', 'Proceso_idProceso', '=', 'idProceso')
@@ -29,6 +36,9 @@
                         '</a>&nbsp;'.
                         '<a href="procedimiento/'.$value->idProcedimiento.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>'.
+                         '<a href="procedimiento" onclick="imprimirFormato('.$value->idProcedimiento.');s">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idProcedimiento;
         $row[$key][] = $value->nombreProcedimiento;

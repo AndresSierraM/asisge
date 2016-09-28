@@ -103,7 +103,7 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
-        var imprimir = '<?php echo $dato["consultarRolOpcion"];?>';
+        var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#tlistachequeo').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
