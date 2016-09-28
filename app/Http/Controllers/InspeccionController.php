@@ -93,7 +93,46 @@ class InspeccionController extends Controller
                 file_put_contents('imagenes/'.$ruta, $data);
             }
 
-           $this->grabarDetalle($inspeccion->idInspeccion, $request);
+            //----------------------------
+
+
+            $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                \App\InspeccionDetalle::create([
+                'Inspeccion_idInspeccion' => $inspeccion->idInspeccion,
+                'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
+                'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
+                'fotoInspeccionDetalle' => $request['fotoInspeccionDetalle'][$i],
+                'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
+                'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
+                'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' || $request['Tercero_idResponsable'][$i] == 0) ? null : $request['Tercero_idResponsable'][$i],
+                'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
+                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
+               ]);
+
+
+                // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['accionMejoraInspeccionDetalle'][$i] != '' )
+                {
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+                        guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 24, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
+                                );   
+                }
+                
+            }
 
            return redirect('/inspeccion');
         }
@@ -106,33 +145,17 @@ class InspeccionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show(Request $request)
+    public function show($id, Request $request)
     {
-        /*if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
         {
 
-          $inspeccion = \App\Inspeccion::find($id);
-          
-          $inspeccionDetalle = DB::table('inspecciondetalle as dd')
-            ->leftJoin('inspeccionpregunta as dp', 'dd.InspeccionPregunta_idInspeccionPregunta', '=', 'dp.idInspeccionPregunta')
-            ->leftJoin('tipoinspeccion as dg', 'dp.TipoInspeccion_idTipoInspeccion', '=', 'dg.idTipoInspeccion')
-            ->select(DB::raw('dd.idInspeccionDetalle, dg.nombreTipoInspeccion, dp.idInspeccionPregunta, dp.ordenInspeccionPregunta, dp.detalleInspeccionPregunta, dd.puntuacionInspeccionDetalle, dd.resultadoInspeccionDetalle, dd.mejoraInspeccionDetalle'))
-            ->orderBy('dg.nombreTipoInspeccion', 'ASC')
-            ->orderBy('dp.ordenInspeccionPregunta', 'ASC')
-            ->where('Inspeccion_idInspeccion','=',$id)
-            ->get();
+          $inspeccion = DB::Select('SELECT nombreTipoInspeccion, nombreCompletoTercero, firmaRealizadaPorInspeccion, fechaElaboracionInspeccion, observacionesInspeccion from inspeccion i left join tipoinspeccion ti on ti.idTipoInspeccion = i.TipoInspeccion_idTipoInspeccion left join tercero t on t.idTercero = i.Tercero_idRealizadaPor where idInspeccion = '.$id.' and i.Compania_idCompania = '.\Session::get('idCompania'));
 
-          $inspeccionResumen = DB::table('inspecciondetalle as dd')
-            ->leftJoin('inspeccionpregunta as dp', 'dd.InspeccionPregunta_idInspeccionPregunta', '=', 'dp.idInspeccionPregunta')
-            ->leftJoin('tipoinspeccion as dg', 'dp.TipoInspeccion_idTipoInspeccion', '=', 'dg.idTipoInspeccion')
-            ->select(DB::raw('dg.nombreTipoInspeccion, AVG(dd.resultadoInspeccionDetalle) as resultadoInspeccionDetalle'))
-            ->orderBy('dg.nombreTipoInspeccion', 'ASC')
-            ->groupBy('dg.nombreTipoInspeccion')
-            ->where('Inspeccion_idInspeccion','=',$id)
-            ->get();
+          $inspeccionResumen = DB::select('select contenidoTipoInspeccionPregunta, situacionInspeccionDetalle, fotoInspeccionDetalle, ubicacionInspeccionDetalle,   accionMejoraInspeccionDetalle, nombreCompletoTercero, fechaInspeccionDetalle, observacionInspeccionDetalle from inspecciondetalle ipd left join tipoinspeccionpregunta tip on tip.idTipoInspeccionPregunta = ipd.TipoInspeccionPregunta_idTipoInspeccionPregunta left join tercero t on t.idTercero = ipd.Tercero_idResponsable where Inspeccion_idInspeccion = '.$id);
 
-            return view('formatos.inspeccionimpresion',['inspeccion'=>$inspeccion], compact('inspeccionDetalle','inspeccionResumen'));
-        }*/
+            return view('formatos.inspeccionimpresion',['inspeccion'=>$inspeccion], compact('inspeccion','inspeccionResumen'));
+        }
 
         if(isset($request['idTipoInspeccion']))
         {
@@ -169,8 +192,8 @@ class InspeccionController extends Controller
         $preguntas = DB::table('inspecciondetalle')
             ->leftJoin('tipoinspeccionpregunta', 'inspecciondetalle.TipoInspeccionPregunta_idTipoInspeccionPregunta', '=', 'tipoinspeccionpregunta.idTipoInspeccionPregunta')
             ->leftJoin('tipoinspeccion', 'tipoinspeccionpregunta.TipoInspeccion_idTipoInspeccion', '=', 'tipoinspeccion.idTipoInspeccion')
-            ->select(DB::raw('idInspeccionDetalle, TipoInspeccionPregunta_idTipoInspeccionPregunta, numeroTipoInspeccionPregunta, contenidoTipoInspeccionPregunta, 
-                              situacionInspeccionDetalle,   IF(fotoInspeccionDetalle != "" ,CONCAT("' . 'http://'.$_SERVER["HTTP_HOST"].'/imagenes/' . '",fotoInspeccionDetalle), "") as fotoInspeccionDetalle, ubicacionInspeccionDetalle,
+            ->select(DB::raw('TipoInspeccionPregunta_idTipoInspeccionPregunta, numeroTipoInspeccionPregunta, contenidoTipoInspeccionPregunta, 
+                              situacionInspeccionDetalle,   fotoInspeccionDetalle, ubicacionInspeccionDetalle,
                               accionMejoraInspeccionDetalle, Tercero_idResponsable, fechaInspeccionDetalle,
                               observacionInspeccionDetalle'))
             ->orderBy('numeroTipoInspeccionPregunta', 'ASC')
@@ -214,8 +237,100 @@ class InspeccionController extends Controller
                 file_put_contents('imagenes/'.$ruta, $data);
             }
 
-            $this->grabarDetalle($id, $request);
+            //----------------------------
 
+            \App\InspeccionDetalle::where('Inspeccion_idInspeccion',$id)->delete();
+             $files = Input::file('fotoInspeccionDetalle');
+
+            $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
+            for($i = 0; $i < $contadorDetalle; $i++)
+            {
+                
+
+               
+                $file = $files[$i] ;
+                $rutaImagen = '';
+                $destinationPath = 'imagenes/inspeccion/';
+                if(isset($file))
+                {
+                    $filename = $destinationPath . $file->getClientOriginalName();
+                     
+                    $manager = new ImageManager();
+                    $manager->make($file->getRealPath())->save($filename);
+                    $rutaImagen = 'inspeccion/'.$file->getClientOriginalName();
+
+
+                    // recorrer todos los archivos para guardarlos en la carpeta
+                    // luego de almacenar la información, guardamos los archivos en la carpeta de inpecciones
+                    // $files = Input::file('fotoInspeccionDetalle');
+                    // foreach($files as $file) {
+
+                    //     $destinationPath = 'imagenes/inspeccion/';
+                    //     if(isset($file))
+                    //     {
+                    //         $filename = $destinationPath . $file->getClientOriginalName();
+                             
+                    //         $manager = new ImageManager();
+                    //         $manager->make($file->getRealPath())->save($filename);
+                    //         echo 'Si entra ' . $filename.'<br>';
+                    //     }
+                    // }
+
+
+                    // mostrar los archivos en un formulario
+                    //  Route::get('storage/{id}/{archivo}', function ($archivo) {
+                    //  $public_path = public_path();
+                    //  $url = $public_path.'/storage/id/'.$archivo;
+
+                    // //verificamos si el archivo existe y lo retornamos
+                    //  if (Storage::exists($archivo))
+                    //  {
+                    //  return response()->download($url);
+                    //  }
+                    //  //si no se encuentra lanzamos un error 404.
+                    //  abort(404);
+                    //  });
+
+                }
+                
+            
+                \App\InspeccionDetalle::create([
+                'Inspeccion_idInspeccion' => $id,
+                'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
+                'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
+                'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
+                'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
+                'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' || $request['Tercero_idResponsable'][$i] == 0) ? null : $request['Tercero_idResponsable'][$i],
+                'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
+                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i],
+                'fotoInspeccionDetalle' =>  $rutaImagen
+               ]);
+
+                
+                // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
+                if($request['accionMejoraInspeccionDetalle'][$i] != '' )
+                {
+                        //************************************************
+                        //
+                        //  R E P O R T E   A C C I O N E S   
+                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                        //  Y   D E   M E J O R A 
+                        //
+                        //************************************************
+                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+                        guardarReporteACPM(
+                                $fechaAccion = date("Y-m-d"), 
+                                $idModulo = 24, 
+                                $tipoAccion = 'Correctiva', 
+                                $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
+                                );   
+
+                        
+                }
+            }
+
+            
             return redirect('/inspeccion');
         }    
     }
@@ -233,78 +348,6 @@ class InspeccionController extends Controller
 
         \App\Inspeccion::destroy($id);
         return redirect('/inspeccion');
-    }
-
-    public function grabarDetalle($id, $request)
-    {
-        // tomamos los archivos cargados en el objeto $files
-        $files = Input::file('archivoInspeccionDetalle');
-
-        // recorremos los registros del detalle
-        $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
-        for($i = 0; $i < $contadorDetalle; $i++)
-        {
-            // tomamos el archiv del registro actual y establecemos la ruta
-            $file = $files[$i] ;
-
-            $rutaImagen = '';
-            $destinationPath = 'imagenes/inspeccion/';
-            
-            // si el archivo existe
-            if(isset($file))
-            {
-                //  concatenanamos ruta y nombre de archivo
-                $filename = $destinationPath . $file->getClientOriginalName();
-                
-                // con la libreria ImageManager guardamos el archivo 
-                $manager = new ImageManager();
-                $manager->make($file->getRealPath())->save($filename);
-
-                // creamos una ruta para guardar en la tabla de la BD
-                $rutaImagen = 'inspeccion/'.$file->getClientOriginalName();
-            }
-        
-            $indice = array(
-                'idInspeccionDetalle' => $request['idInspeccionDetalle'][$i]);
-            
-            if($rutaImagen != '')
-                $datoruta = array('fotoInspeccionDetalle' =>  $rutaImagen);
-            else
-                $datoruta = array();
-            
-            $datos = array(
-                'Inspeccion_idInspeccion' => $id,
-                'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
-                'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
-                'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
-                'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
-                'Tercero_idResponsable' => (($request['Tercero_idResponsable'][$i] == 0 or
-                    $request['Tercero_idResponsable'][$i] == '') ? null : $request['Tercero_idResponsable'][$i]),
-                'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
-                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i],
-                $datoruta);
-
-
-            $respuesta = \App\InspeccionDetalle::updateOrCreate($indice, $datos);
-
-            // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
-            if($request['accionMejoraInspeccionDetalle'][$i] != '' )
-            {
-                //************************************************
-                //
-                //  R E P O R T E   A C C I O N E S   
-                //  C O R R E C T I V A S,  P R E V E N T I V A S 
-                //  Y   D E   M E J O R A 
-                //
-                //************************************************
-                guardarReporteACPM(
-                        $fechaAccion = date("Y-m-d"), 
-                        $idModulo = 24, 
-                        $tipoAccion = 'Correctiva', 
-                        $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
-                        );   
-            }
-        }
     }
 
 }

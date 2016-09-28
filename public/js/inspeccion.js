@@ -13,8 +13,7 @@ function validarformulario()
     for(actual = 0; actual < document.getElementById('registros').value ; actual++)
     {
         if(document.getElementById("Tercero_idResponsable"+(actual)) && 
-            (document.getElementById("Tercero_idResponsable"+(actual)).value == 0 &&
-             document.getElementById("accionMejoraInspeccionDetalle"+(actual)).value != ''))
+           document.getElementById("accionMejoraInspeccionDetalle"+(actual)).value != '' && document.getElementById("Tercero_idResponsable"+(actual)).value == 0)
         {
             document.getElementById("Tercero_idResponsable"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:#F5A9A9;";
             resp = false;
@@ -37,7 +36,6 @@ function validarformulario()
 
     return true;
 }
-
 
 function cargarArchivoInspeccion(registro, idInspeccionDetalle)
 {
@@ -67,7 +65,7 @@ function visualizarArchivoInspeccion(rutaImagen)
 {
     if (rutaImagen != "") 
     {
-        window.open('http://'+location.host+'/imagenes/'+rutaImagen, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1000,height=1000");
+        window.open(location.host+'/imagenes/'+rutaImagen, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1000,height=1000");
     }
 }
 

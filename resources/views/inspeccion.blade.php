@@ -266,13 +266,12 @@
             </div>
           </div>
 
-        <div class="panel-body">
+        <div class="panel-body" style="width:1220px;">
           <div class="form-group" id='test'>
-
             <div class="col-sm-12">
-              <div class="row show-grid">
-                <div style="overflow: auto; width: 100%;">
-                  <div style="width: 1910px; height: 300px; display: inline-block; ">
+               <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                  <div style="overflow:auto; height:400px;">
+                    <div style="width: 1900px; display: inline-block;">
                     <div class="col-md-1" style="width: 1220px;">&nbsp;</div>
                     <div class="col-md-1" style="width: 650px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
                           

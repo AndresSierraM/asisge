@@ -93,9 +93,12 @@ class EntregaElementoProteccionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id, Request $request)
     {
-        //   
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            
+        } 
     }
 
     /**

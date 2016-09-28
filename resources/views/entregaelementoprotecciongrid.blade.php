@@ -72,7 +72,7 @@
                     <table id="tentregaelemento" name="tentregaelemento" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:70px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:90px;padding: 1px 8px;" data-orderable="false">
                                  <a href="entregaelementoproteccion/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -99,6 +99,11 @@
 
 <script type="text/javascript">
 
+    function imprimirFormato(id)
+    {
+        window.open('entregaelementoproteccion/'+id+'?accion=imprimir','entregaelementoproteccion','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
+
     $(document).ready( function () {
         mostrarFirma();
 
@@ -112,12 +117,13 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#tentregaelemento').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosEntregaElementoProteccion?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosEntregaElementoProteccion?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

@@ -1,9 +1,12 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
+
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +16,12 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none;';
+    
     $entregaelementoproteccion = DB::table('entregaelementoproteccion')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
             ->select(DB::raw('idEntregaElementoProteccion,nombreCompletoTercero, fechaEntregaElementoProteccion'))
@@ -31,6 +40,9 @@
                         '</a>&nbsp;'.
                         '<a onclick="firmarEntregaElemento('.$value->idEntregaElementoProteccion.')">'.
                             '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a href="#" onclick="imprimirFormato('.$value->idEntregaElementoProteccion.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
 
         $row[$key][] = $value->idEntregaElementoProteccion;

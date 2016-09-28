@@ -818,6 +818,49 @@ class MatrizRiesgoController extends Controller
                 // recorremos el array recibido para insertar o actualizar cada registro
                 for($reg = 0; $reg < count($matriz); $reg++)
                 {
+                    $probabilidad = '';
+
+                    $nivelProbabilidad = ((int)$matriz[$reg]['nivelDeficienciaMatrizRiesgoDetalle'] * (int)['nivelExposicionMatrizRiesgoDetalle']);
+
+                    if($nivelProbabilidad >= 24 && $nivelProbabilidad <= 40)
+                      $probabilidad = 'Muy Alto';
+                    else if($nivelProbabilidad >=  10  && $nivelProbabilidad <= 20)
+                      $probabilidad = 'Alto';
+                    else if($nivelProbabilidad >=  6 && $nivelProbabilidad <= 8)
+                      $probabilidad = 'Medio';
+                    else if($nivelProbabilidad >=  2 && $nivelProbabilidad <= 4)
+                      $probabilidad = 'Bajo';
+                    else if($nivelProbabilidad ==  0 )
+                      $probabilidad = '';  
+
+
+                    $nivelRiesgo = ((int)$probabilidad * (int)$matriz[$reg]['nivelConsecuenciaMatrizRiesgoDetalle']);
+
+                    if($nivelRiesgo >= 600 && $nivelRiesgo <= 4000)
+                      { 
+                          $nombreRiesgo = 'I';
+                          $aceptacionRiesgo = 'No aceptable';
+                      }
+                      else if($nivelRiesgo >=  150  && $nivelRiesgo <= 500)
+                      {
+                        $nombreRiesgo = 'II';
+                          $aceptacionRiesgo = 'No aceptable o aceptable con control específico';
+                      }
+                      else if($nivelRiesgo >=  40  && $nivelRiesgo <= 120)
+                      {
+                        $nombreRiesgo = 'III';
+                          $aceptacionRiesgo = 'Aceptable';
+                      }
+                      else if($nivelRiesgo ==  20)
+                      {
+                        $nombreRiesgo = 'IV';
+                          $aceptacionRiesgo = 'Aceptable';
+                      }
+                      else if($nivelRiesgo ==  0)
+                      {
+                        $nombreRiesgo = '';
+                          $aceptacionRiesgo = '';                        
+                    }
                     
                     $indice = array(
                           'idMatrizRiesgoDetalle' => $matriz[$reg]["idMatrizRiesgoDetalle"]);
@@ -832,18 +875,18 @@ class MatrizRiesgoController extends Controller
                         'TipoRiesgoSalud_idTipoRiesgoSalud' => $matriz[$reg]['TipoRiesgoSalud_idTipoRiesgoSalud'],
                         'vinculadosMatrizRiesgoDetalle' => $matriz[$reg]['vinculadosMatrizRiesgoDetalle'],
                         'temporalesMatrizRiesgoDetalle' => $matriz[$reg]['temporalesMatrizRiesgoDetalle'],
-                        'totalExpuestosMatrizRiesgoDetalle' => $matriz[$reg]['totalExpuestosMatrizRiesgoDetalle'],
+                        'totalExpuestosMatrizRiesgoDetalle' => ($matriz[$reg]['vinculadosMatrizRiesgoDetalle'] + $matriz[$reg]['temporalesMatrizRiesgoDetalle']),
                         'fuenteMatrizRiesgoDetalle' => $matriz[$reg]['fuenteMatrizRiesgoDetalle'],
                         'medioMatrizRiesgoDetalle' => $matriz[$reg]['medioMatrizRiesgoDetalle'],
                         'personaMatrizRiesgoDetalle' => $matriz[$reg]['personaMatrizRiesgoDetalle'],
                         'nivelDeficienciaMatrizRiesgoDetalle' => $matriz[$reg]['nivelDeficienciaMatrizRiesgoDetalle'],
                         'nivelExposicionMatrizRiesgoDetalle' => $matriz[$reg]['nivelExposicionMatrizRiesgoDetalle'],
-                        'nivelProbabilidadMatrizRiesgoDetalle' => $matriz[$reg]['nivelProbabilidadMatrizRiesgoDetalle'],
-                        'nombreProbabilidadMatrizRiesgoDetalle' => $matriz[$reg]['nombreProbabilidadMatrizRiesgoDetalle'],
+                        'nivelProbabilidadMatrizRiesgoDetalle' => $nivelProbabilidad,
+                        'nombreProbabilidadMatrizRiesgoDetalle' => $probabilidad,
                         'nivelConsecuenciaMatrizRiesgoDetalle' => $matriz[$reg]['nivelConsecuenciaMatrizRiesgoDetalle'],
-                        'nivelRiesgoMatrizRiesgoDetalle' => $matriz[$reg]['nivelRiesgoMatrizRiesgoDetalle'],
-                        'nombreRiesgoMatrizRiesgoDetalle' => $matriz[$reg]['nombreRiesgoMatrizRiesgoDetalle'],
-                        'aceptacionRiesgoMatrizRiesgoDetalle' => $matriz[$reg]['aceptacionRiesgoMatrizRiesgoDetalle'],
+                        'nivelRiesgoMatrizRiesgoDetalle' => $nivelRiesgo,
+                        'nombreRiesgoMatrizRiesgoDetalle' => $nombreRiesgo,
+                        'aceptacionRiesgoMatrizRiesgoDetalle' => $aceptacionRiesgo,
                         'eliminacionMatrizRiesgoDetalle' => $matriz[$reg]['eliminacionMatrizRiesgoDetalle'],
                         'sustitucionMatrizRiesgoDetalle' => $matriz[$reg]['sustitucionMatrizRiesgoDetalle'],
                         'controlMatrizRiesgoDetalle' => $matriz[$reg]['controlMatrizRiesgoDetalle'],

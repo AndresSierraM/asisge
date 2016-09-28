@@ -23,7 +23,7 @@
       procedimiento.campos    = ['actividadProcedimientoDetalle', 'Tercero_idResponsable',        'Documento_idDocumento'];
       procedimiento.etiqueta  = ['input',                          'select1',                       'select2'];
       procedimiento.tipo      = ['text',                              '',                             ''];
-      procedimiento.estilo    = ['width: 500px;height:35px;',     'width: 300px;height:30px;','width: 300px;height:30px;'];
+      procedimiento.estilo    = ['width: 900px;height:35px;',     'width: 300px;height:30px;','width: 300px;height:30px;'];
       procedimiento.clase     = ['',                              'chosen-select form-control',   'chosen-select form-control'];
       procedimiento.sololectura = [false,false,false];
       procedimiento.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
@@ -175,24 +175,29 @@
             </div>
           </div>
 
-        <div class="panel-body">
+        <div class="panel-body" style="width:1220px;">
           <div class="form-group" id='test'>
             <div class="col-sm-12">
-              <div class="row show-grid">
-                <div class="col-md-1" style="width: 40px;" onclick="procedimiento.agregarCampos(valorProcedimiento,'A')">
-                  <span class="glyphicon glyphicon-plus"></span>
-                </div>
-                <div class="col-md-1" style="width: 500px;">Actividad</div>
-                <div class="col-md-1" style="width: 300px;">Responsable</div>
-                <div class="col-md-1" style="width: 300px;">Documento y/o Registro</div>
-                <div id="contenedor_procedimiento">
+              <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                  <div style="overflow:auto; height:350px;">
+                    <div style="width: 1550px; display: inline-block;">
+                      <div class="col-md-1" style="width: 40px;" onclick="procedimiento.agregarCampos(valorProcedimiento,'A')">
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </div>
+                      <div class="col-md-1" style="width: 900px;">Actividad</div>
+                      <div class="col-md-1" style="width: 300px;">Responsable</div>
+                      <div class="col-md-1" style="width: 300px;">Documento y/o Registro</div>
+                      <div id="contenedor_procedimiento">
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
     </fieldset>
-  @if(isset($diagnostico))
+  @if(isset($procedimiento))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
       @else

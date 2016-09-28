@@ -60,7 +60,7 @@
                     <table id="tmatrizlegal" name="tmatrizlegal" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:70px;padding: 1px 8px;" data-orderable="false">
                                  <a href="matrizlegal/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="javascript:mostrarModalInterface();"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-cloud-upload"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
@@ -114,12 +114,13 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#tmatrizlegal').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-             "ajax": "{!! URL::to ('/datosMatrizLegal?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+             "ajax": "{!! URL::to ('/datosMatrizLegal?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

@@ -2,9 +2,12 @@
 
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
+
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -14,6 +17,11 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none;';
 
     $matrizlegal = DB::table('matrizlegal')
             ->leftJoin('users', 'Users_id', '=', 'id')
@@ -30,6 +38,9 @@
                         '</a>&nbsp;'.
                         '<a href="matrizlegal/'.$value->idMatrizLegal.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a href="#" onclick="imprimirFormato('.$value->idMatrizLegal.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idMatrizLegal;
         $row[$key][] = $value->nombreMatrizLegal;
