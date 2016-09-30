@@ -84,9 +84,21 @@ class ActaGrupoApoyoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+         if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            $actagrupoapoyo = DB::select ("SELECT nombreGrupoApoyo,fechaActaGrupoApoyo,horaInicioActaGrupoApoyo,horaFinActaGrupoApoyo,observacionActaGrupoApoyo FROM actagrupoapoyo ac LEFT JOIN grupoapoyo ga ON ga.idGrupoApoyo  = ac.GrupoApoyo_idGrupoApoyo WHERE idActaGrupoApoyo = ".$id."
+              AND ac.Compania_idCompania = ".\Session::get('idCompania'));
+
+             $actagrupoapoyotercero = DB::select("SELECT nombreCompletoTercero,firmaActaGrupoApoyoTercero FROM actagrupoapoyotercero at LEFT JOIN tercero t on t.idTercero = at.Tercero_idParticipante WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
+
+          
+            $actagrupoapoyodetalle = DB::select("SELECT actividadGrupoApoyoDetalle,nombreCompletoTercero,fechaPlaneadaActaGrupoApoyoDetalle,nombreDocumento,recursoPlaneadoActaGrupoApoyoDetalle,recursoEjecutadoActaGrupoApoyoDetalle,  fechaEjecucionGrupoApoyoDetalle,observacionGrupoApoyoDetalle FROM actagrupoapoyodetalle ad LEFT JOIN tercero t ON t.idTercero = ad.ActaGrupoApoyo_idActaGrupoApoyo LEFT JOIN documento d ON d.idDocumento = ad.Documento_idDocumento WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
+
+            
+            return view('formatos.actagrupoapoyoimpresion',compact('actagrupoapoyo','actagrupoapoyotercero','actagrupoapoyodetalle'));
+       } 
     }
 
     /**

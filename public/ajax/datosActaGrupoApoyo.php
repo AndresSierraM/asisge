@@ -1,6 +1,7 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
@@ -13,6 +14,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    if ($imprimir == 1) 
+            $visibleI = 'inline-block;';
+        else
+            $visibleI = 'none';
 
 
     $actagrupoapoyo = DB::table('actagrupoapoyo')
@@ -33,6 +38,9 @@
                         '</a>&nbsp;'.
                         '<a onclick="firmarGrupoApoyo('.$value->idActaGrupoApoyo.')">'.
                             '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
+                        '</a>&nbsp'.
+                         '<a href="actagrupoapoyo" onclick="imprimirFormato('.$value->idActaGrupoApoyo.');s">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
                          
         $row[$key][] = $value->idActaGrupoApoyo;

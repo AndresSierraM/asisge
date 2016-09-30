@@ -21,7 +21,7 @@
 							</tr>
 							<tr>
 								<td>Firma</td>
-								<td><?php echo '<img style="width:10%; height:10%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaRealizadaPorInspeccion;?></td>
+								<td><?php echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaRealizadaPorInspeccion.'"';?></td>
 							</tr>
 							<tr>
 								<td>Fecha Elaboración</td>

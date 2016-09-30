@@ -60,6 +60,23 @@ class CompaniaController extends Controller
 
         $compania = \App\Compania::All()->last();
 
+        // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+        // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+        $ruta = 'compania/firmaempleador_'.$compania->idCompania.'.png';
+        $compania->firmaEmpleadorCompania = $ruta;
+
+        $compania->save();
+
+        //----------------------------
+        // Guardamos la imagen de la firma como un archivo en disco
+        $data = $request['firmabase64'];
+
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        file_put_contents('imagenes/'.$ruta, $data);
+
         //---------------------------------
         // guardamos las tablas de detalle
         //---------------------------------
@@ -102,9 +119,23 @@ class CompaniaController extends Controller
     public function update($id,CompaniaRequest $request)
     {
         $compania = \App\Compania::find($id);
-        
         $compania->fill($request->all());
+        // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+        // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+        $ruta = 'compania/firmaempleador_'.$compania->idCompania.'.png';
+        $compania->firmaEmpleadorCompania = $ruta;
+
         $compania->save();
+
+        //----------------------------
+        // Guardamos la imagen de la firma como un archivo en disco
+        $data = $request['firmabase64'];
+
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        file_put_contents('imagenes/'.$ruta, $data);
         
         //---------------------------------
         // guardamos las tablas de detalle

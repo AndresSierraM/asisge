@@ -99,9 +99,37 @@ class ProgramaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+         if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            $programa = DB::select ("
+            SELECT
+              nombrePrograma,
+              fechaElaboracionPrograma,
+              nombreClasificacionRiesgo,
+              alcancePrograma,
+              nombreCompaniaObjetivo,
+              objetivoEspecificoPrograma,
+              nombreCompletoTercero
+            FROM
+              programa pr
+            LEFT JOIN
+              clasificacionriesgo cl ON cl.idClasificacionRiesgo = pr.ClasificacionRiesgo_idClasificacionRiesgo
+            LEFT JOIN
+              companiaobjetivo co ON co.idCompaniaObjetivo = pr.CompaniaObjetivo_idCompaniaObjetivo
+            LEFT JOIN
+              tercero t ON t.idTercero = pr.Tercero_idElabora
+            WHERE
+              idPrograma = ".$id."
+              AND pr.Compania_idCompania = ".\Session::get('idCompania'));
+
+          
+            $programaDetalle = DB::select("SELECT actividadProgramaDetalle,nombreCompletoTercero,fechaPlaneadaProgramaDetalle,nombreDocumento,recursoPlaneadoProgramaDetalle,recursoEjecutadoProgramaDetalle,fechaEjecucionProgramaDetalle,observacionProgramaDetalle from programadetalle pd LEFT JOIN tercero t ON t.idTercero = pd.Tercero_idResponsable LEFT JOIN documento d ON d.idDocumento = pd.Documento_idDocumento WHERE Programa_idPrograma =  ".$id);
+
+            
+            return view('formatos.programaimpresion',compact('programa','programaDetalle'));
+       } 
         
     }
 

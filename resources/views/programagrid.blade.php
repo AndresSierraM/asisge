@@ -63,7 +63,7 @@
                         </thead>
                                         <tfoot>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;">
+                                <th style="width:60px;padding: 1px 8px;">
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
@@ -80,6 +80,12 @@
 
 <script type="text/javascript">
 
+   function imprimirFormato(id)
+    {
+        window.open('programa/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
+
+
     $(document).ready( function () {
 
         
@@ -92,12 +98,13 @@
         var lastIdx = null;
          var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#tprograma').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosPrograma?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosPrograma?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

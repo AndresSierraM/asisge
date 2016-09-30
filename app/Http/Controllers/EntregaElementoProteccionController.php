@@ -95,10 +95,19 @@ class EntregaElementoProteccionController extends Controller
      */
     public function show($id, Request $request)
     {
-        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+
+         if(isset($request['accion']) and $request['accion'] == 'imprimir')
         {
+            $entregaelementoproteccion = DB::select ("SELECT nombreCompletoTercero,firmaTerceroEntregaElementoProteccion,fechaEntregaElementoProteccion,observacionEntregaElementoProteccion FROM entregaelementoproteccion en LEFT JOIN tercero t ON t.idTercero = en.Tercero_idTercero WHERE idEntregaElementoProteccion = ".$id."
+              AND en.Compania_idCompania = ".\Session::get('idCompania'));
+
+          
+            $entregaelementoproteccionDetalle = DB::select("select nombreElementoProteccion, cantidadEntregaElementoProteccionDetalle from entregaelementoprotecciondetalle eppd left join elementoproteccion ep on ep.idElementoProteccion = eppd.ElementoProteccion_idElementoProteccion where EntregaElementoProteccion_idEntregaElementoProteccion = ".$id);
+
             
-        } 
+            return view('formatos.entregaelementoproteccionimpresion',compact('entregaelementoproteccion','entregaelementoproteccionDetalle'));
+       } 
+
     }
 
     /**

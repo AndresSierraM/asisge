@@ -36,7 +36,7 @@
                         '</a>&nbsp;'.
                         '<a href="procedimiento/'.$value->idProcedimiento.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
-                        '</a>'.
+                        '</a>&nbsp;'.
                          '<a href="procedimiento" onclick="imprimirFormato('.$value->idProcedimiento.');s">'.
                             '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';

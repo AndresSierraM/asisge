@@ -1,6 +1,7 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
@@ -13,6 +14,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+     if ($imprimir == 1) 
+            $visibleI = 'inline-block;';
+        else
+            $visibleI = 'none';
 
     $programa = DB::table('programa')
             ->leftJoin('clasificacionriesgo', 'ClasificacionRiesgo_idClasificacionRiesgo', '=', 'idClasificacionRiesgo')
@@ -29,6 +34,9 @@
                         '</a>&nbsp;'.
                         '<a href="programa/'.$value->idPrograma.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp'.
+                         '<a href="programa" onclick="imprimirFormato('.$value->idPrograma.');s">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idPrograma;
         $row[$key][] = $value->nombrePrograma;

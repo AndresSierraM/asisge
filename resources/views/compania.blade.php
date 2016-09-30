@@ -4,6 +4,25 @@
 @section('content')
 @include('alerts.request')
 
+{!!Html::style('css/signature-pad.css'); !!} 
+
+<?php
+  // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
+  // al cuadro de imagen y al input oculto de firmabase64
+  $base64 = ''; 
+  if(isset($compania))
+  {
+    $path = 'imagenes/'.$compania["firmaEmpleadorCompania"];
+    
+    if($compania["firmaEmpleadorCompania"] != "" and file_exists($path))
+    {
+      $type = pathinfo($path, PATHINFO_EXTENSION);
+      $data = file_get_contents($path);
+      $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
+  }
+?>
+
 <script>
 
   var companiaObjetivos = '<?php echo (isset($compania) ? json_encode($compania->companiaobjetivos) : "");?>';
@@ -42,6 +61,18 @@
 		{!!Form::open(['route'=>'compania.store','method'=>'POST'])!!}
 	@endif
 
+<div id="signature-pad" class="m-signature-pad">
+    <input type="hidden" id="signature-reg" value="">
+    <div class="m-signature-pad--body">
+      <canvas></canvas>
+    </div>
+    <div class="m-signature-pad--footer">
+      <div class="description">Firme sobre el recuadro</div>
+      <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+      <button type="button" class="button save btn btn-success" data-action="save">Guardar Firma</button>
+    </div>
+</div>
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
 <div id='form-section' >
 
 	
@@ -147,6 +178,16 @@
                             <div class="input-group">
                               {!!Form::textarea('politicasCompania',null,['class'=>'ckeditor','placeholder'=>'Ingresa las políticas de la compania'])!!}
                             </div>
+                            <br/>
+                            <div class="input-group">
+                            {!!Form::label('nombreEmpleadorCompania', 'Empleador', array('class' => 'col-sm-2 control-label')) !!}
+                            <span class="input-group-addon">
+                              <i class="fa fa-pencil-square-o "></i>
+                            </span>
+                            <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
+                            {!!Form::hidden('firmabase64', $base64, array('id' => 'firmabase64'))!!}
+                            {!!Form::hidden('idEntregaElementoProteccion', null, array('id' => 'idEntregaElementoProteccion'))!!}
+                            </div>
                           </div>
                         </div>  
                       </div>
@@ -233,6 +274,13 @@
     CKEDITOR.replace(('misionCompania','visionCompania','valoresCompania','politicasCompania','principiosCompania','metasCompania'), {
         fullPage: true,
         allowedContent: true
-      });  
+      }); 
+
+  $(document).ready(function()
+  {
+    mostrarFirma();
+  }); 
 </script>
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
 @stop
