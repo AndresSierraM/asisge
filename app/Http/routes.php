@@ -44,12 +44,7 @@ Route::group(['middleware' => 'auth'], function ()
         return view('signaturepad');
     });
 
-    Route::get('calcularCuadroMando', function()
-    {
-        include public_path().'/ajax/calcularCuadroMando.php';
-    });
-
-
+    
     Route::post('importarTerceroProveedor', [
             'as' => 'importarTerceroProveedor', 
             'uses' => 'TerceroController@importarTerceroProveedor']);
@@ -76,9 +71,6 @@ Route::group(['middleware' => 'auth'], function ()
             "password"  => "Auth\PasswordController"
         ]); */
 
-
-    
-
     // Registration routes...
     // Route::get('auth/register', 'Auth\AuthController@getRegister');
     // Route::post('auth/register', ['as' => 'auth/register', 'uses' => 'Auth\AuthController@postRegister']);
@@ -97,175 +89,18 @@ Route::group(['middleware' => 'auth'], function ()
     //     Route::get('logout', 'AuthController@logOut');
     // });
 
-
-
-
-    Route::get('datosUsers', function()
-    {
-        include public_path().'/ajax/datosUsers.php';
-    });
-
-    Route::get('datosPaquete', function()
-    {
-        include public_path().'/ajax/datosPaquete.php';
-    });
-
-    Route::get('datosOpcion', function()
-    {
-        include public_path().'/ajax/datosOpcion.php';
-    });
-
     /*Route::get('datosopciongridselect', function()
     {
         include public_path().'/ajax/datosopciongridphpselect');
     });
     */
-    Route::get('datosRol', function()
-    {
-        include public_path().'/ajax/datosRol.php';
-    });
-
+    
     Route::resource('users','UsersController');
     Route::resource('paquete','PaqueteController');
     Route::resource('opcion','OpcionController');
     Route::resource('opcionselect','OpcionController@select');
     Route::resource('rol','RolController');
 
-    // ---------------------------------
-    // Archivos Maestros
-    // ---------------------------------
-    Route::get('datosPais', function()
-    {
-        include public_path().'/ajax/datosPais.php';
-    });
-
-    Route::get('datosDepartamento', function()
-    {
-        include public_path().'/ajax/datosDepartamento.php';
-    });
-
-
-    Route::get('datosCiudad', function()
-    {
-        include public_path().'/ajax/datosCiudad.php';
-    });
-
-    Route::get('datosTipoIdentificacion', function()
-    {
-        include public_path().'/ajax/datosTipoIdentificacion.php';
-    });
-
-    Route::get('datosFrecuenciaMedicion', function()
-    {
-        include public_path().'/ajax/datosFrecuenciaMedicion.php';
-    });
-
-    Route::get('datosProceso', function()
-    {
-        include public_path().'/ajax/datosProceso.php';
-    });
-
-    Route::get('datosCompania', function()
-    {
-        include public_path().'/ajax/datosCompania.php';
-    });
-
-    Route::get('datosTercero', function()
-    {
-        include public_path().'/ajax/datosTercero.php';
-    });
-
-    Route::get('datosCargo', function()
-    {
-        include public_path().'/ajax/datosCargo.php';
-    });
-
-    Route::get('datosClasificacionRiesgo', function()
-    {
-        include public_path().'/ajax/datosClasificacionRiesgo.php';
-    });
-
-    Route::get('datosTipoRiesgo', function()
-    {
-        include public_path().'/ajax/datosTipoRiesgo.php';
-    });
-
-    Route::get('datosListaGeneral', function()
-    {
-        include public_path().'/ajax/datosListaGeneral.php';
-    });
-
-    Route::get('datosTipoNormaLegal', function()
-    {
-        include public_path().'/ajax/datosTipoNormaLegal.php';
-    });
-
-    Route::get('datosExpideNormaLegal', function()
-    {
-        include public_path().'/ajax/datosExpideNormaLegal.php';
-    });
-
-    Route::get('datosDocumento', function()
-    {
-        include public_path().'/ajax/datosDocumento.php';
-    });
-
-    Route::get('datosTipoInspeccion', function()
-    {
-        include public_path().'/ajax/datosTipoInspeccion.php';
-    });
-
-    Route::get('datosTipoExamenMedico', function()
-    {
-        include public_path().'/ajax/datosTipoExamenMedico.php';
-    });
-
-    Route::get('datosTipoElementoProteccion', function()
-    {
-        include public_path().'/ajax/datosTipoElementoProteccion.php';
-    });
-
-    Route::get('datosElementoProteccion', function()
-    {
-        include public_path().'/ajax/datosElementoProteccion.php';
-    });
-
-
-
-
-    Route::post('dashboardConsultarProgramas', function()
-    {
-        include public_path().'/ajax/dashboardConsultarProgramas.php';
-    });
-    Route::post('dashboardConsultarCapacitaciones', function()
-    {
-        include public_path().'/ajax/dashboardConsultarCapacitaciones.php';
-    });
-    Route::post('dashboardConsultarInspecciones', function()
-    {
-        include public_path().'/ajax/dashboardConsultarInspecciones.php';
-    });
-    Route::post('dashboardConsultarExamenes', function()
-    {
-        include public_path().'/ajax/dashboardConsultarExamenes.php';
-    });
-    Route::post('dashboardConsultarActas', function()
-    {
-        include public_path().'/ajax/dashboardConsultarActas.php';
-    });
-    Route::post('dashboardConsultarAccidentes', function()
-    {
-        include public_path().'/ajax/dashboardConsultarAccidentes.php';
-    });
-    Route::post('dashboardConsultarGrupos', function()
-    {
-        include public_path().'/ajax/dashboardConsultarGrupos.php';
-    });
-
-    Route::post('consultarPermisos', function()
-    {
-        include public_path().'/ajax/consultarPermisos.php';
-    });
 
     Route::resource('dashboard','DashboardController');
     Route::resource('pais','PaisController');
@@ -287,189 +122,6 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('tipoexamenmedico','TipoExamenMedicoController');
     Route::resource('tipoelementoproteccion','TipoElementoProteccionController');
     Route::resource('elementoproteccion','ElementoProteccionController');
-
-
-    //Ajax de Maestros
-    Route::post('llenarCargo', function()
-    {
-        include public_path().'/ajax/llenarCargo.php';
-    });
-
-    Route::post('llenarDescripcion', function()
-    {
-        include public_path().'/ajax/llenarDescripcion.php';
-    });
-
-    Route::post('llenarObjetivo', function()
-    {
-        include public_path().'/ajax/llenarObjetivo.php';
-    });
-
-    Route::post('llenarPlanCapacitacionTema', function()
-    {
-        include public_path().'/ajax/llenarPlanCapacitacionTema.php';
-    });
-
-    Route::post('llenarAusentismo', function()
-    {
-        include public_path().'/ajax/llenarAusentismo.php';
-    });
-
-
-
-    Route::post('CuadroMandoConsultarCampos', function()
-    {
-        include public_path().'/ajax/CuadroMandoConsultarCampos.php';
-    });
-    Route::post('CuadroMandoConsultarCamposFecha', function()
-    {
-        include public_path().'/ajax/CuadroMandoConsultarCamposFecha.php';
-    });
-    Route::post('CuadroMandoConsultarCalculos', function()
-    {
-        include public_path().'/ajax/CuadroMandoConsultarCalculos.php';
-    });
-
-    // ---------------------------------
-    // Inspecciones
-    // ---------------------------------
-
-        Route::post('consultarImagenInspeccion', function()
-        {
-            include public_path().'/ajax/consultarImagenInspeccion.php';
-        });
-        
-    // ---------------------------------
-    // Documentos
-    // ---------------------------------
-
-
-    Route::get('datosDiagnostico', function()
-    {
-        include public_path().'/ajax/datosDiagnostico.php';
-    });
-
-    Route::get('datosMatrizRiesgo', function()
-    {
-        include public_path().'/ajax/datosMatrizRiesgo.php';
-    });
-
-    Route::get('datosMatrizLegal', function()
-    {
-        include public_path().'/ajax/datosMatrizLegal.php';
-    });
-
-    Route::get('datosProcedimiento', function()
-    {
-        include public_path().'/ajax/datosProcedimiento.php';
-    });
-
-
-    Route::get('datosPrograma', function()
-    {
-        include public_path().'/ajax/datosPrograma.php';
-    });
-
-
-    Route::get('datosActaCapacitacion', function()
-    {
-        include public_path().'/ajax/datosActaCapacitacion.php';
-    });
-
-    Route::get('datosActaCapacitacionSelect', function()
-    {
-        include public_path().'/ajax/datosActaCapacitacionSelect.php';
-    });
-
-    Route::get('datosPlanCapacitacion', function()
-    {
-        include public_path().'/ajax/datosPlanCapacitacion.php';
-    });
-
-    Route::get('datosPlanAuditoria', function()
-    {
-        include public_path().'/ajax/datosPlanAuditoria.php';
-    });
-
-    Route::get('datosListaChequeo', function()
-    {
-        include public_path().'/ajax/datosListaChequeo.php';
-    });
-
-    Route::get('datosReporteACPM', function()
-    {
-        include public_path().'/ajax/datosReporteACPM.php';
-    });
-
-    Route::get('datosInspeccion', function()
-    {
-        include public_path().'/ajax/datosInspeccion.php';
-    });
-
-    Route::get('datosInspeccionSelect', function()
-    {
-        include public_path().'/ajax/datosInspeccionSelect.php';
-    });
-
-    Route::get('datosExamenMedico', function()
-    {
-        include public_path().'/ajax/datosExamenMedico.php';
-    });
-
-    Route::get('datosAusentismo', function()
-    {
-        include public_path().'/ajax/datosAusentismo.php';
-    });
-
-    Route::get('datosAccidente', function()
-    {
-        include public_path().'/ajax/datosAccidente.php';
-    });
-
-    Route::get('datosAccidenteSelect', function()
-    {
-        include public_path().'/ajax/datosAccidenteSelect.php';
-    });
-
-    Route::get('datosGrupoApoyo', function()
-    {
-        include public_path().'/ajax/datosGrupoApoyo.php';
-    });
-
-    Route::get('datosConformacionGrupoApoyo', function()
-    {
-        include public_path().'/ajax/datosConformacionGrupoApoyo.php';
-    });
-
-    Route::get('datosConformacionGrupoApoyoSelect', function()
-    {
-        include public_path().'/ajax/datosConformacionGrupoApoyoSelect.php';
-    });
-
-    Route::get('datosActaGrupoApoyo', function()
-    {
-        include public_path().'/ajax/datosActaGrupoApoyo.php';
-    });
-
-    Route::get('datosActaGrupoApoyoSelect', function()
-    {
-        include public_path().'/ajax/datosActaGrupoApoyoSelect.php';
-    });
-
-    Route::get('datosEntregaElementoProteccion', function()
-    {
-        include public_path().'/ajax/datosEntregaElementoProteccion.php';
-    });
-
-    Route::get('datosEntregaElementoProteccionSelect', function()
-    {
-        include public_path().'/ajax/datosEntregaElementoProteccionSelect.php';
-    });
-
-    Route::get('datosCuadroMando', function()
-    {
-        include public_path().'/ajax/datosCuadroMando.php';
-    });
 
     Route::resource('diagnostico','DiagnosticoController');
     Route::resource('cuadromando','CuadroMandoController');
@@ -509,119 +161,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('movimientocrm','MovimientoCRMController');
     Route::resource('presupuesto','PresupuestoController');
 
-    Route::get('datosSectorEmpresa', function()
-    {
-        include public_path().'/ajax/datosSectorEmpresa.php';
-    });
-    Route::get('datosLineaNegocio', function()
-    {
-        include public_path().'/ajax/datosLineaNegocio.php';
-    });
-    Route::get('datosOrigenCRM', function()
-    {
-        include public_path().'/ajax/datosOrigenCRM.php';
-    });
-    Route::get('datosZona', function()
-    {
-        include public_path().'/ajax/datosZona.php';
-    });
-    Route::get('datosCategoriaCRM', function()
-    {
-        include public_path().'/ajax/datosCategoriaCRM.php';
-    });
-    Route::get('datosEventoCRM', function()
-    {
-        include public_path().'/ajax/datosEventoCRM.php';
-    });
-    Route::get('datosAcuerdoServicio', function()
-    {
-        include public_path().'/ajax/datosAcuerdoServicio.php';
-    });
-    Route::get('datosGrupoEstado', function()
-    {
-        include public_path().'/ajax/datosGrupoEstado.php';
-    });
-
-
-    Route::get('datosDocumentoCRM', function()
-    {
-        include public_path().'/ajax/datosDocumentoCRM.php';
-    });
-    Route::get('datosMovimientoCRM', function()
-    {
-        include public_path().'/ajax/datosMovimientoCRM.php';
-    });
-
-    Route::get('datosCampoCRMSelect', function()
-    {
-        include public_path().'/ajax/datosCampoCRMSelect.php';
-    });
-    Route::get('datosCompaniaSelect', function()
-    {
-        include public_path().'/ajax/datosCompaniaSelect.php';
-    });
-    Route::get('datosRolSelect', function()
-    {
-        include public_path().'/ajax/datosRolSelect.php';
-    });
-
-    Route::get('datosPresupuesto', function()
-    {
-        include public_path().'/ajax/datosPresupuesto.php';
-    });
-
-
-    Route::post('llenarCampo', function()
-    {
-        include public_path().'/ajax/llenarCampo.php';
-    });
-    Route::post('llenarCompania', function()
-    {
-        include public_path().'/ajax/llenarCompania.php';
-    });
-    Route::post('llenarRol', function()
-    {
-        include public_path().'/ajax/llenarRol.php';
-    });
-
-    Route::post('actualizarFirmaActaGrupoApoyo', function()
-    {
-        include public_path().'/ajax/actualizarFirmaActaGrupoApoyo.php';
-    });
-
-    Route::post('actualizarFirmaActaCapacitacion', function()
-    {
-        include public_path().'/ajax/actualizarFirmaActaCapacitacion.php';
-    });
-
-    Route::post('actualizarFirmaEntregaElementoProteccion', function()
-    {
-        include public_path().'/ajax/actualizarFirmaEntregaElementoProteccion.php';
-    });
-
-    Route::post('actualizarFirmaAccidente', function()
-    {
-        include public_path().'/ajax/actualizarFirmaAccidente.php';
-    });
-
-    Route::post('actualizarFirmaInspeccion', function()
-    {
-        include public_path().'/ajax/actualizarFirmaInspeccion.php';
-    });
-
-    Route::post('actualizarFirmaConformacionGrupoApoyo', function()
-    {
-        include public_path().'/ajax/actualizarFirmaConformacionGrupoApoyo.php';
-    });
-
-    Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
-    Route::get('companiagridselect','DocumentoCRMController@indexCompaniaGrid');
-    Route::get('rolgridselect','DocumentoCRMController@indexRolGrid');
-    Route::get('actagrupoapoyoselect','ActaGrupoApoyoController@indexActaGrid');
-
     
-
-
     // *************************************************
     //
     //  D I S E Ñ A D O R   D E   I N F O R M E S 
@@ -634,101 +174,573 @@ Route::group(['middleware' => 'auth'], function ()
         return view('visorinforme');
     });
 
-    Route::get('informeconceptogridselect','VisorInformeController@indexInformeConceptoGrid');
+    
 
-
-
-
-    //Ajax de Maestros
-    Route::post('consultarSistemaInformacion', function()
-    {
-        include public_path().'/ajax/consultarSistemaInformacion.php';
-    });
-
-    Route::post('guardarSistemaInformacion', function()
-    {
-        include public_path().'/ajax/guardarSistemaInformacion.php';
-    });
-
-    Route::post('consultarEstiloInforme', function()
-    {
-        include public_path().'/ajax/consultarEstiloInforme.php';
-    });
-
-    Route::post('guardarEstiloInforme', function()
-    {
-        include public_path().'/ajax/guardarEstiloInforme.php';
-    });
-
-
-    Route::post('consultarCategoriaInforme', function()
-    {
-        include public_path().'/ajax/consultarCategoriaInforme.php';
-    });
-    Route::post('guardarCategoriaInforme', function()
-    {
-        include public_path().'/ajax/guardarCategoriaInforme.php';
-    });
-
-    Route::post('mostrarInformesCategoria', function()
-    {
-        include public_path().'/ajax/mostrarInformesCategoria.php';
-    });
-
-
-
-    Route::post('consultarInforme', function()
-    {
-        include public_path().'/ajax/consultarInforme.php';
-    });
-    Route::post('eliminarInforme', function()
-    {
-        include public_path().'/ajax/eliminarInforme.php';
-    });
-
-    Route::post('consultarInformeCapa', function()
-    {
-        include public_path().'/ajax/consultarInformeCapa.php';
-    });
-
-    Route::post('consultarInformeConcepto', function()
-    {
-        include public_path().'/ajax/consultarInformeConcepto.php';
-    });
-
-    Route::post('consultarInformeGrupo', function()
-    {
-        include public_path().'/ajax/consultarInformeGrupo.php';
-    });
-
-    Route::post('consultarInformeObjeto', function()
-    {
-        include public_path().'/ajax/consultarInformeObjeto.php';
-    });
-
-    Route::post('guardarInforme', function()
-    {
-        include public_path().'/ajax/guardarInforme.php';
-    });
-
-
-    Route::post('conexionDocumento', function()
-    {
-        include public_path().'/ajax/conexionDocumento.php';
-    });
-
-
-    Route::post('conexionDocumentoCampos', function()
-    {
-        include public_path().'/ajax/conexionDocumentoCampos.php';
-    });
-
-    Route::get('generarInforme', function()
-    {
-        include public_path().'/ajax/generarInforme.php';
-    });
 
 });
+
+
+//**************************
+//
+//      A  J  A  X 
+//
+//**************************
+
+Route::get('calcularCuadroMando', function()
+{
+    include public_path().'/ajax/calcularCuadroMando.php';
+});
+
+Route::get('datosUsers', function()
+{
+    include public_path().'/ajax/datosUsers.php';
+});
+
+Route::get('datosPaquete', function()
+{
+    include public_path().'/ajax/datosPaquete.php';
+});
+
+Route::get('datosOpcion', function()
+{
+    include public_path().'/ajax/datosOpcion.php';
+});
+Route::get('datosRol', function()
+{
+    include public_path().'/ajax/datosRol.php';
+});
+
+
+
+
+// ---------------------------------
+// Archivos Maestros
+// ---------------------------------
+Route::get('datosPais', function()
+{
+    include public_path().'/ajax/datosPais.php';
+});
+
+Route::get('datosDepartamento', function()
+{
+    include public_path().'/ajax/datosDepartamento.php';
+});
+
+
+Route::get('datosCiudad', function()
+{
+    include public_path().'/ajax/datosCiudad.php';
+});
+
+Route::get('datosTipoIdentificacion', function()
+{
+    include public_path().'/ajax/datosTipoIdentificacion.php';
+});
+
+Route::get('datosFrecuenciaMedicion', function()
+{
+    include public_path().'/ajax/datosFrecuenciaMedicion.php';
+});
+
+Route::get('datosProceso', function()
+{
+    include public_path().'/ajax/datosProceso.php';
+});
+
+Route::get('datosCompania', function()
+{
+    include public_path().'/ajax/datosCompania.php';
+});
+
+Route::get('datosTercero', function()
+{
+    include public_path().'/ajax/datosTercero.php';
+});
+
+Route::get('datosCargo', function()
+{
+    include public_path().'/ajax/datosCargo.php';
+});
+
+Route::get('datosClasificacionRiesgo', function()
+{
+    include public_path().'/ajax/datosClasificacionRiesgo.php';
+});
+
+Route::get('datosTipoRiesgo', function()
+{
+    include public_path().'/ajax/datosTipoRiesgo.php';
+});
+
+Route::get('datosListaGeneral', function()
+{
+    include public_path().'/ajax/datosListaGeneral.php';
+});
+
+Route::get('datosTipoNormaLegal', function()
+{
+    include public_path().'/ajax/datosTipoNormaLegal.php';
+});
+
+Route::get('datosExpideNormaLegal', function()
+{
+    include public_path().'/ajax/datosExpideNormaLegal.php';
+});
+
+Route::get('datosDocumento', function()
+{
+    include public_path().'/ajax/datosDocumento.php';
+});
+
+Route::get('datosTipoInspeccion', function()
+{
+    include public_path().'/ajax/datosTipoInspeccion.php';
+});
+
+Route::get('datosTipoExamenMedico', function()
+{
+    include public_path().'/ajax/datosTipoExamenMedico.php';
+});
+
+Route::get('datosTipoElementoProteccion', function()
+{
+    include public_path().'/ajax/datosTipoElementoProteccion.php';
+});
+
+Route::get('datosElementoProteccion', function()
+{
+    include public_path().'/ajax/datosElementoProteccion.php';
+});
+
+
+// ---------------------------------
+// Dashboard
+// ---------------------------------
+Route::post('dashboardConsultarProgramas', function()
+{
+    include public_path().'/ajax/dashboardConsultarProgramas.php';
+});
+Route::post('dashboardConsultarCapacitaciones', function()
+{
+    include public_path().'/ajax/dashboardConsultarCapacitaciones.php';
+});
+Route::post('dashboardConsultarInspecciones', function()
+{
+    include public_path().'/ajax/dashboardConsultarInspecciones.php';
+});
+Route::post('dashboardConsultarExamenes', function()
+{
+    include public_path().'/ajax/dashboardConsultarExamenes.php';
+});
+Route::post('dashboardConsultarActas', function()
+{
+    include public_path().'/ajax/dashboardConsultarActas.php';
+});
+Route::post('dashboardConsultarAccidentes', function()
+{
+    include public_path().'/ajax/dashboardConsultarAccidentes.php';
+});
+Route::post('dashboardConsultarGrupos', function()
+{
+    include public_path().'/ajax/dashboardConsultarGrupos.php';
+});
+
+Route::post('consultarPermisos', function()
+{
+    include public_path().'/ajax/consultarPermisos.php';
+});
+
+
+//Ajax de Maestros
+Route::post('llenarCargo', function()
+{
+    include public_path().'/ajax/llenarCargo.php';
+});
+
+Route::post('llenarDescripcion', function()
+{
+    include public_path().'/ajax/llenarDescripcion.php';
+});
+
+Route::post('llenarObjetivo', function()
+{
+    include public_path().'/ajax/llenarObjetivo.php';
+});
+
+Route::post('llenarPlanCapacitacionTema', function()
+{
+    include public_path().'/ajax/llenarPlanCapacitacionTema.php';
+});
+
+Route::post('llenarAusentismo', function()
+{
+    include public_path().'/ajax/llenarAusentismo.php';
+});
+
+
+
+Route::post('CuadroMandoConsultarCampos', function()
+{
+    include public_path().'/ajax/CuadroMandoConsultarCampos.php';
+});
+Route::post('CuadroMandoConsultarCamposFecha', function()
+{
+    include public_path().'/ajax/CuadroMandoConsultarCamposFecha.php';
+});
+Route::post('CuadroMandoConsultarCalculos', function()
+{
+    include public_path().'/ajax/CuadroMandoConsultarCalculos.php';
+});
+
+// ---------------------------------
+// Inspecciones
+// ---------------------------------
+
+Route::post('consultarImagenInspeccion', function()
+{
+    include public_path().'/ajax/consultarImagenInspeccion.php';
+});
+    
+// ---------------------------------
+// Documentos
+// ---------------------------------
+
+
+Route::get('datosDiagnostico', function()
+{
+    include public_path().'/ajax/datosDiagnostico.php';
+});
+
+Route::get('datosMatrizRiesgo', function()
+{
+    include public_path().'/ajax/datosMatrizRiesgo.php';
+});
+
+Route::get('datosMatrizLegal', function()
+{
+    include public_path().'/ajax/datosMatrizLegal.php';
+});
+
+Route::get('datosProcedimiento', function()
+{
+    include public_path().'/ajax/datosProcedimiento.php';
+});
+
+
+Route::get('datosPrograma', function()
+{
+    include public_path().'/ajax/datosPrograma.php';
+});
+
+
+Route::get('datosActaCapacitacion', function()
+{
+    include public_path().'/ajax/datosActaCapacitacion.php';
+});
+
+Route::get('datosActaCapacitacionSelect', function()
+{
+    include public_path().'/ajax/datosActaCapacitacionSelect.php';
+});
+
+Route::get('datosPlanCapacitacion', function()
+{
+    include public_path().'/ajax/datosPlanCapacitacion.php';
+});
+
+Route::get('datosPlanAuditoria', function()
+{
+    include public_path().'/ajax/datosPlanAuditoria.php';
+});
+
+Route::get('datosListaChequeo', function()
+{
+    include public_path().'/ajax/datosListaChequeo.php';
+});
+
+Route::get('datosReporteACPM', function()
+{
+    include public_path().'/ajax/datosReporteACPM.php';
+});
+
+Route::get('datosInspeccion', function()
+{
+    include public_path().'/ajax/datosInspeccion.php';
+});
+
+Route::get('datosInspeccionSelect', function()
+{
+    include public_path().'/ajax/datosInspeccionSelect.php';
+});
+
+Route::get('datosExamenMedico', function()
+{
+    include public_path().'/ajax/datosExamenMedico.php';
+});
+
+Route::get('datosAusentismo', function()
+{
+    include public_path().'/ajax/datosAusentismo.php';
+});
+
+Route::get('datosAccidente', function()
+{
+    include public_path().'/ajax/datosAccidente.php';
+});
+
+Route::get('datosAccidenteSelect', function()
+{
+    include public_path().'/ajax/datosAccidenteSelect.php';
+});
+
+Route::get('datosGrupoApoyo', function()
+{
+    include public_path().'/ajax/datosGrupoApoyo.php';
+});
+
+Route::get('datosConformacionGrupoApoyo', function()
+{
+    include public_path().'/ajax/datosConformacionGrupoApoyo.php';
+});
+
+Route::get('datosConformacionGrupoApoyoSelect', function()
+{
+    include public_path().'/ajax/datosConformacionGrupoApoyoSelect.php';
+});
+
+Route::get('datosActaGrupoApoyo', function()
+{
+    include public_path().'/ajax/datosActaGrupoApoyo.php';
+});
+
+Route::get('datosActaGrupoApoyoSelect', function()
+{
+    include public_path().'/ajax/datosActaGrupoApoyoSelect.php';
+});
+
+Route::get('datosEntregaElementoProteccion', function()
+{
+    include public_path().'/ajax/datosEntregaElementoProteccion.php';
+});
+
+Route::get('datosEntregaElementoProteccionSelect', function()
+{
+    include public_path().'/ajax/datosEntregaElementoProteccionSelect.php';
+});
+
+Route::get('datosCuadroMando', function()
+{
+    include public_path().'/ajax/datosCuadroMando.php';
+});
+
+
+
+// *************************************
+// Rutas del CRM
+// *************************************
+Route::get('datosSectorEmpresa', function()
+{
+    include public_path().'/ajax/datosSectorEmpresa.php';
+});
+Route::get('datosLineaNegocio', function()
+{
+    include public_path().'/ajax/datosLineaNegocio.php';
+});
+Route::get('datosOrigenCRM', function()
+{
+    include public_path().'/ajax/datosOrigenCRM.php';
+});
+Route::get('datosZona', function()
+{
+    include public_path().'/ajax/datosZona.php';
+});
+Route::get('datosCategoriaCRM', function()
+{
+    include public_path().'/ajax/datosCategoriaCRM.php';
+});
+Route::get('datosEventoCRM', function()
+{
+    include public_path().'/ajax/datosEventoCRM.php';
+});
+Route::get('datosAcuerdoServicio', function()
+{
+    include public_path().'/ajax/datosAcuerdoServicio.php';
+});
+Route::get('datosGrupoEstado', function()
+{
+    include public_path().'/ajax/datosGrupoEstado.php';
+});
+
+
+Route::get('datosDocumentoCRM', function()
+{
+    include public_path().'/ajax/datosDocumentoCRM.php';
+});
+Route::get('datosMovimientoCRM', function()
+{
+    include public_path().'/ajax/datosMovimientoCRM.php';
+});
+
+Route::get('datosCampoCRMSelect', function()
+{
+    include public_path().'/ajax/datosCampoCRMSelect.php';
+});
+Route::get('datosCompaniaSelect', function()
+{
+    include public_path().'/ajax/datosCompaniaSelect.php';
+});
+Route::get('datosRolSelect', function()
+{
+    include public_path().'/ajax/datosRolSelect.php';
+});
+
+Route::get('datosPresupuesto', function()
+{
+    include public_path().'/ajax/datosPresupuesto.php';
+});
+
+
+Route::post('llenarCampo', function()
+{
+    include public_path().'/ajax/llenarCampo.php';
+});
+Route::post('llenarCompania', function()
+{
+    include public_path().'/ajax/llenarCompania.php';
+});
+Route::post('llenarRol', function()
+{
+    include public_path().'/ajax/llenarRol.php';
+});
+
+Route::post('actualizarFirmaActaGrupoApoyo', function()
+{
+    include public_path().'/ajax/actualizarFirmaActaGrupoApoyo.php';
+});
+
+Route::post('actualizarFirmaActaCapacitacion', function()
+{
+    include public_path().'/ajax/actualizarFirmaActaCapacitacion.php';
+});
+
+Route::post('actualizarFirmaEntregaElementoProteccion', function()
+{
+    include public_path().'/ajax/actualizarFirmaEntregaElementoProteccion.php';
+});
+
+Route::post('actualizarFirmaAccidente', function()
+{
+    include public_path().'/ajax/actualizarFirmaAccidente.php';
+});
+
+Route::post('actualizarFirmaInspeccion', function()
+{
+    include public_path().'/ajax/actualizarFirmaInspeccion.php';
+});
+
+Route::post('actualizarFirmaConformacionGrupoApoyo', function()
+{
+    include public_path().'/ajax/actualizarFirmaConformacionGrupoApoyo.php';
+});
+
+
+
+//Ajax de Diseñador de informes
+Route::post('consultarSistemaInformacion', function()
+{
+    include public_path().'/ajax/consultarSistemaInformacion.php';
+});
+
+Route::post('guardarSistemaInformacion', function()
+{
+    include public_path().'/ajax/guardarSistemaInformacion.php';
+});
+
+Route::post('consultarEstiloInforme', function()
+{
+    include public_path().'/ajax/consultarEstiloInforme.php';
+});
+
+Route::post('guardarEstiloInforme', function()
+{
+    include public_path().'/ajax/guardarEstiloInforme.php';
+});
+
+
+Route::post('consultarCategoriaInforme', function()
+{
+    include public_path().'/ajax/consultarCategoriaInforme.php';
+});
+Route::post('guardarCategoriaInforme', function()
+{
+    include public_path().'/ajax/guardarCategoriaInforme.php';
+});
+
+Route::post('mostrarInformesCategoria', function()
+{
+    include public_path().'/ajax/mostrarInformesCategoria.php';
+});
+
+
+
+Route::post('consultarInforme', function()
+{
+    include public_path().'/ajax/consultarInforme.php';
+});
+Route::post('eliminarInforme', function()
+{
+    include public_path().'/ajax/eliminarInforme.php';
+});
+
+Route::post('consultarInformeCapa', function()
+{
+    include public_path().'/ajax/consultarInformeCapa.php';
+});
+
+Route::post('consultarInformeConcepto', function()
+{
+    include public_path().'/ajax/consultarInformeConcepto.php';
+});
+
+Route::post('consultarInformeGrupo', function()
+{
+    include public_path().'/ajax/consultarInformeGrupo.php';
+});
+
+Route::post('consultarInformeObjeto', function()
+{
+    include public_path().'/ajax/consultarInformeObjeto.php';
+});
+
+Route::post('guardarInforme', function()
+{
+    include public_path().'/ajax/guardarInforme.php';
+});
+
+
+Route::post('conexionDocumento', function()
+{
+    include public_path().'/ajax/conexionDocumento.php';
+});
+
+
+Route::post('conexionDocumentoCampos', function()
+{
+    include public_path().'/ajax/conexionDocumentoCampos.php';
+});
+
+Route::get('generarInforme', function()
+{
+    include public_path().'/ajax/generarInforme.php';
+});
+
+Route::get('informeconceptogridselect','VisorInformeController@indexInformeConceptoGrid');
+Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
+Route::get('companiagridselect','DocumentoCRMController@indexCompaniaGrid');
+Route::get('rolgridselect','DocumentoCRMController@indexRolGrid');
+Route::get('actagrupoapoyoselect','ActaGrupoApoyoController@indexActaGrid');
+
+
 
 Route::get('dropzone','TerceroController@indexdropzone');
 Route::post('dropzone/uploadFiles', 'TerceroController@uploadFiles'); 

@@ -10,26 +10,25 @@ use App\Http\Requests\MovimientoCRMRequest;
 
 use Illuminate\Routing\Route;
 use DB;
+include public_path().'/ajax/consultarPermisosCRM.php';
+
 
 
 class MovimientoCRMController extends Controller
 {
-    public function _construct(){
-        $this->beforeFilter('@find',['only'=>['edit','update','destroy']]);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function find(Route $route){
-        $this->movimientocrm = \App\MovimientoCRM::find($route->getParameter('movimientocrm'));
-        return $this->movimientocrm;
-    }
+
 
     public function index()
     {
-        return view('movimientocrmgrid');
+        $idDocumento = $_GET["idDocumentoCRM"];
+        
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisosCRM($idDocumento);
+
+        if($datos != null)
+            return view('movimientocrmgrid', compact('datos'));
+        else
+            return view('movimientocrmgrid');
     }
 
 
@@ -160,7 +159,14 @@ class MovimientoCRMController extends Controller
      */
     public function show($id)
     {
-        //
+        if(isset($_GET['accion']) and $_GET['accion'] == 'imprimir')
+        {
+            $movimientocrm = \App\MovimientoCRM::find($id);
+            $idDocumentoCRM= $_GET['idDocumentoCRM'];
+            
+
+            return view('formatos.formatomovimientocrm',['movimientocrm'=>$movimientocrm], compact('idDocumentoCRM'));
+        }
     }
 
     /**

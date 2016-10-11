@@ -24,5 +24,48 @@ class MovimientoCRM extends Model
     {
         return $this->hasMany('App\MovimientoCRMArchivo','MovimientoCRM_idMovimientoCRM');
     }
+
+    public function AcuerdoServicio()
+    {
+        return $this->hasOne('App\AcuerdoServicio','idAcuerdoServicio');
+    }
+
+    public function OrigenCRM()
+    {
+        return $this->hasOne('App\OrigenCRM','idOrigenCRM');
+    }
+    
+    public function TerceroSolicitante()
+    {
+        return $this->hasOne('App\Tercero','idTercero');
+    }
+    
+    public function TerceroSupervisor()
+    {
+        return $this->hasOne('App\Tercero','idTercero');
+    }
+
+    public function TerceroAsesor()
+    {
+        return $this->hasOne('App\Tercero','idTercero');
+    }
+
+    public function CategoriaCRM()
+    {
+        return $this->hasOne('App\CategoriaCRM','idCategoriaCRM');
+    }
+
+    
+    public function EventoCRM()
+    {
+        return $this->hasOne('App\EventoCRM','idEventoCRM');
+    }
+
+    public function LineaNegocio()
+    {
+        return $this->hasOne('App\LineaNegocio','idLineaNegocio');
+    }
+
+    
     
 }

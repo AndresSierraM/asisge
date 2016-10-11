@@ -1,4 +1,23 @@
 <?php 
+    $visible = '';
+
+    if (isset($datos[0])) 
+    {
+        $dato = get_object_vars($datos[0]);
+        if ($dato['adicionarDocumentoCRMRol'] == 1) 
+        {
+            $visible = 'inline-block;';    
+        }
+        else
+        {
+            $visible = 'none;';
+        }
+    }
+    else
+    {
+        $visible = 'none;';
+    }
+
 
 $id = isset($_GET["idDocumentoCRM"]) ? $_GET["idDocumentoCRM"] : 0; 
 $campos = DB::select(
@@ -50,12 +69,26 @@ for($i = 0; $i < count($campos); $i++)
         <div class="container">
             <div class="row">
                 <div class="container">
-                    {!!Html::image('images/iconoscrm/estado_nuevo.png', 'Nuevos', array('style' => 'height: 24px; width:24px;')) !!}
-                    {!!Html::image('images/iconoscrm/estado_pendiente.png', 'Pendientes', array('style' => 'height: 24px; width:24px;')) !!}
-                    {!!Html::image('images/iconoscrm/estado_proceso.png', 'En Proceso', array('style' => 'height: 24px; width:24px;')) !!}
-                    {!!Html::image('images/iconoscrm/estado_cancelado.png', 'Cancelados', array('style' => 'height: 24px; width:24px;')) !!}
-                    {!!Html::image('images/iconoscrm/estado_fallido.png', 'Fallidos', array('style' => 'height: 24px; width:24px;')) !!}
-                    {!!Html::image('images/iconoscrm/estado_exitoso.png', 'Exitosos', array('style' => 'height: 24px; width:24px;')) !!}
+
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Nuevo');" title="Mostrar Nuevas">
+                        <img  src='images/iconoscrm/estado_nuevo.png' style="width:28px; height:28px;">
+                    </a>
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Pendiente');" title="Mostrar Pendientes">
+                        <img  src='images/iconoscrm/estado_pendiente.png' style="width:28px; height:28px;">
+                    </a>
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'En Proceso');" title="Mostrar En Proceso">
+                        <img  src='images/iconoscrm/estado_proceso.png' style="width:28px; height:28px;">
+                    </a>
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Cancelado');" title="Mostrar Canceladas / Rechazadas">
+                        <img  src='images/iconoscrm/estado_cancelado.png' style="width:28px; height:28px;">
+                    </a>
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Fallido');" title="Mostrar Finalizadas Sin Exito / Fallidas">
+                        <img  src='images/iconoscrm/estado_fallido.png' style="width:28px; height:28px;">
+                    </a>
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Exitoso');" title="Mostrar Finalizadas Con Exito / Exitosas">
+                        <img  src='images/iconoscrm/estado_exitoso.png' style="width:28px; height:28px;">
+                    </a>
+                                 
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
 
                         <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
@@ -80,7 +113,7 @@ for($i = 0; $i < count($campos); $i++)
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                <a href=<?php echo "movimientocrm/create?idDocumentoCRM=".$id;?>><span  class="glyphicon glyphicon-plus"></span></a>
+                                <a href=<?php echo "movimientocrm/create?idDocumentoCRM=".$id;?>><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <?php 
@@ -113,18 +146,30 @@ for($i = 0; $i < count($campos); $i++)
 
 <script type="text/javascript">
 
+
+    function imprimirFormato(idMov, idDoc)
+    {
+        window.open('movimientocrm/'+idMov+'?idDocumentoCRM='+idDoc+'&accion=imprimir','movimientocrm','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
+
     $(document).ready( function () {
         var id = "<?php echo $id;?>";
         var camposBase = "<?php echo $camposBase;?>";
         var camposGrid = "<?php echo $camposGrid;?>";
 
         var lastIdx = null;
+        
+        var modificar = '<?php echo (isset($dato["modificarDocumentoCRMRol"]) ? $dato["modificarDocumentoCRMRol"] : 0);?>';
+        var eliminar = '<?php echo (isset($dato["anularDocumentoCRMRol"]) ? $dato["anularDocumentoCRMRol"] : 0);?>';
+        var consultar = '<?php echo (isset($dato["consultarDocumentoCRMRol"]) ? $dato["consultarDocumentoCRMRol"] : 0);?>';
+        var aprobar = '<?php echo (isset($dato["aprobarDocumentoCRMRol"]) ? $dato["aprobarDocumentoCRMRol"] : 0);?>';
+
         var table = $('#tmovimientocrm').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosMovimientoCRM?idDocumento="+id+"&camposBase="+camposBase+"&camposGrid="+camposGrid+"')!!}",
+            "ajax": "{!! URL::to ('/datosMovimientoCRM?idDocumento="+id+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -202,6 +247,17 @@ for($i = 0; $i < count($campos); $i++)
     
 });
     
+    function cambiarEstado(id, TipoEstado)
+    {
+
+        var modificar = '<?php echo (isset($dato["modificarDocumentoCRMRol"]) ? $dato["modificarDocumentoCRMRol"] : 0);?>';
+        var eliminar = '<?php echo (isset($dato["anularDocumentoCRMRol"]) ? $dato["anularDocumentoCRMRol"] : 0);?>';
+        var consultar = '<?php echo (isset($dato["consultarDocumentoCRMRol"]) ? $dato["consultarDocumentoCRMRol"] : 0);?>';
+        var aprobar = '<?php echo (isset($dato["aprobarDocumentoCRMRol"]) ? $dato["aprobarDocumentoCRMRol"] : 0);?>';
+
+
+        $("#tmovimientocrm").DataTable().ajax.url('http://'+location.host+"/datosMovimientoCRM?idDocumento="+id+"&TipoEstado="+TipoEstado+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar).load();
+    }
 </script>
 
 @stop
