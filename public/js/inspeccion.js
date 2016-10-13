@@ -51,8 +51,8 @@ function cargarArchivoInspeccion(registro, idInspeccionDetalle)
             success: function(respuesta)
             {
                 reg = registro.replace('fotoInspeccionDetalle','');
-
-                $('#visualizarInspeccionDetalle'+reg).val(respuesta["fotoInspeccionDetalle"]);
+alert('http://'+location.host+'/imagenes/'+respuesta["fotoInspeccionDetalle"]);
+                $('#visualizarInspeccionDetalle'+reg).val('http://'+location.host+'/imagenes/'+respuesta["fotoInspeccionDetalle"]);
             },
             error: function(xhr,err)
             { 

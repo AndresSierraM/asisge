@@ -94,47 +94,47 @@ class InspeccionController extends Controller
             }
 
             //----------------------------
+            $this->grabarDetalle($request, $inspeccion->idInspeccion);
+
+           //  $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
+           //  for($i = 0; $i < $contadorDetalle; $i++)
+           //  {
+           //      \App\InspeccionDetalle::create([
+           //      'Inspeccion_idInspeccion' => $inspeccion->idInspeccion,
+           //      'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
+           //      'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
+           //      'fotoInspeccionDetalle' => $request['fotoInspeccionDetalle'][$i],
+           //      'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
+           //      'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
+           //      'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' || $request['Tercero_idResponsable'][$i] == 0) ? null : $request['Tercero_idResponsable'][$i],
+           //      'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
+           //      'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
+           //     ]);
 
 
-            $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\InspeccionDetalle::create([
-                'Inspeccion_idInspeccion' => $inspeccion->idInspeccion,
-                'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
-                'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
-                'fotoInspeccionDetalle' => $request['fotoInspeccionDetalle'][$i],
-                'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
-                'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
-                'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' || $request['Tercero_idResponsable'][$i] == 0) ? null : $request['Tercero_idResponsable'][$i],
-                'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
-                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
-               ]);
+           //      // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
+           //      if($request['accionMejoraInspeccionDetalle'][$i] != '' )
+           //      {
+           //              //************************************************
+           //              //
+           //              //  R E P O R T E   A C C I O N E S   
+           //              //  C O R R E C T I V A S,  P R E V E N T I V A S 
+           //              //  Y   D E   M E J O R A 
+           //              //
+           //              //************************************************
+           //              // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
 
-
-                // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
-                if($request['accionMejoraInspeccionDetalle'][$i] != '' )
-                {
-                        //************************************************
-                        //
-                        //  R E P O R T E   A C C I O N E S   
-                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
-                        //  Y   D E   M E J O R A 
-                        //
-                        //************************************************
-                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
-
-                        guardarReporteACPM(
-                                $fechaAccion = date("Y-m-d"), 
-                                $idModulo = 24, 
-                                $tipoAccion = 'Correctiva', 
-                                $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
-                                );   
-                }
+           //              guardarReporteACPM(
+           //                      $fechaAccion = date("Y-m-d"), 
+           //                      $idModulo = 24, 
+           //                      $tipoAccion = 'Correctiva', 
+           //                      $descripcionAccion = $request['accionMejoraInspeccionDetalle'][$i]
+           //                      );   
+           //      }
                 
-            }
+           //  }
 
-           return redirect('/inspeccion');
+            return redirect('/inspeccion');
         }
     }
 
@@ -192,7 +192,7 @@ class InspeccionController extends Controller
         $preguntas = DB::table('inspecciondetalle')
             ->leftJoin('tipoinspeccionpregunta', 'inspecciondetalle.TipoInspeccionPregunta_idTipoInspeccionPregunta', '=', 'tipoinspeccionpregunta.idTipoInspeccionPregunta')
             ->leftJoin('tipoinspeccion', 'tipoinspeccionpregunta.TipoInspeccion_idTipoInspeccion', '=', 'tipoinspeccion.idTipoInspeccion')
-            ->select(DB::raw('TipoInspeccionPregunta_idTipoInspeccionPregunta, numeroTipoInspeccionPregunta, contenidoTipoInspeccionPregunta, 
+            ->select(DB::raw('idInspeccionDetalle,TipoInspeccionPregunta_idTipoInspeccionPregunta, numeroTipoInspeccionPregunta, contenidoTipoInspeccionPregunta, 
                               situacionInspeccionDetalle,   fotoInspeccionDetalle, ubicacionInspeccionDetalle,
                               accionMejoraInspeccionDetalle, Tercero_idResponsable, fechaInspeccionDetalle,
                               observacionInspeccionDetalle'))
@@ -238,16 +238,50 @@ class InspeccionController extends Controller
             }
 
             //----------------------------
+            $this->grabarDetalle($request, $id);
+            return redirect('/inspeccion');
+        }    
+    }
 
-            \App\InspeccionDetalle::where('Inspeccion_idInspeccion',$id)->delete();
-             $files = Input::file('fotoInspeccionDetalle');
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    
+
+    public function destroy($id)
+    {
+
+        \App\Inspeccion::destroy($id);
+        return redirect('/inspeccion');
+    }
+
+    public function grabarDetalle($request, $id)
+    {
+        //\App\InspeccionDetalle::where('Inspeccion_idInspeccion',$id)->delete();
+            $files = Input::file('archivoInspeccionDetalle');
 
             $contadorDetalle = count($request['TipoInspeccionPregunta_idTipoInspeccionPregunta']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                
 
-               
+                $indice = array(
+                    'idInspeccionDetalle' => $request['idInspeccionDetalle'][$i]);
+
+                $data = array(
+                    'Inspeccion_idInspeccion' => $id,
+                    'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
+                    'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
+                    'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
+                    'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
+                    'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' || $request['Tercero_idResponsable'][$i] == 0) ? null : $request['Tercero_idResponsable'][$i],
+                    'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
+                    'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i]
+                    );
+
+
                 $file = $files[$i] ;
                 $rutaImagen = '';
                 $destinationPath = 'imagenes/inspeccion/';
@@ -259,53 +293,17 @@ class InspeccionController extends Controller
                     $manager->make($file->getRealPath())->save($filename);
                     $rutaImagen = 'inspeccion/'.$file->getClientOriginalName();
 
+                    
+                    $data['fotoInspeccionDetalle'] =  $rutaImagen;
 
-                    // recorrer todos los archivos para guardarlos en la carpeta
-                    // luego de almacenar la información, guardamos los archivos en la carpeta de inpecciones
-                    // $files = Input::file('fotoInspeccionDetalle');
-                    // foreach($files as $file) {
-
-                    //     $destinationPath = 'imagenes/inspeccion/';
-                    //     if(isset($file))
-                    //     {
-                    //         $filename = $destinationPath . $file->getClientOriginalName();
-                             
-                    //         $manager = new ImageManager();
-                    //         $manager->make($file->getRealPath())->save($filename);
-                    //         echo 'Si entra ' . $filename.'<br>';
-                    //     }
-                    // }
-
-
-                    // mostrar los archivos en un formulario
-                    //  Route::get('storage/{id}/{archivo}', function ($archivo) {
-                    //  $public_path = public_path();
-                    //  $url = $public_path.'/storage/id/'.$archivo;
-
-                    // //verificamos si el archivo existe y lo retornamos
-                    //  if (Storage::exists($archivo))
-                    //  {
-                    //  return response()->download($url);
-                    //  }
-                    //  //si no se encuentra lanzamos un error 404.
-                    //  abort(404);
-                    //  });
-
+                }
+                else
+                {
+                    $rutaImagen = $request['fotoInspeccionDetalle'][$i];
                 }
                 
             
-                \App\InspeccionDetalle::create([
-                'Inspeccion_idInspeccion' => $id,
-                'TipoInspeccionPregunta_idTipoInspeccionPregunta' => $request['TipoInspeccionPregunta_idTipoInspeccionPregunta'][$i],
-                'situacionInspeccionDetalle' => $request['situacionInspeccionDetalle'][$i],
-                'ubicacionInspeccionDetalle' => $request['ubicacionInspeccionDetalle'][$i],
-                'accionMejoraInspeccionDetalle' => $request['accionMejoraInspeccionDetalle'][$i],
-                'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' || $request['Tercero_idResponsable'][$i] == 0) ? null : $request['Tercero_idResponsable'][$i],
-                'fechaInspeccionDetalle' => $request['fechaInspeccionDetalle'][$i],
-                'observacionInspeccionDetalle' => $request['observacionInspeccionDetalle'][$i],
-                'fotoInspeccionDetalle' =>  $rutaImagen
-               ]);
-
+                $respuesta = \App\InspeccionDetalle::updateOrCreate($indice, $data);
                 
                 // verificamos si tiene texto en el campos de accion de mejora, insertamos un registro en el ACPM (Accion Correctiva)
                 if($request['accionMejoraInspeccionDetalle'][$i] != '' )
@@ -330,24 +328,6 @@ class InspeccionController extends Controller
                 }
             }
 
-            
-            return redirect('/inspeccion');
-        }    
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    
-
-    public function destroy($id)
-    {
-
-        \App\Inspeccion::destroy($id);
-        return redirect('/inspeccion');
     }
 
 }

@@ -2,6 +2,7 @@ var wrapper = document.getElementById("signature-pad"),
     clearButton = wrapper.querySelector("[data-action=clear]"),
     saveButton = wrapper.querySelector("[data-action=save]"),
     closeButton = wrapper.querySelector("[data-action=close]"),
+    closeImageButton = wrapper.querySelector("[data-action=close]"),
     canvas = wrapper.querySelector("canvas"),
     signaturePad;
 

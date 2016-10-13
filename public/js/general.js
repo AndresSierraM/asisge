@@ -279,11 +279,11 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             // un img para mostrarla  en base64
             var imagen = document.createElement('img');
             imagen.id =  this.campos[i] + this.contador;
-            imagen.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+            imagen.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? 'http://'+location.host+'/imagenes/'+valor[(tipo == 'A' ? i : this.campos[i])] : '');
             imagen.setAttribute("placeholder", 'Vista previa de la imagen');
             imagen.setAttribute("class", this.clase[i]);
             imagen.setAttribute("style", this.estilo[i]);
-            imagen.setAttribute("onclick", "mostrarImagen('"+valor[this.campos[i]]+"')");
+            imagen.setAttribute("onclick", "mostrarImagen('"+'http://'+location.host+'/imagenes/'+valor[this.campos[i]]+"')");
             if(typeof(this.funciones[i]) !== "undefined") 
             {
                 for(var h=0,c = this.funciones[i].length;h<c;h+=2) 

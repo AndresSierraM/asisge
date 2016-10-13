@@ -85,6 +85,7 @@
     // var inspeccionDetalle = '<?php echo (isset($inspeccion) ? json_encode($inspeccion->inspeccionDetalle) : "");?>';
 
     inspeccionDetalle = (inspeccionDetalle != '' ? JSON.parse(inspeccionDetalle) : '');
+
     var valorInspeccion = [0,0,'','','','','','','',0,'',''];
 
     $(document).ready(function(){
@@ -137,7 +138,7 @@
         {
           // llena los campos de preguntas
           inspeccion.agregarCampos(JSON.stringify(inspeccionDetalle[j]),'L', inspeccionDetalle[j]["idInspeccionGrupo"]);
-          cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
+          //cargarArchivoInspeccion($('#fotoInspeccionDetalle'+j).attr('id'), $('#idInspeccionDetalle'+j).val());
           // console.log(inspeccionDetalle[j]);
         }
         document.getElementById('registros').value = j ;
@@ -175,7 +176,7 @@
       </div>
       <div class="m-image-pad--footer">
         <div class="description">Vista previa de la imagen</div>
-        <button type="button" class="button clear btn btn-primary" data-action="close">Cerrar</button>
+        <button type="button" class="button clear btn btn-primary" onclick="document.getElementById('image-pad').style.display = 'none';">Cerrar</button>
       </div>
   </div>
 
