@@ -251,7 +251,7 @@
 						              	<span class="input-group-addon">
 						                	<i class="fa fa-flag"></i>
 						              	</span>
-										{!!Form::select('Tercero_idEmpleado',$terceroEmple, (isset($accidente) ? $accidente->Tercero_idEmpleado : 0),["onchange" => "buscarAusentismo();","class" => "form-control", "placeholder" =>"Seleccione el Empleado Accidentado"])!!}
+										{!!Form::select('Tercero_idEmpleado',$terceroEmple, (isset($accidente) ? $accidente->Tercero_idEmpleado : 0),["onchange" => "buscarAusentismo(); consultarFecha(this.value)","class" => "form-control", "placeholder" =>"Seleccione el Empleado Accidentado"])!!}
 									</div>
 								</div>
 							</div>
@@ -388,7 +388,7 @@
 					        </div>
 
 					        <div class="form-group" id='test'>
-					          {!!Form::label('tareaDesarrolladaAccidente', 'Lugar', array('class' => 'col-sm-2 control-label'))!!}
+					          {!!Form::label('tareaDesarrolladaAccidente', 'Tarea', array('class' => 'col-sm-2 control-label'))!!}
 					          <div class="col-sm-10" >
 					            <div class="input-group">
 					              <span class="input-group-addon">

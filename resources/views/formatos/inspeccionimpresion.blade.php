@@ -47,32 +47,32 @@
 				     </table>
 				    @endforeach
 				     <table  class="table table-striped table-bordered" width="100%">
-				      <thead>
-				       <tr>
-				        <td>Pregunta</td>
-				        <td>Situación identificada</td>
-				        <td>Evidencia fotográfica</td>
-				        <td>Ubicación</td>
-				        <td>Acción de mejora</td>
-				        <td>Responsable</td>
-				        <td>Fecha</td>
-				        <td>Observaciones</td>
-				       </tr>
-				      </thead>
-				      <tbody>
-				       @foreach($inspeccionResumen as $dato)
-				       <tr>
-				        <td>{{$dato->contenidoTipoInspeccionPregunta}}</td>
-				        <td>{{$dato->situacionInspeccionDetalle}}</td>
-				        <td><?php echo '<img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->fotoInspeccionDetalle;?></td>
-				        <td>{{$dato->ubicacionInspeccionDetalle}}</td>
-				        <td>{{$dato->accionMejoraInspeccionDetalle}}</td>
-				        <td>{{$dato->nombreCompletoTercero}}</td>
-				        <td>{{$dato->fechaInspeccionDetalle}}</td>
-				        <td>{{$dato->observacionInspeccionDetalle}}</td>
-				       </tr>
-				       @endforeach
-				      </tbody>
+					      <thead>
+						       <tr>
+						        <td>Pregunta</td>
+						        <td>Situación identificada</td>
+						        <td>Evidencia fotográfica</td>
+						        <td>Ubicación</td>
+						        <td>Acción de mejora</td>
+						        <td>Responsable</td>
+						        <td>Fecha</td>
+						        <td>Observaciones</td>
+						       </tr>
+					      </thead>
+					      <tbody>
+						       @foreach($inspeccionResumen as $dato)
+						       <tr>
+						        <td>{{$dato->contenidoTipoInspeccionPregunta}}</td>
+						        <td>{{$dato->situacionInspeccionDetalle}}</td>
+						        <td><?php echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->fotoInspeccionDetalle.'"';?></td>
+						        <td>{{$dato->ubicacionInspeccionDetalle}}</td>
+						        <td>{{$dato->accionMejoraInspeccionDetalle}}</td>
+						        <td>{{$dato->nombreCompletoTercero}}</td>
+						        <td>{{$dato->fechaInspeccionDetalle}}</td>
+						        <td>{{$dato->observacionInspeccionDetalle}}</td>
+						       </tr>
+						       @endforeach
+					      </tbody>
 				     </table>
 				</div>
 			</div>

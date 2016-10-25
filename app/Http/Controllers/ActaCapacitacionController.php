@@ -125,9 +125,20 @@ class ActaCapacitacionController extends Controller
                 FROM plancapacitaciontema PCT
                 LEFT JOIN actacapacitaciontema ACT
                     ON PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema
-                WHERE   PlanCapacitacion_idPlanCapacitacion = '.$request['idPlanCapacitacion'].' and 
-                        ACT.PlanCapacitacionTema_idPlanCapacitacionTema IS NULL OR 
-                        (dictadaActaCapacitacionTema = 0 OR cumpleObjetivoActaCapacitacionTema = 0)');
+                LEFT JOIN plancapacitacion PC 
+                    ON PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
+                WHERE   PlanCapacitacion_idPlanCapacitacion = '.$request['idPlanCapacitacion'].' and Compania_idCompania = '.\Session::get("idCompania").' and (cumpleObjetivoActaCapacitacionTema = 0 or cumpleObjetivoActaCapacitacionTema IS NULL)');
+
+
+// $plan = DB::select(
+//                 'SELECT idPlanCapacitacionTema as PlanCapacitacionTema_idPlanCapacitacionTema, 0 as idActaCapacitacionTema, nombrePlanCapacitacionTema, PCT.Tercero_idCapacitador, fechaPlanCapacitacionTema, horaPlanCapacitacionTema, 1 as dictadaPlanCapacitacionTema,  0 as cumpleObjetivoPlanCapacitacionTema
+//                 FROM plancapacitaciontema PCT
+//                 LEFT JOIN actacapacitaciontema ACT
+//                     ON PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema
+//                 WHERE   PlanCapacitacion_idPlanCapacitacion = '.$request['idPlanCapacitacion'].' and 
+//                         ACT.PlanCapacitacionTema_idPlanCapacitacionTema IS NULL OR 
+//                         (dictadaActaCapacitacionTema = 0 OR cumpleObjetivoActaCapacitacionTema = 0)');
+
 
             return response()->json([
                 $planCapacitacion,

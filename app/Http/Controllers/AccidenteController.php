@@ -53,7 +53,10 @@ class AccidenteController extends Controller
     public function create()
     {
         $terceroCoord = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $terceroEmple = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        // $terceroEmple = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+
+        $terceroEmple = DB::Select('SELECT idTercero as id, nombreCompletoTercero as nombre from ausentismo left join tercero on `Tercero_idTercero` = idTercero left join `accidente` on Ausentismo_idAusentismo = idAusentismo where ausentismo.Compania_idCompania = '.\Session::get('idCompania').' and tipoAusentismo like "%ente%" and nombreAccidente IS NULL');
+        $terceroEmple = $this->convertirArray($terceroEmple);
         
 
         $ausentismo  = \App\Ausentismo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreAusentismo','idAusentismo');
@@ -65,6 +68,17 @@ class AccidenteController extends Controller
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         return view('accidente',compact('terceroCoord','terceroEmple','ausentismo',
             'proceso','idProceso','nombreProceso','idTercero','nombreCompletoTercero'));
+    }
+
+    function convertirArray($dato)
+    {
+        $nuevo = array();
+        $nuevo[0] = 'Seleccione';
+        for($i = 0; $i < count($dato); $i++) 
+        {
+          $nuevo[get_object_vars($dato[$i])["id"]] = get_object_vars($dato[$i])["nombre"] ;
+        }
+        return $nuevo;
     }
 
     /**

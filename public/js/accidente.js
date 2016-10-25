@@ -35,6 +35,147 @@ function buscarAusentismo(){
 	});
 }
 
+function consultarFecha(idTercero)
+{
+
+    var token = document.getElementById('token').value;
+
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: "json",
+                data: {'idTercero': idTercero},
+                url:   'http://'+location.host+'/consultarFechaEmpleadoAccidente/',
+                type:  'post',
+                beforeSend: function(){
+                    //Lo que se hace antes de enviar el formulario
+                    },
+                success: function(respuesta){
+                    fecha = respuesta['fechaNacimientoTerceroInformacion'];
+                    
+                if (fecha !== '0000-00-00') 
+                {
+
+                    var values=fecha.split("-");
+
+                    var dia = values[2];
+
+                    var mes = values[1];
+
+                    var ano = values[0];
+
+                    // cogemos los valores actuales
+
+                    var fecha_hoy = new Date();
+
+                    var ahora_ano = fecha_hoy.getYear();
+
+                    var ahora_mes = fecha_hoy.getMonth()+1;
+
+                    var ahora_dia = fecha_hoy.getDate();
+
+                    // realizamos el calculo
+
+                    var edad = (ahora_ano + 1900) - ano;
+
+                    if ( ahora_mes < mes )
+
+                    {
+                        edad--;
+                    }
+
+                    if ((mes == ahora_mes) && (ahora_dia < dia))
+                    {
+                        edad--;
+                    }
+
+                    if (edad > 1900)
+                    {
+                        edad -= 1900;
+                    }
+
+                    $("#edadEmpleadoAccidente").val(edad);
+                }
+                else
+                {
+                    alert("Debe llenar la fecha de nacimiento del empleado en el modulo de tercero.");
+                    $("#edadEmpleadoAccidente").val('');
+                }
+
+                fechaant = respuesta['fechaIngresoTerceroInformacion'];
+                if (fechaant !== '0000-00-00') 
+                {                    
+                    var values=fechaant.split("-");
+
+                    var dia = values[2];
+
+                    var mes = values[1];
+
+                    var ano = values[0];
+
+                    // cogemos los valores actuales
+
+                    var fecha_hoy = new Date();
+
+                    var ahora_ano = fecha_hoy.getYear();
+
+                    var ahora_mes = fecha_hoy.getMonth()+1;
+
+                    var ahora_dia = fecha_hoy.getDate();
+
+                    // realizamos el calculo
+
+                    var tiemposerv = (ahora_ano + 1900) - ano;
+
+                    if ( ahora_mes < mes )
+
+                    {
+                        tiemposerv--;
+                    }
+
+                    if ((mes == ahora_mes) && (ahora_dia < dia))
+                    {
+                        tiemposerv--;
+                    }
+
+                    if (tiemposerv > 1900)
+                    {
+                        tiemposerv -= 1900;
+                    }
+
+                    // calculamos los meses
+
+                    var meses=0;
+
+                    if(ahora_mes>mes)
+
+                        meses=ahora_mes-mes;
+
+                    if(ahora_mes<mes)
+
+                        meses=12-(mes-ahora_mes);
+
+                    if(ahora_mes==mes && dia>ahora_dia)
+
+                        meses=11;
+
+                    $("#tiempoServicioAccidente").val(tiemposerv+' AÑOS '+meses+' MESES');
+                }
+                else
+                {
+                    alert("Debe llenar el tiempo de servicio del empleado en el modulo de tercero.");
+                    $("#tiempoServicioAccidente").val('');   
+                }
+
+            },
+            error: function(xhr,err)
+            { 
+                alert("Debe llenar la fecha de nacimiento o el tiempo de servicio del empleado en el modulo de tercero.");
+                $("#tiempoServicioAccidente").val('');
+                $("#edadEmpleadoAccidente").val('');
+            }   
+        });
+}
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/accidente";

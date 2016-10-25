@@ -147,6 +147,7 @@
 									</div>
 								</div>
 							</div>
+							<br/><br/><br/>
 							<div class="form-group" style="width:565px; display: inline;">
 								{!!Form::label('nombre1Tercero', 'Primer Nombre', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
@@ -554,7 +555,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('composicionFamiliarTerceroInformacion', 'Composici&oacute;n Familiar', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													{!!Form::label('composicionFamiliarTerceroInformacion', 'Composici&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
