@@ -92,7 +92,9 @@ for($i = 0; $i < count($campos); $i++)
           Left Join acuerdoservicio
             On movimientocrm.AcuerdoServicio_idAcuerdoServicio =
             acuerdoservicio.idAcuerdoServicio
-        Where idDocumentoCRM = '.$id.  ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '') );
+        Where   idDocumentoCRM = '.$id.  ' and 
+                movimientocrm.Compania_idCompania = '.\Session::get('idCompania').
+                ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '') );
 
 
     $row = array();

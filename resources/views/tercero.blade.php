@@ -239,7 +239,7 @@
 													{!!Form::checkbox('tipoTercero1','02',false, array('id' => 'tipoTercero2', 'onclick'=>'validarTipoTercero()'))!!}Proveedor
 												</label>
 											</div>
-											<div class="checkbox-inline" style="display:none;">
+											<div class="checkbox-inline">
 												<label>
 													{!!Form::hidden('tipoTercero1','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
 												</label>
@@ -394,6 +394,28 @@
 																<i class="fa fa-mobile" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('Cargo_idCargo',$cargo, (isset($tercero) ? $tercero->Cargo_idCargo : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el cargo",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: none;" id="zona">
+													{!!Form::label('Zona_idZona', 'Zona', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-mobile" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('Zona_idZona',$zona, (isset($tercero) ? $tercero->Zona_idZona : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la zona",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: none;" id="sector">
+													{!!Form::label('SectorEmpresa_idSectorEmpresa', 'Sector Empresa', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-mobile" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('SectorEmpresa_idSectorEmpresa',$sectorempresa, (isset($tercero) ? $tercero->SectorEmpresa_idSectorEmpresa : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el sector empresarial",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>

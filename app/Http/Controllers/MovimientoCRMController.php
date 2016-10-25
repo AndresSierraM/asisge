@@ -112,7 +112,8 @@ class MovimientoCRMController extends Controller
             'LineaNegocio_idLineaNegocio' => $request['LineaNegocio_idLineaNegocio'],
             'OrigenCRM_idOrigenCRM' => $request['OrigenCRM_idOrigenCRM'],
             'EstadoCRM_idEstadoCRM' => $request['EstadoCRM_idEstadoCRM'],
-            'AcuerdoServicio_idAcuerdoServicio' => $request['AcuerdoServicio_idAcuerdoServicio']
+            'AcuerdoServicio_idAcuerdoServicio' => $request['AcuerdoServicio_idAcuerdoServicio'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
         $movimientocrm = \App\MovimientoCRM::All()->last();

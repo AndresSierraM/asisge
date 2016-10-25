@@ -84,7 +84,14 @@ class TerceroController extends Controller
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
         $cargo = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCargo','idCargo');
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'));
+
+        $zona = \App\Zona::All()->lists('nombreZona', 'idZona');
+        
+        $sectorempresa = \App\SectorEmpresa::All()->lists('nombreSectorEmpresa', 'idSectorEmpresa');
+
+        $tercero = \App\Tercero::find($id);
+        
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa'));
     }
     /**
      * Store a newly created resource in storage.
@@ -137,6 +144,8 @@ class TerceroController extends Controller
                 'correoElectronicoTercero' => $request['correoElectronicoTercero'],
                 'paginaWebTercero' => $request['paginaWebTercero'],
                 'Cargo_idCargo' => (($request['Cargo_idCargo'] == '' or $request['Cargo_idCargo'] == 0) ? null : $request['Cargo_idCargo']),
+                'Zona_idZona' => (($request['Zona_idZona'] == '' or $request['Zona_idZona'] == 0) ? null : $request['Zona_idZona']),
+                'SectorEmpresa_idSectorEmpresa' => (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa']),
                 'Compania_idCompania' => \Session::get('idCompania')
                 ]);
             
@@ -269,8 +278,14 @@ class TerceroController extends Controller
         $ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
         $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
         $cargo = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCargo','idCargo');
+
+        $zona = \App\Zona::All()->lists('nombreZona', 'idZona');
+        
+        $sectorempresa = \App\SectorEmpresa::All()->lists('nombreSectorEmpresa', 'idSectorEmpresa');
+
         $tercero = \App\Tercero::find($id);
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol'),['tercero'=>$tercero]);
+
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -286,6 +301,8 @@ class TerceroController extends Controller
             $tercero = \App\Tercero::find($id);
             $tercero->fill($request->all());
             $tercero->Cargo_idCargo = (($request['Cargo_idCargo'] == '' or $request['Cargo_idCargo'] == 0) ? null : $request['Cargo_idCargo']);
+            $tercero->Zona_idZona = (($request['Zona_idZona'] == '' or $request['Zona_idZona'] == 0) ? null : $request['Zona_idZona']);
+            $tercero->SectorEmpresa_idSectorEmpresa = (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa']);
 
             if(null !== Input::file('imagenTercero') )
             {
@@ -527,6 +544,17 @@ class TerceroController extends Controller
                 }
 
                 //*****************************
+                // Tipo de Tercero
+                //*****************************
+                // con los campos de tipo cliente y tipo proveedor, armamos el tipo de tercero
+                $terceros[$posTer]["tipoTercero"] = 
+                        ($terceros[$posTer]["tipoProveedor"] != '' ? '*02*', '').
+                        ($terceros[$posTer]["tipoCliente"] != '' ? '*03*', '');
+                // si le tipo de tercero queda vacio, por defecto lo ponemos como proveedor
+                $terceros[$posTer]["tipoTercero"] == ($terceros[$posTer]["tipoTercero"] == '' ? '*02*' : $terceros[$posTer]["tipoTercero"]);
+
+
+                //*****************************
                 // Número de documento
                 //*****************************
                 // si la celda esta en blanco, reportamos error de obligatoriedad
@@ -677,7 +705,74 @@ class TerceroController extends Controller
                         // $posErr++;
                     }
                 }
+
+
+                //*****************************
+                // Zona
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($terceros[ $posTer]["Zona_idZona"] == '' or 
+                    $terceros[ $posTer]["Zona_idZona"] == null)
+                {
+                    $terceros[$posTer]["Zona_idZona"] = null;
+                    // $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    // $errores[$posErr]["mensaje"] = 'Debe diligenciar el código del Cargo';
+                    
+                    // $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\Zona::where('codigoZona','=', $terceros[ $posTer]["Zona_idZona"])->lists('idZona');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $terceros[$posTer]["Zona_idZona"] = $consulta[0];
+                    else
+                    {
+                        $terceros[$posTer]["Zona_idZona"] = null;
+                        // $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                        // $errores[$posErr]["mensaje"] = 'Código de Cargo '. $terceros[ $posTer]["Cargo_idCargo"]. ' no existe';
+                        
+                        // $posErr++;
+                    }
+                }
                 
+
+                //*****************************
+                // Sector Empresarial
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($terceros[ $posTer]["SectorEmpresa_idSectorEmpresa"] == '' or 
+                    $terceros[ $posTer]["SectorEmpresa_idSectorEmpresa"] == null)
+                {
+                    $terceros[$posTer]["SectorEmpresa_idSectorEmpresa"] = null;
+                    // $errores[$posErr]["linea"] = $fila;
+                    // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    // $errores[$posErr]["mensaje"] = 'Debe diligenciar el código del Cargo';
+                    
+                    // $posErr++;
+                }
+                else
+                {
+                    $consulta = \App\SectorEmpresa::where('codigoSectorEmpresa','=', $terceros[ $posTer]["SectorEmpresa_idSectorEmpresa"])->lists('idSectorEmpresa');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $terceros[$posTer]["SectorEmpresa_idSectorEmpresa"] = $consulta[0];
+                    else
+                    {
+                        $terceros[$posTer]["SectorEmpresa_idSectorEmpresa"] = null;
+                        // $errores[$posErr]["linea"] = $fila;
+                        // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                        // $errores[$posErr]["mensaje"] = 'Código de Cargo '. $terceros[ $posTer]["Cargo_idCargo"]. ' no existe';
+                        
+                        // $posErr++;
+                    }
+                }
+
+
                 $posTer++;
                 $fila++;
                 
