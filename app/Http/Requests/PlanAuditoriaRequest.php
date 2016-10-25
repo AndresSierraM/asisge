@@ -33,7 +33,7 @@ class PlanAuditoriaRequest extends Request
         $validacion = array( 
             "numeroPlanAuditoria" => "required|integer",
             "fechaInicioPlanAuditoria" => "required|date",
-            "fechaFinPlanAuditoria" => "require|date",
+            "fechaFinPlanAuditoria" => "required|date",
             "Tercero_AuditorLider" => "required");
         
         for($i = 0; $i < $acompañante; $i++)

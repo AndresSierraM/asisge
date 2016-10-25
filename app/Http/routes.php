@@ -357,6 +357,11 @@ Route::post('llenarCargo', function()
     include public_path().'/ajax/llenarCargo.php';
 });
 
+Route::post('llenarElementoProteccion', function()
+{
+    include public_path().'/ajax/llenarElementoProteccion.php';
+});
+
 Route::post('llenarDescripcion', function()
 {
     include public_path().'/ajax/llenarDescripcion.php';
@@ -377,7 +382,10 @@ Route::post('llenarAusentismo', function()
     include public_path().'/ajax/llenarAusentismo.php';
 });
 
-
+Route::post('consultarFechaEmpleadoAccidente', function()
+{
+    include public_path().'/ajax/consultarFechaEmpleadoAccidente.php';
+});
 
 Route::post('CuadroMandoConsultarCampos', function()
 {

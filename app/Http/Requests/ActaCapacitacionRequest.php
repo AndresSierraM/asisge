@@ -37,7 +37,7 @@ class ActaCapacitacionRequest extends Request
                 $validacion['Tercero_idCapacitador'.$i] =  'required';
             }
 
-            if(trim($this->get('fechaActaCapacitacionTema')[$i]) == '' or trim($this->get('fechaActaCapacitacionTema')[$i]) == 0)
+            if(trim($this->get('fechaActaCapacitacionTema')[$i]) == '')
             {    
                 $validacion['fechaActaCapacitacionTema'.$i] =  'required';
             }

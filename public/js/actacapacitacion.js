@@ -57,8 +57,8 @@ function validarFormulario(event)
     var dato2 = document.getElementById('fechaElaboracionActaCapacitacion').value;
     var dato3 = document.getElementById('PlanCapacitacion_idPlanCapacitacion').value;
     var datoCapacitador = document.querySelectorAll("[name='Tercero_idCapacitador[]']");
-    var datoFecha = document.querySelectorAll("[name='fechaPlanCapacitacionTema[]']");
-    var datoHora = document.querySelectorAll("[name='horaPlanCapacitacionTema[]']");
+    var datoFecha = document.querySelectorAll("[name='fechaActaCapacitacionTema[]']");
+    var datoHora = document.querySelectorAll("[name='horaActaCapacitacionTema[]']");
     var datoAsistente = document.querySelectorAll("[name='Tercero_idAsistente[]']");
     var dato4 = [];
     var dato5 = [];
@@ -71,7 +71,15 @@ function validarFormulario(event)
     for(var j=0,i=datoCapacitador.length; j<i;j++)
     {
         dato4[j] = datoCapacitador[j].value;
+    }
+
+    for(var j=0,i=datoFecha.length; j<i;j++)
+    {
         dato5[j] = datoFecha[j].value;
+    }
+
+    for(var j=0,i=datoHora.length; j<i;j++)
+    {
         dato6[j] = datoHora[j].value;
     }
 
@@ -92,8 +100,8 @@ function validarFormulario(event)
                 fechaElaboracionActaCapacitacion: dato2,
                 PlanCapacitacion_idPlanCapacitacion: dato3,
                 Tercero_idCapacitador: dato4, 
-                fechaPlanCapacitacionTema: dato5, 
-                horaPlanCapacitacionTema: dato6, 
+                fechaActaCapacitacionTema: dato5, 
+                horaActaCapacitacionTema: dato6, 
                 Tercero_idAsistente: dato7
                 },
         success:function(){
@@ -124,19 +132,30 @@ function validarFormulario(event)
                 for(var j=0,i=datoCapacitador.length; j<i;j++)
                 {
                     (typeof respuesta['Tercero_idCapacitador'+j] === "undefined" ? document.getElementById('Tercero_idCapacitador'+j).style.borderColor = '' : document.getElementById('Tercero_idCapacitador'+j).style.borderColor = '#a94442');
+                }
 
-                    (typeof respuesta['fechaPlanCapacitacionTema'+j] === "undefined" ? document.getElementById('fechaPlanCapacitacionTema'+j).style.borderColor = '' : document.getElementById('fechaPlanCapacitacionTema'+j).style.borderColor = '#a94442');
+                for(var j=0,i=datoFecha.length; j<i;j++)
+                {
+                    (typeof respuesta['fechaActaCapacitacionTema'+j] === "undefined" ? document.getElementById('fechaActaCapacitacionTema'+j).style.borderColor = '' : document.getElementById('fechaActaCapacitacionTema'+j).style.borderColor = '#a94442');
+                }
 
-                    (typeof respuesta['horaPlanCapacitacionTema'+j] === "undefined" ? document.getElementById('horaPlanCapacitacionTema'+j).style.borderColor = '' : document.getElementById('horaPlanCapacitacionTema'+j).style.borderColor = '#a94442');
+                for(var j=0,i=datoHora.length; j<i;j++)
+                {
+                    (typeof respuesta['horaActaCapacitacionTema'+j] === "undefined" ? document.getElementById('horaActaCapacitacionTema'+j).style.borderColor = '' : document.getElementById('horaActaCapacitacionTema'+j).style.borderColor = '#a94442');
                 }
 
                 for(var j=0,i=datoAsistente.length; j<i;j++)
                 {
                     (typeof respuesta['Tercero_idAsistente'+j] === "undefined" ? document.getElementById('Tercero_idAsistente'+j).style.borderColor = '' : document.getElementById('Tercero_idAsistente'+j).style.borderColor = '#a94442');
-
                 }
 
-                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li><br>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
                 $("#msj-error").fadeIn();
             }
 

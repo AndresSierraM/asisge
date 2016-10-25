@@ -117,6 +117,41 @@ function llenarCargo(idTercero)
             });
 }
 
+function llenarElemento(idTercero)
+{
+     var token = document.getElementById('token').value;
+
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: "json",
+                data: {'idTercero': idTercero},
+                url:   'http://'+location.host+'/llenarElementoProteccion/',
+                type:  'post',
+                beforeSend: function(){
+                    //Lo que se hace antes de enviar el formulario
+                    },
+                success: function(respuesta){
+                    document.getElementById("contenedor_entregaelementoproteccion").innerHTML = '';
+                    var valor = new Array();
+                    var nombres = new Array();
+
+                    for (var i = 0; i < respuesta.length; i++) 
+                    {
+                        valor[i] = respuesta[i]["idElementoProteccion"];
+                        nombres[i] = respuesta[i]["nombreElementoProteccion"];
+                        
+                        var valores = new Array(0,valor[i],nombres[i],'',1);
+                        window.parent.entregaelementoproteccion.agregarCampos(valores,'A'); 
+
+                        llenarDescripcion(valor[i], 'ElementoProteccion_idElementoProteccion'+i)
+                    }  
+                },
+                error:    function(xhr,err){ 
+                    alert("Error");
+                }
+            });
+}
+
 function llenarDescripcion(idElementoProteccion,nombreCampo)
 {
     var registro = nombreCampo.substring(39); //Le quito la palabra 'ElementoProteccion_idElementoProteccion'y solo envío el número del registro
@@ -137,7 +172,8 @@ function llenarDescripcion(idElementoProteccion,nombreCampo)
                     },
                 success: function(respuesta){
                     //lo que se si el destino devuelve algo
-                    $("#descripcionElementoProteccion"+registro).val(respuesta);
+                    $("#descripcionElementoProteccion"+registro).val(respuesta['descripcionElementoProteccion']);
+                    $("#nombreElemento"+registro).val(respuesta['nombreElementoProteccion']);
                 },
                 error:    function(xhr,err){ 
                     alert("Error");

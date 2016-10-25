@@ -34,7 +34,7 @@
 
     var entregaelementoprotecciondetalle = '<?php echo (isset($entregaelementoproteccion) ? json_encode($entregaelementoproteccion->entregaelementoprotecciondetalles) : "");?>';
     entregaelementoprotecciondetalle = (entregaelementoprotecciondetalle != '' ? JSON.parse(entregaelementoprotecciondetalle) : '');
-    var valorEntregaElemento = [0,'','',0];
+    var valorEntregaElemento = [0,'','','',0];
 
     $(document).ready(function(){
 
@@ -44,16 +44,16 @@
       entregaelementoproteccion.campoid = 'idEntregaElementoProteccionDetalle';
       entregaelementoproteccion.campoEliminacion = 'eliminarElemento';
 
-      entregaelementoproteccion.campos   = ['idEntregaElementoProteccionDetalle', 'ElementoProteccion_idElementoProteccion', 'descripcionElementoProteccion', 'cantidadEntregaElementoProteccionDetalle'];
-      entregaelementoproteccion.etiqueta = ['input', 'select', 'input', 'input'];
-      entregaelementoproteccion.tipo     = ['hidden', '', 'text', 'text'];
-      entregaelementoproteccion.estilo   = ['', 'width: 200px;height:35px;','width: 500px;height:35px;','width:100px;height:35px;','width:250px;height:35px;'];
-      entregaelementoproteccion.clase    = ['', 'chosen-select','',''];
-      entregaelementoproteccion.sololectura = [false, false,true,false];
+      entregaelementoproteccion.campos   = ['idEntregaElementoProteccionDetalle', 'ElementoProteccion_idElementoProteccion', 'nombreElemento', 'descripcionElementoProteccion', 'cantidadEntregaElementoProteccionDetalle'];
+      entregaelementoproteccion.etiqueta = ['input', 'input', 'input','input', 'input'];
+      entregaelementoproteccion.tipo     = ['hidden', 'hidden', 'text', 'text', 'text'];
+      entregaelementoproteccion.estilo   = ['', '', 'width: 200px;height:35px;','width: 500px;height:35px;','width:100px;height:35px;','width:250px;height:35px;'];
+      entregaelementoproteccion.clase    = ['','','','',''];
+      entregaelementoproteccion.sololectura = [false, false,true,true,false];
 
-      var eventochange = ['onchange','llenarDescripcion(this.value, this.id);'];
-      entregaelementoproteccion.funciones = ['', eventochange,'',''];
-      entregaelementoproteccion.opciones = ['',ElementoProteccion,'',''];
+      // var eventochange = ['onchange','llenarDescripcion(this.value, this.id);'];
+      // entregaelementoproteccion.funciones = ['', eventochange,'',''];
+      // entregaelementoproteccion.opciones = ['',ElementoProteccion,'',''];
       
 
 
@@ -108,7 +108,7 @@
                       <span class="input-group-addon">
                         <i class="fa fa-flag"></i>
                       </span>
-              {!!Form::select('Tercero_idTercero',$tercero, (isset($entregaelementoproteccion) ? $entregaelementoproteccion->Tercero_idTercero : 0),["class" => "chosen-select form-control",'onchange'=>'llenarCargo(this.value)', "placeholder" =>"Seleccione el empleado"])!!}
+              {!!Form::select('Tercero_idTercero',$tercero, (isset($entregaelementoproteccion) ? $entregaelementoproteccion->Tercero_idTercero : 0),["class" => "chosen-select form-control",'onchange'=>'llenarCargo(this.value); llenarElemento(this.value)', "placeholder" =>"Seleccione el empleado"])!!}
 
               <div class="col-sm-10">
                 <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
