@@ -4,14 +4,24 @@
 @include('alerts.request')
 
 {!!Html::script('js/examenmedico.js')!!}
+{!!Html::style('css/image-pad.css'); !!} 
   <script>
 
     var examenmedicoDetalle = '<?php echo (isset($examenesmedicos) ? json_encode($examenesmedicos) : "");?>';
 
     examenmedicoDetalle = (examenmedicoDetalle != '' ? JSON.parse(examenmedicoDetalle) : '');
+
     var valorExamenMedico = [0,'','','','',''];
 
     $(document).ready(function(){
+
+        examenmedico = new Atributos('detalle','contenedor_detalle','detalle_');
+        // como este formulario no lleva caneca para eliminar registros de detalle, no llenamos las
+        // propiedades correspondientes
+        examenmedico.altura = '62px;';
+        examenmedico.campoid = '';
+        examenmedico.campoEliminacion = '';
+        examenmedico.botonEliminacion = false;
 
         // ejecutamos la funcion para llenar el cargo del empleado
         if(document.getElementById('Tercero_idTercero').value != 0)
@@ -21,24 +31,38 @@
         // puntuacion (digitado por el susuario de 1 a 5 )
         // resultado, calculado por el sistema (resultado = puntuacion * 20  expresado como porcentaje)
         // mejora (digitado por le usuario, editor de texto libre)
-        examenmedico = new Atributos('detalle','contenedor_detalle','detalle_');
-        examenmedico.campos   = ['TipoExamenMedico_idTipoExamenMedico',  'nombreTipoExamenMedico', 
-                                'limiteInferiorTipoExamenMedico' , 'limiteSuperiorTipoExamenMedico',
-                                'resultadoExamenMedicoDetalle',   'observacionExamenMedicoDetalle'];
-        examenmedico.etiqueta = ['input', 'input', 'input', 'input', 'input', 'textarea'];
-        examenmedico.tipo     = ['hidden', 'text', 'text','text','text' , 'textarea'];
-        examenmedico.estilo   = ['',
-                                'vertical-align:top; width: 400px; height:35px;', 
-                                'vertical-align:top; width: 150px;  height:35px;',
-                                'vertical-align:top; width: 150px;  height:35px;',
-                                'vertical-align:top; width: 170px;  height:35px;',
-                                'vertical-align:top; resize:none; width: 300px; height:35px;'];
-        examenmedico.clase    = ['','','','','',''];
-        examenmedico.sololectura = [false,true,true,true,false,false];
+        
+        examenmedico.campos   = [
+        'idExamenMedicoDetalle',
+        'TipoExamenMedico_idTipoExamenMedico', 
+        'nombreTipoExamenMedico', 
+        'limiteInferiorTipoExamenMedico', 
+        'limiteSuperiorTipoExamenMedico', 
+        'resultadoExamenMedicoDetalle', 
+        'archivoExamenMedicoDetalle',
+        'fotoExamenMedicoDetalle', 
+        'observacionExamenMedicoDetalle'];
+        
+        examenmedico.etiqueta = ['input','input', 'input', 'input', 'input', 'input', 'file', 'imagen','textarea'];
+
+        examenmedico.tipo     = ['hidden','hidden', 'text', 'text', 'text', 'text', '', 'imagen', 'textarea'];
+        
+        examenmedico.estilo   = ['','',
+                                'vertical-align:top; width: 300px; height:60px;', 
+                                'vertical-align:top; width: 100px;  height:60px;',
+                                'vertical-align:top; width: 100px;  height:60px;',
+                                'vertical-align:top; width: 110px;  height:60px;',
+                                'vertical-align:top; width: 200px;  height:60px; display: inline-block;',
+                                'vertical-align:top; width: 60px;  height:60px; display: inline-block;',
+                                'vertical-align:top; resize:none; width: 300px; height:60px;'];
+
+        examenmedico.clase    = ['','','','','','','','btn-primary',''];
+
+        examenmedico.sololectura = [false,false,true,true,true,false,false,false,false];
       
-        examenmedico.opciones = ['','','','','',''];
+        examenmedico.opciones = ['','','','','','','','',''];
 
-
+        document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas
         for(var j=0, k = examenmedicoDetalle.length; j < k; j++)
         {
@@ -62,6 +86,17 @@
 
 
 <div id='form-section' >
+
+  <div id="image-pad" class="m-image-pad" style="height: 100%; width: 100% left;">
+    <input type="hidden" id="image-reg" value="">
+      <div class="m-image-pad--body">
+        <img id="image-src"></img>
+      </div>
+      <div class="m-image-pad--footer">
+        <div class="description">Vista previa de la imagen</div>
+        <button type="button" class="button clear btn btn-primary" onclick="document.getElementById('image-pad').style.display = 'none';">Cerrar</button>
+      </div>
+  </div>
 
 	<fieldset id="examenmedico-form-fieldset">	
 
@@ -138,10 +173,11 @@
               <div class="row show-grid">
                 <div style="overflow: auto; width: 100%;">
   
-                    <div class="col-md-1" style="width: 400px;">Examen</div>
-                    <div class="col-md-2" style="width: 150px;">Lim. Inferior</div>
-                    <div class="col-md-3" style="width: 150px;">Lim. Superior</div>
-                    <div class="col-md-4" style="width: 170px;">Resultado</div>
+                    <div class="col-md-1" style="width: 300px;">Examen</div>
+                    <div class="col-md-2" style="width: 100px;">Lim Inf</div>
+                    <div class="col-md-3" style="width: 100px;">Lim Sup</div>
+                    <div class="col-md-4" style="width: 110px;">Resultado</div>
+                    <div class="col-md-4" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
                     <div class="col-md-5" style="width: 300px;">Observaci&oacute;n</div>
                  
                     <div id="contenedor_detalle">
@@ -177,9 +213,17 @@
       format: "YYYY-MM-DD"
     }));
 
+    $(document).ready(function()
+    {
+      mostrarImagen();
+    });
+
   </script>
 
 
 	</div>
 </div>
+
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app.js'); !!}
 @stop

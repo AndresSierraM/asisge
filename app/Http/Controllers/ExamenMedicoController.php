@@ -11,6 +11,12 @@ use DB;
 include public_path().'/ajax/consultarPermisos.php';
 include public_path().'/ajax/guardarReporteAcpm.php';
 
+use Input;
+use File;
+// include composer autoload
+// require '../vendor/autoload.php';
+// import the Intervention Image Manager Class
+use Intervention\Image\ImageManager ;
 
 class ExamenMedicoController extends Controller
 {
@@ -65,48 +71,10 @@ class ExamenMedicoController extends Controller
                 ]); 
 
             $examenmedico = \App\ExamenMedico::All()->last();
-            $contadorDetalle = count($request['TipoExamenMedico_idTipoExamenMedico']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\ExamenMedicoDetalle::create([
-                'ExamenMedico_idExamenMedico' => $examenmedico->idExamenMedico,
-                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i],
-                'resultadoExamenMedicoDetalle' => $request['resultadoExamenMedicoDetalle'][$i],
-                'observacionExamenMedicoDetalle' => $request['observacionExamenMedicoDetalle'][$i]
-               ]);
 
-                // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
-                if($request['resultadoExamenMedicoDetalle'][$i] < $request['limiteInferiorTipoExamenMedico'][$i] OR 
-                    $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
-                {
-
-                        //COnsultamos el nombre del tercero empleado
-                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-
-                        //************************************************
-                        //
-                        //  R E P O R T E   A C C I O N E S   
-                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
-                        //  Y   D E   M E J O R A 
-                        //
-                        //************************************************
-                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
-
-                        //COnsultamos el nombre del tercero empleado
-                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-
-                        guardarReporteACPM(
-                                $fechaAccion = date("Y-m-d"), 
-                                $idModulo = 22, 
-                                $tipoAccion = 'Correctiva', 
-                                $descripcionAccion = 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')'
-                                );   
-
-                }
-                
-            }
-
-           return redirect('/examenmedico');
+            $this->grabarDetalle($request, $examenmedico->idExamenMedico);
+            return redirect('/examenmedico');
+            
         }
     }
 
@@ -181,7 +149,7 @@ class ExamenMedicoController extends Controller
         $examenmedico = \App\ExamenMedico::find($id);
         $examenesmedicos = DB::table('examenmedicodetalle')
             ->leftJoin('tipoexamenmedico', 'examenmedicodetalle.TipoExamenMedico_idTipoExamenMedico', '=', 'tipoexamenmedico.idTipoExamenMedico')
-            ->select(DB::raw('TipoExamenMedico_idTipoExamenMedico, nombreTipoExamenMedico, limiteInferiorTipoExamenMedico, limiteSuperiorTipoExamenMedico, resultadoExamenMedicoDetalle, observacionExamenMedicoDetalle'))
+            ->select(DB::raw('idExamenMedicoDetalle, TipoExamenMedico_idTipoExamenMedico, nombreTipoExamenMedico, limiteInferiorTipoExamenMedico, limiteSuperiorTipoExamenMedico, resultadoExamenMedicoDetalle, fotoExamenMedicoDetalle, observacionExamenMedicoDetalle'))
             ->orderBy('nombreTipoExamenMedico', 'ASC')
             ->where('ExamenMedico_idExamenMedico','=',$id)
             ->get();
@@ -204,53 +172,8 @@ class ExamenMedicoController extends Controller
             $examenmedico->fill($request->all());
             $examenmedico->save();
 
-            \App\ExamenMedicoDetalle::where('ExamenMedico_idExamenMedico',$id)->delete();
-
-            $contadorDetalle = count($request['TipoExamenMedico_idTipoExamenMedico']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\ExamenMedicoDetalle::create([
-                'ExamenMedico_idExamenMedico' => $id,
-                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i],
-                'resultadoExamenMedicoDetalle' => $request['resultadoExamenMedicoDetalle'][$i],
-                'observacionExamenMedicoDetalle' => $request['observacionExamenMedicoDetalle'][$i]
-               ]);
-                
-                // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
-                if($request['resultadoExamenMedicoDetalle'][$i] < $request['limiteInferiorTipoExamenMedico'][$i] OR 
-                    $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
-                {
-
-
-                        //COnsultamos el nombre del tercero empleado
-                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-
-                        //COnsultamos el nombre del tercero empleado
-                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-
-                        //************************************************
-                        //
-                        //  R E P O R T E   A C C I O N E S   
-                        //  C O R R E C T I V A S,  P R E V E N T I V A S 
-                        //  Y   D E   M E J O R A 
-                        //
-                        //************************************************
-                        // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
-
-                        //COnsultamos el nombre del tercero empleado
-                        $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
-
-                        guardarReporteACPM(
-                                $fechaAccion = date("Y-m-d"), 
-                                $idModulo = 22, 
-                                $tipoAccion = 'Correctiva', 
-                                $descripcionAccion = 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')'
-                                );   
-
-                        
-                }
-            }
-
+            
+            $this->grabarDetalle($request, $id);
             return redirect('/examenmedico');
         }    
     }
@@ -268,6 +191,86 @@ class ExamenMedicoController extends Controller
 
         \App\ExamenMedico::destroy($id);
         return redirect('/examenmedico');
+    }
+
+    public function grabarDetalle($request, $id)
+    {
+        $files = Input::file('archivoExamenMedicoDetalle');
+
+        $contadorDetalle = count($request['TipoExamenMedico_idTipoExamenMedico']);
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+
+            $indice = array(
+                'idExamenMedicoDetalle' => $request['idExamenMedicoDetalle'][$i]);
+
+            $data = array(
+               'ExamenMedico_idExamenMedico' => $id,
+                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i],
+                'resultadoExamenMedicoDetalle' => $request['resultadoExamenMedicoDetalle'][$i],
+                'observacionExamenMedicoDetalle' => $request['observacionExamenMedicoDetalle'][$i]
+                );
+
+
+            $file = $files[$i] ;
+            $rutaImagen = '';
+            $destinationPath = 'imagenes/examenmedico/';
+            if(isset($file))
+            {
+                $filename = $destinationPath . $file->getClientOriginalName();
+                 
+                $manager = new ImageManager();
+                $manager->make($file->getRealPath())->save($filename);
+                $rutaImagen = 'examenmedico/'.$file->getClientOriginalName();
+
+                
+                $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
+
+            }
+            else
+            {
+                $rutaImagen = $request['fotoExamenMedicoDetalle'][$i];
+            }
+            
+        
+            $respuesta = \App\ExamenMedicoDetalle::updateOrCreate($indice, $data);
+            
+            
+            // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
+            if($request['resultadoExamenMedicoDetalle'][$i] < $request['limiteInferiorTipoExamenMedico'][$i] OR 
+                $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
+            {
+
+
+                    //Consultamos el nombre del tercero empleado
+                    $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+
+                    //COnsultamos el nombre del tercero empleado
+                    $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+
+                    //************************************************
+                    //
+                    //  R E P O R T E   A C C I O N E S   
+                    //  C O R R E C T I V A S,  P R E V E N T I V A S 
+                    //  Y   D E   M E J O R A 
+                    //
+                    //************************************************
+                    // todos los accidentes o incidentes los  insertamos un registro en el ACPM (Accion Correctiva)
+
+                    //COnsultamos el nombre del tercero empleado
+                    $nombreTercero = \App\Tercero::find($request['Tercero_idTercero']);
+
+                    guardarReporteACPM(
+                            $fechaAccion = date("Y-m-d"), 
+                            $idModulo = 22, 
+                            $tipoAccion = 'Correctiva', 
+                            $descripcionAccion = 'El Examen Medico '.$request['nombreTipoExamenMedico'][$i].' de '.$nombreTercero->nombreCompletoTercero.', no esta dentro de los limites (Resultado '.$request['resultadoExamenMedicoDetalle'][$i].' Rango de '. $request['limiteInferiorTipoExamenMedico'][$i].' a '.$request['limiteSuperiorTipoExamenMedico'][$i].')'
+                            );   
+
+                    
+            }
+        }
+
     }
 
 }
