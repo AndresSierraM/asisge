@@ -15,6 +15,8 @@
 // Opciones del modulo de seguridad
 // ---------------------------------
 
+// las variables de session estan en 
+// \vendor\laravel\framework\src\Illuminate\Foundation\Auth\AuthenticatesUsers.php
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
@@ -584,10 +586,25 @@ Route::get('datosDocumentoCRM', function()
 {
     include public_path().'/ajax/datosDocumentoCRM.php';
 });
+
 Route::get('datosMovimientoCRM', function()
 {
     include public_path().'/ajax/datosMovimientoCRM.php';
 });
+
+Route::post('guardarAsesorMovimientoCRM', [
+            'as' => 'guardarAsesorMovimientoCRM', 
+            'uses' => 'MovimientoCRMController@guardarAsesorMovimientoCRM']);
+
+Route::post('consultarAsesorMovimientoCRM', [
+            'as' => 'consultarAsesorMovimientoCRM', 
+            'uses' => 'MovimientoCRMController@consultarAsesorMovimientoCRM']);
+
+Route::post('consultarDiasAcuerdoServicio', [
+            'as' => 'consultarDiasAcuerdoServicio', 
+            'uses' => 'MovimientoCRMController@consultarDiasAcuerdoServicio']);
+
+
 
 Route::get('datosCampoCRMSelect', function()
 {

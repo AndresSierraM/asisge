@@ -1,5 +1,41 @@
 <?php 
 
+//****************************
+// CONSULTAMOS EL TERCERO
+// PARA SABER SI ES SOLICITANTE
+// SUPERVISOR O CREADOR, PARA
+// HABILITAR LOS CAMPOS
+//****************************
+// Reglas :
+// USUARIO CREADOR: si es el usuario creador ocultamos campos que por logica no debe llenar
+//					como 
+// CAMPO 						CREADOR 	SUPERVISOR 		ASESOR
+// Fecha Estimada solución 										X
+// Fecha Vencimiento 				X
+// Fecha Real Solución 											X
+// Prioridad 						X
+// Días Estimados Solución 						X				X
+// Días Reales Solución 			X  			X 				X
+// Solicitante 						X 			X 				X
+// Supervisor 						
+// Asesor 							
+// Categoría 						
+// Línea de Negocio 				
+// Origen 							
+// Estado 							
+// Acuerdo Servicio 				
+// Evento / Campaña 				
+// Detalles 						
+// Solución 						
+// Valor 							
+// Asistentes 						
+// Documentos 						
+
+// ***************************
+//	CONSULTAMOS LOS CAMPOS A
+//  MOSTRAR EN EL FORMULARIO
+//
+//****************************
 $id = isset($_GET["idDocumentoCRM"]) ? $_GET["idDocumentoCRM"] : 0; 
 $campos = DB::select(
     'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, 
@@ -21,9 +57,19 @@ for($i = 0; $i < count($campos); $i++)
     $camposVista .= $datos["nombreCampoCRM"].',';
 }
 
-	$idMovimientoCRMA = (isset($movimientocrm->idMovimientoCRM) ? $movimientocrm->idMovimientoCRM : 0);
+$idMovimientoCRMA = (isset($movimientocrm->idMovimientoCRM) ? $movimientocrm->idMovimientoCRM : 0);
+
+
+// consultamos el tercero asociado al  usuario logueado, para 
+// relacionarlo al campo de solicitante
+$tercero  = DB::select(
+    'SELECT idTercero, nombreCompletoTercero
+    FROM tercero
+    where idTercero = '.\Session::get('idTercero'));
+$tercero = get_object_vars($tercero[0]); 
 
 ?>
+
 @extends('layouts.vista')
 @section('titulo')<h3 id="titulo"><center><?php echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"];?></center></h3>@stop
 
@@ -35,6 +81,7 @@ for($i = 0; $i < count($campos); $i++)
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
 {!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
+
 
 
 <script>
@@ -222,45 +269,6 @@ for($i = 0; $i < count($campos); $i++)
 						<?php
 							}
 
-							if(strpos($camposVista, 'AcuerdoServicio_idAcuerdoServicio') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('AcuerdoServicio_idAcuerdoServicio', 'Acuerdo de Servicio', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-					              	{!!Form::select('AcuerdoServicio_idAcuerdoServicio',$acuerdoservicio, (isset($movimientocrm) ? $movimientocrm->AcuerdoServicio_idAcuerdoServicio : 0),["class" => "chosen-select form-control"])!!}
-
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
-							if(strpos($camposVista, 'diasEstimadosSolucionMovimientoCRM') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('diasEstimadosSolucionMovimientoCRM', 'Días Est. Solución', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-									{!!Form::text('diasEstimadosSolucionMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa los días estimados de solución'])!!}
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
 							if(strpos($camposVista, 'diasRealesSolucionMovimientoCRM') !== false)
 							{ 
 						?>
@@ -273,7 +281,7 @@ for($i = 0; $i < count($campos); $i++)
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-									{!!Form::text('diasRealesSolucionMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa los días reales de solución'])!!}
+									{!!Form::text('diasRealesSolucionMovimientoCRM',null,['readonly'=>'readonly', 'class'=>'form-control','placeholder'=>'Ingresa los días reales de solución'])!!}
 								</div>
 							</div>
 						</div>
@@ -312,7 +320,7 @@ for($i = 0; $i < count($campos); $i++)
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('Tercero_idSolicitante',$solicitante, (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : 0),["class" => "chosen-select form-control"])!!}
+					              	{!!Form::select('Tercero_idSolicitante',$solicitante, (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : $tercero['idTercero']),["class" => "chosen-select form-control"])!!}
 
 								</div>
 							</div>
@@ -320,46 +328,7 @@ for($i = 0; $i < count($campos); $i++)
 						<?php
 							}
 
-							if(strpos($camposVista, 'Tercero_idSupervisor') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('Tercero_idSupervisor', 'Supervisor', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-					              	{!!Form::select('Tercero_idSupervisor',$supervisor, (isset($movimientocrm) ? $movimientocrm->Tercero_idSupervisor : 0),["class" => "chosen-select form-control"])!!}
-
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
-							if(strpos($camposVista, 'Tercero_idAsesor') !== false)
-							{ 
-						?>
-						<div class="col-sm-6">
-							<div class="col-sm-4">
-								{!!Form::label('Tercero_idAsesor', 'Asesor', array())!!}
-							</div>
-							<div class="col-sm-8">
-					            <div class="input-group">
-					              	<span class="input-group-addon">
-					                	<i class="fa fa-pencil-square-o"></i>
-					              	</span>
-					              	{!!Form::select('Tercero_idAsesor',$asesor, (isset($movimientocrm) ? $movimientocrm->Tercero_idAsesor : 0),["class" => "chosen-select form-control"])!!}
-
-								</div>
-							</div>
-						</div>
-						<?php
-							}
-
+							
 							if(strpos($camposVista, 'CategoriaCRM_idCategoriaCRM') !== false)
 							{ 
 						?>

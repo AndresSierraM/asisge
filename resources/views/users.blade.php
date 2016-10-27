@@ -68,6 +68,19 @@
           </div>
         </div>
 
+        <div class="form-group" id='test'>
+            {!!Form::label('Tercero_idTercero', 'Tercero Asociado', array('class' => 'col-sm-2 control-label'))!!}
+            <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="fa fa-bank"></i>
+                        </span>
+                {!!Form::select('Tercero_idTercero',$tercero, (isset($usuario) ? $usuario->Tercero_idTercero : 0),["class" => "chosen-select form-control"])!!}
+              </div>
+            </div>
+          </div>
+
+
         <div class="form-group" >
           {!!Form::label('Rol_idRol', 'Rol', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >

@@ -242,7 +242,7 @@
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::hidden('tipoTercero1','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
+													{!!Form::checkbox('tipoTercero3','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
 												</label>
 											</div>
 											<div class="checkbox-inline" style="display:none;">

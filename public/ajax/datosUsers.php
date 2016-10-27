@@ -17,7 +17,8 @@
     $users = DB::table('users')
             ->leftJoin('compania', 'Compania_idCompania', '=', 'idCompania')
             ->leftJoin('rol', 'Rol_idRol', '=', 'idRol')
-            ->select(DB::raw('id, name, email, nombreCompania, nombreRol'))
+            ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
+            ->select(DB::raw('id, name, email, nombreCompania, nombreRol, nombreCompletoTercero'))
             ->where('users.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
@@ -38,6 +39,7 @@
         $row[$key][] = $value->email; 
         $row[$key][] = $value->nombreRol; 
         $row[$key][] = $value->nombreCompania;    
+        $row[$key][] = $value->nombreCompletoTercero;    
     }
 
     $output['aaData'] = $row;

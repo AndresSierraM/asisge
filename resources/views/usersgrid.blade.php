@@ -47,6 +47,7 @@
                             <li><a class="toggle-vis" data-column="3"><label> Usuario</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Rol</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Compañía</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Tercero Asociado</label></a></li>
                         </ul>
                     </div>
                     <table id="tusuario" name="tusuario" class="display table-bordered" width="100%">
@@ -61,6 +62,7 @@
                                 <th><b>Usuario</b></th>
                                 <th><b>Rol</b></th>
                                 <th><b>Compañía</b></th>
+                                <th><b>Tercero Asociado</b></th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -73,6 +75,7 @@
                                 <th>Usuario</th>
                                 <th>Rol</th>
                                 <th>Compañía</th>
+                                <th>Tercero Asociado</th>
                             </tr>
                         </tfoot>
                     </table>

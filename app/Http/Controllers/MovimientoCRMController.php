@@ -24,11 +24,14 @@ class MovimientoCRMController extends Controller
         
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisosCRM($idDocumento);
-
+        
+        $supervisor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $asesor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $acuerdoservicio = \App\AcuerdoServicio::All()->lists('nombreAcuerdoServicio','idAcuerdoServicio');
         if($datos != null)
-            return view('movimientocrmgrid', compact('datos'));
+            return view('movimientocrmgrid', compact('datos','supervisor','asesor','acuerdoservicio'));
         else
-            return view('movimientocrmgrid');
+            return view('movimientocrmgrid', compact('supervisor','asesor','acuerdoservicio'));
     }
 
 
@@ -72,16 +75,15 @@ class MovimientoCRMController extends Controller
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
         
         $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $supervisor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $asesor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        
         $categoria = \App\CategoriaCRM::All()->lists('nombreCategoriaCRM','idCategoriaCRM');
         $lineanegocio = \App\LineaNegocio::All()->lists('nombreLineaNegocio','idLineaNegocio');
         $origen = \App\OrigenCRM::All()->lists('nombreOrigenCRM','idOrigenCRM');
         $estado = \App\EstadoCRM::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreEstadoCRM','idEstadoCRM');
-        $acuerdoservicio = \App\AcuerdoServicio::All()->lists('nombreAcuerdoServicio','idAcuerdoServicio');
+        
         $evento = \App\EventoCRM::All()->lists('nombreEventoCRM','idEventoCRM');
 
-       return view('movimientocrm',compact('solicitante','supervisor','asesor','categoria','documento','lineanegocio','origen','estado','acuerdoservicio', 'evento'));
+       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento'));
     }
 
     /**
@@ -182,18 +184,17 @@ class MovimientoCRMController extends Controller
 
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
-        
+       
         $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $supervisor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $asesor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        
         $categoria = \App\CategoriaCRM::All()->lists('nombreCategoriaCRM','idCategoriaCRM');
         $lineanegocio = \App\LineaNegocio::All()->lists('nombreLineaNegocio','idLineaNegocio');
         $origen = \App\OrigenCRM::All()->lists('nombreOrigenCRM','idOrigenCRM');
         $estado = \App\EstadoCRM::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreEstadoCRM','idEstadoCRM');
-        $acuerdoservicio = \App\AcuerdoServicio::All()->lists('nombreAcuerdoServicio','idAcuerdoServicio');
+        
         $evento = \App\EventoCRM::All()->lists('nombreEventoCRM','idEventoCRM');
 
-       return view('movimientocrm',compact('solicitante','supervisor','asesor','categoria','documento','lineanegocio','origen','estado','acuerdoservicio', 'evento'),['movimientocrm'=>$movimientocrm]);
+       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -287,5 +288,47 @@ class MovimientoCRMController extends Controller
             $respuesta = \App\MovimientoCRMAsistente::updateOrCreate($indice, $data);
 
         }
+    }
+
+    public function guardarAsesorMovimientoCRM()
+    {
+        $movimientocrm = \App\MovimientoCRM::find($_POST["idMovimientoCRM"]);
+        $movimientocrm->Tercero_idSupervisor = $_POST["idSupervisor"];
+        $movimientocrm->Tercero_idAsesor = $_POST["idAsesor"];
+        $movimientocrm->AcuerdoServicio_idAcuerdoServicio = $_POST["idAcuerdo"];
+        $movimientocrm->diasEstimadosSolucionMovimientoCRM = $_POST["diasAcuerdo"];
+        $movimientocrm->save();
+
+        echo json_encode(array(true, 'Se ha guardado exitosamente'));
+    }
+
+    public function consultarAsesorMovimientoCRM()
+    {
+        $movimientocrm = DB::select(
+            'SELECT Tercero_idSupervisor, 
+                    nombreCompletoTercero as nombreCompletoSupervisor,
+                    Tercero_idAsesor, 
+                    AcuerdoServicio_idAcuerdoServicio, 
+                    diasEstimadosSolucionMovimientoCRM
+            FROM movimientocrm M
+            LEFT JOIN tercero T
+            ON M.Tercero_idSupervisor = T.idTercero
+            WHERE idMovimientoCRM = '.$_POST["idMovimientoCRM"]);
+
+        $movimientocrm = get_object_vars($movimientocrm[0]);
+
+        echo json_encode($movimientocrm);
+    }
+
+    public function consultarDiasAcuerdoServicio()
+    {
+        $acuerdo = DB::select(
+            'SELECT tiempoAcuerdoServicio
+            FROM acuerdoservicio
+            WHERE idAcuerdoServicio = '.$_POST["idAcuerdo"]);
+
+        $acuerdo = get_object_vars($acuerdo[0]);
+
+        echo json_encode($acuerdo);
     }
 }

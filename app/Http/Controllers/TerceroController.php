@@ -89,8 +89,7 @@ class TerceroController extends Controller
         
         $sectorempresa = \App\SectorEmpresa::All()->lists('nombreSectorEmpresa', 'idSectorEmpresa');
 
-        $tercero = \App\Tercero::find($id);
-        
+      
         return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa'));
     }
     /**
@@ -548,8 +547,8 @@ class TerceroController extends Controller
                 //*****************************
                 // con los campos de tipo cliente y tipo proveedor, armamos el tipo de tercero
                 $terceros[$posTer]["tipoTercero"] = 
-                        ($terceros[$posTer]["tipoProveedor"] != '' ? '*02*', '').
-                        ($terceros[$posTer]["tipoCliente"] != '' ? '*03*', '');
+                        ($terceros[$posTer]["tipoProveedor"] != '' ? '*02*': '').
+                        ($terceros[$posTer]["tipoCliente"] != '' ? '*03*': '');
                 // si le tipo de tercero queda vacio, por defecto lo ponemos como proveedor
                 $terceros[$posTer]["tipoTercero"] == ($terceros[$posTer]["tipoTercero"] == '' ? '*02*' : $terceros[$posTer]["tipoTercero"]);
 

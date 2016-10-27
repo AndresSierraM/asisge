@@ -175,6 +175,113 @@ function mostrarPestanas()
 }
 
 
+function mostrarModalAsesor(idMovimientoCRM)
+{   
+    // con el id del movimiento debemos consultar los datos a
+    // mostrar en el modal
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            url:   'http://'+location.host+'/consultarAsesorMovimientoCRM',
+            type:  'post',
+            data: {idMovimientoCRM : idMovimientoCRM},
+            beforeSend: function(){
+                
+                },
+            success: function(respuesta)
+            {
+                // asignamos los valores a los campos del modal
+                if(respuesta["Tercero_idSupervisor"] !== null)
+                {   
+                    $("#Tercero_idSupervisor").val(respuesta["Tercero_idSupervisor"]);
+                    $("#nombreCompletoSupervisor").val(respuesta["nombreCompletoSupervisor"]);
+                }
+                $('#Tercero_idAsesor > option[value="'+respuesta["Tercero_idAsesor"]+'"]').attr('selected', 'selected');
+                $('#AcuerdoServicio_idAcuerdoServicio > option[value="'+respuesta["AcuerdoServicio_idAcuerdoServicio"]+'"]').attr('selected', 'selected');
+                $("#diasEstimadosSolucionMovimientoCRM").val(respuesta["diasEstimadosSolucionMovimientoCRM"]);
+
+            },
+            error: function(xhr,err)
+            { 
+                console.log(xhr);
+                alert("Error "+xhr);
+            }
+        });
+    
+    $("#idMovimientoCRM").val(idMovimientoCRM);
+    $("#ModalAsesor").modal("show");
+}
+
+function mostrarDiasAcuerdo(idAcuerdo)
+{   
+    // con el id del movimiento debemos consultar los datos a
+    // mostrar en el modal
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            url:   'http://'+location.host+'/consultarDiasAcuerdoServicio',
+            type:  'post',
+            data: {idAcuerdo : idAcuerdo},
+            beforeSend: function(){
+                
+                },
+            success: function(respuesta)
+            {
+                
+                // asignamos los valores a los campos del modal
+                if(respuesta["tiempoAcuerdoServicio"] !== null)
+                {   
+                    $("#diasEstimadosSolucionMovimientoCRM").val(respuesta["tiempoAcuerdoServicio"]);
+                }
+
+            },
+            error: function(xhr,err)
+            { 
+                console.log(xhr);
+                alert("Error "+xhr);
+            }
+        });
+}
+
+function guardarAsesor()
+{   
+    var idMovimientoCRM = $("#idMovimientoCRM").val();
+    var idSupervisor = $("#Tercero_idSupervisor").val();
+    var idAsesor = $("#Tercero_idAsesor").val();
+    var idAcuerdo = $("#AcuerdoServicio_idAcuerdoServicio").val();
+    var diasAcuerdo = $("#diasEstimadosSolucionMovimientoCRM").val();
+    
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            url:   'http://'+location.host+'/guardarAsesorMovimientoCRM',
+            type:  'post',
+            data: {idMovimientoCRM : idMovimientoCRM,
+                    idSupervisor: idSupervisor,
+                    idAsesor: idAsesor,
+                    idAcuerdo: idAcuerdo,
+                    diasAcuerdo: diasAcuerdo},
+            beforeSend: function(){
+                
+                },
+            success: function(respuesta)
+            {
+                
+                alert(respuesta[1]);
+                $("#ModalAsesor").modal("hide");
+                
+            },
+            error: function(xhr,err)
+            { 
+                console.log(xhr);
+                alert("Error "+xhr);
+            }
+        });
+}
+
 
 function abrirModal(file)
 {

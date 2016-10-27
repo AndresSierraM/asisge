@@ -134,6 +134,8 @@ function mostrarPestanas()
     if(document.getElementById('tipoTercero1').checked)
     {
         document.getElementById('cargo').style.display = 'inline';
+        document.getElementById('zona').style.display = 'none';
+        document.getElementById('sector').style.display = 'none';
         document.getElementById('pestanaProducto').style.display = 'none';
         document.getElementById('pestanaEducacion').style.display = 'block';
         document.getElementById('pestanaExperiencia').style.display = 'block';
@@ -152,9 +154,12 @@ function mostrarPestanas()
         document.getElementById('pestanaLaboral').style.display = 'none';
     }*/
 
-    if(document.getElementById('tipoTercero2').checked)
+    if(document.getElementById('tipoTercero2').checked || document.getElementById('tipoTercero3').checked  )
     {
         document.getElementById('cargo').style.display = 'none';
+        document.getElementById('zona').style.display = 'inline';
+        document.getElementById('sector').style.display = 'inline';
+
         document.getElementById('pestanaProducto').style.display = 'block';
         document.getElementById('pestanaEducacion').style.display = 'none';
         document.getElementById('pestanaExperiencia').style.display = 'none';
@@ -162,6 +167,8 @@ function mostrarPestanas()
         document.getElementById('pestanaPersonal').style.display = 'none';
         document.getElementById('pestanaLaboral').style.display = 'none';
     }
+
+
     /*else
     {
         document.getElementById('cargo').style.display = 'inline';

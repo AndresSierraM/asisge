@@ -1,3 +1,5 @@
+{!!Html::script('js/movimientocrm.js'); !!}
+
 <?php 
     $visible = '';
 
@@ -17,6 +19,16 @@
     {
         $visible = 'none;';
     }
+
+
+// consultamos el tercero asociado al  usuario logueado, para 
+// relacionarlo al campo de solicitante
+$tercero  = DB::select(
+    'SELECT idTercero, nombreCompletoTercero
+    FROM tercero
+    where idTercero = '.\Session::get('idTercero'));
+$tercero = get_object_vars($tercero[0]); 
+
 
 
 $id = isset($_GET["idDocumentoCRM"]) ? $_GET["idDocumentoCRM"] : 0; 
@@ -51,11 +63,19 @@ for($i = 0; $i < count($campos); $i++)
     $titulosGrid .= ', '. $datos["descripcionCampoCRM"];
 }
 
+// $tercero  = DB::select(
+//     'SELECT idTercero, nombreCompletoTercero
+//     FROM tercero
+//     where idTercero = '.\Session::get('idTercero'));
+// $tercero = get_object_vars($tercero[0]); 
+
 
 ?>
 @extends('layouts.grid')
 @section('titulo')<h3 id="titulo"><center><?php echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"];?></center></h3>@stop
 @section('content')
+
+
 <style>
     tfoot input {
                 width: 100%;
@@ -142,6 +162,9 @@ for($i = 0; $i < count($campos); $i++)
                 </div>
             </div>
         </div>
+
+
+
 
 
 <script type="text/javascript">
@@ -261,3 +284,90 @@ for($i = 0; $i < count($campos); $i++)
 </script>
 
 @stop
+
+<div id="ModalAsesor" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Asignación de Asesor</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container col-md-12"  style="height:200px;">
+
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    {!!Form::label('Tercero_idSupervisor', 'Supervisor', array())!!}
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </span>
+                        <input type="hidden" id="token" value="{{csrf_token()}}"/>
+                        {!!Form::hidden('idMovimientoCRM',null, array("id"=>"idMovimientoCRM"))!!}
+                        {!!Form::hidden('Tercero_idSupervisor',$tercero["idTercero"] , array("id"=>"Tercero_idSupervisor"))!!}
+                        {!!Form::text('nombreCompletoSupervisor',$tercero["nombreCompletoTercero"],['class'=>'form-control', 'readonly'=>'readonly'])!!}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    {!!Form::label('Tercero_idAsesor', 'Asesor', array())!!}
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </span>
+                        {!!Form::select('Tercero_idAsesor',$asesor, (isset($movimientocrm) ? $movimientocrm->Tercero_idAsesor : 0),["class" => "chosen-select form-control"])!!}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    {!!Form::label('AcuerdoServicio_idAcuerdoServicio', 'Acuerdo de Servicio', array())!!}
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </span>
+                        {!!Form::select('AcuerdoServicio_idAcuerdoServicio',$acuerdoservicio, (isset($movimientocrm) ? $movimientocrm->AcuerdoServicio_idAcuerdoServicio : 0),["onchange"=>"mostrarDiasAcuerdo(this.value)","class" => "chosen-select form-control"])!!}
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    {!!Form::label('diasEstimadosSolucionMovimientoCRM', 'Días Est. Solución', array())!!}
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </span>
+                        {!!Form::text('diasEstimadosSolucionMovimientoCRM',null,['readonly'=>'readonly', 'class'=>'form-control','placeholder'=>'Segun Acuerdo de Servicio'])!!}
+                    </div>
+                </div>
+            </div>
+                       
+
+
+        </div>
+
+      </div>
+       <div class="modal-footer">
+        
+            <button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="guardarAsesor();">Actualizar</button>
+            <button type="button" class="btn btn-danger"  data-dismiss="modal">Cancelar</button>
+
+      </div>
+    </div>
+  </div>
+</div>

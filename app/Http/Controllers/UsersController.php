@@ -45,7 +45,8 @@ class UsersController extends Controller
     {
         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
         $rol = \App\Rol::All()->lists('nombreRol','idRol');
-        return view('users',compact('compania','selected','rol'));
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        return view('users',compact('compania','selected','rol', 'tercero'));
     }
 
     /**
@@ -60,8 +61,9 @@ class UsersController extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => $request['password'],
-             'Compania_idCompania'=> $request['Compania_idCompania'],
-             'Rol_idRol' => $request['Rol_idRol']
+            'Compania_idCompania'=> $request['Compania_idCompania'],
+            'Rol_idRol' => $request['Rol_idRol'],
+            'Tercero_idTercero' => ($request['Tercero_idTercero'] == 0 ? null : $request['Tercero_idTercero'])
             ]);
         
         return redirect('/users');
@@ -89,7 +91,8 @@ class UsersController extends Controller
         $usuario = \App\User::find($id);
         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
         $rol = \App\Rol::All()->lists('nombreRol','idRol');
-        return view('users',compact('compania', 'rol'),['usuario'=>$usuario]);
+        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        return view('users',compact('compania', 'rol','tercero'),['usuario'=>$usuario]);
     }
 
     /**
@@ -104,12 +107,12 @@ class UsersController extends Controller
         
         $usuario = \App\User::find($id);
         $usuario->fill($request->all());
+
+        $usuario->Tercero_idTercero = ($request['Tercero_idTercero'] == 0 ? null : $request['Tercero_idTercero']);
+
         $usuario->save();
 
-
-
         return redirect('/users');
-
     }
 
     /**

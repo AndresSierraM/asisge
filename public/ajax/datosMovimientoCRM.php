@@ -93,7 +93,10 @@ for($i = 0; $i < count($campos); $i++)
             On movimientocrm.AcuerdoServicio_idAcuerdoServicio =
             acuerdoservicio.idAcuerdoServicio
         Where   idDocumentoCRM = '.$id.  ' and 
-                movimientocrm.Compania_idCompania = '.\Session::get('idCompania').
+                movimientocrm.Compania_idCompania = '.\Session::get('idCompania'). ' and 
+                (movimientocrm.Tercero_idSolicitante = '.\Session::get('idTercero'). ' or 
+                 movimientocrm.Tercero_idSupervisor = '.\Session::get('idTercero'). ' or 
+                 movimientocrm.Tercero_idAsesor = '.\Session::get('idTercero'). ') '. 
                 ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '') );
 
 
@@ -108,7 +111,7 @@ for($i = 0; $i < count($campos); $i++)
                         '<a href="movimientocrm/'.$datoValor["idMovimientoCRM"].'/edit?idDocumentoCRM='.$id.'&accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="#" onclick="alert(\'Aprobacion del ID \'+'.$datoValor["idMovimientoCRM"].','.$id.');">'.
+                        '<a href="javascript:mostrarModalAsesor('.$datoValor["idMovimientoCRM"].');">'.
                             '<span class="glyphicon glyphicon-check" style = "display:'.$visibleA.'" ></span>'.
                         '</a>&nbsp;'.
                         '<a href="#" onclick="imprimirFormato('.$datoValor["idMovimientoCRM"].','.$id.');">'.
