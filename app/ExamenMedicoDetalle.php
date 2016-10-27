@@ -10,7 +10,7 @@ class ExamenMedicoDetalle extends Model
     protected $primaryKey = 'idExamenMedicoDetalle';
 
     protected $fillable = ['ExamenMedico_idExamenMedico','TipoExamenMedico_idTipoExamenMedico',
-    						'resultadoExamenMedicoDetalle','observacionExamenMedicoDetalle'];
+    						'resultadoExamenMedicoDetalle','fotoExamenMedicoDetalle','observacionExamenMedicoDetalle'];
 
     public $timestamps = false;
 
