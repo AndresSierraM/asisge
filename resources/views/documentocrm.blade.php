@@ -269,18 +269,22 @@
 			                    <div id="numeracion" class="panel-collapse collapse in">
 			                      <div class="panel-body">
 			                        
-			                        <div class="form-group">
-			                          <div class="col-sm-6" >
-			                            <div class="input-group">
-											<div id="gruponumeracion" class="segmented-control" style="width: 300px;  color: orange;">
-											  <input type="radio" name="numeracionDocumentoCRM" id="manual" checked>
-											  <input type="radio" name="numeracionDocumentoCRM" id="automatica">
-											  <label for="manual" data-value="Manual">Manual</label>
-											  <label for="automatica" data-value="Automatica">Automática</label>
-											</div>
-			                            </div>
-			                          </div>
-									</div> 
+									<div class="form-group" >
+						          	{!!Form::label('numeracionDocumentoCRM', 'Tipo Numeración', array('class' => 'col-sm-2 control-label'))!!}
+						          	<div class="col-sm-4" >
+						            	<div class="input-group">
+							              <span class="input-group-addon">
+							                <i class="fa fa-credit-card" ></i>
+							              </span>
+											{!!Form::select('numeracionDocumentoCRM',
+				            				array('Automatica'=>'Automática','Manual'=>'Manual'), 
+				            				(isset($documentocrm) ? $documentocrm->numeracionDocumentoCRM : 'Automatica'),
+				            				["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Numeración"])!!}
+							            </div>
+							          </div>
+							        </div>
+
+
 		                          <div class="form-group" >
 						          	{!!Form::label('longitudDocumentoCRM', 'Longitud', array('class' => 'col-sm-2 control-label'))!!}
 						          	<div class="col-sm-4" >

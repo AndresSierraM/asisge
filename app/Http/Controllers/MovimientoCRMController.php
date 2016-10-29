@@ -94,9 +94,21 @@ class MovimientoCRMController extends Controller
      */
     public function store(MovimientoCRMRequest $request)
     {
+        $numero = DB::select(
+            "SELECT CONCAT(REPEAT('0', longitudDocumentoCRM - LENGTH(ultimo+1)), (ultimo+1)) as nuevo
+            FROM 
+            (
+                SELECT IFNULL( MAX(numeroMovimientoCRM) , 0) as ultimo, longitudDocumentoCRM
+                FROM  documentocrm D 
+                LEFT JOIN movimientocrm M
+                on D.idDocumentoCRM = M.DocumentoCRM_idDocumentoCRM
+                where   Compania_idCompania = ".\Session::get('idCompania')." and 
+                        DocumentoCRM_idDocumentoCRM = ".$request['DocumentoCRM_idDocumentoCRM']."
+            ) temp");
 
+        $numero = get_object_vars($numero[0])["nuevo"];
         \App\MovimientoCRM::create([
-            'numeroMovimientoCRM' => $request['numeroMovimientoCRM'],
+            'numeroMovimientoCRM' => $numero,
             'asuntoMovimientoCRM' => $request['asuntoMovimientoCRM'],
             'fechaSolicitudMovimientoCRM' => $request['fechaSolicitudMovimientoCRM'],
             'fechaEstimadaSolucionMovimientoCRM' => $request['fechaEstimadaSolucionMovimientoCRM'],
@@ -115,6 +127,8 @@ class MovimientoCRMController extends Controller
             'OrigenCRM_idOrigenCRM' => $request['OrigenCRM_idOrigenCRM'],
             'EstadoCRM_idEstadoCRM' => $request['EstadoCRM_idEstadoCRM'],
             'AcuerdoServicio_idAcuerdoServicio' => $request['AcuerdoServicio_idAcuerdoServicio'],
+            'detallesMovimientoCRM' => $request['detallesMovimientoCRM'],
+            'solucionMovimientoCRM' => $request['solucionMovimientoCRM'],
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 

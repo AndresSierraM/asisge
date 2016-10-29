@@ -44,9 +44,9 @@ $campos = DB::select(
             relacionTablaCampoCRM != "" and 
             mostrarGridDocumentoCRMCampo = 1');
 
-$camposGrid = 'idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM';
-$camposBase = 'idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM';
-$titulosGrid = 'ID, Número, Asunto';
+$camposGrid = 'idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM, DATEDIFF(CURDATE(), fechaSolicitudMovimientoCRM) as diasProceso';
+$camposBase = 'idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM, diasProceso';
+$titulosGrid = 'ID, Número, Asunto, Dias Proceso';
 for($i = 0; $i < count($campos); $i++)
 {
     $datos = get_object_vars($campos[$i]); 

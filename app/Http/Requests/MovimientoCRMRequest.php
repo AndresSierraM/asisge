@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-
+use Illuminate\Support\Facades\DB;
 class MovimientoCRMRequest extends Request
 {
     /**
@@ -24,9 +24,56 @@ class MovimientoCRMRequest extends Request
     public function rules()
     {
         
-        return[
-            "numeroMovimientoCRM" => "required|string|unique:movimientocrm,numeroMovimientoCRM,".$this->get('idMovimientoCRM') .",idMovimientoCRM",
-            "asuntoMovimientoCRM" => "required|string|max:100"
-        ];
+        $id = $this->get('DocumentoCRM_idDocumentoCRM'); 
+        $campos = DB::select(
+            'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, mostrarGridDocumentoCRMCampo, 
+                relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM
+            FROM documentocrm
+            left join documentocrmcampo
+            on documentocrm.idDocumentoCRM = documentocrmcampo.DocumentoCRM_idDocumentoCRM
+            left join campocrm
+            on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
+            where documentocrm.idDocumentoCRM = '.$id.' and obligatorioDocumentoCRMCampo = 1');
+
+        $validacion = array();
+        $validacion["numeroMovimientoCRM"] = "required|string|unique:movimientocrm,numeroMovimientoCRM,".$this->get('idMovimientoCRM') .",idMovimientoCRM,Compania_idCompania,".(\Session::get('idCompania')).",DocumentoCRM_idDocumentoCRM,".$this->get('DocumentoCRM_idDocumentoCRM');
+        $validacion["asuntoMovimientoCRM"] = "required|string|max:100";
+
+        for($i = 0; $i < count($campos); $i++)
+        {
+            $datos = get_object_vars($campos[$i]); 
+            $validacion[$datos["nombreCampoCRM"]] = "required";
+        }
+
+        return $validacion;
     }
+
+    public function messages()
+    {
+        $id = $this->get('DocumentoCRM_idDocumentoCRM');
+        echo 'ID = '.$id; 
+        $campos = DB::select(
+            'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, mostrarGridDocumentoCRMCampo, 
+                relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM
+            FROM documentocrm
+            left join documentocrmcampo
+            on documentocrm.idDocumentoCRM = documentocrmcampo.DocumentoCRM_idDocumentoCRM
+            left join campocrm
+            on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
+            where documentocrm.idDocumentoCRM = '.$id.' and obligatorioDocumentoCRMCampo = 1');
+
+        $mensajes = array();
+        $mensajes["numeroMovimientoCRM.required"] = "El campo Número es obligatorio en modo Manual";
+        $mensajes["asuntoMovimientoCRM.required"] = "El campo Asunto es obligatorio";
+
+        for($i = 0; $i < count($campos); $i++)
+        {
+            $datos = get_object_vars($campos[$i]); 
+            $mensajes[$datos["nombreCampoCRM"].'.required'] = "El campo ".$datos["descripcionCampoCRM"]." es obligatorio";
+        }
+        return $mensajes;
+
+    }
+
+
 }

@@ -117,7 +117,6 @@ class DocumentoCRMController extends Controller
         
         $documentocrm->fill($request->all());
         $documentocrm->save();
-        
         //---------------------------------
         // guardamos las tablas de detalle
         //---------------------------------

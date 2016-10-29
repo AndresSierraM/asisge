@@ -49,8 +49,8 @@
             relacionTablaCampoCRM != "" and 
             mostrarGridDocumentoCRMCampo = 1');
 
-$camposGrid = 'idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM';
-$camposBase = 'idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM';
+$camposGrid = 'idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM, DATEDIFF(CURDATE(), fechaSolicitudMovimientoCRM) as diasProceso';
+$camposBase = 'idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM, diasProceso';
 for($i = 0; $i < count($campos); $i++)
 {
     $datos = get_object_vars($campos[$i]); 
@@ -97,7 +97,8 @@ for($i = 0; $i < count($campos); $i++)
                 (movimientocrm.Tercero_idSolicitante = '.\Session::get('idTercero'). ' or 
                  movimientocrm.Tercero_idSupervisor = '.\Session::get('idTercero'). ' or 
                  movimientocrm.Tercero_idAsesor = '.\Session::get('idTercero'). ') '. 
-                ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '') );
+                ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '').
+        ' Order By numeroMovimientoCRM DESC ' );
 
 
     $row = array();

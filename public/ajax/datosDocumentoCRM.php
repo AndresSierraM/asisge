@@ -1,7 +1,7 @@
 <?php
 
     $documentocrm = DB::table('documentocrm')
-            ->select(DB::raw('idDocumentoCRM, codigoDocumentoCRM, nombreDocumentoCRM, numeracionDocumentoCRM, longitudDocumentoCRM, desdeDocumentoCRM, hastaDocumentoCRM, actualDocumentoCRM'))
+            ->select(DB::raw('idDocumentoCRM, codigoDocumentoCRM, nombreDocumentoCRM, numeracionDocumentoCRM, longitudDocumentoCRM, desdeDocumentoCRM, hastaDocumentoCRM'))
             ->get();
 
     $row = array();
@@ -21,7 +21,6 @@
         $row[$key][] = $value->longitudDocumentoCRM;   
         $row[$key][] = $value->desdeDocumentoCRM;
         $row[$key][] = $value->hastaDocumentoCRM;
-        $row[$key][] = $value->actualDocumentoCRM;
     }
 
     $output['aaData'] = $row;

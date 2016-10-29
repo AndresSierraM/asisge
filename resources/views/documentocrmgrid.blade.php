@@ -29,7 +29,6 @@
                             <li><a class="toggle-vis" data-column="5"><label> Longitud</label></a></li>
                             <li><a class="toggle-vis" data-column="6"><label> Desde</label></a></li>
                             <li><a class="toggle-vis" data-column="6"><label> Hasta</label></a></li>
-                            <li><a class="toggle-vis" data-column="6"><label> Actual</label></a></li>
                         </ul>
                     </div>
                     <table id="tdocumentocrm" name="tdocumentocrm" class="display table-bordered" width="100%">
@@ -46,7 +45,6 @@
                                 <th><b>Longitud</b></th>
                                 <th><b>Desde</b></th>
                                 <th><b>Hasta</b></th>
-                                <th><b>Actual</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -61,7 +59,6 @@
                                 <th><b>Longitud</b></th>
                                 <th><b>Desde</b></th>
                                 <th><b>Hasta</b></th>
-                                <th><b>Actual</b></th>
                             </tr>
                         </tfoot>        
                     </table>

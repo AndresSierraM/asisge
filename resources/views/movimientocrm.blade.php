@@ -38,15 +38,16 @@
 //****************************
 $id = isset($_GET["idDocumentoCRM"]) ? $_GET["idDocumentoCRM"] : 0; 
 $campos = DB::select(
-    'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, 
-            mostrarGridDocumentoCRMCampo, relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM
+    'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, mostrarGridDocumentoCRMCampo, 
+    	relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM,
+    	numeracionDocumentoCRM, longitudDocumentoCRM, desdeDocumentoCRM,
+    	hastaDocumentoCRM, actualDocumentoCRM
     FROM documentocrm
     left join documentocrmcampo
     on documentocrm.idDocumentoCRM = documentocrmcampo.DocumentoCRM_idDocumentoCRM
     left join campocrm
     on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
     where documentocrm.idDocumentoCRM = '.$id.' and mostrarVistaDocumentoCRMCampo = 1');
-
 
 $datos = array();
 $camposVista = '';
@@ -60,6 +61,15 @@ for($i = 0; $i < count($campos); $i++)
 $idMovimientoCRMA = (isset($movimientocrm->idMovimientoCRM) ? $movimientocrm->idMovimientoCRM : 0);
 
 
+// dependiendo del tipo de numeración debemos habilitar o no el campo de numero 
+// Numeracion Automatica
+// Numeración Manual
+if($datos["numeracionDocumentoCRM"] == 'Automatica' )
+	$ReadOnlyNumero = 'readonly';
+else
+	$ReadOnlyNumero = '';
+
+
 // consultamos el tercero asociado al  usuario logueado, para 
 // relacionarlo al campo de solicitante
 $tercero  = DB::select(
@@ -68,6 +78,8 @@ $tercero  = DB::select(
     where idTercero = '.\Session::get('idTercero'));
 $tercero = get_object_vars($tercero[0]); 
 
+
+$fechahora = Carbon\Carbon::now();
 ?>
 
 @extends('layouts.vista')
@@ -142,7 +154,7 @@ $tercero = get_object_vars($tercero[0]);
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-barcode"></i>
 					              	</span>
-									{!!Form::text('numeroMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el número del caso'])!!}
+									{!!Form::text('numeroMovimientoCRM',(isset($movimientocrm) ? $movimientocrm->numeroMovimientoCRM : ($ReadOnlyNumero != '' ? 'Automatico' : null)),[$ReadOnlyNumero => $ReadOnlyNumero, 'class'=>'form-control','placeholder'=>'Ingresa el número del caso'])!!}
 							      	{!!Form::hidden('idMovimientoCRM', null, array('id' => 'idMovimientoCRM'))!!}
 							      	{!!Form::hidden('DocumentoCRM_idDocumentoCRM', $id, array('id' => 'DocumentoCRM_idDocumentoCRM'))!!}
 								</div>
@@ -192,15 +204,10 @@ $tercero = get_object_vars($tercero[0]);
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-barcode"></i>
 					              	</span>
-									{!!Form::text('fechaSolicitudMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha de Elaboración'])!!}
+									{!!Form::text('fechaSolicitudMovimientoCRM',(isset($movimientocrm) ? $movimientocrm->fechaSolicitudMovimientoCRM : $fechahora),['readonly'=>'readonly', 'class'=>'form-control','placeholder'=>'Ingresa la fecha de Elaboración'])!!}
 								</div>
 							</div>
 						</div>
-						<script type="text/javascript">
-							$('#fechaSolicitudMovimientoCRM').datetimepicker(({
-								format: "YYYY-MM-DD"
-							}));
-						</script>
 						<?php 
 							if(strpos($camposVista, 'fechaEstimadaSolucionMovimientoCRM') !== false)
 							{ 
@@ -220,7 +227,8 @@ $tercero = get_object_vars($tercero[0]);
 						</div>
 						<script type="text/javascript">
 							$('#fechaEstimadaSolucionMovimientoCRM').datetimepicker(({
-								format: "YYYY-MM-DD"
+								defaultDate: new Date(),
+    							format:'DD/MM/YYYY HH:mm'
 							}));
 						</script>
 						<?php
@@ -244,7 +252,8 @@ $tercero = get_object_vars($tercero[0]);
 						</div>
 						<script type="text/javascript">
 							$('#fechaVencimientoMovimientoCRM').datetimepicker(({
-								format: "YYYY-MM-DD"
+								defaultDate: new Date(),
+    							format:'DD/MM/YYYY HH:mm'
 							}));
 						</script>
 						<?php
@@ -614,15 +623,6 @@ $tercero = get_object_vars($tercero[0]);
 						}
 					?>
 					</div>
-
-						
-						
-
-						
-						
-                              
-
-
 
 				    </div>	
 
