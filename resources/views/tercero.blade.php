@@ -237,7 +237,7 @@
 											</div>
 											<div class="checkbox-inline">
 												<label>
-													{!!Form::checkbox('tipoTercero1','02',false, array('id' => 'tipoTercero2', 'onclick'=>'validarTipoTercero()'))!!}Proveedor
+													{!!Form::checkbox('tipoTercero2','02',false, array('id' => 'tipoTercero2', 'onclick'=>'validarTipoTercero()'))!!}Proveedor
 												</label>
 											</div>
 											<div class="checkbox-inline">
@@ -245,9 +245,9 @@
 													{!!Form::checkbox('tipoTercero3','03',false, array('id' => 'tipoTercero3', 'onclick'=>'validarTipoTercero()'))!!}Cliente
 												</label>
 											</div>
-											<div class="checkbox-inline" style="display:none;">
+											<div class="checkbox-inline">
 												<label>
-													{!!Form::hidden('tipoTercero1','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}Entidad Estatal
+													{!!Form::checkbox('tipoTercero4','04',false, array('id' => 'tipoTercero4', 'onclick'=>'validarTipoTercero()'))!!}Contratista
 												</label>
 											</div>
 											<div class="checkbox-inline" style="display:none;">
@@ -417,6 +417,17 @@
 																<i class="fa fa-mobile" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('SectorEmpresa_idSectorEmpresa',$sectorempresa, (isset($tercero) ? $tercero->SectorEmpresa_idSectorEmpresa : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el sector empresarial",'style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+												<div class="form-group" style="width:600px; display: none;" id="contratista">
+													{!!Form::label('Tercero_idEmpleadorContratista', 'Empleador', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-user" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('Tercero_idEmpleadorContratista',$empleadorcontratista, (isset($tercero) ? $tercero->empleadorcontratista : 0),["class" => "select form-control","placeholder" =>"Seleccione un empleado",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -748,7 +759,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="panel panel-default">
+									<div id="pestanaExamenes" class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
 												<a data-toggle="collapse" data-parent="#accordion" href="#examen">Examenes M&eacute;dicos Requeridos</a>

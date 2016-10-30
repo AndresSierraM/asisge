@@ -89,8 +89,10 @@ class TerceroController extends Controller
         
         $sectorempresa = \App\SectorEmpresa::All()->lists('nombreSectorEmpresa', 'idSectorEmpresa');
 
+        $empleadorcontratista = \App\Tercero::where('tipoTercero', 'like','%*01*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+
       
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa'));
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa','empleadorcontratista'));
     }
     /**
      * Store a newly created resource in storage.
@@ -145,6 +147,7 @@ class TerceroController extends Controller
                 'Cargo_idCargo' => (($request['Cargo_idCargo'] == '' or $request['Cargo_idCargo'] == 0) ? null : $request['Cargo_idCargo']),
                 'Zona_idZona' => (($request['Zona_idZona'] == '' or $request['Zona_idZona'] == 0) ? null : $request['Zona_idZona']),
                 'SectorEmpresa_idSectorEmpresa' => (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa']),
+                'Tercero_idEmpladorContratista' => (($request['Tercero_idEmpladorContratista'] == '' or $request['Tercero_idEmpladorContratista'] == 0) ? null : $request['Tercero_idEmpladorContratista']),
                 'Compania_idCompania' => \Session::get('idCompania')
                 ]);
             
@@ -282,9 +285,11 @@ class TerceroController extends Controller
         
         $sectorempresa = \App\SectorEmpresa::All()->lists('nombreSectorEmpresa', 'idSectorEmpresa');
 
+        $empleadorcontratista = \App\Tercero::where('tipoTercero', 'like','%*01*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+
         $tercero = \App\Tercero::find($id);
 
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa'),['tercero'=>$tercero]);
+        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -301,7 +306,10 @@ class TerceroController extends Controller
             $tercero->fill($request->all());
             $tercero->Cargo_idCargo = (($request['Cargo_idCargo'] == '' or $request['Cargo_idCargo'] == 0) ? null : $request['Cargo_idCargo']);
             $tercero->Zona_idZona = (($request['Zona_idZona'] == '' or $request['Zona_idZona'] == 0) ? null : $request['Zona_idZona']);
-            $tercero->SectorEmpresa_idSectorEmpresa = (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa']);
+            $tercero->SectorEmpresa_idSectorEmpresa = (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa'
+                ]);
+            $tercero->Tercero_idEmpleadorContratista = (($request['Tercero_idEmpleadorContratista'] == '' or $request['Tercero_idEmpleadorContratista'] == 0) ? null : $request['Tercero_idEmpleadorContratista'
+                ]);
 
             if(null !== Input::file('imagenTercero') )
             {
