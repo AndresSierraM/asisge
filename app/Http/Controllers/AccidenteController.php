@@ -129,13 +129,16 @@ class AccidenteController extends Controller
 
         //----------------------------
         // Guardamos la imagen de la firma como un archivo en disco
-        $data = $request['firmabase64'];
+        if (isset($request['firmabase64']) and $request['firmabase64'] != '') 
+        {
+            $data = $request['firmabase64'];
 
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
-        $data = base64_decode($data);
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
 
-        file_put_contents('imagenes/accidente/firmaaccidente_'.$accidente->idAccidente.'.png', $data);
+            file_put_contents('imagenes/accidente/firmaaccidente_'.$accidente->idAccidente.'.png', $data);
+        }
         //----------------------------
 
         //---------------------------------

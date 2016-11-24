@@ -1,3 +1,28 @@
+function cambiarEstado(id, TipoEstado)
+{
+
+    var modificar = '<?php echo (isset($dato["modificarDocumentoCRMRol"]) ? $dato["modificarDocumentoCRMRol"] : 0);?>';
+    var eliminar = '<?php echo (isset($dato["anularDocumentoCRMRol"]) ? $dato["anularDocumentoCRMRol"] : 0);?>';
+    var consultar = '<?php echo (isset($dato["consultarDocumentoCRMRol"]) ? $dato["consultarDocumentoCRMRol"] : 0);?>';
+    var aprobar = '<?php echo (isset($dato["aprobarDocumentoCRMRol"]) ? $dato["aprobarDocumentoCRMRol"] : 0);?>';
+
+
+    $("#tmovimientocrm").DataTable().ajax.url('http://'+location.host+"/datosMovimientoCRM?idDocumento="+id+"&TipoEstado="+TipoEstado+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar).load();
+}
+
+function imprimirFormato(idMov, idDoc)
+{
+    window.open('movimientocrm/'+idMov+'?idDocumentoCRM='+idDoc+'&accion=imprimir','movimientocrm','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+}
+
+function mostrarTableroCRM(idDoc)
+{
+    window.open('movimientocrm/0?idDocumentoCRM='+idDoc+'&accion=dashboard','dashboardcrm','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+}
+
+
+
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/tercero";
