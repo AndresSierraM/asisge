@@ -94,7 +94,7 @@ function validarTipoTercero()
 {
     document.getElementById("tipoTercero").value = '';
 
-    for (tipo = 1; tipo <= 2; tipo++)
+    for (tipo = 1; tipo <= 4; tipo++)
     {
         document.getElementById("tipoTercero").value = document.getElementById("tipoTercero").value + ((document.getElementById("tipoTercero" + (tipo)).checked) ? '*' + document.getElementById("tipoTercero" + (tipo)).value + '*' : '');
     }
@@ -103,7 +103,7 @@ function validarTipoTercero()
 
 function seleccionarTipoTercero()
 {
-    for (tipo = 1; tipo <= 2; tipo++)
+    for (tipo = 1; tipo <= 4; tipo++)
     {
         if (document.getElementById("tipoTercero").value.indexOf('*' + document.getElementById("tipoTercero" + (tipo)).value + '*') >= 0)
         {
@@ -137,6 +137,7 @@ function mostrarPestanas()
         document.getElementById('zona').style.display = 'none';
         document.getElementById('sector').style.display = 'none';
         document.getElementById('pestanaProducto').style.display = 'none';
+        document.getElementById('pestanaExamenes').style.display = 'block';
         document.getElementById('pestanaEducacion').style.display = 'block';
         document.getElementById('pestanaExperiencia').style.display = 'block';
         document.getElementById('pestanaFormacion').style.display = 'block';
@@ -161,6 +162,24 @@ function mostrarPestanas()
         document.getElementById('sector').style.display = 'inline';
 
         document.getElementById('pestanaProducto').style.display = 'block';
+        document.getElementById('pestanaExamenes').style.display = 'none';
+        document.getElementById('pestanaEducacion').style.display = 'none';
+        document.getElementById('pestanaExperiencia').style.display = 'none';
+        document.getElementById('pestanaFormacion').style.display = 'none';
+        document.getElementById('pestanaPersonal').style.display = 'none';
+        document.getElementById('pestanaLaboral').style.display = 'none';
+    }
+
+    if(document.getElementById('tipoTercero4').checked)
+    {
+        document.getElementById('cargo').style.display = 'none';
+        document.getElementById('zona').style.display = 'inline';
+        document.getElementById('sector').style.display = 'inline';
+        document.getElementById('contratista').style.display = 'inline';
+
+
+        document.getElementById('pestanaProducto').style.display = 'block';
+        document.getElementById('pestanaExamenes').style.display = 'none';
         document.getElementById('pestanaEducacion').style.display = 'none';
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
