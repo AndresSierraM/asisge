@@ -146,6 +146,7 @@ class TipoInspeccionController extends Controller
             'numeroTipoInspeccionPregunta' => $request['numeroTipoInspeccionPregunta'][$i],
             'contenidoTipoInspeccionPregunta' => $request['contenidoTipoInspeccionPregunta'][$i] );
 
+
             $preguntas = \App\TipoInspeccionPregunta::updateOrCreate($indice, $data);
 
         }

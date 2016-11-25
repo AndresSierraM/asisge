@@ -3,6 +3,56 @@
 
 @section('content')
   <!-- @include('alerts.request') -->
+  {!!Html::script('js/encuesta.js')!!}
+
+<script>
+    // var actaCapacitacionAsistente = '<?php echo (isset($firmas) ? json_encode($firmas) : "");?>';
+    // actaCapacitacionAsistente = (actaCapacitacionAsistente != '' ? JSON.parse(actaCapacitacionAsistente) : '');
+
+    // var actaCapacitacionTema = '<?php echo (isset($firmas) ? json_encode($actaCapacitacion->actaCapacitacionTemas) : "");?>';
+    // actaCapacitacionTema = (actaCapacitacionTema != '' ? JSON.parse(actaCapacitacionTema) : '');
+
+    
+    var valorPregunta = [0,'',0,'0000-00-00','00:00',0];
+
+    // var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
+    // var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
+    // var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
+    // var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
+    // var eventos2 = ['onchange','llenarCargo(this);'];
+
+    $(document).ready(function(){
+
+
+      pregunta = new Propiedades('pregunta','contenedor_pregunta','pregunta');
+
+      pregunta.altura = '36px;';
+      pregunta.campoid = 'idActaCapacitacionTema';
+      pregunta.campoEliminacion = 'eliminarTema';
+
+      // pregunta.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
+      // pregunta.etiqueta = ['input', 'input','input','select','input','input','checkbox','checkbox'];
+      // pregunta.tipo = ['hidden', 'hidden','text','','date','time','checkbox','checkbox'];
+      // pregunta.estilo = ['', '','width: 250px;height:35px;','width: 250px;height:35px;','width: 130px;height:35px;','width: 110px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
+      // pregunta.clase = ['', '','','','','',''];
+      // pregunta.sololectura = [false, false,true,false,false,false,false,false];
+      // pregunta.completar = ['off', 'off','off','off','off','off','off','off'];
+      // pregunta.opciones = ['', '','',tercero,'','','',''];
+      // pregunta.funciones  = ['', '','','',eventos1,'','',''];
+
+      // for(var j=0, k = actaCapacitacionTema.length; j < k; j++)
+      // {
+
+      //   pregunta.agregarCampos(JSON.stringify(actaCapacitacionTema[j]),'L');
+      //   llenarPlanCapacitacionTema(document.getElementById('PlanCapacitacionTema_idPlanCapacitacionTema'+j));
+      // }
+
+      
+
+    });
+
+  </script>
+
 
 	@if(isset($encuesta))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -19,31 +69,67 @@
 
 	<fieldset id="encuesta-form-fieldset">	
 		<div class="form-group" id='test'>
-          {!!Form::label('tituloEncuesta', 'Título', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-barcode"></i>
-              </span>
-              {!!Form::text('tituloEncuesta',null,['class'=>'form-control','placeholder'=>'Ingrese el Título de la Encuesta'])!!}
-              {!!Form::hidden('idEncuesta', null, array('id' => 'idEncuesta')) !!}
-            </div>
-          </div>
+      {!!Form::label('tituloEncuesta', 'Título', array('class' => 'col-sm-2 control-label')) !!}
+      <div class="col-sm-10">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <i class="fa fa-barcode"></i>
+          </span>
+          {!!Form::text('tituloEncuesta',null,['class'=>'form-control','placeholder'=>'Ingrese el Título de la Encuesta'])!!}
+          {!!Form::hidden('idEncuesta', null, array('id' => 'idEncuesta')) !!}
         </div>
+      </div>
+    </div>
 
 
 		
 		<div class="form-group" id='test'>
-          {!!Form::label('descripcionEncuesta', 'Descripción', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
-              </span>
-				      {!!Form::textarea('descripcionEncuesta',null,['class'=>'ckeditor','placeholder'=>'Ingresa la descripción de la Encuesta'])!!}
-            </div>
+      {!!Form::label('descripcionEncuesta', 'Descripción', array('class' => 'col-sm-2 control-label')) !!}
+      <div class="col-sm-10">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <i class="fa fa-pencil-square-o "></i>
+          </span>
+		      {!!Form::textarea('descripcionEncuesta',null,['class'=>'ckeditor','placeholder'=>'Ingresa la descripción de la Encuesta'])!!}
+        </div>
+      </div>
+    </div>
+    
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#preguntas">Preguntas</a></li>
+      <li><a data-toggle="tab" href="#permisos">Permisos</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="preguntas" class="tab-pane fade in active">
+        
+        <div id="contenedor_pregunta">
+        </div>
+
+      <!-- <div class="row show-grid"> -->
+          <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
+            <span class="fa fa-plus-square fa-2x"></span>
           </div>
-    </fieldset>
+          <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
+            <span class="fa fa-pencil-square fa-2x"></span>
+          </div>
+          <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
+            <span class="fa fa-photo fa-2x"></span>
+          </div>
+          <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
+            <span class="fa fa-film fa-2x"></span>
+          </div>
+        <!-- </div> -->
+          
+      </div>
+      <div id="permisos" class="tab-pane fade">
+
+
+      </div>
+    </div>
+
+  </fieldset>
 
 
 	@if(isset($encuesta))

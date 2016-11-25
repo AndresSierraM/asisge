@@ -163,6 +163,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('movimientocrm','MovimientoCRMController');
     Route::resource('presupuesto','PresupuestoController');
 
+
+    // *************************************
+    // Rutas de Encuestas
+    // *************************************
+    Route::resource('encuesta','EncuestaController');
     
     // *************************************************
     //
@@ -669,8 +674,20 @@ Route::post('actualizarFirmaConformacionGrupoApoyo', function()
 });
 
 
+//************************************
+// Rutas de Ajax de Encuestas
+//************************************
 
-//Ajax de Diseñador de informes
+Route::get('datosEncuesta', function()
+{
+    include public_path().'/ajax/datosEncuesta.php';
+});
+
+
+//************************************
+// Rutas de Ajax de Diseñador de informes
+//************************************
+
 Route::post('consultarSistemaInformacion', function()
 {
     include public_path().'/ajax/consultarSistemaInformacion.php';
