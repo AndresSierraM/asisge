@@ -146,6 +146,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('listachequeo','ListaChequeoController');
     Route::resource('reporteacpm','ReporteACPMController');
     Route::resource('plantrabajo','PlanTrabajoController');
+    Route::resource('plantrabajoformulario','PlanTrabajoFormularioController');
 
 
     // *************************************
@@ -215,6 +216,11 @@ Route::get('datosOpcion', function()
 Route::get('datosRol', function()
 {
     include public_path().'/ajax/datosRol.php';
+});
+
+Route::get('datosPlanTrabajo', function()
+{
+    include public_path().'/ajax/datosPlanTrabajo.php';
 });
 
 

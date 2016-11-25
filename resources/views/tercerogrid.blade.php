@@ -104,7 +104,7 @@
 
 
 
-
+{!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
 
     $(document).ready( function () {
@@ -197,6 +197,13 @@
                     .draw();
             }
         } );
+
+        $('#btnLimpiarFiltros').click(function() 
+        {
+            that
+                .search('')
+                .draw();
+        });
     })
 
     

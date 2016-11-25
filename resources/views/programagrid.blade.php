@@ -77,7 +77,7 @@
             </div>
         </div>
 
-
+{!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
 
    function imprimirFormato(id)
@@ -99,7 +99,7 @@
          var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
-        var table = $('#tprograma').DataTable( {
+        var table = $('#tprograma').DataTable( {    
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
@@ -129,6 +129,7 @@
                             "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                         }
                     }
+                    
         });
          
         $('a.toggle-vis').on( 'click', function (e) {
@@ -177,9 +178,14 @@
                     .draw();
             }
         } );
-    })
 
-    
+        $('#btnLimpiarFiltros').click(function() 
+        {
+            that
+                .search('')
+                .draw();
+        });
+    })
 });
     
 </script>

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Categorías CRM</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Plan de Trabajo Anual</center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -11,6 +11,26 @@
                 border-radius: 4px;
             }
 </style> 
+<?php 
+    $visible = '';
+
+    if (isset($datos[0])) 
+    {
+        $dato = get_object_vars($datos[0]);
+        if ($dato['adicionarRolOpcion'] == 1) 
+        {
+            $visible = 'inline-block;';    
+        }
+        else
+        {
+            $visible = 'none;';
+        }
+    }
+    else
+    {
+        $visible = 'none;';
+    }
+?>
         <div class="container">
             <div class="row">
                 <div class="container">
@@ -23,21 +43,22 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Código</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
-                           
+                            <li><a class="toggle-vis" data-column="2"><label> Número</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Asunto</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Fecha</label></a></li>
                         </ul>
                     </div>
-                    <table id="tcategoriacrm" name="tcategoriacrm" class="display table-bordered" width="100%">
+                    <table id="tplantrabajo" name="tplantrabajo" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                {!!Html::link('categoriacrm/create','',array('class' => 'glyphicon glyphicon-plus'))!!}
+                                 <a href="plantrabajoformulario/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Código</b></th>
-                                <th><b>Nombre</b></th>
+                                <th><b>Número</b></th>
+                                <th><b>Asunto</b></th>
+                                <th><b>Fecha</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -46,8 +67,9 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
+                                <th>Número</th>
+                                <th>Asunto</th>
+                                <th>Fecha</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -61,19 +83,21 @@
     $(document).ready( function () {
 
         
-        /*$('#tcategoriacrm').DataTable({
+        /*$('#tplantrabajo').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCategoriaCRM')!!}",
+            "ajax": "{!! URL::to ('/datosPlanTrabajo')!!}",
         });*/
         var lastIdx = null;
-        var table = $('#tcategoriacrm').DataTable( {
+        var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
+        var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var table = $('#tplantrabajo').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCategoriaCRM')!!}",
+            "ajax": "{!! URL::to ('/datosPlanTrabajo?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -110,7 +134,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tcategoriacrm tbody')
+        $('#tplantrabajo tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -125,15 +149,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tcategoriacrm tfoot th').each( function () {
+    $('#tplantrabajo tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tcategoriacrm thead th').eq( $(this).index() ).text();
+        var title = $('#tplantrabajo thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tcategoriacrm').DataTable();
+    var table = $('#tplantrabajo').DataTable();
  
     // Apply the search
     table.columns().every( function () {
