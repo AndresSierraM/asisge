@@ -1150,7 +1150,7 @@ class TerceroController extends Controller
             }
             else
             {
-                // recorremos el array recibido para insertar o actualizar cada registro en la tabla de terceros
+                // recorremos el array recibido para insertar o actualizar cada registro
                 for($reg = 0; $reg < count($terceros); $reg++)
                 {
                     
@@ -1180,22 +1180,7 @@ class TerceroController extends Controller
                         'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
                         'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
-                        'Compania_idCompania' => \Session::get("idCompania")
-                    );
 
-                    $tercero = \App\Tercero::updateOrCreate($indice, $data);
-                }
-
-                $tercero = \App\Tercero::All()->last();
-
-                // recorremos el array recibido para insertar o actualizar cada registro en la tabla de terceros
-                for($reg = 0; $reg < count($terceros); $reg++)
-                {
-                    
-                    $indice = array(
-                          'idTerceroInformacion' => 0);
-
-                    $data = array(
                         'fechaIngresoTerceroInformacion' => $terceros[$reg]['fechaIngresoTerceroInformacion'],
                         'fechaRetiroTerceroInformacion' => $terceros[$reg]['fechaRetiroTerceroInformacion'],
                         'tipoContratoTerceroInformacion' => $terceros[$reg]['tipoContratoTerceroInformacion'],
@@ -1212,12 +1197,12 @@ class TerceroController extends Controller
                         'HobbyTerceroInformacion' => $terceros[$reg]['HobbyTerceroInformacion'],
                         'actividadFisicaTerceroInformacion' => $terceros[$reg]['actividadFisicaTerceroInformacion'],
                         'consumeLicorTerceroInformacion' => $terceros[$reg]['consumeLicorTerceroInformacion'],
-                        'FrecuenciaMedicion_idConsumeLicor' => ($terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == '' ? NULL : $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor']),
+                        'FrecuenciaMedicion_idConsumeLicor' => $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'],
                         'consumeCigarrilloTerceroInformacion' => $terceros[$reg]['consumeCigarrilloTerceroInformacion'],
-                        'Tercero_idTercero' => $tercero->idTercero
+                        'Compania_idCompania' => \Session::get("idCompania")
                     );
 
-                    $tercero = \App\TerceroInformacion::updateOrCreate($indice, $data);
+                    $tercero = \App\Tercero::updateOrCreate($indice, $data);
                 }
                 echo json_encode(array(true, 'Importacion Exitosa, por favor verifique'));
             }
