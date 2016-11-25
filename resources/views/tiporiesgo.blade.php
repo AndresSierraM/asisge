@@ -52,6 +52,7 @@
 
     for(var j=0, k = tipoRiesgoSalud.length; j < k; j++)
     {
+      // decodeURIComponent(escape(tipoRiesgoSalud[j]))
         salud.agregarCampos(JSON.stringify(tipoRiesgoSalud[j]),'L');
     }
   });

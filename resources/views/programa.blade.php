@@ -171,6 +171,18 @@
           </div>
         </div>
 
+        <div class="form-group" id='test'>
+          {!!Form::label('generalidadPrograma', 'Generalidades', array('class' => 'col-sm-2 control-label'))!!}
+          <div class="col-sm-10" >
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-edit" ></i>
+              </span>
+              {!!Form::textarea('generalidadPrograma',null,['class'=>'ckeditor','placeholder'=>'Generalidades del programa'])!!}
+            </div>
+          </div>
+        </div>
+
         <div class="panel-body">
           <div class="form-group" id='test'>
 
@@ -224,7 +236,7 @@
     }));
 
     
-    CKEDITOR.replace(('objetivoEspecificoPrograma'), {
+    CKEDITOR.replace(('objetivoEspecificoPrograma','generalidadPrograma'), {
         fullPage: true,
         allowedContent: false
     });

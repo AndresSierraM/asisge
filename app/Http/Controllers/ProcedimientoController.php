@@ -65,6 +65,7 @@ class ProcedimientoController extends Controller
             'objetivoProcedimiento' => $request['objetivoProcedimiento'],
             'alcanceProcedimiento' => $request['alcanceProcedimiento'],
             'responsabilidadProcedimiento' => $request['responsabilidadProcedimiento'],
+            'generalidadProcedimiento' => $request['generalidadProcedimiento'],
             'Compania_idCompania' => \Session::get('idCompania')
             ]); 
 

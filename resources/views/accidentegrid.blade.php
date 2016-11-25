@@ -1,6 +1,9 @@
 @extends('layouts.grid')
 @section('titulo')<h3 id="titulo"><center>Investigación de Accidentes</center></h3>@stop
 @section('content')
+{!!Html::script('js/accidente.js')!!}
+{!!Html::style('css/signature-pad.css'); !!}
+{!!Html::style('css/cerrardiv.css'); !!} 
 <style>
     tfoot input {
                 width: 100%;
@@ -31,6 +34,7 @@
         $visible = 'none;';
     }
 ?>
+        <input type="hidden" id="token" value="{{csrf_token()}}"/>
         <div class="container">
             <div class="row">
                 <div class="container">
@@ -84,11 +88,11 @@
             </div>
         </div>
 
-
+{!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
 
     $(document).ready( function () {
-
+        mostrarFirma();
         
         /*$('#taccidente').DataTable({
             "aProcessing": true,
@@ -177,11 +181,82 @@
                     .draw();
             }
         } );
+
+        $('#btnLimpiarFiltros').click(function() 
+        {
+            that
+                .search('')
+                .draw();
+        });
     })
 
     
 });
     
 </script>
-
+{!!Html::script('js/signature_pad.js'); !!}
+{!!Html::script('js/app1.js'); !!}
 @stop
+
+<div id="modalAccidente" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:100%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title">Coordinador investigación</h4>
+      </div>
+      <div class="modal-body">
+
+        <div id="signature-pad" class="m-signature-pad">
+        <a class='cerrar' href='javascript:void(0);' onclick='cerrarDivFirma(); document.getElementById(&apos;signature-pad&apos;).style.display = &apos;none&apos;'>x</a> 
+            <input type="hidden" id="signature-reg" value="">
+            <div class="m-signature-pad--body">
+              <canvas></canvas>
+            </div>
+            <div class="m-signature-pad--footer">
+              <div class="description">Firme sobre el recuadro</div>
+              <button type="button" class="button clear btn btn-danger" data-action="clear">Limpiar</button>
+              <button type="button" class="button save btn btn-success"  onclick="actualizarFirma()">Guardar Firma</button>
+                <img id="firma" style="width:200px; height: 150px; border: 1px solid; display:none;"  src="">
+                {!!Form::hidden('firmabase64', null, array('id' => 'firmabase64'))!!}
+                {!!Form::hidden('idCoordinador', null, array('id' => 'idCoordinador'))!!}
+            </div>
+        </div>
+
+         <div class="container">
+            <div class="row">
+                <div class="container col-md-9 col-sm-12">
+                    <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
+                        <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-th icon-th"></i> 
+                            <span class="caret"></span>
+                        </button>
+                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li><a class="toggle-vis" data-column="0"><label> Nombre</label></a></li>
+                        </ul>
+                    </div>
+                    
+                    <table id="taccidenteselect" name="taccidenteselect" class="display table-bordered" width="100%">
+                        <thead>
+                            <tr class="btn-default active">
+                                <th><b>Nombre</b></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="btn-default active">
+                                <th>Nombre</th>
+                            </tr>
+                        </tfoot>
+                    </table>                
+                </div>
+            </div>
+        </div>
+      </div>
+       <div class="modal-footer">
+            <button type="button" class="btn btn-danger"  data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

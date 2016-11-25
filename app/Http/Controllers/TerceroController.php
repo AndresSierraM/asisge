@@ -1049,7 +1049,6 @@ class TerceroController extends Controller
                     }
                 }
 
-
                 //*****************************
                 // Cargo
                 //*****************************
@@ -1065,7 +1064,7 @@ class TerceroController extends Controller
                 }
                 else
                 {
-                    $consulta = \App\Cargo::where('codigoCargo','=', $terceros[ $posTer]["Cargo_idCargo"])->lists('idCargo');
+                    $consulta = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('codigoCargo','=', $terceros[ $posTer]["Cargo_idCargo"])->lists('idCargo');
 
                     // si se encuentra el id lo guardamos en el array
                     if(isset($consulta[0]))
@@ -1080,7 +1079,6 @@ class TerceroController extends Controller
                         $posErr++;
                     }
                 }
-                
 
                 
                 //*****************************

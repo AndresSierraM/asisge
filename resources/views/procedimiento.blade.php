@@ -169,6 +169,28 @@
                       </div>
                     </div>
 
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Generalidades</a>
+                        </h4>
+                      </div>
+                      <div id="collapseFour" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('generalidadProcedimiento',null,['class'=>'ckeditor','placeholder'=>''])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -216,7 +238,7 @@
     }));
 
     
-    CKEDITOR.replace(('objetivoProcedimiento','alcanceProcedimiento','responsabilidadProcedimiento'), {
+    CKEDITOR.replace(('objetivoProcedimiento','alcanceProcedimiento','responsabilidadProcedimiento','generalidadProcedimiento'), {
         fullPage: true,
         allowedContent: false
     });
