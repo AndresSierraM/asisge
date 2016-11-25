@@ -184,7 +184,16 @@ class MovimientoCRMController extends Controller
 
             return view('formatos.formatomovimientocrm',['movimientocrm'=>$movimientocrm], compact('idDocumentoCRM'));
         }
+    
+        if(isset($_GET['accion']) and $_GET['accion'] == 'dashboard')
+        {
+            
+            $idDocumentoCRM= $_GET['idDocumentoCRM'];
+
+            return view('dashboardcrm',compact('idDocumentoCRM'));
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.
