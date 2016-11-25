@@ -577,7 +577,7 @@ class TerceroController extends Controller
                 else
                 {
                     //buscamos el id en el modelo correspondiente
-                    $consulta = \App\Tercero::where('documentoTercero','=', $terceros[ $posTer]["documentoTercero"])->lists('idTercero');
+                    $consulta = \App\Tercero::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('documentoTercero','=', $terceros[ $posTer]["documentoTercero"])->lists('idTercero');
                     // si se encuentra el id lo guardamos en el array
 
                     if(isset($consulta[0]))
@@ -697,7 +697,7 @@ class TerceroController extends Controller
                 }
                 else
                 {
-                    $consulta = \App\Cargo::where('codigoCargo','=', $terceros[ $posTer]["Cargo_idCargo"])->lists('idCargo');
+                    $consulta = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('codigoCargo','=', $terceros[ $posTer]["Cargo_idCargo"])->lists('idCargo');
 
                     // si se encuentra el id lo guardamos en el array
                     if(isset($consulta[0]))
@@ -946,7 +946,7 @@ class TerceroController extends Controller
                 else
                 {
                     //buscamos el id en el modelo correspondiente
-                    $consulta = \App\Tercero::where('documentoTercero','=', $terceros[ $posTer]["documentoTercero"])->lists('idTercero');
+                    $consulta = \App\Tercero::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('documentoTercero','=', $terceros[ $posTer]["documentoTercero"])->lists('idTercero');
                     // si se encuentra el id lo guardamos en el array
 
                     if(isset($consulta[0]))
@@ -1150,7 +1150,7 @@ class TerceroController extends Controller
             }
             else
             {
-                // recorremos el array recibido para insertar o actualizar cada registro
+                // recorremos el array recibido para insertar o actualizar cada registro en la tabla de terceros
                 for($reg = 0; $reg < count($terceros); $reg++)
                 {
                     
@@ -1180,7 +1180,22 @@ class TerceroController extends Controller
                         'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
                         'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
+                        'Compania_idCompania' => \Session::get("idCompania")
+                    );
 
+                    $tercero = \App\Tercero::updateOrCreate($indice, $data);
+                }
+
+                $tercero = \App\Tercero::All()->last();
+
+                // recorremos el array recibido para insertar o actualizar cada registro en la tabla de terceros
+                for($reg = 0; $reg < count($terceros); $reg++)
+                {
+                    
+                    $indice = array(
+                          'idTerceroInformacion' => 0);
+
+                    $data = array(
                         'fechaIngresoTerceroInformacion' => $terceros[$reg]['fechaIngresoTerceroInformacion'],
                         'fechaRetiroTerceroInformacion' => $terceros[$reg]['fechaRetiroTerceroInformacion'],
                         'tipoContratoTerceroInformacion' => $terceros[$reg]['tipoContratoTerceroInformacion'],
@@ -1197,12 +1212,12 @@ class TerceroController extends Controller
                         'HobbyTerceroInformacion' => $terceros[$reg]['HobbyTerceroInformacion'],
                         'actividadFisicaTerceroInformacion' => $terceros[$reg]['actividadFisicaTerceroInformacion'],
                         'consumeLicorTerceroInformacion' => $terceros[$reg]['consumeLicorTerceroInformacion'],
-                        'FrecuenciaMedicion_idConsumeLicor' => $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'],
+                        'FrecuenciaMedicion_idConsumeLicor' => ($terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == '' ? NULL : $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor']),
                         'consumeCigarrilloTerceroInformacion' => $terceros[$reg]['consumeCigarrilloTerceroInformacion'],
-                        'Compania_idCompania' => \Session::get("idCompania")
+                        'Tercero_idTercero' => $tercero->idTercero
                     );
 
-                    $tercero = \App\Tercero::updateOrCreate($indice, $data);
+                    $tercero = \App\TerceroInformacion::updateOrCreate($indice, $data);
                 }
                 echo json_encode(array(true, 'Importacion Exitosa, por favor verifique'));
             }
