@@ -23,10 +23,27 @@
 		var cargoExamenMedico = '<?php echo (isset($cargo) ? json_encode($cargo->cargoExamenMedicos) : "");?>';
 		cargoExamenMedico = (cargoExamenMedico != '' ? JSON.parse(cargoExamenMedico) : '');
 
+		var cargoResponsabilidad = '<?php echo (isset($cargo) ? json_encode($cargo->CargoResponsabilidad) : "");?>';
+		cargoResponsabilidad = (cargoResponsabilidad != '' ? JSON.parse(cargoResponsabilidad) : '');
+
+		var cargoEducacion = '<?php echo (isset($cargoeducacion) ? json_encode($cargoeducacion) : "");?>';
+		cargoEducacion = (cargoEducacion != '' ? JSON.parse(cargoEducacion) : '')
+
+		var cargoFormacion = '<?php echo (isset($cargoformacion) ? json_encode($cargoformacion) : "");?>';
+		cargoFormacion = (cargoFormacion != '' ? JSON.parse(cargoFormacion) : '')
+
+		var cargoHabilidad = '<?php echo (isset($cargohabilidad) ? json_encode($cargohabilidad) : "");?>';
+		cargoHabilidad = (cargoHabilidad != '' ? JSON.parse(cargoHabilidad) : '')
+
+		var cargocompetencia = '<?php echo (isset($cargocompetencia) ? json_encode($cargocompetencia) : "");?>';
+		cargocompetencia = (cargocompetencia != '' ? JSON.parse(cargocompetencia) : '')
+;
+
 		var valorTarea = [0,''];
 		var valorVacuna = [0,''];
 		var valorElemento = [0,''];
 		var valorExamen = [0,'',0,0,0,''];
+		var ResponsabilidadesModelo = [0,'',0];
 
 		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
 		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';
@@ -113,6 +130,148 @@
 			examen.funciones  = ['','','','','',''];
 
 
+				// multiregistro Responsabilidades
+
+  			
+			  Responsabilidades = new Atributos('Responsabilidades','Responsabilidad_Modulo','Responsabilidaddescripcion_');
+
+			    Responsabilidades.campoid = 'idCargoResponsabilidad';  //hermanitas             
+			    Responsabilidades.campoEliminacion = 'eliminarResponsabilidades';//hermanitas         Cuando se utilice la funcionalidad 
+			    Responsabilidades.botonEliminacion = true;//hermanitas
+			    // despues del punto son las propiedades que se le van adicionar al objeto
+			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','Cargo_idCargo']; //[arrays ]
+			    Responsabilidades.altura = '40px;'; 
+			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+			    Responsabilidades.etiqueta = ['input','input','input'];
+			    Responsabilidades.tipo = ['hidden','','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Responsabilidades.estilo = ['','width: 1200px;height:40px;',''];	
+
+			    // estas propiedades no son muy usadas PERO SON UTILES
+			    
+			    Responsabilidades.clase = ['','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Responsabilidades.sololectura = [false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Responsabilidades.completar = ['off','off','off']; //autocompleta 
+			    
+			    Responsabilidades.opciones = ['','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Responsabilidades.funciones  = ['','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+
+
+
+			    // // multiregistro Educacion
+
+  			
+			    Educacion = new Atributos('Educacion','Educacion_Modulo','Educaciondescripcion_');
+
+			    Educacion.campoid = 'idCargoEducacion';  //hermanitas             
+			    Educacion.campoEliminacion = 'eliminarEducacion';//hermanitas         Cuando se utilice la funcionalidad 
+			    Educacion.botonEliminacion = true;//hermanitas
+			    // despues del punto son las propiedades que se le van adicionar al objeto
+			    Educacion.campos = ['idCargoEducacion','PerfilCargo_idEducacion','nombreEducacion','porcentajeCargoEducacion']; //[arrays ]
+			    Educacion.altura = '35px;'; 
+			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+			    Educacion.etiqueta = ['input','input','input','input'];
+			    Educacion.tipo = ['hidden','hidden','text','text']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Educacion.estilo = ['', '', 'width: 600px;height:35px;','width: 100px;height:35px;'];	
+
+			    // estas propiedades no son muy usadas PERO SON UTILES
+			    
+			    Educacion.clase = ['','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Educacion.sololectura = [false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Educacion.completar = ['off','off','off','off']; //autocompleta 
+			    
+			    Educacion.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Educacion.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+
+    			// // multiregistro Educacion
+
+  			
+			    Formacion = new Atributos('Formacion','Formacion_Modulo','Formaciondescripcion_');
+
+			    Formacion.campoid = 'idCargoFormacion';  //hermanitas             
+			    Formacion.campoEliminacion = 'eliminarFormacion';//hermanitas         Cuando se utilice la funcionalidad 
+			    Formacion.botonEliminacion = true;//hermanitas
+			    // despues del punto son las propiedades que se le van adicionar al objeto
+			    Formacion.campos = ['idCargoFormacion','PerfilCargo_idFormacion','nombreFormacion','porcentajeCargoFormacion']; //[arrays ]
+			    Formacion.altura = '35px;'; 
+			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+			    Formacion.etiqueta = ['input','input','input','input'];
+			    Formacion.tipo = ['hidden','hidden','text','text']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Formacion.estilo = ['', '', 'width: 600px;height:35px;','width: 100px;height:35px;'];	
+
+			    // estas propiedades no son muy usadas PERO SON UTILES
+			    
+			    Formacion.clase = ['','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Formacion.sololectura = [false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Formacion.completar = ['off','off','off','off']; //autocompleta 
+			    
+			    Formacion.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Formacion.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+
+
+    			// // multiregistro  Habilidad 
+
+  			
+			    Habilidad = new Atributos('Habilidad','Habilidad_Modulo','Habilidaddescripcion_');
+
+			    Habilidad.campoid = 'idCargoHabilidad';  //hermanitas             
+			    Habilidad.campoEliminacion = 'eliminarHabilidad';//hermanitas         Cuando se utilice la funcionalidad 
+			    Habilidad.botonEliminacion = true;//hermanitas
+			    // despues del punto son las propiedades que se le van adicionar al objeto
+			    Habilidad.campos = ['idCargoHabilidad','PerfilCargo_idHabilidad','nombreHabilidad','porcentajeCargoHabilidad']; //[arrays ]
+			    Habilidad.altura = '35px;'; 
+			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+			    Habilidad.etiqueta = ['input','input','input','input'];
+			    Habilidad.tipo = ['hidden','hidden','text','text']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Habilidad.estilo = ['', '', 'width: 600px;height:35px;','width: 100px;height:35px;'];	
+
+			    // estas propiedades no son muy usadas PERO SON UTILES
+			    
+			    Habilidad.clase = ['','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Habilidad.sololectura = [false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Habilidad.completar = ['off','off','off','off']; //autocompleta 
+			    
+			    Habilidad.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Habilidad.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+
+
+
+	// // multiregistro  Competencias 
+
+  			
+			    Competencia = new Atributos('Competencia','Competencia_Modulo','Competenciadescripcion_');
+
+			    Competencia.campoid = 'idCargoCompetencia';  //hermanitas             
+			    Competencia.campoEliminacion = 'eliminarCompetencia';//hermanitas         Cuando se utilice la funcionalidad 
+			    Competencia.botonEliminacion = true;//hermanitas
+			    // despues del punto son las propiedades que se le van adicionar al objeto
+			    Competencia.campos = ['idCargoCompetencia','Competencia_idCompetencia','nombreCompetencia','Cargo_idCargo']; //[arrays ]
+			    Competencia.altura = '35px;'; 
+			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+			    Competencia.etiqueta = ['input','input','input','input'];
+			    Competencia.tipo = ['hidden','hidden','text','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Competencia.estilo = ['','','width: 600px;height:35px;',''];	
+
+			    // estas propiedades no son muy usadas PERO SON UTILES
+			    
+			    Competencia.clase = ['','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Competencia.sololectura = [false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Competencia.completar = ['off','off','off','off']; //autocompleta 
+			    
+			    Competencia.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Competencia.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+
+
+
+
+
+
+
+
 			for(var j=0, k = cargoTareaRiesgo.length; j < k; j++)
 			{
 				tarea.agregarCampos(JSON.stringify(cargoTareaRiesgo[j]),'L');
@@ -131,6 +290,32 @@
 			for(var j=0, k = cargoExamenMedico.length; j < k; j++)
 			{
 				examen.agregarCampos(JSON.stringify(cargoExamenMedico[j]),'L');
+			}
+
+			for(var j=0, k = cargoResponsabilidad.length; j < k; j++)
+			{
+				Responsabilidades.agregarCampos(JSON.stringify(cargoResponsabilidad[j]),'L');
+			}
+
+
+			for(var j=0, k = cargoEducacion.length; j < k; j++)
+			{
+				Educacion.agregarCampos(JSON.stringify(cargoEducacion[j]),'L');
+			}
+
+			for(var j=0, k = cargoFormacion.length; j < k; j++)
+			{
+				Formacion.agregarCampos(JSON.stringify(cargoFormacion[j]),'L');
+			}
+
+			for(var j=0, k = cargoHabilidad.length; j < k; j++)
+			{
+				Habilidad.agregarCampos(JSON.stringify(cargoHabilidad[j]),'L');
+			}
+
+			for(var j=0, k = cargocompetencia.length; j < k; j++)
+			{
+				Competencia.agregarCampos(JSON.stringify(cargocompetencia[j]),'L');
 			}
 
 		});
@@ -165,6 +350,15 @@
 					      	{!!Form::hidden('eliminarVacuna', '', array('id' => 'eliminarVacuna'))!!}
 					      	{!!Form::hidden('eliminarElemento', '', array('id' => 'eliminarElemento'))!!}
 					      	{!!Form::hidden('eliminarExamen', '', array('id' => 'eliminarExamen'))!!}
+					      	{!!Form::hidden('eliminarResponsabilidades', '', array('id' => 'eliminarResponsabilidades'))!!}
+					      	{!!Form::hidden('eliminarEducacion', '', array('id' => 'eliminarEducacion'))!!}
+					      	{!!Form::hidden('eliminarFormacion', '', array('id' => 'eliminarFormacion'))!!}
+					      	{!!Form::hidden('eliminarHabilidad', '', array('id' => 'eliminarHabilidad'))!!}
+					      	{!!Form::hidden('eliminarCompetencia', '', array('id' => 'eliminarCompetencia'))!!}
+
+
+
+
 						</div>
 					</div>
 				</div>
@@ -203,6 +397,33 @@
 						</div>
 					</div>
 				</div>
+
+				<!--  Nuevos Cambios (Depende de , años de experiencia -->
+
+				<!-- Depende De -->
+					<div class="form-group" id='test'>
+					{!!Form::label('Cargo_idCargo', 'Depende De', array('class' => 'col-sm-2 control-label'))!!}
+					<div class="col-sm-10">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+							</span>
+						{!!Form::select('Cargo_idCargo',$cargoPadre, (isset($cargo) ? $cargo->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}
+						</div>
+					</div>
+				</div>
+				<!-- Años de experiencia -->
+				<div class="form-group" id='test'>
+					{!!Form::label('AñoExperiencia', 'Años de Experiencia', array('class' => 'col-sm-2 control-label'))!!}
+					<div class="col-sm-10">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+							</span>
+							{!!Form::text('AñoExperiencia',null,['class'=>'form-control','placeholder'=>'Ingresa los años de experiencia'])!!}
+						</div>
+					</div>
+				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -238,7 +459,39 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('educacionCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa la educaci&oacute;n'])!!}
+														<!-- nuevo campo para 	Reponsabilidad peso educacion -->
+													     <div class="form-group" id='test'>
+															{!!Form::label('porcentajeEducacionCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
+															<div class="col-sm-10">
+																<div class="input-group">
+																	<span class="input-group-addon">
+																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+																	</span>
+																	{!!Form::text('porcentajeEducacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																</div>
+															</div>
+														</div>
+														
+															<!-- Detalle responsabilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalEducacion();">
+											                        <span class="glyphicon glyphicon-plus"></span>
+											                      </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+
+														         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Educacion_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div> 
+
+
+
 														</div>
 													</div>
 												</div>
@@ -274,7 +527,37 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('formacionCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa la formaci&oacute;n'])!!}
+															
+
+																<!-- nuevo campo para 	Formacion peso  -->
+													     <div class="form-group" id='test'>
+															{!!Form::label('porcentajeFormacionCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
+															<div class="col-sm-10">
+																<div class="input-group">
+																	<span class="input-group-addon">
+																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+																	</span>
+																	{!!Form::text('porcentajeFormacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																</div>
+															</div>
+														</div>
+																<!-- Detalle responsabilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalFormacion();">
+											                        <span class="glyphicon glyphicon-plus"></span>
+											                      </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+
+														         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Formacion_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div> 
 														</div>
 													</div>
 												</div>
@@ -424,7 +707,35 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('habilidadesCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa las habilidades'])!!}
+														<!-- nuevo campo para 	Formacion peso  -->
+													     <div class="form-group" id='test'>
+															{!!Form::label('porcentajeHabilidadCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
+															<div class="col-sm-10">
+																<div class="input-group">
+																	<span class="input-group-addon">
+																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+																	</span>
+																	{!!Form::text('porcentajeHabilidadCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																</div>
+															</div>
+														</div>
+															<!-- Detalle Habilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalHabilidad();">
+											                        <span class="glyphicon glyphicon-plus"></span>
+											                      </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+
+														         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Habilidad_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div> 
 														</div>
 													</div>
 												</div>
@@ -437,17 +748,35 @@
 												<a data-toggle="collapse" data-parent="#accordion" href="#responsabilidad">Responsabilidades</a>
 											</h4>
 										</div>
+
+
+										<!-- cambio a una multiregistro para digitar manualmente por el usuario -->
 										<div id="responsabilidad" class="panel-collapse collapse">
 											<div class="panel-body">
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-															{!!Form::textarea('responsabilidadesCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa las responsabilidades'])!!}
+															<!-- Detalle responsabilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width: 40px;height: 40px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
+														            <span class="glyphicon glyphicon-plus"></span>
+														          </div>
+														          <div class="col-md-1" style="width: 1200px;display:inline-block;height:40px;">Descripcion</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Responsabilidad_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div>  
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+
 									</div>
 									<div class="panel panel-default">
 										<div class="panel-heading">
@@ -461,6 +790,39 @@
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
 															{!!Form::textarea('autoridadesCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa las autoridades'])!!}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+										<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#Competencia">Competencias</a>
+											</h4>
+										</div>
+										<div id="Competencia" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+															<!-- Detalle Habilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalCompetencia();">
+											                        <span class="glyphicon glyphicon-plus"></span>
+											                      </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Competencia</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Competencia_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div> 
 														</div>
 													</div>
 												</div>
@@ -486,3 +848,84 @@
 		</div>	
 	{!!Form::close()!!}
 @stop
+<!-- Grid modal para  Educacion -->
+<div id="ModalEducacion" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Perfil de Educación</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/educaciongridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grid modal para  Formacion -->
+<div id="ModalFormacion" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Perfil de Formación</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/formaciongridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Grid modal para  Habilidad -->
+<div id="ModalHabilidad" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Perfil de Habilidad</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/habiliadadgridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Grid modal para  Competencia -->
+<div id="ModalCompetencia" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Competencias</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/competenciagridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,4 +1,4 @@
-@extends('layouts.vista')
+  @extends('layouts.vista')
 @section('titulo')<h3 id="titulo"><center>Paises</center></h3>@stop
 
 @section('content')

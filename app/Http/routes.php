@@ -96,7 +96,12 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosopciongridphpselect');
     });
     */
-    
+
+
+    Route::resource ('entrevista','EntrevistaController');
+    Route::resource ('competencia','CompetenciaController');
+    Route::resource ('perfilcargo','PerfilCargoController');
+    Route::resource('plantrabajoalerta','PlanTrabajoAlertaController');
     Route::resource('users','UsersController');
     Route::resource('paquete','PaqueteController');
     Route::resource('opcion','OpcionController');
@@ -187,6 +192,32 @@ Route::group(['middleware' => 'auth'], function ()
 //      A  J  A  X 
 //
 //**************************
+
+Route::get('datosEntrevista', function()
+{
+    include public_path().'/ajax/datosEntrevista.php';
+});
+
+
+Route::get('datosCompetenciaSelect', function()
+{
+    include public_path().'/ajax/datosCompetenciaSelect.php';
+});
+
+Route::get('datosHabilidadSelect', function()
+{
+    include public_path().'/ajax/datosHabilidadSelect.php';
+});
+
+Route::get('datosFormacionSelect', function()
+{
+    include public_path().'/ajax/datosFormacionSelect.php';
+});
+
+Route::get('datosEducacionSelect', function()
+{
+    include public_path().'/ajax/datosEducacionSelect.php';
+});
 
 Route::get('calcularCuadroMando', function()
 {
@@ -313,6 +344,19 @@ Route::get('datosElementoProteccion', function()
 {
     include public_path().'/ajax/datosElementoProteccion.php';
 });
+
+Route::get('datosCompetencia', function()
+{
+    include public_path().'/ajax/datosCompetencia.php';
+});
+
+Route::get('datosPerfilCargo', function()
+{
+    include public_path().'/ajax/datosPerfilCargo.php';
+});
+
+
+
 
 
 // ---------------------------------
@@ -543,7 +587,10 @@ Route::get('datosCuadroMando', function()
     include public_path().'/ajax/datosCuadroMando.php';
 });
 
-
+Route::get('datosPlanTrabajoAlerta', function()
+{
+    include public_path().'/ajax/datosPlanTrabajoAlerta.php';
+});
 
 // *************************************
 // Rutas del CRM
@@ -606,6 +653,8 @@ Route::post('consultarDiasAcuerdoServicio', [
 
 
 
+
+
 Route::get('datosCampoCRMSelect', function()
 {
     include public_path().'/ajax/datosCampoCRMSelect.php';
@@ -623,6 +672,7 @@ Route::get('datosPresupuesto', function()
 {
     include public_path().'/ajax/datosPresupuesto.php';
 });
+
 
 
 Route::post('llenarCampo', function()
@@ -759,12 +809,26 @@ Route::get('generarInforme', function()
     include public_path().'/ajax/generarInforme.php';
 });
 
+
+// Rutas de AJAX de Gestion Humana
+
+
+
+
+//----------------------------
 Route::get('informeconceptogridselect','VisorInformeController@indexInformeConceptoGrid');
 Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
 Route::get('companiagridselect','DocumentoCRMController@indexCompaniaGrid');
 Route::get('rolgridselect','DocumentoCRMController@indexRolGrid');
 Route::get('actagrupoapoyoselect','ActaGrupoApoyoController@indexActaGrid');
 
+Route::get('educaciongridselect','CargoController@indexEducacionGrid');
+Route::get('formaciongridselect','CargoController@indexformacionGrid');
+
+Route::get('habiliadadgridselect','CargoController@indexHabilidadGrid');
+
+
+Route::get('competenciagridselect','CargoController@indexCompetenciaGrid');
 
 
 Route::get('dropzone','TerceroController@indexdropzone');
