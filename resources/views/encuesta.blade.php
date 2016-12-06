@@ -5,12 +5,67 @@
   <!-- @include('alerts.request') -->
   {!!Html::script('js/encuesta.js')!!}
 
-<script>
-    // var actaCapacitacionAsistente = '<?php echo (isset($firmas) ? json_encode($firmas) : "");?>';
-    // actaCapacitacionAsistente = (actaCapacitacionAsistente != '' ? JSON.parse(actaCapacitacionAsistente) : '');
+<style type="text/css">
+  .Pregunta
+  {
+    border: 3px solid gray;
+    width: 100%;
+    height: 300px;
+    margin: 5px 5px 5px 5px; 
+    padding: 5px 5px 5px 5px;
 
-    // var actaCapacitacionTema = '<?php echo (isset($firmas) ? json_encode($actaCapacitacion->actaCapacitacionTemas) : "");?>';
-    // actaCapacitacionTema = (actaCapacitacionTema != '' ? JSON.parse(actaCapacitacionTema) : '');
+  }
+
+  .Encuesta-Titulo 
+  {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 2px solid black;
+    font-size: 20px;
+    width: 100%;
+    margin: 5px 5px 5px 5px;
+  }
+
+  .Encuesta-Subtitulo 
+  {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 2px solid gray;
+    font-size: 16px;
+    width: 100%;
+    margin: 5px 5px 30px 5px;
+  }
+
+  .Encuesta-Tipo
+  {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 2px solid gray;
+    font-size: 16px;
+    width: 100%;
+    margin: 5px 5px 5px 5px;
+  }
+
+  /*select.Encuesta-Tipo option[value="Respuesta Corta"]   { background-image:url(division.png);   }
+  select.Encuesta-Tipo option[value="Párrafo"] { background-image:url(mas.png); }
+*/
+  .Encuesta-Respuesta
+  {
+    background: transparent;
+    font-size: 16px;
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    margin: 5px 5px 5px 5px;
+  }
+</style>
+
+
+<script>
+    var EncuestaPregunta = '<?php echo (isset($encuesta) ? json_encode($encuesta->EncuestaPregunta) : "");?>';
+    EncuestaPregunta = (EncuestaPregunta != '' ? JSON.parse(EncuestaPregunta) : '');
 
     
     var valorPregunta = [0,'',0,'0000-00-00','00:00',0];
@@ -27,27 +82,16 @@
       pregunta = new Propiedades('pregunta','contenedor_pregunta','pregunta');
 
       pregunta.altura = '36px;';
-      pregunta.campoid = 'idActaCapacitacionTema';
-      pregunta.campoEliminacion = 'eliminarTema';
+      pregunta.campoid = 'idEncuestaPregunta';
+      pregunta.campoEliminacion = 'eliminarPregunta';
+      for(var j=0, k = EncuestaPregunta.length; j < k; j++)
+      {
+        pregunta.agregarPregunta(JSON.stringify(EncuestaPregunta[j]),'L');
+        $("#tipoRespuestaEncuestaPregunta"+j).trigger("change");
 
-      // pregunta.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
-      // pregunta.etiqueta = ['input', 'input','input','select','input','input','checkbox','checkbox'];
-      // pregunta.tipo = ['hidden', 'hidden','text','','date','time','checkbox','checkbox'];
-      // pregunta.estilo = ['', '','width: 250px;height:35px;','width: 250px;height:35px;','width: 130px;height:35px;','width: 110px;height:35px;','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
-      // pregunta.clase = ['', '','','','','',''];
-      // pregunta.sololectura = [false, false,true,false,false,false,false,false];
-      // pregunta.completar = ['off', 'off','off','off','off','off','off','off'];
-      // pregunta.opciones = ['', '','',tercero,'','','',''];
-      // pregunta.funciones  = ['', '','','',eventos1,'','',''];
+        // Por cada Pregunta, insertamos las opciones de esta
 
-      // for(var j=0, k = actaCapacitacionTema.length; j < k; j++)
-      // {
-
-      //   pregunta.agregarCampos(JSON.stringify(actaCapacitacionTema[j]),'L');
-      //   llenarPlanCapacitacionTema(document.getElementById('PlanCapacitacionTema_idPlanCapacitacionTema'+j));
-      // }
-
-      
+      }
 
     });
 
