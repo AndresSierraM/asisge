@@ -151,6 +151,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('listachequeo','ListaChequeoController');
     Route::resource('reporteacpm','ReporteACPMController');
     Route::resource('plantrabajo','PlanTrabajoController');
+    Route::resource('plantrabajoformulario','PlanTrabajoFormularioController');
 
 
     // *************************************
@@ -168,6 +169,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('movimientocrm','MovimientoCRMController');
     Route::resource('presupuesto','PresupuestoController');
 
+
+    // *************************************
+    // Rutas de Encuestas
+    // *************************************
+    Route::resource('encuesta','EncuestaController');
     
     // *************************************************
     //
@@ -241,6 +247,11 @@ Route::get('datosOpcion', function()
 Route::get('datosRol', function()
 {
     include public_path().'/ajax/datosRol.php';
+});
+
+Route::get('datosPlanTrabajo', function()
+{
+    include public_path().'/ajax/datosPlanTrabajo.php';
 });
 
 
@@ -719,8 +730,20 @@ Route::post('actualizarFirmaConformacionGrupoApoyo', function()
 });
 
 
+//************************************
+// Rutas de Ajax de Encuestas
+//************************************
 
-//Ajax de Diseñador de informes
+Route::get('datosEncuesta', function()
+{
+    include public_path().'/ajax/datosEncuesta.php';
+});
+
+
+//************************************
+// Rutas de Ajax de Diseñador de informes
+//************************************
+
 Route::post('consultarSistemaInformacion', function()
 {
     include public_path().'/ajax/consultarSistemaInformacion.php';

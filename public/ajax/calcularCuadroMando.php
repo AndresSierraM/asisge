@@ -94,12 +94,14 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin)
 		// cada valor es un nuevo array de tipo StdClass, el cual debemos convertir en array php
 		$datosCondicion = get_object_vars($where); 
 		$like = ($datosCondicion["operadorCuadroMandoCondicion"] == 'like' ? '%': '');
-
+		$tipoString = substr($datosCondicion["valorCuadroMandoCondicion"],0,1) == '('
+						? ''
+						: '"';
 		// concatenamos caa campo separado por coma
 		$datowhere .= $datosCondicion["parentesisInicioCuadroMandoCondicion"].' '.
 						$datosCondicion["campoCuadroMandoCondicion"].' '.
 						$datosCondicion["operadorCuadroMandoCondicion"].' '.
-						'"'.$like.$datosCondicion["valorCuadroMandoCondicion"].$like.'" '.
+						$tipoString.$like.$datosCondicion["valorCuadroMandoCondicion"].$like.$tipoString.' '.
 						$datosCondicion["parentesisFinCuadroMandoCondicion"].' '.
 						$datosCondicion["conectorCuadroMandoCondicion"].' ';
 

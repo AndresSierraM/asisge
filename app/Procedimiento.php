@@ -11,7 +11,7 @@ class Procedimiento extends Model
 
     protected $fillable = ['Proceso_idProceso', 'nombreProcedimiento', 'fechaElaboracionProcedimiento', 
     						'objetivoProcedimiento', 'alcanceProcedimiento', 
-    						'responsabilidadProcedimiento', 'Compania_idCompania'];
+    						'responsabilidadProcedimiento', 'generalidadProcedimiento', 'Compania_idCompania'];
 
     public $timestamps = false;
 

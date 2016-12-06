@@ -89,7 +89,10 @@ for($i = 0; $i < count($campos); $i++)
         <div class="container">
             <div class="row">
                 <div class="container">
-
+                    <a href="#" onclick="mostrarTableroCRM(<?php echo $id;?>);" title="Mostrar Nuevas">
+                        <img  src='images/iconoscrm/dashboardcrm.png' style="width:28px; height:28px;">
+                    </a>
+                    <br>
                     <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Nuevo');" title="Mostrar Nuevas">
                         <img  src='images/iconoscrm/estado_nuevo.png' style="width:28px; height:28px;">
                     </a>
@@ -168,12 +171,6 @@ for($i = 0; $i < count($campos); $i++)
 
 
 <script type="text/javascript">
-
-
-    function imprimirFormato(idMov, idDoc)
-    {
-        window.open('movimientocrm/'+idMov+'?idDocumentoCRM='+idDoc+'&accion=imprimir','movimientocrm','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
-    }
 
     $(document).ready( function () {
         var id = "<?php echo $id;?>";
@@ -270,17 +267,7 @@ for($i = 0; $i < count($campos); $i++)
     
 });
     
-    function cambiarEstado(id, TipoEstado)
-    {
-
-        var modificar = '<?php echo (isset($dato["modificarDocumentoCRMRol"]) ? $dato["modificarDocumentoCRMRol"] : 0);?>';
-        var eliminar = '<?php echo (isset($dato["anularDocumentoCRMRol"]) ? $dato["anularDocumentoCRMRol"] : 0);?>';
-        var consultar = '<?php echo (isset($dato["consultarDocumentoCRMRol"]) ? $dato["consultarDocumentoCRMRol"] : 0);?>';
-        var aprobar = '<?php echo (isset($dato["aprobarDocumentoCRMRol"]) ? $dato["aprobarDocumentoCRMRol"] : 0);?>';
-
-
-        $("#tmovimientocrm").DataTable().ajax.url('http://'+location.host+"/datosMovimientoCRM?idDocumento="+id+"&TipoEstado="+TipoEstado+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar).load();
-    }
+    
 </script>
 
 @stop

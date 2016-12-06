@@ -38,7 +38,7 @@ class ProgramaController extends Controller
         // cuando se crea un nuevo programa, enviamos los maestros requeridos para el encabezado         
         $clasificacionriesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
         $terceros = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero');
-        $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
+        $companiaobjetivo = \App\CompaniaObjetivo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
 
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
@@ -67,6 +67,7 @@ class ProgramaController extends Controller
                 'CompaniaObjetivo_idCompaniaObjetivo' => $request['CompaniaObjetivo_idCompaniaObjetivo'],
                 'objetivoEspecificoPrograma' => $request['objetivoEspecificoPrograma'],
                 'Tercero_idElabora' => $request['Tercero_idElabora'],
+                'generalidadPrograma' => $request['generalidadPrograma'],
                 'Compania_idCompania' => \Session::get('idCompania')
                 ]); 
 
