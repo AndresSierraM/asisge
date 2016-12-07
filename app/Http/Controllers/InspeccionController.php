@@ -287,11 +287,11 @@ class InspeccionController extends Controller
                 $destinationPath = 'imagenes/inspeccion/';
                 if(isset($file))
                 {
-                    $filename = $destinationPath . $file->getClientOriginalName();
+                    $filename = $destinationPath .$id.'_'.$i.'_'. $file->getClientOriginalName();
                      
                     $manager = new ImageManager();
                     $manager->make($file->getRealPath())->save($filename);
-                    $rutaImagen = 'inspeccion/'.$file->getClientOriginalName();
+                    $rutaImagen = 'inspeccion/'.$id.'_'.$i.'_'.$file->getClientOriginalName();
 
                     
                     $data['fotoInspeccionDetalle'] =  $rutaImagen;

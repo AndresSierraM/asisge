@@ -50,6 +50,7 @@ class CompaniaController extends Controller
         \App\Compania::create([
             'codigoCompania' => $request['codigoCompania'],
             'nombreCompania' => $request['nombreCompania'],
+            'fechaCreacionCompania' => $request['fechaCreacionCompania'],
             'misionCompania' => $request['misionCompania'],
             'visionCompania' => $request['visionCompania'],
             'valoresCompania' => $request['valoresCompania'],

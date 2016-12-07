@@ -490,7 +490,7 @@ class PlanTrabajoFormularioController extends Controller
         //  A C T A S   D E   R E U N I O N 
         // -------------------------------------------
         $actividadesgrupoapoyo = DB::select(
-            'SELECT nombreGrupoApoyo  as descripcionTarea,
+            'SELECT CONCAT(nombreGrupoApoyo, " - ", actividadGrupoApoyoDetalle) as descripcionTarea,
                 idActaGrupoApoyoDetalle as idConcepto,
                 SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 1, 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 1, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as EneroC,
@@ -524,7 +524,7 @@ class PlanTrabajoFormularioController extends Controller
             left join grupoapoyo ga
             on ga.idGrupoApoyo = agp.GrupoApoyo_idGrupoApoyo
             Where  agp.Compania_idCompania = '.$idCompania .' 
-            Group by idActaGrupoApoyo');
+            Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
         return view('plantrabajoformulario', compact('Tercero_idAuditor','accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo','actividadesgrupoapoyo'));
     }
@@ -548,14 +548,14 @@ class PlanTrabajoFormularioController extends Controller
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
-            $plantrabajo = \App\PlanTrabajo::All()->last();
+            $plantrabajoformulario = \App\PlanTrabajo::All()->last();
             
             // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
             // esto es porque la creamos con el ID del plan de trabajo y debiamos grabar primero para obtenerlo
-            $ruta = 'plantrabajo/firmaAuditorPlanTrabajo_'.$plantrabajo->idPlanTrabajo.'.png';
-            $plantrabajo->firmaAuditorPlanTrabajo = $ruta;
+            $ruta = 'plantrabajo/firmaAuditorPlanTrabajo_'.$plantrabajoformulario->idPlanTrabajo.'.png';
+            $plantrabajoformulario->firmaAuditorPlanTrabajo = $ruta;
 
-            $plantrabajo->save();
+            $plantrabajoformulario->save();
 
             //----------------------------
             // Guardamos la imagen de la firma como un archivo en disco
@@ -574,7 +574,7 @@ class PlanTrabajoFormularioController extends Controller
             //---------------------------------
             // guardamos las tablas de detalle
             //---------------------------------
-            $this->grabarDetalle($plantrabajo->idPlanTrabajo, $request);
+            $this->grabarDetalle($plantrabajoformulario->idPlanTrabajo, $request);
 
             return redirect('/plantrabajoformulario');    
         }
@@ -600,26 +600,26 @@ class PlanTrabajoFormularioController extends Controller
     public function edit($id)
     {
         $Tercero_idAuditor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->where('tipoTercero','like','%*01*%')->lists('nombreCompletoTercero','idTercero');
-        $plantrabajo = \App\PlanTrabajo::find($id);
+        $plantrabajoformulario = \App\PlanTrabajo::find($id);
 
-        $accidente = \App\Accidente::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $auditoria = \App\PlanAuditoria::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $capacitacion = \App\PlanCapacitacion::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $programa = \App\Programa::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $examen = \App\ExamenMedico::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $inspeccion = \App\TipoInspeccion::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $matrizlegal = \App\MatrizLegal::where('Compania_idCompania', "=", \Session::get('idCompania'));
-        $grupoapoyo = \App\GrupoApoyo::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $accidente = \App\Accidente::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $auditoria = \App\PlanAuditoria::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $capacitacion = \App\PlanCapacitacion::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $programa = \App\Programa::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $examen = \App\ExamenMedico::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $inspeccion = \App\TipoInspeccion::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $matrizlegal = \App\MatrizLegal::where('Compania_idCompania', "=", \Session::get('idCompania'));
+        // $grupoapoyo = \App\GrupoApoyo::where('Compania_idCompania', "=", \Session::get('idCompania'));
 
         $plantrabajodetalle = DB::Select('
-        SELECT idPlanTrabajoDetalle,Modulo_idModulo, nombreModulo, PlanTrabajo_idPlanTrabajo,idConcepto,nombreConceptoPlanTrabajoDetalle,eneroPlanTrabajoDetalle,febreroPlanTrabajoDetalle,marzoPlanTrabajoDetalle,abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle, diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle, nombreCompletoTercero, observacionPlanTrabajoDetalle 
+        SELECT PlanTrabajo_idPlantrabajo, idPlanTrabajoDetalle,Modulo_idModulo, nombreModulo, PlanTrabajo_idPlanTrabajo,idConcepto,nombreConceptoPlanTrabajoDetalle,eneroPlanTrabajoDetalle,febreroPlanTrabajoDetalle,marzoPlanTrabajoDetalle,abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle, diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle, metaPlanTrabajoDetalle, nombreCompletoTercero, idTercero, presupuestoPlanTrabajoDetalle, costoRealPlanTrabajoDetalle, observacionPlanTrabajoDetalle 
         from plantrabajodetalle ptd 
         left join tercero t on t.idTercero = ptd.Tercero_idResponsable
         left join modulo m on ptd.Modulo_idModulo = m.idModulo
         Where PlanTrabajo_idPlanTrabajo = '.$id.'
         order by nombreModulo');
 
-        return view('plantrabajoformulario', compact('Tercero_idAuditor','plantrabajodetalle'),['plantrabajo'=>$plantrabajo]);
+        return view('plantrabajoformulario', compact('Tercero_idAuditor','plantrabajodetalle'),['plantrabajoformulario'=>$plantrabajoformulario]);
     }
 
     /**
@@ -633,15 +633,15 @@ class PlanTrabajoFormularioController extends Controller
     {
         if($request['respuesta'] != 'falso')
         {    
-            $plantrabajo = \App\PlanTrabajo::find($id);
-            $plantrabajo->fill($request->all());
+            $plantrabajoformulario = \App\PlanTrabajo::find($id);
+            $plantrabajoformulario->fill($request->all());
             
             // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
             // esto es porque la creamos con el ID del plan de trabajo y debiamos grabar primero para obtenerlo
-            $ruta = 'plantrabajo/firmaAuditorPlanTrabajo_'.$plantrabajo->idPlanTrabajo.'.png';
-            $plantrabajo->firmaAuditorPlanTrabajo = $ruta;
+            $ruta = 'plantrabajo/firmaAuditorPlanTrabajo_'.$plantrabajoformulario->idPlanTrabajo.'.png';
+            $plantrabajoformulario->firmaAuditorPlanTrabajo = $ruta;
 
-            $plantrabajo->save();
+            $plantrabajoformulario->save();
 
             //----------------------------
             // Guardamos la imagen de la firma como un archivo en disco
@@ -661,7 +661,7 @@ class PlanTrabajoFormularioController extends Controller
             //---------------------------------
             // guardamos las tablas de detalle
             //---------------------------------
-            $this->grabarDetalle($plantrabajo->idplantrabajo, $request);
+            $this->grabarDetalle($plantrabajoformulario->idPlanTrabajo, $request);
 
             return redirect('/plantrabajoformulario');
         }
@@ -682,7 +682,7 @@ class PlanTrabajoFormularioController extends Controller
     protected function grabarDetalle($id, $request)
     {
 
-        $contadorPlanTrabajo = count($request['Modulo_idModulo']);
+        $contadorPlanTrabajo = count($request['observacionPlanTrabajoDetalle']);
         for($i = 0; $i < $contadorPlanTrabajo; $i++)
         {
             $indice = array(
@@ -708,6 +708,7 @@ class PlanTrabajoFormularioController extends Controller
             'presupuestoPlanTrabajoDetalle' => $request['presupuestoPlanTrabajoDetalle'][$i],
             'costoRealPlanTrabajoDetalle' => $request['costoRealPlanTrabajoDetalle'][$i],
             'cumplimientoPlanTrabajoDetalle' => $request['cumplimientoPlanTrabajoDetalle'][$i],
+            'metaPlanTrabajoDetalle' => $request['metaPlanTrabajoDetalle'][$i],
             'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' ? NULL : $request['Tercero_idResponsable'][$i]),
             'observacionPlanTrabajoDetalle' => $request['observacionPlanTrabajoDetalle'][$i] 
             );

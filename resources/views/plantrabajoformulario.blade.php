@@ -10,11 +10,11 @@
   // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
   // al cuadro de imagen y al input oculto de firmabase64
   $base64 = ''; 
-  if(isset($plantrabajo))
+  if(isset($plantrabajoformulario))
   {
-    $path = 'imagenes/'.$plantrabajo["firmaAuditorPlanTrabajo"];
+    $path = 'imagenes/'.$plantrabajoformulario["firmaAuditorPlanTrabajo"];
     
-    if($plantrabajo["firmaAuditorPlanTrabajo"] != "" and file_exists($path))
+    if($plantrabajoformulario["firmaAuditorPlanTrabajo"] != "" and file_exists($path))
     {
       $type = pathinfo($path, PATHINFO_EXTENSION);
       $data = file_get_contents($path);
@@ -37,7 +37,7 @@
 
 
 <div id='form-section' >
-<div id="signature-pad" class="m-signature-pad">
+<div id="signature-pad" class="m-signature-pad" style="float:top;">
     <input type="hidden" id="signature-reg" value="">
     <div class="m-signature-pad--body">
       <canvas></canvas>
@@ -57,7 +57,7 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('numeroPlanTrabajo',null,['class'=>'form-control','placeholder'=>'Ingresa el número del plan de trabajo'])!!}
-              {!!Form::hidden('idPlanTrabajo', null, array('id' => 'idplantrabajo')) !!}
+              {!!Form::hidden('idPlanTrabajo', null, array('id' => 'idPlanTrabajo')) !!}
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@
                   <span class="input-group-addon">
                     <i class="fa fa-pencil-square-o"></i>
                   </span>
-              		{!!Form::select('Tercero_idAuditor',$Tercero_idAuditor, (isset($plantrabajo) ? $plantrabajo->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+              		{!!Form::select('Tercero_idAuditor',$Tercero_idAuditor, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
 
 	              <div class="col-sm-10">
 	                <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
@@ -184,6 +184,7 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 								<th >Presupuesto</th>
 								<th >Costo Real</th>
 								<th >Cumplimiento</th>
+								<th >Meta</th>
 								<th >Responsable</th>
 								<th >Observación</th>
 							</tr>
@@ -242,8 +243,10 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 
 									<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]"></td>
 
+									<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
+
 									<td>';?>
-										{!!Form::select('Tercero_idResponsable[]',$tercero, (isset($plantrabajo) ? $plantrabajo->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+										{!!Form::select('Tercero_idResponsable[]',$tercero, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
 									<?php 
 									echo '</td>
 									<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
@@ -270,7 +273,7 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 				
     <div class="panel-group" id="accordion">
       <?php
-  			if (isset($plantrabajo)) 
+  			if (isset($plantrabajoformulario)) 
   			{
   				for ($i=0; $i < count($plantrabajodetalle); $i++) { 
   					$detalle[] = get_object_vars($plantrabajodetalle[$i]);
@@ -312,6 +315,7 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 								<th >Presupuesto</th>
 								<th >Costo Real</th>
 								<th >Cumplimiento</th>
+								<th >Meta</th>
 								<th >Responsable</th>
 								<th >Observación</th>
 							</tr>
@@ -320,6 +324,46 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
   					while ($i < $total and $moduloAnt == $detalle[$i]["nombreModulo"])
   					{
   						// cada campo en un TD
+  						?>
+  						{!!Form::hidden('idPlanTrabajoDetalle[]', (isset($plantrabajoformulario->plantrabajodetalle) ? $detalle[$i]["idPlanTrabajoDetalle"] : null), array('id' => 'idPlanTrabajoDetalle')) !!}
+  						<?php
+  						echo 
+  						'<input type="hidden" id="PlanTrabajo_idPlanTrabajo" name="PlanTrabajo_idPlanTrabajo[]" value="'.$detalle[$i]["PlanTrabajo_idPlanTrabajo"].'">
+
+  						<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$detalle[$i]["Modulo_idModulo"].'">
+
+  						<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$detalle[$i]["idConcepto"].'">
+
+  						<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$detalle[$i]["nombreConceptoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.$detalle[$i]["eneroPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.$detalle[$i]["febreroPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["marzoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.$detalle[$i]["abrilPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.$detalle[$i]["mayoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.$detalle[$i]["junioPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.$detalle[$i]["julioPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.$detalle[$i]["agostoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["septiembrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.$detalle[$i]["octubrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["noviembrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["diciembrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.$detalle[$i]["presupuestoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.$detalle[$i]["costoRealPlanTrabajoDetalle"].'">';
+
   						echo '<tr align="center">';
   						echo '<td>'.$detalle[$i]["nombreConceptoPlanTrabajoDetalle"].'</td>';
   						
@@ -362,9 +406,13 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 	  					echo '
 	  					<td>'.(isset($detalle[$i]["presupuestoPlanTrabajoDetalle"]) ? $detalle[$i]["presupuestoPlanTrabajoDetalle"] : "" ).'</td>
 	  					<td>'.(isset($detalle[$i]["costoRealPlanTrabajoDetalle"]) ? $detalle[$i]["costoRealPlanTrabajoDetalle"] : "" ).'</td>
-	  					<td><input type="text" value="'.(isset($detalle[$i]["cumplimientoPlanTrabajoDetalle"]) ? $detalle[$i]["cumplimientoPlanTrabajoDetalle"] : "" ).'"></td>
-	  					<td>'.$detalle[$i]["nombreCompletoTercero"].'</td>
-	  					<td><textarea>'.$detalle[$i]["observacionPlanTrabajoDetalle"].'</textarea></td>
+	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["cumplimientoPlanTrabajoDetalle"]) ? $detalle[$i]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
+	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["metaPlanTrabajoDetalle"]) ? $detalle[$i]["metaPlanTrabajoDetalle"] : "" ).'"</td>
+	  					<td>';?>
+							{!!Form::select('Tercero_idResponsable[]',$Tercero_idAuditor, (isset($plantrabajoformulario) ? $detalle[$i]["idTercero"] : ''),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+						<?php 
+						echo '</td>
+	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$detalle[$i]["observacionPlanTrabajoDetalle"].'</textarea></td>
 
 	  					</tr>';
 
@@ -393,12 +441,12 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 				imprimirTabla('Accidente', $accidente, 'accidente',$Tercero_idAuditor, 3);
 				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Tercero_idAuditor, 24);
 				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Tercero_idAuditor, 32);
-				imprimirTabla('Atividades de Grupos de Apoyo ', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 9);
+				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
 			}
 		?>
     </div>
 		    
-@if(isset($plantrabajo))
+@if(isset($plantrabajoformulario))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else
