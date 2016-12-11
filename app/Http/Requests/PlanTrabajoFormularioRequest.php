@@ -23,22 +23,11 @@ class PlanTrabajoFormularioRequest extends Request
      */
     public function rules()
     {
-        // $responsable = count($this->get('Tercero_idResponsable'));
-
-        $validacion = array('numeroPlanTrabajo' => "required|unique:plantrabajo,numeroPlanTrabajo,".$this->get('idPlanTrabajo') .",idPlanTrabajo,Compania_idCompania,".(\Session::get('idCompania')),
+        return [
+            'numeroPlanTrabajo' => "required|unique:plantrabajo,numeroPlanTrabajo,".$this->get('idPlanTrabajo') .",idPlanTrabajo,Compania_idCompania,".(\Session::get('idCompania')),
             'asuntoPlanTrabajo' => "required|string|max:80",
             'fechaPlanTrabajo' => "required|date",
-            'Tercero_idAuditor' => "required");
-        
-        // for($i = 0; $i < $responsable; $i++)
-        // {
-        //     if(trim($this->get('Tercero_idResponsable')[$i]) == '' or trim($this->get('Tercero_idResponsable')[$i]) == 0)
-        //     {    
-        //         $validacion['Tercero_idResponsable'.$i] =  'required';
-        //     }
-        // }
-
-        return $validacion;
-
+            'Tercero_idAuditor' => "required"
+        ];
     }
 }

@@ -9,7 +9,7 @@ class Compania extends Model
     protected $table = 'compania';
     protected $primaryKey = 'idCompania';
 
-    protected $fillable = ['codigoCompania', 'nombreCompania','misionCompania','visionCompania','valoresCompania','politicasCompania','firmaEmpleadorCompania','principiosCompania','metasCompania'];
+    protected $fillable = ['codigoCompania', 'nombreCompania','fechaCreacionCompania','misionCompania','visionCompania','valoresCompania','politicasCompania','firmaEmpleadorCompania','principiosCompania','metasCompania'];
 
     public $timestamps = false;
 

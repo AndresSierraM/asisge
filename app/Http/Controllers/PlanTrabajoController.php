@@ -185,7 +185,7 @@ class PlanTrabajoController extends Controller
         //  E X A M E N E S   M E D I C O S
         // -------------------------------------------
         $examen = DB::select(
-            'SELECT descripcionTarea, 
+            'SELECT nombreTipoExamenMedico, descripcionTarea, 
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 1 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 1 AND RET = 1) OR (MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaExamenMedico) = 1, 1, 0 )) as EneroC,
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 2 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 2 AND RET = 1) OR (MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
@@ -258,7 +258,8 @@ class PlanTrabajoController extends Controller
                     T.Compania_idCompania = '.$idCompania .' 
                 group by idTercero, idTipoExamenMedico
             ) Examen
-            group by idTercero');
+            group by nombreTipoExamenMedico, idTercero
+            order by nombreTipoExamenMedico');
 
 
         // -------------------------------------------
@@ -457,7 +458,47 @@ class PlanTrabajoController extends Controller
             on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
             group by idGrupoApoyo');
 
-        return view('plantrabajo', compact('accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo'));
+        // -------------------------------------------
+        //  A C T A S   D E   R E U N I O N 
+        // -------------------------------------------
+        $actividadesgrupoapoyo = DB::select(
+            'SELECT CONCAT(nombreGrupoApoyo, " - ", actividadGrupoApoyoDetalle) as descripcionTarea,
+                idActaGrupoApoyoDetalle as idConcepto,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 1, 1 , 0)) as EneroT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 1, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as EneroC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 2, 1 , 0)) as FebreroT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 2, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as FebreroC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 3, 1 , 0)) as MarzoT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 3, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as MarzoC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 4, 1 , 0)) as AbrilT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 4, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as AbrilC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 5, 1 , 0)) as MayoT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 5, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as MayoC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 6, 1 , 0)) as JunioT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 6, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as JunioC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 7, 1 , 0)) as JulioT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 7, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as JulioC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 8, 1 , 0)) as AgostoT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 8, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as AgostoC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 9, 1 , 0)) as SeptiembreT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 9, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as SeptiembreC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 10, 1 , 0)) as OctubreT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 10, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as OctubreC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 11, 1 , 0)) as NoviembreT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 11, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as NoviembreC,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 12, 1 , 0)) as DiciembreT,
+                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 12, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as DiciembreC,
+                SUM(recursoPlaneadoActaGrupoApoyoDetalle) as PresupuestoT,
+                SUM(recursoEjecutadoActaGrupoApoyoDetalle) as PresupuestoC
+            From actagrupoapoyodetalle agpd
+            left join actagrupoapoyo agp
+            on agpd.ActaGrupoApoyo_idActaGrupoApoyo = agp.idActaGrupoApoyo
+            left join grupoapoyo ga
+            on ga.idGrupoApoyo = agp.GrupoApoyo_idGrupoApoyo
+            Where  agp.Compania_idCompania = '.$idCompania .' 
+            Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
+
+        return view('plantrabajo', compact('accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo','actividadesgrupoapoyo'));
     }
 
 

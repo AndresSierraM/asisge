@@ -25,7 +25,8 @@ class CompaniaRequest extends Request
     {
         return [
             "codigoCompania" => "required|string|max:20|unique:compania,codigoCompania,".$this->get('idCompania') .",idCompania",
-            "nombreCompania" => "required|string|max:80"
+            "nombreCompania" => "required|string|max:80",
+            "fechaCreacionCompania" => "required|date"
         ];
     }
 }

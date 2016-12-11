@@ -140,3 +140,32 @@ function validarFormulario(event)
         event.preventDefault();
 }
 
+function abrirModalEducacion()
+{
+    $('#ModalEducacion').modal('show');
+
+}
+
+
+function abrirModalFormacion()
+{
+    $('#ModalFormacion').modal('show');
+
+}
+
+
+function abrirModalHabilidad()
+{
+    $('#ModalHabilidad').modal('show');
+
+}
+
+
+function abrirModalCompetencia()
+{
+    $('#ModalCompetencia').modal('show');
+
+}
+
+
+

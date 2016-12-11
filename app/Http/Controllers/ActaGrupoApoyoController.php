@@ -94,7 +94,7 @@ class ActaGrupoApoyoController extends Controller
              $actagrupoapoyotercero = DB::select("SELECT nombreCompletoTercero,firmaActaGrupoApoyoTercero FROM actagrupoapoyotercero at LEFT JOIN tercero t on t.idTercero = at.Tercero_idParticipante WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
 
           
-            $actagrupoapoyodetalle = DB::select("SELECT actividadGrupoApoyoDetalle,nombreCompletoTercero,fechaPlaneadaActaGrupoApoyoDetalle,nombreDocumento,recursoPlaneadoActaGrupoApoyoDetalle,recursoEjecutadoActaGrupoApoyoDetalle,  fechaEjecucionGrupoApoyoDetalle,observacionGrupoApoyoDetalle FROM actagrupoapoyodetalle ad LEFT JOIN tercero t ON t.idTercero = ad.ActaGrupoApoyo_idActaGrupoApoyo LEFT JOIN documento d ON d.idDocumento = ad.Documento_idDocumento WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
+            $actagrupoapoyodetalle = DB::select("SELECT actividadGrupoApoyoDetalle,nombreCompletoTercero,fechaPlaneadaActaGrupoApoyoDetalle,nombreDocumento,recursoPlaneadoActaGrupoApoyoDetalle,recursoEjecutadoActaGrupoApoyoDetalle,  fechaEjecucionGrupoApoyoDetalle,observacionGrupoApoyoDetalle FROM actagrupoapoyodetalle ad LEFT JOIN tercero t ON ad.Tercero_idResponsableDetalle = t.idTercero LEFT JOIN documento d ON d.idDocumento = ad.Documento_idDocumento WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
 
             
             return view('formatos.actagrupoapoyoimpresion',compact('actagrupoapoyo','actagrupoapoyotercero','actagrupoapoyodetalle'));

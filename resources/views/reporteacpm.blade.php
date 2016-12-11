@@ -39,6 +39,12 @@
 		$(document).ready(function(){
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
+
+
+		    detalle.altura = '35px';
+		    detalle.campoid = 'idReporteACPMDetalle';
+	      	detalle.campoEliminacion = 'eliminarReporteACPMDetalle';
+
 			detalle.campos = ['idReporteACPMDetalle', 'ordenReporteACPMDetalle', 'fechaReporteACPMDetalle', 'Proceso_idProceso', 'Modulo_idModulo', 'tipoReporteACPMDetalle', 'descripcionReporteACPMDetalle', 'analisisReporteACPMDetalle', 'correccionReporteACPMDetalle', 'Tercero_idResponsableCorrecion', 'planAccionReporteACPMDetalle', 'Tercero_idResponsablePlanAccion', 'fechaEstimadaCierreReporteACPMDetalle', 'estadoActualReporteACPMDetalle', 'fechaCierreReporteACPMDetalle', 'eficazReporteACPMDetalle','diasAtrasoReporteACPMDetalle'];
 			detalle.etiqueta = ['input','input','input','select','select','select','input','input','input','select','input','select','input','input','input','checkbox','input'];
 			detalle.tipo = ['hidden','text','text','','','','text','text','text','','text','','text','text','text','checkbox','text'];
@@ -79,7 +85,8 @@
 							</span>
 							<input type="hidden" id="token" value="{{csrf_token()}}"/>
 							{!!Form::text('numeroReporteACPM',null,["class" => "form-control", "placeholder" =>"Digite el n&uacute;mero"])!!}
-							{!!Form::hidden('idReporteACPM', 0, array('id' => 'idReporteACPM'))!!}
+							{!!Form::hidden('idReporteACPM', null, array('id' => 'idReporteACPM'))!!}
+							{!!Form::hidden('eliminarReporteACPMDetalle', null, array('id' => 'eliminarReporteACPMDetalle'))!!}
 							{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
 						</div>
 					</div>

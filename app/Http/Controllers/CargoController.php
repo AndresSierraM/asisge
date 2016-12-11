@@ -28,6 +28,32 @@ class CargoController extends Controller
             return view('accesodenegado');
     }
 
+    public function indexEducacionGrid()
+    {
+        return view('educaciongridselect');
+        
+    }
+
+      public function indexFormacionGrid()
+    {
+        return view('formaciongridselect');
+        
+    }
+
+
+
+      public function indexHabilidadGrid()
+    {
+        return view('habilidadgridselect');
+        
+    }
+
+       public function indexCompetenciaGrid()
+    {
+        return view('competenciagridselect');
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -49,8 +75,13 @@ class CargoController extends Controller
 
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
+
+        $cargoPadre = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCargo','idCargo'); 
         
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'));
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion', 'cargoPadre'));
+
+
+
     }
 
     /**
@@ -68,14 +99,17 @@ class CargoController extends Controller
                 'nombreCargo' => $request['nombreCargo'],
                 'salarioBaseCargo' => $request['salarioBaseCargo'],
                 'nivelRiesgoCargo' => $request['nivelRiesgoCargo'],
+                //campos adicionales
+                'falta' => $request['CargoDepende'],
+                'falta' => $request['AñoExperiencia'],
+                'porcentajeEducacionCargo' => $request['porcentajeEducacionCargo'],
+                'porcentajeFormacionCargo' => $request['porcentajeFormacionCargo'],
+                'porcentajeHabilidadCargo' => $request['porcentajeHabilidadCargo'],
+                //
                 'objetivoCargo' => $request['objetivoCargo'],
-                'educacionCargo' => $request['educacionCargo'],
-                'experienciaCargo' => $request['experienciaCargo'],
-                'formacionCargo' => $request['formacionCargo'],
                 'posicionPredominanteCargo' => $request['posicionPredominanteCargo'],
                 'restriccionesCargo' => $request['restriccionesCargo'],
                 'habilidadesCargo' => $request['habilidadesCargo'],
-                'responsabilidadesCargo' => $request['responsabilidadesCargo'],
                 'autoridadesCargo' => $request['autoridadesCargo'],
                 'Compania_idCompania' => \Session::get('idCompania')
                 ]);
@@ -88,6 +122,8 @@ class CargoController extends Controller
             $this->grabarDetalle($cargo->idCargo, $request);
 
             return redirect('/cargo');
+
+
         }
 
     }
@@ -126,7 +162,51 @@ class CargoController extends Controller
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
         $cargo = \App\Cargo::find($id);
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion'),['cargo'=>$cargo]);
+
+
+        // Cuando editamos el cargo, debemos enviar los datos de las multiregistros que se deben cargar
+        // Consultamos la multiregistro de EDUCACION (tabla cargoeducacion )
+        $cargoeducacion = DB::select(
+            "SELECT idCargoEducacion, PerfilCargo_idPerfilCargo as PerfilCargo_idEducacion, nombrePerfilCargo as  nombreEducacion, porcentajeCargoEducacion
+            FROM cargoeducacion  CE
+            LEFT JOIN perfilcargo  PC
+            ON CE.PerfilCargo_idPerfilCargo = PC.idPerfilCargo
+            WHERE Cargo_idCargo = ".$id);
+        
+
+       // para editar el cargo de formacion 
+        $cargoformacion = DB::select(
+            "SELECT idCargoFormacion,PerfilCargo_idPerfilCargo as PerfilCargo_idFormacion, nombrePerfilCargo as  nombreFormacion,porcentajeCargoFormacion
+            FROM cargoformacion CF
+            LEFT JOIN perfilcargo PC
+            ON CF.PerfilCargo_idPerfilCargo = PC.idPerfilCargo
+            WHERE Cargo_idCargo = ".$id);
+
+
+
+        // $cargoHabilidad
+
+        $cargohabilidad = DB::select(
+            "SELECT idCargoHabilidad,PerfilCargo_idPerfilCargo as PerfilCargo_idHabilidad, nombrePerfilCargo as nombreHabilidad,porcentajeCargoHabilidad
+            FROM cargohabilidad CH
+            LEFT JOIN perfilcargo PC
+            ON CH.PerfilCargo_idPerfilCargo = PC.idPerfilCargo
+            WHERE Cargo_idCargo = ".$id);
+
+
+        // $cargocompetencia
+
+        $cargocompetencia = DB::select(
+            "SELECT idCargoCompetencia,Competencia_idCompetencia,nombreCompetencia
+            FROM cargocompetencia CC
+            LEFT JOIN competencia CP
+            ON CC.Competencia_idCompetencia = CP.idCompetencia
+            WHERE Cargo_idCargo = ".$id);
+
+
+         // Se retorna todas las consultas
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion','cargoeducacion','cargoformacion','cargohabilidad','cargocompetencia'),['cargo'=>$cargo]);
+
     }
 
     /**
@@ -256,5 +336,129 @@ class CargoController extends Controller
 
            
         }
-    }
+
+         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        //Descripcion Responsabilidad 
+         $idsEliminar = explode(',', $request['eliminarResponsabilidades']);
+         \App\CargoResponsabilidad::whereIn('idCargoResponsabilidad',$idsEliminar)->delete();
+
+
+         for ($i=0; $i < count($request['descripcionCargoResponsabilidad']); $i++) 
+         { 
+            $indice = array(
+             'idCargoResponsabilidad' => $request['idCargoResponsabilidad'][$i]);
+
+            $data = array(
+            'Cargo_idCargo' => $id,
+            'descripcionCargoResponsabilidad' => $request['descripcionCargoResponsabilidad'][$i], );
+
+            $preguntas = \App\CargoResponsabilidad::updateOrCreate($indice, $data);
+
+            
+         }
+
+
+         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        //Descripcion  
+         //
+         $idsEliminar = explode(',', $request['eliminarEducacion']);
+         \App\CargoEducacion::whereIn('idCargoEducacion',$idsEliminar)->delete();
+
+
+         for ($i=0; $i < count($request['idCargoEducacion']); $i++) 
+         { 
+            $indice = array(
+             'idCargoEducacion' => $request['idCargoEducacion'][$i]);
+
+            $data = array(
+            'Cargo_idCargo' => $id,
+            'PerfilCargo_idPerfilCargo' => $request['PerfilCargo_idEducacion'][$i],
+            'porcentajeCargoEducacion' => $request['porcentajeCargoEducacion'][$i], );
+
+            $preguntas = \App\CargoEducacion::updateOrCreate($indice, $data);
+         }
+
+
+
+         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        //Formacion
+         //
+
+
+           $idsEliminar = explode(',', $request['eliminarFormacion']);
+         \App\CargoFormacion::whereIn('idCargoFormacion',$idsEliminar)->delete();
+
+
+         for ($i=0; $i < count($request['idCargoFormacion']); $i++) 
+         { 
+            $indice = array(
+             'idCargoFormacion' => $request['idCargoFormacion'][$i]);
+
+            $data = array(
+            'Cargo_idCargo' => $id,
+            'PerfilCargo_idPerfilCargo' => $request['PerfilCargo_idFormacion'][$i],
+            'porcentajeCargoFormacion' => $request['porcentajeCargoFormacion'][$i], );
+
+            $preguntas = \App\CargoFormacion::updateOrCreate($indice, $data);
+         }
+
+
+
+
+         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        //Hablidad 
+         //
+
+
+           $idsEliminar = explode(',', $request['eliminarHabilidad']);
+         \App\CargoHabilidad::whereIn('idCargoHabilidad',$idsEliminar)->delete();
+
+
+         for ($i=0; $i < count($request['idCargoHabilidad']); $i++) 
+         { 
+            $indice = array(
+             'idCargoHabilidad' => $request['idCargoHabilidad'][$i]);
+
+            $data = array(
+            'Cargo_idCargo' => $id,
+            'PerfilCargo_idPerfilCargo' => $request['PerfilCargo_idHabilidad'][$i],
+            'porcentajeCargoHabilidad' => $request['porcentajeCargoHabilidad'][$i], );
+
+            $preguntas = \App\CargoHabilidad::updateOrCreate($indice, $data);
+         }
+
+
+
+
+
+         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        //Competencia 
+         //
+
+
+           $idsEliminar = explode(',', $request['eliminarCompetencia']);
+         \App\CargoCompetencia::whereIn('idCargoCompetencia',$idsEliminar)->delete();
+
+
+         for ($i=0; $i < count($request['idCargoCompetencia']); $i++) 
+         { 
+            $indice = array(
+             'idCargoCompetencia' => $request['idCargoCompetencia'][$i]);
+
+            $data = array(
+            'Cargo_idCargo' => $id,
+            'Competencia_idCompetencia' => $request['Competencia_idCompetencia'][$i]);
+
+            $preguntas = \App\CargoCompetencia::updateOrCreate($indice, $data);
+         }
+
+
+
+
+}
 }

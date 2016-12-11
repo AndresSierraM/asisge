@@ -50,6 +50,7 @@ class CompaniaController extends Controller
         \App\Compania::create([
             'codigoCompania' => $request['codigoCompania'],
             'nombreCompania' => $request['nombreCompania'],
+            'fechaCreacionCompania' => $request['fechaCreacionCompania'],
             'misionCompania' => $request['misionCompania'],
             'visionCompania' => $request['visionCompania'],
             'valoresCompania' => $request['valoresCompania'],
@@ -69,13 +70,16 @@ class CompaniaController extends Controller
 
         //----------------------------
         // Guardamos la imagen de la firma como un archivo en disco
-        $data = $request['firmabase64'];
+        if (isset($request['firmabase64']) and $request['firmabase64'] != '') 
+        {            
+            $data = $request['firmabase64'];
 
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
-        $data = base64_decode($data);
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
 
-        file_put_contents('imagenes/'.$ruta, $data);
+            file_put_contents('imagenes/'.$ruta, $data);
+        }
 
         //---------------------------------
         // guardamos las tablas de detalle
@@ -129,13 +133,16 @@ class CompaniaController extends Controller
 
         //----------------------------
         // Guardamos la imagen de la firma como un archivo en disco
-        $data = $request['firmabase64'];
+        if (isset($request['firmabase64']) and $request['firmabase64'] != '') 
+        {            
+            $data = $request['firmabase64'];
 
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
-        $data = base64_decode($data);
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
 
-        file_put_contents('imagenes/'.$ruta, $data);
+            file_put_contents('imagenes/'.$ruta, $data);
+        }
         
         //---------------------------------
         // guardamos las tablas de detalle

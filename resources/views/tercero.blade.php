@@ -132,7 +132,7 @@
 											<i class="fa fa-credit-card" style="width: 14px;"></i>
 										</span>
 										{!! Form::hidden('idTercero', null, array('id' => 'idTercero')) !!}
-										{!! Form::hidden('idTerceroInformacion', (isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->idTerceroInformacion : null), array('id' => 'idTerceroInformacion')) !!}
+										{!! Form::hidden('idTerceroInformacion', (isset($tercero->idTerceroInformacion) ? $tercero->idTerceroInformacion->idTerceroInformacion : null), array('id' => 'idTerceroInformacion')) !!}
 										{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
 									</div>
 								</div>

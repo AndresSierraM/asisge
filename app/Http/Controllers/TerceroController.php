@@ -1192,10 +1192,10 @@ class TerceroController extends Controller
                         $idtercero = $tercero->idTercero;
                     }
                     else
-                        $idtercero = $terceros[$reg]["idTercero"]
+                        $idtercero = $terceros[$reg]["idTercero"];
 
                     $indice = array(
-                          'idTerceroInformacion' => $terceros[$reg]['idTerceroInformacion']);
+                          'idTerceroInformacion' => 0);
 
                     $data = array(
                         'Tercero_idTercero' => $idtercero,
@@ -1215,7 +1215,7 @@ class TerceroController extends Controller
                         'HobbyTerceroInformacion' => $terceros[$reg]['HobbyTerceroInformacion'],
                         'actividadFisicaTerceroInformacion' => $terceros[$reg]['actividadFisicaTerceroInformacion'],
                         'consumeLicorTerceroInformacion' => $terceros[$reg]['consumeLicorTerceroInformacion'],
-                        'FrecuenciaMedicion_idConsumeLicor' => $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'],
+                        'FrecuenciaMedicion_idConsumeLicor' => ($terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == '' or $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == 0 ? null : $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor']),
                         'consumeCigarrilloTerceroInformacion' => $terceros[$reg]['consumeCigarrilloTerceroInformacion']
                         );
 
