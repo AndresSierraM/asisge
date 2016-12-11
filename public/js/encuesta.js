@@ -1,3 +1,9 @@
+function abrirModalRol()
+{
+    $('#ModalRoles').modal('show');
+
+}
+
 var TituloMulti = function(titnombreObjeto, titnombreContenedor, titnombreDiv){
 
     this.nombre = titnombreObjeto;
@@ -69,7 +75,7 @@ var RegistroMulti = function(nombreObjeto, nombreContenedor, nombreDiv){
 };
 
 RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
-console.log(pos);
+
     var valor;
     if(tipo == 'A')
        valor = datos;
@@ -80,7 +86,7 @@ console.log(pos);
    
     
     var div = document.createElement('div');
-    div.id = this.contenido+this.contador;
+    div.id = this.contenido+pos+'_'+this.contador;
     div.setAttribute("class", "col-sm-12");
     div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
     
@@ -90,7 +96,7 @@ console.log(pos);
         var img = document.createElement('i');
         var caneca = document.createElement('div');
         caneca.id = 'eliminarRegistro'+ this.contador;
-        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+        caneca.setAttribute('onclick',this.nombre+'.borrarOpcion(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+ pos+'_'+this.contador+'\')');
         caneca.setAttribute("class","col-md-1");
         caneca.setAttribute("style","width:40px; height:35px; cursor:pointer;");
         img.setAttribute("class","glyphicon glyphicon-trash");
@@ -106,7 +112,7 @@ console.log(pos);
         {
             var input = document.createElement('input');
             input.type =  this.tipo[i];
-            input.id =  this.campos[i] + this.contador;
+            input.id =  this.campos[i] + pos +'_' + this.contador;
             input.name =  this.campos[i]+'['+pos+']'+'[]';
 
             input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
@@ -134,24 +140,21 @@ console.log(pos);
 
 }
 
-RegistroMulti.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
+RegistroMulti.prototype.borrarOpcion = function(elemento, campoEliminacion, campoid){
    
     if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
         document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
-
-    // aux = elemento.parentNode;
-    // alert(aux);
-    // if(aux );
-        $("#"+elemento).remove();
+    
+    $("#"+elemento).remove();
 
 }
 
-RegistroMulti.prototype.borrarTodosCampos = function(){
+RegistroMulti.prototype.borrarTodosOpciones = function(){
     
     
     for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
     {
-        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
+        this.borrarOpcion(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
     }
     this.contador = 0;
 }
@@ -263,6 +266,7 @@ Propiedades.prototype.agregarPregunta = function(datos, tipo){
     var input0 = document.createElement('input');
     input0.type =  'hidden';
     input0.id =  'idEncuestaPregunta' + this.contador;
+    input0.value =  (typeof(valor['idEncuestaPregunta']) !== "undefined" ? valor['idEncuestaPregunta'] : '');
     input0.name =  'idEncuestaPregunta[]';
 
     li.appendChild(input0);
@@ -340,7 +344,7 @@ Propiedades.prototype.agregarPregunta = function(datos, tipo){
     opcionTitulos.estilo   = ['width: 40px;', 'width: 100px;', 'width: 400px;'];
     opcionTitulos.clase   = ['col-md-1','col-md-1','col-md-1'];
 
-    opcionPregunta = new RegistroMulti('pregunta_opcion',divRespMulti.id,'pregunta_opcion');
+    opcionPregunta = new RegistroMulti('opcionPregunta',divRespMulti.id,'opcionPregunta');
 
     opcionPregunta.altura = '25px;';
     opcionPregunta.campoid = 'idEncuestaOpcion';
@@ -381,9 +385,6 @@ Propiedades.prototype.borrarCampos = function(elemento, campoEliminacion, campoi
     if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
         document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
 
-    // aux = elemento.parentNode;
-    // alert(aux);
-    // if(aux );
         $("#"+elemento).remove();
 
 }

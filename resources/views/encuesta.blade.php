@@ -3,78 +3,19 @@
 
 @section('content')
   <!-- @include('alerts.request') -->
-  {!!Html::script('js/encuesta.js')!!}
-
-<style type="text/css">
-  .Pregunta
-  {
-    border: 3px solid gray;
-    width: 100%;
-    height: 300px;
-    margin: 5px 5px 5px 5px; 
-    padding: 5px 5px 5px 5px;
-
-  }
-
-  .Encuesta-Titulo 
-  {
-    border: 0;
-    outline: 0;
-    background: transparent;
-    border-bottom: 2px solid black;
-    font-size: 20px;
-    width: 100%;
-    margin: 5px 5px 5px 5px;
-  }
-
-  .Encuesta-Subtitulo 
-  {
-    border: 0;
-    outline: 0;
-    background: transparent;
-    border-bottom: 2px solid gray;
-    font-size: 16px;
-    width: 100%;
-    margin: 5px 5px 30px 5px;
-  }
-
-  .Encuesta-Tipo
-  {
-    border: 0;
-    outline: 0;
-    background: transparent;
-    border-bottom: 2px solid gray;
-    font-size: 16px;
-    width: 100%;
-    margin: 5px 5px 5px 5px;
-  }
-
-  /*select.Encuesta-Tipo option[value="Respuesta Corta"]   { background-image:url(division.png);   }
-  select.Encuesta-Tipo option[value="Párrafo"] { background-image:url(mas.png); }
-*/
-  .Encuesta-Respuesta
-  {
-    background: transparent;
-    font-size: 16px;
-    width: 100%;
-    padding: 5px 5px 5px 5px;
-    margin: 5px 5px 5px 5px;
-  }
-</style>
-
+{!!Html::script('js/encuesta.js')!!}
+{!!Html::style('css/encuesta.css')!!}
 
 <script>
-    var EncuestaPregunta = '<?php echo (isset($encuesta) ? json_encode($encuesta->EncuestaPregunta) : "");?>';
-    EncuestaPregunta = (EncuestaPregunta != '' ? JSON.parse(EncuestaPregunta) : '');
+    var EncuestaDetalle = '<?php echo (isset($encuestaDetalle) ? json_encode($encuestaDetalle) : "");?>';
+    EncuestaDetalle = (EncuestaDetalle != '' ? JSON.parse(EncuestaDetalle) : '');
 
-    
+    var EncuestaRol = '<?php echo (isset($encuestaRol) ? json_encode($encuestaRol) : "");?>';
+    EncuestaRol = (EncuestaRol != '' ? JSON.parse(EncuestaRol) : '');
+
+  
+   
     var valorPregunta = [0,'',0,'0000-00-00','00:00',0];
-
-    // var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
-    // var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
-    // var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
-    // var eventos1 = ['onclick','fechaDetalle(this.parentNode.id);'];
-    // var eventos2 = ['onchange','llenarCargo(this);'];
 
     $(document).ready(function(){
 
@@ -84,13 +25,86 @@
       pregunta.altura = '36px;';
       pregunta.campoid = 'idEncuestaPregunta';
       pregunta.campoEliminacion = 'eliminarPregunta';
-      for(var j=0, k = EncuestaPregunta.length; j < k; j++)
+
+      var reg = 0;
+      var nPreg = 0;
+      while(reg < EncuestaDetalle.length)
       {
-        pregunta.agregarPregunta(JSON.stringify(EncuestaPregunta[j]),'L');
-        $("#tipoRespuestaEncuestaPregunta"+j).trigger("change");
+        var preguntaAnt = EncuestaDetalle[reg]["idEncuestaPregunta"];
+        pregunta.agregarPregunta(JSON.stringify(EncuestaDetalle[reg]),'L');
+        
+        // ejecutamos el onchange de la lista de tipo para que muestre el detalle de opciones
+        $("#tipoRespuestaEncuestaPregunta"+nPreg).trigger("change");
 
-        // Por cada Pregunta, insertamos las opciones de esta
 
+        while(reg < EncuestaDetalle.length &&  preguntaAnt == EncuestaDetalle[reg]["idEncuestaPregunta"])
+        {
+          opcionPregunta.agregarCampos(JSON.stringify(EncuestaDetalle[reg]),'L', nPreg);
+          reg++;
+        }
+        nPreg++;
+      }
+
+
+      protRol = new Atributos('protRol','contenedor_protRol','encuestarol');
+
+      protRol.altura = '35px';
+      protRol.campoid = 'idEncuestaRol';
+      protRol.campoEliminacion = 'eliminarRol';
+
+      protRol.campos   = [
+      'idEncuestaRol',
+      'Rol_idRol',
+      'nombreRol',
+      'adicionarEncuestaRol',
+      'modificarEncuestaRol',
+      'consultarEncuestaRol',
+      'eliminarEncuestaRol',
+      'publicarEncuestaRol'
+      ];
+
+      protRol.etiqueta = [
+      'input',
+      'input',
+      'input',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox'
+      ];
+
+      protRol.tipo = [
+      'hidden',
+      'hidden',
+      'text',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox'
+      ];
+
+      protRol.estilo = [
+      '',
+      '',
+      'width: 530px;height:35px;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;'
+      ];
+
+      protRol.clase    = ['','','','','','','',''];
+      protRol.sololectura = [true,true,true,true,true,true,true,true];  
+      protRol.funciones = ['','','','','','','',''];
+      protRol.completar = ['off','off','off','off','off','off','off','off'];
+      protRol.opciones = ['','','','','','','','']
+
+      for(var j=0, k = EncuestaRol.length; j < k; j++)
+      {
+        protRol.agregarCampos(JSON.stringify(EncuestaRol[j]),'L');
       }
 
     });
@@ -121,6 +135,9 @@
           </span>
           {!!Form::text('tituloEncuesta',null,['class'=>'form-control','placeholder'=>'Ingrese el Título de la Encuesta'])!!}
           {!!Form::hidden('idEncuesta', null, array('id' => 'idEncuesta')) !!}
+          {!!Form::hidden('eliminarPregunta', null, array('id' => 'eliminarPregunta')) !!}
+          {!!Form::hidden('eliminarOpcion', null, array('id' => 'eliminarOpcion')) !!}
+          {!!Form::hidden('eliminarRol', null, array('id' => 'eliminarRol')) !!}
         </div>
       </div>
     </div>
@@ -155,7 +172,7 @@
           <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
             <span class="fa fa-plus-square fa-2x"></span>
           </div>
-          <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
+          <!-- <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
             <span class="fa fa-pencil-square fa-2x"></span>
           </div>
           <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
@@ -163,14 +180,42 @@
           </div>
           <div class="col-md-1" style="width: 40px;height: 50px;"  onclick="pregunta.agregarPregunta(valorPregunta,'A')">
             <span class="fa fa-film fa-2x"></span>
-          </div>
+          </div> -->
         <!-- </div> -->
           
       </div>
       <div id="permisos" class="tab-pane fade">
-
-
-      </div>
+        <div class="panel-body" >
+          <div class="form-group" id='test'>
+            <div class="col-sm-12">
+              <div class="panel-body" >
+                <div class="form-group" id='test'>
+                  <div class="col-sm-12">
+                    <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                      <div style="overflow:auto; height:350px;">
+                        <div style="width: 100%; display: inline-block;">
+                          <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalRol();">
+                            <span class="glyphicon glyphicon-plus"></span>
+                          </div>
+                          <div class="col-md-1" style="width: 530px;" >Rol</div>
+                          <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
+                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
+                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Consultar" class="fa fa-search"></span></center></div>
+                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Anular" class="fa fa-trash"></span></center></div>
+                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Aprobar" class="fa fa-cloud-upload"></span></center></div>
+                          
+                          <div id="contenedor_protRol">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div> 
     </div>
 
   </fieldset>
@@ -198,3 +243,21 @@
 </script>
 
 @stop
+
+<div id="ModalRoles" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Roles</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
