@@ -185,7 +185,7 @@ class PlanTrabajoController extends Controller
         //  E X A M E N E S   M E D I C O S
         // -------------------------------------------
         $examen = DB::select(
-            'SELECT descripcionTarea, 
+            'SELECT nombreTipoExamenMedico, descripcionTarea, 
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 1 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 1 AND RET = 1) OR (MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaExamenMedico) = 1, 1, 0 )) as EneroC,
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 2 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 2 AND RET = 1) OR (MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
@@ -258,7 +258,8 @@ class PlanTrabajoController extends Controller
                     T.Compania_idCompania = '.$idCompania .' 
                 group by idTercero, idTipoExamenMedico
             ) Examen
-            group by idTercero');
+            group by nombreTipoExamenMedico, idTercero
+            order by nombreTipoExamenMedico');
 
 
         // -------------------------------------------
