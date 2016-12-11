@@ -43,18 +43,21 @@ class EncuestaController extends Controller
      */
     public function store(Request $request)
     {
+        // Insertamos el encabezado
         \App\Encuesta::create([
             'tituloEncuesta' => $request['tituloEncuesta'],
             'descripcionEncuesta' => $request['descripcionEncuesta'],
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
-
+        // Consultamos el ultimo id insertado
         $encuesta = \App\Encuesta::All()->last();
-        //$encuesta->idEncuesta;
+        
+        // ejecutamos la funcion para grabar las preguntas y sus opciones
+        $this->grabarDetalle($encuesta->idEncuesta, $request);
 
 
-        return redirect('/encuesta');
+        //return redirect('/encuesta');
     }
 
     /**
@@ -76,7 +79,8 @@ class EncuestaController extends Controller
      */
     public function edit($id)
     {
-        return view('encuesta');
+        $encuesta = \App\Encuesta::find($id);
+        return view('encuesta', ['encuesta'=>$encuesta]);
     }
 
     /**
@@ -92,7 +96,7 @@ class EncuestaController extends Controller
         $encuesta->fill($request->all());
         $accidente->save();
 
-        return redirect('/encuesta');
+        //return redirect('/encuesta');
     }
 
     /**
@@ -106,4 +110,61 @@ class EncuestaController extends Controller
         \App\Encuesta::destroy($id);
         return redirect('/encuesta');
     }
+
+    protected function grabarDetalle($id, $request)
+    {
+
+        // en el formulario hay un campo oculto en el que almacenamos los 
+        // id que se eliminan separados por coma, en este proceso lo convertimos 
+        // en array y eliminamos dichos id de la tabla de detalle preguntas
+        // $idsEliminar = explode(',', $request['eliminarTercero']);
+        // \App\EncuestaPregunta::whereIn('idActaGrupoApoyoTercero',$idsEliminar)->delete();
+
+        for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
+        {
+           
+            $indice = array(
+             'idEncuestaPregunta' => $request['idEncuestaPregunta'][$i]);
+
+             $data = array(
+             'preguntaEncuestaPregunta' => $request['preguntaEncuestaPregunta'][$i],
+             'detalleEncuestaPregunta' => $request['detalleEncuestaPregunta'][$i],
+             'tipoRespuestaEncuestaPregunta' => $request['tipoRespuestaEncuestaPregunta'][$i],
+             'Encuesta_idEncuesta' => $id);
+
+            $preguntas = \App\EncuestaPregunta::updateOrCreate($indice, $data);
+
+            // Consultamos el ultimo id insertado
+            $idPregunta = $request['idEncuestaPregunta'][$i];
+            if($idPregunta == 0)
+            {
+                $encuesta = \App\EncuestaPregunta::All()->last();
+                $idPregunta = $encuesta->idEncuestaPregunta;
+            }
+            
+            // por cada pregunta, gurdamos el subdetalle (Opciones de la pregunta)
+            $this->grabarSubDetalle($idPregunta, $request, $i);
+
+        }
+        
+    }
+
+
+    protected function grabarSubDetalle($id, $request, $i)
+    {
+
+        for($j = 0; $j < count($request['idEncuestaOpcion'][$i]); $j++)
+        {
+            $indice = array(
+             'idEncuestaOpcion' => $request['idEncuestaOpcion'][$i][$j]);
+
+            $data = array(
+             'valorEncuestaOpcion' => $request['valorEncuestaOpcion'][$i][$j],
+             'nombreEncuestaOpcion' => $request['nombreEncuestaOpcion'][$i][$j],
+             'EncuestaPregunta_idEncuestaPregunta' => $id);
+
+            $preguntas = \App\EncuestaOpcion::updateOrCreate($indice, $data);
+        }
+    }
+
 }

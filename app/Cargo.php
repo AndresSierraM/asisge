@@ -8,7 +8,7 @@ class Cargo extends Model
 {
     protected $table = 'cargo';
     protected $primaryKey = 'idCargo';
-    protected $fillable = ['codigoCargo', 'nombreCargo', 'salarioBaseCargo', 'nivelRiesgoCargo', 'objetivoCargo', 'educacionCargo', 'experienciaCargo', 'formacionCargo', 'posicionPredominanteCargo', 'restriccionesCargo', 'habilidadesCargo', 'responsabilidadesCargo', 'autoridadesCargo', 'Compania_idCompania'];
+    protected $fillable = ['codigoCargo', 'nombreCargo', 'salarioBaseCargo', 'nivelRiesgoCargo','CargoDepende','AñoExperiencia','porcentajeEducacionCargo','porcentajeFormacionCargo','porcentajeHabilidadCargo', 'objetivoCargo', 'posicionPredominanteCargo', 'restriccionesCargo', 'responsabilidadesCargo', 'autoridadesCargo', 'Compania_idCompania'];
     public $timestamps = false;
 
     public function cargoElementoProtecciones()
@@ -29,5 +29,33 @@ class Cargo extends Model
     public function cargoVacunas()
     {
     	return $this->hasMany('App\CargoVacuna','Cargo_idCargo');
+    }
+
+    public function CargoResponsabilidad()
+    {
+        return $this->hasMany('App\CargoResponsabilidad','Cargo_idCargo');
+    }
+
+
+        public function CargoEducacion()
+    {
+        return $this->hasMany('App\CargoEducacion','Cargo_idCargo');
+    }
+
+
+       public function CargoFormacion()
+    {
+        return $this->hasMany('App\CargoFormacion','Cargo_idCargo');
+    }
+
+       public function CargoHabilidad()
+    {
+        return $this->hasMany('App\CargoHabilidad','Cargo_idCargo');
+    }
+
+
+       public function CargoCompetencia()
+    {
+        return $this->hasMany('App\CargoCompetencia','Cargo_idCargo');
     }
 }
