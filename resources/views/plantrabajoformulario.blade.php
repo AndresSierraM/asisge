@@ -358,7 +358,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 				<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["OctubreT"], $dato[$reg]["OctubreC"]).'">
 
 				<td>'.colorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'</td>
-				<input type="hidden" id="noviembrelanTrabajoDetalle" name="noviembrelanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'">
+				<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'">
 
 				<td>'.colorTarea($dato[$reg]["DiciembreT"], $dato[$reg]["DiciembreC"]).'</td>
 				<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["DiciembreT"], $dato[$reg]["DiciembreC"]).'">
@@ -420,6 +420,10 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
   				while ($i < $total) 
   				{
   					$moduloAnt = $detalle[$i]["nombreModulo"];
+  					if ($detalle[$i]["Modulo_idModulo"] == 22) 
+  					{
+  						
+  					}
   					echo 
   					'<div class="panel panel-primary">
             			<div class="panel-heading">
@@ -474,7 +478,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 
   						<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.$detalle[$i]["febreroPlanTrabajoDetalle"].'">
 
-  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["marzoPlanTrabajoDetalle"].'">
+  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.$detalle[$i]["marzoPlanTrabajoDetalle"].'">
 
   						<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.$detalle[$i]["abrilPlanTrabajoDetalle"].'">
 
