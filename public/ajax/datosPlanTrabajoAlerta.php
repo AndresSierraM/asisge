@@ -30,6 +30,9 @@
                         '</a>&nbsp;'.
                         '<a href="plantrabajoalerta/'.$value->idPlanTrabajoAlerta.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="imprimirPlanTrabajoAlerta('.$value->idPlanTrabajoAlerta.')">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;';
         $row[$key][] = $value->idPlanTrabajoAlerta;
         $row[$key][] = $value->nombrePlanTrabajoAlerta;

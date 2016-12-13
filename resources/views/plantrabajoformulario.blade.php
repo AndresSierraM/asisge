@@ -420,10 +420,10 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
   				while ($i < $total) 
   				{
   					$moduloAnt = $detalle[$i]["nombreModulo"];
-  					if ($detalle[$i]["Modulo_idModulo"] == 22) 
-  					{
+  					// if ($detalle[$i]["Modulo_idModulo"] == 22) 
+  					// {
   						
-  					}
+  					// }
   					echo 
   					'<div class="panel panel-primary">
             			<div class="panel-heading">
@@ -571,15 +571,15 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
   			}
   			else
   			{
-				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
-				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Tercero_idAuditor, 9);
-				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
-				imprimirTabla('Programas', $programa, 'programa',$Tercero_idAuditor, 40);	
-				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Tercero_idAuditor, 22);
 				imprimirTabla('Accidente', $accidente, 'accidente',$Tercero_idAuditor, 3);
+				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Tercero_idAuditor, 9);
+				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
+				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Tercero_idAuditor, 22);
 				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Tercero_idAuditor, 24);
 				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Tercero_idAuditor, 32);
-				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
+				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
+				imprimirTabla('Programas', $programa, 'programa',$Tercero_idAuditor, 40);	
+				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
 			}
 		?>
     </div>

@@ -3,11 +3,14 @@
 @section('content')
 @include('alerts.request')
 
+{!!Html::script('js/plantrabajoalerta.js')!!}
 
 <script>
   // tomamos los valores de los modulos enviados desde el controlador, y los almacenamos en un array convertidos en formato json
   // para luego enviarlo como parametro al multiregistro en el campo descripcionModulo
   var modulos = [JSON.parse('<?php echo $idModulo;?>'), JSON.parse('<?php echo $nombreModulo;?>')];
+
+  
 
   var valorModelo = [0,''];
   $(document).ready(function(){
@@ -23,7 +26,7 @@
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
     PlanTrabajoAlertaModulo.etiqueta = ['input','select'];
     PlanTrabajoAlertaModulo.tipo = ['hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-    PlanTrabajoAlertaModulo.estilo = ['','width: 1490px;height:35px;'];	
+    PlanTrabajoAlertaModulo.estilo = ['','width: 1050px;height:35px;'];	
 
     // estas propiedades no son muy usadas PERO SON UTILES
     
@@ -33,6 +36,12 @@
     
     PlanTrabajoAlertaModulo.opciones = ['',modulos]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
     PlanTrabajoAlertaModulo.funciones  = ['','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+    for(var j=0, k = alertaplan.length; j < k; j++)
+      {
+        permisos.agregarCampos(JSON.stringify(alertaplan[j]),'L');
+        console.log(JSON.stringify(alertaplan[j]))
+      }
   });
 </script> 
 
@@ -217,7 +226,7 @@
 			          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="PlanTrabajoAlertaModulo.agregarCampos(valorModelo,'A')">
 			            <span class="glyphicon glyphicon-plus"></span>
 			          </div>
-			          <div class="col-md-1" style="width: 1490px;display:inline-block;height:35px;">Nombre del Modulo</div>
+			          <div class="col-md-1" style="width: 1050px;display:inline-block;height:35px;">Nombre del Modulo</div>
 			          <!-- este es el div para donde van insertando los registros --> 
 			          <div id="planTrabajoAlertaModulo_Modulo">
 			          </div>
@@ -250,7 +259,7 @@
 					        <!-- <div class="panel-body"> -->
 					       
 					        <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaDia', 'Fecha Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaDia', 'Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					          <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
@@ -319,7 +328,7 @@
 
 			<!-- opcion fecha de inicio  -->
 			   <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaSemana', 'Fecha Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaSemana', 'Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					<div class="col-sm-11">
 					    <div class="input-group">	
 					        <span class="input-group-addon">
@@ -353,7 +362,7 @@
 			              <span class="input-group-addon">
 			                <i class="fa fa-bars"></i>
 			              </span> 
-			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',1,['class'=>'form-control','placeholder'=>'', 'autocomplete' => 'off'])!!}
+			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',null,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
 			              Semanas
 			              </span>
@@ -394,17 +403,17 @@
 						<div class="col-md-1">Viernes
 							  <div class="input-group">
 							   {!! Form::checkbox('Dia5', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia5']) !!} 
-							   </div>
+							  </div>
 					    </div>
 						<div class="col-md-1">Sabado
 							  <div class="input-group">
 							   {!! Form::checkbox('Dia6', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia6']) !!} 
-							    </div>
+							   </div>
 						</div>
 						<div class="col-md-1">Domingo
 							  <div class="input-group">
 							   {!! Form::checkbox('Dia7', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia7']) !!} 
-							            </div>
+							    </div>
 						</div>
 							  
 					</div>
@@ -422,7 +431,7 @@
 				          <a data-toggle="collapse" data-parent="#accordion" href="#CalendarioMes"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/calendarioMes.png style='width:60px; height:50px;'></a></li></a></li>"?></a><b>Programación Mensual</b>
 			        <div id="CalendarioMes" class="panel-collapse collapse  ">
 			           <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaMes', 'Fecha Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaMes', 'Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					       <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">

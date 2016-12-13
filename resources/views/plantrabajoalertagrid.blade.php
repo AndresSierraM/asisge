@@ -2,6 +2,8 @@
 @section('titulo')<h3 id="titulo"><center>Alertas de Plan de Trabajo</center></h3>@stop
 @section('content')
 
+{!!Html::script('js/plantrabajoalerta.js')!!}
+
 <style>
     tfoot input {
                 width: 100%;
