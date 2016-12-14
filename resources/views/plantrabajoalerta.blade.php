@@ -10,7 +10,8 @@
   // para luego enviarlo como parametro al multiregistro en el campo descripcionModulo
   var modulos = [JSON.parse('<?php echo $idModulo;?>'), JSON.parse('<?php echo $nombreModulo;?>')];
 
-  
+ var alertaplan = '<?php echo (isset($plantrabajoalerta) ? json_encode($plantrabajoalerta->planTrabajoAlertaModulo) : "");?>';
+    alertaplan = (alertaplan != '' ? JSON.parse(alertaplan) : '');
 
   var valorModelo = [0,''];
   $(document).ready(function(){
@@ -25,10 +26,10 @@
     PlanTrabajoAlertaModulo.altura = '35px;';
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
     PlanTrabajoAlertaModulo.etiqueta = ['input','select'];
-    PlanTrabajoAlertaModulo.tipo = ['hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+    PlanTrabajoAlertaModulo.tipo = ['hidden','']; //tip hidden - oculto para el usuario  y los otros quedan visibles ''
     PlanTrabajoAlertaModulo.estilo = ['','width: 1050px;height:35px;'];	
 
-    // estas propiedades no son muy usadas PERO SON UTILES
+    // estas propiedades no son muy usadas PERO SON UToILES
     
     PlanTrabajoAlertaModulo.clase = ['',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
     PlanTrabajoAlertaModulo.sololectura = [false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
@@ -39,10 +40,16 @@
 
     for(var j=0, k = alertaplan.length; j < k; j++)
       {
-        permisos.agregarCampos(JSON.stringify(alertaplan[j]),'L');
-        console.log(JSON.stringify(alertaplan[j]))
+        // permisos.agregarCampos(JSON.stringify(alertaplan[j]),'L');
+        // console.log(JSON.stringify(alertaplan[j]))
+           PlanTrabajoAlertaModulo.agregarCampos(JSON.stringify(alertaplan[j]),'L');
+           // llenarplantrabajoalertaModelo($("#idPlanTrabajoAlertaModulo"+j).val());
+        // Llamar la funcion en el for para que por cada registro de la multiregistro el haga el ajax de llenar el nombre del rol
+        // enviando el respectivo id del rol 
       }
   });
+
+  
 </script> 
 
 @if(isset($plantrabajoalerta))
@@ -57,7 +64,7 @@
 
 <div id='form-section' >
 	<fieldset id="pestañas-form-fieldset">	
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
 		<div class="form-group" id='test'>
 			 {!!Form::label('nombrePlanTrabajoAlerta', 'Descripción', array('class' => 'col-sm-1 control-label')) !!}
 			<div class="col-sm-11">
@@ -259,7 +266,7 @@
 					        <!-- <div class="panel-body"> -->
 					       
 					        <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaDia', 'Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaDia', 'F.Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					          <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
@@ -328,7 +335,7 @@
 
 			<!-- opcion fecha de inicio  -->
 			   <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaSemana', 'Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaSemana', 'F.Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					<div class="col-sm-11">
 					    <div class="input-group">	
 					        <span class="input-group-addon">
@@ -431,7 +438,7 @@
 				          <a data-toggle="collapse" data-parent="#accordion" href="#CalendarioMes"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/calendarioMes.png style='width:60px; height:50px;'></a></li></a></li>"?></a><b>Programación Mensual</b>
 			        <div id="CalendarioMes" class="panel-collapse collapse  ">
 			           <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaMes', 'Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaMes', 'F.Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					       <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
@@ -611,7 +618,7 @@
     	 $('#tareaDiasPlanTrabajoAlerta').val(dias);
 
     }
-// hechele candela
+
     function seleccionarMes()
     {
     	var Meses = '';

@@ -17,9 +17,9 @@ class PlanTrabajoAlerta extends Model
 	// hasta aca primer formulario correomensajeplantrabajoalerta
 	public $timestamps = false;
 
-	public function plantrabajomodulo()
+	public function planTrabajoAlertaModulo()
 	{
-		return $this->hasMany('App\PlanTrabajoModulo','PlanTreabajoAlerta_idPlanTrabajoAlerta');
+		return $this->hasMany('App\PlanTrabajoAlertaModulo','PlanTrabajoAlerta_idPlanTrabajoAlerta');
 	}
 
 }

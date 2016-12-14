@@ -414,6 +414,10 @@ Route::post('consultarPermisos', function()
 
 //Ajax de Maestros
 
+Route::post('llenarplantrabajoalartaModelo', function()
+{
+    include public_path().'/ajax/llenarplantrabajoalartaModelo.php';
+});
 
 Route::post('llenarNombreRolGrupoApoyo', function()
 {

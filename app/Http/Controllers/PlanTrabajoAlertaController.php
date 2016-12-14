@@ -159,7 +159,7 @@ class PlanTrabajoAlertaController extends Controller
         $plantrabajoalerta = \App\PlanTrabajoAlerta::find($id);
         $idModulo= \App\Modulo::All()->lists('idModulo');
         $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
-        return view ('plantrabajoalerta',['plantrabajoalerta'=>$plantrabajoalerta], compact('idModulo','nombreModulo'));
+        return view ('plantrabajoalerta', compact('idModulo','nombreModulo'),['plantrabajoalerta'=>$plantrabajoalerta]);
     }
 
     /**
@@ -171,7 +171,7 @@ class PlanTrabajoAlertaController extends Controller
      */
     public function update(PlanTrabajoAlertaRequest $request, $id)
     {
-        return;
+        
         $plantrabajoalerta = \App\PlanTrabajoAlerta::find($id);
         $plantrabajoalerta->fill($request->all());
         $plantrabajoalerta->save();

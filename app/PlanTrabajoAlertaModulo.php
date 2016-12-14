@@ -15,7 +15,7 @@ class PlanTrabajoAlertaModulo extends Model
 									      //modelo para la multiregistro
 	public $timestamps = false;
 
-	public function plantrabajoalerta() 
+	public function PlanTrabajoAlerta() 
 	{
 		return $this->hasOne('App\PlanTrabajoAlerta','idPlanTrabajoAlerta');
 	}
