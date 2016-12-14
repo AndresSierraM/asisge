@@ -140,13 +140,16 @@ class ReporteACPMController extends Controller
 
             $reporteACPM->save();
 
-            \App\ReporteACPMDetalle::where('ReporteACPM_idReporteACPM',$id)->delete();
+            $idsEliminar = explode(',', $request['eliminarReporteACPMDetalle']);
+            \App\ReporteACPMDetalle::whereIn('idReporteACPMDetalle',$idsEliminar)->delete();
 
             $contadorDetalle = count($request['ordenReporteACPMDetalle']);
             for($i = 0; $i < $contadorDetalle; $i++)
             {
-                \App\ReporteACPMDetalle::create([
+                 $indice = array(
+                'idReporteACPMDetalle' => $request['idReporteACPMDetalle'][$i]);
 
+                $datos= array(
                     'ReporteACPM_idReporteACPM' => $id,
                     'ordenReporteACPMDetalle' => $request['ordenReporteACPMDetalle'][$i],
                     'fechaReporteACPMDetalle' => $request['fechaReporteACPMDetalle'][$i],
@@ -162,9 +165,9 @@ class ReporteACPMController extends Controller
                     'fechaEstimadaCierreReporteACPMDetalle' => $request['fechaEstimadaCierreReporteACPMDetalle'][$i],
                     'estadoActualReporteACPMDetalle' => $request['estadoActualReporteACPMDetalle'][$i],
                     'fechaCierreReporteACPMDetalle' => $request['fechaCierreReporteACPMDetalle'][$i],
-                    'eficazReporteACPMDetalle' => $request['eficazReporteACPMDetalle'][$i]
+                    'eficazReporteACPMDetalle' => $request['eficazReporteACPMDetalle'][$i]);
 
-                ]);
+                    $guardar = \App\ReporteACPMDetalle::updateOrCreate($indice, $datos);
             }
 
             return redirect('/reporteacpm');

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use DB;
+use Carbon;
 include public_path().'/ajax/consultarPermisos.php';
 
 
@@ -43,10 +45,14 @@ class EncuestaController extends Controller
      */
     public function store(Request $request)
     {
+        $fechahora = Carbon\Carbon::now();
+
         // Insertamos el encabezado
         \App\Encuesta::create([
             'tituloEncuesta' => $request['tituloEncuesta'],
             'descripcionEncuesta' => $request['descripcionEncuesta'],
+            'Users_idCrea' => \Session::get('idUsuario'),
+            'created_at' => $fechahora,
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
@@ -57,7 +63,7 @@ class EncuestaController extends Controller
         $this->grabarDetalle($encuesta->idEncuesta, $request);
 
 
-        //return redirect('/encuesta');
+        return redirect('/encuesta');
     }
 
     /**
@@ -80,7 +86,22 @@ class EncuestaController extends Controller
     public function edit($id)
     {
         $encuesta = \App\Encuesta::find($id);
-        return view('encuesta', ['encuesta'=>$encuesta]);
+        $encuestaDetalle = DB::table('encuesta as E')
+        ->leftjoin('encuestapregunta as EP', 'E.idEncuesta', '=', 'EP.Encuesta_idEncuesta')
+        ->leftjoin('encuestaopcion as EO', 'EP.idEncuestaPregunta', '=', 'EO.EncuestaPregunta_idEncuestaPregunta')
+        ->select(DB::raw('idEncuestaPregunta, preguntaEncuestaPregunta, detalleEncuestaPregunta, tipoRespuestaEncuestaPregunta, Encuesta_idEncuesta, idEncuestaOpcion, valorEncuestaOpcion, nombreEncuestaOpcion, EncuestaPregunta_idEncuestaPregunta'))
+        ->where('idEncuesta','=',$id)
+        ->get();
+
+        $encuestaRol = DB::table('encuesta as E')
+        ->leftjoin('encuestarol as ER', 'E.idEncuesta', '=', 'ER.Encuesta_idEncuesta')
+        ->leftjoin('rol as R', 'ER.Rol_idRol', '=', 'R.idRol')
+        ->select(DB::raw('idEncuestaRol, Rol_idRol, nombreRol, adicionarEncuestaRol, modificarEncuestaRol, eliminarEncuestaRol, consultarEncuestaRol, publicarEncuestaRol'))
+        ->where('idEncuesta','=',$id)
+        ->get();
+
+
+        return view('encuesta',['encuesta'=>$encuesta], compact('encuestaDetalle','encuestaRol'));
     }
 
     /**
@@ -92,11 +113,19 @@ class EncuestaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $fechahora = Carbon\Carbon::now();
+
         $encuesta = \App\Encuesta::find($id);
         $encuesta->fill($request->all());
-        $accidente->save();
+        $encuesta->updated_at = $fechahora;
+        $encuesta->Users_idModifica = \Session::get('idUsuario');
+        $encuesta->save();
 
-        //return redirect('/encuesta');
+        // ejecutamos la funcion para grabar las preguntas y sus opciones
+        $this->grabarDetalle($id, $request);
+
+
+        return redirect('/encuesta');
     }
 
     /**
@@ -117,8 +146,8 @@ class EncuestaController extends Controller
         // en el formulario hay un campo oculto en el que almacenamos los 
         // id que se eliminan separados por coma, en este proceso lo convertimos 
         // en array y eliminamos dichos id de la tabla de detalle preguntas
-        // $idsEliminar = explode(',', $request['eliminarTercero']);
-        // \App\EncuestaPregunta::whereIn('idActaGrupoApoyoTercero',$idsEliminar)->delete();
+        $idsEliminar = explode(',', $request['eliminarPregunta']);
+        \App\EncuestaPregunta::whereIn('idEncuestaPregunta',$idsEliminar)->delete();
 
         for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
         {
@@ -146,6 +175,32 @@ class EncuestaController extends Controller
             $this->grabarSubDetalle($idPregunta, $request, $i);
 
         }
+
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarRol']);
+        \App\EncuestaRol::whereIn('idEncuestaRol',$idsEliminar)->delete();
+
+        $contador = count($request['idEncuestaRol']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+
+            $indice = array(
+             'idEncuestaRol' => $request['idEncuestaRol'][$i]);
+
+            $data = array(
+            'Encuesta_idEncuesta' => $id,
+            'Rol_idRol' => $request['Rol_idRol'][$i],
+            'adicionarEncuestaRol' => $request['adicionarEncuestaRol'][$i],
+            'modificarEncuestaRol' => $request['modificarEncuestaRol'][$i],
+            'consultarEncuestaRol' => $request['consultarEncuestaRol'][$i],
+            'eliminarEncuestaRol' => $request['eliminarEncuestaRol'][$i],
+            'publicarEncuestaRol' => $request['publicarEncuestaRol'][$i]);
+            $permisos = \App\EncuestaRol::updateOrCreate($indice, $data);
+
+        }
         
     }
 
@@ -153,17 +208,26 @@ class EncuestaController extends Controller
     protected function grabarSubDetalle($id, $request, $i)
     {
 
-        for($j = 0; $j < count($request['idEncuestaOpcion'][$i]); $j++)
+        // en el formulario hay un campo oculto en el que almacenamos los 
+        // id que se eliminan separados por coma, en este proceso lo convertimos 
+        // en array y eliminamos dichos id de la tabla de detalle preguntas
+        $idsEliminar = explode(',', $request['eliminarOpcion']);
+        \App\EncuestaOpcion::whereIn('idEncuestaOpcion',$idsEliminar)->delete();
+
+        if(isset($request['idEncuestaOpcion'][$i]))
         {
-            $indice = array(
-             'idEncuestaOpcion' => $request['idEncuestaOpcion'][$i][$j]);
+            for($j = 0; $j < count($request['idEncuestaOpcion'][$i]); $j++)
+            {
+                $indice = array(
+                 'idEncuestaOpcion' => $request['idEncuestaOpcion'][$i][$j]);
 
-            $data = array(
-             'valorEncuestaOpcion' => $request['valorEncuestaOpcion'][$i][$j],
-             'nombreEncuestaOpcion' => $request['nombreEncuestaOpcion'][$i][$j],
-             'EncuestaPregunta_idEncuestaPregunta' => $id);
+                $data = array(
+                 'valorEncuestaOpcion' => $request['valorEncuestaOpcion'][$i][$j],
+                 'nombreEncuestaOpcion' => $request['nombreEncuestaOpcion'][$i][$j],
+                 'EncuestaPregunta_idEncuestaPregunta' => $id);
 
-            $preguntas = \App\EncuestaOpcion::updateOrCreate($indice, $data);
+                $preguntas = \App\EncuestaOpcion::updateOrCreate($indice, $data);
+            }
         }
     }
 

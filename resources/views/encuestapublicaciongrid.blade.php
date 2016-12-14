@@ -1,9 +1,6 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Alertas de Plan de Trabajo</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Publicación de Encuestas</center></h3>@stop
 @section('content')
-
-{!!Html::script('js/plantrabajoalerta.js')!!}
-
 <style>
     tfoot input {
                 width: 100%;
@@ -34,7 +31,6 @@
         $visible = 'none;';
     }
 ?>
-        <input type="hidden" id="token" value="{{csrf_token()}}"/>
         <div class="container">
             <div class="row">
                 <div class="container">
@@ -47,24 +43,22 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Nombre de Alerta</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Correo Para</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Correo Copia</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Asunto Correo</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Descripción</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Fecha</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Título de Encuesta</label></a></li>
                         </ul>
                     </div>
-                    <table id="tplantrabajoalerta" name="tplantrabajoalerta" class="display table-bordered" width="100%">
+                    <table id="tencuestapublicacion" name="tencuestapublicacion" class="display table-bordered" width="100%">
                         <thead>
-                            <tr class="btn-primary active">
-                                <th style="width:70px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="plantrabajoalerta/create"><span style= "color:white; display:  <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
-                                 <a href="#"><span class="glyphicon glyphicon-refresh" style= "color:white;" ></span></a>
+                            <tr class="btn-default active">
+                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
+                                 <a href="encuestapublicacion/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Nombre de Alertas</b></th>
-                                <th><b>Correo Para</b></th>
-                                <th><b>Correo Copia</b></th>
-                                <th><b>Asunto Correo</b></th>
+                                <th><b>Descripción</b></th>
+                                <th><b>Fecha</b></th>
+                                <th><b>Título de Encuesta</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -73,10 +67,9 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Nombre de Alertas</th>
-                                <th>Correo Para</th>
-                                <th>Correo Copia</th>
-                                <th>Asunto Correo</th>
+                                <th>Descripción</th>
+                                <th>Fecha</th>
+                                <th>Título de Encuesta</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -88,16 +81,16 @@
 <script type="text/javascript">
 
     $(document).ready( function () {
-        
+
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
-        var table = $('#tplantrabajoalerta').DataTable( {
+        var table = $('#tencuestapublicacion').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosPlanTrabajoAlerta?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosEncuestaPublicacion?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -134,7 +127,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tplantrabajoalerta tbody')
+        $('#tencuestapublicacion tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -149,15 +142,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tplantrabajoalerta tfoot th').each( function () {
+    $('#tencuestapublicacion tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tplantrabajoalerta thead th').eq( $(this).index() ).text();
+        var title = $('#tencuestapublicacion thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tplantrabajoalerta').DataTable();
+    var table = $('#tencuestapublicacion').DataTable();
  
     // Apply the search
     table.columns().every( function () {

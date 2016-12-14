@@ -105,6 +105,19 @@
           </div>
         </div>
 
+
+        <div class="form-group" id='test'>
+          {!! Form::label('fechaCreacionCompania', 'Fecha de creación', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              {!!Form::text('fechaCreacionCompania',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la compania'])!!}
+            </div>
+          </div>
+        </div>
+
         <div class="form-group">
           <div class="col-lg-12">
             <div class="panel panel-default">
@@ -275,6 +288,10 @@
         fullPage: true,
         allowedContent: true
       }); 
+
+    $('#fechaCreacionCompania').datetimepicker(({
+      format: "YYYY-MM-DD"
+    }));
 
   $(document).ready(function()
   {

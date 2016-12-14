@@ -11,7 +11,12 @@ class Encuesta extends Model
 
     protected $fillable = ['tituloEncuesta', 
 						    'descripcionEncuesta', 
-						    'Compania_idCompania'
+						    'Compania_idCompania',
+						    'Users_idCrea', 
+						    'created_at', 
+						    'Users_idModifica', 
+						    'updated_at'
+
 						  ];
 
     public $timestamps = false;
@@ -19,5 +24,10 @@ class Encuesta extends Model
     public function EncuestaPregunta()
 	{
 		return $this->hasMany('App\EncuestaPregunta','Encuesta_idEncuesta');
+	}
+
+	public function EncuestaRol()
+	{
+		return $this->hasMany('App\EncuestaRol','Encuesta_idEncuesta');
 	}
 }

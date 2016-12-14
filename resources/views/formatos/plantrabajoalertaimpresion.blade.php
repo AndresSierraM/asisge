@@ -1,53 +1,55 @@
-<?php
+@extends('layouts.formato')
 
-namespace App\Http\Controllers;
+@section('contenido')
+	{!!Form::model($plantrabajo)!!}
+	<?php
 
-use Illuminate\Http\Request;
+	#REALIZO TODAS LAS CONSULTAS QUE VAN AL PLAN DE TRABAJO HABITUAL
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use DB;
-class PlanTrabajoController extends Controller
+function nombreMes($fecha)
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
 
-        $idCompania = \Session::get("idCompania");
+    $mes = (int) date("m", strtotime($fecha));
+     $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+    return $meses[$mes];
+}
 
-        // -------------------------------------------
+	function consultarAccidente($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
+	{
+            // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+            // independiente
+            // ------------------------------------------------
+            // Enero    Febrero     Marzo   Abril......
+            // ------------------------------------------------
+            $inicio = $fechaInicial;
+            $anioAnt = date("Y", strtotime($inicio));
+            $columnas = '';
+            while($inicio < $fechaFinal)
+            {
+
+                // adicionamos la columna del mes
+               
+                $columnas .= "SUM(IF((MONTH(fechaElaboracionAusentismo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionAusentismo) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).'T, ';
+
+                $columnas .= "SUM(IF((MONTH(fechaElaboracionAusentismo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionAusentismo) =  '".date("Y", strtotime($inicio))."'), IF(Acc.idAccidente IS NULL, 0, 1), 0)) as ". nombreMes($inicio).'C, ';
+                
+
+                //Avanzamos al siguiente mes
+                $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+            }
+
+            // Quitamos la ultima coma del concatenado de columnas
+            $columnas = substr($columnas,0, strlen($columnas)-2);
+
+
+
+		// -------------------------------------------
         // A C C I D E N T E S / I N C I D E N T E S
         // -------------------------------------------
         $accidente = DB::select(
             'SELECT nombreCompletoTercero as descripcionTarea,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 1, 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 1, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as EneroC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 2, 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 2, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as FebreroC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 3, 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 3, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as MarzoC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 4, 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 4, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as AbrilC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 5, 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 5, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as MayoC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 6, 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 6, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as JunioC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 7, 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 7, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as JulioC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 8, 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 8, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as AgostoC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 9, 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 9, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as SeptiembreC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 10, 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 10, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as OctubreC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 11, 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 11, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as NoviembreC,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 12, 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaElaboracionAusentismo) = 12, IF(Acc.idAccidente IS NULL, 0, 1), 0)) as DiciembreC
+                idAusentismo as idConcepto,
+                '.$columnas.'
             FROM ausentismo Aus
             left join accidente Acc
             on Aus.idAusentismo = Acc.Ausentismo_idAusentismo
@@ -56,13 +58,18 @@ class PlanTrabajoController extends Controller
             Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
                 Aus.Compania_idCompania = '.$idCompania .' 
             group by Aus.Tercero_idTercero;');
-        
 
-        // -------------------------------------------
+        imprimirTabla('Accidente', $accidente, 'accidente', $filtroEstado, $fechaInicial, $fechaFinal);
+	}
+
+	function consultarAuditoria($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         // P L A N   D E   A U D I T O R I A
         // -------------------------------------------
         $auditoria = DB::select(
             'SELECT nombreProceso as descripcionTarea,
+                idPlanAuditoria as idConcepto,
                 SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 1, 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 1, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as EneroC,
                 SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 2, 1 , 0)) as FebreroT,
@@ -97,12 +104,18 @@ class PlanTrabajoController extends Controller
             Where  PA.Compania_idCompania = '.$idCompania .' 
             group by idPlanAuditoriaAgenda;');
 
-        // -------------------------------------------
+            imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $filtroEstado);
+	}
+
+	function consultarCapacitacion($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  P L A N   D E   C A P A C I T A C I O N
         // -------------------------------------------
         
         $capacitacion = DB::select(
             'SELECT nombrePlanCapacitacion  as descripcionTarea,
+                idPlanCapacitacion as idConcepto,
                 SUM(IF(MONTH(fechaPlanCapacitacionTema) = 1, 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaPlanCapacitacionTema) = 1, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as EneroC,
                 SUM(IF(MONTH(fechaPlanCapacitacionTema) = 2, 1 , 0)) as FebreroT,
@@ -141,13 +154,17 @@ class PlanTrabajoController extends Controller
             on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
             Where  PC.Compania_idCompania = '.$idCompania .' 
             group by idPlanCapacitacion');
+            imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $filtroEstado);
+	}
 
-
-        // -------------------------------------------
+	function consultarPrograma($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  P R O G R A M A S   /   A C T I V I D A D E S
         // -------------------------------------------
         $programa = DB::select(
             'SELECT nombrePrograma  as descripcionTarea,
+                idPrograma as idConcepto,
                 SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 1, 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 1, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as EneroC,
                 SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 2, 1 , 0)) as FebreroT,
@@ -180,12 +197,17 @@ class PlanTrabajoController extends Controller
             Where  P.Compania_idCompania = '.$idCompania .' 
             Group by idPrograma');
 
+            imprimirTabla('Programas', $programa, 'programa', $filtroEstado);   
+	}
 
-        // -------------------------------------------
+	function consultarExamen($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  E X A M E N E S   M E D I C O S
         // -------------------------------------------
         $examen = DB::select(
             'SELECT nombreTipoExamenMedico, descripcionTarea, 
+                idFrecuenciaMedicion as idConcepto,
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 1 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 1 AND RET = 1) OR (MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaExamenMedico) = 1, 1, 0 )) as EneroC,
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 2 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 2 AND RET = 1) OR (MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
@@ -214,7 +236,7 @@ class PlanTrabajoController extends Controller
             (
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoTerceroExamenMedico as ING, retiroTerceroExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico 
+                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico, idFrecuenciaMedicion 
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero
@@ -238,7 +260,7 @@ class PlanTrabajoController extends Controller
 
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TEC.nombreTipoExamenMedico, 
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoCargoExamenMedico as ING, retiroCargoExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico
+                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico, idFrecuenciaMedicion
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero
@@ -260,13 +282,17 @@ class PlanTrabajoController extends Controller
             ) Examen
             group by nombreTipoExamenMedico, idTercero
             order by nombreTipoExamenMedico');
+            imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen', $filtroEstado);
+	}
 
-
-        // -------------------------------------------
+	function consultarInspeccion($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  I N S P E C C I O N E S   D E   S E G U R I D A D
         // -------------------------------------------
         $inspeccion = DB::select(
             'SELECT nombreTipoInspeccion as descripcionTarea, 
+                idTipoInspeccion as idConcepto,
                 SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaElaboracionInspeccion) = 1, 1, 0 )) as EneroC,
                 SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
@@ -299,12 +325,17 @@ class PlanTrabajoController extends Controller
             Where TI.Compania_idCompania = '.$idCompania .' 
             group by idTipoInspeccion');
 
+            imprimirTabla('Inspección', $inspeccion, 'inspeccion', $filtroEstado);
+	}
 
-        // -------------------------------------------
+	function consultarMatriz($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  M A T R I Z   L E G A L
         // -------------------------------------------
         $matrizlegal = DB::select(
             '           SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
+                        idMatrizLegal as idConcepto,
                 SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 1, 1, 0 )) as EneroC,
                 SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
@@ -338,6 +369,7 @@ class PlanTrabajoController extends Controller
             UNION
             
             SELECT concat("Matriz Riesgo: ",nombreMatrizRiesgo) as descripcionTarea, 
+                idMatrizRiesgo as idConcepto,
                 SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 1, 1, 0 )) as EneroC,
                 SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
@@ -366,16 +398,20 @@ class PlanTrabajoController extends Controller
             left join frecuenciamedicion FM
             on MR.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
             Where MR.Compania_idCompania = '.$idCompania .' 
-            group by idMatrizRiesgo
-            ');
+            group by idMatrizRiesgo');
 
+            imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal', $filtroEstado);
+	}
 
-        // -------------------------------------------
+	function consultarGrupoApoyo($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  G R U P O S   D E   A P O Y O
         // -------------------------------------------
         $grupoapoyo = DB::select(
             'SELECT 
                 nombreGrupoApoyo as descripcionTarea, 
+                idGrupoApoyo as idConcepto,
                 IF(MOD(1,GA.multiploMes) = 0, numeroTareas, 0) as EneroT,
                 SUM(IF(AGA.mesActa = 1, numeroCumplidas, 0)) as EneroC,
                 IF(MOD(2,GA.multiploMes) = 0, numeroTareas, 0) as FebreroT,
@@ -458,7 +494,12 @@ class PlanTrabajoController extends Controller
             on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
             group by idGrupoApoyo');
 
-        // -------------------------------------------
+            imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $filtroEstado);
+	}
+
+	function consultarActividadGrupoApoyo($idCompania, $filtroEstado)
+	{
+		// -------------------------------------------
         //  A C T A S   D E   R E U N I O N 
         // -------------------------------------------
         $actividadesgrupoapoyo = DB::select(
@@ -495,11 +536,233 @@ class PlanTrabajoController extends Controller
             on agpd.ActaGrupoApoyo_idActaGrupoApoyo = agp.idActaGrupoApoyo
             left join grupoapoyo ga
             on ga.idGrupoApoyo = agp.GrupoApoyo_idGrupoApoyo
-            Where  agp.Compania_idCompania = '.$idCompania .' 
+            Where  agp.Compania_idCompania = '.$idCompania .'
             Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
-        return view('plantrabajo', compact('accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo','actividadesgrupoapoyo'));
+			imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $filtroEstado);
+	}
+
+
+	#RECIBO LA CONSULTA QUE LLEGA DESDE EL CONTROLADOR Y CONVIERTO DE ARRAY A STRING
+	$plan = array();
+	$idCompania = \Session::get('idCompania');
+  		// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+       for ($i = 0, $c = count($plantrabajo); $i < $c; ++$i) 
+       {
+          $plan[$i] = (array) $plantrabajo[$i];
+       }
+
+
+    #OBTENGO EL NUMERO Y EL NOMBRE DEL MES PASADO
+    $mes = '06';//date('m');
+    $añoInicial = date('Y');
+    $añoFinal = date('Y');
+    $mesInicial = $mes - $plan[0]["filtroMesesPasadosPlanTrabajoAlerta"];
+    $mesFinal = $mes + $plan[0]["filtroMesesFuturosPlanTrabajoAlerta"];
+    if($mesInicial > 12)
+    {
+        $mesInicial -= 12;
+        $añoInicial += 1;
+    }
+
+    if($mesFinal > 12)
+    {
+        $mesFinal -= 12;
+        $añoFinal += 1;
+    }
+
+    $meses = array('', 'enero','febrero','marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
+    $nombreMesPasado = $meses[$mesInicial];
+    $nombreMesFuturo = $meses[$mesFinal];
+
+    $fechaInicial = $añoInicial.'-'. str_repeat ( '0' , 2 - strlen($mesInicial)).$mesInicial.'-01';
+    $fechaFinal  = date('Y-m-d', strtotime($añoFinal.'-'.$mesFinal.' last day')); 
+
+    // echo $fechaInicial.'-'.$fechaFinal;
+    // $fechaPasada = strtotime ('-'.$plan[0]["filtroMesesPasadosPlanTrabajoAlerta"].' month',strtotime($fecha));
+    // $fechaPasada = date ('Y-m-j',$fechaPasada);
+    // $mesFechaPasada = date("m", strtotime($fechaPasada));  
+    // setlocale(LC_TIME, 'spanish');  
+    // $nombreMesPasado = strftime("%B",mktime(0, 0, 0, $mesFechaPasada, 1, 2000)); 
+
+    // #OBTENGO EL NUMERO Y EL NOMBRE DEL MES FUTURO
+    // $fechaFuturo = strtotime ('+'.$plan[0]["filtroMesesFuturosPlanTrabajoAlerta"].' month',strtotime($fecha));
+    // $fechaFuturo = date ( 'Y-m-j' , $fechaFuturo );
+    // $mesFechaFuturo = date("m", strtotime($fechaFuturo));  
+    // setlocale(LC_TIME, 'spanish');  
+    // $nombreMesFuturo = strftime("%B",mktime(0, 0, 0, $mesFechaFuturo, 1, 2000)); 
+
+    // echo $nombreMesPasado.'-'.$nombreMesFuturo;
+
+    #DEPENDIENDO DEL MODULO GUARDADO EN ESTE REGISTRO, REALIZO LA CONSULTA Y DESDE LA MISMA IMPRIMO EL INFORME
+    for ($i=0; $i < count($plan) ; $i++) 
+    { 
+        $filtroEstado = $plan[0]['filtroEstadosPlanTrabajoAlerta'];
+
+   		if ($plan[$i]['Modulo_idModulo'] == 3) 
+        {
+            consultarAccidente($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 9) 
+        {
+       		consultarGrupoApoyo($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 43) 
+        {
+       		consultarActividadGrupoApoyo($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 22) 
+        {
+            consultarExamen($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 24) 
+        {
+            consultarInspeccion($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 32) 
+        {
+            consultarAuditoria($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 36) 
+        {
+            consultarCapacitacion($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 40) 
+        {
+            consultarPrograma($idCompania, $filtroEstado);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 30) 
+        {
+            consultarMatriz($idCompania, $filtroEstado);
+        }
     }
 
 
-}
+   	#EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
+   	function colorTarea($valorTarea, $valorCumplido, $filtroEstado)
+	{
+
+		$icono = '';	
+		$tool = 'Tareas Pendientes : '.number_format($valorTarea,0,'.',',')."\n".
+				'Tareas Realizadas : '.number_format($valorCumplido,0,'.',',');	
+		$etiqueta = '';
+
+		if($valorTarea != $valorCumplido and $valorCumplido != 0)
+		{
+
+            if (strpos($filtroEstado,'2') !== false) 
+            {
+    			$icono = 'Amarillo.png';
+    			$etiqueta = '<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';
+            }
+            else
+            {
+                $icono = '';
+            }
+		}
+
+		elseif($valorTarea == $valorCumplido and $valorTarea != 0)
+		{
+            if (strpos($filtroEstado,'3') !== false) 
+			$icono = 'Verde.png';
+            else
+                $icono = '';
+		}
+
+		elseif($valorTarea > 0 and $valorCumplido == 0)
+		{
+            if (strpos($filtroEstado,'1') !== false) 
+                $icono = 'Rojo.png';    
+			else
+                $icono = '';
+		}
+
+		if($valorTarea != 0 or $valorCumplido != 0)
+		{
+            if ($icono == '') 
+            {
+                $icono = '';
+            }
+            else
+            {
+                $icono =    '<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
+                                <img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/'.$icono.'"  width="30">
+                            </a>'.$etiqueta;        
+            }
+			
+		}
+		return $icono;
+	}
+
+   function imprimirTabla($titulo, $informacion, $idtabla, $filtroEstado, $fechaInicial, $fechaFinal)
+   {
+   		$tabla = '';
+
+   		$tabla .= '
+   		<div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
+              </h4>
+            </div>
+            <div id="'.$idtabla.'" class="panel-collapse"> <div class="panel-body" style="overflow:auto;">
+                <table  class="table table-striped table-bordered table-hover" style="width:100%;" >
+					<thead class="thead-inverse">
+						<tr class="table-info">
+							<th scope="col" width="30%">&nbsp;</th>';
+							   
+							$inicio = $fechaInicial;
+                            $anioAnt = date("Y", strtotime($inicio));
+                            while($inicio < $fechaFinal)
+                            {
+                                // adicionamos la columna del mes
+                                $tabla .= '<th >'. nombreMes($inicio).'</th>';
+                                //Avanzamos al siguiente mes
+                                $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+                            }
+
+                
+						$tabla .= '</tr>
+    					</thead>
+    					<tbody>';
+
+                    foreach($informacion as $dato)
+                            {
+                                $tabla .='<tr align="center">
+                                    <th scope="row">'.$dato->descripcionTarea.'</th>';
+                               
+                                $inicio = $fechaInicial;
+                                $anioAnt = date("Y", strtotime($inicio));
+                                while($inicio < $fechaFinal)
+                                {
+                                    $resultado = '$tarea = '.'$dato->'.nombreMes($inicio).'T;';
+                                    eval("$resultado");
+
+                                    $resultado = '$cumplido = '.'$dato->'.nombreMes($inicio).'C;';
+                                    eval("$resultado");
+
+                                    // adicionamos la columna del mes
+                                    $tabla .= '<td >'. colorTarea($tarea, $cumplido, $filtroEstado).'</td>';
+                                    //Avanzamos al siguiente mes
+                                    $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+                                }
+
+                
+                        $tabla .= '</tr>';
+                            }
+
+
+		$tabla.='	</tbody>
+				</table>
+	          </div> 
+	        </div>
+	      </div>';
+
+	    echo $tabla;
+   }
+
+       
+
+	?>
+	{!!Form::close()!!}
+@stop

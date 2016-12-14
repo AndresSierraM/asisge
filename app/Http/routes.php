@@ -174,6 +174,7 @@ Route::group(['middleware' => 'auth'], function ()
     // Rutas de Encuestas
     // *************************************
     Route::resource('encuesta','EncuestaController');
+    Route::resource('encuestapublicacion','EncuestaPublicacionController');
     
     // *************************************************
     //
@@ -755,6 +756,10 @@ Route::post('llenarEducacionCargo', function()
 Route::get('datosEncuesta', function()
 {
     include public_path().'/ajax/datosEncuesta.php';
+});
+Route::get('datosEncuestaPublicacion', function()
+{
+    include public_path().'/ajax/datosEncuestaPublicacion.php';
 });
 
 

@@ -12,7 +12,7 @@ function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAc
     {
         $indice = array(
             'ReporteACPM_idReporteACPM' => $reporte, 
-            'fechaReporteACPMDetalle' => $fechaAccion,
+            // 'fechaReporteACPMDetalle' => $fechaAccion,
             'Modulo_idModulo' => $idModulo,
             'tipoReporteACPMDetalle' => $tipoAccion,
             'descripcionReporteACPMDetalle' => $descripcionAccion);
@@ -47,7 +47,7 @@ function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAc
 
         $indice = array(
             'ReporteACPM_idReporteACPM' => $reporte, 
-            'fechaReporteACPMDetalle' => $fechaAccion,
+            // 'fechaReporteACPMDetalle' => $fechaAccion,
             'Modulo_idModulo' => $idModulo,
             'tipoReporteACPMDetalle' => $tipoAccion,
             'descripcionReporteACPMDetalle' => $descripcionAccion);
@@ -55,7 +55,7 @@ function guardarReporteACPM($fechaAccion, $idModulo, $tipoAccion, $descripcionAc
         $data = array(
             'ReporteACPM_idReporteACPM' => $reporte,
             'ordenReporteACPMDetalle' => 0,
-            'fechaReporteACPMDetalle' => $fechaAccion,
+            // 'fechaReporteACPMDetalle' => $fechaAccion,
             'Proceso_idProceso' => NULL,
             'Modulo_idModulo' => $idModulo,
             'tipoReporteACPMDetalle' => $tipoAccion,
