@@ -49,7 +49,6 @@ class PlanTrabajoAlertaController extends Controller
      */
     public function store(PlanTrabajoAlertaRequest $request)
     {
-        return;
         // se agrega un if para la condicion de que el usuario ingresa el primer campo tareaFechaInicioPlanTrabajoAlerta para saber en que calendario esta trabajando
         if($request ['tareaFechaInicioPlanTrabajoAlertaDia'] != '')
         {
