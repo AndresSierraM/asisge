@@ -29,8 +29,15 @@ class PlanTrabajoAlertaRequest extends Request
          "correoParaPlanTrabajoAlerta" => "required|string",
          "correoAsuntoPlanTrabajoAlerta" => "required|string",
          "correoMensajePlanTrabajoAlerta" => "required|string",
-          "correoMensajePlanTrabajoAlerta" => "required|string"
+          "correoMensajePlanTrabajoAlerta" => "required|string",
+          "filtroMesesPasadosPlanTrabajoAlerta" => "required|int|min:0",
+          "filtroMesesFuturosPlanTrabajoAlerta" => "required|int|min:0"
+
+
+
 
          ];
+
+
     }
 }

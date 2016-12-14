@@ -12,6 +12,7 @@
 
  var alertaplan = '<?php echo (isset($plantrabajoalerta) ? json_encode($plantrabajoalerta->planTrabajoAlertaModulo) : "");?>';
     alertaplan = (alertaplan != '' ? JSON.parse(alertaplan) : '');
+    console.log(alertaplan);
 
   var valorModelo = [0,''];
   $(document).ready(function(){
@@ -22,21 +23,21 @@
     PlanTrabajoAlertaModulo.campoEliminacion = 'idsborrados';//hermanitas         Cuando se utilice la funcionalidad 
     PlanTrabajoAlertaModulo.botonEliminacion = true;//hermanitas
     // despues del punto son las propiedades que se le van adicionar al objeto
-    PlanTrabajoAlertaModulo.campos = ['idPlanTrabajoAlertaModulo ','Modulo_idModulo']; //[arrays ]
+    PlanTrabajoAlertaModulo.campos = ['idPlanTrabajoAlertaModulo','Modulo_idModulo','PlanTrabajoAlerta_idPlanTrabajoAlerta']; //[arrays ]
     PlanTrabajoAlertaModulo.altura = '35px;';
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-    PlanTrabajoAlertaModulo.etiqueta = ['input','select'];
-    PlanTrabajoAlertaModulo.tipo = ['hidden','']; //tip hidden - oculto para el usuario  y los otros quedan visibles ''
-    PlanTrabajoAlertaModulo.estilo = ['','width: 1050px;height:35px;'];	
+    PlanTrabajoAlertaModulo.etiqueta = ['input','select','input'];
+    PlanTrabajoAlertaModulo.tipo = ['hidden','','hidden']; //tip hidden - oculto para el usuario  y los otros quedan visibles ''
+    PlanTrabajoAlertaModulo.estilo = ['','width: 1050px;height:35px;',''];	
 
     // estas propiedades no son muy usadas PERO SON UToILES
     
-    PlanTrabajoAlertaModulo.clase = ['',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
-    PlanTrabajoAlertaModulo.sololectura = [false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
-    PlanTrabajoAlertaModulo.completar = ['off','off']; //autocompleta 
+    PlanTrabajoAlertaModulo.clase = ['','', ''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+    PlanTrabajoAlertaModulo.sololectura = [false,false, false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+    PlanTrabajoAlertaModulo.completar = ['off','off', 'off']; //autocompleta 
     
-    PlanTrabajoAlertaModulo.opciones = ['',modulos]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-    PlanTrabajoAlertaModulo.funciones  = ['','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+    PlanTrabajoAlertaModulo.opciones = ['',modulos, '']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+    PlanTrabajoAlertaModulo.funciones  = ['','', '']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
     for(var j=0, k = alertaplan.length; j < k; j++)
       {
@@ -105,6 +106,7 @@
 			         </span>
 			             {!!Form::text('correoParaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>''])!!}
 			             {!!Form::hidden('idPlanTrabajoAlerta', null, array('id' => 'idPlanTrabajoAlerta')) !!}
+			             {!!Form::hidden('idsborrados', null, array('id' => 'idsborrados')) !!}
 			     </div>
 			</div>
 		</div>

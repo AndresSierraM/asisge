@@ -176,14 +176,21 @@ class PlanTrabajoAlertaController extends Controller
         $plantrabajoalerta->fill($request->all());
         $plantrabajoalerta->save();
 
+        $idsEliminar = explode("," , $request['idsborrados']);
+        //Eliminar registros de la multiregistro
+        \App\PlanTrabajoAlertaModulo::whereIn('idPlanTrabajoAlertaModulo', $idsEliminar)->delete();
         // Guardamos el detalle de los modulos
         for($i = 0; $i < count($request['Modulo_idModulo']); $i++)
         {
-            \App\PlanTrabajoAlertaModulo::create([
+             $indice = array(
+                'idPlanTrabajoAlertaModulo' => $request['idPlanTrabajoAlertaModulo'][$i]);
+
+            $data = array(
                 'PlanTrabajoAlerta_idPlanTrabajoAlerta' => $id,
-                'Modulo_idModulo' => $request['Modulo_idModulo'][$i]
-               ]); 
-        }
+                'Modulo_idModulo' => $request['Modulo_idModulo'][$i]);
+
+            $guardar = \App\PlanTrabajoAlertaModulo::updateOrCreate($indice, $data);
+        } 
 
         return redirect('plantrabajoalerta');
     }
