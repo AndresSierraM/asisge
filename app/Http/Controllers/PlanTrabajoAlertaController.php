@@ -146,7 +146,7 @@ class PlanTrabajoAlertaController extends Controller
      */
     public function edit($id)
     {
-
+        
         $plantrabajoalerta = \App\PlanTrabajoAlerta::find($id);
          $idModulo= \App\Modulo::All()->lists('idModulo');
          $nombreModulo= \App\Modulo::All()->lists('nombreModulo');

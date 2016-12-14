@@ -23,15 +23,17 @@
                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="0"><label> Descripción</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> % Peso</label></a></li>
                         </ul>
                     </div>
                     
-                    <table id="tperfilcargoSelect" name="tperfilcargoSelect" class="display table-bordered" width="100%">
+                    <table id="tcargoformacionSelect" name="tcargoformacionSelect" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
 
                                 <th><b>ID</b></th>
                                 <th><b>Descripción</b></th>
+                                <th><b>% Peso</b></th>
                               
                             </tr>
                         </thead>
@@ -40,6 +42,7 @@
 
                                 <th>ID</th>
                                 <th>Descripción</th>
+                                <th>% Peso</th>
                                
                             </tr>
                         </tfoot>
@@ -61,12 +64,12 @@
     $(document).ready( function () {
 
         var lastIdx = null;
-        var table = $('#tperfilcargoSelect').DataTable( {
+        var table = $('#tcargoformacionSelect').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosEducacionSelect')!!}",
+            "ajax": "{!! URL::to ('/datosFormacionEntrevistaSelect')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -103,7 +106,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tperfilcargoSelect tbody')
+        $('#tcargoformacionSelect tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -118,15 +121,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tperfilcargoSelect tfoot th').each( function () {
+    $('#tcargoformacionSelect tfoot th').each( function () {
         
-        var title = $('#tperfilcargoSelect thead th').eq( $(this).index() ).text();
+        var title = $('#tcargoformacionSelect thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         
     } );
  
     // DataTable
-    var table = $('#tperfilcargoSelect').DataTable();
+    var table = $('#tcargoformacionSelect').DataTable();
  
     // Apply the search
     table.columns().every( function () {
@@ -141,7 +144,7 @@
         } );
     })
 
-    $('#tperfilcargoSelect tbody').on( 'click', 'tr', function () {
+    $('#tcargoformacionSelect tbody').on( 'click', 'tr', function () {
         $(this).toggleClass('selected');
 
         var datos = table.rows('.selected').data();
@@ -154,12 +157,10 @@
 
         for (var i = 0; i < datos.length; i++) 
         {
-
-
             var valores = new Array(0, datos[i][0],datos[i][1],0);
-            window.parent.Educacionentrevista.agregarCampos(valores,'A');  
+            window.parent.Formacionentrevista.agregarCampos(valores,'A');  
         }
-        window.parent.$("#ModalEducacion").modal("hide");
+        window.parent.$("#ModalFormacionEntrevista").modal("hide");
     });
 
     

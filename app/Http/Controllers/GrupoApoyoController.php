@@ -28,6 +28,15 @@ class GrupoApoyoController extends Controller
             return view('accesodenegado');
     }
 
+
+  public function indexGrupoApoyoGrid()
+    {
+        return view('grupoapoyogridSelect');
+        
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -58,6 +67,28 @@ class GrupoApoyoController extends Controller
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
+
+
+
+// en esta parte es el guardado de la multiregistro descripcion
+         //Primero consultar el ultimo id guardado
+         $grupoapoyo = \App\GrupoApoyo::All()->last(); 
+         //for para guardar cada registro de la multiregistro
+
+         for ($i=0; $i < count($request['Rol_idRol']); $i++) 
+         { 
+             \App\GrupoApoyoPermiso::create([
+            'GrupoApoyo_idGrupoApoyo' => $grupoapoyo->idGrupoApoyo,
+            'Rol_idRol' => $request['Rol_idRol'][$i],
+            'adicionarGrupoApoyoPermiso' => $request['adicionarGrupoApoyoPermiso'][$i],
+            'modificarGrupoApoyoPermiso' => $request['modificarGrupoApoyoPermiso'][$i],
+            'eliminarGrupoApoyoPermiso' => $request['eliminarGrupoApoyoPermiso'][$i],
+            'consultarGrupoApoyoPermiso' => $request['consultarGrupoApoyoPermiso'][$i],
+
+
+            ]);
+         }
+
         return redirect('/grupoapoyo');
     }
 
@@ -79,13 +110,16 @@ class GrupoApoyoController extends Controller
      * @return Response
      */
     public function edit($id)
-    {
+    {  
         $grupoApoyo = \App\GrupoApoyo::find($id);
         $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
 
         return view('grupoapoyo', compact('frecuenciaMedicion'), ['grupoApoyo'=>$grupoApoyo]);
     }
 
+
+
+        
     /**
      * Update the specified resource in storage.
      *

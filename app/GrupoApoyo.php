@@ -13,4 +13,10 @@ class GrupoApoyo extends Model
 
     public $timestamps = false;
 
+
+     public function GrupoApoyoPermiso()
+	{
+		return $this->hasMany('App\GrupoApoyoPermiso','GrupoApoyo_idGrupoApoyo');
+	}
+
 }
