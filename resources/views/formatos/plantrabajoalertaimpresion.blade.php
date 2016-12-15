@@ -10,36 +10,36 @@ function nombreMes($fecha)
 {
 
     $mes = (int) date("m", strtotime($fecha));
-     $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+    $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
     return $meses[$mes];
 }
 
 	function consultarAccidente($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
 	{
-            // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
-            // independiente
-            // ------------------------------------------------
-            // Enero    Febrero     Marzo   Abril......
-            // ------------------------------------------------
-            $inicio = $fechaInicial;
-            $anioAnt = date("Y", strtotime($inicio));
-            $columnas = '';
-            while($inicio < $fechaFinal)
-            {
+        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+        // independiente
+        // ------------------------------------------------
+        // Enero    Febrero     Marzo   Abril......
+        // ------------------------------------------------
+        $inicio = $fechaInicial;
+        $anioAnt = date("Y", strtotime($inicio));
+        $columnas = '';
+        while($inicio < $fechaFinal)
+        {
 
-                // adicionamos la columna del mes
-               
-                $columnas .= "SUM(IF((MONTH(fechaElaboracionAusentismo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionAusentismo) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).'T, ';
+            // adicionamos la columna del mes
+           
+            $columnas .= "SUM(IF((MONTH(fechaElaboracionAusentismo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionAusentismo) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).$anioAnt.'T, ';
 
-                $columnas .= "SUM(IF((MONTH(fechaElaboracionAusentismo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionAusentismo) =  '".date("Y", strtotime($inicio))."'), IF(Acc.idAccidente IS NULL, 0, 1), 0)) as ". nombreMes($inicio).'C, ';
-                
+            $columnas .= "SUM(IF((MONTH(fechaElaboracionAusentismo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionAusentismo) =  '".date("Y", strtotime($inicio))."'), IF(Acc.idAccidente IS NULL, 0, 1), 0)) as ". nombreMes($inicio).$anioAnt.'C, ';
+            
 
-                //Avanzamos al siguiente mes
-                $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
-            }
+            //Avanzamos al siguiente mes
+            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+        }
 
-            // Quitamos la ultima coma del concatenado de columnas
-            $columnas = substr($columnas,0, strlen($columnas)-2);
+        // Quitamos la ultima coma del concatenado de columnas
+        $columnas = substr($columnas,0, strlen($columnas)-2);
 
 
 
@@ -59,41 +59,43 @@ function nombreMes($fecha)
                 Aus.Compania_idCompania = '.$idCompania .' 
             group by Aus.Tercero_idTercero;');
 
-        imprimirTabla('Accidente', $accidente, 'accidente', $filtroEstado, $fechaInicial, $fechaFinal);
+        return imprimirTabla('Accidente', $accidente, 'accidente', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
-	function consultarAuditoria($idCompania, $filtroEstado)
+	function consultarAuditoria($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
 	{
+        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+        // independiente
+        // ------------------------------------------------
+        // Enero    Febrero     Marzo   Abril......
+        // ------------------------------------------------
+        $inicio = $fechaInicial;
+        $anioAnt = date("Y", strtotime($inicio));
+        $columnas = '';
+        while($inicio < $fechaFinal)
+        {
+
+            // adicionamos la columna del mes
+           
+            $columnas .= "SUM(IF((MONTH(fechaPlanAuditoriaAgenda) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlanAuditoriaAgenda) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).$anioAnt.'T, ';
+
+            $columnas .= "SUM(IF((MONTH(fechaPlanAuditoriaAgenda) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlanAuditoriaAgenda) =  '".date("Y", strtotime($inicio))."'), IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as ". nombreMes($inicio).$anioAnt.'C, ';
+            
+
+            //Avanzamos al siguiente mes
+            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+        }
+
+        // Quitamos la ultima coma del concatenado de columnas
+        $columnas = substr($columnas,0, strlen($columnas)-2);
+
 		// -------------------------------------------
         // P L A N   D E   A U D I T O R I A
         // -------------------------------------------
         $auditoria = DB::select(
             'SELECT nombreProceso as descripcionTarea,
                 idPlanAuditoria as idConcepto,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 1, 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 1, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as EneroC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 2, 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 2, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as FebreroC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 3, 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 3, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as MarzoC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 4, 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 4, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as AbrilC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 5, 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 5, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as MayoC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 6, 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 6, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as JunioC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 7, 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 7, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as JulioC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 8, 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 8, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as AgostoC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 9, 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 9, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as SeptiembreC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 10, 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 10, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as OctubreC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 11, 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 11, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as NoviembreC,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 12, 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaPlanAuditoriaAgenda) = 12, IF(LC.idListaChequeo IS NULL, 0, 1), 0)) as DiciembreC
+                '.$columnas.'
             From planauditoria PA
             left join planauditoriaagenda PAA
             on PA.idPlanAuditoria = PAA.PlanAuditoria_idPlanAuditoria
@@ -104,11 +106,37 @@ function nombreMes($fecha)
             Where  PA.Compania_idCompania = '.$idCompania .' 
             group by idPlanAuditoriaAgenda;');
 
-            imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $filtroEstado);
+            imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
-	function consultarCapacitacion($idCompania, $filtroEstado)
+	function consultarCapacitacion($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
 	{
+        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+        // independiente
+        // ------------------------------------------------
+        // Enero    Febrero     Marzo   Abril......
+        // ------------------------------------------------
+        $inicio = $fechaInicial;
+        $anioAnt = date("Y", strtotime($inicio));
+        $columnas = '';
+        while($inicio < $fechaFinal)
+        {
+
+            // adicionamos la columna del mes
+           
+            $columnas .= "SUM(IF((MONTH(fechaPlanCapacitacionTema) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlanCapacitacionTema) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).$anioAnt.'T, ';
+
+            $columnas .= "SUM(IF((MONTH(fechaPlanCapacitacionTema) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlanCapacitacionTema) =  '".date("Y", strtotime($inicio))."'), IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as ". nombreMes($inicio).$anioAnt.'C, ';
+            
+
+            //Avanzamos al siguiente mes
+            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+        }
+
+        // Quitamos la ultima coma del concatenado de columnas
+        $columnas = substr($columnas,0, strlen($columnas)-2);
+
+
 		// -------------------------------------------
         //  P L A N   D E   C A P A C I T A C I O N
         // -------------------------------------------
@@ -116,30 +144,7 @@ function nombreMes($fecha)
         $capacitacion = DB::select(
             'SELECT nombrePlanCapacitacion  as descripcionTarea,
                 idPlanCapacitacion as idConcepto,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 1, 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 1, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as EneroC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 2, 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 2, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as FebreroC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 3, 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 3, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as MarzoC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 4, 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 4, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as AbrilC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 5, 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 5, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as MayoC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 6, 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 6, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as JunioC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 7, 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 7, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as JulioC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 8, 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 8, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as AgostoC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 9, 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 9, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as SeptiembreC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 10, 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 10, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as OctubreC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 11, 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 11, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as NoviembreC,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 12, 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaPlanCapacitacionTema) = 12, IF(ACT.ActaCapacitacion_idActaCapacitacion IS NULL, 0, 1), 0)) as DiciembreC
+                '.$columnas.'
             From plancapacitacion PC
             left join plancapacitaciontema PCT
             on PC.idPlanCapacitacion = PCT.PlanCapacitacion_idPlanCapacitacion
@@ -154,53 +159,54 @@ function nombreMes($fecha)
             on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
             Where  PC.Compania_idCompania = '.$idCompania .' 
             group by idPlanCapacitacion');
-            imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $filtroEstado);
+            imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
-	function consultarPrograma($idCompania, $filtroEstado)
-	{
+	function consultarPrograma($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
+    {
+        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+        // independiente
+        // ------------------------------------------------
+        // Enero    Febrero     Marzo   Abril......
+        // ------------------------------------------------
+        $inicio = $fechaInicial;
+        $anioAnt = date("Y", strtotime($inicio));
+        $columnas = '';
+        while($inicio < $fechaFinal)
+        {
+
+            // adicionamos la columna del mes
+           
+            $columnas .= "SUM(IF((MONTH(fechaPlaneadaProgramaDetalle) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlaneadaProgramaDetalle) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).$anioAnt.'T, ';
+
+            $columnas .= "SUM(IF((MONTH(fechaPlaneadaProgramaDetalle) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlaneadaProgramaDetalle) =  '".date("Y", strtotime($inicio))."'), IF(fechaEjecucionProgramaDetalle IS NULL, 0, 1), 0)) as ". nombreMes($inicio).$anioAnt.'C, ';
+            
+
+            //Avanzamos al siguiente mes
+            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+        }
+
+        // Quitamos la ultima coma del concatenado de columnas
+        $columnas = substr($columnas,0, strlen($columnas)-2);
+
+
 		// -------------------------------------------
         //  P R O G R A M A S   /   A C T I V I D A D E S
         // -------------------------------------------
         $programa = DB::select(
             'SELECT nombrePrograma  as descripcionTarea,
                 idPrograma as idConcepto,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 1, 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 1, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as EneroC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 2, 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 2, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as FebreroC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 3, 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 3, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as MarzoC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 4, 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 4, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as AbrilC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 5, 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 5, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as MayoC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 6, 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 6, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as JunioC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 7, 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 7, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as JulioC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 8, 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 8, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as AgostoC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 9, 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 9, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as SeptiembreC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 10, 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 10, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as OctubreC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 11, 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 11, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as NoviembreC,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 12, 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaPlaneadaProgramaDetalle) = 12, IF(fechaEjecucionProgramaDetalle IS NULL OR fechaEjecucionProgramaDetalle  = "0000-00-00", 0, 1), 0)) as DiciembreC,
-                SUM(recursoPlaneadoProgramaDetalle) as PresupuestoT,
-                SUM(recursoEjecutadoProgramaDetalle) as PresupuestoC
+                '.$columnas.'
             From programa P
             left join programadetalle PD
             on P.idPrograma = PD.Programa_idPrograma
             Where  P.Compania_idCompania = '.$idCompania .' 
             Group by idPrograma');
 
-            imprimirTabla('Programas', $programa, 'programa', $filtroEstado);   
+            imprimirTabla('Programas', $programa, 'programa', $filtroEstado, $fechaInicial, $fechaFinal);   
 	}
 
-	function consultarExamen($idCompania, $filtroEstado)
+	function consultarExamen($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
 	{
 		// -------------------------------------------
         //  E X A M E N E S   M E D I C O S
@@ -282,7 +288,7 @@ function nombreMes($fecha)
             ) Examen
             group by nombreTipoExamenMedico, idTercero
             order by nombreTipoExamenMedico');
-            imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen', $filtroEstado);
+            imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
 	function consultarInspeccion($idCompania, $filtroEstado)
@@ -325,7 +331,7 @@ function nombreMes($fecha)
             Where TI.Compania_idCompania = '.$idCompania .' 
             group by idTipoInspeccion');
 
-            imprimirTabla('Inspección', $inspeccion, 'inspeccion', $filtroEstado);
+            imprimirTabla('Inspección', $inspeccion, 'inspeccion', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
 	function consultarMatriz($idCompania, $filtroEstado)
@@ -334,7 +340,7 @@ function nombreMes($fecha)
         //  M A T R I Z   L E G A L
         // -------------------------------------------
         $matrizlegal = DB::select(
-            '           SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
+            'SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
                         idMatrizLegal as idConcepto,
                 SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 1, 1, 0 )) as EneroC,
@@ -400,7 +406,7 @@ function nombreMes($fecha)
             Where MR.Compania_idCompania = '.$idCompania .' 
             group by idMatrizRiesgo');
 
-            imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal', $filtroEstado);
+            imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
 	function consultarGrupoApoyo($idCompania, $filtroEstado)
@@ -494,43 +500,43 @@ function nombreMes($fecha)
             on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
             group by idGrupoApoyo');
 
-            imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $filtroEstado);
+            imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
-	function consultarActividadGrupoApoyo($idCompania, $filtroEstado)
+	function consultarActividadGrupoApoyo($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
 	{
+        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+        // independiente
+        // ------------------------------------------------
+        // Enero    Febrero     Marzo   Abril......
+        // ------------------------------------------------
+        $inicio = $fechaInicial;
+        $anioAnt = date("Y", strtotime($inicio));
+        $columnas = '';
+        while($inicio < $fechaFinal)
+        {
+
+            // adicionamos la columna del mes
+           
+            $columnas .= "SUM(IF((MONTH(fechaPlaneadaActaGrupoApoyoDetalle) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlaneadaActaGrupoApoyoDetalle) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).$anioAnt.'T, ';
+
+            $columnas .= "SUM(IF((MONTH(fechaPlaneadaActaGrupoApoyoDetalle) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaPlaneadaActaGrupoApoyoDetalle) =  '".date("Y", strtotime($inicio))."'), IF(fechaEjecucionGrupoApoyoDetalle IS NULL, 0, 1), 0)) as ". nombreMes($inicio).$anioAnt.'C, ';
+            
+
+            //Avanzamos al siguiente mes
+            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+        }
+
+        // Quitamos la ultima coma del concatenado de columnas
+        $columnas = substr($columnas,0, strlen($columnas)-2);
+
 		// -------------------------------------------
         //  A C T A S   D E   R E U N I O N 
         // -------------------------------------------
         $actividadesgrupoapoyo = DB::select(
             'SELECT CONCAT(nombreGrupoApoyo, " - ", actividadGrupoApoyoDetalle) as descripcionTarea,
                 idActaGrupoApoyoDetalle as idConcepto,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 1, 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 1, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as EneroC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 2, 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 2, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as FebreroC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 3, 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 3, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as MarzoC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 4, 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 4, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as AbrilC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 5, 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 5, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as MayoC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 6, 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 6, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as JunioC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 7, 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 7, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as JulioC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 8, 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 8, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as AgostoC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 9, 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 9, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as SeptiembreC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 10, 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 10, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as OctubreC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 11, 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 11, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as NoviembreC,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 12, 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaPlaneadaActaGrupoApoyoDetalle) = 12, IF(fechaEjecucionGrupoApoyoDetalle IS NULL OR fechaEjecucionGrupoApoyoDetalle  = "0000-00-00", 0, 1), 0)) as DiciembreC,
-                SUM(recursoPlaneadoActaGrupoApoyoDetalle) as PresupuestoT,
-                SUM(recursoEjecutadoActaGrupoApoyoDetalle) as PresupuestoC
+                '.$columnas.'
             From actagrupoapoyodetalle agpd
             left join actagrupoapoyo agp
             on agpd.ActaGrupoApoyo_idActaGrupoApoyo = agp.idActaGrupoApoyo
@@ -539,7 +545,7 @@ function nombreMes($fecha)
             Where  agp.Compania_idCompania = '.$idCompania .'
             Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
-			imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $filtroEstado);
+			imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
 
 
@@ -554,7 +560,7 @@ function nombreMes($fecha)
 
 
     #OBTENGO EL NUMERO Y EL NOMBRE DEL MES PASADO
-    $mes = '06';//date('m');
+    $mes = date('m');
     $añoInicial = date('Y');
     $añoFinal = date('Y');
     $mesInicial = $mes - $plan[0]["filtroMesesPasadosPlanTrabajoAlerta"];
@@ -571,14 +577,17 @@ function nombreMes($fecha)
         $añoFinal += 1;
     }
 
-    $meses = array('', 'enero','febrero','marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
+    $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
     $nombreMesPasado = $meses[$mesInicial];
     $nombreMesFuturo = $meses[$mesFinal];
 
     $fechaInicial = $añoInicial.'-'. str_repeat ( '0' , 2 - strlen($mesInicial)).$mesInicial.'-01';
-    $fechaFinal  = date('Y-m-d', strtotime($añoFinal.'-'.$mesFinal.' last day')); 
+    $fechaFinal  = date("Y-m-d", mktime(0,0,0, $mesFinal+1, 0, $añoFinal));
 
-    // echo $fechaInicial.'-'.$fechaFinal;
+    // $fechaFinal  = date('Y-m-d', strtotime($añoFinal.'-'.$mesFinal.' last day')); 
+
+    // echo $fechaInicial.'-----------'.$fechaFinal;
+    // return;
     // $fechaPasada = strtotime ('-'.$plan[0]["filtroMesesPasadosPlanTrabajoAlerta"].' month',strtotime($fecha));
     // $fechaPasada = date ('Y-m-j',$fechaPasada);
     // $mesFechaPasada = date("m", strtotime($fechaPasada));  
@@ -595,47 +604,63 @@ function nombreMes($fecha)
     // echo $nombreMesPasado.'-'.$nombreMesFuturo;
 
     #DEPENDIENDO DEL MODULO GUARDADO EN ESTE REGISTRO, REALIZO LA CONSULTA Y DESDE LA MISMA IMPRIMO EL INFORME
+    $informe = '';
     for ($i=0; $i < count($plan) ; $i++) 
     { 
         $filtroEstado = $plan[0]['filtroEstadosPlanTrabajoAlerta'];
 
    		if ($plan[$i]['Modulo_idModulo'] == 3) 
         {
-            consultarAccidente($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
+            $informe .= consultarAccidente($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 9) 
         {
-       		consultarGrupoApoyo($idCompania, $filtroEstado);
+       		$informe .= consultarGrupoApoyo($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 43) 
         {
-       		consultarActividadGrupoApoyo($idCompania, $filtroEstado);
+       		consultarActividadGrupoApoyo($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 22) 
         {
-            consultarExamen($idCompania, $filtroEstado);
+            consultarExamen($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 24) 
         {
-            consultarInspeccion($idCompania, $filtroEstado);
+            consultarInspeccion($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 32) 
         {
-            consultarAuditoria($idCompania, $filtroEstado);
+            consultarAuditoria($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 36) 
         {
-            consultarCapacitacion($idCompania, $filtroEstado);
+            consultarCapacitacion($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 40) 
         {
-            consultarPrograma($idCompania, $filtroEstado);
+            consultarPrograma($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 30) 
         {
-            consultarMatriz($idCompania, $filtroEstado);
+            consultarMatriz($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
     }
+    echo $informe ;
+
+
+    //creamos un archivo (fopen) extension htm
+
+    // escribimos en el archivo todo el HTML del informe (fputs)
+
+    // cerramos el archivo (fclose)
+
+
+
+    // enviamos un correo con la informacion de la tabla plantrabajoalerta y le adjuntamos el archivo que acabamos de crear
+
+    
+
 
 
    	#EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
@@ -726,7 +751,7 @@ function nombreMes($fecha)
     					</thead>
     					<tbody>';
 
-                    foreach($informacion as $dato)
+                            foreach($informacion as $dato)
                             {
                                 $tabla .='<tr align="center">
                                     <th scope="row">'.$dato->descripcionTarea.'</th>';
@@ -735,10 +760,10 @@ function nombreMes($fecha)
                                 $anioAnt = date("Y", strtotime($inicio));
                                 while($inicio < $fechaFinal)
                                 {
-                                    $resultado = '$tarea = '.'$dato->'.nombreMes($inicio).'T;';
+                                    $resultado = '$tarea = '.'$dato->'.nombreMes($inicio).$anioAnt.'T;';
                                     eval("$resultado");
 
-                                    $resultado = '$cumplido = '.'$dato->'.nombreMes($inicio).'C;';
+                                    $resultado = '$cumplido = '.'$dato->'.nombreMes($inicio).$anioAnt.'C;';
                                     eval("$resultado");
 
                                     // adicionamos la columna del mes
@@ -758,7 +783,7 @@ function nombreMes($fecha)
 	        </div>
 	      </div>';
 
-	    echo $tabla;
+	    return $tabla;
    }
 
        
