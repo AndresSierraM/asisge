@@ -12,7 +12,7 @@
 
  var alertaplan = '<?php echo (isset($plantrabajoalerta) ? json_encode($plantrabajoalerta->planTrabajoAlertaModulo) : "");?>';
     alertaplan = (alertaplan != '' ? JSON.parse(alertaplan) : '');
-    console.log(alertaplan);
+   
 
   var valorModelo = [0,''];
   $(document).ready(function(){
