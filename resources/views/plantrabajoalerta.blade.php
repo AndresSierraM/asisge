@@ -5,6 +5,47 @@
 
 {!!Html::script('js/plantrabajoalerta.js')!!}
 
+<?php 
+	$fechaDia = null;
+	$horaDia = null;
+	$intervaloDia = null;
+
+	$fechaSemana = null;
+	$horaSemana = null;
+	$intervaloSemana = null;
+
+	$fechaMes = null;
+	$horaMes = null;
+	
+if(isset($plantrabajoalerta))
+{
+
+	if($plantrabajoalerta->tareaDiasPlanTrabajoAlerta != '')
+	{
+		
+		$fechaSemana = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+		$horaSemana = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+		$intervaloSemana = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
+	}
+	else
+	{
+		if($plantrabajoalerta->tareaMesesPlanTrabajoAlerta != '')
+		{
+			
+			$fechaMes = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+		}
+		else
+		{
+			$fechaDia = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+			$horaDia = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
+		}
+	}
+}
+
+?>
+
 <script>
   // tomamos los valores de los modulos enviados desde el controlador, y los almacenamos en un array convertidos en formato json
   // para luego enviarlo como parametro al multiregistro en el campo descripcionModulo
@@ -182,7 +223,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('filtroMesesPasadosPlanTrabajoAlerta',1,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('filtroMesesPasadosPlanTrabajoAlerta',(isset($plantrabajoalerta) ? $plantrabajoalerta->filtroMesesPasadosPlanTrabajoAlerta : 1),['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					        </div>
 					 </div>
 					 </br></br></br>
@@ -195,7 +236,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('filtroMesesFuturosPlanTrabajoAlerta',1,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('filtroMesesFuturosPlanTrabajoAlerta',(isset($plantrabajoalerta )? $plantrabajoalerta->filtroMesesFuturosPlanTrabajoAlerta : 1),['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
 					         </div>
 					    </div>
@@ -274,7 +315,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaDia',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaDia',$fechaDia,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
 					          </div>
 					        </div>
@@ -289,7 +330,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-clock-o"></i>
 					              </span>
-					             {!!Form::text('tareaHoraPlanTrabajoAlertaDia',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaHoraPlanTrabajoAlertaDia',$horaDia,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
 				            	</div>
 				          	   </div>
 				        	</div>
@@ -313,7 +354,7 @@
 			              <span class="input-group-addon">
 			                <i class="fa fa-bars"></i>
 			              </span> 
-			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaDia',null,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
+			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaDia',$intervaloDia,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
 			              Días
 			              </span>
@@ -343,7 +384,7 @@
 					        <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					        </span>
-					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaSemana',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaSemana',$fechaSemana,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					     </div>
 					 </div>
 				</div>
@@ -356,7 +397,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					              {!!Form::text('tareaHoraPlanTrabajoAlertaSemana',null,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
+					              {!!Form::text('tareaHoraPlanTrabajoAlertaSemana',$horaSemana,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
 					         </div>
 					     </div>
 					  </div>
@@ -371,7 +412,7 @@
 			              <span class="input-group-addon">
 			                <i class="fa fa-bars"></i>
 			              </span> 
-			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',null,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
+			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',$intervaloSemana,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
 			              Semanas
 			              </span>
@@ -590,6 +631,7 @@
     $('#tareaFechaInicioPlanTrabajoAlertaDia').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
+
     $('#tareaFechaInicioPlanTrabajoAlertaSemana').datetimepicker(({
       format: "YYYY-MM-DD"
     }));

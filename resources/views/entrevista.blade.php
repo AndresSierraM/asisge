@@ -23,7 +23,6 @@ Cumplimiento = [valorCumple,NombreCumple];
 
 //VARIABLES
     
- 
 
  $(document).ready( function () {
 
@@ -124,7 +123,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                       <!-- Cedula aspirante -->
                                       <div class="form-group col-md-6" id='test'>
                                           {!!Form::label('documentoAspiranteEntrevista', 'Cedula', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -137,7 +136,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                             <!-- Estado Final -->
                                       <div class="form-group col-md-6" id='test'>
                                           {!!Form::label('estadoEntrevista ', 'Estado Final', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-bars "></i>
@@ -152,7 +151,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                               <!-- Cargo -->
                                       <div class="form-group col-md-6" id='test'>
                                           {!!Form::label('Cargo_idCargo ', 'Cargo', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-bars "></i>
@@ -167,12 +166,14 @@ Cumplimiento = [valorCumple,NombreCumple];
                                       </br>
                                       </br>
                                       </br>
+                                        </br>
+                                      </br>
 
 
                                            <!-- Nombre 1 aspirante -->
                                     <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('nombre1AspiranteEntrevista', 'Nombre 1', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('nombre1AspiranteEntrevista', 'Nombre1', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -185,8 +186,8 @@ Cumplimiento = [valorCumple,NombreCumple];
 
                                               <!-- Nombre 2 aspirante -->
                                     <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('nombre2AspiranteEntrevista', 'Nombre 2', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('nombre2AspiranteEntrevista', 'Nombre2', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -201,8 +202,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                         
                                                   <!-- Apellido 1 aspirante -->
                                     <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('apellido1AspiranteEntrevista', 'Apellido 1', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('apellido1AspiranteEntrevista', 'Apellido1', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -214,8 +215,8 @@ Cumplimiento = [valorCumple,NombreCumple];
 
                                                <!-- Apellido 2 aspirante -->
                                     <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('apellido2AspiranteEntrevista', 'Apellido 2', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('apellido2AspiranteEntrevista', 'Apellido2', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -228,7 +229,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                              <!--  Entrevistador --> 
                                       <div class="form-group col-md-6" id='test'>
                                           {!!Form::label('nombreEntrevistadorEntrevista', 'Entrevistador', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-bars "></i>
@@ -240,8 +241,8 @@ Cumplimiento = [valorCumple,NombreCumple];
 
                                         <!-- Fecha Entrevista -->
                                       <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('fechaEntrevista ', 'Fecha Entrevista ', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('fechaEntrevista ', 'F.Entrevista ', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -254,8 +255,8 @@ Cumplimiento = [valorCumple,NombreCumple];
 
                                        <!-- Experiencia en Años -->
                                       <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('experienciaAspiranteEntrevista ', 'Experiencia(Años)', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('experienciaAspiranteEntrevista ', 'Exp(Años)', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
@@ -268,12 +269,13 @@ Cumplimiento = [valorCumple,NombreCumple];
 
                                            <!-- Requerida -->
                                       <div class="form-group col-md-6" id='test'>
-                                          {!!Form::label('experienciaRequeridaEntrevista ', 'Experiencia Requerida', array('class' => 'col-sm-2 control-label')) !!}
-                                          <div class="col-sm-10">
+                                          {!!Form::label('experienciaRequeridaEntrevista ', 'Exp.Requerida', array('class' => 'col-sm-2 control-label')) !!}
+                                          <div class="col-sm-8">
                                             <div class="input-group">
                                               <span class="input-group-addon">
                                                 <i class="fa fa-user "></i>
                                               </span>
+                                              {!!Form::text('experienciaAspiranteEntrevista ',2,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
                                               
                                             </div>
                                           </div>
@@ -400,8 +402,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                 <div class="form-group">
                                                                     <div class="panel-body">
                                                                         <div class="form-group" id='test'>
-                                                                             {!!Form::label('telefonoEntrevistaPregunta', 'Telefono', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-7 ">
+                                                                             {!!Form::label('telefonoEntrevistaPregunta', 'Telefono', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-5 ">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-user"></i>
@@ -409,10 +411,9 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                                          {!!Form::text('telefonoEntrevistaPregunta',null,['class'=> 'form-control','placeholder'=>'Por favor Ingrese su telefono'])!!}
                                                                                  </div>
                                                                             </div>
-                                                                            </div>
 
                                                                             <div class="form-group" id='test'>
-                                                                             {!!Form::label('movilEntrevistaPregunta', 'Mòvil', array('class' => 'col-sm-1 control-label')) !!}
+                                                                             {!!Form::label('movilEntrevistaPregunta', 'Mòvil', array('class' => 'col-sm-2 control-label')) !!}
                                                                             <div class="col-sm-3">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
@@ -422,12 +423,14 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                                  </div>
                                                                             </div>
                                                                          </div>
+                                                                            </div>
+
                                                                          
 
                                                                           <!-- CORREO ELECTRONICO  -->
                                                                           <div class="form-group" id='test'>
-                                                                             {!!Form::label('correoElectronicoEntrevistaPregunta', 'Correo E', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-11">
+                                                                             {!!Form::label('correoElectronicoEntrevistaPregunta', 'Correo E', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-10">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-user"></i>
@@ -438,8 +441,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                          </div>
 
                                                                           <div class="form-group" id='test'>
-                                                                             {!!Form::label('direccionEntrevistaPregunta', 'Direccion', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-11">
+                                                                             {!!Form::label('direccionEntrevistaPregunta', 'Direccion', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-10">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-user"></i>
@@ -450,8 +453,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                          </div>
 
                                                                          <div class="form-group" id='test'>
-                                                                             {!!Form::label('Ciudad_idResidencia', 'Ciudad', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-11">
+                                                                             {!!Form::label('Ciudad_idResidencia', 'Ciudad', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-10">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-bars"></i>
@@ -473,8 +476,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                         
                                                                                    <!-- nombreConyugeEntrevistaPregunta  -->
                                                                           <div class="form-group" id='test'>
-                                                                             {!!Form::label('nombreConyugeEntrevistaPregunta', 'Nombre', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-11">
+                                                                             {!!Form::label('nombreConyugeEntrevistaPregunta', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-10">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-user"></i>
@@ -485,8 +488,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                          </div>
                                                                                         <!-- Ocupacion conyugue -->
                                                                           <div class="form-group" id='test'>
-                                                                             {!!Form::label('ocupacionConyugeEntrevistaPregunta', 'Ocupacion', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-11">
+                                                                             {!!Form::label('ocupacionConyugeEntrevistaPregunta', 'Ocupacion', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-10">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-user"></i>
@@ -497,8 +500,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                          </div>
                                                                                        <!--  Numero de Hijos Conyugue -->
                                                                          <div class="form-group" id='test'>
-                                                                             {!!Form::label('numeroHijosEntrevistaPregunta', 'Número Hijos', array('class' => 'col-sm-1 control-label')) !!}
-                                                                            <div class="col-sm-11">
+                                                                             {!!Form::label('numeroHijosEntrevistaPregunta', 'Número Hijos', array('class' => 'col-sm-2 control-label')) !!}
+                                                                            <div class="col-sm-10">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
                                                                                             <i class="fa fa-user"></i>
@@ -518,7 +521,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                                   <span class="glyphicon glyphicon-plus"></span>
                                                                                 </div>
                                                                                 <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Nombre</div>
-                                                                                <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Edad</div>
+                                                                                <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Edad</div>
                                                                                 <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Ocupación</div>
                                                                                
                                                                                   
@@ -526,7 +529,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                                 <!-- este es el div para donde van insertando los registros --> 
                                                                                 <div id="competencia_Modulo">
                                                                                 </div>
-                                                                              </div>
+                                                                                 </div>
                                                                             </div>
                                                                         </div>  
                                                                           </br>
@@ -536,7 +539,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                          
                                                                         <!-- Con quien vive   -->
                                                                           <div class="form-group" id='test'>
-                                                                             {!!Form::label('conQuienViveEntrevistaPregunta', 'Con quien Vive', array('class' => 'col-sm-1 control-label')) !!}
+                                                                             {!!Form::label('conQuienViveEntrevistaPregunta', 'Vive Con', array('class' => 'col-sm-1 control-label')) !!}
                                                                             <div class="col-sm-11">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
@@ -555,7 +558,7 @@ Cumplimiento = [valorCumple,NombreCumple];
           
                                                                                         <!--  Donde Vive -->
                                                                           <div class="form-group" id='test'>
-                                                                             {!!Form::label('dondeViveEntrevistaPregunta', ' Donde Vive', array('class' => 'col-sm-1 control-label')) !!}
+                                                                             {!!Form::label('dondeViveEntrevistaPregunta', ' DondeVive', array('class' => 'col-sm-1 control-label')) !!}
                                                                             <div class="col-sm-11">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
@@ -572,7 +575,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                                       
                                                                                        <!--  Ocupacion Actual -->
                                                                          <div class="form-group" id='test'>
-                                                                             {!!Form::label('ocupacionActualEntrevistaPregunta', 'Ocupación Actual', array('class' => 'col-sm-1 control-label')) !!}
+                                                                             {!!Form::label('ocupacionActualEntrevistaPregunta', 'Ocupación', array('class' => 'col-sm-1 control-label')) !!}
                                                                             <div class="col-sm-11">
                                                                               <div class="input-group">
                                                                                      <span class="input-group-addon">
@@ -655,7 +658,8 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                               </div>
                                                           </div>
                                           </div>
-                                 </div>                                                         
+                                 </div>  
+
                                                                                 
                                            </div>
                                     </div>
@@ -689,7 +693,7 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                           </div>
                                                         </div>
                                                       </div>
-                                                       <!-- Estudia Actualmente -->
+                                                       <!-- Que lo motivó elegir su carrera?  -->
                                                   
                                                     <div class="panel-body">
                                                      <font color = "000000">Que lo motivó elegir su carrera? </font>
@@ -697,6 +701,20 @@ Cumplimiento = [valorCumple,NombreCumple];
                                                           <div class="col-sm-10" style="width: 100%;">
                                                             <div class="input-group">
                                                               {!!Form::textarea('motivacionCarreraEntrevistaPregunta',null,['class'=>'ckeditor','placeholder'=>'motivacionCarreraEntrevistaPregunta'])!!}
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+
+
+                                                       <!--Cuales son sus expectativas de estudio? -->
+                                                  
+                                                    <div class="panel-body">
+                                                     <font color = "000000">Cuales son sus expectativas de estudio? </font>
+                                                    <div class="form-group" id='test'>
+                                                          <div class="col-sm-10" style="width: 100%;">
+                                                            <div class="input-group">
+                                                              {!!Form::textarea('expectativaEstudioEntrevistaPregunta',null,['class'=>'ckeditor','placeholder'=>'motivacionCarreraEntrevistaPregunta'])!!}
                                                             </div>
                                                           </div>
                                                         </div>
@@ -718,10 +736,63 @@ Cumplimiento = [valorCumple,NombreCumple];
                                     <div class="entrevista-container">
                                       <div class="panel panel-default" > 
 
-                                                  aspectos laborales       
+                                               <!-- Ultimo empleo -->
+                                                  
+                                                    <div class="panel-body">
+                                                     <font color = "000000">Cual fue el Último Empleo que tuvo?</font>
+                                                    <div class="form-group" id='test'>
+                                                          <div class="col-sm-10" style="width: 100%;">
+                                                            <div class="input-group">
+                                                              {!!Form::textarea('ultimoEmpleoEntrevistaPregunta',null,['class'=>'ckeditor','placeholder'=>'Cual fue el Último Empleo que tuvo?'])!!}
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                       <!-- Funciones Principales -->
+                                                  
+                                                    <div class="panel-body">
+                                                     <font color = "000000">Funciones Principales</font>
+                                                    <div class="form-group" id='test'>
+                                                          <div class="col-sm-10" style="width: 100%;">
+                                                            <div class="input-group">
+                                                              {!!Form::textarea('funcionesEmpleoEntrevistaPregunta',null,['class'=>'ckeditor','placeholder'=>'Digite sus Funciones Principales'])!!}
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                       <!-- Logros Obtenidos -->
+                                                  
+                                                    <div class="panel-body">
+                                                     <font color = "000000">Logros Obtenidos </font>
+                                                    <div class="form-group" id='test'>
+                                                          <div class="col-sm-10" style="width: 100%;">
+                                                            <div class="input-group">
+                                                              {!!Form::textarea('logrosEmpleoEntrevistaPregunta',null,['class'=>'ckeditor','placeholder'=>'Digite los logros Obtenidos'])!!}
+                                                            </div>
+                                                          </div>
+                                                        </div>
+
+                                                      </div>
+
+
+
+      
                                                                                 
-                                      </div>
+                                    
+                                                                <!-- PARA CAMBIARRRRRRRRRRRRRRRRRRRRRRRTERETREEH   -->
+                                                                          <div class="form-group" id='test'>
+                                                                             {!!Form::label('conQuienViveEntrevistaPregunta', 'Vive Con', array('class' => 'col-sm-1 control-label')) !!}
+                                                                            <div class="col-sm-11">
+                                                                              <div class="input-group">
+                                                                                     <span class="input-group-addon">
+                                                                                            <i class="fa fa-user"></i>
+                                                                                     </span>
+                                                                                         {!!Form::text('conQuienViveEntrevistaPregunta',null,['class'=> 'form-control','placeholder'=>'Por favor Ingrese Con quien Vive'])!!}
+                                                                                 </div>
+                                                                            </div>
+                                                                         </div>
                                      </div>
+                                       </div>   
                                </div>
                                             <!-- socialespersonalidad -->
                                  <div id="sociales" class="tab-panel fade" >
@@ -781,7 +852,7 @@ Cumplimiento = [valorCumple,NombreCumple];
 
 <script>
 
- CKEDITOR.replace(('estudioActualEntrevistaPregunta'), {
+ CKEDITOR.replace(('estudioActualEntrevistaPregunta','horarioEstudioEntrevistaPregunta','motivacionCarreraEntrevistaPregunta','expectativaEstudioEntrevistaPregunta','','',''), {
         fullPage: true,
         allowedContent: true
       }); 
