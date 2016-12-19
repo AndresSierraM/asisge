@@ -4,6 +4,24 @@
 	{!!Form::model($plantrabajo)!!}
 	<?php
 
+    function base64($archivo)
+    {
+      
+        $logo = '&nbsp;';
+        $fp = fopen($archivo,"r", 0);
+        if($archivo != '' and $fp)
+        {
+           $imagen = fread($fp,filesize($archivo));
+           fclose($fp);
+           // devuelve datos cifrados en base64
+           //  formatear $imagen usando la sem ntica del RFC 2045
+
+           $base64 = chunk_split(base64_encode($imagen));
+           $logo =  '<img src="data:image/png;base64,' . $base64 .'" alt="Texto alternativo" width="130px"/>';
+        }
+        return $logo;
+    }
+
 	#REALIZO TODAS LAS CONSULTAS QUE VAN AL PLAN DE TRABAJO HABITUAL
 
     function nombreMes($fecha)
