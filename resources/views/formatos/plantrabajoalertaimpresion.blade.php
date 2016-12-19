@@ -8,7 +8,7 @@
 
     function nombreMes($fecha)
     {
-
+//http://181.143.108.226:8000/plantrabajoalerta/1?accion=imprimir
         $mes = (int) date("m", strtotime($fecha));
         $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
         return $meses[$mes];
@@ -223,17 +223,28 @@
         $anioAnt = date("Y", strtotime($inicio));
         $columnas = '';
 
+
         while($inicio < $fechaFinal)
         {
-
-            // adicionamos la columna del mes
-
-            $columnas .= "SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '".date("m", strtotime($inicio))."' AND 
+            if (date("m", strtotime($inicio)) == '12')
+            {
+                $columnas .= "SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '".date("m", strtotime($inicio))."' AND 
+                        YEAR(fechaIngresoTerceroInformacion) = '".date("Y", strtotime($inicio))."' AND ING =1) OR 
+                        (MONTH(fechaRetiroTerceroInformacion) = '".date("m", strtotime($inicio))."' AND 
+                        YEAR(fechaIngresoTerceroInformacion) = '".date("Y", strtotime($inicio))."' AND RET = 1) OR 
+                        (MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')
+                      ), 1 , 0) OR (unidadFrecuenciaMedicion IN ('Años'))) as " . nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+                
+            }
+            else
+            {
+                $columnas .= "SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '".date("m", strtotime($inicio))."' AND 
                         YEAR(fechaIngresoTerceroInformacion) = '".date("Y", strtotime($inicio))."' AND ING =1) OR 
                         (MONTH(fechaRetiroTerceroInformacion) = '".date("m", strtotime($inicio))."' AND 
                         YEAR(fechaIngresoTerceroInformacion) = '".date("Y", strtotime($inicio))."' AND RET = 1) OR 
                         (MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')
                       ), 1 , 0)) as " . nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+            }
 
             $columnas .= "SUM(IF(MONTH(fechaExamenMedico) = '".date("m", strtotime($inicio))."' and  YEAR(fechaExamenMedico) =  '".date("Y", strtotime($inicio))."', 1, 0 )) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
             
@@ -245,7 +256,7 @@
         // Quitamos la ultima coma del concatenado de columnas
         $columnas = substr($columnas,0, strlen($columnas)-2);
 
-        $examen = DB::select(
+        $examen = DB::Select(
             'SELECT nombreTipoExamenMedico, descripcionTarea, 
                 idFrecuenciaMedicion as idConcepto,
                 '.$columnas.'
@@ -352,7 +363,7 @@
     //  M A T R I Z   L E G A L
     // -------------------------------------------
 
-	function consultarMatriz($idCompania, $filtroEstado$fechaInicial, $fechaFinal)
+	function consultarMatriz($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
     {
         // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
         // independiente
@@ -361,54 +372,33 @@
         // ------------------------------------------------
         $inicio = $fechaInicial;
         $anioAnt = date("Y", strtotime($inicio));
-        $columnas = '';
+        $columnasLegal = '';
+        $columnasRiesgo = '';
 
         while($inicio < $fechaFinal)
         {
             // adicionamos la columna del mes
-             $columnas .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
-
-             SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
+             $columnasLegal .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
                 
-            $columnas .= "SUM(IF((MONTH(fechaElaboracionInspeccion) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionInspeccion) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
+            $columnasLegal .= "SUM(IF((MONTH(fechaActualizacionMatrizLegal) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaActualizacionMatrizLegal) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
 
-            SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 1, 1, 0 )) as EneroC,
+            $columnasRiesgo .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+
+            $columnasRiesgo .= "SUM(IF((MONTH(fechaActualizacionMatrizRiesgo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaActualizacionMatrizRiesgo) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';      
 
             //Avanzamos al siguiente mes
             $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
         }
 
         // Quitamos la ultima coma del concatenado de columnas
-        $columnas = substr($columnas,0, strlen($columnas)-2);
+        $columnasLegal = substr($columnasLegal,0, strlen($columnasLegal)-2);
+        $columnasRiesgo = substr($columnasRiesgo,0, strlen($columnasRiesgo)-2);
 
 
         $matrizlegal = DB::select(
             'SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
                         idMatrizLegal as idConcepto,
-                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 1, 1, 0 )) as EneroC,
-                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 2, 1, 0 )) as FebreroC,
-                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 3, 1, 0 )) as MarzoC,
-                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 4, 1, 0 )) as AbrilC,
-                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 5, 1, 0 )) as MayoC,
-                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 6, 1, 0 )) as JunioC,
-                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 7, 1, 0 )) as JulioC,
-                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 8, 1, 0 )) as AgostoC,
-                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 9, 1, 0 )) as SeptiembreC,
-                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 10, 1, 0 )) as OctubreC,
-                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 11, 1, 0 )) as NoviembreC,
-                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 12, 1, 0 )) as DiciembreC
+                '.$columnasLegal.'
             FROM matrizlegal ML
             left join frecuenciamedicion FM
             on ML.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
@@ -419,30 +409,7 @@
             
             SELECT concat("Matriz Riesgo: ",nombreMatrizRiesgo) as descripcionTarea, 
                 idMatrizRiesgo as idConcepto,
-                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 1, 1, 0 )) as EneroC,
-                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 2, 1, 0 )) as FebreroC,
-                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 3, 1, 0 )) as MarzoC,
-                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 4, 1, 0 )) as AbrilC,
-                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 5, 1, 0 )) as MayoC,
-                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 6, 1, 0 )) as JunioC,
-                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 7, 1, 0 )) as JulioC,
-                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 8, 1, 0 )) as AgostoC,
-                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 9, 1, 0 )) as SeptiembreC,
-                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 10, 1, 0 )) as OctubreC,
-                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 11, 1, 0 )) as NoviembreC,
-                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 12, 1, 0 )) as DiciembreC
+                '.$columnasRiesgo.'
             FROM matrizriesgo MR
             left join frecuenciamedicion FM
             on MR.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
@@ -450,7 +417,7 @@
             group by idMatrizRiesgo');
 
             return imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal', $filtroEstado, $fechaInicial, $fechaFinal);
-	}
+    }
 
     // -------------------------------------------
     //  G R U P O S   D E   A P O Y O
@@ -700,27 +667,35 @@
 
     
     
-    // //creamos un archivo (fopen) extension html
-    // $arch = fopen(public_path().'/plantrabajo.html', "w");
+    //creamos un archivo (fopen) extension html
+    $arch = fopen(public_path().'/plantrabajo.html', "w");
 
-    // // escribimos en el archivo todo el HTML del informe (fputs)
-    // fputs ($arch, $informe);
+    // escribimos en el archivo todo el HTML del informe (fputs)
+    fputs ($arch, $informe);
 
-    // // cerramos el archivo (fclose)
-    // fclose($arch);
+    // cerramos el archivo (fclose)
+    fclose($arch);
 
-    // // enviamos un correo con la informacion de la tabla plantrabajoalerta y le adjuntamos el archivo que acabamos de crear
+    // enviamos un correo con la informacion de la tabla plantrabajoalerta y le adjuntamos el archivo que acabamos de crear
 
 
-    // $plan['mensaje'] = $plan[0]['correoMensajePlanTrabajoAlerta'];
+    $plan['mensaje'] = $plan[0]['correoMensajePlanTrabajoAlerta'];
 
-    // Mail::send('emails.contact',$plan,function($msj) use ($plan)
-    // {
-    //     $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
-    //     $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
-    //     // $msj->getSwitfMessage($plan['mensaje']);
-    //     $msj->attach(public_path().'/plantrabajo.html');
-    // }); 
+    Mail::send('emails.contact',$plan,function($msj) use ($plan)
+    {
+        $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
+        $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
+        // (isset($plan[0]['correoCopiaPlanTrabajoAlerta']))
+        // {
+        //     $msj->cc($plan[0]['correoCopiaPlanTrabajoAlerta']);    
+        // }
+        // (isset($plan[0]['correoCopiaOcultaPlanTrabajoAlerta']))
+        // {
+        //     $msj->bcc($plan[0]['correoCopiaOcultaPlanTrabajoAlerta']);    
+        // }
+        // $msj->getSwitfMessage($plan['mensaje']);
+        $msj->attach(public_path().'/plantrabajo.html');
+    }); 
 
     
 
@@ -795,7 +770,7 @@
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 </head>
                 <body>
-               		<div class="panel panel-primary">
+               		<div class="panel panel-primary" style="border:1px solid">
                         <div class="panel-heading">
                           <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
@@ -859,6 +834,111 @@
 
 	    return $tabla;
    }
+
+   function imprimirTablaExamenesMedicos($titulo, $informacion, $idtabla, $filtroEstado, $fechaInicial, $fechaFinal)
+    {
+
+        
+        $tabla = '';
+
+        $tabla .= '
+          <!DOCTYPE html>
+            <html lang="es">
+                <head>
+                    <meta charset="utf-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body>
+                <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
+                  </h4>
+                </div>
+                <div id="'.$idtabla.'" class="panel-collapse">
+                  <div class="panel-body" style="overflow:auto;">';
+
+        $dato = array();
+        for ($i=0; $i < count($informacion); $i++) 
+        { 
+            $dato[] = get_object_vars($informacion[$i]);
+        }
+
+        // hacemos rompimiento por el campo de Tipo de examen medico
+        $reg = 0;
+        while ($reg < count($dato)) 
+        {
+            $examenAnt = $dato[$reg]['nombreTipoExamenMedico'];
+        
+            $tabla .= '<div class="panel panel-primary" style="border:1px solid">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#'.str_replace(" ", "_", $examenAnt).'" href="#'.str_replace(" ", "_", $examenAnt).'">'.$examenAnt.'</a> 
+                  </h4>
+                </div>
+                <div id="'.str_replace(" ", "_", $examenAnt).'" class="panel-collapse">
+                  <div class="panel-body" style="overflow:auto;">';
+
+            $tabla .= '<table  border="1" style="width:100%;" >
+                    <thead class="thead-inverse">
+                        <tr class="table-info">
+                           <th scope="col" width="30%">&nbsp;</th>';
+                                               
+                            $inicio = $fechaInicial;
+                            $anioAnt = date("Y", strtotime($inicio));
+                            while($inicio < $fechaFinal)
+                            {
+                                // adicionamos la columna del mes
+                                $tabla .= '<th >'. nombreMes($inicio).'</th>';
+                                //Avanzamos al siguiente mes
+                                $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+                            }
+
+                
+                        $tabla .= '</tr>
+                    </thead>
+                        <tbody>';
+
+            while ($reg < count($dato) AND $examenAnt == $dato[$reg]['nombreTipoExamenMedico']) 
+            {       
+                $tabla .= '<tr align="center">
+                             <th scope="row">'.$dato[$reg]["descripcionTarea"].'</th>';
+                                               
+                                $inicio = $fechaInicial;
+                                $anioAnt = date("Y", strtotime($inicio));
+                                while($inicio < $fechaFinal)
+                                {
+                                    $resultado = '$tarea = '.'$dato[$reg]["'.nombreMes($inicio).date("Y", strtotime($inicio)).'T"];';
+                                    eval("$resultado");
+
+                                    $resultado = '$cumplido = '.'$dato[$reg]["'.nombreMes($inicio).date("Y", strtotime($inicio)).'C"];';
+                                    eval("$resultado");
+
+                                    // adicionamos la columna del mes
+                                    $tabla .= '<td >'. colorTarea($tarea, $cumplido, $filtroEstado).'</td>';
+                                    //Avanzamos al siguiente mes
+                                    $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+                                }
+                $tabla .= '</tr>';
+                $reg++;
+            }
+
+            $tabla .= '</tbody>
+                </table>
+              </div> 
+            </div>
+          </div>';
+        }
+            $tabla .= '</div> 
+                </div>
+                </div>
+            </body>
+        </html>';
+
+        return $tabla;
+
+    }
 
        
 
