@@ -699,21 +699,47 @@
 
     $plan['mensaje'] = $plan[0]['correoMensajePlanTrabajoAlerta'];
 
-    Mail::send('emails.contact',$plan,function($msj) use ($plan)
+    if ($plan[0]['correoCopiaPlanTrabajoAlerta'] != '' and $plan[0]['correoCopiaOcultaPlanTrabajoAlerta'] != '')
     {
-        $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
-        $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
-        // (isset($plan[0]['correoCopiaPlanTrabajoAlerta']))
-        // {
-        //     $msj->cc($plan[0]['correoCopiaPlanTrabajoAlerta']);    
-        // }
-        // (isset($plan[0]['correoCopiaOcultaPlanTrabajoAlerta']))
-        // {
-        //     $msj->bcc($plan[0]['correoCopiaOcultaPlanTrabajoAlerta']);    
-        // }
-        // $msj->getSwitfMessage($plan['mensaje']);
-        $msj->attach(public_path().'/plantrabajo.html');
-    }); 
+        Mail::send('emails.contact',$plan,function($msj) use ($plan)
+        {
+            $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
+            $msj->cc($plan[0]['correoCopiaPlanTrabajoAlerta']);    
+            $msj->bcc($plan[0]['correoCopiaOcultaPlanTrabajoAlerta']);
+            $msj->attach(public_path().'/plantrabajo.html'); 
+        }); 
+    }
+    else if($plan[0]['correoCopiaOcultaPlanTrabajoAlerta'] !== '')
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan)
+        { 
+            $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
+            $msj->bcc($plan[0]['correoCopiaOcultaPlanTrabajoAlerta']);    
+            $msj->attach(public_path().'/plantrabajo.html');
+        }); 
+    }
+    else if($plan[0]['correoCopiaPlanTrabajoAlerta'] !== '')
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan)
+        { 
+            $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
+            $msj->cc($plan[0]['correoCopiaPlanTrabajoAlerta']);    
+            $msj->attach(public_path().'/plantrabajo.html');
+        }); 
+    }
+    else
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan)
+        {
+            $msj->to($plan[0]['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan[0]['correoAsuntoPlanTrabajoAlerta']);
+            $msj->attach(public_path().'/plantrabajo.html');
+        }); 
+    }
+
 
     
 
