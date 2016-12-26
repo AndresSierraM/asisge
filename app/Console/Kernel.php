@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use DB;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\PlanTrabajo::class,
     ];
 
     /**
@@ -26,5 +28,18 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+
+        $schedule->call(function() {
+            
+            $programacion =
+            DB::table('plantrabajoalerta')
+            ->select(DB::raw('tareaFechaInicioPlanTrabajoAlerta, tareaHoraPlanTrabajoAlerta, tareaIntervaloPlanTrabajoAlerta, tareaDiaLaboralPlanTrabajoAlerta, tareaDiasPlanTrabajoAlerta, tareaMesesPlanTrabajoAlerta'))
+            ->where('idPlanTrabajoAlerta',"=", $id)
+            ->get();
+
+            $schedule->command('log:plantrabajo')->cron('minuto hora dia * * *');
+
+        });
+
     }
 }

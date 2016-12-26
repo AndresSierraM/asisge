@@ -125,10 +125,10 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
     	echo '<div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#'.$examenAnt.$idtabla.'" href="#'.$examenAnt.'">'.$examenAnt.'</a>	
+                <a data-toggle="collapse" data-parent="#'.str_replace(" ", "_", $examenAnt).'" href="#'.str_replace(" ", "_", $examenAnt).'">'.$examenAnt.'</a>	
               </h4>
             </div>
-            <div id="'.$examenAnt.'" class="panel-collapse">
+            <div id="'.str_replace(" ", "_", $examenAnt).'" class="panel-collapse">
               <div class="panel-body" style="overflow:auto;">';
 
       	echo  '<table  class="table table-striped table-bordered table-hover" style="width:100%;" >

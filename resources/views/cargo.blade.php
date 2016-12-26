@@ -44,6 +44,7 @@
 		var valorElemento = [0,''];
 		var valorExamen = [0,'',0,0,0,''];
 		var ResponsabilidadesModelo = [0,'',0];
+		
 
 		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
 		var nombreListaTarea = '<?php echo isset($nombreListaTarea) ? $nombreListaTarea : "";?>';

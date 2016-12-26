@@ -20,6 +20,82 @@
 		{!!Form::open(['route'=>'grupoapoyo.store','method'=>'POST'])!!}
 	@endif
 
+	{!!Html::script('js/grupoapoyo.js')!!} 
+
+
+<script>
+
+
+var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoyo->GrupoApoyoPermiso) : "");?>';
+    GrupoApoyoPermiso = (GrupoApoyoPermiso != '' ? JSON.parse(GrupoApoyoPermiso) : '');
+
+  $(document).ready(function(){
+    protRol = new Atributos('protRol','contenedor_grupoapoyo','grupoapoyoseleccion');
+
+      protRol.altura = '35px';
+      protRol.campoid = 'idGrupoApoyoPermiso';
+      protRol.campoEliminacion = 'eliminarRol';
+      protRol.campos   = [
+      'idGrupoApoyoPermiso', 
+      'Rol_idRol',
+      'nombreRol',  
+      'adicionarGrupoApoyoPermiso',
+      'modificarGrupoApoyoPermiso',
+      'eliminarGrupoApoyoPermiso',
+      'consultarGrupoApoyoPermiso'
+      ];
+
+      protRol.etiqueta = [
+      'input',
+      'input', 
+      'input',  
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox'
+      ];
+
+      protRol.tipo = [
+      'hidden',
+      'hidden',
+      'text',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox',
+
+      ];
+
+      protRol.estilo = [
+      '',
+      '',
+      'width: 530px;height:35px;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;',
+      'width: 70px;height:35px; display:inline-block;'
+      ];
+
+      protRol.clase    = ['','','','','','','']; 
+      protRol.sololectura = [true,true,true,true,true,true,true];  
+      protRol.funciones = ['','','','','','',''];
+      protRol.completar = ['off','off','off','off','off','off','off'];
+      protRol.opciones = ['','','','','','','']
+
+      for(var j=0, k = GrupoApoyoPermiso.length; j < k; j++)
+      {
+        protRol.agregarCampos(JSON.stringify(GrupoApoyoPermiso[j]),'L');
+        llenarNombreRol($("#Rol_idRol"+j).val());
+        // Llamar la funcion en el for para que por cada registro de la multiregistro el haga el ajax de llenar el nombre del rol
+        // enviando el respectivo id del rol 
+
+      }
+
+
+    });
+
+  </script>
+
 		<div id="form_section">
 			<fieldset id="grupoapoyo-form-fieldset">
 				<div class="form-group" id='test'>
@@ -116,6 +192,47 @@
 												</div>
 											</div>
 										</div>
+
+									</div>
+										<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#permisos">Permisos</a>
+											</h4>
+										</div>
+
+										<!-- Nuevo cambio multiregistro con permisos  -->
+										<div id="permisos" class="panel-collapse collapse">
+									   <div class="panel-body" >
+								          <div class="form-group" id='test'>
+								            <div class="col-sm-12">
+								              <div class="panel-body" >
+								                <div class="form-group" id='test'>
+								                  <div class="col-sm-12">
+								                    <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+								                      <div style="overflow:auto; height:350px;">
+								                        <div style="width: 100%; display: inline-block;">
+								                          <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalRol();">
+								                            <span class="glyphicon glyphicon-plus"></span>
+								                          </div>
+								                          <div class="col-md-1" style="width: 530px;" >Rol</div>
+								                          <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
+								                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
+								                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Eliminar" class="fa fa-trash"></span></center></div>          
+								                       <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Consultar" class="fa fa-search"></span></center></div>
+								                          <div id="contenedor_grupoapoyo">
+								                          </div>
+								                        </div>
+								                      </div>
+								                    </div>
+								                  </div>
+								                </div>
+								              </div>
+								            </div>
+								          </div>  
+								        </div>
+								   </div>
+										
 									</div>
 									
 								</div>
@@ -126,7 +243,7 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						@if(isset($grupoApoyo))
-							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+							{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
 						@else
 							{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@endif
@@ -137,3 +254,23 @@
 		</div>	
 	{!!Form::close()!!}
 @stop
+
+
+<div id="ModalRoles" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Roles</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+

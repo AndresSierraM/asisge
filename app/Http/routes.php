@@ -203,7 +203,10 @@ Route::group(['middleware' => 'auth'], function ()
 //      A  J  A  X 
 //
 //**************************
-
+Route::get('datosGrupoApoyoPermisos', function()
+{
+    include public_path().'/ajax/datosGrupoApoyoPermisos.php';
+});
 Route::get('datosEntrevista', function()
 {
     include public_path().'/ajax/datosEntrevista.php';
@@ -414,6 +417,17 @@ Route::post('consultarPermisos', function()
 
 
 //Ajax de Maestros
+
+Route::post('llenarplantrabajoalartaModelo', function()
+{
+    include public_path().'/ajax/llenarplantrabajoalartaModelo.php';
+});
+
+Route::post('llenarNombreRolGrupoApoyo', function()
+{
+    include public_path().'/ajax/llenarNombreRolGrupoApoyo.php';
+});
+
 Route::post('llenarCargo', function()
 {
     include public_path().'/ajax/llenarCargo.php';
@@ -733,6 +747,14 @@ Route::post('actualizarFirmaConformacionGrupoApoyo', function()
 {
     include public_path().'/ajax/actualizarFirmaConformacionGrupoApoyo.php';
 });
+Route::post('llenarFormacionCargo', function()
+{
+    include public_path().'/ajax/llenarFormacionCargo.php';
+});
+Route::post('llenarEducacionCargo', function()
+{
+    include public_path().'/ajax/llenarEducacionCargo.php';
+});
 
 
 //************************************
@@ -848,6 +870,7 @@ Route::get('generarInforme', function()
 
 
 //----------------------------
+Route::get('grupoapoyogridSelect','GrupoApoyoController@indexGrupoApoyoGrid');
 Route::get('informeconceptogridselect','VisorInformeController@indexInformeConceptoGrid');
 Route::get('campocrmgridselect','DocumentoCRMController@indexCampoCRMGrid');
 Route::get('companiagridselect','DocumentoCRMController@indexCompaniaGrid');

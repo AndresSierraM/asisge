@@ -154,8 +154,10 @@
 
         for (var i = 0; i < datos.length; i++) 
         {
+
+
             var valores = new Array(0, datos[i][0],datos[i][1],0);
-            window.parent.Educacion.agregarCampos(valores,'A');  
+            window.parent.Educacionentrevista.agregarCampos(valores,'A');  
         }
         window.parent.$("#ModalEducacion").modal("hide");
     });

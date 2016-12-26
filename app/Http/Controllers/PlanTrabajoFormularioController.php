@@ -209,7 +209,7 @@ class PlanTrabajoFormularioController extends Controller
         //  E X A M E N E S   M E D I C O S
         // -------------------------------------------
         $examen = DB::select(
-            'SELECT descripcionTarea, 
+            'SELECT nombreTipoExamenMedico, descripcionTarea, 
                 idFrecuenciaMedicion as idConcepto,
                 SUM(IF((MONTH(fechaIngresoTerceroInformacion) = 1 AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = 1 AND RET = 1) OR (MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
                 SUM(IF(MONTH(fechaExamenMedico) = 1, 1, 0 )) as EneroC,
@@ -237,9 +237,9 @@ class PlanTrabajoFormularioController extends Controller
                 SUM(IF(MONTH(fechaExamenMedico) = 12, 1, 0 )) as DiciembreC
             FROM
             (
-                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, idFrecuenciaMedicion,
+                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoTerceroExamenMedico as ING, retiroTerceroExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico
+                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico, idFrecuenciaMedicion 
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero
@@ -261,9 +261,9 @@ class PlanTrabajoFormularioController extends Controller
              
             UNION
 
-                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TEC.nombreTipoExamenMedico, idFrecuenciaMedicion,
+                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TEC.nombreTipoExamenMedico, 
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoCargoExamenMedico as ING, retiroCargoExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico
+                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico, idFrecuenciaMedicion
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero
@@ -283,7 +283,8 @@ class PlanTrabajoFormularioController extends Controller
                     T.Compania_idCompania = '.$idCompania .' 
                 group by idTercero, idTipoExamenMedico
             ) Examen
-            group by idTercero');
+            group by nombreTipoExamenMedico, idTercero
+            order by nombreTipoExamenMedico');
 
 
         // -------------------------------------------

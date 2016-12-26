@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PlanTrabajoAlertaRequest;
 use App\Http\Controllers\Controller;
+use DB;
 
 
 include public_path().'/ajax/consultarPermisos.php';
@@ -48,7 +49,6 @@ class PlanTrabajoAlertaController extends Controller
      */
     public function store(PlanTrabajoAlertaRequest $request)
     {
-
         // se agrega un if para la condicion de que el usuario ingresa el primer campo tareaFechaInicioPlanTrabajoAlerta para saber en que calendario esta trabajando
         if($request ['tareaFechaInicioPlanTrabajoAlertaDia'] != '')
         {
@@ -133,9 +133,19 @@ class PlanTrabajoAlertaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        if(isset($request['accion']) and $request['accion'] == 'imprimir')
+        {
+            $plantrabajo = DB::Select('
+                SELECT *
+                FROM plantrabajoalerta pta
+                LEFT JOIN plantrabajoalertamodulo ptam
+                ON pta.idPlanTrabajoAlerta = ptam.PlanTrabajoAlerta_idPlanTrabajoAlerta
+                WHERE idPlanTrabajoAlerta = '.$id);
+
+            return view('formatos.plantrabajoalertaimpresion',compact('plantrabajo'));
+        }
     }
 
     /**
@@ -146,11 +156,10 @@ class PlanTrabajoAlertaController extends Controller
      */
     public function edit($id)
     {
-
         $plantrabajoalerta = \App\PlanTrabajoAlerta::find($id);
-         $idModulo= \App\Modulo::All()->lists('idModulo');
-         $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
-        return view ('plantrabajoalerta',['plantrabajoalerta'=>$plantrabajoalerta], compact('idModulo','nombreModulo'));
+        $idModulo= \App\Modulo::All()->lists('idModulo');
+        $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
+        return view ('plantrabajoalerta', compact('idModulo','nombreModulo'),['plantrabajoalerta'=>$plantrabajoalerta]);
     }
 
     /**
@@ -162,10 +171,26 @@ class PlanTrabajoAlertaController extends Controller
      */
     public function update(PlanTrabajoAlertaRequest $request, $id)
     {
+        
         $plantrabajoalerta = \App\PlanTrabajoAlerta::find($id);
         $plantrabajoalerta->fill($request->all());
-
         $plantrabajoalerta->save();
+
+        $idsEliminar = explode("," , $request['idsborrados']);
+        //Eliminar registros de la multiregistro
+        \App\PlanTrabajoAlertaModulo::whereIn('idPlanTrabajoAlertaModulo', $idsEliminar)->delete();
+        // Guardamos el detalle de los modulos
+        for($i = 0; $i < count($request['Modulo_idModulo']); $i++)
+        {
+             $indice = array(
+                'idPlanTrabajoAlertaModulo' => $request['idPlanTrabajoAlertaModulo'][$i]);
+
+            $data = array(
+                'PlanTrabajoAlerta_idPlanTrabajoAlerta' => $id,
+                'Modulo_idModulo' => $request['Modulo_idModulo'][$i]);
+
+            $guardar = \App\PlanTrabajoAlertaModulo::updateOrCreate($indice, $data);
+        } 
 
         return redirect('plantrabajoalerta');
     }

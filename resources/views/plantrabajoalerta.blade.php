@@ -3,11 +3,57 @@
 @section('content')
 @include('alerts.request')
 
+{!!Html::script('js/plantrabajoalerta.js')!!}
+
+<?php 
+	$fechaDia = null;
+	$horaDia = null;
+	$intervaloDia = null;
+
+	$fechaSemana = null;
+	$horaSemana = null;
+	$intervaloSemana = null;
+
+	$fechaMes = null;
+	$horaMes = null;
+	
+if(isset($plantrabajoalerta))
+{
+
+	if($plantrabajoalerta->tareaDiasPlanTrabajoAlerta != '')
+	{
+		
+		$fechaSemana = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+		$horaSemana = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+		$intervaloSemana = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
+	}
+	else
+	{
+		if($plantrabajoalerta->tareaMesesPlanTrabajoAlerta != '')
+		{
+			
+			$fechaMes = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+		}
+		else
+		{
+			$fechaDia = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+			$horaDia = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
+		}
+	}
+}
+
+?>
 
 <script>
   // tomamos los valores de los modulos enviados desde el controlador, y los almacenamos en un array convertidos en formato json
   // para luego enviarlo como parametro al multiregistro en el campo descripcionModulo
   var modulos = [JSON.parse('<?php echo $idModulo;?>'), JSON.parse('<?php echo $nombreModulo;?>')];
+
+ var alertaplan = '<?php echo (isset($plantrabajoalerta) ? json_encode($plantrabajoalerta->planTrabajoAlertaModulo) : "");?>';
+    alertaplan = (alertaplan != '' ? JSON.parse(alertaplan) : '');
+   
 
   var valorModelo = [0,''];
   $(document).ready(function(){
@@ -18,22 +64,34 @@
     PlanTrabajoAlertaModulo.campoEliminacion = 'idsborrados';//hermanitas         Cuando se utilice la funcionalidad 
     PlanTrabajoAlertaModulo.botonEliminacion = true;//hermanitas
     // despues del punto son las propiedades que se le van adicionar al objeto
-    PlanTrabajoAlertaModulo.campos = ['idPlanTrabajoAlertaModulo ','Modulo_idModulo']; //[arrays ]
+    PlanTrabajoAlertaModulo.campos = ['idPlanTrabajoAlertaModulo','Modulo_idModulo','PlanTrabajoAlerta_idPlanTrabajoAlerta']; //[arrays ]
     PlanTrabajoAlertaModulo.altura = '35px;';
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-    PlanTrabajoAlertaModulo.etiqueta = ['input','select'];
-    PlanTrabajoAlertaModulo.tipo = ['hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-    PlanTrabajoAlertaModulo.estilo = ['','width: 1490px;height:35px;'];	
+    PlanTrabajoAlertaModulo.etiqueta = ['input','select','input'];
+    PlanTrabajoAlertaModulo.tipo = ['hidden','','hidden']; //tip hidden - oculto para el usuario  y los otros quedan visibles ''
+    PlanTrabajoAlertaModulo.estilo = ['','width: 1050px;height:35px;',''];	
 
-    // estas propiedades no son muy usadas PERO SON UTILES
+    // estas propiedades no son muy usadas PERO SON UToILES
     
-    PlanTrabajoAlertaModulo.clase = ['',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
-    PlanTrabajoAlertaModulo.sololectura = [false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
-    PlanTrabajoAlertaModulo.completar = ['off','off']; //autocompleta 
+    PlanTrabajoAlertaModulo.clase = ['','', ''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+    PlanTrabajoAlertaModulo.sololectura = [false,false, false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+    PlanTrabajoAlertaModulo.completar = ['off','off', 'off']; //autocompleta 
     
-    PlanTrabajoAlertaModulo.opciones = ['',modulos]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-    PlanTrabajoAlertaModulo.funciones  = ['','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+    PlanTrabajoAlertaModulo.opciones = ['',modulos, '']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+    PlanTrabajoAlertaModulo.funciones  = ['','', '']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+    for(var j=0, k = alertaplan.length; j < k; j++)
+      {
+        // permisos.agregarCampos(JSON.stringify(alertaplan[j]),'L');
+        // console.log(JSON.stringify(alertaplan[j]))
+           PlanTrabajoAlertaModulo.agregarCampos(JSON.stringify(alertaplan[j]),'L');
+           // llenarplantrabajoalertaModelo($("#idPlanTrabajoAlertaModulo"+j).val());
+        // Llamar la funcion en el for para que por cada registro de la multiregistro el haga el ajax de llenar el nombre del rol
+        // enviando el respectivo id del rol 
+      }
   });
+
+  
 </script> 
 
 @if(isset($plantrabajoalerta))
@@ -48,7 +106,7 @@
 
 <div id='form-section' >
 	<fieldset id="pestañas-form-fieldset">	
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
 		<div class="form-group" id='test'>
 			 {!!Form::label('nombrePlanTrabajoAlerta', 'Descripción', array('class' => 'col-sm-1 control-label')) !!}
 			<div class="col-sm-11">
@@ -89,6 +147,7 @@
 			         </span>
 			             {!!Form::text('correoParaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>''])!!}
 			             {!!Form::hidden('idPlanTrabajoAlerta', null, array('id' => 'idPlanTrabajoAlerta')) !!}
+			             {!!Form::hidden('idsborrados', null, array('id' => 'idsborrados')) !!}
 			     </div>
 			</div>
 		</div>
@@ -115,7 +174,7 @@
 				              <span class="input-group-addon">
 				                <i class="fa fa-clipboard"></i>
 				              </span>
-							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta','',['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
 			            	</div>
 			          </div>
 			        </div>
@@ -164,7 +223,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('filtroMesesPasadosPlanTrabajoAlerta',1,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('filtroMesesPasadosPlanTrabajoAlerta',(isset($plantrabajoalerta) ? $plantrabajoalerta->filtroMesesPasadosPlanTrabajoAlerta : 1),['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					        </div>
 					 </div>
 					 </br></br></br>
@@ -177,7 +236,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('filtroMesesFuturosPlanTrabajoAlerta',1,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('filtroMesesFuturosPlanTrabajoAlerta',(isset($plantrabajoalerta )? $plantrabajoalerta->filtroMesesFuturosPlanTrabajoAlerta : 1),['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
 					         </div>
 					    </div>
@@ -217,7 +276,7 @@
 			          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="PlanTrabajoAlertaModulo.agregarCampos(valorModelo,'A')">
 			            <span class="glyphicon glyphicon-plus"></span>
 			          </div>
-			          <div class="col-md-1" style="width: 1490px;display:inline-block;height:35px;">Nombre del Modulo</div>
+			          <div class="col-md-1" style="width: 1050px;display:inline-block;height:35px;">Nombre del Modulo</div>
 			          <!-- este es el div para donde van insertando los registros --> 
 			          <div id="planTrabajoAlertaModulo_Modulo">
 			          </div>
@@ -250,13 +309,13 @@
 					        <!-- <div class="panel-body"> -->
 					       
 					        <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaDia', 'Fecha Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaDia', 'F.Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					          <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaDia',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaDia',$fechaDia,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
 					          </div>
 					        </div>
@@ -271,7 +330,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-clock-o"></i>
 					              </span>
-					             {!!Form::text('tareaHoraPlanTrabajoAlertaDia',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaHoraPlanTrabajoAlertaDia',$horaDia,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
 				            	</div>
 				          	   </div>
 				        	</div>
@@ -295,7 +354,7 @@
 			              <span class="input-group-addon">
 			                <i class="fa fa-bars"></i>
 			              </span> 
-			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaDia',null,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
+			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaDia',$intervaloDia,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
 			              Días
 			              </span>
@@ -319,13 +378,13 @@
 
 			<!-- opcion fecha de inicio  -->
 			   <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaSemana', 'Fecha Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaSemana', 'F.Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					<div class="col-sm-11">
 					    <div class="input-group">	
 					        <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					        </span>
-					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaSemana',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaSemana',$fechaSemana,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					     </div>
 					 </div>
 				</div>
@@ -338,7 +397,7 @@
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					              {!!Form::text('tareaHoraPlanTrabajoAlertaSemana',null,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
+					              {!!Form::text('tareaHoraPlanTrabajoAlertaSemana',$horaSemana,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
 					         </div>
 					     </div>
 					  </div>
@@ -353,7 +412,7 @@
 			              <span class="input-group-addon">
 			                <i class="fa fa-bars"></i>
 			              </span> 
-			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',1,['class'=>'form-control','placeholder'=>'', 'autocomplete' => 'off'])!!}
+			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',$intervaloSemana,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
 			              Semanas
 			              </span>
@@ -394,17 +453,17 @@
 						<div class="col-md-1">Viernes
 							  <div class="input-group">
 							   {!! Form::checkbox('Dia5', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia5']) !!} 
-							   </div>
+							  </div>
 					    </div>
 						<div class="col-md-1">Sabado
 							  <div class="input-group">
 							   {!! Form::checkbox('Dia6', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia6']) !!} 
-							    </div>
+							   </div>
 						</div>
 						<div class="col-md-1">Domingo
 							  <div class="input-group">
 							   {!! Form::checkbox('Dia7', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia7']) !!} 
-							            </div>
+							    </div>
 						</div>
 							  
 					</div>
@@ -422,7 +481,7 @@
 				          <a data-toggle="collapse" data-parent="#accordion" href="#CalendarioMes"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/calendarioMes.png style='width:60px; height:50px;'></a></li></a></li>"?></a><b>Programación Mensual</b>
 			        <div id="CalendarioMes" class="panel-collapse collapse  ">
 			           <div class="form-group" id='test'>
-					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaMes', 'Fecha Inicio', array('class' => 'col-sm-1 control-label')) !!}
+					         {!!Form::label('tareaFechaInicioPlanTrabajoAlertaMes', 'F.Inicio', array('class' => 'col-sm-1 control-label')) !!}
 					       <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
@@ -572,6 +631,7 @@
     $('#tareaFechaInicioPlanTrabajoAlertaDia').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
+
     $('#tareaFechaInicioPlanTrabajoAlertaSemana').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
@@ -602,7 +662,7 @@
     	 $('#tareaDiasPlanTrabajoAlerta').val(dias);
 
     }
-// hechele candela
+
     function seleccionarMes()
     {
     	var Meses = '';

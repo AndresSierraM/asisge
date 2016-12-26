@@ -38,4 +38,9 @@ class Tercero extends Model
     {
         return $this->hasMany('App\Presupuesto','Tercero_idTercero');
     }
+
+     public function Entrevista()
+     {
+         return $this->hasMany('App\Entrevista','Tercero_idTercero');
+     }
 }

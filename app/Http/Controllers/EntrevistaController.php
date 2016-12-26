@@ -26,6 +26,7 @@ class EntrevistaController extends Controller
             return view('accesodenegado');
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -33,11 +34,13 @@ class EntrevistaController extends Controller
      */
     public function create()
     {
-        
+
+        $Ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
+         $Tercero = \App\Tercero::where('Tercero_idEmpleadorContratista', "=", \Session::get('idTercero'))->lists('nombreCompletoTercero','idTercero'); 
         $cargo = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCargo','idCargo'); 
 
 
-          return view('entrevista',compact('cargo'));
+          return view('entrevista',compact('cargo','Tercero','Ciudad'));
 
     }
 
@@ -59,6 +62,15 @@ class EntrevistaController extends Controller
             'Cargo_idCargo' => $request['Cargo_idCargo'],
             'experienciaRequeridaEntrevista' => $request['experienciaRequeridaEntrevista']    
             ]);
+
+
+
+     $Tercero = \App\Tercero::All()->last();
+            
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($Tercero->idTercero, $request);
 
         return redirect('/entrevista');
     }
@@ -83,10 +95,15 @@ class EntrevistaController extends Controller
     public function edit($id)
     {
 
+         $Ciudad = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');;
+
          $entrevista = \App\Entrevista::find($id);
+         $Tercero = \App\Tercero::where('Tercero_idEmpleadorContratista', "=", \Session::get('idTercero'))->lists('nombreCompletoTercero','idTercero'); 
           $cargo = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCargo','idCargo'); 
 
-          return view('entrevista',compact('cargo'),['entrevista'=>$entrevista]);
+          return view('entrevista',compact('cargo','Tercero','Ciudad'),['entrevista'=>$entrevista]);
+
+          
     }
 
     /**

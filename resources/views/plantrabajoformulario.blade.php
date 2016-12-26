@@ -259,6 +259,140 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 		        </div>
 		      </div>';
 }
+
+function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero, $idModulo)
+{
+	echo '<div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
+              </h4>
+            </div>
+            <div id="'.$idtabla.'" class="panel-collapse">
+              <div class="panel-body" style="overflow:auto;">';
+
+    $dato = array();
+    for ($i=0; $i < count($informacion); $i++) 
+    { 
+   		$dato[] = get_object_vars($informacion[$i]);
+    }
+
+    // hacemos rompimiento por el campo de Tipo de examen medico
+    $reg = 0;
+    while ($reg < count($dato)) 
+    {
+    	$examenAnt = $dato[$reg]['nombreTipoExamenMedico'];
+    
+    	echo '<div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#'.str_replace(" ", "_", $examenAnt).'" href="#'.str_replace(" ", "_", $examenAnt).'">'.$examenAnt.'</a>	
+              </h4>
+            </div>
+            <div id="'.str_replace(" ", "_", $examenAnt).'" class="panel-collapse">
+              <div class="panel-body" style="overflow:auto;">';
+
+      	echo  '<table  class="table table-striped table-bordered table-hover" style="width:100%;" >
+				<thead class="thead-inverse">
+					<tr class="table-info">
+						<th scope="col" width="30%">&nbsp;</th>
+						<th >Enero</th>
+						<th >Febrero</th>
+						<th >Marzo</th>
+						<th >Abril</th>
+						<th >Mayo</th>
+						<th >Junio</th>
+						<th >Julio</th>
+						<th >Agosto</th>
+						<th >Septiembre</th>
+						<th >Octubre</th>
+						<th >Noviembre</th>
+						<th >Diciembre</th>
+						<th >Presupuesto</th>
+						<th >Costo Real</th>
+						<th >Cumplimiento</th>
+						<th >Meta</th>
+						<th >Responsable</th>
+						<th >Observación</th>
+					</tr>
+				</thead>
+				<tbody>';
+
+    	while ($reg < count($dato) AND $examenAnt == $dato[$reg]['nombreTipoExamenMedico']) 
+    	{		
+			echo '<tr align="center">
+				<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$idModulo.'">
+				<th scope="row">'.$dato[$reg]["descripcionTarea"].'</th>
+
+				<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato[$reg]["idConcepto"].'">
+				<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato[$reg]["descripcionTarea"].'">
+
+				<td>'.colorTarea($dato[$reg]["EneroT"], $dato[$reg]["EneroC"]).'</td>
+				<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["EneroT"], $dato[$reg]["EneroC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["FebreroT"], $dato[$reg]["FebreroC"]).'</td>
+				<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["FebreroT"], $dato[$reg]["FebreroC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["MarzoT"], $dato[$reg]["MarzoC"]).'</td>
+				<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["MarzoT"], $dato[$reg]["MarzoC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["AbrilT"], $dato[$reg]["AbrilC"]).'</td>
+				<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["AbrilT"], $dato[$reg]["AbrilC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["MayoT"], $dato[$reg]["MayoC"]).'</td>
+				<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["MayoT"], $dato[$reg]["MayoC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["JunioT"], $dato[$reg]["JunioC"]).'</td>
+				<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["JunioT"], $dato[$reg]["JunioC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["JulioT"], $dato[$reg]["JulioC"]).'</td>
+				<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["JunioT"], $dato[$reg]["JunioC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["AgostoT"], $dato[$reg]["AgostoT"]).'</td>
+				<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["AgostoT"], $dato[$reg]["AgostoT"]).'">
+
+				<td>'.colorTarea($dato[$reg]["SeptiembreT"], $dato[$reg]["SeptiembreC"]).'</td>
+				<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["SeptiembreT"], $dato[$reg]["SeptiembreC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["OctubreT"], $dato[$reg]["OctubreC"]).'</td>
+				<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["OctubreT"], $dato[$reg]["OctubreC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'</td>
+				<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'">
+
+				<td>'.colorTarea($dato[$reg]["DiciembreT"], $dato[$reg]["DiciembreC"]).'</td>
+				<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["DiciembreT"], $dato[$reg]["DiciembreC"]).'">
+
+				<td>'.(isset($dato[$reg]['PresupuestoT']) ? $dato[$reg]['PresupuestoT'] : '&nbsp;').'</td>
+				<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoT']) ? $dato[$reg]['PresupuestoT'] : '&nbsp;').'">
+
+         		<td>'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'</td>
+         		<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'">
+
+				<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]"></td>
+
+				<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
+
+				<td>';?>
+					{!!Form::select('Tercero_idResponsable[]',$tercero, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+				<?php 
+				echo '</td>
+				<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
+			</tr>';
+			$reg++;
+		}
+
+		echo '</tbody>
+			</table>
+          </div> 
+        </div>
+      </div>';
+	}
+	echo '</div> 
+	  </div>
+	</div>';
+
+}
 ?>
 
 		
@@ -286,6 +420,10 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
   				while ($i < $total) 
   				{
   					$moduloAnt = $detalle[$i]["nombreModulo"];
+  					// if ($detalle[$i]["Modulo_idModulo"] == 22) 
+  					// {
+  						
+  					// }
   					echo 
   					'<div class="panel panel-primary">
             			<div class="panel-heading">
@@ -340,7 +478,7 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 
   						<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.$detalle[$i]["febreroPlanTrabajoDetalle"].'">
 
-  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["marzoPlanTrabajoDetalle"].'">
+  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.$detalle[$i]["marzoPlanTrabajoDetalle"].'">
 
   						<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.$detalle[$i]["abrilPlanTrabajoDetalle"].'">
 
@@ -433,15 +571,15 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
   			}
   			else
   			{
-				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
-				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Tercero_idAuditor, 9);
-				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
-				imprimirTabla('Programas', $programa, 'programa',$Tercero_idAuditor, 40);	
-				imprimirTabla('Examen Médico', $examen, 'examen',$Tercero_idAuditor, 22);
 				imprimirTabla('Accidente', $accidente, 'accidente',$Tercero_idAuditor, 3);
+				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Tercero_idAuditor, 9);
+				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
+				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Tercero_idAuditor, 22);
 				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Tercero_idAuditor, 24);
 				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Tercero_idAuditor, 32);
-				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
+				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
+				imprimirTabla('Programas', $programa, 'programa',$Tercero_idAuditor, 40);	
+				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
 			}
 		?>
     </div>

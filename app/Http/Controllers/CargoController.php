@@ -161,6 +161,8 @@ class CargoController extends Controller
 
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
         $nombreFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion');
+
+        $cargoPadre = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCargo','idCargo'); 
         $cargo = \App\Cargo::find($id);
 
 
@@ -205,7 +207,7 @@ class CargoController extends Controller
 
 
          // Se retorna todas las consultas
-        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion','cargoeducacion','cargoformacion','cargohabilidad','cargocompetencia'),['cargo'=>$cargo]);
+        return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion','cargoeducacion','cargoformacion','cargohabilidad','cargocompetencia', 'cargoPadre'),['cargo'=>$cargo]);
 
     }
 

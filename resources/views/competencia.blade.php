@@ -48,7 +48,7 @@ Estado = [valorEstado,NombreEstado];
     competencia.campos = ['idCompetenciaPregunta ','ordenCompetenciaPregunta','preguntaCompetenciaPregunta','respuestaCompetenciaPregunta','estadoCompetenciaPregunta','Competencia_idCompetencia']; //[arrays ]
     competencia.altura = '35px;';
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-    competencia.etiqueta = ['input','input','input','select','select','input'];
+    competencia.etiqueta = ['input','input','input','styleect','select','input'];
     competencia.tipo = ['hidden','text','text','','','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
     competencia.estilo = ['','width: 300px;height:35px;','width: 600px;height:35px;','width: 300px;height:35px;','width: 300px;height:35px;',''];  
 

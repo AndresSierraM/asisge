@@ -1,8 +1,5 @@
-@extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Alertas de Plan de Trabajo</center></h3>@stop
+@extends('layouts.modal') 
 @section('content')
-
-{!!Html::script('js/plantrabajoalerta.js')!!}
 
 <style>
     tfoot input {
@@ -14,72 +11,49 @@
                 border-radius: 4px;
             }
 </style> 
-<?php 
-    $visible = '';
 
-    if (isset($datos[0])) 
-    {
-        $dato = get_object_vars($datos[0]);
-        if ($dato['adicionarRolOpcion'] == 1) 
-        {
-            $visible = 'inline-block;';    
-        }
-        else
-        {
-            $visible = 'none;';
-        }
-    }
-    else
-    {
-        $visible = 'none;';
-    }
-?>
-        <input type="hidden" id="token" value="{{csrf_token()}}"/>
         <div class="container">
             <div class="row">
                 <div class="container">
-                    <br>
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
+                        <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
                             <i class="glyphicon glyphicon-th icon-th"></i> 
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
-                            <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Nombre de Alerta</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Correo Para</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Correo Copia</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Asunto Correo</label></a></li>
+                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Descripción</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> % Peso</label></a></li>
                         </ul>
                     </div>
-                    <table id="tplantrabajoalerta" name="tplantrabajoalerta" class="display table-bordered" width="100%">
+                    
+                    <table id="tcargoformacionSelect" name="tcargoformacionSelect" class="display table-bordered" width="100%">
                         <thead>
-                            <tr class="btn-primary active">
-                                <th style="width:70px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="plantrabajoalerta/create"><span style= "color:white; display:  <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
-                                 <a href="#"><span class="glyphicon glyphicon-refresh" style= "color:white;" ></span></a>
-                                </th>
+                            <tr class="btn-default active">
+
                                 <th><b>ID</b></th>
-                                <th><b>Nombre de Alertas</b></th>
-                                <th><b>Correo Para</b></th>
-                                <th><b>Correo Copia</b></th>
-                                <th><b>Asunto Correo</b></th>
+                                <th><b>Descripción</b></th>
+                                <th><b>% Peso</b></th>
+                              
                             </tr>
                         </thead>
-                                        <tfoot>
+                        <tfoot>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;">
-                                    &nbsp;
-                                </th>
+
                                 <th>ID</th>
-                                <th>Nombre de Alertas</th>
-                                <th>Correo Para</th>
-                                <th>Correo Copia</th>
-                                <th>Asunto Correo</th>
+                                <th>Descripción</th>
+                                <th>% Peso</th>
+                               
                             </tr>
-                        </tfoot>        
+                        </tfoot>
                     </table>
+
+                    <div class="modal-footer">
+                        <button id="botonCampo" name="botonCampo" type="button" class="btn btn-primary" >Seleccionar</button>
+                    </div>
+
+                
+
                 </div>
             </div>
         </div>
@@ -88,16 +62,14 @@
 <script type="text/javascript">
 
     $(document).ready( function () {
-        
+
         var lastIdx = null;
-        var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
-        var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
-        var table = $('#tplantrabajoalerta').DataTable( {
+        var table = $('#tcargoformacionSelect').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosPlanTrabajoAlerta?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosFormacionEntrevistaSelect')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -134,7 +106,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tplantrabajoalerta tbody')
+        $('#tcargoformacionSelect tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -149,15 +121,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tplantrabajoalerta tfoot th').each( function () {
-        if($(this).index()>0){
-        var title = $('#tplantrabajoalerta thead th').eq( $(this).index() ).text();
+    $('#tcargoformacionSelect tfoot th').each( function () {
+        
+        var title = $('#tcargoformacionSelect thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
-        }
+        
     } );
  
     // DataTable
-    var table = $('#tplantrabajoalerta').DataTable();
+    var table = $('#tcargoformacionSelect').DataTable();
  
     // Apply the search
     table.columns().every( function () {
@@ -172,9 +144,27 @@
         } );
     })
 
+    $('#tcargoformacionSelect tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+
+        var datos = table.rows('.selected').data();
+
+
+    } );
+ 
+     $('#botonCampo').click(function() {
+        var datos = table.rows('.selected').data();  
+
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(0, datos[i][0],datos[i][1],0);
+            window.parent.Formacionentrevista.agregarCampos(valores,'A');  
+        }
+        window.parent.$("#ModalFormacionEntrevista").modal("hide");
+    });
+
     
 });
     
 </script>
-
 @stop
