@@ -1,3 +1,87 @@
+function validarFormulario(event)
+{
+    var token = $("#token").val();
+    var dato0 = document.getElementById('idEncuesta').value;
+    var dato1 = document.getElementById('tituloEncuesta').value;
+    var dato2 = document.getElementById('descripcionEncuesta').value;
+    var datoPregunta = document.querySelectorAll("[name='preguntaEncuestaPregunta[]']");
+    var dato3 = [];
+    
+    var valor = '';
+    var sw = true;
+    
+    for(var j=0,i=datoPregunta.length; j<i;j++)
+    {
+        dato3[j] = datoPregunta[j].value;
+    }
+
+    $.ajax({
+        async: false,
+        url: "http://"+location.host+"/encuesta",
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: {respuesta: 'falso',
+                idEncuesta: dato0,
+                tituloEncuesta: dato1,
+                descripcionEncuesta: dato2,
+                datoPregunta: dato3
+                },
+
+        success:function(){
+            // $("#msj-success").fadeIn();
+            // console.log(' sin errores');
+        },
+        error:function(msj){
+
+            var mensaje = '';
+            var respuesta = JSON.stringify(msj.responseJSON); 
+
+            console.log(respuesta);
+             event.preventDefault();
+            if(typeof respuesta === "undefined")
+            {
+                sw = false;
+                $("#msj").html('');
+                $("#msj-error").fadeOut();
+            }
+            else
+            {
+                sw = true;
+                respuesta = JSON.parse(respuesta);
+
+                (typeof msj.responseJSON.tituloEncuesta === "undefined" 
+                    ? document.getElementById('tituloEncuesta').style.borderColor = '' 
+                    : document.getElementById('tituloEncuesta').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.descripcionEncuesta === "undefined" 
+                    ? document.getElementById('descripcionEncuesta').style.borderColor = '' 
+                    : document.getElementById('descripcionEncuesta').style.borderColor = '#a94442');
+
+                for(var j=0,i=datoPregunta.length; j<i;j++)
+                {
+                    (typeof respuesta['preguntaEncuestaPregunta'+j] === "undefined" 
+                        ? document.getElementById('preguntaEncuestaPregunta'+j).style.borderColor = '' 
+                        : document.getElementById('preguntaEncuestaPregunta'+j).style.borderColor = '#a94442');
+                }
+
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li><br>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
+                $("#msj-error").fadeIn();
+            }
+
+        }
+    });
+
+    if(sw === true)
+        event.preventDefault();
+}
+
 function abrirModalRol()
 {
     $('#ModalRoles').modal('show');
@@ -237,9 +321,11 @@ Propiedades.prototype.agregarPregunta = function(datos, tipo){
     option.value = '';
     option.text = 'Seleccione Tipo de Respuesta...';
     select.appendChild(option);
+
+    //,'Escala Lineal'
     opciones =  [
-                    ['Respuesta Corta', 'Párrafo','Selección Múltiple','Casillas de Verificación','Lista de Opciones','Escala Lineal','Fecha', 'Hora'],
-                    ['Respuesta Corta', 'Párrafo','Selección Múltiple','Casillas de Verificación','Lista de Opciones','Escala Lineal','Fecha', 'Hora']
+                    ['Respuesta Corta', 'Párrafo','Selección Múltiple','Casillas de Verificación','Lista de Opciones','Fecha', 'Hora'],
+                    ['Respuesta Corta', 'Párrafo','Selección Múltiple','Casillas de Verificación','Lista de Opciones','Fecha', 'Hora']
                 ];
 
 
@@ -366,6 +452,7 @@ Propiedades.prototype.agregarPregunta = function(datos, tipo){
 
 
     this.contador++;
+    $('#totalPreguntas').val(this.contador);
 
     var config = {
       '.chosen-select'           : {},

@@ -2,7 +2,7 @@
 @section('titulo')<h3 id="titulo"><center>Encuesta</center></h3>@stop
 
 @section('content')
-  <!-- @include('alerts.request') -->
+@include('alerts.request')
 {!!Html::script('js/encuesta.js')!!}
 {!!Html::style('css/encuesta.css')!!}
 
@@ -124,7 +124,7 @@
 
 
 <div id='form-section' >
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
 	<fieldset id="encuesta-form-fieldset">	
 		<div class="form-group" id='test'>
       {!!Form::label('tituloEncuesta', 'Título', array('class' => 'col-sm-2 control-label')) !!}
@@ -135,6 +135,7 @@
           </span>
           {!!Form::text('tituloEncuesta',null,['class'=>'form-control','placeholder'=>'Ingrese el Título de la Encuesta'])!!}
           {!!Form::hidden('idEncuesta', null, array('id' => 'idEncuesta')) !!}
+          {!!Form::hidden('totalPreguntas', null, array('id' => 'totalPreguntas')) !!}
           {!!Form::hidden('eliminarPregunta', null, array('id' => 'eliminarPregunta')) !!}
           {!!Form::hidden('eliminarOpcion', null, array('id' => 'eliminarOpcion')) !!}
           {!!Form::hidden('eliminarRol', null, array('id' => 'eliminarRol')) !!}
@@ -225,10 +226,10 @@
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
   		@endif
  	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
  	@endif
 
 	{!! Form::close() !!}

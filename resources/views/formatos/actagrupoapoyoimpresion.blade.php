@@ -52,10 +52,11 @@
 						<thead>
 							<tr>
 								<td>Observaciones</td>
-								<td>{{$dato->observacionActaGrupoApoyo}}</td>
 							</tr>
-						
-							
+							<tr>
+								<td><?php echo $dato->observacionActaGrupoApoyo;?></td>
+							</tr>
+
 						</thead>
 					</table>
 				    @endforeach

@@ -147,12 +147,19 @@
 
 
 
-				</fieldset>	
-				@if(isset($encuestapublicacion))
-					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
-				@else
-  					{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
- 				@endif
-		</div>
-	{!!Form::close()!!}		
+	</fieldset>	
+	@if(isset($encuestapublicacion))
+		{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+	@else
+			{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+	@endif
+	</div>
+	{!!Form::close()!!}	
+
+	<script type="text/javascript">
+	    $('#fechaEncuestaPublicacion').datetimepicker(({
+    	  format: "YYYY-MM-DD"
+    	}));
+	</script>
+
 @stop
