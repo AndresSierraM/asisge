@@ -37,8 +37,8 @@ function validarFormulario(event)
             var mensaje = '';
             var respuesta = JSON.stringify(msj.responseJSON); 
 
-            console.log(respuesta);
-             event.preventDefault();
+            // console.log(respuesta);
+             
             if(typeof respuesta === "undefined")
             {
                 sw = false;

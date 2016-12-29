@@ -29,8 +29,10 @@
                             <span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>
                         </a>
                         <a href="#" onclick="mostrarTabulacionEncuesta('.$value->idEncuestaPublicacion.');" title="Ver Tabulación">
-                        <img  src="images/iconoscrm/dashboardcrm.png" style="width:28px; height:28px;">
-                    </a>';
+                            <span class="glyphicon glyphicon-print" style = "display:'.$visibleM.'"></span>
+                        </a>
+
+                        ';
         $row[$key][] = $value->idEncuestaPublicacion;
         $row[$key][] = $value->nombreEncuestaPublicacion;
         $row[$key][] = $value->fechaEncuestaPublicacion;

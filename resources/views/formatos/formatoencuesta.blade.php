@@ -25,7 +25,6 @@ for($i = 0; $i < count($encuesta); $i++)
     $datos[] = get_object_vars($encuesta[$i]); 
 }
 
-
 ?>
 @extends('layouts.formato')
 <h3 id="titulo"><center>Encuesta<br><?php echo $datos[0]["nombreEncuestaPublicacion"];?></center></h3>

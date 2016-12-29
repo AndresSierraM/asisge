@@ -80,7 +80,6 @@ class EncuestaPublicacionController extends Controller
     {
         if(isset($_GET['accion']) and $_GET['accion'] == 'imprimir')
         {
-
             return view('formatos.formatoencuesta', compact('id'));
         }
 

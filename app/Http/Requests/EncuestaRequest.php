@@ -25,25 +25,25 @@ class EncuestaRequest extends Request
     {
         
         $preguntas = ($this->get('preguntaEncuestaPregunta')[0]);
-        echo 'total = '.$preguntas;
-        echo 'id '.$this->get('idEncuesta');
+        // echo 'total = '.$preguntas;
+        // echo 'id '.$this->get('idEncuesta');
         $validacion = array(
             'tituloEncuesta' => "required|string|unique:encuesta,tituloEncuesta,".$this->get('idEncuesta') .",idEncuesta,Compania_idCompania,".(\Session::get('idCompania')),
             'descripcionEncuesta' => "required|string");
         
-        for($i = 0; $i < $preguntas; $i++)
-        {
-            if(trim($this->get('preguntaEncuestaPregunta')[$i]) === '' )
-            {    
-                $validacion['preguntaEncuestaPregunta'.$i] =  'required';
-            }
+    //     for($i = 0; $i < $preguntas; $i++)
+    //     {
+    //         if(trim($this->get('preguntaEncuestaPregunta')[$i]) === '' )
+    //         {    
+    //             $validacion['preguntaEncuestaPregunta'.$i] =  'required';
+    //         }
 
-            if(trim($this->get('tipoRespuestaEncuestaPregunta')[$i]) == '' )
-            {    
-                $validacion['tipoRespuestaEncuestaPregunta'.$i] =  'required';
-            }
-        }
-    print_r($validacion);
+    //         if(trim($this->get('tipoRespuestaEncuestaPregunta')[$i]) == '' )
+    //         {    
+    //             $validacion['tipoRespuestaEncuestaPregunta'.$i] =  'required';
+    //         }
+    //     }
+    // print_r($validacion);
         return $validacion;
     }
 }
