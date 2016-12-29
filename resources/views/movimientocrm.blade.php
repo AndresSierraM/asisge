@@ -91,7 +91,7 @@ $fechahora = Carbon\Carbon::now();
 {!!Html::script('js/movimientocrm.js'); !!}
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
-{!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
+{!!Html::style('assets/dropzone/dist/min/dropmmzone.min.css'); !!}<!--Llamo al dropzone-->
 {!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
 
 
@@ -105,8 +105,13 @@ $fechahora = Carbon\Carbon::now();
 	var movimientoCRMArchivo = '<?php echo (isset($movimientocrm) ? json_encode($movimientocrm->movimientoCRMArchivos) : "");?>';
 		movimientoCRMArchivo = (movimientoCRMArchivo != '' ? JSON.parse(movimientoCRMArchivo) : '');
 
+	var movimientocrmvacante = '<?php echo (isset($movimientocrmcargo) ? json_encode($movimientocrmcargo) : "");?>';
+		movimientocrmvacante = (movimientocrmvacante != '' ? JSON.parse(movimientocrmvacante) : '');
+
 	var valorAsistentes = [0,'','','','',''];
 	var valorArchivo = [0,'','',''];
+
+
 
 	$(document).ready(function(){
 
@@ -129,6 +134,37 @@ $fechahora = Carbon\Carbon::now();
 		// 	archivo.agregarCampos(JSON.stringify(movimientoCRMArchivo[j]),'L');
 		// }
 
+
+		// // Multiregistro Opcion Nueva VACANTES           
+          documentocrmcargo = new Atributos('documentocrmcargo','documentocrmcargo_Modulo','documentocrmcargodescripcion_');
+
+          documentocrmcargo.campoid = 'idDocumentoCRMCargo';  //hermanitas             
+          documentocrmcargo.campoEliminacion = 'eliminardocumentocrmcargo';//hermanitas         Cuando se utilice la funcionalidad 
+          documentocrmcargo.botonEliminacion = true;//hermanitas
+          // despues del punto son las propiedades que se le van adicionar al objeto
+          documentocrmcargo.campos = ['idMovimientoCRMCargo','nombreCargo','Cargo_idCargo','vacantesMovimientoCRMCargo','salarioBaseCargo','fechaEstimadaMovimientoCRMCargo']; //[arrays ]
+          documentocrmcargo.altura = '35px;'; 
+           // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+          documentocrmcargo.etiqueta = ['input','input','input','input','input','input'];
+          documentocrmcargo.tipo = ['hidden','text','hidden','text','text','date']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+          documentocrmcargo.estilo =  ['','width: 230px;height:35px;background-color:#EEEEEE;','','width: 230px; height:35px;','width: 230px; height:35px;;background-color:#EEEEEE;','width: 230px; height:35px;']; 
+
+          // estas propiedades no son muy usadas PERO SON USUARIOTILES
+          
+          documentocrmcargo.clase = ['','','','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+          documentocrmcargo.sololectura = [false,true,false,false,true,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+          documentocrmcargo.completar = ['off','off','off','off','off','off']; //autocompleta 
+          
+          documentocrmcargo.opciones = ['','','','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+          documentocrmcargo.funciones  = ['','','','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+
+
+				for(var j=0, k = movimientocrmvacante.length; j < k; j++)
+		{
+			documentocrmcargo.agregarCampos(JSON.stringify(movimientocrmvacante[j]),'L');
+			
+		}
 	});
 </script>
 
@@ -154,9 +190,11 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-barcode"></i>
 					              	</span>
+					              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 									{!!Form::text('numeroMovimientoCRM',(isset($movimientocrm) ? $movimientocrm->numeroMovimientoCRM : ($ReadOnlyNumero != '' ? 'Automatico' : null)),[$ReadOnlyNumero => $ReadOnlyNumero, 'class'=>'form-control','placeholder'=>'Ingresa el número del caso'])!!}
 							      	{!!Form::hidden('idMovimientoCRM', null, array('id' => 'idMovimientoCRM'))!!}
 							      	{!!Form::hidden('DocumentoCRM_idDocumentoCRM', $id, array('id' => 'DocumentoCRM_idDocumentoCRM'))!!}
+							      	{!!Form::hidden('eliminardocumentocrmcargo', $id, array('id' => 'eliminardocumentocrmcargo'))!!}
 								</div>
 							</div>
 						</div>
@@ -473,6 +511,11 @@ $fechahora = Carbon\Carbon::now();
 					  		<li><a data-toggle="tab" href="#documentos">Documentos</a></li>
 						<?php
 						}
+						{
+							?>
+					  		<li><a data-toggle="tab" href="#vacantes">Vacantes</a></li>
+					  		<?php
+						}
 						?>
 					</ul>
 					</div>
@@ -617,11 +660,34 @@ $fechahora = Carbon\Carbon::now();
 							</div>
 						</div>
 					  </div>
+					 
+					  <div id="vacantes" class="tab-pane fade">
+						   <div class="form-group" id='test'>
+			                    <div class="col-sm-12">
 
-					</div>
+			                      	<div class="row show-grid">
+			                        <div class="col-md-1" style="width: 40px;height: 35px;" onclick="abrirModalVacante();">
+			                          <span class="glyphicon glyphicon-plus"></span>
+			                        </div>
+			                        <div class="col-md-1" style="width: 230px;display:inline-block;height:35px;">Cargo</div>
+			                        <div class="col-md-1" style="width: 230px;display:inline-block;height:35px;">No.Vacantes</div>
+			                        <div class="col-md-1" style="width: 230px;display:inline-block;height:35px;">Salario</div>
+			                        <div class="col-md-1" style="width: 230px;display:inline-block;height:35px;">Fecha Est.Vinculación</div>
+			                          
+
+			                        <!-- este es el div para donde van insertando los registros --> 
+			                        <div id="documentocrmcargo_Modulo">
+			                        </div>
+			                      </div>
+		                    	</div>
+	               		 </div>  
+              		 </div>
+
 					<?php
 						}
 					?>
+					</div>
+					
 					</div>
 
 				    </div>	
@@ -694,3 +760,22 @@ $fechahora = Carbon\Carbon::now();
 </script>
 
 @stop
+
+<!-- Grid modal para  cargo (Vacantes) -->
+<div id="ModalVacante" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Seleccion Vacantes</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/MovimientocrmVacantegridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>

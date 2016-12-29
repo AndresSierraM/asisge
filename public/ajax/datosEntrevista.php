@@ -16,7 +16,10 @@
         $visibleE = 'none;';
 
     $entrevista = DB::table('entrevista')
-            ->select(DB::raw('idEntrevista, fechaEntrevista,documentoAspiranteEntrevista,nombreAspiranteEntrevista,Cargo_idCargo,Tercero_idEntrevistador'))
+
+            ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idcargo')
+            ->leftJoin('tercero', 'Tercero_idEntrevistador', '=', 'idTercero')
+            ->select(DB::raw('idEntrevista,fechaEntrevista,documentoAspiranteEntrevista,nombre1AspiranteEntrevista,nombreCargo,nombreCompletoTercero'))
             ->get();
             //->where('plantrabajoalerta.Compania_idCompania','=', \Session::get('idCompania'))
 
@@ -33,9 +36,9 @@
         $row[$key][] = $value->idEntrevista;
         $row[$key][] = $value->fechaEntrevista;
         $row[$key][] = $value->documentoAspiranteEntrevista;
-        $row[$key][] = $value->nombreAspiranteEntrevista;
-        $row[$key][] = $value->Cargo_idCargo;
-        $row[$key][] = $value->Tercero_idEntrevistador;
+        $row[$key][] = $value->nombre1AspiranteEntrevista;
+        $row[$key][] = $value->nombreCargo;
+        $row[$key][] = $value->nombreCompletoTercero;
 
         
     }

@@ -32,8 +32,8 @@ if(isset($plantrabajoalerta))
 		if($plantrabajoalerta->tareaMesesPlanTrabajoAlerta != '')
 		{
 			
-			$fechaMes = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
-			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+			$fechaMes = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlertaMes;
+			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaMes;
 		}
 		else
 		{

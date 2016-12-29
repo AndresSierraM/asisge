@@ -1,6 +1,7 @@
 {!!Html::script('js/movimientocrm.js'); !!}
 
 <?php 
+
     $visible = '';
 
     if (isset($datos[0])) 
@@ -23,10 +24,12 @@
 
 // consultamos el tercero asociado al  usuario logueado, para 
 // relacionarlo al campo de solicitante
+
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
     where idTercero = '.\Session::get('idTercero'));
+
 $tercero = get_object_vars($tercero[0]); 
 
 

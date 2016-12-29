@@ -1,4 +1,5 @@
-@extends('layouts.modal') 
+@extends('layouts.grid')
+@section('titulo')<h3 id="titulo"><center>Competencia Respuesta</center></h3>@stop
 @section('content')
 
 <style>
@@ -11,45 +12,69 @@
                 border-radius: 4px;
             }
 </style> 
+<?php 
+    $visible = '';
 
+    if (isset($datos[0])) 
+    {
+        $dato = get_object_vars($datos[0]);
+        if ($dato['adicionarRolOpcion'] == 1) 
+        {
+            $visible = 'inline-block;';    
+        }
+        else
+        {
+            $visible = 'none;';
+        }
+    }
+    else
+    {
+        $visible = 'none;';
+    }
+?>
+        <input type="hidden" id="token" value="{{csrf_token()}}"/>
         <div class="container">
             <div class="row">
                 <div class="container">
+                    <br>
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
-                        <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
                             <i class="glyphicon glyphicon-th icon-th"></i> 
                             <span class="caret"></span>
                         </button>
-                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Campo</label></a></li>
-                            
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
+                            <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Respuesta</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Respuesta Normal</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Respuesta Inversa</label></a></li>
                         </ul>
                     </div>
-                    
-                    <table id="tcampoSelect" name="tcampoSelect" class="display table-bordered" width="100%">
+                    <table id="tcompetenciarespuesta" name="tcompetenciarespuesta" class="display table-bordered" width="100%">
                         <thead>
-                            <tr class="btn-default active">
-
+                            <tr class="btn-primary active">
+                                <th style="width:70px;padding: 1px 8px;" data-orderable="false">
+                                 <a href="competenciarespuesta/create"><span style= "color:white; display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="#"><span class="glyphicon glyphicon-refresh" style= "color:white;"></span></a>
+                                </th>
                                 <th><b>ID</b></th>
-                                <th><b>Campo</b></th>         
+                                <th><b>Respuesta</b></th>
+                                <th><b>Respuesta Normal</b></th>
+                                <th><b>Respuesta Inversa</b></th>
                             </tr>
                         </thead>
-                        <tfoot>
+                                        <tfoot>
                             <tr class="btn-default active">
-
+                                <th style="width:40px;padding: 1px 8px;">
+                                    &nbsp;
+                                </th>
                                 <th>ID</th>
-                                <th>Campo</th>                               
+                                <th>Respuesta</th>
+                                <th>Respuesta Normal</th>
+                                <th>Respuesta Inversa</th>
                             </tr>
-                        </tfoot>
+                        </tfoot>        
                     </table>
-
-                    <div class="modal-footer">
-                        <button id="botonCampo" name="botonCampo" type="button" class="btn btn-primary" >Seleccionar</button>
-                    </div>
-
-                
-
                 </div>
             </div>
         </div>
@@ -58,14 +83,16 @@
 <script type="text/javascript">
 
     $(document).ready( function () {
-
+        
         var lastIdx = null;
-        var table = $('#tcampoSelect').DataTable( {
+        var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
+        var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var table = $('#tcompetenciarespuesta').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCampoCRMSelect')!!}",
+            "ajax": "{!! URL::to ('/datosCompetenciaRespuesta?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -102,7 +129,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tcampoSelect tbody')
+        $('#tcompetenciarespuesta tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -117,15 +144,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tcampoSelect tfoot th').each( function () {
-        
-        var title = $('#tcampoSelect thead th').eq( $(this).index() ).text();
+    $('#tcompetenciarespuesta tfoot th').each( function () {
+        if($(this).index()>0){
+        var title = $('#tcompetenciarespuesta thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
-        
+        }
     } );
  
     // DataTable
-    var table = $('#tcampoSelect').DataTable();
+    var table = $('#tcompetenciarespuesta').DataTable();
  
     // Apply the search
     table.columns().every( function () {
@@ -140,27 +167,9 @@
         } );
     })
 
-    $('#tcampoSelect tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-
-        var datos = table.rows('.selected').data();
-
-
-    } );
- 
-     $('#botonCampo').click(function() {
-        var datos = table.rows('.selected').data();  
-
-        for (var i = 0; i < datos.length; i++) 
-        {
-            var valores = new Array(0, datos[i][0],datos[i][1],1,1,1);
-            window.parent.protCampos.agregarCampos(valores,'A');  
-        }
-        window.parent.$("#ModalCampos").modal("hide");
-    });
-
     
 });
     
 </script>
+
 @stop

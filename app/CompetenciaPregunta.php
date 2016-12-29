@@ -19,4 +19,10 @@ class CompetenciaPregunta extends Model
     }
 
 
+
+	public function EntrevistaCompetencia()
+	{
+		return $this->hasMany('App\EntrevistaCompetencia','CompetenciaPregunta_idCompetenciaPregunta');
+    }
+
 }

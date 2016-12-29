@@ -24,6 +24,14 @@ class MovimientoCRM extends Model
     {
         return $this->hasMany('App\MovimientoCRMArchivo','MovimientoCRM_idMovimientoCRM');
     }
+    //nueva pestaña Relacion cargo (VACANTES)
+     public function MovimientoCRMCargos()
+    {
+        return $this->hasMany('App\MovimientoCRMCargos','MovimientoCRM_idMovimientoCRM');
+    }
+
+
+    // Relacion nueva Modelo MovimientoCRMCargos
 
     public function AcuerdoServicio()
     {

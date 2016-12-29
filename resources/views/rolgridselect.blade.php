@@ -141,7 +141,7 @@
         } );
     })
 
-    $('#trolSelect tbody').on( 'click', 'tr', function () {
+    $('#trolSelect tbody').on( 'click', 'tr', function () { 
         $(this).toggleClass('selected');
 
         var datos = table.rows('.selected').data();

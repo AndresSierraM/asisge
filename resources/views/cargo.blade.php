@@ -29,7 +29,7 @@
 		var cargoEducacion = '<?php echo (isset($cargoeducacion) ? json_encode($cargoeducacion) : "");?>';
 		cargoEducacion = (cargoEducacion != '' ? JSON.parse(cargoEducacion) : '')
 
-		var cargoFormacion = '<?php echo (isset($cargoformacion) ? json_encode($cargoformacion) : "");?>';
+		var cargoFormacion = '<?php echo (isset($cargohabilidad) ? json_encode($cargoformacion) : "");?>';
 		cargoFormacion = (cargoFormacion != '' ? JSON.parse(cargoFormacion) : '')
 
 		var cargoHabilidad = '<?php echo (isset($cargohabilidad) ? json_encode($cargohabilidad) : "");?>';
@@ -141,11 +141,11 @@
 			    Responsabilidades.botonEliminacion = true;//hermanitas
 			    // despues del punto son las propiedades que se le van adicionar al objeto
 			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','Cargo_idCargo']; //[arrays ]
-			    Responsabilidades.altura = '40px;'; 
+			    Responsabilidades.altura = '35px;'; 
 			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
 			    Responsabilidades.etiqueta = ['input','input','input'];
 			    Responsabilidades.tipo = ['hidden','','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-			    Responsabilidades.estilo = ['','width: 1200px;height:40px;',''];	
+			    Responsabilidades.estilo = ['','width: 600px;height:35px;',''];	
 
 			    // estas propiedades no son muy usadas PERO SON UTILES
 			    
@@ -185,7 +185,7 @@
 			    Educacion.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
-    			// // multiregistro Educacion
+    			// // multiregistro Formacion
 
   			
 			    Formacion = new Atributos('Formacion','Formacion_Modulo','Formaciondescripcion_');
@@ -403,25 +403,25 @@
 
 				<!-- Depende De -->
 					<div class="form-group" id='test'>
-					{!!Form::label('Cargo_idCargo', 'Depende De', array('class' => 'col-sm-2 control-label'))!!}
+					{!!Form::label('Cargo_IdDepende', 'Depende De', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-						{!!Form::select('Cargo_idCargo',$cargoPadre, (isset($cargo) ? $cargo->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}
+						{!!Form::select('Cargo_IdDepende',$cargoPadre, (isset($cargo) ? $cargo->Cargo_IdDepende : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}
 						</div>
 					</div>
 				</div>
 				<!-- Años de experiencia -->
 				<div class="form-group" id='test'>
-					{!!Form::label('AñoExperiencia', 'Años de Experiencia', array('class' => 'col-sm-2 control-label'))!!}
+					{!!Form::label('aniosExperienciaCargo', 'Años de Experiencia', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-							{!!Form::text('AñoExperiencia',null,['class'=>'form-control','placeholder'=>'Ingresa los años de experiencia'])!!}
+							{!!Form::text('aniosExperienciaCargo',null,['class'=>'form-control','placeholder'=>'Ingresa los años de experiencia'])!!}
 						</div>
 					</div>
 				</div>
@@ -460,7 +460,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-														<!-- nuevo campo para 	Reponsabilidad peso educacion -->
+														<!-- nuevo campo para 	 peso educacion -->
 													     <div class="form-group" id='test'>
 															{!!Form::label('porcentajeEducacionCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
 															<div class="col-sm-10">
@@ -765,7 +765,7 @@
 														          <div class="col-md-1" style="width: 40px;height: 40px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
 														            <span class="glyphicon glyphicon-plus"></span>
 														          </div>
-														          <div class="col-md-1" style="width: 1200px;display:inline-block;height:40px;">Descripcion</div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
 														          <!-- este es el div para donde van insertando los registros --> 
 														          <div id="Responsabilidad_Modulo">
 														          </div>

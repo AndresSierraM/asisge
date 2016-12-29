@@ -97,7 +97,7 @@ Route::group(['middleware' => 'auth'], function ()
     });
     */
 
-
+    Route::resource ('competenciarespuesta','CompetenciaRespuestaController');
     Route::resource ('entrevista','EntrevistaController');
     Route::resource ('competencia','CompetenciaController');
     Route::resource ('perfilcargo','PerfilCargoController');
@@ -258,6 +258,20 @@ Route::get('datosPlanTrabajo', function()
     include public_path().'/ajax/datosPlanTrabajo.php';
 });
 
+Route::get('datosCompetenciaRespuesta', function()
+{
+    include public_path().'/ajax/datosCompetenciaRespuesta.php';
+});
+
+
+
+
+
+Route::get('datosMovimientocrmVacantegridselect', function()
+{
+    include public_path().'/ajax/datosMovimientocrmVacantegridselect.php';
+});
+
 
 
 
@@ -414,10 +428,8 @@ Route::post('consultarPermisos', function()
 
 //Ajax de Maestros
 
-Route::post('llenarplantrabajoalartaModelo', function()
-{
-    include public_path().'/ajax/llenarplantrabajoalartaModelo.php';
-});
+
+
 
 Route::post('llenarNombreRolGrupoApoyo', function()
 {
@@ -751,6 +763,10 @@ Route::post('llenarEducacionCargo', function()
 {
     include public_path().'/ajax/llenarEducacionCargo.php';
 });
+Route::post('llenarEntrevistaCompetencia', function()
+{
+    include public_path().'/ajax/llenarEntrevistaCompetencia.php';
+});
 
 
 //************************************
@@ -890,3 +906,4 @@ Route::post('dropzone/uploadFiles', 'MatrizRiesgoController@uploadFiles');
 
 Route::get('dropzone','MatrizLegalController@indexdropzone');
 Route::post('dropzone/uploadFiles', 'MatrizLegalController@uploadFiles'); 
+Route::get('MovimientocrmVacantegridselect', 'MovimientoCRMController@indexMovimientocrmVacantegridselect'); 

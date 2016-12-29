@@ -1,3 +1,8 @@
+function abrirModalVacante()
+{
+    $('#ModalVacante').modal('show');
+
+}
 function cambiarEstado(id, TipoEstado)
 {
 

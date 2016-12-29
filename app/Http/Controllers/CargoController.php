@@ -100,11 +100,11 @@ class CargoController extends Controller
                 'salarioBaseCargo' => $request['salarioBaseCargo'],
                 'nivelRiesgoCargo' => $request['nivelRiesgoCargo'],
                 //campos adicionales
-                'falta' => $request['CargoDepende'],
-                'falta' => $request['AñoExperiencia'],
-                'porcentajeEducacionCargo' => $request['porcentajeEducacionCargo'],
-                'porcentajeFormacionCargo' => $request['porcentajeFormacionCargo'],
-                'porcentajeHabilidadCargo' => $request['porcentajeHabilidadCargo'],
+                'Cargo_IdDepende' => $request['Cargo_IdDepende'],
+                'aniosExperienciaCargo' => $request['aniosExperienciaCargo'],
+                'porcentajeCargoEducacion' => $request['porcentajeCargoEducacion'],
+                'porcentajeCargoFormacion' => $request['porcentajeCargoFormacion'],
+                'porcentajeCargoHabilidad' => $request['porcentajeCargoHabilidad'],
                 //
                 'objetivoCargo' => $request['objetivoCargo'],
                 'posicionPredominanteCargo' => $request['posicionPredominanteCargo'],

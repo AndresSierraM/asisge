@@ -18,7 +18,7 @@ class EntrevistaEducacion extends Model
 
 public function Entrevista()
 	{
-		return $this->hasOne('App\Entrevista','idEntrevista');
+		return $this->hasMany('App\Entrevista','idEntrevista');
     }
 	
 }

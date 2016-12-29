@@ -22,24 +22,29 @@
                         </button>
                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Campo</label></a></li>
-                            
+                            <li><a class="toggle-vis" data-column="0"><label> Cargo</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Salario</label></a></li>
                         </ul>
                     </div>
                     
-                    <table id="tcampoSelect" name="tcampoSelect" class="display table-bordered" width="100%">
+                    <table id="tdocumentocrmcargo" name="tdocumentocrmcargo" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
 
                                 <th><b>ID</b></th>
-                                <th><b>Campo</b></th>         
+                                <th><b>Cargo</b></th>
+                                <th><b>Salario</b></th>
+                              
                             </tr>
                         </thead>
                         <tfoot>
                             <tr class="btn-default active">
 
                                 <th>ID</th>
-                                <th>Campo</th>                               
+                                <th>Cargo</th>
+                                <th>Salario</th>
+
+                               
                             </tr>
                         </tfoot>
                     </table>
@@ -57,15 +62,15 @@
 
 <script type="text/javascript">
 
-    $(document).ready( function () {
+    $(document).ready( function () { 
 
         var lastIdx = null;
-        var table = $('#tcampoSelect').DataTable( {
+        var table = $('#tdocumentocrmcargo').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCampoCRMSelect')!!}",
+            "ajax": "{!! URL::to ('/datosMovimientocrmVacantegridselect')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -102,7 +107,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tcampoSelect tbody')
+        $('#tdocumentocrmcargo tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -117,15 +122,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tcampoSelect tfoot th').each( function () {
+    $('#tdocumentocrmcargo tfoot th').each( function () {
         
-        var title = $('#tcampoSelect thead th').eq( $(this).index() ).text();
+        var title = $('#tdocumentocrmcargo thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         
     } );
  
     // DataTable
-    var table = $('#tcampoSelect').DataTable();
+    var table = $('#tdocumentocrmcargo').DataTable();
  
     // Apply the search
     table.columns().every( function () {
@@ -140,7 +145,7 @@
         } );
     })
 
-    $('#tcampoSelect tbody').on( 'click', 'tr', function () {
+    $('#tdocumentocrmcargo tbody').on( 'click', 'tr', function () {
         $(this).toggleClass('selected');
 
         var datos = table.rows('.selected').data();
@@ -153,14 +158,28 @@
 
         for (var i = 0; i < datos.length; i++) 
         {
-            var valores = new Array(0, datos[i][0],datos[i][1],1,1,1);
-            window.parent.protCampos.agregarCampos(valores,'A');  
-        }
-        window.parent.$("#ModalCampos").modal("hide");
-    });
 
-    
-});
+           
+           var valores = new Array(0, datos[i][1],datos[i][0],0,datos[i][2],'');
+        
+            window.parent.documentocrmcargo.agregarCampos(valores,'A'); 
+
+     
+        }
+        window.parent.$("#ModalVacante").modal("hide");
+
+        for (var i = 0; i < window.parent.documentocrmcargo.contador; i++) 
+             {
+              $("#fechaEstimadaDocumentoCRMCargo"+i).datetimepicker
+              (
+                  ({
+                     format: "YYYY-MM-DD"
+                   })
+
+              );  
+             }
+        });
+    });
     
 </script>
 @stop

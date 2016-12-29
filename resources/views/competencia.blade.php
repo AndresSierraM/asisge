@@ -22,6 +22,10 @@
 
 <script>
 
+
+ var competencias = '<?php echo (isset($competencia) ? json_encode($competencia->CompetenciaPregunta) : "");?>';
+competencias = (competencias != '' ? JSON.parse(competencias) : '');
+
 // Se Crea Otra Variable para el Tpo de respuesta 
 valorRespuesta = Array("Normal","Inversa");
 NombreRespuesta = Array ("Normal","Inversa");
@@ -48,9 +52,9 @@ Estado = [valorEstado,NombreEstado];
     competencia.campos = ['idCompetenciaPregunta ','ordenCompetenciaPregunta','preguntaCompetenciaPregunta','respuestaCompetenciaPregunta','estadoCompetenciaPregunta','Competencia_idCompetencia']; //[arrays ]
     competencia.altura = '35px;';
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-    competencia.etiqueta = ['input','input','input','styleect','select','input'];
+    competencia.etiqueta = ['input','input','input','select','select','input'];
     competencia.tipo = ['hidden','text','text','','','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-    competencia.estilo = ['','width: 300px;height:35px;','width: 600px;height:35px;','width: 300px;height:35px;','width: 300px;height:35px;',''];  
+    competencia.estilo = ['','width: 300px;height:35px;','width: 300px;height:35px;','width: 300px;height:35px;','width: 100px;height:35px;',''];  
 
     // estas propiedades no son muy usadas PERO SON UTILES
     
@@ -59,6 +63,13 @@ Estado = [valorEstado,NombreEstado];
     competencia.completar = ['off','off','off','off','off','off']; //autocompleta 
     competencia.opciones = ['','','',TipoRespuesta,Estado,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
     competencia.funciones  = ['','','','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+
+       for(var j=0, k = competencias.length; j < k; j++)
+         {
+      
+           competencia.agregarCampos(JSON.stringify(competencias[j]),'L');
+         
+        }
   });
 </script> 
                           
@@ -74,7 +85,7 @@ Estado = [valorEstado,NombreEstado];
                                   <span class="input-group-addon">
                                     <i class="fa fa-pencil-square-o"></i> 
                                   </span>
-                           {!!Form::text('nombreCompetencia',null,['class'=>'form-control','placeholder'=>'Por favor ingrese su Nombre','style'=>'width:100%;,right'])!!}
+                           {!!Form::text('nombreCompetencia',null,['class'=>'form-control','placeholder'=>'Por favor ingrese el Nombre ','style'=>'width:100%;,right'])!!}
                               {!!Form::hidden('idCompetencia', null, array('id' => 'idCompetencia')) !!}
                                  
                             </div>
@@ -105,9 +116,9 @@ Estado = [valorEstado,NombreEstado];
                           <span class="glyphicon glyphicon-plus"></span>
                         </div>
                         <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Orden</div>
-                        <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Pregunta</div>
+                        <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Pregunta</div>
                         <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Tipo Respuesta</div>
-                        <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Estado</div>
+                        <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">Estado</div>
                           
 
                         <!-- este es el div para donde van insertando los registros --> 

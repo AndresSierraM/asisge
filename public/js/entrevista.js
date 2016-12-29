@@ -1,3 +1,39 @@
+function llenarEntrevistaCompetencia(idCargo)
+{
+
+    var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idCargo': idCargo},
+            url:   'http://'+location.host+'/llenarEntrevistaCompetencia/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+            success: function(respuesta){
+                // Limpiar el div de la multiregistro
+                document.getElementById("EntrevistaCompetencia_Modulo").innerHTML = '';
+                var valor = new Array();
+                var nombres = new Array();
+
+                for (var i = 0; i < respuesta.length; i++) 
+                {
+                    valor[i] = respuesta[i]["idCompetenciaPregunta"];
+                    nombres[i] = respuesta[i]["preguntaCompetenciaPregunta"];
+                    
+                    var valores = new Array(0,valor[i],nombres[i],'',1);
+                    window.parent.EntrevistaCompentencia.agregarCampos(valores,'A'); 
+
+                }  
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+
+}
 
 function llenarFormacionCargo(idCargo)
 {
@@ -18,13 +54,15 @@ function llenarFormacionCargo(idCargo)
                 document.getElementById("FormacionEntrevista_Modulo").innerHTML = '';
                 var valor = new Array();
                 var nombres = new Array();
+                var porcentaje = new Array();
 
                 for (var i = 0; i < respuesta.length; i++) 
                 {
                     valor[i] = respuesta[i]["idPerfilCargo"];
                     nombres[i] = respuesta[i]["nombrePerfilCargo"];
+                    porcentaje[i] = respuesta[i]["porcentajeCargoFormacion"];
                     
-                    var valores = new Array(0,valor[i],nombres[i],'',1);
+                    var valores = new Array(0,nombres[i],valor[i],porcentaje[i],0,0,0);
                     window.parent.Formacionentrevista.agregarCampos(valores,'A'); 
 
                 }  
@@ -59,13 +97,15 @@ function llenarEducacionCargo(idCargo)
                 document.getElementById("EducacionEntrevista_Modulo").innerHTML = '';
                 var valor = new Array();
                 var nombres = new Array();
+                var porcentaje = new Array();
 
                 for (var i = 0; i < respuesta.length; i++) 
                 {
                     valor[i] = respuesta[i]["idPerfilCargo"];
                     nombres[i] = respuesta[i]["nombrePerfilCargo"]; 
-                    var valores = new Array(0,nombres[i],valor[i],0,0);    
-                    alert(valores);
+                    porcentaje[i] = respuesta[i]["porcentajeCargoEducacion"]; 
+
+                    var valores = new Array(0,nombres[i],valor[i],porcentaje[i],0,0,0);  
                     window.parent.Educacionentrevista.agregarCampos(valores,'A'); 
                 }  
             },
@@ -161,3 +201,62 @@ function llenarEducacionCargo(idCargo)
 
     }
 }
+
+
+function consultarEdadEntrevistado(fecha)
+{
+    
+
+    
+    if (fecha !== '0000-00-00') 
+    {
+
+        var values=fecha.split("-");
+
+        var dia = values[2];
+
+        var mes = values[1];
+
+        var ano = values[0];
+
+
+        // cogemos los valores actuales
+
+        var fecha_hoy = new Date();
+
+        var ahora_ano = fecha_hoy.getYear();
+
+        var ahora_mes = fecha_hoy.getMonth()+1;
+
+        var ahora_dia = fecha_hoy.getDate();
+
+        // realizamos el calculo
+
+        var edad = (ahora_ano + 1900) - ano;
+
+        if ( ahora_mes < mes )
+
+        {
+            edad--;
+        }
+
+        if ((mes == ahora_mes) && (ahora_dia < dia))
+        {
+            edad--;
+        }
+
+        if (edad > 1900)
+        {
+            edad -= 1900;
+        }
+        
+
+        $("#edadEntrevistaPregunta").val(edad);
+    }
+    else
+    {
+        alert("Debe llenar la fecha de nacimiento ");
+        $("#edadEntrevistaPregunta").val('');
+    }
+}
+

@@ -16,6 +16,11 @@ include public_path().'/ajax/consultarPermisosCRM.php';
 
 class MovimientoCRMController extends Controller
 {
+    public function indexMovimientocrmVacantegridselect()
+    {
+        return view('MovimientocrmVacantegridselect');
+        
+    }
 
 
     public function index()
@@ -165,6 +170,23 @@ class MovimientoCRMController extends Controller
            ]);
         }
 
+             // en esta parte es el guardado de la multiregistro VACANTES
+         //Primero consultar el ultimo id guardado
+         // $MovimientoCRM = \App\MovimientoCRM::All()->last();
+         //for para guardar cada registro de la multiregistro
+
+         for ($i=0; $i < count($request['nombreCargo']); $i++) 
+         { 
+             \App\MovimientoCRMCargos::create([
+            'MovimientoCRM_idMovimientoCRM' => $movimientocrm->idMovimientoCRM,
+            'Cargo_idCargo' => $request['Cargo_idCargo'][$i],
+            'vacantesMovimientoCRMCargo' => $request['vacantesMovimientoCRMCargo'][$i],
+            'fechaEstimadaMovimientoCRMCargo' => $request['fechaEstimadaMovimientoCRMCargo'][$i]
+            ]);
+         }
+
+
+        
         return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
     }
 
@@ -217,7 +239,24 @@ class MovimientoCRMController extends Controller
         
         $evento = \App\EventoCRM::All()->lists('nombreEventoCRM','idEventoCRM');
 
-       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento'),['movimientocrm'=>$movimientocrm]);
+
+
+        // Consulto  los necesarios el FROM en la tabla principal movimientocrmcargo, luego los envio al blade para llenar los respectivos Datos
+        $movimientocrmcargo = DB::Select('
+            SELECT idMovimientoCRMCargo,nombreCargo,Cargo_idCargo,vacantesMovimientoCRMCargo,salarioBaseCargo,fechaEstimadaMovimientoCRMCargo
+            FROM movimientocrmcargo MC 
+            left join  movimientocrm M 
+            on MC.MovimientoCRM_idMovimientoCRM = M.idMovimientoCRM 
+            left join cargo C  
+            on MC.Cargo_idCargo = C.idCargo
+            WHERE idMovimientoCRM = '.$id);
+
+
+        // print_r($movimientocrmcargo);
+
+
+
+        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -277,6 +316,26 @@ class MovimientoCRMController extends Controller
             \App\MovimientoCRMArchivo::whereIn('MovimientoCRM_idMovimientoCRM',$idsEliminar)->delete();
         }
 
+        //  .. .. .. .. .. .. .. .. .. ... .. .. .. .. ... ... ... ... . .. . .. . .. . . .. . . . . . .
+        $idsEliminar = explode("," , $request['eliminardocumentocrmcargo']);
+        //Eliminar registros de la multiregistro
+        \App\MovimientoCRMCargos::whereIn('idMovimientoCRMCargo', $idsEliminar)->delete();
+        // Guardamos el detalle de los modulos
+        for($i = 0; $i < count($request['idMovimientoCRMCargo']); $i++)
+        {
+             $indice = array(
+                'idMovimientoCRMCargo' => $request['idMovimientoCRMCargo'][$i]);
+
+            $data = array(
+                'MovimientoCRM_idMovimientoCRM' => $id,
+                'Cargo_idCargo' => $request['Cargo_idCargo'][$i],
+                'vacantesMovimientoCRMCargo' => $request['vacantesMovimientoCRMCargo'][$i],
+                'fechaEstimadaMovimientoCRMCargo' => $request['fechaEstimadaMovimientoCRMCargo'][$i]);
+
+
+            $guardar = \App\MovimientoCRMCargos::updateOrCreate($indice, $data);
+        } 
+
         return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
     }
 
@@ -311,6 +370,8 @@ class MovimientoCRMController extends Controller
             $respuesta = \App\MovimientoCRMAsistente::updateOrCreate($indice, $data);
 
         }
+
+
     }
 
     public function guardarAsesorMovimientoCRM()
@@ -354,4 +415,7 @@ class MovimientoCRMController extends Controller
 
         echo json_encode($acuerdo);
     }
+
+        
+       
 }

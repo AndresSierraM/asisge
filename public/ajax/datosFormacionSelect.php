@@ -1,7 +1,7 @@
 <?php
 
         $educacion = DB::table('perfilcargo')
-            ->select(DB::raw('idPerfilCargo,nombrePerfilCargo'))
+            ->select(DB::raw('idPerfilCargo,nombrePerfilCargo'))   
             ->where('tipoPerfilCargo','=','Formacion')
             ->get();
     

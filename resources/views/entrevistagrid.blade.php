@@ -47,9 +47,9 @@
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> Fecha Entrevista</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Documento Aspirante</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Nombre Aspirante</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Cargo</label></a></li>
-                             <li><a class="toggle-vis" data-column="3"><label> Entrevistador</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Nombre Aspirante</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Cargo</label></a></li>
+                             <li><a class="toggle-vis" data-column="6"><label> Entrevistador</label></a></li>
                         </ul>
                     </div>
                     <table id="tentrevista" name="tentrevista" class="display table-bordered" width="100%">
