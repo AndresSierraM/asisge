@@ -22,12 +22,17 @@
 
     foreach ($encuestapublicacion as $key => $value) 
     {  
-        $row[$key][] = '<a href="encuestapublicacion/'.$value->idEncuestaPublicacion.'/edit">'.
-                            '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
-                        '</a>&nbsp;'.
-                        '<a href="encuestapublicacion/'.$value->idEncuestaPublicacion.'/edit?accion=eliminar">'.
-                            '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
-                        '</a>';
+        $row[$key][] = '<a href="encuestapublicacion/'.$value->idEncuestaPublicacion.'/edit">
+                            <span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>
+                        </a>&nbsp;
+                        <a href="encuestapublicacion/'.$value->idEncuestaPublicacion.'/edit?accion=eliminar">
+                            <span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>
+                        </a>
+                        <a href="#" onclick="mostrarTabulacionEncuesta('.$value->idEncuestaPublicacion.');" title="Ver Tabulación">
+                            <span class="glyphicon glyphicon-print" style = "display:'.$visibleM.'"></span>
+                        </a>
+
+                        ';
         $row[$key][] = $value->idEncuestaPublicacion;
         $row[$key][] = $value->nombreEncuestaPublicacion;
         $row[$key][] = $value->fechaEncuestaPublicacion;

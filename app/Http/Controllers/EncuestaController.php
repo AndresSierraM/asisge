@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\EncuestaRequest;
+
 use App\Http\Controllers\Controller;
 
 use DB;
@@ -24,7 +26,11 @@ class EncuestaController extends Controller
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisos($vista);
 
-        return view('encuestagrid', compact('datos'));
+        if($datos != null)
+            return view('encuestagrid', compact('datos'));
+        else
+            return view('accesodenegado');
+
     }
 
     /**
@@ -43,27 +49,30 @@ class EncuestaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EncuestaRequest $request)
     {
-        $fechahora = Carbon\Carbon::now();
+        if($request['respuesta'] != 'falso')
+        { 
+            $fechahora = Carbon\Carbon::now();
 
-        // Insertamos el encabezado
-        \App\Encuesta::create([
-            'tituloEncuesta' => $request['tituloEncuesta'],
-            'descripcionEncuesta' => $request['descripcionEncuesta'],
-            'Users_idCrea' => \Session::get('idUsuario'),
-            'created_at' => $fechahora,
-            'Compania_idCompania' => \Session::get('idCompania')
-            ]);
+            // Insertamos el encabezado
+            \App\Encuesta::create([
+                'tituloEncuesta' => $request['tituloEncuesta'],
+                'descripcionEncuesta' => $request['descripcionEncuesta'],
+                'Users_idCrea' => \Session::get('idUsuario'),
+                'created_at' => $fechahora,
+                'Compania_idCompania' => \Session::get('idCompania')
+                ]);
 
-        // Consultamos el ultimo id insertado
-        $encuesta = \App\Encuesta::All()->last();
-        
-        // ejecutamos la funcion para grabar las preguntas y sus opciones
-        $this->grabarDetalle($encuesta->idEncuesta, $request);
+            // Consultamos el ultimo id insertado
+            $encuesta = \App\Encuesta::All()->last();
+            
+            // ejecutamos la funcion para grabar las preguntas y sus opciones
+            $this->grabarDetalle($encuesta->idEncuesta, $request);
 
 
-        return redirect('/encuesta');
+            return redirect('/encuesta');
+        }
     }
 
     /**
@@ -111,21 +120,24 @@ class EncuestaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EncuestaRequest $request, $id)
     {
-        $fechahora = Carbon\Carbon::now();
+        if($request['respuesta'] != 'falso')
+        {
+            $fechahora = Carbon\Carbon::now();
 
-        $encuesta = \App\Encuesta::find($id);
-        $encuesta->fill($request->all());
-        $encuesta->updated_at = $fechahora;
-        $encuesta->Users_idModifica = \Session::get('idUsuario');
-        $encuesta->save();
+            $encuesta = \App\Encuesta::find($id);
+            $encuesta->fill($request->all());
+            $encuesta->updated_at = $fechahora;
+            $encuesta->Users_idModifica = \Session::get('idUsuario');
+            $encuesta->save();
 
-        // ejecutamos la funcion para grabar las preguntas y sus opciones
-        $this->grabarDetalle($id, $request);
+            // ejecutamos la funcion para grabar las preguntas y sus opciones
+            $this->grabarDetalle($id, $request);
 
 
-        return redirect('/encuesta');
+            return redirect('/encuesta');
+        }
     }
 
     /**
@@ -149,13 +161,14 @@ class EncuestaController extends Controller
         $idsEliminar = explode(',', $request['eliminarPregunta']);
         \App\EncuestaPregunta::whereIn('idEncuestaPregunta',$idsEliminar)->delete();
 
+
         for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
         {
            
             $indice = array(
              'idEncuestaPregunta' => $request['idEncuestaPregunta'][$i]);
 
-             $data = array(
+            $data = array(
              'preguntaEncuestaPregunta' => $request['preguntaEncuestaPregunta'][$i],
              'detalleEncuestaPregunta' => $request['detalleEncuestaPregunta'][$i],
              'tipoRespuestaEncuestaPregunta' => $request['tipoRespuestaEncuestaPregunta'][$i],
@@ -173,6 +186,16 @@ class EncuestaController extends Controller
             
             // por cada pregunta, gurdamos el subdetalle (Opciones de la pregunta)
             $this->grabarSubDetalle($idPregunta, $request, $i);
+
+            // también verificamos si el usuario cambió el tipo de respuesta por una que no sea multiple
+            // en este caso eliminamos las posibles opciones que pudiera tener ya esa pregunta
+            $multiples = ['Selección Múltiple','Casillas de Verificación','Lista de Opciones'];
+            if(in_array($request['tipoRespuestaEncuestaPregunta'][$i], $multiples)  === false)
+            {
+                echo 'EncuestaPregunta_idEncuestaPregunta'.'='.$request['idEncuestaPregunta'][$i];
+                \App\EncuestaOpcion::where('EncuestaPregunta_idEncuestaPregunta','=',$request['idEncuestaPregunta'][$i])->delete();
+
+            }
 
         }
 

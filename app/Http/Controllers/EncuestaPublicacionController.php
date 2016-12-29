@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use DB;
 use Carbon;
+use Mail;
+use Input;
 include public_path().'/ajax/consultarPermisos.php';
 
 
@@ -76,7 +78,18 @@ class EncuestaPublicacionController extends Controller
      */
     public function show($id)
     {
-        //
+        if(isset($_GET['accion']) and $_GET['accion'] == 'imprimir')
+        {
+            return view('formatos.formatoencuesta', compact('id'));
+        }
+
+        if(isset($_GET['accion']) and $_GET['accion'] == 'dashboard')
+        {
+            
+            $idEncuestaPublicacion = $_GET['idEncuestaPublicacion'];
+
+            return view('dashboardencuesta',compact('idEncuestaPublicacion'));
+        }
     }
 
     /**
@@ -88,7 +101,9 @@ class EncuestaPublicacionController extends Controller
     public function edit($id)
     {
         $encuestapublicacion = \App\EncuestaPublicacion::find($id);
-        $encuesta = \App\Encuesta::where('Compania_idCompania','=',\Session::get("idCompania"));
+
+        $encuesta = \App\Encuesta::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('tituloEncuesta', 'idEncuesta');
+
         return view('encuestapublicacion',['encuestapublicacion'=>$encuestapublicacion],compact('encuesta'));
     }
 
@@ -150,7 +165,55 @@ class EncuestaPublicacionController extends Controller
              'EncuestaPublicacion_idEncuestaPublicacion' => $id);
 
             $destinos = \App\EncuestaPublicacionDestino::updateOrCreate($indice, $data);
+            
+            // totmaos el id del destinatario, si esta nulo o en cero, consultamos el ultimo insertado
+            $idDestino = $request['idEncuestaPublicacionDestino'][$i];
+            if($idDestino == null or $idDestino == 0)
+            {
+                $idDestino = \App\EncuestaPublicacionDestino::All()->last()->idEncuestaPublicacionDestino;
+            }
 
+            //********************************
+            //
+            // Envio de Correo con Encuesta
+            //
+            //********************************
+            
+            $datos['asunto'] = 'Encuesta: ';
+            $datos['mensaje'] = 'Se ha enviado una encuesta
+                <a href="http://localhost:8000/encuestapublicacion/2?accion=imprimir&P='.$id.'&D='.$idDestino.'">Ver encuesta</a>';
+            $datos['correos'] = array($request['correoEncuestaPublicacionDestino'][$i]);
+
+            Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            {
+                $msj->to($datos['correos']);
+                $msj->subject($datos['asunto']);
+                // $msj->attach(public_path().'/plantrabajo.html');
+            });
         }
+
+
+        
+
+
+    }
+
+
+    protected function grabarRespuesta()
+    {
+        //antes de grabar las respuestas, eliminamos los datos de ella que puedieran existir
+        \App\EncuestaPublicacionRespuesta::where('EncuestaPublicacionDestino_idEncuestaPublicacionDestino','=', Input::get('idEncuestaPublicacionDestino'))->delete();
+
+        $dato = Input::get('respuesta');
+        foreach ($dato as $reg => $valor) 
+        {
+            \App\EncuestaPublicacionRespuesta::create([
+            'EncuestaPublicacionDestino_idEncuestaPublicacionDestino' => 
+                    Input::get('idEncuestaPublicacionDestino'),
+            'EncuestaPregunta_idEncuestaPregunta' => Input::get('idEncuestaPregunta')[$reg],
+            'valorEncuestaPublicacionDestino' => $valor[0]
+            ]);
+        }
+        
     }
 }

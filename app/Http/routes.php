@@ -175,6 +175,10 @@ Route::group(['middleware' => 'auth'], function ()
     // *************************************
     Route::resource('encuesta','EncuestaController');
     Route::resource('encuestapublicacion','EncuestaPublicacionController');
+
+    Route::post('grabarRespuesta', [
+            'as' => 'grabarRespuesta', 
+            'uses' => 'EncuestaPublicacionController@grabarRespuesta']);
     
     // *************************************************
     //

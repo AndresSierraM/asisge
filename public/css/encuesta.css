@@ -52,3 +52,61 @@
     padding: 5px 5px 5px 5px;
     margin: 5px 5px 5px 5px;
   }
+
+  .PublicacionForm
+  {
+    width: 90%;
+    margin: 5% 5% 5% 5% ;
+    padding: 10px ;
+    border-top: 1px solid gray;
+    border-bottom: 3px solid gray;
+    border-left:  1px solid gray;
+    border-right:  3px solid gray;
+  }
+
+
+ .PublicacionTitulo 
+  {
+    font-size: 20px;
+    width: 100%;
+    margin: 5px 5px 5px 5px;
+  }
+
+  .PublicacionSubtitulo 
+  {
+    font-size: 16px;
+    width: 100%;
+    margin: 5px 5px 30px 5px;
+    font-weight: normal;
+  }
+
+  .PublicacionPregunta
+  {
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .PublicacionDetalle
+  {
+    font-size: 14px;
+    width: 100%;
+    margin: 0px 20px 10px 20px ;
+    
+  }
+
+  .PublicacionSelect
+  {
+    font-size: 14px;
+    width: 300px;
+    margin-left: 10px;
+  }
+
+  .PublicacionOpcion
+  {
+    font-size: 14px;
+    margin-left: 5px;
+    margin-right: 50px;
+    font-weight: normal;
+  }

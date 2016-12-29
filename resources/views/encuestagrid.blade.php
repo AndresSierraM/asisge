@@ -45,6 +45,10 @@
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> Título</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Descripción</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Creado Por</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Fecha Creación</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Modifcado Por</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Fecha Modificación</label></a></li>
                         </ul>
                     </div>
                     <table id="tencuesta" name="tencuesta" class="display table-bordered" width="100%">
@@ -57,6 +61,10 @@
                                 <th><b>ID</b></th>
                                 <th><b>Título</b></th>
                                 <th><b>Descripción</b></th>
+                                <th><b>Creado Por</b></th>
+                                <th><b>Fecha Creación</b></th>
+                                <th><b>Modifcado Por</b></th>
+                                <th><b>Fecha Modificación</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -67,6 +75,10 @@
                                 <th>ID</th>
                                 <th>Título</th>
                                 <th>Descripción</th>
+                                <th>Creado Por</th>
+                                <th>Fecha Creación</th>
+                                <th>Modifcado Por</th>
+                                <th>Fecha Modificación</th>
                             </tr>
                         </tfoot>        
                     </table>

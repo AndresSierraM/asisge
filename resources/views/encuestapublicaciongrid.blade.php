@@ -34,6 +34,7 @@
         <div class="container">
             <div class="row">
                 <div class="container">
+
                     <br>
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
                         <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
@@ -168,6 +169,11 @@
     
 });
     
+
+    function mostrarTabulacionEncuesta(idDoc)
+    {
+        window.open('encuestapublicacion/0?idEncuestaPublicacion='+idDoc+'&accion=dashboard','dashboardencuesta','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
 </script>
 
 @stop

@@ -174,7 +174,7 @@ if(isset($plantrabajoalerta))
 				              <span class="input-group-addon">
 				                <i class="fa fa-clipboard"></i>
 				              </span>
-							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta','',['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
 			            	</div>
 			          </div>
 			        </div>
