@@ -511,6 +511,7 @@ $fechahora = Carbon\Carbon::now();
 					  		<li><a data-toggle="tab" href="#documentos">Documentos</a></li>
 						<?php
 						}
+						if(strpos($camposVista, 'vacantesMovimientoCRM') !== false)
 						{
 							?>
 					  		<li><a data-toggle="tab" href="#vacantes">Vacantes</a></li>
@@ -573,13 +574,13 @@ $fechahora = Carbon\Carbon::now();
 							<div class="form-group" id='test'>
 								<div class="col-sm-12">
 									<div class="row show-grid">
-										<div class="col-md-1" style="width: 40px;" onclick="asistentes.agregarCampos(valorAsistentes,'A')">
+										<div class="col-md-1" style="width: 40px;height:35px;" onclick="asistentes.agregarCampos(valorAsistentes,'A')">
 											<span class="glyphicon glyphicon-plus"></span>
 										</div>
-										<div class="col-md-1" style="width: 330px;">Nombre</div>
-										<div class="col-md-1" style="width: 270px;">Cargo</div>
-										<div class="col-md-1" style="width: 150px;">Tel&eacute;fono</div>
-										<div class="col-md-1" style="width: 230px;">Correo</div>
+										<div class="col-md-1" style="width: 330px;height:35px;">Nombre</div>
+										<div class="col-md-1" style="width: 270px;height:35px;">Cargo</div>
+										<div class="col-md-1" style="width: 150px;height:35px;">Tel&eacute;fono</div>
+										<div class="col-md-1" style="width: 230px;height:35px;">Correo</div>
 										<div id="contenedor_asistentes">
 										</div>
 									</div>
@@ -660,7 +661,11 @@ $fechahora = Carbon\Carbon::now();
 							</div>
 						</div>
 					  </div>
-					 
+					 <?php
+						}
+							if(strpos($camposVista, 'vacantesMovimientoCRM') !== false)
+						{ 
+						?>
 					  <div id="vacantes" class="tab-pane fade">
 						   <div class="form-group" id='test'>
 			                    <div class="col-sm-12">

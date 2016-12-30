@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class PlanTrabajoAlertaRequest extends Request
+class EntrevistaRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,19 @@ class PlanTrabajoAlertaRequest extends Request
     public function rules()
     {
  
-        // $validacion = array('documentoAspiranteEntrevista' => 'required',
-        //     "documentoAspiranteEntrevista" => "required|numeric|max:30|unique:entrevista,documentoAspiranteEntrevista,".$this->get('idEntrevista') .",idEntrevista,Compania_idCompania,".(\Session::get('idCompania')),
-        //     'nombre1Tercero' => 'required|string|max:20',
-        //     'apellido1Tercero' => 'required|string|max:20',
-        //     'nombre2Tercero' => 'string|max:20',
-        //     'apellido2Tercero' => 'string|max:20',
-        //     'fechaCreacionTercero' => 'required',
-        //     'tipoTercero' => 'required',
-        //     'direccionTercero' => 'required|max:200',
-        //     'Ciudad_idCiudad' => 'required',
-        //     'telefonoTercero' => 'required|max:20');
+        return [
+            'documentoAspiranteEntrevista' => 'required|string|numeric|max:8',
+            'estadoEntrevista' => 'required',
+            'nombre1AspiranteEntrevista' => 'required|string|max:20',
+            'apellido1AspiranteEntrevista' => 'required|string|max:20',
+            'Tercero_idAspirante' => 'required',
+            'fechaEntrevista' => 'required',
+            'Tercero_idEntrevistador' => 'required',
+            'Cargo_idCargo' => 'required',
+            'experienciaAspiranteEntrevista' => 'required|numeric|min:0',
+            'experienciaRequeridaEntrevista' => 'required|numeric|min:0',
 
-        // return $validacion;
+    ];
 
 
     }

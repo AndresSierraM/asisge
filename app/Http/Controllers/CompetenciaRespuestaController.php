@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\requests\CompetenciaRespuestaRequest;
 include public_path().'/ajax/consultarPermisos.php';
 
 class CompetenciaRespuestaController extends Controller
@@ -50,7 +50,7 @@ class CompetenciaRespuestaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompetenciaRespuestaRequest $request)
     {
     
          \App\CompetenciaRespuesta::create([
@@ -96,7 +96,7 @@ class CompetenciaRespuestaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(request $request, $id)
+    public function update(CompetenciaRespuestaRequest $request, $id)
     {
         $competenciarespuesta = \App\CompetenciaRespuesta::find($id);
         $competenciarespuesta->fill($request->all());

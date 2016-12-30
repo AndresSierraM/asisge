@@ -64,8 +64,8 @@ Relacionfamiliar = [valorrelacion,Nombrerelacion];
 
 
 
-valorCumple = Array("No Aplica","Parcial","Total");
-NombreCumple = Array ("No Aplica","Parcial","Total");
+valorCumple = Array("Total","Parcial","No Aplica");
+NombreCumple = Array ("Total","Parcial","No Aplica");
 Cumplimiento = [valorCumple,NombreCumple];
 var Relacionfamilia = [0,0,'','']
 var competenciamodelo = [0,0,'','',''];
@@ -232,6 +232,7 @@ var competenciamodelo = [0,0,'','',''];
                      {
                     
                        Educacionentrevista.agregarCampos(JSON.stringify(entrevistaeducacion[j]),'L');
+                       
                  
                     } 
 
@@ -310,7 +311,7 @@ var competenciamodelo = [0,0,'','',''];
                                                                               <!--     {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione", 'onchange'=>'llenarFormacionCargo,llenarEducacionCargo,llenarEntrevistaCompetencia(this.value)'])!!}
  -->
 
-                                                                                {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>'llenarFormacionCargo(this.value); llenarEducacionCargo(this.value); llenarEntrevistaCompetencia(this.value);'])!!}
+                                                                                {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>'llenarFormacionCargo(this.value); llenarEducacionCargo(this.value); llenarEntrevistaCompetencia(this.value);calificareducacion(this.value);'])!!}
                                                                                     </div>
                                                                                   </div>
                                                                               </div>
@@ -415,7 +416,7 @@ var competenciamodelo = [0,0,'','',''];
                                                                                         <span class="input-group-addon">
                                                                                           <i class="fa fa-level-up" aria-hidden="true"></i>
                                                                                         </span>
-                                                                                        {!!Form::text('experienciaAspiranteEntrevista',null,['class'=>'form-control','placeholder'=>'Ingrese su Experiencia en Años', 'autocomplete' => 'off'])!!}
+                                                                                        {!!Form::text('experienciaAspiranteEntrevista',null,['class'=>'form-control','placeholder'=>'Ingrese su Experiencia en Años', 'autocomplete' => 'off', 'onblur'=>'compararAniosExperiencia(this.value)'])!!}
                                                                                       </div>
                                                                                     </div>
                                                                                 </div>
@@ -428,7 +429,7 @@ var competenciamodelo = [0,0,'','',''];
                                                                                           <span class="input-group-addon">
                                                                                            <i class="fa fa-gavel" aria-hidden="true"></i>
                                                                                           </span>
-                                                                                          {!!Form::text('experienciaRequeridaEntrevista',2,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                          {!!Form::text('experienciaRequeridaEntrevista',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
                                                                                           
                                                                                         </div>
                                                                                       </div>

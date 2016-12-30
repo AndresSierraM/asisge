@@ -1,3 +1,27 @@
+
+function calificareducacion()
+{
+
+for (var i = 0; i < Educacionentrevista.contador; i++) {
+   
+    if ($("#nombrePerfilCargo"+i).val() == $("#PerfilCargo_idAspirante"+i).val()
+     $("#calificacionEntrevistaEducacion"+i).val("Total"));
+    else
+     $("#calificacionEntrevistaEducacion"+i).val("No Aplica");
+  
+    }    
+}
+
+
+
+function compararAniosExperiencia()
+{
+    if(parseFloat($("#experienciaAspiranteEntrevista").val())  >= parseFloat($("#experienciaRequeridaEntrevista").val()))
+        $("#experienciaRequeridaEntrevista").css("background-color", "#98FB98");
+    else
+        $("#experienciaRequeridaEntrevista").css("background-color", "#FF0000");
+}
+
 function llenarEntrevistaCompetencia(idCargo)
 {
 
@@ -99,6 +123,7 @@ function llenarEducacionCargo(idCargo)
                 var nombres = new Array();
                 var porcentaje = new Array();
 
+                $("#experienciaRequeridaEntrevista").val(respuesta[0]["aniosExperienciaCargo"]);
                 for (var i = 0; i < respuesta.length; i++) 
                 {
                     valor[i] = respuesta[i]["idPerfilCargo"];

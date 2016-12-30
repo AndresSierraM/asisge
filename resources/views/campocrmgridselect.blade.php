@@ -32,14 +32,14 @@
                             <tr class="btn-default active">
 
                                 <th><b>ID</b></th>
-                                <th><b>Campo</b></th>         
+                                <th><b>Campo</b></th>        
                             </tr>
                         </thead>
                         <tfoot>
                             <tr class="btn-default active">
 
                                 <th>ID</th>
-                                <th>Campo</th>                               
+                                <th>Campo</th>                             
                             </tr>
                         </tfoot>
                     </table>
