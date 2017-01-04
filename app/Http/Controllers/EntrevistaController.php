@@ -189,15 +189,14 @@ class EntrevistaController extends Controller
          //Primero consultar el ultimo id guardado
          // $entrevista = \App\entrevista::All()->last();
          //for para guardar cada registro de la multiregistro
-            for ($i=0; $i < count($request['PerfilCargo_idRequerido']); $i++) 
+            for ($i=0; $i < count($request['calificacionEntrevistaFormacion']); $i++) 
          { 
+
              \App\EntrevistaFormacion::create([
              'Entrevista_idEntrevista' => $entrevista->idEntrevista,
-            'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido'][$i],
-            'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante'][$i],
+            'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Formacion'][$i],
+            'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Formacion'][$i],
             'calificacionEntrevistaFormacion' => $request['calificacionEntrevistaFormacion'][$i]
-           
-
 
             ]);
          }
@@ -206,15 +205,14 @@ class EntrevistaController extends Controller
          // $entrevista = \App\entrevista::All()->last();
          //for para guardar cada registro de la multiregistro
 
-            for ($i=0; $i < count($request['PerfilCargo_idRequerido']); $i++) 
+            for ($i=0; $i < count($request['calificacionEntrevistaEducacion']); $i++) 
          { 
              \App\EntrevistaEducacion::create([
              'Entrevista_idEntrevista' => $entrevista->idEntrevista,
-            'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido'][$i],
-            'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante'][$i],
+            'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Educacion'][$i],
+            'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Educacion'][$i],
             'calificacionEntrevistaEducacion' => $request['calificacionEntrevistaEducacion'][$i]
-           
-
+          
 
             ]);
          }
@@ -272,7 +270,31 @@ class EntrevistaController extends Controller
             WHERE EC.Entrevista_idEntrevista = '.$id);
 
 
-          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','entrevistacompetencia'),['entrevista'=>$entrevista]);
+        //consulta para traer los datos a educacion pestaña general 
+            $EntrevistaEducacion  = DB::SELECT(' 
+            SELECT idEntrevistaEducacion,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Educacion,porcentajeCargoEducacion,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Educacion ,calificacionEntrevistaEducacion,Entrevista_idEntrevista
+            FROM entrevistaeducacion ed
+            LEFT JOIN  perfilcargo pca
+            ON ed.PerfilCargo_idRequerido = pca.idPerfilCargo  
+            LEFT JOIN cargoeducacion ce
+            ON ce.PerfilCargo_idPerfilCargo = pca.idPerfilCargo
+            WHERE ed.Entrevista_idEntrevista = '.$id);
+
+            //consulta para traer los datos a Formacion pestaña general 
+            $EntrevistaFormacion  = DB::SELECT(' 
+            SELECT idEntrevistaFormacion,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Formacion ,porcentajeCargoFormacion,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Formacion ,calificacionEntrevistaFormacion,Entrevista_idEntrevista
+            FROM entrevistaformacion ef
+            LEFT JOIN perfilcargo pca
+            ON ef.PerfilCargo_idRequerido = pca.idPerfilCargo
+            LEFT JOIN cargoformacion cf
+            ON cf.PerfilCargo_idPerfilCargo = pca.idPerfilCargo
+            WHERE ef.Entrevista_idEntrevista = '.$id);
+
+
+
+
+
+          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','entrevistacompetencia','EntrevistaEducacion','EntrevistaFormacion'),['entrevista'=>$entrevista]);
 
           
     }
@@ -381,8 +403,8 @@ class EntrevistaController extends Controller
 
             $data = array(
                 'Entrevista_idEntrevista' => $id,
-                'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido'][$i],
-                    'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante'][$i],
+                'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Educacion'][$i],
+                    'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Educacion'][$i],
                 'calificacionEntrevistaEducacion' => $request['calificacionEntrevistaEducacion'][$i]);
             $guardar = \App\EntrevistaEducacion::updateOrCreate($indice, $data);
         } 
@@ -417,8 +439,8 @@ class EntrevistaController extends Controller
 
             $data = array(
                 'Entrevista_idEntrevista' => $id,
-                'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido'][$i],
-                'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante'][$i],
+                'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Formacion'][$i],
+                'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Formacion'][$i],
                 'calificacionEntrevistaFormacion' => $request['calificacionEntrevistaFormacion'][$i]);
             $guardar = \App\EntrevistaFormacion::updateOrCreate($indice, $data);
         } 

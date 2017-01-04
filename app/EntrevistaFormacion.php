@@ -14,4 +14,14 @@ class EntrevistaFormacion extends Model
 
 	public $timestamps = false;
 
+
+
+public function Entrevista()
+	{
+		return $this->hasMany('App\Entrevista','idEntrevista');
+    }
+
 }
+
+
+

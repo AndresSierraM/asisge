@@ -31,11 +31,11 @@ relacion = (relacion != '' ? JSON.parse(relacion) : '');
 entrevistacompetenciap = (entrevistacompetenciap != '' ? JSON.parse(entrevistacompetenciap) : '');
 
 
- var entrevistaeducacion = '<?php echo (isset($entrevista) ? json_encode($entrevista->EntrevistaEducacion) : "");?>';
+ var entrevistaeducacion = '<?php echo (isset($EntrevistaEducacion) ? json_encode($EntrevistaEducacion) : "");?>';
 entrevistaeducacion = (entrevistaeducacion != '' ? JSON.parse(entrevistaeducacion) : '');
 
 
- var entrevistaformacion = '<?php echo (isset($entrevista) ? json_encode($entrevista->EntrevistaFormacion) : "");?>';
+ var entrevistaformacion = '<?php echo (isset($EntrevistaFormacion) ? json_encode($EntrevistaFormacion) : "");?>';
 entrevistaformacion = (entrevistaformacion != '' ? JSON.parse(entrevistaformacion) : '');
 
 var idEducacion = '<?php echo isset($idEducacion) ? $idEducacion : "";?>';
@@ -70,6 +70,11 @@ Cumplimiento = [valorCumple,NombreCumple];
 var Relacionfamilia = [0,0,'','']
 var competenciamodelo = [0,0,'','',''];
 
+// se crean dos variables para busar los datos y comprarlos con su funcion correspondiente
+//educacion
+var evaluacioneducacion = ['onchange','calificareducacion(this.id);']
+//variable para formacion 
+var evaluacionformacion = ['onchange','calificarformacion(this.id);']
 //VARIABLES
  $(document).ready( function () {
 // // multiregistro Educacion Entrevista primera Multiregistro OPCION GENERAL          
@@ -79,7 +84,7 @@ var competenciamodelo = [0,0,'','',''];
           Educacionentrevista.campoEliminacion = 'eliminarEducacionEntrevista';//hermanitas         Cuando se utilice la funcionalidad 
           Educacionentrevista.botonEliminacion = true;//hermanitas
           // despues del punto son las propiedades que se le van adicionar al objeto
-          Educacionentrevista.campos = ['idEntrevistaEducacion','nombrePerfilCargo','PerfilCargo_idRequerido','porcentajePerfilCargo','PerfilCargo_idAspirante','calificacionEntrevistaEducacion','Entrevista_idEntrevista',]; //[arrays ]
+          Educacionentrevista.campos = ['idEntrevistaEducacion','nombrePerfilCargo','PerfilCargo_idRequerido_Educacion','porcentajeCargoEducacion','PerfilCargo_idAspirante_Educacion','calificacionEntrevistaEducacion','Entrevista_idEntrevista']; //[arrays ]
           Educacionentrevista.altura = '35px;'; 
            // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
           Educacionentrevista.etiqueta = ['input','input','input','input','select','select','input'];
@@ -93,7 +98,7 @@ var competenciamodelo = [0,0,'','',''];
           Educacionentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Educacionentrevista.opciones = ['','','','',educacion,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Educacionentrevista.funciones  = ['','','','','','',''];
+          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,'',''];
 
 // // multiregistro Formacionentrevista Segunda multiregistro OPCION GENERAL
        
@@ -103,7 +108,7 @@ var competenciamodelo = [0,0,'','',''];
           Formacionentrevista.campoEliminacion = 'eliminarFormacionEntrevista';//hermanitas         Cuando se utilice la funcionalidad 
           Formacionentrevista.botonEliminacion = true;//hermanitas
           // despues del punto son las propiedades que se le van adicionar al objeto
-          Formacionentrevista.campos = ['idEntrevistaFormacion','nombrePerfilCargo','PerfilCargo_idRequerido','porcentajePerfilCargo','PerfilCargo_idAspirante','calificacionEntrevistaFormacion','Entrevista_idEntrevista',]; //[arrays ]
+          Formacionentrevista.campos = ['idEntrevistaFormacion','nombrePerfilCargo','PerfilCargo_idRequerido_Formacion','porcentajeCargoFormacion','PerfilCargo_idAspirante_Formacion','calificacionEntrevistaFormacion','Entrevista_idEntrevista']; //[arrays ]
           Formacionentrevista.altura = '35px;'; 
            // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
           Formacionentrevista.etiqueta = ['input','input','input','input','select','select','input'];
@@ -117,7 +122,7 @@ var competenciamodelo = [0,0,'','',''];
           Formacionentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Formacionentrevista.opciones = ['','','','',formacion,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Formacionentrevista.funciones  = ['','','','','','',''];
+          Formacionentrevista.funciones  = ['','','','',evaluacionformacion,'',''];
 
 
 
@@ -311,7 +316,7 @@ var competenciamodelo = [0,0,'','',''];
                                                                               <!--     {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione", 'onchange'=>'llenarFormacionCargo,llenarEducacionCargo,llenarEntrevistaCompetencia(this.value)'])!!}
  -->
 
-                                                                                {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>'llenarFormacionCargo(this.value); llenarEducacionCargo(this.value); llenarEntrevistaCompetencia(this.value);calificareducacion(this.value);'])!!}
+                                                                                {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>'llenarFormacionCargo(this.value); llenarEducacionCargo(this.value); llenarEntrevistaCompetencia(this.value);'])!!}
                                                                                     </div>
                                                                                   </div>
                                                                               </div>

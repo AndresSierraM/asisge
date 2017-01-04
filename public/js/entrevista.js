@@ -1,15 +1,44 @@
-
-function calificareducacion()
+function calificarformacion(idRequerido)
 {
 
-for (var i = 0; i < Educacionentrevista.contador; i++) {
-   
-    if ($("#nombrePerfilCargo"+i).val() == $("#PerfilCargo_idAspirante"+i).val()
-     $("#calificacionEntrevistaEducacion"+i).val("Total"));
-    else
-     $("#calificacionEntrevistaEducacion"+i).val("No Aplica");
-  
-    }    
+  // recibimos como parametro el id del campo de educacion requerida, con este tomamos el numero 
+    // del registro para referirnos a los demas campos
+
+    // si al id que recibimos, le quitamos el nombre, nos queda el numero del registro 
+    var reg = idRequerido.replace('PerfilCargo_idAspirante_Formacion', '') ;
+
+    // con el numero de registro comparamos los valores de los  campos (solo de ese registro)
+    if ($("#PerfilCargo_idRequerido_Formacion"+reg).val() == $("#PerfilCargo_idAspirante_Formacion"+reg).val())
+
+    {
+          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'Total\']').prop('selected','selected');
+    } 
+    else 
+    {
+          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'No Aplica\']').prop('selected','selected');
+    }
+}
+
+
+function calificareducacion(idRequerido)
+{
+    // recibimos como parametro el id del campo de educacion requerida, con este tomamos el numero 
+    // del registro para referirnos a los demas campos
+
+    // si al id que recibimos, le quitamos el nombre, nos queda el numero del registro 
+    var reg = idRequerido.replace('PerfilCargo_idAspirante_Educacion', '') ;
+
+    // con el numero de registro comparamos los valores de los 2 campos (solo de ese registro)
+    if ($("#PerfilCargo_idRequerido_Educacion"+reg).val() == $("#PerfilCargo_idAspirante_Educacion"+reg).val())
+
+    {
+          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'Total\']').prop('selected','selected');
+    } 
+    else 
+    {
+          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'No Aplica\']').prop('selected','selected');
+    }
+
 }
 
 

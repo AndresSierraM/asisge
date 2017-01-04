@@ -25,11 +25,11 @@ class EntrevistaRequest extends Request
     {
  
         return [
-            'documentoAspiranteEntrevista' => 'required|string|numeric|max:8',
+            'documentoAspiranteEntrevista' => 'required|numeric',
             'estadoEntrevista' => 'required',
             'nombre1AspiranteEntrevista' => 'required|string|max:20',
             'apellido1AspiranteEntrevista' => 'required|string|max:20',
-            'Tercero_idAspirante' => 'required',
+            // 'Tercero_idAspirante' => 'required',
             'fechaEntrevista' => 'required',
             'Tercero_idEntrevistador' => 'required',
             'Cargo_idCargo' => 'required',
