@@ -36,6 +36,7 @@ $datos = DB::select(
     left join programadetalle PD
     on P.idPrograma = PD.Programa_idPrograma
     Where  P.Compania_idCompania = '.$idCompania .' 
+    and fechaPlaneadaProgramaDetalle >= fechaCreacionCompania and fechaEjecucionProgramaDetalle >= fechaCreacionCompania
     Group by idPrograma');
 
 $informe = array();

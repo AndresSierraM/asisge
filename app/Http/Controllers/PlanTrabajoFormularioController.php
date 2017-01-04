@@ -74,8 +74,11 @@ class PlanTrabajoFormularioController extends Controller
             on Aus.idAusentismo = Acc.Ausentismo_idAusentismo
             left join tercero T
             on Aus.Tercero_idTercero = T.idTercero
+            left join
+            compania c ON Aus.Compania_idCompania = c.idCompania
             Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
                 Aus.Compania_idCompania = '.$idCompania .' 
+            and fechaElaboracionAusentismo >= fechaCreacionCompania
             group by Aus.Tercero_idTercero;');
         
 
@@ -116,7 +119,9 @@ class PlanTrabajoFormularioController extends Controller
             on PA.idPlanAuditoria = LC.PlanAuditoria_idPlanAuditoria and PAA.Proceso_idProceso = LC.Proceso_idProceso
             left join proceso P
             on PAA.Proceso_idProceso = P.idProceso
-            Where  PA.Compania_idCompania = '.$idCompania .' 
+            left join compania c 
+            on PA.Compania_idCompania = c.idCompania
+            Where  PA.Compania_idCompania = '.$idCompania .' and fechaPlanAuditoriaAgenda >= fechaCreacionCompania
             group by idPlanAuditoriaAgenda;');
 
         // -------------------------------------------
@@ -162,7 +167,9 @@ class PlanTrabajoFormularioController extends Controller
                 where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
             )  ACT
             on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
-            Where  PC.Compania_idCompania = '.$idCompania .' 
+            left join compania c
+            on PC.Compania_idCompania = c.idCompania
+            Where  PC.Compania_idCompania = '.$idCompania .' and fechaPlanCapacitacionTema >= fechaCreacionCompania 
             group by idPlanCapacitacion');
 
 
@@ -201,7 +208,10 @@ class PlanTrabajoFormularioController extends Controller
             From programa P
             left join programadetalle PD
             on P.idPrograma = PD.Programa_idPrograma
+            left join compania c
+            on P.Compania_idCompania = c.idCompania
             Where  P.Compania_idCompania = '.$idCompania .' 
+            and fechaPlaneadaProgramaDetalle >= fechaCreacionCompania and fechaEjecucionProgramaDetalle >= fechaCreacionCompania
             Group by idPrograma');
 
 
@@ -291,144 +301,150 @@ class PlanTrabajoFormularioController extends Controller
         //  I N S P E C C I O N E S   D E   S E G U R I D A D
         // -------------------------------------------
         $inspeccion = DB::select(
-            'SELECT nombreTipoInspeccion as descripcionTarea, 
+            "SELECT nombreTipoInspeccion as descripcionTarea, 
                 idTipoInspeccion as idConcepto,
-                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 1, 1, 0 )) as EneroC,
-                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 2, 1, 0 )) as FebreroC,
-                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 3, 1, 0 )) as MarzoC,
-                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 4, 1, 0 )) as AbrilC,
-                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 5, 1, 0 )) as MayoC,
-                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 6, 1, 0 )) as JunioC,
-                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 7, 1, 0 )) as JulioC,
-                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 8, 1, 0 )) as AgostoC,
-                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 9, 1, 0 )) as SeptiembreC,
-                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 10, 1, 0 )) as OctubreC,
-                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 11, 1, 0 )) as NoviembreC,
-                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaElaboracionInspeccion) = 12, 1, 0 )) as DiciembreC
+                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as EneroT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 1 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as EneroC,
+                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as FebreroT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 2 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as FebreroC,
+                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as MarzoT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as MarzoC,
+                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as AbrilT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 4 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as AbrilC,
+                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as MayoT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 5 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as MayoC,
+                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as JunioT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 6 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as JunioC,
+                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as JulioT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 7 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as JulioC,
+                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as AgostoT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 8 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as AgostoC,
+                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as SeptiembreT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 9 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as SeptiembreC,
+                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as OctubreT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 10 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as OctubreC,
+                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as NoviembreT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 11 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as NoviembreC,
+                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as DiciembreT,
+                SUM(IF(MONTH(fechaElaboracionInspeccion) = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as DiciembreC
             FROM tipoinspeccion TI
             left join frecuenciamedicion FM
             on TI.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
             left join inspeccion I
             on TI.idTipoInspeccion = I.TipoInspeccion_idTipoInspeccion
-            Where TI.Compania_idCompania = '.$idCompania .' 
-            group by idTipoInspeccion');
+            LEFT JOIN compania c 
+            ON TI.Compania_idCompania = c.idCompania
+            Where TI.Compania_idCompania = $idCompania 
+            group by idTipoInspeccion");
 
 
         // -------------------------------------------
         //  M A T R I Z   L E G A L
         // -------------------------------------------
         $matrizlegal = DB::select(
-            '           SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
+            "SELECT concat('Matriz Legal: ',nombreMatrizLegal) as descripcionTarea, 
                         idMatrizLegal as idConcepto,
-                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 1, 1, 0 )) as EneroC,
-                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 2, 1, 0 )) as FebreroC,
-                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 3, 1, 0 )) as MarzoC,
-                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 4, 1, 0 )) as AbrilC,
-                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 5, 1, 0 )) as MayoC,
-                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 6, 1, 0 )) as JunioC,
-                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 7, 1, 0 )) as JulioC,
-                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 8, 1, 0 )) as AgostoC,
-                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 9, 1, 0 )) as SeptiembreC,
-                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 10, 1, 0 )) as OctubreC,
-                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 11, 1, 0 )) as NoviembreC,
-                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 12, 1, 0 )) as DiciembreC
+                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as EneroT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 1 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as EneroC,
+                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as FebreroT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 2 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as FebreroC,
+                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as MarzoT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as MarzoC,
+                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as AbrilT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 4 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as AbrilC,
+                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as MayoT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 5 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as MayoC,
+                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as JunioT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 6 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as JunioC,
+                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as JulioT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 7 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as JulioC,
+                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as AgostoT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 8 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as AgostoC,
+                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as SeptiembreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 9 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as SeptiembreC,
+                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as OctubreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 10 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as OctubreC,
+                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as NoviembreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 11 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as NoviembreC,
+                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as DiciembreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizLegal) = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as DiciembreC
             FROM matrizlegal ML
             left join frecuenciamedicion FM
             on ML.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-            Where ML.Compania_idCompania = '.$idCompania .' 
+            LEFT JOIN compania c 
+            ON ML.Compania_idCompania = c.idCompania
+            Where ML.Compania_idCompania = $idCompania  
             group by idMatrizLegal
             
             UNION
             
-            SELECT concat("Matriz Riesgo: ",nombreMatrizRiesgo) as descripcionTarea, 
+            SELECT concat('Matriz Riesgo: ',nombreMatrizRiesgo) as descripcionTarea, 
                 idMatrizRiesgo as idConcepto,
-                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as EneroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 1, 1, 0 )) as EneroC,
-                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as FebreroT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 2, 1, 0 )) as FebreroC,
-                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MarzoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 3, 1, 0 )) as MarzoC,
-                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AbrilT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 4, 1, 0 )) as AbrilC,
-                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as MayoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 5, 1, 0 )) as MayoC,
-                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JunioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 6, 1, 0 )) as JunioC,
-                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as JulioT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 7, 1, 0 )) as JulioC,
-                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as AgostoT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 8, 1, 0 )) as AgostoC,
-                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as SeptiembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 9, 1, 0 )) as SeptiembreC,
-                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as OctubreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 10, 1, 0 )) as OctubreC,
-                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as NoviembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 11, 1, 0 )) as NoviembreC,
-                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")), 1 , 0)) as DiciembreT,
-                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 12, 1, 0 )) as DiciembreC
+                SUM(IF((MOD(1,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as EneroT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 1 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as EneroC,
+                SUM(IF((MOD(2,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as FebreroT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 2 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as FebreroC,
+                SUM(IF((MOD(3,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as MarzoT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as MarzoC,
+                SUM(IF((MOD(4,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as AbrilT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 4 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as AbrilC,
+                SUM(IF((MOD(5,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as MayoT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 5 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as MayoC,
+                SUM(IF((MOD(6,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as JunioT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 6 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as JunioC,
+                SUM(IF((MOD(7,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as JulioT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 7 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as JulioC,
+                SUM(IF((MOD(8,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as AgostoT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 8 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as AgostoC,
+                SUM(IF((MOD(9,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as SeptiembreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 9 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as SeptiembreC,
+                SUM(IF((MOD(10,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as OctubreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 10 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as OctubreC,
+                SUM(IF((MOD(11,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as NoviembreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 11 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as NoviembreC,
+                SUM(IF((MOD(12,valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as DiciembreT,
+                SUM(IF(MONTH(fechaActualizacionMatrizRiesgo) = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0 )) as DiciembreC
             FROM matrizriesgo MR
             left join frecuenciamedicion FM
             on MR.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-            Where MR.Compania_idCompania = '.$idCompania .' 
+            LEFT JOIN compania c 
+            ON MR.Compania_idCompania = c.idCompania
+            Where MR.Compania_idCompania = $idCompania
             group by idMatrizRiesgo
-            ');
+            ");
 
 
         // -------------------------------------------
         //  G R U P O S   D E   A P O Y O
         // -------------------------------------------
         $grupoapoyo = DB::select(
-            'SELECT 
+            "SELECT 
                 nombreGrupoApoyo as descripcionTarea, 
                 idGrupoApoyo as idConcepto,
-                IF(MOD(1,GA.multiploMes) = 0, numeroTareas, 0) as EneroT,
-                SUM(IF(AGA.mesActa = 1, numeroCumplidas, 0)) as EneroC,
-                IF(MOD(2,GA.multiploMes) = 0, numeroTareas, 0) as FebreroT,
-                SUM(IF(AGA.mesActa = 2, numeroCumplidas, 0)) as FebreroC,
-                IF(MOD(3,GA.multiploMes) = 0, numeroTareas, 0) as MarzoT,
-                SUM(IF(AGA.mesActa = 3, numeroCumplidas, 0)) as MarzoC,
-                IF(MOD(4,GA.multiploMes) = 0, numeroTareas, 0) as AbrilT,
-                SUM(IF(AGA.mesActa = 4, numeroCumplidas, 0)) as AbrilC,
-                IF(MOD(5,GA.multiploMes) = 0, numeroTareas, 0) as MayoT,
-                SUM(IF(AGA.mesActa = 5, numeroCumplidas, 0)) as MayoC,
-                IF(MOD(6,GA.multiploMes) = 0, numeroTareas, 0) as JunioT,
-                SUM(IF(AGA.mesActa = 6, numeroCumplidas, 0)) as JunioC,
-                IF(MOD(7,GA.multiploMes) = 0, numeroTareas, 0) as JulioT,
-                SUM(IF(AGA.mesActa = 7, numeroCumplidas, 0)) as JulioC,
-                IF(MOD(8,GA.multiploMes) = 0, numeroTareas, 0) as AgostoT,
-                SUM(IF(AGA.mesActa = 8, numeroCumplidas, 0)) as AgostoC,
-                IF(MOD(9,GA.multiploMes) = 0, numeroTareas, 0) as SeptiembreT,
-                SUM(IF(AGA.mesActa = 9, numeroCumplidas, 0)) as SeptiembreC,
-                IF(MOD(10,GA.multiploMes) = 0, numeroTareas, 0) as OctubreT,
-                SUM(IF(AGA.mesActa = 10, numeroCumplidas, 0)) as OctubreC,
-                IF(MOD(11,GA.multiploMes) = 0, numeroTareas, 0) as NoviembreT,
-                SUM(IF(AGA.mesActa = 11, numeroCumplidas, 0)) as NoviembreC,
-                IF(MOD(12,GA.multiploMes) = 0, numeroTareas, 0) as DiciembreT,
-                SUM(IF(AGA.mesActa = 12, numeroCumplidas, 0)) as DiciembreC,
+                IF((MOD(1, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas,0) AS EneroT,
+                SUM(IF(AGA.mesActa = 1 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '01') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS EneroC,
+                IF((MOD(2, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')),numeroTareas,0) AS FebreroT,
+                SUM(IF(AGA.mesActa = 2 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '02') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas,0)) AS FebreroC,
+                IF((MOD(3, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS MarzoT,
+                SUM(IF(AGA.mesActa = 3 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '03') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS MarzoC,
+                IF((MOD(4, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS AbrilT,
+                SUM(IF(AGA.mesActa = 4 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '04') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS AbrilC,
+                IF((MOD(5, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS MayoT,
+                SUM(IF(AGA.mesActa = 5 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '05') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS MayoC,
+                IF((MOD(6, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS JunioT,
+                SUM(IF(AGA.mesActa = 6 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '06') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS JunioC,
+                IF((MOD(7, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas,0) AS JulioT,
+                SUM(IF(AGA.mesActa = 7 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '07') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS JulioC,
+                IF((MOD(8, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')),numeroTareas, 0) AS AgostoT,
+                SUM(IF(AGA.mesActa = 8 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '08') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS AgostoC,
+                IF((MOD(9, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS SeptiembreT,
+                SUM(IF(AGA.mesActa = 9 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '09') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS SeptiembreC,
+                IF((MOD(10, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS OctubreT,
+                SUM(IF(AGA.mesActa = 10 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '10') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS OctubreC,
+                IF((MOD(11, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS NoviembreT,
+                SUM(IF(AGA.mesActa = 11 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '11') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas, 0)) AS NoviembreC,
+                IF((MOD(12, GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m')), numeroTareas, 0) AS DiciembreT,
+                SUM(IF(AGA.mesActa = 12 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '12') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroCumplidas,0)) AS DiciembreC,
                 SUM(recursoPlaneadoActaGrupoApoyoDetalle) as PresupuestoT,
                 SUM(recursoEjecutadoActaGrupoApoyoDetalle) as PresupuestoC
 
@@ -437,20 +453,23 @@ class PlanTrabajoFormularioController extends Controller
                 SELECT 
                     idGrupoApoyo,
                     nombreGrupoApoyo,
-                    IF(unidadFrecuenciaMedicion = \'Dias\',
+                    IF(unidadFrecuenciaMedicion = 'Dias',
                         30 / valorFrecuenciaMedicion,
-                        IF(unidadFrecuenciaMedicion = \'Semanas\',
+                        IF(unidadFrecuenciaMedicion = 'Semanas',
                             4 / valorFrecuenciaMedicion,
                             1)) AS numeroTareas,
-                    IF(unidadFrecuenciaMedicion IN (\'Dias\' , \'Semanas\'),
+                    IF(unidadFrecuenciaMedicion IN ('Dias' , 'Semanas'),
                         1,
-                        valorFrecuenciaMedicion) AS multiploMes
+                        valorFrecuenciaMedicion) AS multiploMes,
+                    fechaCreacionCompania
                 FROM
                     grupoapoyo GA
                         LEFT JOIN
                     frecuenciamedicion FM ON GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+                        LEFT JOIN 
+                    compania c ON GA.Compania_idCompania = c.idCompania
                 WHERE
-                    Compania_idCompania = '.$idCompania .' 
+                    Compania_idCompania = $idCompania
             ) GA
             Left join 
             (
@@ -461,7 +480,7 @@ class PlanTrabajoFormularioController extends Controller
                 FROM
                     actagrupoapoyo AGA
                 WHERE
-                    AGA.Compania_idCompania = '.$idCompania .' 
+                    AGA.Compania_idCompania = $idCompania
                 GROUP BY GrupoApoyo_idGrupoApoyo , mesActa
             ) AGA
             on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
@@ -481,11 +500,11 @@ class PlanTrabajoFormularioController extends Controller
                         LEFT JOIN
                     actagrupoapoyodetalle AGAD ON AGAD.ActaGrupoApoyo_idActaGrupoApoyo = AGA.idActaGrupoApoyo
                 WHERE
-                    AGA.Compania_idCompania = '.$idCompania .'
+                    AGA.Compania_idCompania = $idCompania
                 GROUP BY GrupoApoyo_idGrupoApoyo , mesActa
             ) AGAD
             on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
-            group by idGrupoApoyo');
+            group by idGrupoApoyo");
 
         // -------------------------------------------
         //  A C T A S   D E   R E U N I O N 
@@ -524,7 +543,10 @@ class PlanTrabajoFormularioController extends Controller
             on agpd.ActaGrupoApoyo_idActaGrupoApoyo = agp.idActaGrupoApoyo
             left join grupoapoyo ga
             on ga.idGrupoApoyo = agp.GrupoApoyo_idGrupoApoyo
+            left join compania c 
+            on agp.Compania_idCompania = c.idCompania
             Where  agp.Compania_idCompania = '.$idCompania .' 
+            and recursoPlaneadoActaGrupoApoyoDetalle >= fechaCreacionCompania and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania
             Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
         return view('plantrabajoformulario', compact('Tercero_idAuditor','accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo','actividadesgrupoapoyo'));

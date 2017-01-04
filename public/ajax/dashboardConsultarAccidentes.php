@@ -35,8 +35,11 @@ $datos = DB::select(
     on Aus.idAusentismo = Acc.Ausentismo_idAusentismo
     left join tercero T
     on Aus.Tercero_idTercero = T.idTercero
+    left join
+    compania c ON Aus.Compania_idCompania = c.idCompania
     Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
         Aus.Compania_idCompania = '.$idCompania .' 
+    and fechaElaboracionAusentismo >= fechaCreacionCompania 
     group by Aus.Tercero_idTercero;');
 
 $informe = array();

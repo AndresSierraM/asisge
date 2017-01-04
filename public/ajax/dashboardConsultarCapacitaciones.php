@@ -42,7 +42,9 @@ $datos = DB::select(
         where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
     )  ACT
     on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
-    WHere  PC.Compania_idCompania = '.$idCompania .' 
+    left join compania c
+    on PC.Compania_idCompania = c.idCompania
+    Where  PC.Compania_idCompania = '.$idCompania .' and fechaPlanCapacitacionTema >= fechaCreacionCompania 
     group by idPlanCapacitacion');
 
 

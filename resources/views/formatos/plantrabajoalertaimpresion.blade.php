@@ -73,8 +73,11 @@
             on Aus.idAusentismo = Acc.Ausentismo_idAusentismo
             left join tercero T
             on Aus.Tercero_idTercero = T.idTercero
+            left join
+            compania c ON Aus.Compania_idCompania = c.idCompania
             Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
                 Aus.Compania_idCompania = '.$idCompania .' 
+            and fechaElaboracionAusentismo >= fechaCreacionCompania
             group by Aus.Tercero_idTercero;');
 
         return imprimirTabla('Accidente', $accidente, 'accidente', $filtroEstado, $fechaInicial, $fechaFinal);
@@ -123,7 +126,10 @@
             on PA.idPlanAuditoria = LC.PlanAuditoria_idPlanAuditoria and PAA.Proceso_idProceso = LC.Proceso_idProceso
             left join proceso P
             on PAA.Proceso_idProceso = P.idProceso
+            left join compania c 
+            on PA.Compania_idCompania = c.idCompania
             Where  PA.Compania_idCompania = '.$idCompania .' 
+            and fechaPlanAuditoriaAgenda >= fechaCreacionCompania
             group by idPlanAuditoriaAgenda;');
 
             return imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $filtroEstado, $fechaInicial, $fechaFinal);
@@ -177,7 +183,9 @@
                 where AC.Compania_idCompania = '.$idCompania .' and ACT.cumpleObjetivoActaCapacitacionTema
             )  ACT
             on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
-            Where  PC.Compania_idCompania = '.$idCompania .' 
+            left join compania c
+            on PC.Compania_idCompania = c.idCompania
+            Where  PC.Compania_idCompania = '.$idCompania .' and fechaPlanCapacitacionTema >= fechaCreacionCompania 
             group by idPlanCapacitacion');
 
             return imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $filtroEstado, $fechaInicial, $fechaFinal);
@@ -221,6 +229,7 @@
             left join programadetalle PD
             on P.idPrograma = PD.Programa_idPrograma
             Where  P.Compania_idCompania = '.$idCompania .' 
+            and fechaPlaneadaProgramaDetalle >= fechaCreacionCompania and fechaEjecucionProgramaDetalle >= fechaCreacionCompania
             Group by idPrograma');
 
             return imprimirTabla('Programas', $programa, 'programa', $filtroEstado, $fechaInicial, $fechaFinal);   
@@ -350,9 +359,9 @@
         while($inicio < $fechaFinal)
         {
             // adicionamos la columna del mes
-             $columnas .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+             $columnas .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
 
-            $columnas .= "SUM(IF((MONTH(fechaElaboracionInspeccion) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionInspeccion) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
+            $columnas .= "SUM(IF((MONTH(fechaElaboracionInspeccion) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionInspeccion) =  '".date("Y", strtotime($inicio))."') AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
 
             //Avanzamos al siguiente mes
             $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
@@ -371,6 +380,8 @@
             on TI.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
             left join inspeccion I
             on TI.idTipoInspeccion = I.TipoInspeccion_idTipoInspeccion
+            LEFT JOIN compania c 
+            ON TI.Compania_idCompania = c.idCompania
             Where TI.Compania_idCompania = '.$idCompania .' 
             group by idTipoInspeccion');
 
@@ -396,13 +407,13 @@
         while($inicio < $fechaFinal)
         {
             // adicionamos la columna del mes
-             $columnasLegal .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+             $columnasLegal .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("Y", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
                 
-            $columnasLegal .= "SUM(IF((MONTH(fechaActualizacionMatrizLegal) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaActualizacionMatrizLegal) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
+            $columnasLegal .= "SUM(IF((MONTH(fechaActualizacionMatrizLegal) =  '".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("Y", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND YEAR(fechaActualizacionMatrizLegal) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
 
-            $columnasRiesgo .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+            $columnasRiesgo .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("Y", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
 
-            $columnasRiesgo .= "SUM(IF((MONTH(fechaActualizacionMatrizRiesgo) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaActualizacionMatrizRiesgo) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';      
+            $columnasRiesgo .= "SUM(IF((MONTH(fechaActualizacionMatrizRiesgo) =  '".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("Y", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND YEAR(fechaActualizacionMatrizRiesgo) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';      
 
             //Avanzamos al siguiente mes
             $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
@@ -454,12 +465,11 @@
 
         while($inicio < $fechaFinal)
         {
-
             // adicionamos la columna del mes
            
-            $columnas .= "IF(MOD('".date("m", strtotime($inicio))."' AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."',GA.multiploMes) = 0, numeroTareas, 0) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+            $columnas .= "IF(MOD('".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."',GA.multiploMes) = 0, numeroTareas, 0) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
 
-            $columnas .= "SUM(IF(AGA.mesActa = '".date("m", strtotime($inicio))."' AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."', numeroCumplidas, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
+            $columnas .= "SUM(IF(AGA.mesActa = '".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."', numeroCumplidas, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
 
             //Avanzamos al siguiente mes
             $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
@@ -487,11 +497,14 @@
                             1)) AS numeroTareas,
                     IF(unidadFrecuenciaMedicion IN (\'Dias\' , \'Semanas\'),
                         1,
-                        valorFrecuenciaMedicion) AS multiploMes
+                        valorFrecuenciaMedicion) AS multiploMes,
+                    fechaCreacionCompania
                 FROM
                     grupoapoyo GA
                         LEFT JOIN
                     frecuenciamedicion FM ON GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+                        LEFT JOIN 
+                    compania c ON GA.Compania_idCompania = c.idCompania
                 WHERE
                     Compania_idCompania = '.$idCompania .' 
             ) GA
@@ -576,7 +589,10 @@
             on agpd.ActaGrupoApoyo_idActaGrupoApoyo = agp.idActaGrupoApoyo
             left join grupoapoyo ga
             on ga.idGrupoApoyo = agp.GrupoApoyo_idGrupoApoyo
-            Where  agp.Compania_idCompania = '.$idCompania .'
+            left join compania c 
+            on agp.Compania_idCompania = c.idCompania
+            Where  agp.Compania_idCompania = '.$idCompania .' 
+            and recursoPlaneadoActaGrupoApoyoDetalle >= fechaCreacionCompania and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania
             Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
 			return imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $filtroEstado, $fechaInicial, $fechaFinal);
