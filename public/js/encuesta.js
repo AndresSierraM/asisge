@@ -1,3 +1,81 @@
+function validarCampos(event)
+{
+   var mensaje = ''
+   if($("#tituloEncuesta").val() == '')
+    {
+        $("#tituloEncuesta").css('border-bottom','solid 2px red');
+        mensaje += 'Debe digitar el título de la encuesta<br>';
+    }
+    else
+    {
+        $("#tituloEncuesta").css('border-bottom','solid 2px gray');
+    }
+
+   // recorremos cada una de los LI de las preguntas verificando su informacion
+    $(".Pregunta").each(function (index) 
+    { 
+        var mensajePreg = '';
+        // si la pregunta esta vacia
+        if($("#preguntaEncuestaPregunta"+index).val() == '')
+        {
+            $("#preguntaEncuestaPregunta"+index).css('border-bottom','solid 2px red');
+            mensajePreg += 'Debe digitar la pregunta<br>';
+        }
+        else
+        {
+            $("#preguntaEncuestaPregunta"+index).css('border-bottom','solid 2px gray');
+        }
+
+
+        // si el tipo de respuesta esta vacio
+        if($("#tipoRespuestaEncuestaPregunta"+index).val() == '')
+        {
+            $("#tipoRespuestaEncuestaPregunta"+index).css('border-bottom','solid 2px red');
+            mensajePreg += 'Debe seleccionar el tipo de respuesta<br>';
+        }
+        else
+        {
+            $("#tipoRespuestaEncuestaPregunta"+index).css('border-bottom','solid 2px gray');
+        }
+
+        // si el tipo de respuesta es multiregistro, validamos que ingresen por lo menos 
+        // un registro de opciones con su valor y titulo
+        var multiregistro = ['Selección Múltiple','Casillas de Verificación','Lista de Opciones'];
+        if(multiregistro.indexOf($("#tipoRespuestaEncuestaPregunta"+index).val()) >= 0) 
+        {
+            $('.divOpcion'+index ).each(function (reg) 
+            {
+                console.log(index+'_'+reg+' / '+$("#valorEncuestaOpcion"+index+'_'+reg).val()+' - '+$("#nombreEncuestaOpcion"+index+'_'+reg).val());
+                if($("#valorEncuestaOpcion"+index+'_'+reg).val() == '' || $("#nombreEncuestaOpcion"+index+'_'+reg).val() == '')
+                {
+                    $("#valorEncuestaOpcion"+index+'_'+reg).css('border','solid 1px red');
+                    $("#nombreEncuestaOpcion"+index+'_'+reg).css('border','solid 1px red');
+                    mensajePreg += "\t"+'Debe digitar el valor y el nombre de la opción '+(reg+1)+'<br>';
+                }
+                else
+                {
+                    $("#valorEncuestaOpcion"+index+'_'+reg).css('border','solid 1px gray');
+                    $("#nombreEncuestaOpcion"+index+'_'+reg).css('border','solid 1px gray');
+                }
+
+            });
+        }
+        if(mensajePreg != '')
+            mensaje += 'Pregunta No. '+(index+1)+'<br>' + mensajePreg;
+
+
+    }) ;
+
+    if(mensaje != '')
+    {
+        $("#msj").html(mensaje);
+        $("#msj-error").css("display","block");
+    
+        event.preventDefault();
+    }
+}
+
+
 function validarFormulario(event)
 {
     var token = $("#token").val();
@@ -37,8 +115,7 @@ function validarFormulario(event)
             var mensaje = '';
             var respuesta = JSON.stringify(msj.responseJSON); 
 
-            // console.log(respuesta);
-             
+            console.log(respuesta);
             if(typeof respuesta === "undefined")
             {
                 sw = false;
@@ -47,6 +124,7 @@ function validarFormulario(event)
             }
             else
             {
+
                 sw = true;
                 respuesta = JSON.parse(respuesta);
 
@@ -141,7 +219,7 @@ var RegistroMulti = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.nombre = nombreObjeto;
     this.contenedor = nombreContenedor;
     this.contenido = nombreDiv;
-    this.contador = 0;
+    this.contador = Array();
     this.campos = new Array();
     this.etiqueta = new Array();
     this.tipo = new Array();
@@ -160,6 +238,16 @@ var RegistroMulti = function(nombreObjeto, nombreContenedor, nombreDiv){
 
 RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
 
+
+    if(!this.contador[pos])
+    {
+
+        this.contador[pos] = 0;
+        console.log('no existe pos '+pos+' = '+this.contador[pos]);
+    }
+    else
+        console.log('SI existe pos '+pos+' = '+this.contador[pos]);
+
     var valor;
     if(tipo == 'A')
        valor = datos;
@@ -170,8 +258,8 @@ RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
    
     
     var div = document.createElement('div');
-    div.id = this.contenido+pos+'_'+this.contador;
-    div.setAttribute("class", "col-sm-12");
+    div.id = this.contenido+pos+'_'+this.contador[pos];
+    div.setAttribute("class", "col-sm-12 divOpcion"+pos);
     div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
     
     // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
@@ -179,7 +267,7 @@ RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
     {
         var img = document.createElement('i');
         var caneca = document.createElement('div');
-        caneca.id = 'eliminarRegistro'+ this.contador;
+        caneca.id = 'eliminarRegistro'+ this.contador[pos];
         caneca.setAttribute('onclick',this.nombre+'.borrarOpcion(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+ pos+'_'+this.contador+'\')');
         caneca.setAttribute("class","col-md-1");
         caneca.setAttribute("style","width:40px; height:35px; cursor:pointer;");
@@ -196,7 +284,7 @@ RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
         {
             var input = document.createElement('input');
             input.type =  this.tipo[i];
-            input.id =  this.campos[i] + pos +'_' + this.contador;
+            input.id =  this.campos[i] + pos +'_' + this.contador[pos];
             input.name =  this.campos[i]+'['+pos+']'+'[]';
 
             input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
@@ -220,7 +308,7 @@ RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
     
     espacio.appendChild(div);
 
-    this.contador++;
+    this.contador[pos]++;
 
 }
 
@@ -431,6 +519,7 @@ Propiedades.prototype.agregarPregunta = function(datos, tipo){
     opcionTitulos.clase   = ['col-md-1','col-md-1','col-md-1'];
 
     opcionPregunta = new RegistroMulti('opcionPregunta',divRespMulti.id,'opcionPregunta');
+    opcionPregunta.contador[this.contador] = 0;
 
     opcionPregunta.altura = '25px;';
     opcionPregunta.campoid = 'idEncuestaOpcion';

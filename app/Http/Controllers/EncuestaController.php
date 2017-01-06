@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\EncuestaRequest;
+//use App\Http\Requests\EncuestaRequest;
 
 use App\Http\Controllers\Controller;
 
@@ -49,7 +49,7 @@ class EncuestaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EncuestaRequest $request)
+    public function store(Request $request)
     {
         if($request['respuesta'] != 'falso')
         { 
@@ -120,7 +120,7 @@ class EncuestaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EncuestaRequest $request, $id)
+    public function update(Request $request, $id)
     {
         if($request['respuesta'] != 'falso')
         {

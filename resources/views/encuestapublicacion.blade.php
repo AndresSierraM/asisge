@@ -2,8 +2,10 @@
 @section('titulo')<h3 id="titulo"><center>Publicación de Encuesta</center></h3>@stop
 
 @section('content')
-<!-- @include('alerts.request') -->
 
+
+@include('alerts.request')
+{!!Html::script('js/encuestapublicacion.js')!!}
 
 <script>
 	
@@ -51,7 +53,7 @@
 	  'width: 300px;height:35px;'
 	  ];
 
-	  destino.clase    = ['','','',''];
+	  destino.clase    = ['destinatario','','',''];
 	  destino.sololectura = [false,false,false,false];  
 	  destino.funciones = ['','','','','','','',''];
 	  destino.completar = ['off','off','off','off'];
@@ -149,10 +151,16 @@
 
 	</fieldset>	
 	@if(isset($encuestapublicacion))
-		{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
-	@else
-			{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
-	@endif
+ 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
+  		@else
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarCampos(event);'])!!}
+  		@endif
+ 	@else
+  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarCampos(event);'])!!}
+ 	@endif
+
+
 	</div>
 	{!!Form::close()!!}	
 

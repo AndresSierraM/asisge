@@ -181,7 +181,7 @@ class EncuestaPublicacionController extends Controller
             
             $datos['asunto'] = 'Encuesta: ';
             $datos['mensaje'] = 'Se ha enviado una encuesta
-                <a href="http://localhost:8000/encuestapublicacion/2?accion=imprimir&P='.$id.'&D='.$idDestino.'">Ver encuesta</a>';
+                <a href="http://'.$_SERVER["HTTP_HOST"].'/encuestapublicacion/2?accion=imprimir&P='.$id.'&D='.$idDestino.'">Ver encuesta</a>';
             $datos['correos'] = array($request['correoEncuestaPublicacionDestino'][$i]);
 
             Mail::send('emails.contact',$datos,function($msj) use ($datos)
