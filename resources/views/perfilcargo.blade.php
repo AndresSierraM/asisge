@@ -58,7 +58,7 @@
                                       <span class="input-group-addon">
                                         <i class="fa fa-commenting-o"></i>
                                       </span>
-                                {!!Form::textarea('observacionPerfilCargo',null,['class'=>'form-control','placeholder'=>'','style'=>'width:1535px;,right'])!!}
+                                {!!Form::textarea('observacionPerfilCargo',null,['class'=>'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
                                                            
                               </div>
                             </br>

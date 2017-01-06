@@ -16,6 +16,61 @@
   @endif
 
 
+
+<?php 
+if(isset($encuestae))
+{
+  // convertimos la consulta en array por facilidad de manejo
+  $datos = array();
+
+  for($i = 0; $i < count($encuestae); $i++)
+  {
+      $datos[] = get_object_vars($encuestae[$i]); 
+  }
+
+
+
+
+  // print_r($encuestae);  // este debe imprimir como llega original desde el controlador
+  // print_r($datos); // este es el array ya convertido
+
+   
+  $textohtml =  '<div class="PublicacionForm">
+    <center><label class="PublicacionTitulo">'.$datos[0]["tituloEncuesta"].'</label></center>
+    <label class="PublicacionSubtitulo">'.$datos[0]["descripcionEncuesta"].'</label>';
+
+  $i = 0;
+  $numPreg = 0;
+  while($i < count($datos))
+  {
+
+   // Imprime la Pregunta y la descripcion de la pregunta
+   $textohtml .=  '<div class="divEncuesta">
+     <div class="PublicacionPregunta">'.($numPreg+1).') '.$datos[$i]["preguntaEncuestaPregunta"].'</div> 
+     <div class="PublicacionDetalle">
+      '.$datos[$i]["detalleEncuestaPregunta"].'
+     </div>';
+
+     // imprime la respuesta (no editable)
+   $textohtml .=  '<div class="PublicacionSelect">'.
+     $datos[$i]["valorEntrevistaEncuestaRespuesta"].'
+    </div>
+    </div>';
+    $i++;
+   $numPreg++;
+  }
+
+
+
+  $textohtml .=  '
+    </div>
+    </div>';
+}
+
+?>
+
+
+
 <script>
 
 
@@ -38,6 +93,10 @@ entrevistaeducacion = (entrevistaeducacion != '' ? JSON.parse(entrevistaeducacio
  var entrevistaformacion = '<?php echo (isset($EntrevistaFormacion) ? json_encode($EntrevistaFormacion) : "");?>';
 entrevistaformacion = (entrevistaformacion != '' ? JSON.parse(entrevistaformacion) : '');
 
+ var encuestae = '<?php echo (isset($encuestae) ? json_encode($encuestae) : "");?>';
+encuestae = (encuestae != '' ? JSON.parse(encuestae) : '');
+
+
 var idEducacion = '<?php echo isset($idEducacion) ? $idEducacion : "";?>';
 var nombreEducacion = '<?php echo isset($nombreEducacion) ? $nombreEducacion : "";?>';
 
@@ -47,9 +106,12 @@ var nombreFormacion = '<?php echo isset($nombreFormacion) ? $nombreFormacion : "
 var idRespuesta = '<?php echo isset($idRespuesta) ? $idRespuesta : "";?>';
 var nombreRespuesta = '<?php echo isset($nombreRespuesta) ? $nombreRespuesta : "";?>';
 
+
+
 var educacion = [JSON.parse(idEducacion),JSON.parse(nombreEducacion)];
 var formacion = [JSON.parse(idFormacion),JSON.parse(nombreFormacion)];
 var respuesta = [JSON.parse(idRespuesta),JSON.parse(nombreRespuesta)];
+
 
 
 
@@ -1097,7 +1159,17 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
 
                                                      <!--  OOPCION 4 -->
                                        <div id="otraspreguntas" class="tab-pane fade">
-                                         asdasd
+                                         <div clas="col-sm-12">
+                                         {!!Form::select('Encuesta_idEncuesta',$encuesta, (isset($entrevista) ? $entrevista->Encuesta_idEncuesta : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>'cargarEntrevista(this.value);'])!!}
+                                         </div>
+                                         <div id="encuestas">
+                                         <?php
+                                          if(isset($textohtml))
+                                          { 
+                                              echo $textohtml;
+                                          }
+                                          ?>
+                                         </div>
                                         </div>
 
                         </div>

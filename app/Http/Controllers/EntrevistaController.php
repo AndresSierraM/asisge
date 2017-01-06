@@ -36,7 +36,10 @@ class EntrevistaController extends Controller
     public function create()
     {
 
-            
+         //consulta al modelo encuesta llamando su respectivo idEncuesta y  tituloEncuesta}
+        $encuesta = \App\Encuesta::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('tituloEncuesta','idEncuesta');
+
+
 
  //         son datos para mandarle a una multi registro con un campo tipo SELECT se consultan diferentes
  // porque tienes que mandar el ID y la respuesta aparte
@@ -59,7 +62,7 @@ class EntrevistaController extends Controller
         $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
         $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
 
-          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion'));
+          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','encuesta'));
 
     }
 
@@ -216,6 +219,23 @@ class EntrevistaController extends Controller
 
             ]);
          }
+         for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
+        {
+            
+
+            $indice = array(
+             'idEntrevistaEncuestaRespuesta' => $request['idEntrevistaEncuestaRespuesta'][$i]);
+
+             $data = array(
+             'Entrevista_idEntrevista' => $entrevista->idEntrevista,
+             'EncuestaPregunta_idEncuestaPregunta' => $request['idEncuestaPregunta'][$i],
+             'valorEntrevistaEncuestaRespuesta' => $request['respuesta'][$i][0]);
+
+            $respuestas = \App\EntrevistaEncuestaRespuesta::updateOrCreate($indice, $data);
+
+            
+
+        }
 
 
         return redirect('/entrevista'); 
@@ -240,6 +260,13 @@ class EntrevistaController extends Controller
      */
     public function edit($id)
     {
+
+
+            //consulta al modelo encuesta llamando su respectivo idEncuesta y  tituloEncuesta}
+        $encuesta = \App\Encuesta::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('tituloEncuesta','idEncuesta');
+
+
+
             // son datos para mandarle a una multi registro con un campo tipo SELECT se consultan diferentes
             // porque tienes que mandar el ID y la respuesta aparte
          $idRespuesta  = \App\CompetenciaRespuesta::All()->lists('idCompetenciaRespuesta');
@@ -290,11 +317,24 @@ class EntrevistaController extends Controller
             ON cf.PerfilCargo_idPerfilCargo = pca.idPerfilCargo
             WHERE ef.Entrevista_idEntrevista = '.$id);
 
+            //consulta a la  Entrevista enncuesta  (Opcion Habilidades)para editarla
+            $encuestae = DB::select(
+            'SELECT idEncuesta,
+              tituloEncuesta, descripcionEncuesta,
+              idEncuestaPregunta, preguntaEncuestaPregunta, detalleEncuestaPregunta, tipoRespuestaEncuestaPregunta,
+                valorEntrevistaEncuestaRespuesta
+            FROM encuesta
+             left join encuestapregunta
+            on encuesta.idEncuesta = encuestapregunta.Encuesta_idEncuesta
+            left join entrevistaencuestarespuesta
+            on encuestapregunta.idEncuestaPregunta = entrevistaencuestarespuesta.EncuestaPregunta_idEncuestaPregunta
+            where entrevistaencuestarespuesta.Entrevista_idEntrevista = '.$id);
 
 
 
 
-          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','entrevistacompetencia','EntrevistaEducacion','EntrevistaFormacion'),['entrevista'=>$entrevista]);
+
+          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','entrevistacompetencia','EntrevistaEducacion','EntrevistaFormacion','encuesta','encuestae'),['entrevista'=>$entrevista]);
 
           
     }
@@ -444,6 +484,24 @@ class EntrevistaController extends Controller
                 'calificacionEntrevistaFormacion' => $request['calificacionEntrevistaFormacion'][$i]);
             $guardar = \App\EntrevistaFormacion::updateOrCreate($indice, $data);
         } 
+
+          for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
+        {
+            
+
+            $indice = array(
+             'idEntrevistaEncuestaRespuesta' => $request['idEntrevistaEncuestaRespuesta'][$i]);
+
+             $data = array(
+             'Entrevista_idEntrevista' => $id,
+             'EncuestaPregunta_idEncuestaPregunta' => $request['idEncuestaPregunta'][$i],
+             'valorEntrevistaEncuestaRespuesta' => $request['respuesta'][$i][0]);
+
+            $respuestas = \App\EntrevistaEncuestaRespuesta::updateOrCreate($indice, $data);
+
+            
+
+        }
 
         return redirect('entrevista');
     }

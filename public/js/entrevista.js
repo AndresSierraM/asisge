@@ -1,3 +1,31 @@
+function cargarEntrevista (idEncuesta)
+{
+    
+    var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idEncuesta': idEncuesta},
+            url:   'http://'+location.host+'/CargarEntrevista/',
+            type:  'POST',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+            success: function(respuesta){
+                $("#encuestas").html(respuesta.contenido);
+                
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+
+}
+
+
+
+
 function calificarformacion(idRequerido)
 {
 
@@ -46,9 +74,9 @@ function calificareducacion(idRequerido)
 function compararAniosExperiencia()
 {
     if(parseFloat($("#experienciaAspiranteEntrevista").val())  >= parseFloat($("#experienciaRequeridaEntrevista").val()))
-        $("#experienciaRequeridaEntrevista").css("background-color", "#98FB98");
+        $("#experienciaRequeridaEntrevista").css("font-weight","bold").css("background-color", "#98FB98");
     else
-        $("#experienciaRequeridaEntrevista").css("background-color", "#FF0000");
+        $("#experienciaRequeridaEntrevista").css("font-weight","bold").css("background-color", "#990000");
 }
 
 function llenarEntrevistaCompetencia(idCargo)

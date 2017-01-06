@@ -772,6 +772,12 @@ Route::post('llenarEntrevistaCompetencia', function()
     include public_path().'/ajax/llenarEntrevistaCompetencia.php';
 });
 
+Route::post('CargarEntrevista', function()
+{
+    include public_path().'/ajax/CargarEntrevista.php';
+});
+
+
 
 //************************************
 // Rutas de Ajax de Encuestas

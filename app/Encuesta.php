@@ -30,4 +30,6 @@ class Encuesta extends Model
 	{
 		return $this->hasMany('App\EncuestaRol','Encuesta_idEncuesta');
 	}
+
+
 }
