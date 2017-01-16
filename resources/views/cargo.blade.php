@@ -63,7 +63,18 @@
 		var listaElemento = [JSON.parse(idListaElemento),JSON.parse(nombreListaElemento)];
 		var listaVacuna = [JSON.parse(idListaVacuna),JSON.parse(nombreListaVacuna)];
 		var frecuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
-		
+		// se crean dos variables para busar los datos y comprarlos con su funcion correspondiente
+		//educacion
+		//al final se agrega otro parametro para saber a que multiregistro esta. que es el nombre quemado para diferenciarlas en la funcion en  cargo.js
+		var validacionesPesoE = ['onchange','validacionesPorcentajeEducacion(this.value);']
+		var validacionesPesoF = ['onchange','validacionesPorcentajeFormacion(this.value);']
+		var validacionesPesoH = ['onchange','validacionesPorcentajeHabilidad(this.value);']
+		var validacionglobal = ['onchange','validacioneducacionformacion(this.value);']
+
+		//aca se debe crear la variable que va a traer el id y el nombre quemado de la responsabilidad y se debe poner en la respectiva multiregistro
+
+
+
 		$(document).ready(function()
 		{
 			tarea = new Atributos('tarea','contenedor_tarea','tarea');
@@ -182,7 +193,7 @@
 			    Educacion.completar = ['off','off','off','off']; //autocompleta 
 			    
 			    Educacion.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-			    Educacion.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+			    Educacion.funciones  = ['','','',validacionesPesoE]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
     			// // multiregistro Formacion
@@ -208,7 +219,7 @@
 			    Formacion.completar = ['off','off','off','off']; //autocompleta 
 			    
 			    Formacion.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-			    Formacion.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+			    Formacion.funciones  = ['','','',validacionesPesoF]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
 
@@ -235,7 +246,7 @@
 			    Habilidad.completar = ['off','off','off','off']; //autocompleta 
 			    
 			    Habilidad.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-			    Habilidad.funciones  = ['','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+			    Habilidad.funciones  = ['','','',validacionesPesoH]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
 
@@ -468,7 +479,7 @@
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeEducacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																	{!!Form::text('porcentajeEducacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso','onchange'=>'validacioneducacionformacion(this.value);'])!!}
 																</div>
 															</div>
 														</div>
@@ -538,7 +549,7 @@
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeFormacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																	{!!Form::text('porcentajeFormacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso','onchange'=>'validacioneducacionformacion(this.value);'])!!}
 																</div>
 															</div>
 														</div>

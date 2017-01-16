@@ -54,7 +54,7 @@ class PerfilCargoController extends Controller
     public function store(PerfilCargoRequest $request)
     {
     
-         \App\perfilcargo::create([
+         \App\PerfilCargo::create([
             'tipoPerfilCargo' => $request['tipoPerfilCargo'],
             'nombrePerfilCargo' => $request['nombrePerfilCargo'],
             'observacionPerfilCargo' => $request['observacionPerfilCargo']

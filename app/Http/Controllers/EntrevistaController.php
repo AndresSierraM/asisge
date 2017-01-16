@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\requests\EntrevistaRequest;
+use App\Http\Requests\EntrevistaRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';

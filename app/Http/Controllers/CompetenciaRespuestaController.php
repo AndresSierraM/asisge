@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-use App\Http\requests\CompetenciaRespuestaRequest;
+use App\Http\Requests\CompetenciaRespuestaRequest;
 include public_path().'/ajax/consultarPermisos.php';
 
 class CompetenciaRespuestaController extends Controller
