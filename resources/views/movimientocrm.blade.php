@@ -91,7 +91,7 @@ $fechahora = Carbon\Carbon::now();
 {!!Html::script('js/movimientocrm.js'); !!}
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
-{!!Html::style('assets/dropzone/dist/min/dropmmzone.min.css'); !!}<!--Llamo al dropzone-->
+{!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
 {!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
 
 

@@ -35,7 +35,7 @@
 
     $TipoEstado = isset($_GET["TipoEstado"])
                 ? $_GET["TipoEstado"] 
-                : '';
+                : 'Nuevo';
 
     $campos = DB::select(
     'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, 
