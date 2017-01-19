@@ -77,7 +77,6 @@
             compania c ON Aus.Compania_idCompania = c.idCompania
             Where (tipoAusentismo like "%Accidente%" or tipoAusentismo like "%Incidente%")  and 
                 Aus.Compania_idCompania = '.$idCompania .' 
-            and fechaElaboracionAusentismo >= fechaCreacionCompania
             group by Aus.Tercero_idTercero;');
 
         return imprimirTabla('Accidente', $accidente, 'accidente', $filtroEstado, $fechaInicial, $fechaFinal);
@@ -129,7 +128,6 @@
             left join compania c 
             on PA.Compania_idCompania = c.idCompania
             Where  PA.Compania_idCompania = '.$idCompania .' 
-            and fechaPlanAuditoriaAgenda >= fechaCreacionCompania
             group by idPlanAuditoriaAgenda;');
 
             return imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $filtroEstado, $fechaInicial, $fechaFinal);
@@ -185,7 +183,7 @@
             on PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema  
             left join compania c
             on PC.Compania_idCompania = c.idCompania
-            Where  PC.Compania_idCompania = '.$idCompania .' and fechaPlanCapacitacionTema >= fechaCreacionCompania 
+            Where  PC.Compania_idCompania = '.$idCompania .'
             group by idPlanCapacitacion');
 
             return imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $filtroEstado, $fechaInicial, $fechaFinal);
@@ -229,7 +227,6 @@
             left join programadetalle PD
             on P.idPrograma = PD.Programa_idPrograma
             Where  P.Compania_idCompania = '.$idCompania .' 
-            and fechaPlaneadaProgramaDetalle >= fechaCreacionCompania and fechaEjecucionProgramaDetalle >= fechaCreacionCompania
             Group by idPrograma');
 
             return imprimirTabla('Programas', $programa, 'programa', $filtroEstado, $fechaInicial, $fechaFinal);   
@@ -592,11 +589,59 @@
             left join compania c 
             on agp.Compania_idCompania = c.idCompania
             Where  agp.Compania_idCompania = '.$idCompania .' 
-            and recursoPlaneadoActaGrupoApoyoDetalle >= fechaCreacionCompania and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania
+            and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania
             Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
 			return imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $filtroEstado, $fechaInicial, $fechaFinal);
 	}
+
+    // -------------------------------------------
+    //  R E P O R T E     A C P M 
+    // -------------------------------------------
+
+    function consultarACPM($idCompania, $filtroEstado, $fechaInicial, $fechaFinal)
+    {
+        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
+        // independiente
+        // ------------------------------------------------
+        // Enero    Febrero     Marzo   Abril......
+        // ------------------------------------------------
+        $inicio = $fechaInicial;
+        $anioAnt = date("Y", strtotime($inicio));
+        $columnas = '';
+        while($inicio < $fechaFinal)
+        {
+
+            // adicionamos la columna del mes
+           
+            $columnas .= "SUM(IF((MONTH(fechaReporteACPMDetalle) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaReporteACPMDetalle) =  '".date("Y", strtotime($inicio))."'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+
+            $columnas .= "SUM(IF((MONTH(fechaReporteACPMDetalle) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaReporteACPMDetalle) =  '".date("Y", strtotime($inicio))."'), IF(fechaCierreReporteACPMDetalle IS NULL, 0, 1), 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
+            
+
+            //Avanzamos al siguiente mes
+            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+        }
+
+        // Quitamos la ultima coma del concatenado de columnas
+        $columnas = substr($columnas,0, strlen($columnas)-2);
+
+        
+        $actividadesgrupoapoyo = DB::select(
+            'SELECT CONCAT(nombreGrupoApoyo, " - ", actividadGrupoApoyoDetalle) as descripcionTarea,
+                idActaGrupoApoyoDetalle as idConcepto,
+                '.$columnas.'
+            From reporteacpmdetalle acpmd
+            left join reporteacpm acpm
+            on acpmd.ReporteACPM_idReporteACPM = acpm.idReporteACPM
+            left join modulo m
+            on acpmd.Modulo_idModulo = m.idModulo
+            Where  acpm.Compania_idCompania = '.$idCompania.'
+            Group by idReporteACPMDetalle
+            order by fechaReporteACPMDetalle, descripcionReporteACPMDetalle');
+
+            return imprimirTabla('Reporte ACPM', $actividadesgrupoapoyo, 'reporteacpm', $filtroEstado, $fechaInicial, $fechaFinal);
+    }
 
 
 	#RECIBO LA CONSULTA QUE LLEGA DESDE EL CONTROLADOR Y CONVIERTO DE ARRAY A STRING
@@ -690,6 +735,10 @@
         elseif ($plan[$i]['Modulo_idModulo'] == 40) 
         {
             $informe .= consultarPrograma($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
+        }
+        elseif ($plan[$i]['Modulo_idModulo'] == 1) 
+        {
+            $informe .= consultarACPM($idCompania, $filtroEstado, $fechaInicial, $fechaFinal);
         }
         elseif ($plan[$i]['Modulo_idModulo'] == 30) 
         {
