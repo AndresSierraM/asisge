@@ -100,7 +100,7 @@ class CargoController extends Controller
                 'salarioBaseCargo' => $request['salarioBaseCargo'],
                 'nivelRiesgoCargo' => $request['nivelRiesgoCargo'],
                 //campos adicionales
-                'Cargo_IdDepende' => $request['Cargo_IdDepende'],
+                'Cargo_IdDepende' => ($request['Cargo_IdDepende'] == '' or $request['Cago_IdDepende'] == 0) ? null : $request['Cargo_IdDepende'],
                 'aniosExperienciaCargo' => $request['aniosExperienciaCargo'],
                 'porcentajeCargoEducacion' => $request['porcentajeCargoEducacion'],
                 'porcentajeCargoFormacion' => $request['porcentajeCargoFormacion'],
@@ -224,6 +224,7 @@ class CargoController extends Controller
         {    
             $cargo = \App\Cargo::find($id);
             $cargo->fill($request->all());
+            $cargo->Cargo_IdDepende = ($request['Cargo_IdDepende'] == '' or $request['Cargo_IdDepende'] == 0) ? null : $request['Cargo_IdDepende'];
 
             $cargo->save();
 

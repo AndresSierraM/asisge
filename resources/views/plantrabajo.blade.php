@@ -210,6 +210,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 			imprimirTabla('Investigacion de Accidentes', $accidente, 'accidente');
 			imprimirTabla('Inspecciones de Seguridad', $inspeccion, 'inspeccion');
 			imprimirTabla('Auditorías', $auditoria, 'auditoria');
+			imprimirTabla('Reporte ACPM', $acpm, 'acpm');
 			imprimirTabla('Atividades de Grupos de Apoyo ', $actividadesgrupoapoyo, 'actividadesgrupoapoyo');
 		?>
     </div>

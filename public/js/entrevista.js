@@ -43,7 +43,7 @@ function calificarformacion(idRequerido)
     } 
     else 
     {
-          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'No Aplica\']').prop('selected','selected');
+          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'No Cumple\']').prop('selected','selected');
     }
 }
 
@@ -64,7 +64,7 @@ function calificareducacion(idRequerido)
     } 
     else 
     {
-          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'No Aplica\']').prop('selected','selected');
+          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'No Cumple\']').prop('selected','selected');
     }
 
 }

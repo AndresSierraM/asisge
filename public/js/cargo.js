@@ -167,5 +167,77 @@ function abrirModalCompetencia()
 
 }
 
+// funciones por separadas 
+function validacionesPorcentajeEducacion()
+{
+    // Se crea una variable para que inicie en 0 
+    var valida = 0;
+
+    
+
+    for (var i = 0; i < Educacion.contador; i++) {
+        valida = valida + parseFloat($('#porcentajeCargoEducacion'+[i]).val());
+    }
+
+    if (valida >100 || valida < 100)
+    {
+        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+    } 
+
+}
+
+
+function validacionesPorcentajeFormacion()
+{
+    // Se crea una variable para que inicie en 0 
+    var validaF = 0;
+
+    for (var i = 0; i < Formacion.contador; i++) {
+        validaF = validaF + parseFloat($('#porcentajeCargoFormacion'+[i]).val());
+    }
+
+    if (validaF >100 || validaF < 100)
+    {
+        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+    } 
+
+}
+
+
+function validacionesPorcentajeHabilidad()
+{
+    // Se crea una variable para que inicie en 0 
+    var validaH = 0;
+
+    
+    for (var i = 0; i < Habilidad.contador; i++) {
+        validaH = validaH + parseFloat($('#porcentajeCargoHabilidad'+[i]).val());
+    }
+
+    if (validaH >100 || validaH < 100)
+    {
+        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+    } 
+
+}
+
+ 
+function validacioneducacionformacion()
+{
+    var sumatoria = 0;
+
+    sumatoria = sumatoria + parseFloat($('#porcentajeEducacionCargo').val()) + parseFloat($('#porcentajeFormacionCargo').val());
+
+
+    if (sumatoria >100 || sumatoria < 100)
+    {
+        alert ('la sumatoria de %Peso Educacion y %Peso Formacion no debe ser mayor o menor que 100 ')
+    }
+
+}
+
+
+
+
 
 

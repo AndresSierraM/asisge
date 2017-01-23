@@ -18,54 +18,54 @@
 
 
 <?php 
-if(isset($encuestae))
-{
-  // convertimos la consulta en array por facilidad de manejo
-  $datos = array();
+// if(isset($encuestae))
+// {
+//   // convertimos la consulta en array por facilidad de manejo
+//   $datos = array();
 
-  for($i = 0; $i < count($encuestae); $i++)
-  {
-      $datos[] = get_object_vars($encuestae[$i]); 
-  }
+//   for($i = 0; $i < count($encuestae); $i++)
+//   {
+//       $datos[] = get_object_vars($encuestae[$i]); 
+//   }
 
 
 
 
   // print_r($encuestae);  // este debe imprimir como llega original desde el controlador
-  // print_r($datos); // este es el array ya convertido
+  //  print_r($datos); // este es el array ya convertido
 
    
-  $textohtml =  '<div class="PublicacionForm">
-    <center><label class="PublicacionTitulo">'.$datos[0]["tituloEncuesta"].'</label></center>
-    <label class="PublicacionSubtitulo">'.$datos[0]["descripcionEncuesta"].'</label>';
+//   $textohtml =  '<div class="PublicacionForm">
+//      <center><label class="PublicacionTitulo">'.$datos[0]["tituloEncuesta"].'</label></center>
+//      <label class="PublicacionSubtitulo">'.$datos[0]["descripcionEncuesta"].'</label>';
 
-  $i = 0;
-  $numPreg = 0;
-  while($i < count($datos))
-  {
+//   $i = 0;
+//   $numPreg = 0;
+//   while($i < count($datos))
+//   {
 
-   // Imprime la Pregunta y la descripcion de la pregunta
-   $textohtml .=  '<div class="divEncuesta">
-     <div class="PublicacionPregunta">'.($numPreg+1).') '.$datos[$i]["preguntaEncuestaPregunta"].'</div> 
-     <div class="PublicacionDetalle">
-      '.$datos[$i]["detalleEncuestaPregunta"].'
-     </div>';
+//    // Imprime la Pregunta y la descripcion de la pregunta
+//    $textohtml .=  '<div class="divEncuesta">
+//      <div class="PublicacionPregunta">'.($numPreg+1).') '.$datos[$i]["preguntaEncuestaPregunta"].'</div> 
+//      <div class="PublicacionDetalle">
+//       '.$datos[$i]["detalleEncuestaPregunta"].'
+//      </div>';
 
-     // imprime la respuesta (no editable)
-   $textohtml .=  '<div class="PublicacionSelect">'.
-     $datos[$i]["valorEntrevistaEncuestaRespuesta"].'
-    </div>
-    </div>';
-    $i++;
-   $numPreg++;
-  }
+//      // imprime la respuesta (no editable)
+//    $textohtml .=  '<div class="PublicacionSelect">'.
+//      $datos[$i]["valorEntrevistaEncuestaRespuesta"].'
+//     </div>
+//     </div>';
+//     $i++;
+//    $numPreg++;
+//   }
 
 
 
-  $textohtml .=  '
-    </div>
-    </div>';
-}
+//   $textohtml .=  '
+//     </div>
+//     </div>';
+// }
 
 ?>
 
@@ -93,8 +93,8 @@ entrevistaeducacion = (entrevistaeducacion != '' ? JSON.parse(entrevistaeducacio
  var entrevistaformacion = '<?php echo (isset($EntrevistaFormacion) ? json_encode($EntrevistaFormacion) : "");?>';
 entrevistaformacion = (entrevistaformacion != '' ? JSON.parse(entrevistaformacion) : '');
 
- var encuestae = '<?php echo (isset($encuestae) ? json_encode($encuestae) : "");?>';
-encuestae = (encuestae != '' ? JSON.parse(encuestae) : '');
+ //  var encuestae = '<?php echo (isset($encuestae) ? json_encode($encuestae) : "");?>';
+ // encuestae = (encuestae != '' ? JSON.parse(encuestae) : '');
 
 
 var idEducacion = '<?php echo isset($idEducacion) ? $idEducacion : "";?>';
@@ -126,8 +126,8 @@ Relacionfamiliar = [valorrelacion,Nombrerelacion];
 
 
 
-valorCumple = Array("Total","Parcial","No Aplica");
-NombreCumple = Array ("Total","Parcial","No Aplica");
+valorCumple = Array("Total","Parcial","No Cumple");
+NombreCumple = Array ("Total","Parcial","No Cumple");
 Cumplimiento = [valorCumple,NombreCumple];
 var Relacionfamilia = [0,0,'','']
 var competenciamodelo = [0,0,'','',''];
@@ -299,6 +299,8 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                      {
                     
                        Educacionentrevista.agregarCampos(JSON.stringify(entrevistaeducacion[j]),'L');
+
+                       
                        
                  
                     } 
@@ -509,8 +511,8 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                         
                             <ul class="nav nav-tabs"> <!--Pestañas de navegacion 4 opciones-->
 
-                              <li class="active"><a data-toggle="tab"  onclick="mostrarDivGenerales('General')" href="#General">General</a></li>
-                              <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('Competencias')" href="#Competencias">Competencias</a></li>
+                              <li class="active"><a data-toggle="tab"  onclick="mostrarDivGenerales('General')" href="#General">Competencias</a></li> <!-- Se hizo un cambio para evitar cambiar la funciones de los divs nada mas se le cambia el nombre a competencia y Generales -->
+                              <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('Competencias')" href="#Competencias">Generales</a></li>
                               <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('Habilidades')" href="#Habilidades">Habilidades</a></li>
                               <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('otraspreguntas')" href="#otraspreguntas">Otras Preguntas</a></li>
 

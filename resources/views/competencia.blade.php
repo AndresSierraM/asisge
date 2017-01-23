@@ -7,9 +7,9 @@
 
 @if(isset($competencia))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-      {!!Form::model($competencia,['route'=>['competencia.destroy',$competencia->idcompetencia],'method'=>'DELETE'])!!}
+      {!!Form::model($competencia,['route'=>['competencia.destroy',$competencia->idCompetencia],'method'=>'DELETE'])!!}
     @else
-      {!!Form::model($competencia,['route'=>['competencia.update',$competencia->idcompetencia],'method'=>'PUT'])!!}
+      {!!Form::model($competencia,['route'=>['competencia.update',$competencia->idCompetencia],'method'=>'PUT'])!!}
     @endif
   @else
     {!!Form::open(['route'=>'competencia.store','method'=>'POST'])!!}

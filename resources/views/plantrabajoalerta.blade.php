@@ -20,12 +20,14 @@
 if(isset($plantrabajoalerta))
 {
 
-	if($plantrabajoalerta->tareaDiasPlanTrabajoAlerta != '')
+	if($plantrabajoalerta->tareaSemanasLaboralPlanTrabajoAlerta != '')
 	{
+
 		
-		$fechaSemana = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
-		$horaSemana = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
-		$intervaloSemana = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
+		$fechaSemana = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlertaSemana;
+		$horaSemana = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaSemana;
+		$intervaloSemana = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlertaSemana;
+
 	}
 	else
 	{
@@ -36,10 +38,12 @@ if(isset($plantrabajoalerta))
 			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaMes;
 		}
 		else
+
 		{
-			$fechaDia = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
-			$horaDia = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
-			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
+
+			$fechaDia = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlertaDia;
+			$horaDia = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaDia;
+			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlertaDia;
 		}
 	}
 }
@@ -55,7 +59,7 @@ if(isset($plantrabajoalerta))
     alertaplan = (alertaplan != '' ? JSON.parse(alertaplan) : '');
    
 
-  var valorModelo = [0,''];
+  var valorMtareaFechaInicioPlanTrabajoAlertaMesodelo = [0,''];
   $(document).ready(function(){
     //objeto  ---  instancia  ---     PARAMETROS  
     PlanTrabajoAlertaModulo = new Atributos('PlanTrabajoAlertaModulo','planTrabajoAlertaModulo_Modulo','modulodescripcion_');
@@ -273,7 +277,7 @@ if(isset($plantrabajoalerta))
 			      <div class="col-sm-12">
 
 			        <div class="row show-grid">
-			          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="PlanTrabajoAlertaModulo.agregarCampos(valorModelo,'A')">
+			          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="PlanTrabajoAlertaModulo.agregarCampos(valorMtareaFechaInicioPlanTrabajoAlertaMesodelo,'A')">
 			            <span class="glyphicon glyphicon-plus"></span>
 			          </div>
 			          <div class="col-md-1" style="width: 1050px;display:inline-block;height:35px;">Nombre del Modulo</div>
@@ -421,9 +425,9 @@ if(isset($plantrabajoalerta))
 			    </div>
 
 
-			<!--  check Box para ejecutar la alerta de Dias laborales  -->
+			<!--  check Box para ejecutar la alerta de Dias de la semana -->
 				    <div class="form-group" id='test'>
-				         {!!Form::label('tareaDiaLaboralPlanTrabajoAlerta', 'Días de la semana', array('class' => 'col-sm-12 control-label')) !!}
+				         {!!Form::label('tareaSemanasLaboralPlanTrabajoAlerta', 'Días de la semana', array('class' => 'col-sm-12 control-label')) !!}
 				    </div>
 
 			<!-- Dias de la semana separado con sus respectivos checkbox
