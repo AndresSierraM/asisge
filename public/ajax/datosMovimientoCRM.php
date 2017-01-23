@@ -94,9 +94,11 @@ for($i = 0; $i < count($campos); $i++)
             acuerdoservicio.idAcuerdoServicio
         Where   idDocumentoCRM = '.$id.  ' and 
                 movimientocrm.Compania_idCompania = '.\Session::get('idCompania'). ' and 
-                (movimientocrm.Tercero_idSolicitante = '.\Session::get('idTercero'). ' or 
+                
+                ((movimientocrm.Tercero_idSolicitante = '.\Session::get('idTercero'). ' or 
                  movimientocrm.Tercero_idSupervisor = '.\Session::get('idTercero'). ' or 
-                 movimientocrm.Tercero_idAsesor = '.\Session::get('idTercero'). ') '. 
+                 movimientocrm.Tercero_idAsesor = '.\Session::get('idTercero'). ') OR 
+                 '.$aprobar.' = 1) '. 
                 ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '').
         ' Order By numeroMovimientoCRM DESC ' );
 
@@ -106,10 +108,10 @@ for($i = 0; $i < count($campos); $i++)
     for($i = 0; $i < count($movimientocrm); $i++)
     {  
         $datoValor = get_object_vars($movimientocrm[$i]); 
-        $row[$i][] = '<a href="movimientocrm/'.$datoValor["idMovimientoCRM"].'/edit?idDocumentoCRM='.$id.'">'.
+        $row[$i][] = '<a href="movimientocrm/'.$datoValor["idMovimientoCRM"].'/edit?idDocumentoCRM='.$id.'&aprobador='.$aprobar.'">'.
                             '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="movimientocrm/'.$datoValor["idMovimientoCRM"].'/edit?idDocumentoCRM='.$id.'&accion=eliminar">'.
+                        '<a href="movimientocrm/'.$datoValor["idMovimientoCRM"].'/edit?idDocumentoCRM='.$id.'&aprobador='.$aprobar.'&accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;'.
                         '<a href="javascript:mostrarModalAsesor('.$datoValor["idMovimientoCRM"].');">'.

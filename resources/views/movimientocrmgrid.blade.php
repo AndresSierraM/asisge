@@ -4,10 +4,14 @@
     $TipoEstado = (isset($_GET["TipoEstado"]) ? $_GET["TipoEstado"] : 'Nuevo');
 
     $visible = '';
-
+    $aprobador = 0;
     if (isset($datos[0])) 
     {
         $dato = get_object_vars($datos[0]);
+
+        $aprobador = (isset($dato['aprobarDocumentoCRMRol']) ? $dato['aprobarDocumentoCRMRol'] : 0);
+
+
         if ($dato['adicionarDocumentoCRMRol'] == 1) 
         {
             $visible = 'inline-block;';    
@@ -76,7 +80,8 @@ for($i = 0; $i < count($campos); $i++)
 
 ?>
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center><?php echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.$TipoEstado.']';?></center></h3>@stop
+@section('titulo')<h3 id="titulo"><center><?php 
+echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.$TipoEstado.']';?></center></h3>@stop
 @section('content')
 
 
@@ -150,7 +155,7 @@ for($i = 0; $i < count($campos); $i++)
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                <a href=<?php echo "movimientocrm/create?idDocumentoCRM=".$id;?>><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                <a href=<?php echo "movimientocrm/create?idDocumentoCRM=".$id."&aprobador=".$aprobador;?>><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <?php 

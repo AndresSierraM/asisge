@@ -25,6 +25,8 @@ class MovimientoCRMRequest extends Request
     {
         
         $id = $this->get('DocumentoCRM_idDocumentoCRM'); 
+        $rolUsuario = $this->get('rolUsuario'); 
+
         $campos = DB::select(
             'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, mostrarGridDocumentoCRMCampo, 
                 relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM
@@ -33,7 +35,9 @@ class MovimientoCRMRequest extends Request
             on documentocrm.idDocumentoCRM = documentocrmcampo.DocumentoCRM_idDocumentoCRM
             left join campocrm
             on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
-            where documentocrm.idDocumentoCRM = '.$id.' and obligatorioDocumentoCRMCampo = 1');
+            where documentocrm.idDocumentoCRM = '.$id.' and 
+               obligatorioDocumentoCRMCampo = 1  and 
+                '.$rolUsuario.'DocumentoCRMCampo = 1');
 
         $validacion = array();
         $validacion["numeroMovimientoCRM"] = "required|string|unique:movimientocrm,numeroMovimientoCRM,".$this->get('idMovimientoCRM') .",idMovimientoCRM,Compania_idCompania,".(\Session::get('idCompania')).",DocumentoCRM_idDocumentoCRM,".$this->get('DocumentoCRM_idDocumentoCRM');
@@ -51,7 +55,8 @@ class MovimientoCRMRequest extends Request
     public function messages()
     {
         $id = $this->get('DocumentoCRM_idDocumentoCRM');
-        echo 'ID = '.$id; 
+        $rolUsuario = $this->get('rolUsuario'); 
+
         $campos = DB::select(
             'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, mostrarGridDocumentoCRMCampo, 
                 relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM
@@ -60,7 +65,9 @@ class MovimientoCRMRequest extends Request
             on documentocrm.idDocumentoCRM = documentocrmcampo.DocumentoCRM_idDocumentoCRM
             left join campocrm
             on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
-            where documentocrm.idDocumentoCRM = '.$id.' and obligatorioDocumentoCRMCampo = 1');
+            where documentocrm.idDocumentoCRM = '.$id.' and 
+                obligatorioDocumentoCRMCampo = 1  and 
+                '.$rolUsuario.'DocumentoCRMCampo = 1');
 
         $mensajes = array();
         $mensajes["numeroMovimientoCRM.required"] = "El campo Número es obligatorio en modo Manual";
