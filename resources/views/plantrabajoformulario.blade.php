@@ -94,7 +94,7 @@
                   <span class="input-group-addon">
                     <i class="fa fa-pencil-square-o"></i>
                   </span>
-              		{!!Form::select('Tercero_idAuditor',$Tercero_idAuditor, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+              		{!!Form::select('Tercero_idAuditor',$Tercero_idAuditor, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione el auditor"])!!}
 
 	              <div class="col-sm-10">
 	                <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
@@ -155,7 +155,7 @@ function valorTarea($valorTarea, $valorCumplido)
 
 
 
-function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
+function imprimirTabla($titulo, $informacion , $idtabla, $cargo, $idModulo)
 {
 	echo '<div class="panel panel-primary">
             <div class="panel-heading">
@@ -249,7 +249,7 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 									<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 
 									<td>';?>
-										{!!Form::select('Tercero_idResponsable[]',$tercero, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+										{!!Form::select('Cargo_idResponsable[]',$cargo, (isset($plantrabajoformulario) ? $plantrabajoformulario->Cargo_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
 									<?php 
 									echo '</td>
 									<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
@@ -263,7 +263,7 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 		      </div>';
 }
 
-function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero, $idModulo)
+function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, $idModulo)
 {
 	echo '<div class="panel panel-primary">
             <div class="panel-heading">
@@ -380,7 +380,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 				<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 
 				<td>';?>
-					{!!Form::select('Tercero_idResponsable[]',$tercero, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+					{!!Form::select('Cargo_idResponsable[]',$cargo, (isset($plantrabajoformulario) ? $plantrabajoformulario->Cargo_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
 				<?php 
 				echo '</td>
 				<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
@@ -553,7 +553,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["cumplimientoPlanTrabajoDetalle"]) ? $detalle[$i]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["metaPlanTrabajoDetalle"]) ? $detalle[$i]["metaPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td>';?>
-							{!!Form::select('Tercero_idResponsable[]',$Tercero_idAuditor, (isset($plantrabajoformulario) ? $detalle[$i]["idTercero"] : ''),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+							{!!Form::select('Cargo_idResponsable[]',$Cargo_idResponsable, (isset($plantrabajoformulario) ? $detalle[$i]["idCargo"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
 						<?php 
 						echo '</td>
 	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$detalle[$i]["observacionPlanTrabajoDetalle"].'</textarea></td>
@@ -726,7 +726,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["cumplimientoPlanTrabajoDetalle"]) ? $examen[$reg]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["metaPlanTrabajoDetalle"]) ? $examen[$reg]["metaPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td>';?>
-							{!!Form::select('Tercero_idResponsable[]',$Tercero_idAuditor, (isset($plantrabajodetalleexamen) ? $examen[$reg]["idTercero"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el responsable"])!!}
+							{!!Form::select('Cargo_idResponsable[]',$Cargo_idResponsable, (isset($plantrabajodetalleexamen) ? $examen[$reg]["idCargo"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
 						<?php 
 						echo '</td>
 	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$examen[$reg]["observacionPlanTrabajoDetalle"].'</textarea></td>
@@ -748,16 +748,16 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
   			}
   			else
   			{
-				imprimirTabla('Accidente', $accidente, 'accidente',$Tercero_idAuditor, 3);
-				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Tercero_idAuditor, 9);
-				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
-				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Tercero_idAuditor, 22);
-				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Tercero_idAuditor, 24);
-				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Tercero_idAuditor, 32);
-				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
-				imprimirTabla('Programas', $programa, 'programa', $Tercero_idAuditor, 40);	
-				imprimirTabla('Reporte ACPM', $acpm, 'acpm', $Tercero_idAuditor, 1);
-				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
+				imprimirTabla('Accidente', $accidente, 'accidente',$Cargo_idResponsable, 3);
+				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Cargo_idResponsable, 9);
+				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Cargo_idResponsable, 43);
+				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Cargo_idResponsable, 22);
+				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Cargo_idResponsable, 24);
+				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Cargo_idResponsable, 32);
+				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Cargo_idResponsable, 36);	
+				imprimirTabla('Programas', $programa, 'programa', $Cargo_idResponsable, 40);	
+				imprimirTabla('Reporte ACPM', $acpm, 'acpm', $Cargo_idResponsable, 1);
+				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Cargo_idResponsable, 30);
 			}
 		?>
     </div>

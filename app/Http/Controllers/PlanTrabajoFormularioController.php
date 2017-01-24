@@ -37,6 +37,8 @@ class PlanTrabajoFormularioController extends Controller
     {
         $Tercero_idAuditor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->where('tipoTercero','like','%*01*%')->lists('nombreCompletoTercero','idTercero');
 
+        $Cargo_idResponsable = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCargo','idCargo');
+
         $idCompania = \Session::get("idCompania");
 
         // -------------------------------------------
@@ -646,7 +648,7 @@ class PlanTrabajoFormularioController extends Controller
             Group by idReporteACPMDetalle
             order by fechaReporteACPMDetalle, descripcionReporteACPMDetalle');
 
-        return view('plantrabajoformulario', compact('Tercero_idAuditor','accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo','actividadesgrupoapoyo','acpm'));
+        return view('plantrabajoformulario', compact('Tercero_idAuditor','Cargo_idResponsable','accidente','auditoria', 'capacitacion','programa', 'examen', 'inspeccion', 'matrizlegal','grupoapoyo','actividadesgrupoapoyo','acpm'));
     }
 
     /**
@@ -722,6 +724,8 @@ class PlanTrabajoFormularioController extends Controller
         $Tercero_idAuditor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->where('tipoTercero','like','%*01*%')->lists('nombreCompletoTercero','idTercero');
         $plantrabajoformulario = \App\PlanTrabajo::find($id);
 
+        $Cargo_idResponsable = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCargo','idCargo');
+
         // $accidente = \App\Accidente::where('Compania_idCompania', "=", \Session::get('idCompania'));
         // $auditoria = \App\PlanAuditoria::where('Compania_idCompania', "=", \Session::get('idCompania'));
         // $capacitacion = \App\PlanCapacitacion::where('Compania_idCompania', "=", \Session::get('idCompania'));
@@ -732,22 +736,22 @@ class PlanTrabajoFormularioController extends Controller
         // $grupoapoyo = \App\GrupoApoyo::where('Compania_idCompania', "=", \Session::get('idCompania'));
 
         $plantrabajodetalle = DB::Select('
-        SELECT PlanTrabajo_idPlantrabajo, idPlanTrabajoDetalle,Modulo_idModulo, nombreModulo, PlanTrabajo_idPlanTrabajo,idConcepto,TipoExamenMedico_idTipoExamenMedico,nombreConceptoPlanTrabajoDetalle,eneroPlanTrabajoDetalle,febreroPlanTrabajoDetalle,marzoPlanTrabajoDetalle,abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle, diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle, metaPlanTrabajoDetalle, nombreCompletoTercero, idTercero, presupuestoPlanTrabajoDetalle, costoRealPlanTrabajoDetalle, observacionPlanTrabajoDetalle 
+        SELECT PlanTrabajo_idPlantrabajo, idPlanTrabajoDetalle,Modulo_idModulo, nombreModulo, PlanTrabajo_idPlanTrabajo,idConcepto,TipoExamenMedico_idTipoExamenMedico,nombreConceptoPlanTrabajoDetalle,eneroPlanTrabajoDetalle,febreroPlanTrabajoDetalle,marzoPlanTrabajoDetalle,abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle, diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle, metaPlanTrabajoDetalle, nombreCargo, idCargo, presupuestoPlanTrabajoDetalle, costoRealPlanTrabajoDetalle, observacionPlanTrabajoDetalle 
         from plantrabajodetalle ptd 
-        left join tercero t on t.idTercero = ptd.Tercero_idResponsable
+        left join cargo c on c.idCargo = ptd.Cargo_idResponsable
         left join modulo m on ptd.Modulo_idModulo = m.idModulo
         Where PlanTrabajo_idPlanTrabajo = '.$id.' and Modulo_idModulo != 22
         order by nombreModulo');
 
         $plantrabajodetalleexamen = DB::Select('
         SELECT 
-        nombreTipoExamenMedico, idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, PlanTrabajo_idPlanTrabajo, idPlanTrabajoDetalle, Modulo_idModulo, nombreModulo, idConcepto, nombreConceptoPlanTrabajoDetalle, eneroPlanTrabajoDetalle, febreroPlanTrabajoDetalle, marzoPlanTrabajoDetalle, abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle,diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle,    metaPlanTrabajoDetalle, te.nombreCompletoTercero, te.idTercero, presupuestoPlanTrabajoDetalle,    costoRealPlanTrabajoDetalle, observacionPlanTrabajoDetalle
+        nombreTipoExamenMedico, idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, PlanTrabajo_idPlanTrabajo, idPlanTrabajoDetalle, Modulo_idModulo, nombreModulo, idConcepto, nombreConceptoPlanTrabajoDetalle, eneroPlanTrabajoDetalle, febreroPlanTrabajoDetalle, marzoPlanTrabajoDetalle, abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle,diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle,    metaPlanTrabajoDetalle, nombreCargo, idCargo, presupuestoPlanTrabajoDetalle,    costoRealPlanTrabajoDetalle, observacionPlanTrabajoDetalle
         FROM
             plantrabajodetalle ptd
                 LEFT JOIN
             tipoexamenmedico TET ON ptd.TipoExamenMedico_idTipoExamenMedico = TET.idTipoExamenMedico
                 LEFT JOIN
-            tercero te ON ptd.Tercero_idResponsable = te.idTercero
+            cargo c ON ptd.Cargo_idResponsable = c.idCargo
                 LEFT JOIN
             modulo m ON ptd.Modulo_idModulo = m.idModulo
         WHERE
@@ -756,7 +760,7 @@ class PlanTrabajoFormularioController extends Controller
                 group by idPlanTrabajoDetalle
         ORDER BY nombreTipoExamenMedico');
 
-        return view('plantrabajoformulario', compact('Tercero_idAuditor','plantrabajodetalle','plantrabajodetalleexamen'),['plantrabajoformulario'=>$plantrabajoformulario]);
+        return view('plantrabajoformulario', compact('Tercero_idAuditor','Cargo_idResponsable','plantrabajodetalle','plantrabajodetalleexamen'),['plantrabajoformulario'=>$plantrabajoformulario]);
     }
 
     /**
@@ -847,7 +851,7 @@ class PlanTrabajoFormularioController extends Controller
             'costoRealPlanTrabajoDetalle' => $request['costoRealPlanTrabajoDetalle'][$i],
             'cumplimientoPlanTrabajoDetalle' => $request['cumplimientoPlanTrabajoDetalle'][$i],
             'metaPlanTrabajoDetalle' => $request['metaPlanTrabajoDetalle'][$i],
-            'Tercero_idResponsable' => ($request['Tercero_idResponsable'][$i] == '' ? NULL : $request['Tercero_idResponsable'][$i]),
+            'Cargo_idResponsable' => ($request['Cargo_idResponsable'][$i] == '' ? NULL : $request['Cargo_idResponsable'][$i]),
             'observacionPlanTrabajoDetalle' => $request['observacionPlanTrabajoDetalle'][$i] 
             );
 

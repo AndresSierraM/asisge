@@ -87,7 +87,7 @@
 
 <div id='form-section' >
 
-  <div id="image-pad" class="m-image-pad" style="height: 100%; width: 100% left;">
+  <div id="image-pad" class="m-image-pad" style="height: 100%; width: 100% left; display: none;">
     <input type="hidden" id="image-reg" value="">
       <div class="m-image-pad--body">
         <img id="image-src"></img>

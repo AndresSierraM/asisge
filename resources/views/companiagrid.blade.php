@@ -87,6 +87,7 @@
             "ajax": "{!! URL::to ('/datosCompania')!!}",
         });*/
         var lastIdx = null;
+        var adicionar = '<?php echo (isset($datos[0]) ? $dato["adicionarRolOpcion"] : 0);?>';
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var table = $('#tcompania').DataTable( {
@@ -94,7 +95,7 @@
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCompania?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosCompania?adicionar="+adicionar+"&modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

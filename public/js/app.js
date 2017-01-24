@@ -44,16 +44,27 @@ function mostrarFirma(reg)
 function mostrarImagen(ruta)
 {
 
-    if(document.getElementById("image-pad").style.display == "block" || 
+    if(document.getElementById("image-pad").style.display == "none" || 
         document.getElementById("image-pad").style.display == "")
         document.getElementById("image-pad").style.display = "none";
     else
-        document.getElementById("image-pad").style.display = "block";
+        document.getElementById("image-pad").style.display = "none";
 
     if(ruta != 'undefined')
-        document.getElementById("image-src").src = ruta;
-    else
-        document.getElementById("image-src").src = '';
+    {       
+        imagen = ruta.substring(ruta.length-4);
+        if (imagen == 'null') 
+        {
+            alert('No hay archivo cargado.');
+        } 
+        else
+        {
+            // document.getElementById("image-src").src = ruta;
+            window.open(ruta);
+        }
+    }
+    // else
+    //     document.getElementById("image-src").src = '';
 }
 
 window.onresize = resizeCanvas;
