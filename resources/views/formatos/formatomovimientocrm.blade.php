@@ -22,7 +22,14 @@ for($i = 0; $i < count($campos); $i++)
     $camposVista .= $datos["nombreCampoCRM"].',';
 }
 
-	$idMovimientoCRMA = (isset($movimientocrm->idMovimientoCRM) ? $movimientocrm->idMovimientoCRM : 0);
+$idMovimientoCRMA = (isset($movimientocrm->idMovimientoCRM) ? $movimientocrm->idMovimientoCRM : 0);
+
+$movimiento = array();
+for($i = 0; $i < count($movimientocrm); $i++)
+{
+    $movimiento[] = get_object_vars($movimientocrm[$i]); 
+}
+
 
 ?>
 @extends('layouts.formato')
@@ -30,9 +37,7 @@ for($i = 0; $i < count($campos); $i++)
 
 @section('contenido')
 
-	@if(isset($movimientocrm))
-		{!!Form::model($movimientocrm)!!}
-	@endif
+	
 		<div id='form-section' >
 				<fieldset id="movimientocrm-form-fieldset">	
 					<div class="form-group" id='test'>
@@ -42,7 +47,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->numeroMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["numeroMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -52,7 +57,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->asuntoMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["asuntoMovimientoCRM"];?>
 					    		</div>
 					    	</div>
 					    </div>
@@ -67,7 +72,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->OrigenCRM->nombreOrigenCRM;?>
+					              	<?php echo $movimiento[0]["nombreOrigenCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -80,7 +85,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->fechaSolicitudMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["fechaSolicitudMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -95,7 +100,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->fechaEstimadaSolucionMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["fechaEstimadaSolucionMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -112,7 +117,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->fechaVencimientoMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["fechaVencimientoMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -129,7 +134,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->fechaRealSolucionMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["fechaRealSolucionMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -145,7 +150,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->AcuerdoServicio->nombreAcuerdoServicio;?>
+					              	<?php echo $movimiento[0]["nombreAcuerdoServicio"];?>
 
 								</div>
 							</div>
@@ -162,7 +167,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->diasEstimadosSolucionMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["diasEstimadosSolucionMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -178,7 +183,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->diasRealesSolucionMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["diasRealesSolucionMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -194,7 +199,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->prioridadMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["prioridadMovimientoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -210,7 +215,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->TerceroSolicitante->nombreCompletoTercero;?>
+					              	<?php echo $movimiento[0]["nombreSolicitante"];?>
 								</div>
 							</div>
 						</div>
@@ -226,7 +231,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->TerceroSupervisor->nombreCompletoTercero;?>
+					              	<?php echo $movimiento[0]["nombreSupervisor"];?>
 								</div>
 							</div>
 						</div>
@@ -242,7 +247,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->TerceroAsesor->nombreCompletoTercero;?>
+					              	<?php echo $movimiento[0]["nombreAsesor"];?>
 								</div>
 							</div>
 						</div>
@@ -258,7 +263,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->CategoriaCRM->nombreCategoriaCRM;?>
+					              	<?php echo $movimiento[0]["nombreCategoriaCRM"];?>
 
 								</div>
 							</div>
@@ -275,7 +280,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->EventoCRM->nombreEventoCRM;?>
+					              	<?php echo $movimiento[0]["nombreEventoCRM"];?>
 								</div>
 							</div>
 						</div>
@@ -291,7 +296,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->LineaNegocio->nombreLineaNegocio;?>
+					              	<?php echo $movimiento[0]["nombreLineaNegocio"];?>
 								</div>
 							</div>
 						</div>
@@ -307,7 +312,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->valorMovimientoCRM;?>
+					              	<?php echo $movimiento[0]["valorMovimientoCRM"];?>
 
 								</div>
 							</div>
@@ -325,7 +330,7 @@ for($i = 0; $i < count($campos); $i++)
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
-					              	<?php echo $movimientocrm->EstadoCRM;?>
+					              	<?php echo $movimiento[0]["nombreEstadoCRM"];?>
 
 								</div>
 							</div>
@@ -350,7 +355,7 @@ for($i = 0; $i < count($campos); $i++)
 					            <div class="panel-body">
 					                
 									<div class="col-sm-12">
-							              <?php echo $movimientocrm->detallesMovimientoCRM;?>
+							              <?php echo $movimiento[0]["detallesMovimientoCRM"];?>
 									</div>
 
 					            </div>
@@ -372,7 +377,7 @@ for($i = 0; $i < count($campos); $i++)
                                 <div class="panel-body">
                                     
 									<div class="col-sm-12">
-							              <?php echo $movimientocrm->solucionMovimientoCRM;?>
+							              <?php echo $movimiento[0]["solucionMovimientoCRM"];?>
 									</div>
 
                                 </div>
@@ -429,5 +434,4 @@ for($i = 0; $i < count($campos); $i++)
 				</fieldset>	
 		    </div>	
 
-{!!Form::close()!!}	
 @stop

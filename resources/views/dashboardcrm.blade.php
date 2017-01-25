@@ -8,6 +8,7 @@
 
 <?php 
     $idCompania = \Session::get("idCompania");
+    $idDocumentoCRM = $_GET["idDocumentoCRM"];
     $mes = date("m-Y");
     //$mesAnt = date("Y-m-d"strtotime("- 1 month", date()));
     //echo 'Mes actual '.$mes.' Mes anterior '.$mesAnt.'<br>';
@@ -15,44 +16,7 @@
 <!-- Token para ejecuciones de ajax -->
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
 
-            <div class="row">
-               <div class="col-lg-4 col-md-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-list fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                <?php 
-
-                                    // -------------------------------------------
-                                    //  
-                                    // -------------------------------------------
-                                    $total = DB::select(
-                                        'SELECT count(*) as Cantidad
-                                        FROM movimientocrm M 
-                                        left join estadocrm E 
-                                        on M.EstadoCRM_idEstadoCRM = E.idEstadoCRM
-                                        where Compania_idCompania = '.$idCompania .' and DocumentoCRM_idDocumentoCRM = 6
-                                        group by nombreEstadoCRM');
-
-                                                                        
-                                    // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
-                                    foreach ($total as $key => $value)
-                                    {
-                                        $datos = (array) $value;
-                                    }
-                                    
-                                ?>
-                                    <div class="huge" title="Registros del Mes">{{$datos["Cantidad"]}}</div>
-                                    <div>Programas</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <!-- /.row -->
             <div class="row">
 
@@ -64,7 +28,7 @@
                     $graficos = DB::select(
                         "SELECT idDocumentoCRMGrafico, DocumentoCRM_idDocumentoCRM, tituloDocumentoCRMGrafico, tipoDocumentoCRMGrafico, valorDocumentoCRMGrafico, serieDocumentoCRMGrafico, filtroDocumentoCRMGrafico 
                         FROM    documentocrmgrafico 
-                        WHERE   DocumentoCRM_idDocumentoCRM = 6 ");
+                        WHERE   DocumentoCRM_idDocumentoCRM = ".$idDocumentoCRM);
                     
                     for ($g=0; $g < count($graficos) ; $g++) 
                     { 
@@ -82,9 +46,12 @@
                             left join ".strtolower($tabla)." T 
                             on M.".$tabla."_id".$tabla." = T.id".$tabla."
                             where   M.Compania_idCompania = ".$idCompania ." and 
-                                    M.DocumentoCRM_idDocumentoCRM = 6 and 
-                                    DATE_FORMAT(fechaSolicitudMovimientoCRM,'%m-%Y') = '".$mes."'
+                                    M.DocumentoCRM_idDocumentoCRM = '.$idDocumentoCRM.' 
                             group by nombre".$tabla);
+
+                        //and 
+                                    //DATE_FORMAT(fechaSolicitudMovimientoCRM,'%m-%Y') = '".$mes."'
+
 
                         $arrayLabels = '[';
                         $arrayDatos = '[';
@@ -275,6 +242,4 @@ function graficoDona($marco, $arrayDatos)
         </script>';
 }
 ?>
-
-
 @stop
