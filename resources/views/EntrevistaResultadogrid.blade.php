@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Parámetros de habilidades actitudinales</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Resultados de Entrevistas</center></h3>@stop
 @section('content')
 
 <style>
@@ -45,22 +45,26 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Respuesta</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Respuesta Normal</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Respuesta Inversa</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Cargo</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Fecha Inicial</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Fecha Final</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Usuario</label></a></li>
+                             <li><a class="toggle-vis" data-column="6"><label> Fecha/Hora</label></a></li>
                         </ul>
                     </div>
-                    <table id="tcompetenciarespuesta" name="tcompetenciarespuesta" class="display table-bordered" width="100%">
+                    <table id="tentrevistaresultado" name="tentrevistaresultado" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-primary active">
                                 <th style="width:70px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="competenciarespuesta/create"><span style= "color:white; display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="entrevistaresultado/create"><span style= "color:white; display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh" style= "color:white;"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Respuesta</b></th>
-                                <th><b>Respuesta Normal</b></th>
-                                <th><b>Respuesta Inversa</b></th>
+                                <th><b>Cargo</b></th>
+                                <th><b>Fecha Inicial</b></th>
+                                <th><b>Fecha Final</b></th>
+                                <th><b>Usuario</b></th>
+                                <th><b>Fecha/Hora</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -69,9 +73,11 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Respuesta</th>
-                                <th>Respuesta Normal</th>
-                                <th>Respuesta Inversa</th>
+                                <th>Cargo</th>
+                                <th>Fecha Inicial</th>
+                                <th>Fecha Final</th>
+                                <th>Usuario</th>
+                                <th>Fecha/Hora</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -87,12 +93,12 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
-        var table = $('#tcompetenciarespuesta').DataTable( {
+        var table = $('#tentrevistaresultado').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCompetenciaRespuesta?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosEntrevistaResultado?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -129,7 +135,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tcompetenciarespuesta tbody')
+        $('#tentrevistaresultado tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -144,15 +150,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tcompetenciarespuesta tfoot th').each( function () {
+    $('#tentrevistaresultado tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tcompetenciarespuesta thead th').eq( $(this).index() ).text();
+        var title = $('#tentrevistaresultado thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tcompetenciarespuesta').DataTable();
+    var table = $('#tentrevistaresultado').DataTable();
  
     // Apply the search
     table.columns().every( function () {

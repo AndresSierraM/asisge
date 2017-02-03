@@ -69,7 +69,7 @@
 		var validacionesPesoE = ['onchange','validacionesPorcentajeEducacion(this.value);']
 		var validacionesPesoF = ['onchange','validacionesPorcentajeFormacion(this.value);']
 		var validacionesPesoH = ['onchange','validacionesPorcentajeHabilidad(this.value);']
-		var validacionglobal = ['onchange','validacioneducacionformacion(this.value);']
+		// var validacionglobal = ['onchange','sumatoriatotal(this.value);']
 
 		//aca se debe crear la variable que va a traer el id y el nombre quemado de la responsabilidad y se debe poner en la respectiva multiregistro
 
@@ -424,18 +424,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- Años de experiencia -->
-				<div class="form-group" id='test'>
-					{!!Form::label('aniosExperienciaCargo', 'Años de Experiencia', array('class' => 'col-sm-2 control-label'))!!}
-					<div class="col-sm-10">
-						<div class="input-group">
-							<span class="input-group-addon">
-								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
-							</span>
-							{!!Form::text('aniosExperienciaCargo',null,['class'=>'form-control','placeholder'=>'Ingresa los años de experiencia'])!!}
-						</div>
-					</div>
-				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -473,13 +461,13 @@
 														<div class="input-group">
 														<!-- nuevo campo para 	 peso educacion -->
 													     <div class="form-group" id='test'>
-															{!!Form::label('porcentajeEducacionCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
+															{!!Form::label('porcentajeEducacionCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
 															<div class="col-sm-10">
 																<div class="input-group">
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeEducacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso','onchange'=>'validacioneducacionformacion(this.value);'])!!}
+																	{!!Form::text('porcentajeEducacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
 																</div>
 															</div>
 														</div>
@@ -520,8 +508,39 @@
 											<div class="panel-body">
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
-														<div class="input-group">
-															{!!Form::textarea('experienciaCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+													<fieldset>
+															<!-- Años de experiencia --> <!-- cambio -->
+															<div class="form-group" id='test'  >
+																{!!Form::label('aniosExperienciaCargo', 'Años de Experiencia', array('class' => 'col-sm-1 control-label'))!!}
+																<div class="col-sm-10">
+																	<div class="input-group">
+																		<span class="input-group-addon">
+																			<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+																		</span>
+																		{!!Form::text('aniosExperienciaCargo',null,['class'=>'form-control','placeholder'=>'Ingresa los años de experiencia'])!!}
+																	</div>
+																</div>
+															</div>
+																<!-- nuevo campo para 	Experiencia peso  -->
+															 
+															     <div class="form-group" id='test' style="display:inline-block";>
+																	{!!Form::label('porcentajeExperienciaCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
+																	<div class="col-sm-10">
+																		<div class="input-group">
+																			<span class="input-group-addon">
+																				<i class="fa fa-pencil-square-o" ></i>
+																			</span>
+																			{!!Form::text('porcentajeExperienciaCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
+																		</div>
+																	</div>
+																</div>
+															
+														</fieldset>
+															</br>
+														 <div class="panel-body">
+															<div class="input-group">
+																{!!Form::textarea('experienciaCargo',null,['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+															</div>
 														</div>
 													</div>
 												</div>
@@ -543,13 +562,13 @@
 
 																<!-- nuevo campo para 	Formacion peso  -->
 													     <div class="form-group" id='test'>
-															{!!Form::label('porcentajeFormacionCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
+															{!!Form::label('porcentajeFormacionCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
 															<div class="col-sm-10">
 																<div class="input-group">
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeFormacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso','onchange'=>'validacioneducacionformacion(this.value);'])!!}
+																	{!!Form::text('porcentajeFormacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
 																</div>
 															</div>
 														</div>
@@ -576,6 +595,138 @@
 											</div>
 										</div>
 									</div>
+									<!-- cambio de orden aca va hacer habilidades propias del cargo -->
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#habilidad">Habilidades propias del cargo.</a>
+											</h4>
+										</div>
+										<div id="habilidad" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+														<!-- nuevo campo para 	Formacion peso  -->
+													     <div class="form-group" id='test'>
+															{!!Form::label('porcentajeHabilidadCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
+															<div class="col-sm-10">
+																<div class="input-group">
+																	<span class="input-group-addon">
+																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+																	</span>
+																	{!!Form::text('porcentajeHabilidadCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																</div>
+															</div>
+														</div>
+															<!-- Detalle Habilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalHabilidad();">
+											                        <span class="glyphicon glyphicon-plus"></span>
+											                      </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+
+														         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Habilidad_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div> 
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Responsabilidades -->
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#responsabilidad">Responsabilidades</a>
+											</h4>
+										</div>
+
+
+										<!-- cambio a una multiregistro para digitar manualmente por el usuario -->
+										<div id="responsabilidad" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+														<!-- nuevo campo para 	Experiencia peso  -->
+															 
+															     <div class="form-group" id='test'>
+																	{!!Form::label('porcentajeResponsabilidadCargo', '% Peso ', array('class' => 'col-sm-2 control-label'))!!}
+																	<div class="col-sm-10">
+																		<div class="input-group">
+																			<span class="input-group-addon">
+																				<i class="fa fa-pencil-square-o" ></i>
+																			</span>
+																			{!!Form::text('porcentajeResponsabilidadCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
+																		</div>
+																	</div>
+																</div>
+															<!-- Detalle responsabilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width: 35px;height: 35px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
+														            <span class="glyphicon glyphicon-plus"></span>
+														          </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Responsabilidad_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div>  
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+									<!-- Habilidades Actitudinales -->
+										<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#Competencia">Habilidades Actitudinales</a>
+											</h4>
+										</div>
+										<div id="Competencia" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-10" style="width: 100%;">
+														<div class="input-group">
+															<!-- Detalle Habilidad -->
+															<div class="form-group" id='test'>
+														      <div class="col-sm-12">
+
+														        <div class="row show-grid">
+														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalCompetencia();">
+											                        <span class="glyphicon glyphicon-plus"></span>
+											                      </div>
+														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Habilidad Actitudinal</div>
+														          <!-- este es el div para donde van insertando los registros --> 
+														          <div id="Competencia_Modulo">
+														          </div>
+														        </div>
+														      </div>
+														    </div> 
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
@@ -708,88 +859,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="panel panel-default">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#habilidad">Habilidades</a>
-											</h4>
-										</div>
-										<div id="habilidad" class="panel-collapse collapse">
-											<div class="panel-body">
-												<div class="form-group" id='test'>
-													<div class="col-sm-10" style="width: 100%;">
-														<div class="input-group">
-														<!-- nuevo campo para 	Formacion peso  -->
-													     <div class="form-group" id='test'>
-															{!!Form::label('porcentajeHabilidadCargo', '% Peso Educacion', array('class' => 'col-sm-1 control-label'))!!}
-															<div class="col-sm-10">
-																<div class="input-group">
-																	<span class="input-group-addon">
-																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
-																	</span>
-																	{!!Form::text('porcentajeHabilidadCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
-																</div>
-															</div>
-														</div>
-															<!-- Detalle Habilidad -->
-															<div class="form-group" id='test'>
-														      <div class="col-sm-12">
-
-														        <div class="row show-grid">
-														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalHabilidad();">
-											                        <span class="glyphicon glyphicon-plus"></span>
-											                      </div>
-														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
-
-														         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
-														          <!-- este es el div para donde van insertando los registros --> 
-														          <div id="Habilidad_Modulo">
-														          </div>
-														        </div>
-														      </div>
-														    </div> 
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="panel panel-default">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#responsabilidad">Responsabilidades</a>
-											</h4>
-										</div>
-
-
-										<!-- cambio a una multiregistro para digitar manualmente por el usuario -->
-										<div id="responsabilidad" class="panel-collapse collapse">
-											<div class="panel-body">
-												<div class="form-group" id='test'>
-													<div class="col-sm-10" style="width: 100%;">
-														<div class="input-group">
-															<!-- Detalle responsabilidad -->
-															<div class="form-group" id='test'>
-														      <div class="col-sm-12">
-
-														        <div class="row show-grid">
-														          <div class="col-md-1" style="width: 40px;height: 40px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
-														            <span class="glyphicon glyphicon-plus"></span>
-														          </div>
-														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
-														          <!-- este es el div para donde van insertando los registros --> 
-														          <div id="Responsabilidad_Modulo">
-														          </div>
-														        </div>
-														      </div>
-														    </div>  
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-
-									</div>
+									
+									
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
@@ -809,38 +880,7 @@
 										</div>
 
 									</div>
-										<div class="panel panel-default">
-										<div class="panel-heading">
-											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#Competencia">Competencias</a>
-											</h4>
-										</div>
-										<div id="Competencia" class="panel-collapse collapse">
-											<div class="panel-body">
-												<div class="form-group" id='test'>
-													<div class="col-sm-10" style="width: 100%;">
-														<div class="input-group">
-															<!-- Detalle Habilidad -->
-															<div class="form-group" id='test'>
-														      <div class="col-sm-12">
-
-														        <div class="row show-grid">
-														          <div class="col-md-1" style="width:40px;height: 35px; cursor:pointer;" onclick="abrirModalCompetencia();">
-											                        <span class="glyphicon glyphicon-plus"></span>
-											                      </div>
-														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Competencia</div>
-														          <!-- este es el div para donde van insertando los registros --> 
-														          <div id="Competencia_Modulo">
-														          </div>
-														        </div>
-														      </div>
-														    </div> 
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -908,7 +948,7 @@
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Selecci&oacute;n de Perfil de Habilidad</h4>
+        <h4 class="modal-title">Selecci&oacute;n de Perfil de Habilidades propias del Cargo</h4>
       </div>
       <div class="modal-body">
       <?php 
@@ -928,7 +968,7 @@
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Selecci&oacute;n de Competencias</h4>
+        <h4 class="modal-title">Selecci&oacute;n de Habilidades actitudinales</h4>
       </div>
       <div class="modal-body">
       <?php 

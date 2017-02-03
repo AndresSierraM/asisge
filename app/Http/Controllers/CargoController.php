@@ -105,6 +105,15 @@ class CargoController extends Controller
                 'porcentajeCargoEducacion' => $request['porcentajeCargoEducacion'],
                 'porcentajeCargoFormacion' => $request['porcentajeCargoFormacion'],
                 'porcentajeCargoHabilidad' => $request['porcentajeCargoHabilidad'],
+                //campos Porcentaje encabezado
+                'porcentajeEducacionCargo' => $request['porcentajeEducacionCargo'],
+                'porcentajeCargoEducacion' => $request['porcentajeCargoEducacion'],
+                'porcentajeExperienciaCargo' => $request['porcentajeExperienciaCargo'],
+                'porcentajeFormacionCargo' => $request['porcentajeFormacionCargo'],
+                'porcentajeHabilidadCargo' => $request['porcentajeHabilidadCargo'],
+                'porcentajeResponsabilidadCargo' => $request['porcentajeResponsabilidadCargo'],
+
+                
                 //
                 'objetivoCargo' => $request['objetivoCargo'],
                 'posicionPredominanteCargo' => $request['posicionPredominanteCargo'],

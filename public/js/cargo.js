@@ -1,5 +1,18 @@
 function validarFormulario(event)
 {
+    
+    //Antes de validar los campos del formulario, validamos los campos de porcentajes, llamando a la funcion que los verifica
+    // Esta funcion nos debe decir si a validacion es correcta o incorrecta y la almacenamos en una variable
+    var PorcentajeTotal = validacionPorcentajePeso();
+    if(PorcentajeTotal == false)
+    {
+        alert ('la sumatoria de %Peso Educacion no debe ser mayor o menor que 100 ');
+        // si hay porcentajes malos, evitamos que el formulario se cierre
+        event.preventDefault();
+    }
+
+
+
     var route = "http://"+location.host+"/cargo";
     var token = $("#token").val();
     var dato0 = document.getElementById('idCargo').value;
@@ -221,20 +234,31 @@ function validacionesPorcentajeHabilidad()
 
 }
 
- 
-function validacioneducacionformacion()
+   
+// esta funcion verifica que los % de Peso no excedan 100%
+function validacionPorcentajePeso()
 {
-    var sumatoria = 0;
+     
 
-    sumatoria = sumatoria + parseFloat($('#porcentajeEducacionCargo').val()) + parseFloat($('#porcentajeFormacionCargo').val());
+    sumatoria = 0;
+    sumatoria +=  parseFloat($('#porcentajeEducacionCargo').val()) + parseFloat($('#porcentajeFormacionCargo').val()) +
+    parseFloat($('#porcentajeExperienciaCargo').val()) +parseFloat($('#porcentajeHabilidadCargo').val())+parseFloat($('#porcentajeResponsabilidadCargo').val());
 
 
-    if (sumatoria >100 || sumatoria < 100)
+    if (sumatoria != 100)
     {
-        alert ('la sumatoria de %Peso Educacion y %Peso Formacion no debe ser mayor o menor que 100 ')
+        // devolvemos un FALSE para indicar que esta mala
+        return false;
     }
 
+    // devolvemos un TRUE para indicar que esta buena (No entró al if)
+    return true;
+
 }
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Cuestionario por Competencia </center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Cuestionario por Habilidades actitudinales</center></h3>@stop
 @section('content')
 
 <style>

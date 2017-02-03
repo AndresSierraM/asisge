@@ -25,7 +25,7 @@ class PerfilCargoRequest extends Request
     {
         return [
 
-        "nombrePerfilCargo" => "required|string|max:20|",
+        "nombrePerfilCargo" => "required|string|max:200|",
          "tipoPerfilCargo" => "required"
 
 

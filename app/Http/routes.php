@@ -96,7 +96,7 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosopciongridphpselect');
     });
     */
-
+    Route::resource ('entrevistaresultado','EntrevistaResultadoController');
     Route::resource ('competenciarespuesta','CompetenciaRespuestaController');
     Route::resource ('entrevista','EntrevistaController');
     Route::resource ('competencia','CompetenciaController');
@@ -211,6 +211,10 @@ Route::get('datosEntrevista', function()
 {
     include public_path().'/ajax/datosEntrevista.php';
 });
+Route::get('datosEntrevistaResultado', function()
+{
+    include public_path().'/ajax/datosEntrevistaResultado.php';
+});
 
 
 Route::get('datosCompetenciaSelect', function()
@@ -267,13 +271,17 @@ Route::get('datosCompetenciaRespuesta', function()
     include public_path().'/ajax/datosCompetenciaRespuesta.php';
 });
 
-
-
-
-
 Route::get('datosMovimientocrmVacantegridselect', function()
 {
     include public_path().'/ajax/datosMovimientocrmVacantegridselect.php';
+});
+
+
+
+
+Route::POST('consultarinformeEntrevista', function()
+{
+    include public_path().'/ajax/consultarinformeEntrevista.php';
 });
 
 
@@ -762,6 +770,10 @@ Route::post('actualizarFirmaConformacionGrupoApoyo', function()
 Route::post('llenarFormacionCargo', function()
 {
     include public_path().'/ajax/llenarFormacionCargo.php';
+});
+Route::post('llenarHabilidadCargo', function()
+{
+    include public_path().'/ajax/llenarHabilidadCargo.php';
 });
 Route::post('llenarEducacionCargo', function()
 {

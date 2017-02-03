@@ -197,6 +197,9 @@ function imprimirTabla($titulo, $informacion , $idtabla, $tercero, $idModulo)
 								<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$idModulo.'">
 									<th scope="row">'.$dato->descripcionTarea.'</th>
 									<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato->idConcepto.'">
+
+									<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$dato->TipoExamenMedico_idTipoExamenMedico.'">
+
 									<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato->descripcionTarea.'">
 
 									<td>'.colorTarea($dato->EneroT, $dato->EneroC).'</td>
@@ -325,6 +328,9 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 				<th scope="row">'.$dato[$reg]["descripcionTarea"].'</th>
 
 				<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato[$reg]["idConcepto"].'">
+
+				<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$dato[$reg]["TipoExamenMedico_idTipoExamenMedico"].'">
+
 				<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato[$reg]["descripcionTarea"].'">
 
 				<td>'.colorTarea($dato[$reg]["EneroT"], $dato[$reg]["EneroC"]).'</td>
@@ -374,7 +380,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 				<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 
 				<td>';?>
-					{!!Form::select('Tercero_idResponsable[]',$tercero, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
+					{!!Form::select('Tercero_idAuditor',$cargoR, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
 				<?php 
 				echo '</td>
 				<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
@@ -409,7 +415,8 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
       <?php
   			if (isset($plantrabajoformulario)) 
   			{
-  				for ($i=0; $i < count($plantrabajodetalle); $i++) { 
+  				for ($i=0; $i < count($plantrabajodetalle); $i++) 
+  				{ 
   					$detalle[] = get_object_vars($plantrabajodetalle[$i]);
   				}
 
@@ -420,10 +427,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
   				while ($i < $total) 
   				{
   					$moduloAnt = $detalle[$i]["nombreModulo"];
-  					// if ($detalle[$i]["Modulo_idModulo"] == 22) 
-  					// {
-  						
-  					// }
+  					
   					echo 
   					'<div class="panel panel-primary">
             			<div class="panel-heading">
@@ -471,6 +475,8 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
   						<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$detalle[$i]["Modulo_idModulo"].'">
 
   						<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$detalle[$i]["idConcepto"].'">
+
+  						<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$detalle[$i]["TipoExamenMedico_idTipoExamenMedico"].'">
 
   						<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$detalle[$i]["nombreConceptoPlanTrabajoDetalle"].'">
 
@@ -566,8 +572,179 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 				    </div>';
 
   				}
+  				//////////////////////////////////////////////////////////
+  				// R O M P I M I E N T O   E X A M E N E S   M E D I C O S
+  				//////////////////////////////////////////////////////////
+
+  				for ($i=0; $i < count($plantrabajodetalleexamen); $i++) 
+  				{ 
+  					$examen[] = get_object_vars($plantrabajodetalleexamen[$i]);
+  				}
+
+  				$reg = 0;
+  				$total = count($examen);
+
+  				$meses = array('enero','febrero','marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
+
+  					$moduloAnt = $examen[$reg]["nombreModulo"];
+
+  				echo 
+  					'<div class="panel panel-primary">
+            			<div class="panel-heading">
+	              			<h4 class="panel-title">
+	                		<a data-toggle="collapse" data-parent="#accordion" href="#'.$examen[$reg]["Modulo_idModulo"].'">'.$moduloAnt.'</a>
+	              			</h4>
+            			</div>
+            			<div id="'.$examen[$reg]["Modulo_idModulo"].'" class="panel-collapse">
+              			<div class="panel-body" style="overflow:auto;">';
 
 
+			    while ($reg < $total) 
+			    {
+			    	$examenAnt = $examen[$reg]['nombreTipoExamenMedico'];
+			    
+			    	echo '<div class="panel panel-primary">
+			            <div class="panel-heading">
+			              <h4 class="panel-title">
+			                <a data-toggle="collapse" data-parent="#'.str_replace(" ", "_", $examenAnt).'" href="#'.str_replace(" ", "_", $examenAnt).'">'.$examenAnt.'</a>	
+			              </h4>
+			            </div>
+			            <div id="'.str_replace(" ", "_", $examenAnt).'" class="panel-collapse">
+			              <div class="panel-body" style="overflow:auto;">';
+
+			      	echo  '<table  class="table table-striped table-bordered table-hover" style="width:100%;" >
+							<thead class="thead-inverse">
+								<tr class="table-info">
+									<th scope="col" width="30%">&nbsp;</th>
+									<th >Enero</th>
+									<th >Febrero</th>
+									<th >Marzo</th>
+									<th >Abril</th>
+									<th >Mayo</th>
+									<th >Junio</th>
+									<th >Julio</th>
+									<th >Agosto</th>
+									<th >Septiembre</th>
+									<th >Octubre</th>
+									<th >Noviembre</th>
+									<th >Diciembre</th>
+									<th >Presupuesto</th>
+									<th >Costo Real</th>
+									<th >Cumplimiento</th>
+									<th >Meta</th>
+									<th >Responsable</th>
+									<th >Observación</th>
+								</tr>
+							</thead>
+							<tbody>';
+
+			    	while ($reg < $total AND $examenAnt == $examen[$reg]['nombreTipoExamenMedico']) 
+  					{
+  						echo 
+  						'<input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="'.$examen[$reg]["idPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="PlanTrabajo_idPlanTrabajo" name="PlanTrabajo_idPlanTrabajo[]" value="'.$examen[$reg]["PlanTrabajo_idPlanTrabajo"].'">
+
+  						<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$examen[$reg]["Modulo_idModulo"].'">
+
+  						<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$examen[$reg]["idConcepto"].'">
+
+  						<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$examen[$reg]["TipoExamenMedico_idTipoExamenMedico"].'">
+
+  						<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$examen[$reg]["nombreConceptoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.$examen[$reg]["eneroPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.$examen[$reg]["febreroPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.$examen[$reg]["marzoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.$examen[$reg]["abrilPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.$examen[$reg]["mayoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.$examen[$reg]["junioPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.$examen[$reg]["julioPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.$examen[$reg]["agostoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.$examen[$reg]["septiembrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.$examen[$reg]["octubrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$examen[$reg]["noviembrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.$examen[$reg]["diciembrePlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.$examen[$reg]["presupuestoPlanTrabajoDetalle"].'">
+
+  						<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.$examen[$reg]["costoRealPlanTrabajoDetalle"].'">';
+
+  						echo '<tr align="center">';
+  						echo '<td>'.$examen[$reg]["nombreConceptoPlanTrabajoDetalle"].'</td>';
+  						
+  						for($mes = 0; $mes <= 11; $mes++)
+	  					{	
+	  						switch ($examen[$reg][$meses[$mes]."PlanTrabajoDetalle"]) 
+	  						{
+	  							case null:
+	  								echo '<td>  </td>';
+	  								break;
+
+	  							case 0:
+	  								echo '
+	  								<td>
+	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
+											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Rojo.png" width="30">
+										</a>
+	  								</td>';
+	  								break;
+	  							
+	  							case 100:
+	  								echo '
+	  								<td>
+	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
+											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Verde.png" width="30">
+										</a>
+	  								</td>';
+	  								break;
+
+	  							default:
+	  								echo '
+	  								<td>
+	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
+											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Amarillo.png" width="30"><label style="color:black;">'.$examen[$reg][$meses[$mes]."PlanTrabajoDetalle"].'%</label>
+										</a>
+	  								</td>';
+	  								break;
+	  						};
+	  					}
+	  					echo '
+	  					<td>'.(isset($examen[$reg]["presupuestoPlanTrabajoDetalle"]) ? $examen[$reg]["presupuestoPlanTrabajoDetalle"] : "" ).'</td>
+	  					<td>'.(isset($examen[$reg]["costoRealPlanTrabajoDetalle"]) ? $examen[$reg]["costoRealPlanTrabajoDetalle"] : "" ).'</td>
+	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["cumplimientoPlanTrabajoDetalle"]) ? $examen[$reg]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
+	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["metaPlanTrabajoDetalle"]) ? $examen[$reg]["metaPlanTrabajoDetalle"] : "" ).'"</td>
+	  					<td>';?>
+							{!!Form::select('Tercero_idResponsable[]',$Tercero_idAuditor, (isset($plantrabajodetalleexamen) ? $examen[$reg]["idTercero"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el responsable"])!!}
+						<?php 
+						echo '</td>
+	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$examen[$reg]["observacionPlanTrabajoDetalle"].'</textarea></td>
+
+	  					</tr>';
+
+  						$reg++;
+  					}
+
+					echo '</tbody>
+						</table>
+			          </div> 
+			        </div>
+			      </div>';
+				}
+				echo '</div> 
+				  </div>
+				</div>';
   			}
   			else
   			{
@@ -578,7 +755,8 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $tercero
 				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Tercero_idAuditor, 24);
 				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Tercero_idAuditor, 32);
 				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
-				imprimirTabla('Programas', $programa, 'programa',$Tercero_idAuditor, 40);	
+				imprimirTabla('Programas', $programa, 'programa', $Tercero_idAuditor, 40);	
+				imprimirTabla('Reporte ACPM', $acpm, 'acpm', $Tercero_idAuditor, 1);
 				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
 			}
 		?>

@@ -1,5 +1,5 @@
 @extends('layouts.vista')
-@section('titulo')<h3 id="titulo"><center>Respuestas de Competencias</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Respuestas de Parámetros de habilidades actitudinales</center></h3>@stop
 @section('content')
 @include('alerts.request')
 

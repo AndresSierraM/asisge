@@ -1,8 +1,8 @@
 @extends('layouts.vista')
-@section('titulo')<h3 id="titulo"><center>Cuestionario Por Competencia</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Cuestionario por Habilidades actitudinales</center></h3>@stop
 @section('content')
 @include('alerts.request')
-
+{!!Html::script('js/competencia.js')!!}
 
 
 @if(isset($competencia))
@@ -21,6 +21,7 @@
 
 
 <script>
+
 
 
  var competencias = '<?php echo (isset($competencia) ? json_encode($competencia->CompetenciaPregunta) : "");?>';
@@ -76,21 +77,23 @@ Estado = [valorEstado,NombreEstado];
 <div class="competencia-container">
       <form class="form-horizontal" action="" method="post">
          <legend class="text-center"></legend>    
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
                       <!-- Competencia --> 
                   <div class="form-group" id='test'>
-                             {!!Form::label('nombreCompetencia', 'Competencia', array('class' => 'col-sm-1 control-label')) !!}
+                             {!!Form::label('nombreCompetencia', 'H.Actitudinal', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group"> 
                                   <span class="input-group-addon">
                                     <i class="fa fa-pencil-square-o"></i> 
                                   </span>
-                           {!!Form::text('nombreCompetencia',null,['class'=>'form-control','placeholder'=>'Por favor ingrese el Nombre ','style'=>'width:100%;,right'])!!}
+                           {!!Form::text('nombreCompetencia',null,['class'=>'form-control','placeholder'=>'Por favor ingrese el Nombre para la Habilidad Actitudinal ','style'=>'width:100%;,right'])!!}
                               {!!Form::hidden('idCompetencia', null, array('id' => 'idCompetencia')) !!}
                                  
                             </div>
                         </div>
                     </div>
+                    </br>
+                    </br>
                                    <!--   Estado de la Competencia  -->
 
                     <div class="form-group" id='test'>
@@ -134,10 +137,10 @@ Estado = [valorEstado,NombreEstado];
                                @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
                                   {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
                                 @else
-                                  {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+                                  {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
                                 @endif
                               @else
-                                {!!Form::submit('Guardar',["class"=>"btn btn-primary"])!!}
+                                {!!Form::submit('Guardar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
                               @endif
 
                              {!! Form::close() !!}

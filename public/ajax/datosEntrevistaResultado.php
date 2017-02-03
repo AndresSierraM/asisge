@@ -15,31 +15,30 @@
     else
         $visibleE = 'none;';
 
-    $entrevista = DB::table('entrevista')
+    $informeEntrevista = DB::table('entrevistaresultado')
 
             ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idcargo')
-            ->leftJoin('tercero', 'Tercero_idEntrevistador', '=', 'idTercero')
-            ->select(DB::raw('idEntrevista,fechaEntrevista,documentoAspiranteEntrevista,nombre1AspiranteEntrevista,nombreCargo,nombreCompletoTercero,estadoEntrevista'))
+            // ->leftJoin('tercero', 'Tercero_idEntrevistador', '=', 'idTercero')
+            ->select(DB::raw('idEntrevistaResultado,nombreCargo,fechaInicialEntrevistaResultado,fechaFinalEntrevistaResultado,Users_idCrea,fechaElaboracionEntrevistaResultado'))
             ->get();
             //->where('plantrabajoalerta.Compania_idCompania','=', \Session::get('idCompania'))
 
         $row = array();
 
-    foreach ($entrevista as $key => $value) 
+    foreach ($informeEntrevista as $key => $value) 
     {  
-        $row[$key][] = '<a href="entrevista/'.$value->idEntrevista.'/edit">'.
+        $row[$key][] = '<a href="entrevistaresultado/'.$value->idEntrevistaResultado.'/edit">'.
                             '<span class="glyphicon glyphicon-pencil " style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="entrevista/'.$value->idEntrevista.'/edit?accion=eliminar">'.
+                        '<a href="entrevistaresultado/'.$value->idEntrevistaResultado.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;';
-        $row[$key][] = $value->idEntrevista;
-        $row[$key][] = $value->fechaEntrevista;
-        $row[$key][] = $value->documentoAspiranteEntrevista;
-        $row[$key][] = $value->nombre1AspiranteEntrevista;
+        $row[$key][] = $value->idEntrevistaResultado;
         $row[$key][] = $value->nombreCargo;
-        $row[$key][] = $value->nombreCompletoTercero;
-        $row[$key][] = $value->estadoEntrevista;
+        $row[$key][] = $value->fechaInicialEntrevistaResultado;
+        $row[$key][] = $value->fechaFinalEntrevistaResultado;
+        $row[$key][] = $value->Users_idCrea;
+        $row[$key][] = $value->fechaElaboracionEntrevistaResultado;
         
     }
 

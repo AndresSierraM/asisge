@@ -40,8 +40,11 @@ class PerfilCargoController extends Controller
      */
     public function create()
     {
-         $idModulo= \App\Modulo::All()->lists('idModulo');
-         $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
+       
+       $idModulo= \App\Modulo::All()->lists('idModulo');
+       $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
+       
+         
         return view ('perfilcargo', compact('idModulo','nombreModulo'));
     }
 
@@ -57,7 +60,8 @@ class PerfilCargoController extends Controller
          \App\PerfilCargo::create([
             'tipoPerfilCargo' => $request['tipoPerfilCargo'],
             'nombrePerfilCargo' => $request['nombrePerfilCargo'],
-            'observacionPerfilCargo' => $request['observacionPerfilCargo']
+            'observacionPerfilCargo' => $request['observacionPerfilCargo'],
+            'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
         return redirect('/perfilcargo');

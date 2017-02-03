@@ -16,4 +16,5 @@ class Compania extends Model
     public function companiaobjetivos(){
 		return $this->hasMany('App\CompaniaObjetivo','Compania_idCompania');
     }
+   
 }

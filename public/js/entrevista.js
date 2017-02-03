@@ -25,6 +25,29 @@ function cargarEntrevista (idEncuesta)
 
 
 
+function calificarHabilidad(idRequerido)
+{
+
+  // recibimos como parametro el id del campo de educacion requerida, con este tomamos el numero 
+    // del registro para referirnos a los demas campos
+
+    // si al id que recibimos, le quitamos el nombre, nos queda el numero del registro 
+    var reg = idRequerido.replace('PerfilCargo_idAspirante_Habilidad', '') ;
+
+    // con el numero de registro comparamos los valores de los  campos (solo de ese registro)
+    if ($("#PerfilCargo_idRequerido_Habilidad"+reg).val() == $("#PerfilCargo_idAspirante_Habilidad"+reg).val())
+
+    {
+          $('#calificacionEntrevistaHabilidad'+reg+' option[value=\'Total\']').prop('selected','selected');
+
+    } 
+    else 
+    {
+          $('#calificacionEntrevistaHabilidad'+reg+' option[value=\'No Cumple\']').prop('selected','selected');
+    }
+}
+
+
 
 function calificarformacion(idRequerido)
 {
@@ -189,6 +212,47 @@ function llenarEducacionCargo(idCargo)
 
                     var valores = new Array(0,nombres[i],valor[i],porcentaje[i],0,0,0);  
                     window.parent.Educacionentrevista.agregarCampos(valores,'A'); 
+                }  
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+
+}
+
+function llenarHabilidadCargo(idCargo)
+{
+
+    var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idCargo': idCargo},
+            url:   'http://'+location.host+'/llenarHabilidadCargo/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+
+            success: function(respuesta){
+              
+                // Limpiar el div de la multiregistro
+                document.getElementById("HabilidadEntrevista_Modulo").innerHTML = '';
+                var valor = new Array();
+                var nombres = new Array();
+                var porcentaje = new Array();
+
+                
+                for (var i = 0; i < respuesta.length; i++) 
+                {
+                    valor[i] = respuesta[i]["idPerfilCargo"];
+                    nombres[i] = respuesta[i]["nombrePerfilCargo"]; 
+                    porcentaje[i] = respuesta[i]["porcentajeCargoHabilidad"]; 
+
+                    var valores = new Array(0,nombres[i],valor[i],porcentaje[i],0,0,0);  
+                    window.parent.Habilidadentrevista.agregarCampos(valores,'A'); 
                 }  
             },
             error:    function(xhr,err){ 
