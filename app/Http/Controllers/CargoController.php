@@ -111,7 +111,6 @@ class CargoController extends Controller
                 'porcentajeExperienciaCargo' => $request['porcentajeExperienciaCargo'],
                 'porcentajeFormacionCargo' => $request['porcentajeFormacionCargo'],
                 'porcentajeHabilidadCargo' => $request['porcentajeHabilidadCargo'],
-                'porcentajeResponsabilidadCargo' => $request['porcentajeResponsabilidadCargo'],
 
                 
                 //
@@ -363,7 +362,8 @@ class CargoController extends Controller
 
             $data = array(
             'Cargo_idCargo' => $id,
-            'descripcionCargoResponsabilidad' => $request['descripcionCargoResponsabilidad'][$i], );
+            'descripcionCargoResponsabilidad' => $request['descripcionCargoResponsabilidad'][$i],
+            'porcentajeCargoResponsabilidad' => $request['porcentajeCargoResponsabilidad'][$i] );
 
             $preguntas = \App\CargoResponsabilidad::updateOrCreate($indice, $data);
 

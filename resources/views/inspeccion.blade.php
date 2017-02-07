@@ -169,7 +169,7 @@
 </div>
 
 
-<div id="image-pad" class="m-image-pad">
+<div id="image-pad" class="m-image-pad" style="display: none;">
     <input type="hidden" id="image-reg" value="">
       <div class="m-image-pad--body">
         <img id="image-src"></img>

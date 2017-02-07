@@ -214,13 +214,14 @@ class ExamenMedicoController extends Controller
 
             $file = $files[$i] ;
             $rutaImagen = '';
-            $destinationPath = 'imagenes/examenmedico/';
+            $destinationPath = '/examenmedico/';
             if(isset($file))
             {
                 $filename = $destinationPath . $file->getClientOriginalName();
                  
-                $manager = new ImageManager();
-                $manager->make($file->getRealPath())->save($filename);
+                // $manager = new ImageManager();
+                // $manager->make($file->getRealPath())->save($filename);
+                \Storage::disk('local')->put($filename, \File::get($file));
                 $rutaImagen = 'examenmedico/'.$file->getClientOriginalName();
 
                 

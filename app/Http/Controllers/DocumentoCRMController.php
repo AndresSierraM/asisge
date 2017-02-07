@@ -160,7 +160,10 @@ class DocumentoCRMController extends Controller
             'CampoCRM_idCampoCRM' => $request['CampoCRM_idCampoCRM'][$i],
             'mostrarGridDocumentoCRMCampo' => $request['mostrarGridDocumentoCRMCampo'][$i],
             'mostrarVistaDocumentoCRMCampo' => $request['mostrarVistaDocumentoCRMCampo'][$i],
-            'obligatorioDocumentoCRMCampo' => $request['obligatorioDocumentoCRMCampo'][$i] );
+            'obligatorioDocumentoCRMCampo' => $request['obligatorioDocumentoCRMCampo'][$i],
+            'solicitanteDocumentoCRMCampo' => $request['solicitanteDocumentoCRMCampo'][$i],
+            'asesorDocumentoCRMCampo' => $request['asesorDocumentoCRMCampo'][$i],
+            'aprobadorDocumentoCRMCampo' => $request['aprobadorDocumentoCRMCampo'][$i] );
 
              $preguntas = \App\DocumentoCRMCampo::updateOrCreate($indice, $data);
 

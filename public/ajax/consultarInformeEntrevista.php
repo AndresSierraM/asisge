@@ -83,14 +83,19 @@ $informehtml .= '
 	        <td> <textarea id="observacionInformeEntrevista"></textarea></td>
 	        <input type="hidden" id="idEntrevista" value ="'.$datosconsulta["idEntrevista"].'" name="idEntrevista">
 	        
-	        <td>';?> {!! Form::select('idEntrevista', ['EnProceso' =>'En Proceso','Seleccionado' => 'Seleccionado','Rechazado'=>'Rechazado'],null,['class' => 'form-control',"placeholder"=>"Seleccione el estado"]) !!} <?php $informehtml .='</td> 
+	        <td>
+	        <select id="" name="">
+	        <option value="EnProceso">En Proceso</option> 
+	        <option value="Seleccionado">Seleccionado</option> 
+	        <option value="Rechazado">Rechazado</option> 
+	        </select></td> 
       </tr>
 			';
 
 	}
 	 		$informehtml .= '
 		    </tbody>
-		  	</table>
+		  	</table>|
 			</div>';
     
     

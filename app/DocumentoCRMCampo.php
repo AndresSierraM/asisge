@@ -10,7 +10,8 @@ class DocumentoCRMCampo extends Model
     protected $primaryKey = 'idDocumentoCRMCampo';
 
     protected $fillable = ['DocumentoCRM_idDocumentoCRM', 'CampoCRM_idCampoCRM', 
-    'mostrarGridDocumentoCRMCampo', 'mostrarVistaDocumentoCRMCampo', 'obligatorioDocumentoCRMCampo'];
+    'mostrarGridDocumentoCRMCampo', 'mostrarVistaDocumentoCRMCampo', 'obligatorioDocumentoCRMCampo',
+    'solicitanteDocumentoCRMCampo','asesorDocumentoCRMCampo','aprobadorDocumentoCRMCampo'];
 
     public $timestamps = false;
 

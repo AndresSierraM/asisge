@@ -234,6 +234,25 @@ function validacionesPorcentajeHabilidad()
 
 }
 
+
+
+function validacionesPorcentajeResponsabilidad()
+{
+    // Se crea una variable para que inicie en 0 
+    var validaH = 0;
+
+    
+    for (var i = 0; i < Responsabilidades.contador; i++) {
+        validaH = validaH + parseFloat($('#porcentajeCargoResponsabilidad'+[i]).val());
+    }
+
+    if (validaH >100 || validaH < 100)
+    {
+        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+    } 
+
+}
+
    
 // esta funcion verifica que los % de Peso no excedan 100%
 function validacionPorcentajePeso()

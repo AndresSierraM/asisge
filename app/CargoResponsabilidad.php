@@ -9,7 +9,7 @@ class CargoResponsabilidad extends Model
      protected $table ='cargoresponsabilidad'; //la tabla siempre es en miniscula 
 	protected $primaryKey = 'idCargoResponsabilidad'; //camello
 	
-	protected $fillable = ['idCargoResponsabilidad ','descripcionCargoResponsabilidad','Cargo_idCargo'];
+	protected $fillable = ['idCargoResponsabilidad ','descripcionCargoResponsabilidad','Cargo_idCargo','porcentajeCargoResponsabilidad'];
 
 	public $timestamps = false;
 

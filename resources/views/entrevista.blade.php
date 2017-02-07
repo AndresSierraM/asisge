@@ -131,8 +131,8 @@ Relacionfamiliar = [valorrelacion,Nombrerelacion];
 
 
 
-valorCumple = Array("Total","Parcial","No Cumple");
-NombreCumple = Array ("Total","Parcial","No Cumple");
+valorCumple = Array('5','4','3','2','1');
+NombreCumple = Array ("Total","y","Parcial","x","No Cumple");
 Cumplimiento = [valorCumple,NombreCumple];
 var Relacionfamilia = [0,0,'','']
 var competenciamodelo = [0,0,'','',''];
@@ -144,6 +144,10 @@ var evaluacioneducacion = ['onchange','calificareducacion(this.id);']
 var evaluacionformacion = ['onchange','calificarformacion(this.id);']
 // Habilidad
  var evaluacionhabilidad = ['onchange','calificarHabilidad(this.id);']
+
+ // CALIFICACION DE MULTIREGISTROs 
+ //Habilidad 
+  var CalificacionHab = ['onchange','calificacionEduacionEntrevista(this.value);']
 //VARIABLES
  $(document).ready( function () {
 // // multiregistro Educacion Entrevista primera Multiregistro OPCION GENERAL          
@@ -167,7 +171,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
           Educacionentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Educacionentrevista.opciones = ['','','','',educacion,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,'',''];
+          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,CalificacionHab,''];
 
 // // multiregistro Formacionentrevista Segunda multiregistro OPCION GENERAL
        
@@ -374,11 +378,11 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                 <div class="form-group col-md-6">
                                                                                 {!!Form::label('TipoIdentificacion_idTipoIdentificacion', 'Tipo ', array('class' => 'col-sm-2 control-label'))!!}
                                                                                 <div class="col-sm-8">
-                                                                                  <div class="input-group">
+                                                                                  <div class="input-group" style="padding-left:15px ">
                                                                                     <span class="input-group-addon">
                                                                                       <i class="fa fa-credit-card"></i>
                                                                                     </span>
-                                                                                    {!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:280px;'])!!}
+                                                                                    {!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:265px;'])!!}
                                                                                   </div>
                                                                                 </div>
                                                                               </div>
@@ -387,15 +391,14 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                     <div class="form-group col-md-6" id='test'>
                                                                         {!!Form::label('documentoAspiranteEntrevista', 'Cedula', array('class' => 'col-sm-2 control-label')) !!}
                                                                               <div class="col-sm-8">
-                                                                                <div class="input-group">
+                                                                                <div class="input-group" style="padding-left:25px ">
                                                                                   <span class="input-group-addon">
-                                                                                    <i class="fa fa-address-card" aria-hidden="true"></i>
                                                                                     <i class="fa fa-barcode" aria-hidden="true"></i>
                                                                                   </span>
                                                                                   {!!Form::text('documentoAspiranteEntrevista',null,['class'=>'form-control','placeholder'=>'Ingrese su Cedula', 'autocomplete' => 'off'])!!}
-                                                                                     {!!Form::hidden('Tercero_idAspirante ', null, array('id' => 'Tercero_idAspirante ')) !!}
-                                                                                     {!!Form::hidden('idEntrevista ', null, array('id' => 'idEntrevista ')) !!}
-                                                                                    {!!Form::hidden('Entrevista_idEntrevista ', (isset($entrevista->EntrevistaPregunta) ? $entrevista->EntrevistaPregunta->Entrevista_idEntrevista : null), array('id' => 'Entrevista_idEntrevista ')) !!}
+                                                                                     {!!Form::hidden('Tercero_idAspirante', null, array('id' => 'Tercero_idAspirante')) !!}
+                                                                                     {!!Form::hidden('idEntrevista', null, array('id' => 'idEntrevista')) !!}
+                                                                                    {!!Form::hidden('Entrevista_idEntrevista', (isset($entrevista->EntrevistaPregunta) ? $entrevista->EntrevistaPregunta->Entrevista_idEntrevista : null), array('id' => 'Entrevista_idEntrevista')) !!}
 
                                                                                       {!!Form::hidden('eliminarEducacionEntrevista',null, array('id' => 'eliminarEducacionEntrevista'))!!}
 
@@ -416,7 +419,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                           <div class="form-group col-md-6" id='test'>
                                                                               {!!Form::label('Cargo_idCargo','Cargo',array('class' => 'col-sm-2 control-label')) !!}
                                                                                   <div class="col-sm-8">
-                                                                                    <div class="input-group">
+                                                                                    <div class="input-group" style="padding-left:15px ">
                                                                                       <span class="input-group-addon">
                                                                                         <i class="fa fa-sitemap" aria-hidden="true"></i>
                                                                                       </span>
@@ -432,7 +435,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                       <div class="form-group col-md-6" id='test'>
                                                                           {!!Form::label('estadoEntrevista', 'Estado Final', array('class' => 'col-sm-2 control-label')) !!}
                                                                             <div class="col-sm-8">
-                                                                              <div class="input-group">
+                                                                              <div class="input-group" style="padding-left:25px ">
                                                                                 <span class="input-group-addon">
                                                                                   <i class="fa fa-bars "></i>
                                                                                 </span>
@@ -458,7 +461,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                               <div class="form-group col-md-6" id='test'>
                                                                                     {!!Form::label('nombre1AspiranteEntrevista', 'Nombre1', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
-                                                                                      <div class="input-group">
+                                                                                      <div class="input-group" style="padding-left:15px ">
                                                                                         <span class="input-group-addon">
                                                                                          <i class="fa fa-font" aria-hidden="true"></i>
                                                                                         </span>
@@ -472,7 +475,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                               <div class="form-group col-md-6" id='test'>
                                                                                     {!!Form::label('nombre2AspiranteEntrevista', 'Nombre2', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
-                                                                                      <div class="input-group">
+                                                                                      <div class="input-group" style="padding-left:25px ">
                                                                                         <span class="input-group-addon">
                                                                                           <i class="fa fa-font" aria-hidden="true"></i>
                                                                                         </span>
@@ -488,7 +491,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                             <div class="form-group col-md-6" id='test'>
                                                                                   {!!Form::label('apellido1AspiranteEntrevista','Apellido1', array('class' => 'col-sm-2 control-label')) !!}
                                                                                   <div class="col-sm-8">
-                                                                                    <div class="input-group">
+                                                                                    <div class="input-group" style="padding-left:15px ">
                                                                                       <span class="input-group-addon">
                                                                                        <i class="fa fa-header" aria-hidden="true"></i>
                                                                                       </span>
@@ -501,7 +504,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                             <div class="form-group col-md-6" id='test'>
                                                                                   {!!Form::label('apellido2AspiranteEntrevista','Apellido2', array('class' => 'col-sm-2 control-label')) !!}
                                                                                   <div class="col-sm-8">
-                                                                                    <div class="input-group">
+                                                                                    <div class="input-group" style="padding-left:25px ">
                                                                                       <span class="input-group-addon">
                                                                                         <i class="fa fa-header" aria-hidden="true"></i>
                                                                                       </span>
@@ -514,7 +517,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                 <div class="form-group col-md-6" id='test'>
                                                                                     {!!Form::label('Tercero_idEntrevistador', 'Entrevistador', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
-                                                                                      <div class="input-group">
+                                                                                      <div class="input-group" style="padding-left:15px ">
                                                                                         <span class="input-group-addon">
                                                                                           <i class="fa fa-user" aria-hidden="true"></i>
                                                                                         </span>
@@ -527,7 +530,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                 <div class="form-group col-md-6" id='test'>
                                                                                     {!!Form::label('fechaEntrevista', 'F.Entrevista ', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
-                                                                                      <div class="input-group">
+                                                                                      <div class="input-group" style="padding-left:25px ">
                                                                                         <span class="input-group-addon">
                                                                                           <i class="fa fa-calendar"></i>
                                                                                         </span>
@@ -541,7 +544,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                 <div class="form-group col-md-6" id='test'>
                                                                                     {!!Form::label('experienciaAspiranteEntrevista', 'Exp(Años)', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
-                                                                                      <div class="input-group">
+                                                                                      <div class="input-group" style="padding-left:15px ">
                                                                                         <span class="input-group-addon">
                                                                                           <i class="fa fa-level-up" aria-hidden="true"></i>
                                                                                         </span>
@@ -551,9 +554,9 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                 </div>
 
                                                                                        <!-- Requerida -->
-                                                                                  <div class="form-group col-md-6" id='test'>
+                                                                                  <div class="form-group col-md-6" id='test' >
                                                                                       {!!Form::label('experienciaRequeridaEntrevista', 'Exp.Requerida', array('class' => 'col-sm-2 control-label')) !!}
-                                                                                      <div class="col-sm-8">
+                                                                                      <div class="col-sm-8" style="padding-left:40px ">
                                                                                         <div class="input-group">
                                                                                           <span class="input-group-addon">
                                                                                            <i class="fa fa-gavel" aria-hidden="true"></i>
@@ -613,11 +616,26 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                                   <!-- este es el div para donde van insertando los registros --> 
                                                                                                   <div id="EducacionEntrevista_Modulo">
                                                                                                   </div>
+
+                                                                                                </div>
+                                                                                                                    <!-- nuevo campo para Calificacion  -->
+                                                                                                 <div class="form-group" id='test' >
+                                                                                                  {!!Form::label('calificacionEducacionEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
+                                                                                                  <div class="col-sm-10">
+                                                                                                    <div class="input-group" style="padding-left:10px ">
+                                                                                                      <span class="input-group-addon">
+                                                                                                        <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+                                                                                                      </span>
+                                                                                                      {!!Form::text('calificacionEducacionEntrevista',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                                    </div>
+                                                                                                  </div>
                                                                                                 </div>
                                                                                               </div>
                                                                                             </div> 
                                                                                     </div>
+                                                                
                                                                                   </div>
+
                                                                                 </div>  
                                                                                                   <!-- FORMACION -->
                                                                             <div class="panel panel-default">
@@ -645,6 +663,18 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                                           <div id="FormacionEntrevista_Modulo">
                                                                                                           </div>
                                                                                                         </div>
+                                                                                                                          <!-- nuevo campo para Calificacion  -->
+                                                                                                         <div class="form-group" id='test' >
+                                                                                                          {!!Form::label('calificacionEducacionEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
+                                                                                                          <div class="col-sm-10">
+                                                                                                            <div class="input-group" style="padding-left:10px ">
+                                                                                                              <span class="input-group-addon">
+                                                                                                                <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+                                                                                                              </span>
+                                                                                                              {!!Form::text('calificacionFormacionEntrevista',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                                            </div>
+                                                                                                          </div>
+                                                                                                        </div>
                                                                                                       </div>
                                                                                                     </div> 
                                                                                                   </div>
@@ -654,7 +684,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                             <div class="panel panel-default">
                                                                                   <div class="panel-heading">
                                                                                     <h4 class="panel-title">
-                                                                                      <a data-toggle="collapse" data-parent="#accordion" href="#Habilidadesinterno">Habilidades</a>
+                                                                                      <a data-toggle="collapse" data-parent="#accordion" href="#Habilidadesinterno">Habilidades propias del Cargo</a>
                                                                                     </h4>
                                                                                   </div>
                                                                                       <div id="Habilidadesinterno" class="panel-collapse collapse">  
@@ -674,6 +704,18 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                                         
                                                                                                           <!-- este es el div para donde van insertando los registros --> 
                                                                                                           <div id="HabilidadEntrevista_Modulo">
+                                                                                                          </div>
+                                                                                                        </div>
+                                                                                                                  <!-- nuevo campo para Calificacion  -->
+                                                                                                         <div class="form-group" id='test' >
+                                                                                                          {!!Form::label('calificacionEducacionEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
+                                                                                                          <div class="col-sm-10">
+                                                                                                            <div class="input-group" style="padding-left:10px ">
+                                                                                                              <span class="input-group-addon">
+                                                                                                                <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+                                                                                                              </span>
+                                                                                                              {!!Form::text('calificacionHabilidadCargoEntrevista',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                                            </div>
                                                                                                           </div>
                                                                                                         </div>
                                                                                                       </div>
@@ -1246,6 +1288,19 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                   </div>
                                                                               </div>
                                                                           </div>  
+                                                                          <!-- Campo para agregar en Habilidades actudinales CALIFICAR  -->
+                                                                                    <!-- nuevo campo para Calificacion  -->
+                                                                                                 <div class="form-group" id='test' >
+                                                                                                  {!!Form::label('calificacionHabilidadActitudinalEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
+                                                                                                  <div class="col-sm-10">
+                                                                                                    <div class="input-group" style="padding-left:10px ">
+                                                                                                      <span class="input-group-addon">
+                                                                                                        <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+                                                                                                      </span>
+                                                                                                      {!!Form::text('calificacionHabilidadActitudinalEntrevista',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                                    </div>
+                                                                                                  </div>
+                                                                                                </div>
                                                                 </div> 
                                         
                                         </div>
@@ -1272,10 +1327,10 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
       {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
     @else
-      {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+      {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
     @endif
   @else
-    {!!Form::submit('Guardar',["class"=>"btn btn-primary"])!!}
+    {!!Form::submit('Guardar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
   @endif
 
  {!! Form::close() !!}

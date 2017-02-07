@@ -31,13 +31,19 @@
       'descripcionCampoCRM',
       'mostrarGridDocumentoCRMCampo', 
       'mostrarVistaDocumentoCRMCampo', 
-      'obligatorioDocumentoCRMCampo'
+      'obligatorioDocumentoCRMCampo', 
+      'solicitanteDocumentoCRMCampo', 
+      'asesorDocumentoCRMCampo', 
+      'aprobadorDocumentoCRMCampo'
       ];
 
       protCampos.etiqueta = [
       'input',
       'input',
       'input',
+      'checkbox',
+      'checkbox',
+      'checkbox',
       'checkbox',
       'checkbox',
       'checkbox'
@@ -49,23 +55,29 @@
       'text',
       'checkbox',
       'checkbox',
+      'checkbox',
+      'checkbox',
+      'checkbox',
       'checkbox'
       ];
 
       protCampos.estilo = [
       '',
       '',
-      'width: 560px;height:35px;',
+      'width: 260px;height:35px;',
+      'width: 100px;height:35px; display:inline-block;',
+      'width: 100px;height:35px; display:inline-block;',
+      'width: 100px;height:35px; display:inline-block;',
       'width: 100px;height:35px; display:inline-block;',
       'width: 100px;height:35px; display:inline-block;',
       'width: 100px;height:35px; display:inline-block;'
       ];
 
-      protCampos.clase    = ['','','','','',''];
-      protCampos.sololectura = [true,true,true,false,false,false];  
-      protCampos.funciones = ['','','','','',''];
-      protCampos.completar = ['off','off','off','off','off','off'];
-      protCampos.opciones = ['','','','','','']
+      protCampos.clase    = ['','','','','','','','',''];
+      protCampos.sololectura = [true,true,true,false,false,false,false,false,false];  
+      protCampos.funciones = ['','','','','','','','',''];
+      protCampos.completar = ['off','off','off','off','off','off','off','off','off'];
+      protCampos.opciones = ['','','','','','','','',''];
 
       for(var j=0, k = documentocrmcampo.length; j < k; j++)
       {
@@ -347,10 +359,13 @@
 								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCampos();">
 								                        <span class="glyphicon glyphicon-plus"></span>
 								                      </div>
-								                      <div class="col-md-1" style="width: 560px;" >Campo</div>
+								                      <div class="col-md-1" style="width: 260px;" >Campo</div>
 								                      <div class="col-md-1" style="width: 100px;" >Consulta</div>
 								                      <div class="col-md-1" style="width: 100px;" >Formulario</div>
 								                      <div class="col-md-1" style="width: 100px;" >Obligatorio</div>
+								                      <div class="col-md-1" style="width: 100px;" >Solicitante</div>
+								                      <div class="col-md-1" style="width: 100px;" >Asesor</div>
+								                      <div class="col-md-1" style="width: 100px;" >Aprobador</div>
 								                      <div id="contenedor_protCampos">
 								                      </div>
 								                    </div>

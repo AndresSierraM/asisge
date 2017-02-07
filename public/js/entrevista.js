@@ -1,3 +1,201 @@
+function calificacionEduacionEntrevista()
+{
+    // Se crea una variable para que inicie en 0 
+    var calificarE = 0;
+    var resultado = 0;
+    var valor1 = 100;
+    var valor2 = 5;
+
+    
+    for (var i = 0; i < Educacionentrevista.contador; i++) {
+        calificarE += parseFloat($('#porcentajeCargoEducacion'+[i]).val() * parseFloat($('#calificacionEntrevistaEducacion'+[i]).val()));
+        
+        
+    }
+
+   isNaN(resultado = calificarE/valor1);
+
+   
+$("#calificacionEducacionEntrevista").val(resultado);
+}
+
+
+
+
+function validarFormulario(event)
+{
+    var route = "http://"+location.host+"/entrevista";
+    var token = $("#token").val();
+    var dato0 = document.getElementById('idEntrevista').value;
+    var dato1 = document.getElementById('documentoAspiranteEntrevista').value;
+    var dato2 = document.getElementById('estadoEntrevista').value;
+    var dato3 = document.getElementById('nombre1AspiranteEntrevista').value;
+    var dato4 = document.getElementById('apellido1AspiranteEntrevista').value;
+    var dato5 = document.getElementById('Tercero_idEntrevistador').value;
+    var dato6 = document.getElementById('fechaEntrevista').value;
+    var dato7 = document.getElementById('Cargo_idCargo').value;
+    var dato8 = document.getElementById('experienciaAspiranteEntrevista').value;
+
+ 
+    var EntrevistaHijos = document.querySelectorAll("[name='nombreEntrevistaHijo[]']");
+    var RelacionFamiliar = document.querySelectorAll("[name='parentescoEntrevistaRelacionFamiliar[]']"); 
+    var CompetenciaPregunta = document.querySelectorAll("[name='CompetenciaPregunta_idCompetenciaPregunta[]']");
+    var EntrevistaFormacion = document.querySelectorAll("[name='calificacionEntrevistaFormacion[]']"); 
+    var EntrevistaEducacion = document.querySelectorAll("[name='calificacionEntrevistaEducacion[]']");
+    var EntrevistaHabilidad = document.querySelectorAll("[name='calificacionEntrevistaHabilidad[]']"); 
+
+    var dato9 = [];
+    var dato10 = [];
+    var dato11 = [];
+    var dato12 = [];
+    var dato13= [];
+    var dato14 = [];
+    
+    var valor = '';
+    var sw = true;
+    
+    
+    for(var j=0,i= EntrevistaHijos.length; j<i;j++)
+    {
+        dato9[j] = EntrevistaHijos[j].value;
+    }
+
+    for(var j=0,i= RelacionFamiliar.length; j<i;j++)
+    {
+        dato10[j] = RelacionFamiliar[j].value;
+    }
+     for(var j=0,i= CompetenciaPregunta.length; j<i;j++)
+    {
+        dato11[j] = CompetenciaPregunta[j].value;
+    }
+     for(var j=0,i= EntrevistaFormacion.length; j<i;j++)
+    {
+        dato12[j] = EntrevistaFormacion[j].value;
+    }
+     for(var j=0,i= EntrevistaEducacion.length; j<i;j++)
+    {
+        dato13[j] = EntrevistaEducacion[j].value;
+    }
+     for(var j=0,i= EntrevistaHabilidad.length; j<i;j++)
+    {
+        dato14[j] = EntrevistaHabilidad[j].value;
+    }
+
+    $.ajax({
+        async: false,
+        url:route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: {respuesta: 'falso',
+                idEntrevista: dato0,
+                documentoAspiranteEntrevista: dato1,
+                estadoEntrevista: dato2,
+                nombre1AspiranteEntrevista: dato3,
+                apellido1AspiranteEntrevista: dato4, 
+                Tercero_idEntrevistador: dato5, 
+                fechaEntrevista: dato6, 
+                Cargo_idCargo: dato7,
+                experienciaAspiranteEntrevista: dato8,
+                nombreEntrevistaHijo: dato9,
+                parentescoEntrevistaRelacionFamiliar: dato10,
+                CompetenciaPregunta_idCompetenciaPregunta: dato11,
+                calificacionEntrevistaFormacion: dato12,
+                calificacionEntrevistaEducacion: dato13,
+                calificacionEntrevistaHabilidad: dato14,
+                // solo se modifica los campos del data
+                },
+        success:function(){
+            //$("#msj-success").fadeIn();
+            //console.log(' sin errores');
+
+        },
+        error:function(msj){
+            var mensaje = '';
+            var respuesta = JSON.stringify(msj.responseJSON); 
+            if(typeof respuesta === "undefined")
+            {
+                sw = false;
+                $("#msj").html('');
+                $("#msj-error").fadeOut();
+
+            }
+            else
+            {
+                sw = true;
+                respuesta = JSON.parse(respuesta);
+               
+                (typeof msj.responseJSON.documentoAspiranteEntrevista === "undefined" ? document.getElementById('documentoAspiranteEntrevista').style.borderColor = '' : document.getElementById('documentoAspiranteEntrevista').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.estadoEntrevista === "undefined" ? document.getElementById('estadoEntrevista').style.borderColor = '' : document.getElementById('estadoEntrevista').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.nombre1AspiranteEntrevista === "undefined" ? document.getElementById('nombre1AspiranteEntrevista').style.borderColor = '' : document.getElementById('nombre1AspiranteEntrevista').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.apellido1AspiranteEntrevista === "undefined" ? document.getElementById('apellido1AspiranteEntrevista').style.borderColor = '' : document.getElementById('apellido1AspiranteEntrevista').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.Tercero_idEntrevistador === "undefined" ? document.getElementById('Tercero_idEntrevistador').style.borderColor = '' : document.getElementById('Tercero_idEntrevistador').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.fechaEntrevista === "undefined" ? document.getElementById('fechaEntrevista').style.borderColor = '' : document.getElementById('fechaEntrevista').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.Cargo_idCargo === "undefined" ? document.getElementById('Cargo_idCargo').style.borderColor = '' : document.getElementById('Cargo_idCargo').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.experienciaAspiranteEntrevista === "undefined" ? document.getElementById('experienciaAspiranteEntrevista').style.borderColor = '' : document.getElementById('experienciaAspiranteEntrevista').style.borderColor = '#a94442');
+
+                
+         
+                for(var j=0,i=EntrevistaHijos.length; j<i;j++)
+                {
+                    (typeof respuesta['nombreEntrevistaHijo'+j] === "undefined" 
+                        ? document.getElementById('nombreEntrevistaHijo'+j).style.borderColor = '' 
+                        : document.getElementById('nombreEntrevistaHijo'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=RelacionFamiliar.length; j<i;j++)
+                {
+                    (typeof respuesta['parentescoEntrevistaRelacionFamiliar'+j] === "undefined" ? document.getElementById('parentescoEntrevistaRelacionFamiliar'+j).style.borderColor = '' : document.getElementById('parentescoEntrevistaRelacionFamiliar'+j).style.borderColor = '#a94442');
+                }
+
+                 for(var j=0,i=CompetenciaPregunta.length; j<i;j++)
+                {
+                    (typeof respuesta['Proceso_idResponsable'+j] === "undefined" 
+                        ? document.getElementById('CompetenciaPregunta_idCompetenciaPregunta'+j).style.borderColor = '' 
+                        : document.getElementById('CompetenciaPregunta_idCompetenciaPregunta'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=EntrevistaFormacion.length; j<i;j++)
+                {
+                    (typeof respuesta['calificacionEntrevistaFormacion'+j] === "undefined" ? document.getElementById('calificacionEntrevistaFormacion'+j).style.borderColor = '' : document.getElementById('calificacionEntrevistaFormacion'+j).style.borderColor = '#a94442');
+                }
+
+                 for(var j=0,i=EntrevistaEducacion.length; j<i;j++)
+                {
+                    (typeof respuesta['calificacionEntrevistaEducacion'+j] === "undefined" 
+                        ? document.getElementById('calificacionEntrevistaEducacion'+j).style.borderColor = '' 
+                        : document.getElementById('calificacionEntrevistaEducacion'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=EntrevistaHabilidad.length; j<i;j++)
+                {
+                    (typeof respuesta['calificacionEntrevistaHabilidad'+j] === "undefined" ? document.getElementById('calificacionEntrevistaHabilidad'+j).style.borderColor = '' : document.getElementById('calificacionEntrevistaHabilidad'+j).style.borderColor = '#a94442');
+                }
+
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li><br>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
+                $("#msj-error").fadeIn();
+            }
+
+        }
+    });
+
+    if(sw === true)
+        event.preventDefault();
+}
+
 function cargarEntrevista (idEncuesta)
 {
     
@@ -38,12 +236,12 @@ function calificarHabilidad(idRequerido)
     if ($("#PerfilCargo_idRequerido_Habilidad"+reg).val() == $("#PerfilCargo_idAspirante_Habilidad"+reg).val())
 
     {
-          $('#calificacionEntrevistaHabilidad'+reg+' option[value=\'Total\']').prop('selected','selected');
+          $('#calificacionEntrevistaHabilidad'+reg+' option[value=\'5\']').prop('selected','selected');
 
     } 
     else 
     {
-          $('#calificacionEntrevistaHabilidad'+reg+' option[value=\'No Cumple\']').prop('selected','selected');
+          $('#calificacionEntrevistaHabilidad'+reg+' option[value=\'1\']').prop('selected','selected');
     }
 }
 
@@ -62,11 +260,11 @@ function calificarformacion(idRequerido)
     if ($("#PerfilCargo_idRequerido_Formacion"+reg).val() == $("#PerfilCargo_idAspirante_Formacion"+reg).val())
 
     {
-          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'Total\']').prop('selected','selected');
+          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'5\']').prop('selected','selected');
     } 
     else 
     {
-          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'No Cumple\']').prop('selected','selected');
+          $('#calificacionEntrevistaFormacion'+reg+' option[value=\'1\']').prop('selected','selected');
     }
 }
 
@@ -83,11 +281,11 @@ function calificareducacion(idRequerido)
     if ($("#PerfilCargo_idRequerido_Educacion"+reg).val() == $("#PerfilCargo_idAspirante_Educacion"+reg).val())
 
     {
-          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'Total\']').prop('selected','selected');
+          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'5\']').prop('selected','selected');
     } 
     else 
     {
-          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'No Cumple\']').prop('selected','selected');
+          $('#calificacionEntrevistaEducacion'+reg+' option[value=\'1\']').prop('selected','selected');
     }
 
 }

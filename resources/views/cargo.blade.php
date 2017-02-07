@@ -69,6 +69,7 @@
 		var validacionesPesoE = ['onchange','validacionesPorcentajeEducacion(this.value);']
 		var validacionesPesoF = ['onchange','validacionesPorcentajeFormacion(this.value);']
 		var validacionesPesoH = ['onchange','validacionesPorcentajeHabilidad(this.value);']
+		var validacionesPesoR = ['onchange','validacionesPorcentajeResponsabilidad(this.value);']
 		// var validacionglobal = ['onchange','sumatoriatotal(this.value);']
 
 		//aca se debe crear la variable que va a traer el id y el nombre quemado de la responsabilidad y se debe poner en la respectiva multiregistro
@@ -151,21 +152,21 @@
 			    Responsabilidades.campoEliminacion = 'eliminarResponsabilidades';//hermanitas         Cuando se utilice la funcionalidad 
 			    Responsabilidades.botonEliminacion = true;//hermanitas
 			    // despues del punto son las propiedades que se le van adicionar al objeto
-			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','Cargo_idCargo']; //[arrays ]
+			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','Cargo_idCargo','porcentajeCargoResponsabilidad']; //[arrays ]
 			    Responsabilidades.altura = '35px;'; 
 			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-			    Responsabilidades.etiqueta = ['input','input','input'];
-			    Responsabilidades.tipo = ['hidden','','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-			    Responsabilidades.estilo = ['','width: 600px;height:35px;',''];	
+			    Responsabilidades.etiqueta = ['input','input','input','input'];
+			    Responsabilidades.tipo = ['hidden','','hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Responsabilidades.estilo = ['','width: 600px;height:35px;','','width: 100px;height:35px;'];	
 
 			    // estas propiedades no son muy usadas PERO SON UTILES
 			    
-			    Responsabilidades.clase = ['','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
-			    Responsabilidades.sololectura = [false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
-			    Responsabilidades.completar = ['off','off','off']; //autocompleta 
+			    Responsabilidades.clase = ['','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Responsabilidades.sololectura = [false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Responsabilidades.completar = ['off','off','off','off']; //autocompleta 
 			    
-			    Responsabilidades.opciones = ['','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-			    Responsabilidades.funciones  = ['','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+			    Responsabilidades.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Responsabilidades.funciones  = ['','','',validacionesPesoR]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
 
@@ -467,7 +468,7 @@
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeEducacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																	{!!Form::text('porcentajeEducacionCargo',(isset($cargo) ? $cargo->porcentajeEducacionCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
 																</div>
 															</div>
 														</div>
@@ -530,7 +531,7 @@
 																			<span class="input-group-addon">
 																				<i class="fa fa-pencil-square-o" ></i>
 																			</span>
-																			{!!Form::text('porcentajeExperienciaCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
+																			{!!Form::text('porcentajeExperienciaCargo',(isset($cargo) ? $cargo->porcentajeExperienciaCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
 																		</div>
 																	</div>
 																</div>
@@ -568,7 +569,7 @@
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeFormacionCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																	{!!Form::text('porcentajeFormacionCargo',(isset($cargo) ? $cargo->porcentajeFormacionCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
 																</div>
 															</div>
 														</div>
@@ -599,7 +600,7 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#habilidad">Habilidades propias del cargo.</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#habilidad">Habilidades propias del cargo</a>
 											</h4>
 										</div>
 										<div id="habilidad" class="panel-collapse collapse">
@@ -607,7 +608,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
-														<!-- nuevo campo para 	Formacion peso  -->
+														<!-- nuevo campo para 	habilidad peso  -->
 													     <div class="form-group" id='test'>
 															{!!Form::label('porcentajeHabilidadCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
 															<div class="col-sm-10">
@@ -615,7 +616,7 @@
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
-																	{!!Form::text('porcentajeHabilidadCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
+																	{!!Form::text('porcentajeHabilidadCargo',(isset($cargo) ? $cargo->porcentajeHabilidadCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % del peso'])!!}
 																</div>
 															</div>
 														</div>
@@ -666,7 +667,7 @@
 																			<span class="input-group-addon">
 																				<i class="fa fa-pencil-square-o" ></i>
 																			</span>
-																			{!!Form::text('porcentajeResponsabilidadCargo',null,['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
+																			{!!Form::text('porcentajeResponsabilidadCargo',(isset($cargo) ? $cargo->porcentajeResponsabilidadCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
 																		</div>
 																	</div>
 																</div>
@@ -675,10 +676,11 @@
 														      <div class="col-sm-12">
 
 														        <div class="row show-grid">
-														          <div class="col-md-1" style="width: 35px;height: 35px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
+														          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
 														            <span class="glyphicon glyphicon-plus"></span>
 														          </div>
 														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+														          <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
 														          <!-- este es el div para donde van insertando los registros --> 
 														          <div id="Responsabilidad_Modulo">
 														          </div>

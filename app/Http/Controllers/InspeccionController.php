@@ -284,13 +284,14 @@ class InspeccionController extends Controller
 
                 $file = $files[$i] ;
                 $rutaImagen = '';
-                $destinationPath = 'imagenes/inspeccion/';
+                $destinationPath = 'inspeccion/';
                 if(isset($file))
                 {
                     $filename = $destinationPath .$id.'_'.$i.'_'. $file->getClientOriginalName();
                      
-                    $manager = new ImageManager();
-                    $manager->make($file->getRealPath())->save($filename);
+                    // $manager = new ImageManager();
+                    // $manager->make($file->getRealPath())->save($filename);
+                    \Storage::disk('local')->put($filename, \File::get($file));
                     $rutaImagen = 'inspeccion/'.$id.'_'.$i.'_'.$file->getClientOriginalName();
 
                     

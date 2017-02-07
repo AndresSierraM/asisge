@@ -200,7 +200,61 @@ class MovimientoCRMController extends Controller
     {
         if(isset($_GET['accion']) and $_GET['accion'] == 'imprimir')
         {
-            $movimientocrm = \App\MovimientoCRM::find($id);
+            //$movimientocrm = \App\MovimientoCRM::find($id);
+
+            $movimientocrm = DB::select(
+            "SELECT 
+                solicitante.documentoTercero AS documentoSolicitante,
+                solicitante.nombreCompletoTercero nombreSolicitante,
+                supervisor.documentoTercero AS documentoSupervisor,
+                supervisor.nombreCompletoTercero AS nombreSupervisor,
+                asesor.documentoTercero AS documentoAsesor,
+                asesor.nombreCompletoTercero AS nombreAsesor,
+                categoriacrm.nombreCategoriaCRM,
+                documentocrm.nombreDocumentoCRM,
+                origencrm.nombreOrigenCRM,
+                estadocrm.nombreEstadoCRM,
+                lineanegocio.nombreLineaNegocio,
+                acuerdoservicio.nombreAcuerdoServicio,
+                acuerdoservicio.tiempoAcuerdoServicio,
+                acuerdoservicio.unidadTiempoAcuerdoServicio,
+                eventocrm.nombreEventoCRM,
+                movimientocrm.numeroMovimientoCRM,
+                movimientocrm.asuntoMovimientoCRM,
+                movimientocrm.fechaSolicitudMovimientoCRM,
+                movimientocrm.fechaEstimadaSolucionMovimientoCRM,
+                movimientocrm.fechaVencimientoMovimientoCRM,
+                movimientocrm.fechaRealSolucionMovimientoCRM,
+                movimientocrm.prioridadMovimientoCRM,
+                movimientocrm.diasEstimadosSolucionMovimientoCRM,
+                movimientocrm.diasRealesSolucionMovimientoCRM,
+                movimientocrm.detallesMovimientoCRM,
+                movimientocrm.solucionMovimientoCRM,
+                movimientocrm.valorMovimientoCRM
+            FROM
+                movimientocrm
+                    LEFT JOIN
+                tercero solicitante ON movimientocrm.Tercero_idSolicitante = solicitante.idTercero
+                    LEFT JOIN
+                tercero supervisor ON movimientocrm.Tercero_idSupervisor = supervisor.idTercero
+                    LEFT JOIN
+                tercero asesor ON movimientocrm.Tercero_idAsesor = asesor.idTercero
+                    LEFT JOIN
+                categoriacrm ON movimientocrm.CategoriaCRM_idCategoriaCRM = categoriacrm.idCategoriaCRM
+                    LEFT JOIN
+                documentocrm ON movimientocrm.DocumentoCRM_idDocumentoCRM = documentocrm.idDocumentoCRM
+                    LEFT JOIN
+                lineanegocio ON movimientocrm.LineaNegocio_idLineaNegocio = lineanegocio.idLineaNegocio
+                    LEFT JOIN
+                origencrm ON movimientocrm.OrigenCRM_idOrigenCRM = origencrm.idOrigenCRM
+                    LEFT JOIN
+                estadocrm ON movimientocrm.EstadoCRM_idEstadoCRM = estadocrm.idEstadoCRM
+                    LEFT JOIN
+                acuerdoservicio ON movimientocrm.AcuerdoServicio_idAcuerdoServicio = acuerdoservicio.idAcuerdoServicio
+                    LEFT JOIN
+                eventocrm ON movimientocrm.EventoCRM_idEventoCRM = eventocrm.idEventoCRM
+                WHERE idMovimientoCRM = $id");
+
             $idDocumentoCRM= $_GET['idDocumentoCRM'];
             
 

@@ -287,6 +287,7 @@ Route::POST('consultarinformeEntrevista', function()
 
 
 
+
 // ---------------------------------
 // Archivos Maestros
 // ---------------------------------
