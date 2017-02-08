@@ -242,9 +242,37 @@ function imprimirTabla($titulo, $informacion , $idtabla, $cargo, $idModulo)
 									<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'">
 
          							<td>'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'</td>
-         							<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">
+         							<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">';
 
-									<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]"></td>
+         							$mesesC = ((int)$dato->EneroC + 
+											(int)$dato->FebreroC + 
+											(int)$dato->MarzoC + 
+											(int)$dato->AbrilC + 
+											(int)$dato->MayoC + 
+											(int)$dato->JunioC + 
+											(int)$dato->JulioC + 
+											(int)$dato->AgostoC + 
+											(int)$dato->SeptiembreC + 
+											(int)$dato->OctubreC + 
+											(int)$dato->NoviembreC + 
+											(int)$dato->DiciembreC);
+
+									$mesesT = (((int)$dato->EneroT + 
+										   	(int)$dato->FebreroT + 
+										   	(int)$dato->MarzoT + 
+										   	(int)$dato->AbrilT + 
+										   	(int)$dato->MayoT + 
+										   	(int)$dato->JunioT + 
+										   	(int)$dato->JulioT + 
+										   	(int)$dato->AgostoT + 
+										   	(int)$dato->SeptiembreT + 
+										   	(int)$dato->OctubreT + 
+										   	(int)$dato->NoviembreT + 
+										   	(int)$dato->DiciembreT));
+
+									$total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
+
+									echo '<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" readonly value="'.$total.'"></td>
 
 									<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 
@@ -373,18 +401,42 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
 				<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoT']) ? $dato[$reg]['PresupuestoT'] : '&nbsp;').'">
 
          		<td>'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'</td>
-         		<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'">
+         		<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'">';
 
-				<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]"></td>
+         		$mesesC = ((int)$dato[$reg]["EneroC"] + 
+							(int)$dato[$reg]["FebreroC"] + 
+							(int)$dato[$reg]["MarzoC"] + 
+							(int)$dato[$reg]["AbrilC"] + 
+							(int)$dato[$reg]["MayoC"] + 
+							(int)$dato[$reg]["JunioC"] + 
+							(int)$dato[$reg]["JulioC"] + 
+							(int)$dato[$reg]["AgostoC"] + 
+							(int)$dato[$reg]["SeptiembreC"] + 
+							(int)$dato[$reg]["OctubreC"] + 
+							(int)$dato[$reg]["NoviembreC"] + 
+							(int)$dato[$reg]["DiciembreC"]);
+
+				$mesesT = (((int)$dato[$reg]["EneroT"] + 
+						   	(int)$dato[$reg]["FebreroT"] + 
+						   	(int)$dato[$reg]["MarzoT"] + 
+						   	(int)$dato[$reg]["AbrilT"] + 
+						   	(int)$dato[$reg]["MayoT"] + 
+						   	(int)$dato[$reg]["JunioT"] + 
+						   	(int)$dato[$reg]["JulioT"] + 
+						   	(int)$dato[$reg]["AgostoT"] + 
+						   	(int)$dato[$reg]["SeptiembreT"] + 
+						   	(int)$dato[$reg]["OctubreT"] + 
+						   	(int)$dato[$reg]["NoviembreT"] + 
+						   	(int)$dato[$reg]["DiciembreT"]));
+
+				$total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
+
+				echo'<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" readonly value="'.$total.'"></td>
 
 				<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 
 				<td>';?>
-<<<<<<< HEAD
-					{!!Form::select('Tercero_idAuditor',$cargoR, (isset($plantrabajoformulario) ? $plantrabajoformulario->Tercero_idAuditor : 0),["class" => "form-control", "placeholder" =>"Seleccione auditor del plan de trabajo"])!!}
-=======
 					{!!Form::select('Cargo_idResponsable[]',$cargo, (isset($plantrabajoformulario) ? $plantrabajoformulario->Cargo_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
->>>>>>> 5e4052d9cc94b6306d38b827a0056b315d7edc25
 				<?php 
 				echo '</td>
 				<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
@@ -730,11 +782,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
 	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["cumplimientoPlanTrabajoDetalle"]) ? $examen[$reg]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["metaPlanTrabajoDetalle"]) ? $examen[$reg]["metaPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td>';?>
-<<<<<<< HEAD
-							{!!Form::select('Tercero_idResponsable[]',$Tercero_idAuditor, (isset($plantrabajodetalleexamen) ? $examen[$reg]["idTercero"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el responsable"])!!}
-=======
 							{!!Form::select('Cargo_idResponsable[]',$Cargo_idResponsable, (isset($plantrabajodetalleexamen) ? $examen[$reg]["idCargo"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
->>>>>>> 5e4052d9cc94b6306d38b827a0056b315d7edc25
 						<?php 
 						echo '</td>
 	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$examen[$reg]["observacionPlanTrabajoDetalle"].'</textarea></td>
@@ -756,18 +804,6 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
   			}
   			else
   			{
-<<<<<<< HEAD
-				imprimirTabla('Accidente', $accidente, 'accidente',$Tercero_idAuditor, 3);
-				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Tercero_idAuditor, 9);
-				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Tercero_idAuditor, 43);
-				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Tercero_idAuditor, 22);
-				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Tercero_idAuditor, 24);
-				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Tercero_idAuditor, 32);
-				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Tercero_idAuditor, 36);	
-				imprimirTabla('Programas', $programa, 'programa', $Tercero_idAuditor, 40);	
-				imprimirTabla('Reporte ACPM', $acpm, 'acpm', $Tercero_idAuditor, 1);
-				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Tercero_idAuditor, 30);
-=======
 				imprimirTabla('Accidente', $accidente, 'accidente',$Cargo_idResponsable, 3);
 				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Cargo_idResponsable, 9);
 				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Cargo_idResponsable, 43);
@@ -778,7 +814,6 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
 				imprimirTabla('Programas', $programa, 'programa', $Cargo_idResponsable, 40);	
 				imprimirTabla('Reporte ACPM', $acpm, 'acpm', $Cargo_idResponsable, 1);
 				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Cargo_idResponsable, 30);
->>>>>>> 5e4052d9cc94b6306d38b827a0056b315d7edc25
 			}
 		?>
     </div>

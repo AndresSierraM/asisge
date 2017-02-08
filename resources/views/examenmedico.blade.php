@@ -11,6 +11,8 @@
 
     examenmedicoDetalle = (examenmedicoDetalle != '' ? JSON.parse(examenmedicoDetalle) : '');
 
+    eventochange = ['onchange','validarTamañoImagen(this.id, this.value)'];
+
     var valorExamenMedico = [0,'','','','',''];
 
     $(document).ready(function(){
@@ -61,6 +63,8 @@
         examenmedico.sololectura = [false,false,true,true,true,false,false,false,false];
       
         examenmedico.opciones = ['','','','','','','','',''];
+
+        examenmedico.funciones ['','','','','','',eventochange,'',''];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
 include public_path().'/ajax/guardarReporteAcpm.php';
-
+use Validator;
 use Input;
 use File;
 // include composer autoload
@@ -174,7 +174,7 @@ class ExamenMedicoController extends Controller
 
             
             $this->grabarDetalle($request, $id);
-            return redirect('/examenmedico');
+            // return redirect('/examenmedico');
         }    
     }
 
@@ -217,16 +217,46 @@ class ExamenMedicoController extends Controller
             $destinationPath = '/examenmedico/';
             if(isset($file))
             {
-                $filename = $destinationPath . $file->getClientOriginalName();
-                 
-                // $manager = new ImageManager();
-                // $manager->make($file->getRealPath())->save($filename);
-                \Storage::disk('local')->put($filename, \File::get($file));
-                $rutaImagen = 'examenmedico/'.$file->getClientOriginalName();
+                // $byte = filesize($file);
 
-                
-                $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
+                // $kb = $byte/1024;
 
+                // if ($kb >= '2.5') 
+                // {
+                //     echo "<script type='text/javascript'>alert('El archivo supera el tamaño maximo permitido.');</script>";
+                // }
+                // else
+                // {
+                //     echo "<script type='text/javascript'>alert('Guardar archivo.');</script>";
+                //     $filename = $destinationPath . $file->getClientOriginalName();
+                     
+                //     $manager = new ImageManager();
+                //     $manager->make($file->getRealPath())->save($filename);
+                    \Storage::disk('local')->put($filename, \File::get($file));
+                    $rutaImagen = 'examenmedico/'.$file->getClientOriginalName();
+
+                    
+                    $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
+                // }
+                // print_r($file);
+                // $validacion = Validator::make($request->all(), [
+                //         'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
+                // ]);
+
+                // if ($validacion->fails()) 
+                // {
+                //     return ('Supera el tamaño máximo permitido.'); 
+                // } 
+                // else 
+                // {
+                //     $manager = new ImageManager();
+                //     $manager->make($file->getRealPath())->save($filename);
+                //     \Storage::disk('local')->put($filename, \File::get($file));
+                //     $rutaImagen = 'examenmedico/'.$file->getClientOriginalName();
+
+                    
+                //     $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
+                // }
             }
             else
             {
