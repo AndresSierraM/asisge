@@ -16,6 +16,7 @@
 
     $grupoestado = DB::table('grupoestado')
             ->select(DB::raw('idGrupoEstado, codigoGrupoEstado, nombreGrupoEstado'))
+            ->where('Compania_idCompania','=',\Session::get("idCompania"))
             ->get();
 
     $row = array();

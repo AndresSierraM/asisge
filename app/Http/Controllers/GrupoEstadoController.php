@@ -50,7 +50,8 @@ class GrupoEstadoController extends Controller
         {
             \App\GrupoEstado::create([
             'codigoGrupoEstado' => $request['codigoGrupoEstado'],
-            'nombreGrupoEstado' => $request['nombreGrupoEstado']
+            'nombreGrupoEstado' => $request['nombreGrupoEstado'],
+            'Compania_idCompania' => \Session::get("idCompania")
             ]);
 
             $grupoEstado = \App\GrupoEstado::All()->last();
@@ -125,14 +126,15 @@ class GrupoEstadoController extends Controller
 
     protected function grabarDetalle($id, $request)
     {
-
+        // -----------------------------------
+        // ESTADOS
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        $idsEliminar = explode(',', $request['eliminarDetalle']);
+        $idsEliminar = explode(',', $request['eliminarEstado']);
         \App\EstadoCRM::whereIn('idEstadoCRM',$idsEliminar)->delete();
 
-        $contadorDetalle = count($request['nombreEstadoCRM']);
-        for($i = 0; $i < $contadorDetalle; $i++)
+        $contadorEstado = count($request['nombreEstadoCRM']);
+        for($i = 0; $i < $contadorEstado; $i++)
         {
             $indice = array(
              'idEstadoCRM' => $request['idEstadoCRM'][$i]);
@@ -142,7 +144,101 @@ class GrupoEstadoController extends Controller
             'nombreEstadoCRM' => $request['nombreEstadoCRM'][$i],
             'tipoEstadoCRM' => $request['tipoEstadoCRM'][$i] );
 
-            $preguntas = \App\EstadoCRM::updateOrCreate($indice, $data);
+            $guardar = \App\EstadoCRM::updateOrCreate($indice, $data);
+
+        }
+
+
+        // -----------------------------------
+        // EVENTOS
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarEvento']);
+        \App\EventoCRM::whereIn('idEventoCRM',$idsEliminar)->delete();
+
+        $contadorEvento = count($request['nombreEventoCRM']);
+        for($i = 0; $i < $contadorEvento; $i++)
+        {
+            $indice = array(
+             'idEventoCRM' => $request['idEventoCRM'][$i]);
+
+            $data = array(
+             'GrupoEstado_idGrupoEstado' => $id,
+            'codigoEventoCRM' => $request['codigoEventoCRM'][$i],
+            'nombreEventoCRM' => $request['nombreEventoCRM'][$i] );
+
+            $guardar = \App\EventoCRM::updateOrCreate($indice, $data);
+
+        }
+
+
+        // -----------------------------------
+        // CATEGORIAS
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarCategoria']);
+        \App\CategoriaCRM::whereIn('idCategoriaCRM',$idsEliminar)->delete();
+
+        $contadorCategoria = count($request['nombreCategoriaCRM']);
+        for($i = 0; $i < $contadorCategoria; $i++)
+        {
+            $indice = array(
+             'idCategoriaCRM' => $request['idCategoriaCRM'][$i]);
+
+            $data = array(
+             'GrupoEstado_idGrupoEstado' => $id,
+            'codigoCategoriaCRM' => $request['codigoCategoriaCRM'][$i],
+            'nombreCategoriaCRM' => $request['nombreCategoriaCRM'][$i] );
+
+            $guardar = \App\CategoriaCRM::updateOrCreate($indice, $data);
+
+        }
+
+
+        // -----------------------------------
+        // ORIGENES
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarOrigen']);
+        \App\OrigenCRM::whereIn('idOrigenCRM',$idsEliminar)->delete();
+
+        $contadorOrigen = count($request['nombreOrigenCRM']);
+        for($i = 0; $i < $contadorOrigen; $i++)
+        {
+            $indice = array(
+             'idOrigenCRM' => $request['idOrigenCRM'][$i]);
+
+            $data = array(
+             'GrupoEstado_idGrupoEstado' => $id,
+            'codigoOrigenCRM' => $request['codigoOrigenCRM'][$i],
+            'nombreOrigenCRM' => $request['nombreOrigenCRM'][$i] );
+
+            $guardar = \App\OrigenCRM::updateOrCreate($indice, $data);
+
+        }
+
+
+        // -----------------------------------
+        // ACUERDOS DE SERVICIO
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarAcuerdo']);
+        \App\AcuerdoServicio::whereIn('idAcuerdoServicio',$idsEliminar)->delete();
+
+        $contadorAcuerdoServicio = count($request['nombreAcuerdoServicio']);
+        for($i = 0; $i < $contadorAcuerdoServicio; $i++)
+        {
+            $indice = array(
+             'idAcuerdoServicio' => $request['idAcuerdoServicio'][$i]);
+
+            $data = array(
+             'GrupoEstado_idGrupoEstado' => $id,
+            'codigoAcuerdoServicio' => $request['codigoAcuerdoServicio'][$i],
+            'nombreAcuerdoServicio' => $request['nombreAcuerdoServicio'][$i],
+            'tiempoAcuerdoServicio' => $request['tiempoAcuerdoServicio'][$i],
+            'unidadTiempoAcuerdoServicio' => $request['unidadTiempoAcuerdoServicio'][$i] );
+
+            $guardar = \App\AcuerdoServicio::updateOrCreate($indice, $data);
 
         }
     }

@@ -9,7 +9,7 @@ class LineaNegocio extends Model
     protected $table = 'lineanegocio';
     protected $primaryKey = 'idLineaNegocio';
 
-    protected $fillable = ['codigoLineaNegocio', 'nombreLineaNegocio'];
+    protected $fillable = ['codigoLineaNegocio', 'nombreLineaNegocio', 'Compania_idCompania'];
 
     public $timestamps = false;
 

@@ -12,32 +12,133 @@
 <script>
   var estadoCRM = '<?php echo (isset($grupoEstado) ? json_encode($grupoEstado->estadoCRM) : "");?>';
   estadoCRM = (estadoCRM != '' ? JSON.parse(estadoCRM) : '');
-  var valorDetalle = [0,'', ''];
+
+  var eventoCRM = '<?php echo (isset($grupoEstado) ? json_encode($grupoEstado->eventoCRM) : "");?>';
+  eventoCRM = (eventoCRM != '' ? JSON.parse(eventoCRM) : '');
+
+  var origenCRM = '<?php echo (isset($grupoEstado) ? json_encode($grupoEstado->origenCRM) : "");?>';
+  origenCRM = (origenCRM != '' ? JSON.parse(origenCRM) : '');
+
+  var categoriaCRM = '<?php echo (isset($grupoEstado) ? json_encode($grupoEstado->categoriaCRM) : "");?>';
+  categoriaCRM = (categoriaCRM != '' ? JSON.parse(categoriaCRM) : '');
+
+  var acuerdoservicio = '<?php echo (isset($grupoEstado) ? json_encode($grupoEstado->acuerdoservicio) : "");?>';
+  acuerdoservicio = (acuerdoservicio != '' ? JSON.parse(acuerdoservicio) : '');
+
+  var valorEstado = [0,'', ''];
+  var valorEvento = [0,'', ''];
+  var valorOrigen = [0,'', ''];
+  var valorCategoria = [0,'', ''];
+  var valorAcuerdo = [0,'', '', '', ''];
   
   var tipoestado = [["Nuevo","Pendiente","En Proceso","Cancelado","Fallido","Exitoso"], ["Nuevo","Pendiente","En Proceso","Cancelado","Fallido","Exitoso"]];
 
   $(document).ready(function(){
     
-    detalle = new Atributos('detalle','contenedor_detalle','detalle_');
+    estados = new Atributos('estados','contenedor_estados','estados_');
 
-    detalle.altura = '36px;';
-    detalle.campoid = 'idEstadoCRM';
-    detalle.campoEliminacion = 'eliminarDetalle';
+    estados.altura = '36px;';
+    estados.campoid = 'idEstadoCRM';
+    estados.campoEliminacion = 'eliminarDetalle';
 
-    detalle.campos = ['idEstadoCRM','nombreEstadoCRM','tipoEstadoCRM'];
-    detalle.etiqueta = ['input','input','select'];
-    detalle.tipo = ['hidden','text',''];
-    detalle.estilo = ['','width: 400px;height:35px;','width: 400px;height:35px;'];
-    detalle.clase = ['','',''];
-    detalle.sololectura = [false,false,false];
-    detalle.opciones = ['','',tipoestado];
-    detalle.completar = ['off', 'off','off'];
+    estados.campos = ['idEstadoCRM','nombreEstadoCRM','tipoEstadoCRM'];
+    estados.etiqueta = ['input','input','select'];
+    estados.tipo = ['hidden','text',''];
+    estados.estilo = ['','width: 400px;height:35px;','width: 400px;height:35px;'];
+    estados.clase = ['','',''];
+    estados.sololectura = [false,false,false];
+    estados.opciones = ['','',tipoestado];
+    estados.completar = ['off', 'off','off'];
    
     for(var j=0, k = estadoCRM.length; j < k; j++)
     {
-        detalle.agregarCampos(JSON.stringify(estadoCRM[j]),'L');
+        estados.agregarCampos(JSON.stringify(estadoCRM[j]),'L');
     }
+
     document.getElementById('registros').value = j ;
+
+    eventos = new Atributos('eventos','contenedor_eventos','eventos_');
+
+    eventos.altura = '36px;';
+    eventos.campoid = 'idEventoCRM';
+    eventos.campoEliminacion = 'eliminarEvento';
+
+    eventos.campos = ['idEventoCRM','codigoEventoCRM','nombreEventoCRM'];
+    eventos.etiqueta = ['input','input','input'];
+    eventos.tipo = ['hidden','text','text'];
+    eventos.estilo = ['','width: 200px;height:35px;','width: 600px;height:35px;'];
+    eventos.clase = ['','',''];
+    eventos.sololectura = [false,false,false];
+    eventos.opciones = ['','',''];
+    eventos.completar = ['off', 'off','off'];
+   
+    for(var j=0, k = eventoCRM.length; j < k; j++)
+    {
+        eventos.agregarCampos(JSON.stringify(eventoCRM[j]),'L');
+    }
+
+
+    categorias = new Atributos('categorias','contenedor_categorias','categorias_');
+
+    categorias.altura = '36px;';
+    categorias.campoid = 'idCategoriaCRM';
+    categorias.campoEliminacion = 'eliminarCategoria';
+
+    categorias.campos = ['idCategoriaCRM','codigoCategoriaCRM','nombreCategoriaCRM'];
+    categorias.etiqueta = ['input','input','input'];
+    categorias.tipo = ['hidden','text','text'];
+    categorias.estilo = ['','width: 200px;height:35px;','width: 600px;height:35px;'];
+    categorias.clase = ['','',''];
+    categorias.sololectura = [false,false,false];
+    categorias.opciones = ['','',''];
+    categorias.completar = ['off', 'off','off'];
+   
+    for(var j=0, k = categoriaCRM.length; j < k; j++)
+    {
+        categorias.agregarCampos(JSON.stringify(categoriaCRM[j]),'L');
+    }
+
+    origenes = new Atributos('origenes','contenedor_origenes','origenes_');
+
+    origenes.altura = '36px;';
+    origenes.campoid = 'idOrigenCRM';
+    origenes.campoEliminacion = 'eliminarOrigen';
+
+    origenes.campos = ['idOrigenCRM','codigoOrigenCRM','nombreOrigenCRM'];
+    origenes.etiqueta = ['input','input','input'];
+    origenes.tipo = ['hidden','text','text'];
+    origenes.estilo = ['','width: 200px;height:35px;','width: 600px;height:35px;'];
+    origenes.clase = ['','',''];
+    origenes.sololectura = [false,false,false];
+    origenes.opciones = ['','',''];
+    origenes.completar = ['off', 'off','off'];
+   
+    for(var j=0, k = origenCRM.length; j < k; j++)
+    {
+        origenes.agregarCampos(JSON.stringify(origenCRM[j]),'L');
+    }
+
+
+    unidadTiempo = [['Minutos', 'Horas', 'Dias'],['Minutos', 'Horas', 'Dias']];
+    acuerdos = new Atributos('acuerdos','contenedor_acuerdos','acuerdos_');
+
+    acuerdos.altura = '36px;';
+    acuerdos.campoid = 'idAcuerdoServicio';
+    acuerdos.campoEliminacion = 'eliminarAcuerdoServicio';
+
+    acuerdos.campos = ['idAcuerdoServicio','codigoAcuerdoServicio','nombreAcuerdoServicio', 'tiempoAcuerdoServicio', 'unidadTiempoAcuerdoServicio'];
+    acuerdos.etiqueta = ['input','input','input','input','select'];
+    acuerdos.tipo = ['hidden','text','text','text',''];
+    acuerdos.estilo = ['','width: 200px;height:35px;','width: 400px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;'];
+    acuerdos.clase = ['','','','',''];
+    acuerdos.sololectura = [false,false,false,false,false];
+    acuerdos.opciones = ['','','','',unidadTiempo];
+    acuerdos.completar = ['off', 'off','off','off','off'];
+   
+    for(var j=0, k = acuerdoservicio.length; j < k; j++)
+    {
+        acuerdos.agregarCampos(JSON.stringify(acuerdoservicio[j]),'L');
+    }
 
   });
 </script>
@@ -83,23 +184,114 @@
       </div>
       
       
-      <div class="form-group" id='test'>
-        <div class="col-sm-12">
-          <div class="row show-grid">
-              <div class="col-md-1" style="width: 40px;" onclick="detalle.agregarCampos(valorDetalle,'A')">
-                <span class="glyphicon glyphicon-plus"></span>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#estado">Estados</a></li>
+        <li><a data-toggle="tab" href="#evento">Eventos</a></li>
+        <li><a data-toggle="tab" href="#categoria">Categorías</a></li>
+        <li><a data-toggle="tab" href="#origen">Orígenes</a></li>
+        <li><a data-toggle="tab" href="#acuerdo">Acuerdos de Servicio</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="estado" class="tab-pane fade in active">
+          
+          <div class="form-group" id='test'>
+            <div class="col-sm-12">
+              <div class="row show-grid">
+                  <div class="col-md-1" style="width: 40px;" onclick="estados.agregarCampos(valorEstado,'A')">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </div>
+                  <div class="col-md-1" style="width: 400px;">Estado</div>
+                  <div class="col-md-1" style="width: 400px;">Tipo</div>
+                  <div id="contenedor_estados">
+                  </div>
               </div>
-              <div class="col-md-1" style="width: 400px;">Estado</div>
-              <div class="col-md-1" style="width: 400px;">Tipo</div>
-              <div id="contenedor_detalle">
-              </div>
-          </div>
+            </div>
+          </div> 
+
         </div>
-      </div> 
+        <div id="evento" class="tab-pane fade">
+          
+          <div class="form-group" id='test'>
+            <div class="col-sm-12">
+              <div class="row show-grid">
+                  <div class="col-md-1" style="width: 40px;" onclick="eventos.agregarCampos(valorEvento,'A')">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </div>
+                  <div class="col-md-1" style="width: 200px;">Código</div>
+                  <div class="col-md-1" style="width: 600px;">Nombre</div>
+                  <div id="contenedor_eventos">
+                  </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <div id="categoria" class="tab-pane fade">
+          
+          <div class="form-group" id='test'>
+            <div class="col-sm-12">
+              <div class="row show-grid">
+                  <div class="col-md-1" style="width: 40px;" onclick="categorias.agregarCampos(valorCategoria,'A')">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </div>
+                  <div class="col-md-1" style="width: 200px;">Código</div>
+                  <div class="col-md-1" style="width: 600px;">Nombre</div>
+                  <div id="contenedor_categorias">
+                  </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <div id="origen" class="tab-pane fade">
+          
+          <div class="form-group" id='test'>
+            <div class="col-sm-12">
+              <div class="row show-grid">
+                  <div class="col-md-1" style="width: 40px;" onclick="origenes.agregarCampos(valorOrigen,'A')">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </div>
+                  <div class="col-md-1" style="width: 200px;">Código</div>
+                  <div class="col-md-1" style="width: 600px;">Nombre</div>
+                  <div id="contenedor_origenes">
+                  </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <div id="acuerdo" class="tab-pane fade">
+          
+          <div class="form-group" id='test'>
+            <div class="col-sm-12">
+              <div class="row show-grid">
+                  <div class="col-md-1" style="width: 40px;" onclick="acuerdos.agregarCampos(valorAcuerdo,'A')">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </div>
+                  <div class="col-md-1" style="width: 200px;">Código</div>
+                  <div class="col-md-1" style="width: 400px;">Nombre</div>
+                  <div class="col-md-1" style="width: 200px;">Tiempo</div>
+                  <div class="col-md-1" style="width: 200px;">Unidad de Tiempo</div>
+                  <div id="contenedor_acuerdos">
+                  </div>
+              </div>
+            </div>
+          </div> 
+
+        </div>
+
+      </div>
+
+      
     </fieldset>
   
-      @if(isset($grupoEstado))
-      {!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+    @if(isset($grupoEstado))
+      @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+        {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
+      @else
+        {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
+      @endif
     @else
       {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
     @endif

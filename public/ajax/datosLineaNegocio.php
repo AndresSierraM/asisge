@@ -2,6 +2,7 @@
 
     $lineanegocio = DB::table('lineanegocio')
             ->select(DB::raw('idLineaNegocio, codigoLineaNegocio, nombreLineaNegocio'))
+            ->where('Compania_idCompania','=',\Session::get("idCompania"))
             ->get();
 
     $row = array();

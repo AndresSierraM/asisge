@@ -2,6 +2,7 @@
 
     $sectorempresa = DB::table('sectorempresa')
             ->select(DB::raw('idSectorEmpresa, codigoSectorEmpresa, nombreSectorEmpresa'))
+            ->where('Compania_idCompania','=',\Session::get("idCompania"))
             ->get();
 
     $row = array();

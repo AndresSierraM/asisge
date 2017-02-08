@@ -25,7 +25,7 @@ class LineaNegocioRequest extends Request
     {
         
         return[
-            "codigoLineaNegocio" => "required|string|max:20|unique:lineanegocio,codigoLineaNegocio,".$this->get('idLineaNegocio') .",idLineaNegocio",
+            "codigoLineaNegocio" => "required|string|max:20|unique:lineanegocio,codigoLineaNegocio,".$this->get('idLineaNegocio') .",idLineaNegocio,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreLineaNegocio" => "required|string|max:80"
         ];
     }

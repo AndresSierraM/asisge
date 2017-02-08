@@ -9,7 +9,7 @@ class Zona extends Model
     protected $table = 'zona';
     protected $primaryKey = 'idZona';
 
-    protected $fillable = ['codigoZona', 'nombreZona'];
+    protected $fillable = ['codigoZona', 'nombreZona', 'Compania_idCompania'];
 
     public $timestamps = false;
 }

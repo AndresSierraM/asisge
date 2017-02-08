@@ -26,7 +26,7 @@ class GrupoEstadoRequest extends Request
         $detalle = count($this->get('nombreEstadoCRM'));
         
         $validacion = array(
-            "codigoGrupoEstado" => "required|unique:grupoestado,codigoGrupoEstado,".$this->get('idGrupoEstado') .",idGrupoEstado",
+            "codigoGrupoEstado" => "required|unique:grupoestado,codigoGrupoEstado,".$this->get('idGrupoEstado') .",idGrupoEstado,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreGrupoEstado" => "required|string|max:80");
 
         for($i = 0; $i < $detalle; $i++)

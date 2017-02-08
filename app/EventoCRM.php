@@ -9,7 +9,7 @@ class EventoCRM extends Model
     protected $table = 'eventocrm';
     protected $primaryKey = 'idEventoCRM';
 
-    protected $fillable = ['codigoEventoCRM', 'nombreEventoCRM'];
+    protected $fillable = ['codigoEventoCRM', 'nombreEventoCRM','GrupoEstado_idGrupoEstado'];
 
     public $timestamps = false;
 }

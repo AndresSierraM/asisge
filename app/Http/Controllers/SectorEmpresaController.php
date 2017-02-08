@@ -50,7 +50,8 @@ class SectorEmpresaController extends Controller
     {
         \App\SectorEmpresa::create([
             'codigoSectorEmpresa' => $request['codigoSectorEmpresa'],
-            'nombreSectorEmpresa' => $request['nombreSectorEmpresa']
+            'nombreSectorEmpresa' => $request['nombreSectorEmpresa'],
+            'Compania_idCompania' => \Session::get("idCompania")
             ]);
         return redirect('/sectorempresa');
     }

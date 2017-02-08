@@ -81,7 +81,8 @@ for($i = 0; $i < count($campos); $i++)
 ?>
 @extends('layouts.grid')
 @section('titulo')<h3 id="titulo"><center><?php 
-echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.$TipoEstado.']';?></center></h3>@stop
+echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
+($TipoEstado == '' ? 'Todos' : $TipoEstado).']';?></center></h3>@stop
 @section('content')
 
 
@@ -108,10 +109,8 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
         <div class="container">
             <div class="row">
                 <div class="container">
-                    <a href="#" onclick="mostrarTableroCRM(<?php echo $id;?>);" title="Mostrar Nuevas">
-                        <img  src='images/iconoscrm/dashboardcrm.png' style="width:28px; height:28px;">
-                    </a>
-                    <br>
+                    <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'', modificar, eliminar, consultar, aprobar);" title="Mostrar Todos">
+                        <img  src='images/iconoscrm/sin_filtro.png' style="width:28px; height:28px;">
                     <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Nuevo', modificar, eliminar, consultar, aprobar);" title="Mostrar Nuevas">
                         <img  src='images/iconoscrm/estado_nuevo.png' style="width:28px; height:28px;">
                     </a>
@@ -129,6 +128,9 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
                     </a>
                     <a href="#" onclick="cambiarEstado(<?php echo $id;?>,'Exitoso', modificar, eliminar, consultar, aprobar);" title="Mostrar Finalizadas Con Exito / Exitosas">
                         <img  src='images/iconoscrm/estado_exitoso.png' style="width:28px; height:28px;">
+                    </a>
+                    <a style="float: right;" href="#" onclick="mostrarTableroCRM(<?php echo $id;?>);" title="Mostrar Nuevas">
+                        <img  src='images/iconoscrm/dashboardcrm.png' style="width:36px; height:36px;">
                     </a>
                                  
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
@@ -206,7 +208,7 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
 
 
         var table = $('#tmovimientocrm').DataTable( {
-            "order": [[ 1, "asc" ]],
+            "order": [[ 2, "desc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
@@ -237,6 +239,8 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
                     }
         });
          
+
+        
         $('a.toggle-vis').on( 'click', function (e) {
             e.preventDefault();
      

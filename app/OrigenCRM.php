@@ -9,7 +9,7 @@ class OrigenCRM extends Model
     protected $table = 'origencrm';
     protected $primaryKey = 'idOrigenCRM';
 
-    protected $fillable = ['codigoOrigenCRM', 'nombreOrigenCRM'];
+    protected $fillable = ['codigoOrigenCRM', 'nombreOrigenCRM','GrupoEstado_idGrupoEstado'];
 
     public $timestamps = false;
 }

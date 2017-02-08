@@ -25,7 +25,7 @@ class ZonaRequest extends Request
     {
         
         return[
-            "codigoZona" => "required|string|max:20|unique:zona,codigoZona,".$this->get('idZona') .",idZona",
+            "codigoZona" => "required|string|max:20|unique:zona,codigoZona,".$this->get('idZona') .",idZona,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreZona" => "required|string|max:80"
         ];
     }

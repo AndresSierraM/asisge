@@ -25,7 +25,7 @@ class SectorEmpresaRequest extends Request
     {
         
         return[
-            "codigoSectorEmpresa" => "required|string|max:20|unique:sectorempresa,codigoSectorEmpresa,".$this->get('idSectorEmpresa') .",idSectorEmpresa",
+            "codigoSectorEmpresa" => "required|string|max:20|unique:sectorempresa,codigoSectorEmpresa,".$this->get('idSectorEmpresa') .",idSectorEmpresa,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreSectorEmpresa" => "required|string|max:80"        ];
     }
 }

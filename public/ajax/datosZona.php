@@ -2,6 +2,7 @@
 
     $zona = DB::table('zona')
             ->select(DB::raw('idZona, codigoZona, nombreZona'))
+            ->where('Compania_idCompania','=',\Session::get("idCompania"))
             ->get();
 
     $row = array();

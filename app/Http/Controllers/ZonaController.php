@@ -50,7 +50,8 @@ class ZonaController extends Controller
     {
         \App\Zona::create([
             'codigoZona' => $request['codigoZona'],
-            'nombreZona' => $request['nombreZona']
+            'nombreZona' => $request['nombreZona'],
+            'Compania_idCompania' => \Session::get("idCompania")
             ]);
         return redirect('/zona');
     }

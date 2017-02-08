@@ -27,6 +27,9 @@ class MovimientoCRMRequest extends Request
         $id = $this->get('DocumentoCRM_idDocumentoCRM'); 
         $rolUsuario = $this->get('rolUsuario'); 
 
+
+        // Consultamos los campos que deben ser obligatorios, 
+        // excluyendo los que se muestran en el modal de asignacion de asesor
         $campos = DB::select(
             'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, mostrarGridDocumentoCRMCampo, 
                 relacionTablaCampoCRM, relacionNombreCampoCRM, relacionAliasCampoCRM
@@ -37,6 +40,7 @@ class MovimientoCRMRequest extends Request
             on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
             where documentocrm.idDocumentoCRM = '.$id.' and 
                obligatorioDocumentoCRMCampo = 1  and 
+               nombreCampoCRM NOT IN ("Tercero_idAsesor","AcuerdoServicio_idAcuerdoServicio","Tercero_idSupervisor") and 
                 '.$rolUsuario.'DocumentoCRMCampo = 1');
 
         $validacion = array();
@@ -67,6 +71,7 @@ class MovimientoCRMRequest extends Request
             on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
             where documentocrm.idDocumentoCRM = '.$id.' and 
                 obligatorioDocumentoCRMCampo = 1  and 
+                nombreCampoCRM NOT IN ("Tercero_idAsesor","AcuerdoServicio_idAcuerdoServicio","Tercero_idSupervisor") and 
                 '.$rolUsuario.'DocumentoCRMCampo = 1');
 
         $mensajes = array();

@@ -15,6 +15,54 @@ class MovimientoCRM extends Model
 
     public $timestamps = false;
 
+
+    public function AcuerdoServicio()
+    {
+        return $this->hasOne('App\AcuerdoServicio','idAcuerdoServicio','AcuerdoServicio_idAcuerdoServicio');
+    }
+
+    public function OrigenCRM()
+    {
+        return $this->hasOne('App\OrigenCRM','idOrigenCRM','OrigenCRM_idOrigenCRM');
+    }
+    
+    public function TerceroSolicitante()
+    {
+        return $this->hasOne('App\Tercero','idTercero','Tercero_idSolicitante');
+    }
+    
+    public function TerceroSupervisor()
+    {
+        return $this->hasOne('App\Tercero','idTercero','Tercero_idSupervisor');
+    }
+
+    public function TerceroAsesor()
+    {
+        return $this->hasOne('App\Tercero','idTercero','Tercero_idAsesor');
+    }
+
+    public function EventoCRM()
+    {
+        return $this->hasOne('App\EventoCRM','idEventoCRM','EventoCRM_idEventoCRM');
+    }
+
+    public function CategoriaCRM()
+    {
+        return $this->hasOne('App\CategoriaCRM','idCategoriaCRM','CategoriaCRM_idCategoriaCRM');
+    }
+
+    public function LineaNegocio()
+    {
+        return $this->hasOne('App\LineaNegocio','idLineaNegocio','LineaNegocio_idLineaNegocio');
+    }
+
+     public function EstadoCRM()
+    {
+        return $this->hasOne('App\EstadoCRM','idEstadoCRM','EstadoCRM_idEstadoCRM');
+    }
+
+
+
     public function movimientoCRMAsistentes()
     {
         return $this->hasMany('App\MovimientoCRMAsistente','MovimientoCRM_idMovimientoCRM');
@@ -30,50 +78,5 @@ class MovimientoCRM extends Model
         return $this->hasMany('App\MovimientoCRMCargos','MovimientoCRM_idMovimientoCRM');
     }
 
-
-    // Relacion nueva Modelo MovimientoCRMCargos
-
-    public function AcuerdoServicio()
-    {
-        return $this->hasOne('App\AcuerdoServicio','idAcuerdoServicio');
-    }
-
-    public function OrigenCRM()
-    {
-        return $this->hasOne('App\OrigenCRM','idOrigenCRM');
-    }
-    
-    public function TerceroSolicitante()
-    {
-        return $this->hasOne('App\Tercero','idTercero');
-    }
-    
-    public function TerceroSupervisor()
-    {
-        return $this->hasOne('App\Tercero','idTercero');
-    }
-
-    public function TerceroAsesor()
-    {
-        return $this->hasOne('App\Tercero','idTercero');
-    }
-
-    public function CategoriaCRM()
-    {
-        return $this->hasOne('App\CategoriaCRM','idCategoriaCRM');
-    }
-
-    
-    public function EventoCRM()
-    {
-        return $this->hasOne('App\EventoCRM','idEventoCRM');
-    }
-
-    public function LineaNegocio()
-    {
-        return $this->hasOne('App\LineaNegocio','idLineaNegocio');
-    }
-
-    
     
 }

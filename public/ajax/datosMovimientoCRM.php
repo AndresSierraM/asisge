@@ -35,7 +35,7 @@
 
     $TipoEstado = isset($_GET["TipoEstado"])
                 ? $_GET["TipoEstado"] 
-                : 'Nuevo';
+                : '';
 
     $campos = DB::select(
     'SELECT codigoDocumentoCRM, nombreDocumentoCRM, nombreCampoCRM,descripcionCampoCRM, 
@@ -99,8 +99,7 @@ for($i = 0; $i < count($campos); $i++)
                  movimientocrm.Tercero_idSupervisor = '.\Session::get('idTercero'). ' or 
                  movimientocrm.Tercero_idAsesor = '.\Session::get('idTercero'). ') OR 
                  '.$aprobar.' = 1) '. 
-                ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : '').
-        ' Order By numeroMovimientoCRM DESC ' );
+                ($TipoEstado != '' ? ' and estadocrm.tipoEstadoCRM = "'.$TipoEstado.'"' : ''));
 
 
     $row = array();

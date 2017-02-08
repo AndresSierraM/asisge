@@ -50,7 +50,8 @@ class LineaNegocioController extends Controller
     {
         \App\LineaNegocio::create([
             'codigoLineaNegocio' => $request['codigoLineaNegocio'],
-            'nombreLineaNegocio' => $request['nombreLineaNegocio']
+            'nombreLineaNegocio' => $request['nombreLineaNegocio'],
+            'Compania_idCompania' => \Session::get("idCompania")
             ]);
         return redirect('/lineanegocio');
     }

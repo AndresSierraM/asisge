@@ -1,5 +1,6 @@
 <?php 
 
+					              
 function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 {
 	// recorremos el array verificando si en la columna nombreCampoCRM existe el valor del parametro $campo
@@ -132,7 +133,8 @@ $fechahora = Carbon\Carbon::now();
 ?>
 
 @extends('layouts.vista')
-@section('titulo')<h3 id="titulo"><center>
+@section('titulo')<h3 id="titulo">
+<center>
 <?php 
 	echo '('.$arrayCampos[0]["codigoDocumentoCRM"].') '.$arrayCampos[0]["nombreDocumentoCRM"].'<br>'.
 		strtoupper($rolUsuario);
@@ -152,7 +154,6 @@ $fechahora = Carbon\Carbon::now();
 <script>
 	
 	var movimientoCRMAsistentes = '<?php echo (isset($movimientocrm) ? json_encode($movimientocrm->movimientoCRMAsistentes) : "");?>';
-
 	movimientoCRMAsistentes = (movimientoCRMAsistentes != '' ? JSON.parse(movimientoCRMAsistentes) : '');
 
 	var movimientoCRMArchivo = '<?php echo (isset($movimientocrm) ? json_encode($movimientocrm->movimientoCRMArchivos) : "");?>';
@@ -249,6 +250,8 @@ $fechahora = Carbon\Carbon::now();
 							      	{!!Form::hidden('DocumentoCRM_idDocumentoCRM', $id, array('id' => 'DocumentoCRM_idDocumentoCRM'))!!}
 							      	{!!Form::hidden('eliminardocumentocrmcargo', $id, array('id' => 'eliminardocumentocrmcargo'))!!}
 							      	{!!Form::hidden('rolUsuario', $rolUsuario, array('id' => 'rolUsuario'))!!}
+							      	{!!Form::hidden('nombreDocumentoCRM', $arrayCampos[0]["nombreDocumentoCRM"], array('id' => 'nombreDocumentoCRM'))!!}
+
 								</div>
 							</div>
 						</div>
@@ -272,14 +275,21 @@ $fechahora = Carbon\Carbon::now();
 						?>
 						<div class="col-sm-6">
 							<div class="col-sm-4">
-								{!!Form::label('OrigenCRM_idOrigenCRM', 'Origen', array())!!}
+								{!!Form::label('OrigenCRM_idOrigenCRMSel', 'Origen', array())!!}
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('OrigenCRM_idOrigenCRM',$origen, (isset($movimientocrm) ? $movimientocrm->OrigenCRM_idOrigenCRM : 0),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'OrigenCRM_idOrigenCRM', $rolUsuario,'select')])!!}
+					              	
+					              	@if(mostrarCampo($arrayCampos, 'OrigenCRM_idOrigenCRM', $rolUsuario,'select') == '')
+					              		{!!Form::select('OrigenCRM_idOrigenCRM',$origen, (isset($movimientocrm) ? $movimientocrm->OrigenCRM_idOrigenCRM : null),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('OrigenCRM_idOrigenCRM', (isset($movimientocrm) ? $movimientocrm->OrigenCRM_idOrigenCRM : null), array('id' => 'OrigenCRM_idOrigenCRM'))!!}
+										{!!Form::text('nombreOrigenCRM',(isset($movimientocrm->OrigenCRM->nombreOrigenCRM) ? $movimientocrm->OrigenCRM->nombreOrigenCRM : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+					              	
 
 								</div>
 							</div>
@@ -320,7 +330,7 @@ $fechahora = Carbon\Carbon::now();
 						<script type="text/javascript">
 							$('#fechaEstimadaSolucionMovimientoCRM').datetimepicker(({
 								defaultDate: new Date(),
-    							format:'DD/MM/YYYY HH:mm'
+    							format:'YYYY-MM-DD HH:mm'
 							}));
 						</script>
 						<?php
@@ -345,7 +355,7 @@ $fechahora = Carbon\Carbon::now();
 						<script type="text/javascript">
 							$('#fechaVencimientoMovimientoCRM').datetimepicker(({
 								defaultDate: new Date(),
-    							format:'DD/MM/YYYY HH:mm'
+    							format:'YYYY-MM-DD HH:mm'
 							}));
 						</script>
 						<?php
@@ -401,7 +411,13 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('prioridadMovimientoCRM',['Alta'=>'Alta','Media'=>'Media','Baja'=>'Baja'], (isset($movimientocrm) ? $movimientocrm->prioridadMovimientoCRM : 'Baja'),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'prioridadMovimientoCRM', $rolUsuario,'select')])!!}
+					              	@if(mostrarCampo($arrayCampos, 'prioridadMovimientoCRM', $rolUsuario,'select') == '')
+					              		{!!Form::select('prioridadMovimientoCRM',['Alta'=>'Alta','Media'=>'Media','Baja'=>'Baja'], (isset($movimientocrm) ? $movimientocrm->prioridadMovimientoCRM : 'Baja'),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('prioridadMovimientoCRM', (isset($movimientocrm) ? $movimientocrm->prioridadMovimientoCRM : null), array('id' => 'prioridadMovimientoCRM'))!!}
+										{!!Form::text('nombrePrioridadCRM',(isset($movimientocrm) ? $movimientocrm->prioridadMovimientoCRM : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+					              	
 
 								</div>
 							</div>
@@ -421,7 +437,14 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('Tercero_idSolicitante',$solicitante, (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : $tercero['idTercero']),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'Tercero_idSolicitante', $rolUsuario,'select')])!!}
+					              	@if(mostrarCampo($arrayCampos, 'Tercero_idSolicitante', $rolUsuario,'select') == '')
+					              		{!!Form::select('Tercero_idSolicitante',$solicitante, (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : $tercero['idTercero']),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('Tercero_idSolicitante', (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : null), array('id' => 'Tercero_idSolicitante'))!!}
+										{!!Form::text('nombreSolicitante',(isset($movimientocrm->TerceroSolicitante->nombreCompletoTercero) ? $movimientocrm->TerceroSolicitante->nombreCompletoTercero : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+
+				              	
 
 								</div>
 							</div>
@@ -442,7 +465,14 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('CategoriaCRM_idCategoriaCRM',$categoria, (isset($movimientocrm) ? $movimientocrm->CategoriaCRM_idCategoriaCRM : 0),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'CategoriaCRM_idCategoriaCRM', $rolUsuario,'select')])!!}
+					              	@if(mostrarCampo($arrayCampos, 'CategoriaCRM_idCategoriaCRM', $rolUsuario,'select') == '')
+					              		{!!Form::select('CategoriaCRM_idCategoriaCRM',$categoria, (isset($movimientocrm) ? $movimientocrm->CategoriaCRM_idCategoriaCRM : null),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('CategoriaCRM_idCategoriaCRM', (isset($movimientocrm) ? $movimientocrm->CategoriaCRM_idCategoriaCRM : null), array('id' => 'CategoriaCRM_idCategoriaCRM'))!!}
+										{!!Form::text('nombreCategoriaCRM',(isset($movimientocrm->CategoriaCRM->nombreCategoriaCRM) ? $movimientocrm->CategoriaCRM->nombreCategoriaCRM : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+
+					              	
 
 								</div>
 							</div>
@@ -462,7 +492,13 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('EventoCRM_idEventoCRM',$evento, (isset($movimientocrm) ? $movimientocrm->EventoCRM_idEventoCRM : 0),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'EventoCRM_idEventoCRM', $rolUsuario,'select')])!!}
+					              	@if(mostrarCampo($arrayCampos, 'EventoCRM_idEventoCRM', $rolUsuario,'select') == '')
+					              		{!!Form::select('EventoCRM_idEventoCRM',$evento, (isset($movimientocrm) ? $movimientocrm->EventoCRM_idEventoCRM : null),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('EventoCRM_idEventoCRM', (isset($movimientocrm) ? $movimientocrm->EventoCRM_idEventoCRM : null), array('id' => 'EventoCRM_idEventoCRM'))!!}
+										{!!Form::text('nombreEventoCRM',(isset($movimientocrm->EventoCRM->nombreEventoCRM) ? $movimientocrm->EventoCRM->nombreEventoCRM : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+					              	
 
 								</div>
 							</div>
@@ -482,7 +518,13 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('LineaNegocio_idLineaNegocio',$lineanegocio, (isset($movimientocrm) ? $movimientocrm->LineaNegocio_idLineaNegocio : 0),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'LineaNegocio_idLineaNegocio', $rolUsuario,'select')])!!}
+					              	@if(mostrarCampo($arrayCampos, 'LineaNegocio_idLineaNegocio', $rolUsuario,'select') == '')
+					              		{!!Form::select('LineaNegocio_idLineaNegocio',$lineanegocio, (isset($movimientocrm) ? $movimientocrm->LineaNegocio_idLineaNegocio : null),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('LineaNegocio_idLineaNegocio', (isset($movimientocrm) ? $movimientocrm->LineaNegocio_idLineaNegocio : null), array('id' => 'LineaNegocio_idLineaNegocio'))!!}
+										{!!Form::text('nombreLineaNegocio',(isset($movimientocrm->LineaNegocio->nombreLineaNegocio) ? $movimientocrm->LineaNegocio->nombreLineaNegocio : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+					              	
 
 								</div>
 							</div>
@@ -525,7 +567,13 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-					              	{!!Form::select('EstadoCRM_idEstadoCRM',$estado, (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : 0),["class" => "chosen-select form-control", mostrarCampo($arrayCampos, 'EstadoCRM_idEstadoCRM', $rolUsuario,'select')])!!}
+					              	@if(mostrarCampo($arrayCampos, 'EstadoCRM_idEstadoCRM', $rolUsuario,'select') == '')
+					              		{!!Form::select('EstadoCRM_idEstadoCRM',$estado, (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : null),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('EstadoCRM_idEstadoCRM', (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : null), array('id' => 'EstadoCRM_idEstadoCRM'))!!}
+										{!!Form::text('nombreEstadoCRM',(isset($movimientocrm->EstadoCRM->nombreEstadoCRM) ? $movimientocrm->EstadoCRM->nombreEstadoCRM : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+					              	
 
 								</div>
 							</div>
@@ -763,7 +811,11 @@ $fechahora = Carbon\Carbon::now();
 	{!!Form::close()!!}	
 
 <script>
-    CKEDITOR.replace(('detallesMovimientoCRM','solucionMovimientoCRM'), {
+    CKEDITOR.replace((<?php
+     echo (strpos($camposVista, 'detallesMovimientoCRM') !== false) ? "'".'detallesMovimientoCRM'."'" : '';
+     echo ((strpos($camposVista, 'detallesMovimientoCRM') !== false and strpos($camposVista, 'solucionMovimientoCRM') !== false)) ? "," : '';
+     echo (strpos($camposVista, 'solucionMovimientoCRM') !== false) ? "'".'solucionMovimientoCRM'."'" : '';
+     ?>), {
         fullPage: true,
         allowedContent: true
       });  
