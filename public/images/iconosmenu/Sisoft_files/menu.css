@@ -1,0 +1,164 @@
+html {
+    height: 100%;
+    width: 100%;
+    background-image: url(../images/fondoprincipal.jpg);
+    overflow: auto;
+    /*background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment:fixed;*/
+}
+
+body{
+    font-family: 'Arial';
+    padding: 0px;
+    margin: 0px;
+}
+
+
+
+#titulo{
+    /*padding-top: 23px;*/
+    font-size: 18px; 
+}
+
+
+
+#contenedor{
+    /*width: 1200px;*/
+    /*height: 600px;*/
+    position: relative;
+    /*margin: 0 auto;*/
+    margin: 20px 100px 23px 100px;
+   
+    /*background-image: url(../images/contenedor-01.png);*/
+    /*background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;*/
+    top: -10px;
+}
+
+#contenedor-fin{
+    width: 100%; 
+    /*min-height: 500px;*/
+    /*position: relative;
+    margin: 0 auto;*/
+    /*background-image: url(../images/contenedor-y-01.png);*/
+   /* background-repeat: repeat-y;
+    background-size: contain;
+    background-position: center;*/
+    /*top: -40px;*/
+}
+
+#pantalla{
+    padding: 0px 25px;
+}
+
+#footer{
+    background-color: #687887;
+    width: 100%;
+    height: 30px;
+    position: fixed;
+    bottom: 0px;
+    padding-bottom: 10px;
+    z-index: 999;
+}
+
+#footer p{
+    text-align: left;
+    color: white;
+    margin: 5px 5px;
+    z-index: 1;
+    font-size: 12px;
+}
+
+
+
+#container{
+width:100%;
+height:300px;
+border:solid #CCC 0px;
+padding:0px;
+margin:0 auto;
+margin-top:0px;
+position: absolute;
+z-index: 99;
+ }
+
+.barramenu{
+width:100%;
+height:48px;
+border:solid #CCC 0px;
+padding:3px;
+margin:0 auto;
+margin-top:2px;
+background-color: #687887;
+color: white;
+ }
+
+.innergrid ul{
+ list-style:none;
+ margin:0;
+ padding:0;
+ }
+
+
+.icons li{
+ float:left;
+ padding:5px;
+ border:solid #666 0;
+ cursor: pointer;
+ font-family: 'Arial';
+ font-size: 12px;
+ text-align: center;
+ width: 80px;
+ height: 80px;
+ }
+
+.menu{ cursor:pointer;
+position: relative;
+left: 10px;
+background-color: #687887;
+display:inline-block;
+}
+
+.arrow{
+position: relative;
+margin-left: 118px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 0 5px 10px 5px;
+border-color: transparent transparent #efefef transparent;
+display: none;
+top: 0px;
+}
+
+.gridbox{
+ width:450px;
+ height:400px;
+ background-color:#FFF;
+ box-shadow:0 0 10px #CCC;
+ border:solid #CCC 1px;
+ font-size:18px;
+ color:#666;
+ overflow:hidden;
+ display:none;
+ position: absolute;
+ z-index: 999;
+ top: 45px;
+ }
+
+.innergrid{
+ width:450px;
+ height:400px;
+ overflow:hidden;
+ margin:15px;
+
+ }
+
+
+
+.icons img{
+ width: 40px;
+ height: 40px;
+ }

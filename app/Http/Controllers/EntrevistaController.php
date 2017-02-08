@@ -35,6 +35,9 @@ class EntrevistaController extends Controller
      */
     public function create()
     {
+        //nueva seleccion para entrevista 
+    $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
+       
 
          //consulta al modelo encuesta llamando su respectivo idEncuesta y  tituloEncuesta}
         $encuesta = \App\Encuesta::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('tituloEncuesta','idEncuesta');
@@ -62,7 +65,10 @@ class EntrevistaController extends Controller
         $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
         $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
 
-          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','encuesta'));
+        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
+        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
+
+          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','encuesta','tipoIdentificacion','idHabilidad','nombreHabilidad'));
 
     }
 
@@ -74,8 +80,38 @@ class EntrevistaController extends Controller
      */
     public function store(EntrevistaRequest $request)
     {
+         if($request['respuesta'] != 'falso')
+         {
+              if ($request['estadoEntrevista'] == 'Seleccionado') {
+
+            $nombrecompleto = $request['nombre1AspiranteEntrevista'].' '.$request['nombre2AspiranteEntrevista'].' '.$request['apellido1AspiranteEntrevista'].' '.$request['apellido2AspiranteEntrevista'];
+
+            $indice = array(
+            'documentoTercero' => $request['documentoAspiranteEntrevista']);
+
+            $data = array(
+               
+                'documentoTercero' => $request['documentoAspiranteEntrevista'],
+                'nombre1Tercero' => $request['nombre1AspiranteEntrevista'],
+                'nombre2Tercero' => $request['nombre2AspiranteEntrevista'],
+                'apellido1Tercero' => $request['apellido1AspiranteEntrevista'],
+                'apellido2Tercero' => $request['apellido2AspiranteEntrevista'],
+                'Ciudad_idCiudad' => $request['Ciudad_idResidencia'],
+                'direccionTercero' => $request['direccionEntrevistaPregunta'],
+                'telefonoTercero' => $request['telefonoEntrevistaPregunta'],
+                'movil1Tercero' => $request['movilEntrevistaPregunta'],
+                'nombreCompletoTercero' => $nombrecompleto,
+                'tipoTercero' => '*01*', //01 son Empleados
+                'TipoIdentificacion_idTipoIdentificacion' => 1,
+                 'Compania_idCompania' => \Session::get('idCompania'),
+                'correoElectronicoTercero' => $request['correoElectronicoEntrevistaPregunta']);
+
+
+            $tercero = \App\Tercero::updateOrCreate($indice, $data);
+            }
 
          
+
           \App\Entrevista::create([
             'documentoAspiranteEntrevista' => $request['documentoAspiranteEntrevista'],
             'estadoEntrevista' => $request['estadoEntrevista'],
@@ -87,10 +123,16 @@ class EntrevistaController extends Controller
             'Tercero_idEntrevistador' => $request['Tercero_idEntrevistador'],
             'Cargo_idCargo' => $request['Cargo_idCargo'],
             'experienciaAspiranteEntrevista' => $request['experienciaAspiranteEntrevista'],  
-            'experienciaRequeridaEntrevista' => $request['experienciaRequeridaEntrevista'],  
-           
-     
+            'experienciaRequeridaEntrevista' => $request['experienciaRequeridaEntrevista'],
+            'TipoIdentificacion_idTipoIdentificacion'  => $request['TipoIdentificacion_idTipoIdentificacion'],
+
+            'calificacionEducacionEntrevista' => $request['calificacionEducacionEntrevista'],  
+            'calificacionFormacionEntrevista' => $request['calificacionFormacionEntrevista'],
+            'calificacionHabilidadCargoEntrevista'  => $request['calificacionHabilidadCargoEntrevista'],
+            'calificacionHabilidadActitudinalEntrevista' => $request['calificacionHabilidadActitudinalEntrevista']
             ]);
+         
+
 
 
     $entrevista = \App\entrevista::All()->last();
@@ -219,6 +261,21 @@ class EntrevistaController extends Controller
 
             ]);
          }
+         // Habilidad
+
+
+            for ($i=0; $i < count($request['calificacionEntrevistaHabilidad']); $i++) 
+         { 
+             \App\EntrevistaHabilidad::create([
+             'Entrevista_idEntrevista' => $entrevista->idEntrevista,
+            'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Habilidad'][$i],
+            'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Habilidad'][$i],
+            'calificacionEntrevistaHabilidad' => $request['calificacionEntrevistaHabilidad'][$i]
+          
+
+            ]);
+         }
+
          for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
         {
             
@@ -233,10 +290,14 @@ class EntrevistaController extends Controller
 
             $respuestas = \App\EntrevistaEncuestaRespuesta::updateOrCreate($indice, $data);
 
-            
 
-        }
+         }
+        
 
+           
+    }
+
+     
 
         return redirect('/entrevista'); 
     }
@@ -259,7 +320,9 @@ class EntrevistaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
+        //nueva lista select para entrevista
+        $tipoIdentificacion = \App\TipoIdentificacion::All()->lists('nombreTipoIdentificacion','idTipoIdentificacion');
 
 
             //consulta al modelo encuesta llamando su respectivo idEncuesta y  tituloEncuesta}
@@ -283,6 +346,9 @@ class EntrevistaController extends Controller
         $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
         $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
 
+        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
+        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
+
 
 
         // Cuando editamos la pregunta (Habilidades), debemos enviar los datos de las multiregistro que se deben cargar
@@ -301,21 +367,39 @@ class EntrevistaController extends Controller
             $EntrevistaEducacion  = DB::SELECT(' 
             SELECT idEntrevistaEducacion,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Educacion,porcentajeCargoEducacion,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Educacion ,calificacionEntrevistaEducacion,Entrevista_idEntrevista
             FROM entrevistaeducacion ed
+            LEFT JOIN entrevista e
+            ON ed.Entrevista_idEntrevista = e.idEntrevista
             LEFT JOIN  perfilcargo pca
             ON ed.PerfilCargo_idRequerido = pca.idPerfilCargo  
             LEFT JOIN cargoeducacion ce
-            ON ce.PerfilCargo_idPerfilCargo = pca.idPerfilCargo
-            WHERE ed.Entrevista_idEntrevista = '.$id);
+            ON ed.PerfilCargo_idRequerido = ce.PerfilCargo_idPerfilCargo and e.Cargo_idCargo = ce.Cargo_idCargo
+            WHERE ed.Entrevista_idEntrevista ='.$id);
 
             //consulta para traer los datos a Formacion pestaña general 
             $EntrevistaFormacion  = DB::SELECT(' 
-            SELECT idEntrevistaFormacion,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Formacion ,porcentajeCargoFormacion,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Formacion ,calificacionEntrevistaFormacion,Entrevista_idEntrevista
+            SELECT idEntrevistaFormacion,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Formacion,porcentajeCargoFormacion,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Formacion ,calificacionEntrevistaFormacion,Entrevista_idEntrevista
             FROM entrevistaformacion ef
-            LEFT JOIN perfilcargo pca
-            ON ef.PerfilCargo_idRequerido = pca.idPerfilCargo
+            LEFT JOIN entrevista e
+            ON ef.Entrevista_idEntrevista = e.idEntrevista
+            LEFT JOIN  perfilcargo pca
+            ON ef.PerfilCargo_idRequerido = pca.idPerfilCargo  
             LEFT JOIN cargoformacion cf
-            ON cf.PerfilCargo_idPerfilCargo = pca.idPerfilCargo
-            WHERE ef.Entrevista_idEntrevista = '.$id);
+            ON ef.PerfilCargo_idRequerido = cf.PerfilCargo_idPerfilCargo and e.Cargo_idCargo = cf.Cargo_idCargo
+            WHERE ef.Entrevista_idEntrevista ='.$id);
+
+             //consulta para traer los datos a Habilidad Primer pestaña  
+            $EntrevistaHabilidad  = DB::SELECT(' 
+            SELECT idEntrevistaHabilidad,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Habilidad,porcentajeCargoHabilidad,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Habilidad ,calificacionEntrevistaHabilidad,Entrevista_idEntrevista
+            FROM entrevistahabilidad eh
+            LEFT JOIN entrevista e
+            ON eh.Entrevista_idEntrevista = e.idEntrevista
+            LEFT JOIN  perfilcargo pca
+            ON eh.PerfilCargo_idRequerido = pca.idPerfilCargo  
+            LEFT JOIN cargohabilidad ch
+            ON eh.PerfilCargo_idRequerido = ch.PerfilCargo_idPerfilCargo and e.Cargo_idCargo = ch.Cargo_idCargo
+            WHERE eh.Entrevista_idEntrevista ='.$id);
+
+
 
             //consulta a la  Entrevista enncuesta  (Opcion Habilidades)para editarla
             $encuestae = DB::select(
@@ -334,7 +418,7 @@ class EntrevistaController extends Controller
 
 
 
-          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','entrevistacompetencia','EntrevistaEducacion','EntrevistaFormacion','encuesta','encuestae'),['entrevista'=>$entrevista]);
+          return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','entrevistacompetencia','EntrevistaEducacion','EntrevistaFormacion','encuesta','encuestae','tipoIdentificacion','EntrevistaHabilidad','idHabilidad','nombreHabilidad'),['entrevista'=>$entrevista]);
 
           
     }
@@ -348,160 +432,231 @@ class EntrevistaController extends Controller
      */
     public function update(EntrevistaRequest $request, $id)
     {
-         
-
-        $entrevista = \App\Entrevista::find($id);
-        $entrevista->fill($request->all());
-        $entrevista->save();
-
-//Se guarda los registros de Entrevista pregunta de esta manera ya que no son el encabezado 
-        //se pregunta si el ID ya existe para que reemplace todos los campos Actuales
-    $indice = array(
-        'Entrevista_idEntrevista' => $id);
-
-    $data = array(
-        'fechaNacimientoEntrevistaPregunta' => $request['fechaNacimientoEntrevistaPregunta'],  
-        'edadEntrevistaPregunta' => $request['edadEntrevistaPregunta'],  
-        'estadoCivilEntrevistaPregunta' => $request['estadoCivilEntrevistaPregunta'],  
-        'telefonoEntrevistaPregunta' => $request['telefonoEntrevistaPregunta'],  
-        'movilEntrevistaPregunta' => $request['movilEntrevistaPregunta'],  
-        'correoElectronicoEntrevistaPregunta' => $request['correoElectronicoEntrevistaPregunta'],  
-        'direccionEntrevistaPregunta' => $request['direccionEntrevistaPregunta'],  
-        'Ciudad_idResidencia' => $request['Ciudad_idResidencia'],  
-        'nombreConyugeEntrevistaPregunta' => $request['nombreConyugeEntrevistaPregunta'],  
-        'ocupacionConyugeEntrevistaPregunta' => $request['ocupacionConyugeEntrevistaPregunta'],
-        'numeroHijosEntrevistaPregunta' => $request['numeroHijosEntrevistaPregunta'],
-        'conQuienViveEntrevistaPregunta' => $request['conQuienViveEntrevistaPregunta'],
-        'dondeViveEntrevistaPregunta' => $request['dondeViveEntrevistaPregunta'],
-        'ocupacionActualEntrevistaPregunta' => $request['ocupacionActualEntrevistaPregunta'],
-        'estudioActualEntrevistaPregunta' => $request['estudioActualEntrevistaPregunta'],
-        'horarioEstudioEntrevistaPregunta' => $request['horarioEstudioEntrevistaPregunta'],
-        'motivacionCarreraEntrevistaPregunta' => $request['motivacionCarreraEntrevistaPregunta'],
-        'expectativaEstudioEntrevistaPregunta' => $request['expectativaEstudioEntrevistaPregunta'],
-        'ultimoEmpleoEntrevistaPregunta' => $request['ultimoEmpleoEntrevistaPregunta'],
-        'funcionesEmpleoEntrevistaPregunta' => $request['funcionesEmpleoEntrevistaPregunta'],
-        'logrosEmpleoEntrevistaPregunta' => $request['logrosEmpleoEntrevistaPregunta'],
-        'ultimoSalarioEntrevistaPregunta' => $request['ultimoSalarioEntrevistaPregunta'],
-        'motivoRetiroEntrevistaPregunta' => $request['motivoRetiroEntrevistaPregunta'],
-        'expectativaLaboralEntrevistaPregunta' => $request['expectativaLaboralEntrevistaPregunta'],
-        'disponibilidadInicioEntrevistaPregunta' => $request['disponibilidadInicioEntrevistaPregunta'],
-        'aspiracionSalarialEntrevistaPregunta' => $request['aspiracionSalarialEntrevistaPregunta'],
-        'motivacionTrabajoEntrevistaPregunta' => $request['motivacionTrabajoEntrevistaPregunta'],
-        'proyeccion5AñosEntrevistaPregunta' => $request['proyeccion5AñosEntrevistaPregunta'],
-        'tiempoLibreEntrevistaPregunta' => $request['tiempoLibreEntrevistaPregunta'],
-        'introvertidoEntrevistaPregunta' => $request['introvertidoEntrevistaPregunta'],
-        'vicioEntrevistaPregunta' => $request['vicioEntrevistaPregunta'],
-        'antecedentesEntrevistaPregunta' => $request['antecedentesEntrevistaPregunta'],
-        'anecdotaEntrevistaPregunta' => $request['anecdotaEntrevistaPregunta'],
-        'observacionEntrevistaPregunta' => $request['observacionEntrevistaPregunta']); 
-
-         $entrevistapregunta = \App\EntrevistaPregunta::updateOrCreate($indice, $data);
-
-        $idsEliminar = explode("," , $request['eliminarEntrevistaHijo']);
-        //Eliminar registros de la multiregistro
-        \App\EntrevistaHijo::whereIn('idEntrevistaHijo', $idsEliminar)->delete();
-        // Guardamos el detalle de los modulos
-        for($i = 0; $i < count($request['idEntrevistaHijo']); $i++)
-        {
-             $indice = array(
-                'idEntrevistaHijo' => $request['idEntrevistaHijo'][$i]);
-
-            $data = array(
-                'Entrevista_idEntrevista' => $id,
-                'nombreEntrevistaHijo' => $request['nombreEntrevistaHijo'][$i],
-                'edadEntrevistaHijo' => $request['edadEntrevistaHijo'][$i],
-                'ocupacionEntrevistaHijo' => $request['ocupacionEntrevistaHijo'][$i]);
-            $guardar = \App\EntrevistaHijo::updateOrCreate($indice, $data);
-        } 
-
-        
-         $idsEliminar = explode("," , $request['eliminarEntrevistaRelacionFamilia']);
-        //Eliminar registros de la multiregistro
-        \App\EntrevistaRelacionFamiliar::whereIn('idEntrevistaRelacionFamiliar', $idsEliminar)->delete();
-        // Guardamos el detalle de los modulos
-        for($i = 0; $i < count($request['idEntrevistaRelacionFamiliar']); $i++)
-        {
-             $indice = array(
-                'idEntrevistaRelacionFamiliar' => $request['idEntrevistaRelacionFamiliar'][$i]);
-
-            $data = array(
-                'Entrevista_idEntrevista' => $id,
-                'parentescoEntrevistaRelacionFamiliar' => $request['parentescoEntrevistaRelacionFamiliar'][$i],
-                'relacionEntrevistaRelacionFamiliar' => $request['relacionEntrevistaRelacionFamiliar'][$i]);
-
-            $guardar = \App\EntrevistaRelacionFamiliar::updateOrCreate($indice, $data);
-        } 
-
-            $idsEliminar = explode("," , $request['eliminarEducacionEntrevista']);
-        //Eliminar registros de la multiregistro
-        \App\EntrevistaEducacion::whereIn('idEntrevistaEducacion', $idsEliminar)->delete();
-        // Guardamos el detalle de los modulos
-        for($i = 0; $i < count($request['idEntrevistaEducacion']); $i++)
-        {
-             $indice = array(
-                'idEntrevistaEducacion' => $request['idEntrevistaEducacion'][$i]);
-
-            $data = array(
-                'Entrevista_idEntrevista' => $id,
-                'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Educacion'][$i],
-                    'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Educacion'][$i],
-                'calificacionEntrevistaEducacion' => $request['calificacionEntrevistaEducacion'][$i]);
-            $guardar = \App\EntrevistaEducacion::updateOrCreate($indice, $data);
-        } 
+          if($request['respuesta'] != 'falso')
+          {
+ $entrevista = \App\Entrevista::find($id);
+                $entrevista->fill($request->all());
+                $entrevista->save();
 
 
-
-             $idsEliminar = explode("," , $request['eliminarcompetencia']);
-        //Eliminar registros de la multiregistro
-        \App\EntrevistaCompetencia::whereIn('idEntrevistaCompetencia', $idsEliminar)->delete();
-        // Guardamos el detalle de los modulos
-        for($i = 0; $i < count($request['idEntrevistaCompetencia']); $i++)
-        {
-             $indice = array(
-                'idEntrevistaCompetencia' => $request['idEntrevistaCompetencia'][$i]);
-
-            $data = array(
-                'Entrevista_idEntrevista' => $id,
-                'CompetenciaPregunta_idCompetenciaPregunta' => $request['CompetenciaPregunta_idCompetenciaPregunta'][$i],
-                'CompetenciaRespuesta_idCompetenciaRespuesta' => $request['CompetenciaRespuesta_idCompetenciaRespuesta'][$i]);
-            $guardar = \App\EntrevistaCompetencia::updateOrCreate($indice, $data);
-        } 
-
-
-             $idsEliminar = explode("," , $request['eliminarFormacionEntrevista']);
-        //Eliminar registros de la multiregistro
-        \App\EntrevistaFormacion::whereIn('idEntrevistaFormacion', $idsEliminar)->delete();
-        // Guardamos el detalle de los modulos
-        for($i = 0; $i < count($request['idEntrevistaFormacion']); $i++)
-        {
-             $indice = array(
-                'idEntrevistaFormacion' => $request['idEntrevistaFormacion'][$i]);
-
-            $data = array(
-                'Entrevista_idEntrevista' => $id,
-                'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Formacion'][$i],
-                'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Formacion'][$i],
-                'calificacionEntrevistaFormacion' => $request['calificacionEntrevistaFormacion'][$i]);
-            $guardar = \App\EntrevistaFormacion::updateOrCreate($indice, $data);
-        } 
-
-          for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
-        {
-            
-
+        //Se guarda los registros de Entrevista pregunta de esta manera ya que no son el encabezado 
+                //se pregunta si el ID ya existe para que reemplace todos los campos Actuales
             $indice = array(
-             'idEntrevistaEncuestaRespuesta' => $request['idEntrevistaEncuestaRespuesta'][$i]);
+                'Entrevista_idEntrevista' => $id);
 
-             $data = array(
-             'Entrevista_idEntrevista' => $id,
-             'EncuestaPregunta_idEncuestaPregunta' => $request['idEncuestaPregunta'][$i],
-             'valorEntrevistaEncuestaRespuesta' => $request['respuesta'][$i][0]);
+            $data = array(
+                'fechaNacimientoEntrevistaPregunta' => $request['fechaNacimientoEntrevistaPregunta'],  
+                'edadEntrevistaPregunta' => $request['edadEntrevistaPregunta'],  
+                'estadoCivilEntrevistaPregunta' => $request['estadoCivilEntrevistaPregunta'],  
+                'telefonoEntrevistaPregunta' => $request['telefonoEntrevistaPregunta'],  
+                'movilEntrevistaPregunta' => $request['movilEntrevistaPregunta'],  
+                'correoElectronicoEntrevistaPregunta' => $request['correoElectronicoEntrevistaPregunta'],  
+                'direccionEntrevistaPregunta' => $request['direccionEntrevistaPregunta'],  
+                'Ciudad_idResidencia' => $request['Ciudad_idResidencia'],  
+                'nombreConyugeEntrevistaPregunta' => $request['nombreConyugeEntrevistaPregunta'],  
+                'ocupacionConyugeEntrevistaPregunta' => $request['ocupacionConyugeEntrevistaPregunta'],
+                'numeroHijosEntrevistaPregunta' => $request['numeroHijosEntrevistaPregunta'],
+                'conQuienViveEntrevistaPregunta' => $request['conQuienViveEntrevistaPregunta'],
+                'dondeViveEntrevistaPregunta' => $request['dondeViveEntrevistaPregunta'],
+                'ocupacionActualEntrevistaPregunta' => $request['ocupacionActualEntrevistaPregunta'],
+                'estudioActualEntrevistaPregunta' => $request['estudioActualEntrevistaPregunta'],
+                'horarioEstudioEntrevistaPregunta' => $request['horarioEstudioEntrevistaPregunta'],
+                'motivacionCarreraEntrevistaPregunta' => $request['motivacionCarreraEntrevistaPregunta'],
+                'expectativaEstudioEntrevistaPregunta' => $request['expectativaEstudioEntrevistaPregunta'],
+                'ultimoEmpleoEntrevistaPregunta' => $request['ultimoEmpleoEntrevistaPregunta'],
+                'funcionesEmpleoEntrevistaPregunta' => $request['funcionesEmpleoEntrevistaPregunta'],
+                'logrosEmpleoEntrevistaPregunta' => $request['logrosEmpleoEntrevistaPregunta'],
+                'ultimoSalarioEntrevistaPregunta' => $request['ultimoSalarioEntrevistaPregunta'],
+                'motivoRetiroEntrevistaPregunta' => $request['motivoRetiroEntrevistaPregunta'],
+                'expectativaLaboralEntrevistaPregunta' => $request['expectativaLaboralEntrevistaPregunta'],
+                'disponibilidadInicioEntrevistaPregunta' => $request['disponibilidadInicioEntrevistaPregunta'],
+                'aspiracionSalarialEntrevistaPregunta' => $request['aspiracionSalarialEntrevistaPregunta'],
+                'motivacionTrabajoEntrevistaPregunta' => $request['motivacionTrabajoEntrevistaPregunta'],
+                'proyeccion5AñosEntrevistaPregunta' => $request['proyeccion5AñosEntrevistaPregunta'],
+                'tiempoLibreEntrevistaPregunta' => $request['tiempoLibreEntrevistaPregunta'],
+                'introvertidoEntrevistaPregunta' => $request['introvertidoEntrevistaPregunta'],
+                'vicioEntrevistaPregunta' => $request['vicioEntrevistaPregunta'],
+                'antecedentesEntrevistaPregunta' => $request['antecedentesEntrevistaPregunta'],
+                'anecdotaEntrevistaPregunta' => $request['anecdotaEntrevistaPregunta'],
+                'observacionEntrevistaPregunta' => $request['observacionEntrevistaPregunta']); 
 
-            $respuestas = \App\EntrevistaEncuestaRespuesta::updateOrCreate($indice, $data);
+                 $entrevistapregunta = \App\EntrevistaPregunta::updateOrCreate($indice, $data);
 
+                $idsEliminar = explode("," , $request['eliminarEntrevistaHijo']);
+                //Eliminar registros de la multiregistro
+                \App\EntrevistaHijo::whereIn('idEntrevistaHijo', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idEntrevistaHijo']); $i++)
+                {
+                     $indice = array(
+                        'idEntrevistaHijo' => $request['idEntrevistaHijo'][$i]);
+
+                    $data = array(
+                        'Entrevista_idEntrevista' => $id,
+                        'nombreEntrevistaHijo' => $request['nombreEntrevistaHijo'][$i],
+                        'edadEntrevistaHijo' => $request['edadEntrevistaHijo'][$i],
+                        'ocupacionEntrevistaHijo' => $request['ocupacionEntrevistaHijo'][$i]);
+                    $guardar = \App\EntrevistaHijo::updateOrCreate($indice, $data);
+                } 
+
+                
+                 $idsEliminar = explode("," , $request['eliminarEntrevistaRelacionFamilia']);
+                //Eliminar registros de la multiregistro
+                \App\EntrevistaRelacionFamiliar::whereIn('idEntrevistaRelacionFamiliar', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idEntrevistaRelacionFamiliar']); $i++)
+                {
+                     $indice = array(
+                        'idEntrevistaRelacionFamiliar' => $request['idEntrevistaRelacionFamiliar'][$i]);
+
+                    $data = array(
+                        'Entrevista_idEntrevista' => $id,
+                        'parentescoEntrevistaRelacionFamiliar' => $request['parentescoEntrevistaRelacionFamiliar'][$i],
+                        'relacionEntrevistaRelacionFamiliar' => $request['relacionEntrevistaRelacionFamiliar'][$i]);
+
+                    $guardar = \App\EntrevistaRelacionFamiliar::updateOrCreate($indice, $data);
+                } 
+
+                    $idsEliminar = explode("," , $request['eliminarEducacionEntrevista']);
+                //Eliminar registros de la multiregistro
+                \App\EntrevistaEducacion::whereIn('idEntrevistaEducacion', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idEntrevistaEducacion']); $i++)
+                {
+                     $indice = array(
+                        'idEntrevistaEducacion' => $request['idEntrevistaEducacion'][$i]);
+
+                    $data = array(
+                        'Entrevista_idEntrevista' => $id,
+                        'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Educacion'][$i],
+                            'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Educacion'][$i],
+                        'calificacionEntrevistaEducacion' => $request['calificacionEntrevistaEducacion'][$i]);
+                    $guardar = \App\EntrevistaEducacion::updateOrCreate($indice, $data);
+                } 
+
+
+
+                     $idsEliminar = explode("," , $request['eliminarcompetencia']);
+                //Eliminar registros de la multiregistro
+                \App\EntrevistaCompetencia::whereIn('idEntrevistaCompetencia', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idEntrevistaCompetencia']); $i++)
+                {
+                     $indice = array(
+                        'idEntrevistaCompetencia' => $request['idEntrevistaCompetencia'][$i]);
+
+                    $data = array(
+                        'Entrevista_idEntrevista' => $id,
+                        'CompetenciaPregunta_idCompetenciaPregunta' => $request['CompetenciaPregunta_idCompetenciaPregunta'][$i],
+                        'CompetenciaRespuesta_idCompetenciaRespuesta' => $request['CompetenciaRespuesta_idCompetenciaRespuesta'][$i]);
+                    $guardar = \App\EntrevistaCompetencia::updateOrCreate($indice, $data);
+                } 
+
+
+                     $idsEliminar = explode("," , $request['eliminarFormacionEntrevista']);
+                //Eliminar registros de la multiregistro
+                \App\EntrevistaFormacion::whereIn('idEntrevistaFormacion', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idEntrevistaFormacion']); $i++)
+                {
+                     $indice = array(
+                        'idEntrevistaFormacion' => $request['idEntrevistaFormacion'][$i]);
+
+                    $data = array(
+                        'Entrevista_idEntrevista' => $id,
+                        'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Formacion'][$i],
+                        'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Formacion'][$i],
+                        'calificacionEntrevistaFormacion' => $request['calificacionEntrevistaFormacion'][$i]);
+                    $guardar = \App\EntrevistaFormacion::updateOrCreate($indice, $data);
+                } 
+
+                  for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
+                {
+                    
+
+                    $indice = array(
+                     'idEntrevistaEncuestaRespuesta' => $request['idEntrevistaEncuestaRespuesta'][$i]);
+
+                     $data = array(
+                     'Entrevista_idEntrevista' => $id,
+                     'EncuestaPregunta_idEncuestaPregunta' => $request['idEncuestaPregunta'][$i],
+                     'valorEntrevistaEncuestaRespuesta' => $request['respuesta'][$i][0]);
+
+                    $respuestas = \App\EntrevistaEncuestaRespuesta::updateOrCreate($indice, $data);  
+                }
+
+                    // Detalle Habilidad
+                    $idsEliminar = explode("," , $request['eliminarHabilidadEntrevista']);
+                //Eliminar registros de la multiregistro
+                \App\EntrevistaHabilidad::whereIn('idEntrevistaHabilidad', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idEntrevistaHabilidad']); $i++)
+                {
+                     $indice = array(
+                        'idEntrevistaHabilidad' => $request['idEntrevistaHabilidad'][$i]);
+
+                    $data = array(
+                        'Entrevista_idEntrevista' => $id,
+                        'PerfilCargo_idRequerido' => $request['PerfilCargo_idRequerido_Habilidad'][$i],
+                        'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Habilidad'][$i],
+                        'calificacionEntrevistaHabilidad' => $request['calificacionEntrevistaHabilidad'][$i]);
+                    $guardar = \App\EntrevistaHabilidad::updateOrCreate($indice, $data);
+                } 
+
+                // Detalle Encuesta
+                  for($i = 0; $i < count($request['idEncuestaPregunta']); $i++)
+                {
+                    
+
+                    $indice = array(
+                     'idEntrevistaEncuestaRespuesta' => $request['idEntrevistaEncuestaRespuesta'][$i]);
+
+                     $data = array(
+                     'Entrevista_idEntrevista' => $id,
+                     'EncuestaPregunta_idEncuestaPregunta' => $request['idEncuestaPregunta'][$i],
+                     'valorEntrevistaEncuestaRespuesta' => $request['respuesta'][$i][0]);
+
+                    $respuestas = \App\EntrevistaEncuestaRespuesta::updateOrCreate($indice, $data);
+
+                    
+
+                }
+
+
+                     if ($request['estadoEntrevista'] == 'Seleccionado') {
+
+                    $nombrecompleto = $request['nombre1AspiranteEntrevista'].' '.$request['nombre2AspiranteEntrevista'].' '.$request['apellido1AspiranteEntrevista'].' '.$request['apellido2AspiranteEntrevista'];
+
+                    $indice = array(
+                    'documentoTercero' => $request['documentoAspiranteEntrevista']);
+
+                    $data = array(
+                       
+                        'documentoTercero' => $request['documentoAspiranteEntrevista'],
+                        'nombre1Tercero' => $request['nombre1AspiranteEntrevista'],
+                        'nombre2Tercero' => $request['nombre2AspiranteEntrevista'],
+                        'apellido1Tercero' => $request['apellido1AspiranteEntrevista'],
+                        'apellido2Tercero' => $request['apellido2AspiranteEntrevista'],
+                        'Ciudad_idCiudad' => $request['Ciudad_idResidencia'],
+                        'direccionTercero' => $request['direccionEntrevistaPregunta'],
+                        'telefonoTercero' => $request['telefonoEntrevistaPregunta'],
+                        'movil1Tercero' => $request['movilEntrevistaPregunta'],
+                        'nombreCompletoTercero' => $nombrecompleto,
+                        'tipoTercero' => '*01*', //01 son Empleados
+                        'TipoIdentificacion_idTipoIdentificacion' => 1,
+                         'Compania_idCompania' => \Session::get('idCompania'),
+                        'correoElectronicoTercero' => $request['correoElectronicoEntrevistaPregunta']);
+
+
+                    $tercero = \App\Tercero::updateOrCreate($indice, $data);
+                }
+
+          }
             
 
-        }
+               
+            
+
 
         return redirect('entrevista');
     }

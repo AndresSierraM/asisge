@@ -282,7 +282,8 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             imagen.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? 'http://'+location.host+'/imagenes/'+valor[(tipo == 'A' ? i : this.campos[i])] : '');
             // ruta = imagen.src;
             // src = ruta.substring(ruta.length-4);
-            // if (src !== '.jpg' || src !== '.png' || src !== 'null');
+            // alert(src);
+            // if (src == '.pdf');
             // {
             //     imagen.src = 'http://'+location.host+'/images/iconosgenerales/file.png';
             // }

@@ -242,9 +242,37 @@ function imprimirTabla($titulo, $informacion , $idtabla, $cargo, $idModulo)
 									<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'">
 
          							<td>'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'</td>
-         							<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">
+         							<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">';
 
-									<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]"></td>
+         							$mesesC = ((int)$dato->EneroC + 
+											(int)$dato->FebreroC + 
+											(int)$dato->MarzoC + 
+											(int)$dato->AbrilC + 
+											(int)$dato->MayoC + 
+											(int)$dato->JunioC + 
+											(int)$dato->JulioC + 
+											(int)$dato->AgostoC + 
+											(int)$dato->SeptiembreC + 
+											(int)$dato->OctubreC + 
+											(int)$dato->NoviembreC + 
+											(int)$dato->DiciembreC);
+
+									$mesesT = (((int)$dato->EneroT + 
+										   	(int)$dato->FebreroT + 
+										   	(int)$dato->MarzoT + 
+										   	(int)$dato->AbrilT + 
+										   	(int)$dato->MayoT + 
+										   	(int)$dato->JunioT + 
+										   	(int)$dato->JulioT + 
+										   	(int)$dato->AgostoT + 
+										   	(int)$dato->SeptiembreT + 
+										   	(int)$dato->OctubreT + 
+										   	(int)$dato->NoviembreT + 
+										   	(int)$dato->DiciembreT));
+
+									$total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
+
+									echo '<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" readonly value="'.$total.'"></td>
 
 									<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 
@@ -373,9 +401,37 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
 				<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoT']) ? $dato[$reg]['PresupuestoT'] : '&nbsp;').'">
 
          		<td>'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'</td>
-         		<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'">
+         		<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'">';
 
-				<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]"></td>
+         		$mesesC = ((int)$dato[$reg]["EneroC"] + 
+							(int)$dato[$reg]["FebreroC"] + 
+							(int)$dato[$reg]["MarzoC"] + 
+							(int)$dato[$reg]["AbrilC"] + 
+							(int)$dato[$reg]["MayoC"] + 
+							(int)$dato[$reg]["JunioC"] + 
+							(int)$dato[$reg]["JulioC"] + 
+							(int)$dato[$reg]["AgostoC"] + 
+							(int)$dato[$reg]["SeptiembreC"] + 
+							(int)$dato[$reg]["OctubreC"] + 
+							(int)$dato[$reg]["NoviembreC"] + 
+							(int)$dato[$reg]["DiciembreC"]);
+
+				$mesesT = (((int)$dato[$reg]["EneroT"] + 
+						   	(int)$dato[$reg]["FebreroT"] + 
+						   	(int)$dato[$reg]["MarzoT"] + 
+						   	(int)$dato[$reg]["AbrilT"] + 
+						   	(int)$dato[$reg]["MayoT"] + 
+						   	(int)$dato[$reg]["JunioT"] + 
+						   	(int)$dato[$reg]["JulioT"] + 
+						   	(int)$dato[$reg]["AgostoT"] + 
+						   	(int)$dato[$reg]["SeptiembreT"] + 
+						   	(int)$dato[$reg]["OctubreT"] + 
+						   	(int)$dato[$reg]["NoviembreT"] + 
+						   	(int)$dato[$reg]["DiciembreT"]));
+
+				$total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
+
+				echo'<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" readonly value="'.$total.'"></td>
 
 				<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
 

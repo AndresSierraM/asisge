@@ -20,30 +20,26 @@
 if(isset($plantrabajoalerta))
 {
 
-	if($plantrabajoalerta->tareaSemanasLaboralPlanTrabajoAlerta != '')
+	if($plantrabajoalerta->tareaDiasPlanTrabajoAlerta != '')
 	{
-
 		
-		$fechaSemana = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlertaSemana;
-		$horaSemana = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaSemana;
-		$intervaloSemana = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlertaSemana;
-
+		$fechaSemana = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+		$horaSemana = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+		$intervaloSemana = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
 	}
 	else
 	{
 		if($plantrabajoalerta->tareaMesesPlanTrabajoAlerta != '')
 		{
 			
-			$fechaMes = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlertaMes;
-			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaMes;
+			$fechaMes = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+			$horaMes = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
 		}
 		else
-
 		{
-
-			$fechaDia = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlertaDia;
-			$horaDia = $plantrabajoalerta->tareaHoraPlanTrabajoAlertaDia;
-			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlertaDia;
+			$fechaDia = $plantrabajoalerta->tareaFechaInicioPlanTrabajoAlerta;
+			$horaDia = $plantrabajoalerta->tareaHoraPlanTrabajoAlerta;
+			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
 		}
 	}
 }
@@ -59,7 +55,7 @@ if(isset($plantrabajoalerta))
     alertaplan = (alertaplan != '' ? JSON.parse(alertaplan) : '');
    
 
-  var valorMtareaFechaInicioPlanTrabajoAlertaMesodelo = [0,''];
+  var valorModelo = [0,''];
   $(document).ready(function(){
     //objeto  ---  instancia  ---     PARAMETROS  
     PlanTrabajoAlertaModulo = new Atributos('PlanTrabajoAlertaModulo','planTrabajoAlertaModulo_Modulo','modulodescripcion_');
@@ -149,7 +145,7 @@ if(isset($plantrabajoalerta))
 			         <span class="input-group-addon">
 			                <i class="fa fa-user"></i>
 			         </span>
-			             {!!Form::text('correoParaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>''])!!}
+			             {!!Form::text('correoParaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese correo destinatario'])!!}
 			             {!!Form::hidden('idPlanTrabajoAlerta', null, array('id' => 'idPlanTrabajoAlerta')) !!}
 			             {!!Form::hidden('idsborrados', null, array('id' => 'idsborrados')) !!}
 			     </div>
@@ -165,7 +161,7 @@ if(isset($plantrabajoalerta))
 				       <span class="input-group-addon">
 				                <i class="fa fa-files-o"></i>
 				       </span>
-				            	{!!Form::text('correoCopiaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+				            	{!!Form::text('correoCopiaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese correo para copia','style'=>'width:100%;,right'])!!}
 				 </div>
 			</div>
 		 </div>
@@ -178,7 +174,7 @@ if(isset($plantrabajoalerta))
 				              <span class="input-group-addon">
 				                <i class="fa fa-clipboard"></i>
 				              </span>
-							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese correo para copia oculta','style'=>'width:100%;,right'])!!}
 			            	</div>
 			          </div>
 			        </div>
@@ -192,7 +188,7 @@ if(isset($plantrabajoalerta))
 			              <span class="input-group-addon">
 			                <i class="fa fa-pencil-square"></i>
 			              </span>
-						{!!Form::text('correoAsuntoPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+						{!!Form::text('correoAsuntoPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese Asunto ','style'=>'width:100%;,right'])!!}
 			            </div>
 			          </div>
 			        </div>
@@ -277,7 +273,7 @@ if(isset($plantrabajoalerta))
 			      <div class="col-sm-12">
 
 			        <div class="row show-grid">
-			          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="PlanTrabajoAlertaModulo.agregarCampos(valorMtareaFechaInicioPlanTrabajoAlertaMesodelo,'A')">
+			          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="PlanTrabajoAlertaModulo.agregarCampos(valorModelo,'A')">
 			            <span class="glyphicon glyphicon-plus"></span>
 			          </div>
 			          <div class="col-md-1" style="width: 1050px;display:inline-block;height:35px;">Nombre del Modulo</div>
@@ -425,9 +421,9 @@ if(isset($plantrabajoalerta))
 			    </div>
 
 
-			<!--  check Box para ejecutar la alerta de Dias de la semana -->
+			<!--  check Box para ejecutar la alerta de Dias laborales  -->
 				    <div class="form-group" id='test'>
-				         {!!Form::label('tareaSemanasLaboralPlanTrabajoAlerta', 'Días de la semana', array('class' => 'col-sm-12 control-label')) !!}
+				         {!!Form::label('tareaDiaLaboralPlanTrabajoAlerta', 'Días de la semana', array('class' => 'col-sm-12 control-label')) !!}
 				    </div>
 
 			<!-- Dias de la semana separado con sus respectivos checkbox
@@ -491,7 +487,7 @@ if(isset($plantrabajoalerta))
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaMes',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaMes',$fechaMes,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
 					         </div>
 					    </div>
@@ -504,7 +500,7 @@ if(isset($plantrabajoalerta))
 					              <span class="input-group-addon">
 					                <i class="fa fa-calendar"></i>
 					              </span>
-					             {!!Form::text('tareaHoraPlanTrabajoAlertaMes',null,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
+					             {!!Form::text('tareaHoraPlanTrabajoAlertaMes',$horaMes,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
 					         </div>
 					     </div>
 					  </div>

@@ -15,6 +15,8 @@
     {!!Form::open(['route'=>'perfilcargo.store','method'=>'POST'])!!}
   @endif
 
+
+
                           
 <div class="perfilcargo-container">
       <form class="form-horizontal" action="" method="post">
@@ -29,7 +31,7 @@
                                     <i class="fa fa-bars"></i> 
                                   </span>
                         {!!Form::select('tipoPerfilCargo',
-              array('Educacion'=>'Educacion', 'Formacion'=>'Formacion', 'Habilidad'=>'Habilidad'), (isset($tipoPerfilCargo) ? $tipoPerfilCargo->tipoPerfilCargo: 0),["class" => "form-control"])!!}
+              array('Educacion'=>'Educacion', 'Formacion'=>'Formacion', 'Habilidad'=>'Habilidades propias del cargo'), (isset($tipoPerfilCargo) ? $tipoPerfilCargo->tipoPerfilCargo: 0),["class" => "form-control"])!!}
                                   {!!Form::hidden('idPerfilCargo', null, array('id' => 'idPerfilCargo')) !!}
                                  
                             </div>

@@ -17,9 +17,10 @@
 
     $perfilcargo = DB::table('perfilcargo')
             ->select(DB::raw('idPerfilCargo, tipoPerfilCargo, nombrePerfilCargo'))
+           
+            //Se pone un where para que consulte solo los registros de la compañia que esta logueada
+            ->where('perfilcargo.Compania_idCompania',"=", \Session::get("idCompania"))
             ->get();
-            //->where('plantrabajoalerta.Compania_idCompania','=', \Session::get('idCompania'))
-
         $row = array();
 
     foreach ($perfilcargo as $key => $value) 

@@ -1,5 +1,18 @@
 function validarFormulario(event)
 {
+    
+    //Antes de validar los campos del formulario, validamos los campos de porcentajes, llamando a la funcion que los verifica
+    // Esta funcion nos debe decir si a validacion es correcta o incorrecta y la almacenamos en una variable
+    var PorcentajeTotal = validacionPorcentajePeso();
+    if(PorcentajeTotal == false)
+    {
+        alert ('la sumatoria de %Peso Educacion no debe ser mayor o menor que 100 ');
+        // si hay porcentajes malos, evitamos que el formulario se cierre
+        event.preventDefault();
+    }
+
+
+
     var route = "http://"+location.host+"/cargo";
     var token = $("#token").val();
     var dato0 = document.getElementById('idCargo').value;
@@ -221,20 +234,50 @@ function validacionesPorcentajeHabilidad()
 
 }
 
- 
-function validacioneducacionformacion()
+
+
+function validacionesPorcentajeResponsabilidad()
 {
-    var sumatoria = 0;
+    // Se crea una variable para que inicie en 0 
+    var validaH = 0;
 
-    sumatoria = sumatoria + parseFloat($('#porcentajeEducacionCargo').val()) + parseFloat($('#porcentajeFormacionCargo').val());
-
-
-    if (sumatoria >100 || sumatoria < 100)
-    {
-        alert ('la sumatoria de %Peso Educacion y %Peso Formacion no debe ser mayor o menor que 100 ')
+    
+    for (var i = 0; i < Responsabilidades.contador; i++) {
+        validaH = validaH + parseFloat($('#porcentajeCargoResponsabilidad'+[i]).val());
     }
 
+    if (validaH >100 || validaH < 100)
+    {
+        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+    } 
+
 }
+
+   
+// esta funcion verifica que los % de Peso no excedan 100%
+function validacionPorcentajePeso()
+{
+     
+
+    sumatoria = 0;
+    sumatoria +=  parseFloat($('#porcentajeEducacionCargo').val()) + parseFloat($('#porcentajeFormacionCargo').val()) +
+    parseFloat($('#porcentajeExperienciaCargo').val()) +parseFloat($('#porcentajeHabilidadCargo').val())+parseFloat($('#porcentajeResponsabilidadCargo').val());
+
+
+    if (sumatoria != 100)
+    {
+        // devolvemos un FALSE para indicar que esta mala
+        return false;
+    }
+
+    // devolvemos un TRUE para indicar que esta buena (No entró al if)
+    return true;
+
+}
+
+
+
+
 
 
 

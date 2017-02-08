@@ -50,6 +50,7 @@
                             <li><a class="toggle-vis" data-column="4"><label> Nombre Aspirante</label></a></li>
                             <li><a class="toggle-vis" data-column="5"><label> Cargo</label></a></li>
                              <li><a class="toggle-vis" data-column="6"><label> Entrevistador</label></a></li>
+                              <li><a class="toggle-vis" data-column="6"><label> Estado Entrevista</label></a></li>
                         </ul>
                     </div>
                     <table id="tentrevista" name="tentrevista" class="display table-bordered" width="100%">
@@ -65,6 +66,7 @@
                                 <th><b>Nombre Aspirante</b></th>
                                 <th><b>Cargo</b></th>
                                 <th><b>Entrevistador</b></th>
+                                <th><b>Estado Entrevista</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -78,6 +80,7 @@
                                 <th>Nombre Aspirante</th>
                                 <th>Cargo</th>
                                 <th>Entrevistador</th>
+                                <th>Estado Entrevista</th>
                                 
                             </tr>
                         </tfoot>        

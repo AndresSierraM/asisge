@@ -588,6 +588,9 @@
 
 
                 <?php
+                $mesAñoHoy = date("Y-m-d");
+                $fechaAnt = date("Y-m-d",strtotime("$mesAñoHoy - 11 months"));
+
                 // Consultamos todos los indicadores creados en la compañia actual
                     $cuadroMandoObjeto = DB::table('cuadromando as CM')
                         ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando'))
@@ -605,6 +608,7 @@
                                 ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
                                 ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
                                 ->where('CuadroMando_idCuadroMando','=',$CuadroMando['idCuadroMando'])
+                                ->whereBetween('fechaCalculoIndicador', [$fechaAnt, $mesAñoHoy])
                                 ->get();
                                                 
                         $arrayLabels = '[';
@@ -622,6 +626,7 @@
                             $Indicador = (array) $valor;
                             
                             $dt = strtotime($Indicador['fechaCorteIndicador']);
+                            
                             $month = array("","Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
                             
                             $fecha_reg = "'".$month[date('n', $dt)]."/".date("Y", $dt)."'";

@@ -89,62 +89,66 @@ class AccidenteController extends Controller
      */
     public function store(AccidenteRequest $request)
     {
-        
-        \App\Accidente::create([
-            'numeroAccidente' => $request['numeroAccidente'],
-            'nombreAccidente' => $request['nombreAccidente'],
-            'clasificacionAccidente' => $request['clasificacionAccidente'],
-            'Ausentismo_idAusentismo' => (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']),
-            'Tercero_idCoordinador' => $request['Tercero_idCoordinador'],
-            'Tercero_idEmpleado' => $request['Tercero_idEmpleado'],
-            'edadEmpleadoAccidente' => $request['edadEmpleadoAccidente'],
-            'tiempoServicioAccidente' => $request['tiempoServicioAccidente'],
-            'Proceso_idProceso' => $request['Proceso_idProceso'],
-            'enSuLaborAccidente' => (($request['enSuLaborAccidente'] !== null) ? 1 : 0),
-            'laborAccidente' => $request['laborAccidente'],
-            'enLaEmpresaAccidente' => (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0),
-            'lugarAccidente' => $request['lugarAccidente'],
-            'fechaOcurrenciaAccidente' => $request['fechaOcurrenciaAccidente'],
-            'tiempoEnLaborAccidente' => $request['tiempoEnLaborAccidente'],
-            'tareaDesarrolladaAccidente' => $request['tareaDesarrolladaAccidente'],
-            'descripcionAccidente' => $request['descripcionAccidente'],
-            'observacionTrabajadorAccidente' => $request['observacionTrabajadorAccidente'],
-            'observacionEmpresaAccidente' => $request['observacionEmpresaAccidente'],
-            'agenteYMecanismoAccidente' => $request['agenteYMecanismoAccidente'],
-            'naturalezaLesionAccidente' => $request['naturalezaLesionAccidente'],
-            'parteCuerpoAfectadaAccidente' => $request['parteCuerpoAfectadaAccidente'],
-            'tipoAccidente' => $request['tipoAccidente'],
-            'observacionAccidente'  => $request['observacionAccidente'],
-            'Compania_idCompania' => \Session::get('idCompania')
-            ]);
+        // acá me lo pase por alto, pero todos los formularios que tienen validacion con ajax deben tener esto, tanto en el store
+        // como en el update
+        if($request['respuesta'] != 'falso')
+        {    
+            \App\Accidente::create([
+                'numeroAccidente' => $request['numeroAccidente'],
+                'nombreAccidente' => $request['nombreAccidente'],
+                'clasificacionAccidente' => $request['clasificacionAccidente'],
+                'Ausentismo_idAusentismo' => (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']),
+                'Tercero_idCoordinador' => $request['Tercero_idCoordinador'],
+                'Tercero_idEmpleado' => $request['Tercero_idEmpleado'],
+                'edadEmpleadoAccidente' => $request['edadEmpleadoAccidente'],
+                'tiempoServicioAccidente' => $request['tiempoServicioAccidente'],
+                'Proceso_idProceso' => $request['Proceso_idProceso'],
+                'enSuLaborAccidente' => (($request['enSuLaborAccidente'] !== null) ? 1 : 0),
+                'laborAccidente' => $request['laborAccidente'],
+                'enLaEmpresaAccidente' => (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0),
+                'lugarAccidente' => $request['lugarAccidente'],
+                'fechaOcurrenciaAccidente' => $request['fechaOcurrenciaAccidente'],
+                'tiempoEnLaborAccidente' => $request['tiempoEnLaborAccidente'],
+                'tareaDesarrolladaAccidente' => $request['tareaDesarrolladaAccidente'],
+                'descripcionAccidente' => $request['descripcionAccidente'],
+                'observacionTrabajadorAccidente' => $request['observacionTrabajadorAccidente'],
+                'observacionEmpresaAccidente' => $request['observacionEmpresaAccidente'],
+                'agenteYMecanismoAccidente' => $request['agenteYMecanismoAccidente'],
+                'naturalezaLesionAccidente' => $request['naturalezaLesionAccidente'],
+                'parteCuerpoAfectadaAccidente' => $request['parteCuerpoAfectadaAccidente'],
+                'tipoAccidente' => $request['tipoAccidente'],
+                'observacionAccidente'  => $request['observacionAccidente'],
+                'Compania_idCompania' => \Session::get('idCompania')
+                ]);
 
 
-        $accidente = \App\Accidente::All()->last();
+            $accidente = \App\Accidente::All()->last();
 
-        // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
-        // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
-        $accidente->firmaCoordinadorAccidente = 'accidente/firmaaccidente_'.$accidente->idAccidente.'.png';
+            // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
+            // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo
+            $accidente->firmaCoordinadorAccidente = 'accidente/firmaaccidente_'.$accidente->idAccidente.'.png';
 
-        $accidente->save();
+            $accidente->save();
 
-        //----------------------------
-        // Guardamos la imagen de la firma como un archivo en disco
-        if (isset($request['firmabase64']) and $request['firmabase64'] != '') 
-        {
-            $data = $request['firmabase64'];
+            //----------------------------
+            // Guardamos la imagen de la firma como un archivo en disco
+            if (isset($request['firmabase64']) and $request['firmabase64'] != '') 
+            {
+                $data = $request['firmabase64'];
 
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $data = base64_decode($data);
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
 
-            file_put_contents('imagenes/accidente/firmaaccidente_'.$accidente->idAccidente.'.png', $data);
+                file_put_contents('imagenes/accidente/firmaaccidente_'.$accidente->idAccidente.'.png', $data);
+            }
+            //----------------------------
+
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($accidente->idAccidente, $request);
         }
-        //----------------------------
-
-        //---------------------------------
-        // guardamos las tablas de detalle
-        //---------------------------------
-        $this->grabarDetalle($accidente->idAccidente, $request);
         
 
         return redirect('/accidente');
@@ -195,33 +199,38 @@ class AccidenteController extends Controller
      */
     public function update(AccidenteRequest $request, $id)
     {
-        $accidente = \App\Accidente::find($id);
-        $accidente->fill($request->all());
-        $accidente->enSuLaborAccidente = (($request['enSuLaborAccidente'] !== null) ? 1 : 0);
-        $accidente->enLaEmpresaAccidente = (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0);
-        $accidente->Ausentismo_idAusentismo = (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']);
-        $accidente->firmaCoordinadorAccidente = 'accidente/firmaaccidente_'.$id.'.png';
-
-        $accidente->save();
-
-        //----------------------------
-        // Guardamos la imagen de la firma como un archivo en disco
-        $data = $request['firmabase64'];
-        if($data != '')
+        if ($request['respuesta'] != 'falso') 
         {
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $data = base64_decode($data);
+            $accidente = \App\Accidente::find($id);
+            $accidente->fill($request->all());
+            $accidente->enSuLaborAccidente = (($request['enSuLaborAccidente'] !== null) ? 1 : 0);
+            $accidente->enLaEmpresaAccidente = (($request['enLaEmpresaAccidente'] !== null) ? 1 : 0);
+            $accidente->Ausentismo_idAusentismo = (($request['Ausentismo_idAusentismo'] == '') ? null : $request['Ausentismo_idAusentismo']);
+            $accidente->firmaCoordinadorAccidente = 'accidente/firmaaccidente_'.$id.'.png'; 
 
-            file_put_contents('imagenes/accidente/firmaaccidente_'.$id.'.png', $data);
+            $accidente->save();
+
+            //----------------------------
+            // Guardamos la imagen de la firma como un archivo en disco
+            $data = $request['firmabase64'];
+            if($data != '') 
+            {
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
+
+                file_put_contents('imagenes/accidente/firmaaccidente_'.$id.'.png', $data);
+            }
+            //----------------------------
+
+
+            //---------------------------------
+            // guardamos las tablas de detalle
+            //---------------------------------
+            $this->grabarDetalle($id, $request);
         }
-        //----------------------------
+        // encierra en el if todo el codigo que guarda en la bd
 
-
-        //---------------------------------
-        // guardamos las tablas de detalle
-        //---------------------------------
-        $this->grabarDetalle($id, $request);
        
 
        return redirect('/accidente');

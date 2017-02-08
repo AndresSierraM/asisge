@@ -19,7 +19,7 @@
 
             ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idcargo')
             ->leftJoin('tercero', 'Tercero_idEntrevistador', '=', 'idTercero')
-            ->select(DB::raw('idEntrevista,fechaEntrevista,documentoAspiranteEntrevista,nombre1AspiranteEntrevista,nombreCargo,nombreCompletoTercero'))
+            ->select(DB::raw('idEntrevista,fechaEntrevista,documentoAspiranteEntrevista,nombre1AspiranteEntrevista,nombreCargo,nombreCompletoTercero,estadoEntrevista'))
             ->get();
             //->where('plantrabajoalerta.Compania_idCompania','=', \Session::get('idCompania'))
 
@@ -39,7 +39,7 @@
         $row[$key][] = $value->nombre1AspiranteEntrevista;
         $row[$key][] = $value->nombreCargo;
         $row[$key][] = $value->nombreCompletoTercero;
-
+        $row[$key][] = $value->estadoEntrevista;
         
     }
 

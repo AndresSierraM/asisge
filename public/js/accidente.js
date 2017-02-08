@@ -188,14 +188,20 @@ function validarFormulario(event)
     var dato5 = document.getElementById('Tercero_idEmpleado').value;
     var dato6 = document.getElementById('Ausentismo_idAusentismo').value;
     var dato7 = document.getElementById('Proceso_idProceso').value;
+
+    // Estos dos de abajo son campos de la multiregistro
+    // Primero se asigna a una variable y por cada registro que vayas a validar crea un nuevo dato-tal
+    // Siguiendo el mismo orden en que venias, 7, 8, 9 ...
     var datoResponsable = document.querySelectorAll("[name='Proceso_idResponsable[]']");
-    var datoInvestigador = document.querySelectorAll("[name='Tercero_idInvestigador[]']");
+    var datoInvestigador = document.querySelectorAll("[name='Tercero_idInvestigador[]']"); 
     var dato8 = [];
     var dato9 = [];
     
     var valor = '';
     var sw = true;
     
+    // Luego, dependiendo del numero de campos que vaya a validar en la multi, haces los for, si son 3 campos, son 3 for, en este caso son 2
+    // el for es con la variable en la que asignó el campo y luego le asigna el dato-tal a esa variable
     for(var j=0,i=datoResponsable.length; j<i;j++)
     {
         dato8[j] = datoResponsable[j].value;
@@ -205,6 +211,8 @@ function validarFormulario(event)
     {
         dato9[j] = datoInvestigador[j].value;
     }
+
+    // En este punto ya empieza el ajax normal, simplemente reemplazando valores o bueno, asignando los valores en el data, los mismos que tiene arriba
 
     $.ajax({
         async: false,
@@ -223,6 +231,7 @@ function validarFormulario(event)
                 Proceso_idProceso: dato7,
                 Proceso_idResponsable: dato8,
                 Tercero_idInvestigador: dato9,
+                // solo se modifica los campos del data
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -255,7 +264,11 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.Ausentismo_idAusentismo === "undefined" ? document.getElementById('Ausentismo_idAusentismo').style.borderColor = '' : document.getElementById('Ausentismo_idAusentismo').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.Proceso_idProceso === "undefined" ? document.getElementById('Proceso_idProceso').style.borderColor = '' : document.getElementById('Proceso_idProceso').style.borderColor = '#a94442');
+                // todos essos son los campos de encabezado, aca solo debe cambiar esto (todos los campos menos el id)
+                // a cada registro le pone un campo de los que hay en el data que sea de encabezado
 
+    //             1) el id se llene o no, siempre va a crearse porque es autonumerico
+    // 2)como es un campo hidden, esta porcion lo unico que hace es pintae rojo el campo que no se llenó ypues como se va a pintar un campo que esta oculto
 
                 for(var j=0,i=datoResponsable.length; j<i;j++)
                 {
