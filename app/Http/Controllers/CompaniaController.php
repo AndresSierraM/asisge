@@ -29,6 +29,11 @@ class CompaniaController extends Controller
             return view('accesodenegado');
     }
 
+    public function indexCompaniaGrid()
+    {
+        return view ('companiagridselect');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

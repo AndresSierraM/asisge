@@ -1,6 +1,7 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Documentos o Registros</center></h3>@stop
+@section('titulo')<h3 class="pestana" id="titulo"><center>Documento</center></h3>@stop
 @section('content')
+{!!Html::script('js/documento.js')!!}
 <style>
     tfoot input {
                 width: 100%;
@@ -9,7 +10,7 @@
                 background-image: none;
                 border: 1px solid #ccc;
                 border-radius: 4px;
-            }
+            }    
 </style> 
 <?php 
     $visible = '';
@@ -31,11 +32,12 @@
         $visible = 'none;';
     }
 ?>
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
         <div class="container">
             <div class="row">
                 <div class="container">
                     <br>
-                    <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
+                    <div class="btn-group" style="margin-left: 94%;margin-bottom:0px" title="Columns">
                         <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
                             <i class="glyphicon glyphicon-th icon-th"></i> 
                             <span class="caret"></span>
@@ -43,38 +45,45 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Código</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> C&oacute;digo</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Directorio</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Sistema de informaci&oacute;n</label></a></li>
                         </ul>
                     </div>
                     <table id="tdocumento" name="tdocumento" class="display table-bordered" width="100%">
                         <thead>
-                            <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="documento/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
-                                 <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
+                            <tr class="btn-primary active">
+                                <th style="width:80px;padding: 1px 8px;" data-orderable="false">
+                                <a href="documento/create"><span style= "display: <?php echo $visible;?> color:white;" class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="#"><span style="color:white" class="glyphicon glyphicon-refresh"></span></a>
+                                 <a><span class="glyphicon glyphicon-remove-sign" style="color:white; cursor:pointer;" id="btnLimpiarFiltros"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Código</b></th>
+                                <th><b>C&oacute;digo</b></th>
                                 <th><b>Nombre</b></th>
+                                <th><b>Directorio</b></th>
+                                <th><b>Sistema de informaci&oacute;n</b></th>
                             </tr>
                         </thead>
-                                        <tfoot>
+                        <tfoot>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;">
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Codigo</th>
+                                <th>C&oacute;digo</th>
                                 <th>Nombre</th>
+                                <th>Directorio</th>
+                                <th>Sistema de informaci&oacute;n</th>
                             </tr>
-                        </tfoot>        
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
 
-{!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
+
 <script type="text/javascript">
 
     $(document).ready( function () {
@@ -181,4 +190,4 @@
     
 </script>
 
-@stop
+@stop 
