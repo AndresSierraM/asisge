@@ -814,6 +814,14 @@ class TerceroController extends Controller
             }
             else
             {
+
+                $fechaNacimiento = ($terceros[$reg]['fechaNacimientoTercero'] + 2 - 25569.833299) * 86400; 
+                $fechaNacimiento = date("Y/m/d",$fechaNacimiento);
+
+                $fechaCreacion = ($terceros[$reg]['fechaCreacionTercero'] + 2 - 25569.833299) * 86400; 
+                $fechaCreacion = date("Y/m/d",$fechaCreacion);
+
+
                 // recorremos el array recibido para insertar o actualizar cada registro
                 for($reg = 0; $reg < count($terceros); $reg++)
                 {
@@ -829,7 +837,7 @@ class TerceroController extends Controller
                         'apellido1Tercero' => $terceros[$reg]['apellido1Tercero'],
                         'apellido2Tercero' => $terceros[$reg]['apellido2Tercero'],
                         'nombreCompletoTercero' => $terceros[$reg]['nombreCompletoTercero'],
-                        'fechaCreacionTercero' => $terceros[$reg]['fechaCreacionTercero'],
+                        'fechaCreacionTercero' => $fechaCreacion,
                         'estadoTercero' => $terceros[$reg]['estadoTercero'],
                         'imagenTercero' => $terceros[$reg]['imagenTercero'],
                         'tipoTercero' => $terceros[$reg]['tipoTercero'],
@@ -840,7 +848,7 @@ class TerceroController extends Controller
                         'movil1Tercero' => $terceros[$reg]['movil1Tercero'],
                         'movil2Tercero' => $terceros[$reg]['movil2Tercero'],
                         'sexoTercero' => $terceros[$reg]['sexoTercero'],
-                        'fechaNacimientoTercero' => $terceros[$reg]['fechaNacimientoTercero'],
+                        'fechaNacimientoTercero' => $fechaNacimiento,
                         'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
                         'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
@@ -874,6 +882,7 @@ class TerceroController extends Controller
             
             while ($datos->getCellByColumnAndRow(0, $fila)->getValue() != '' and
                     $datos->getCellByColumnAndRow(0, $fila)->getValue() != NULL) {
+
                 
 
                 // para cada registro de empleados recorremos las columnas desde la 0 hasta la 40
@@ -1153,6 +1162,18 @@ class TerceroController extends Controller
                 // recorremos el array recibido para insertar o actualizar cada registro
                 for($reg = 0; $reg < count($terceros); $reg++)
                 {
+
+                    $fechaNacimiento = ($terceros[$reg]['fechaNacimientoTercero'] + 2 - 25569.833299) * 86400; 
+                    $fechaNacimiento = date("Y/m/d",$fechaNacimiento);
+
+                    $fechaIngreso = ($terceros[$reg]['fechaIngresoTerceroInformacion'] + 2 - 25569.833299) * 86400; 
+                    $fechaIngreso = date("Y/m/d",$fechaIngreso);
+
+                    $fechaRetiro = ($terceros[$reg]['fechaRetiroTerceroInformacion'] + 2 - 25569.833299) * 86400; 
+                    $fechaRetiro = date("Y/m/d",$fechaRetiro);
+
+                    $fechaCreacion = ($terceros[$reg]['fechaCreacionTercero'] + 2 - 25569.833299) * 86400; 
+                    $fechaCreacion = date("Y/m/d",$fechaCreacion);
                     
                     $indice = array(
                           'idTercero' => $terceros[$reg]["idTercero"]);
@@ -1165,7 +1186,7 @@ class TerceroController extends Controller
                         'apellido1Tercero' => $terceros[$reg]['apellido1Tercero'],
                         'apellido2Tercero' => $terceros[$reg]['apellido2Tercero'],
                         'nombreCompletoTercero' => $terceros[$reg]['nombreCompletoTercero'],
-                        'fechaCreacionTercero' => $terceros[$reg]['fechaCreacionTercero'],
+                        'fechaCreacionTercero' => $fechaCreacion,
                         'estadoTercero' => $terceros[$reg]['estadoTercero'],
                         'imagenTercero' => $terceros[$reg]['imagenTercero'],
                         'tipoTercero' => $terceros[$reg]['tipoTercero'],
@@ -1176,7 +1197,7 @@ class TerceroController extends Controller
                         'movil1Tercero' => $terceros[$reg]['movil1Tercero'],
                         'movil2Tercero' => $terceros[$reg]['movil2Tercero'],
                         'sexoTercero' => $terceros[$reg]['sexoTercero'],
-                        'fechaNacimientoTercero' => $terceros[$reg]['fechaNacimientoTercero'],
+                        'fechaNacimientoTercero' => $fechaNacimiento,
                         'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
                         'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
@@ -1199,8 +1220,8 @@ class TerceroController extends Controller
 
                     $data = array(
                         'Tercero_idTercero' => $idtercero,
-                        'fechaIngresoTerceroInformacion' => $terceros[$reg]['fechaIngresoTerceroInformacion'],
-                        'fechaRetiroTerceroInformacion' => $terceros[$reg]['fechaRetiroTerceroInformacion'],
+                        'fechaIngresoTerceroInformacion' => $fechaIngreso,
+                        'fechaRetiroTerceroInformacion' => $fechaRetiro,
                         'tipoContratoTerceroInformacion' => $terceros[$reg]['tipoContratoTerceroInformacion'],
                         'aniosExperienciaTerceroInformacion' => $terceros[$reg]['aniosExperienciaTerceroInformacion'],
                         'educacionTerceroInformacion' => $terceros[$reg]['educacionTerceroInformacion'],

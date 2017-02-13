@@ -11,9 +11,12 @@
 
     examenmedicoDetalle = (examenmedicoDetalle != '' ? JSON.parse(examenmedicoDetalle) : '');
 
-    eventochange = ['onchange','validarTamañoImagen(this.id, this.value)'];
+    valorResultado =  Array("Apto", "No Apto");
+    nombreResultado =  Array("Apto", "No Apto");
 
-    var valorExamenMedico = [0,'','','','',''];
+    var resultado = [valorResultado,nombreResultado];
+
+    var valorExamenMedico = [0,'','',''];
 
     $(document).ready(function(){
 
@@ -29,42 +32,36 @@
         if(document.getElementById('Tercero_idTercero').value != 0)
           CargarCargo(document.getElementById('Tercero_idTercero').value);
 
-        // creamos los campos del detalle por cada pregunta, en los cuales solo se llenan 3 campos
-        // puntuacion (digitado por el susuario de 1 a 5 )
-        // resultado, calculado por el sistema (resultado = puntuacion * 20  expresado como porcentaje)
-        // mejora (digitado por le usuario, editor de texto libre)
+        // creamos los campos del detalle por cada pregunta, en los cuales solo se llena 1 campo
+        // una lista de selección "apto" o "no apto"
         
         examenmedico.campos   = [
         'idExamenMedicoDetalle',
         'TipoExamenMedico_idTipoExamenMedico', 
-        'nombreTipoExamenMedico', 
-        'limiteInferiorTipoExamenMedico', 
-        'limiteSuperiorTipoExamenMedico', 
+        'nombreTipoExamenMedico',  
         'resultadoExamenMedicoDetalle', 
         'archivoExamenMedicoDetalle',
         'fotoExamenMedicoDetalle', 
         'observacionExamenMedicoDetalle'];
         
-        examenmedico.etiqueta = ['input','input', 'input', 'input', 'input', 'input', 'file', 'imagen','textarea'];
+        examenmedico.etiqueta = ['input','input', 'input', 'select', 'file', 'imagen','textarea'];
 
-        examenmedico.tipo     = ['hidden','hidden', 'text', 'text', 'text', 'text', '', 'imagen', 'textarea'];
+        examenmedico.tipo     = ['hidden','hidden', 'text', '', '', 'imagen', 'textarea'];
         
         examenmedico.estilo   = ['','',
                                 'vertical-align:top; width: 300px; height:60px;', 
-                                'vertical-align:top; width: 100px;  height:60px;',
-                                'vertical-align:top; width: 100px;  height:60px;',
                                 'vertical-align:top; width: 110px;  height:60px;',
                                 'vertical-align:top; width: 200px;  height:60px; display: inline-block;',
                                 'vertical-align:top; width: 60px;  height:60px; display: inline-block;',
                                 'vertical-align:top; resize:none; width: 300px; height:60px;'];
 
-        examenmedico.clase    = ['','','','','','','','btn-primary',''];
+        examenmedico.clase    = ['','','','','','btn-primary',''];
 
-        examenmedico.sololectura = [false,false,true,true,true,false,false,false,false];
+        examenmedico.sololectura = [false,false,true,false,false,false,false];
       
-        examenmedico.opciones = ['','','','','','','','',''];
+        examenmedico.opciones = ['','','',resultado,'','',''];
 
-        examenmedico.funciones ['','','','','','',eventochange,'',''];
+        examenmedico.funciones ['','','','','','',''];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas
@@ -178,8 +175,6 @@
                 <div style="overflow: auto; width: 100%;">
   
                     <div class="col-md-1" style="width: 300px;">Examen</div>
-                    <div class="col-md-2" style="width: 100px;">Lim Inf</div>
-                    <div class="col-md-3" style="width: 100px;">Lim Sup</div>
                     <div class="col-md-4" style="width: 110px;">Resultado</div>
                     <div class="col-md-4" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
                     <div class="col-md-5" style="width: 300px;">Observaci&oacute;n</div>
