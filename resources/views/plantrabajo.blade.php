@@ -2,6 +2,13 @@
 @section('titulo')<h3 id="titulo"><center>Plan de Trabajo Anual</center></h3>@stop
 
 @section('content')
+{!!Html::script('js/plantrabajo.js')!!}
+
+<script>
+	$(document).ready(function(){
+		consultarExamenPlanTrabajo('a');
+	});
+</script>
 <?php 
 function colorTarea($valorTarea, $valorCumplido)
 {
@@ -126,7 +133,6 @@ function imprimirTabla($titulo, $informacion , $idtabla)
 }
 
 
-
 function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 {
 	echo '<div class="panel panel-primary">
@@ -137,6 +143,8 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
             </div>
             <div id="'.$idtabla.'" class="panel-collapse">
               <div class="panel-body" style="overflow:auto;">';
+
+              	  
 
     $dato = array();
     for ($i=0; $i < count($informacion); $i++) 
@@ -247,7 +255,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 
 }
 ?>
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
 <style>
     .info {
             background-color: blue,
@@ -262,7 +270,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 			imprimirTabla('Grupos de Apoyo', $grupoapoyo, 'grupoapoyo');
 			imprimirTabla('Planes de Capacitación', $capacitacion, 'capacitacion');			
 			imprimirTabla('Programas / Actividades', $programa, 'programa');	
-			imprimirTablaExamenesMedicos('Examenes Médicos', $examen, 'examen');
+			// imprimirTablaExamenesMedicos('Examenes Médicos', $examen, 'examen');
 			imprimirTabla('Investigacion de Accidentes', $accidente, 'accidente');
 			imprimirTabla('Inspecciones de Seguridad', $inspeccion, 'inspeccion');
 			imprimirTabla('Auditorías', $auditoria, 'auditoria');
@@ -270,6 +278,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 			imprimirTabla('Atividades de Grupos de Apoyo ', $actividadesgrupoapoyo, 'actividadesgrupoapoyo');
 		?>
     </div>
-		    
+	
+	<div id="examenmedico1"> </div> 
 	
 @stop

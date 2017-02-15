@@ -174,7 +174,7 @@ class ExamenMedicoController extends Controller
 
             
             $this->grabarDetalle($request, $id);
-            return redirect('/examenmedico');
+            // return redirect('/examenmedico');
         }    
     }
 
@@ -215,9 +215,22 @@ class ExamenMedicoController extends Controller
             $file = $files[$i] ;
             $rutaImagen = '';
             $destinationPath = '/examenmedico/';
+
+            if (\File::get($file) != null) 
+            {
+                    echo "<script type='text/javascript'>alert('Existe.');</script>";
+            }
+            else
+            {
+                    echo "<script type='text/javascript'>alert('El archivo supera el tamaño maximo permitido.');</script>";
+            }
+            return;
+
             if(isset($file))
             {
                 // $byte = filesize($file);
+
+                // echo $byte;
 
                 // $kb = $byte/1024;
 
@@ -239,8 +252,8 @@ class ExamenMedicoController extends Controller
                     $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
                 // }
                 // print_r($file);
-                // $validacion = Validator::make($request->all(), [
-                //         'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
+                // $validacion = Validator::make($file->all(), [
+                        // 'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
                 // ]);
 
                 // if ($validacion->fails()) 
