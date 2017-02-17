@@ -24,7 +24,7 @@ class OpcionRequest extends Request
     public function rules()
     {
         return [
-            "ordenOpcion" => "required|integer|between:0,99|unique:opcion,ordenOpcion,".$this->get('idOpcion') .",idOpcion",
+            "ordenOpcion" => "required|integer|between:0,200|unique:opcion,ordenOpcion,".$this->get('idOpcion') .",idOpcion",
             "nombreOpcion" => "required|string|max:80",
             "Paquete_idPaquete" => "required",
         ];

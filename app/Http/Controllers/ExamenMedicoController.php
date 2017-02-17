@@ -103,7 +103,7 @@ class ExamenMedicoController extends Controller
                 
                 $examenmedicotercero = DB::table('terceroexamenmedico')
                     ->leftJoin('tipoexamenmedico', 'terceroexamenmedico.TipoExamenMedico_idTipoExamenMedico', '=', 'tipoexamenmedico.idTipoExamenMedico')
-                    ->select(DB::raw('idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, nombreTipoExamenMedico, limiteInferiorTipoExamenMedico, limiteSuperiorTipoExamenMedico, "" as resultadoExamenMedicoDetalle, "" as observacionExamenMedicoDetalle'))
+                    ->select(DB::raw('idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, nombreTipoExamenMedico, "" as resultadoExamenMedicoDetalle, "" as observacionExamenMedicoDetalle'))
                     ->orderBy('nombreTipoExamenMedico', 'ASC')
                     ->where('terceroexamenmedico.Tercero_idTercero','=',$request["idTercero"])
                     ->where('terceroexamenmedico.'.$request["tipoExamenMedico"].'TerceroExamenMedico','=',1)
@@ -111,7 +111,7 @@ class ExamenMedicoController extends Controller
 
                 $examenmedicocargo = DB::table('cargoexamenmedico')
                     ->leftJoin('tipoexamenmedico', 'cargoexamenmedico.TipoExamenMedico_idTipoExamenMedico', '=', 'tipoexamenmedico.idTipoExamenMedico')
-                    ->select(DB::raw('idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, nombreTipoExamenMedico, limiteInferiorTipoExamenMedico, limiteSuperiorTipoExamenMedico, "" as resultadoExamenMedicoDetalle, "" as observacionExamenMedicoDetalle'))
+                    ->select(DB::raw('idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, nombreTipoExamenMedico, "" as resultadoExamenMedicoDetalle, "" as observacionExamenMedicoDetalle'))
                     ->orderBy('nombreTipoExamenMedico', 'ASC')
                     ->where('cargoexamenmedico.Cargo_idCargo','=',$request["idCargo"])
                     ->where('cargoexamenmedico.'.$request["tipoExamenMedico"].'CargoExamenMedico','=',1)
@@ -215,9 +215,22 @@ class ExamenMedicoController extends Controller
             $file = $files[$i] ;
             $rutaImagen = '';
             $destinationPath = '/examenmedico/';
+
+            if (\File::get($file) != null) 
+            {
+                    echo "<script type='text/javascript'>alert('Existe.');</script>";
+            }
+            else
+            {
+                    echo "<script type='text/javascript'>alert('El archivo supera el tamaño maximo permitido.');</script>";
+            }
+            return;
+
             if(isset($file))
             {
                 // $byte = filesize($file);
+
+                // echo $byte;
 
                 // $kb = $byte/1024;
 
@@ -228,7 +241,7 @@ class ExamenMedicoController extends Controller
                 // else
                 // {
                 //     echo "<script type='text/javascript'>alert('Guardar archivo.');</script>";
-                //     $filename = $destinationPath . $file->getClientOriginalName();
+                    $filename = $destinationPath . $file->getClientOriginalName();
                      
                 //     $manager = new ImageManager();
                 //     $manager->make($file->getRealPath())->save($filename);
@@ -239,8 +252,8 @@ class ExamenMedicoController extends Controller
                     $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
                 // }
                 // print_r($file);
-                // $validacion = Validator::make($request->all(), [
-                //         'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
+                // $validacion = Validator::make($file->all(), [
+                        // 'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
                 // ]);
 
                 // if ($validacion->fails()) 
@@ -267,9 +280,8 @@ class ExamenMedicoController extends Controller
             $respuesta = \App\ExamenMedicoDetalle::updateOrCreate($indice, $data);
             
             
-            // verificamos si no tiene el chulo SE CUMPLE, insertamos un registro en el ACPM (Accion Correctiva)
-            if($request['resultadoExamenMedicoDetalle'][$i] < $request['limiteInferiorTipoExamenMedico'][$i] OR 
-                $request['resultadoExamenMedicoDetalle'][$i] > $request['limiteSuperiorTipoExamenMedico'][$i] )
+            // verificamos si NO es APTO, insertamos un registro en el ACPM (Accion Correctiva)
+            if($request['resultadoExamenMedicoDetalle'][$i] == 'No Apto')
             {
 
 

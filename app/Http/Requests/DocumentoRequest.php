@@ -23,9 +23,18 @@ class DocumentoRequest extends Request
      */
     public function rules()
     {
-        return [
-            "codigoDocumento" => "required|string|max:20|unique:documento,codigoDocumento,".$this->get('idDocumento') .",idDocumento",
-            "nombreDocumento" => "required|string|max:80"
-        ];
+        // return [
+        //     "codigoDocumento" => "required|string|max:10|unique:documento,codigoDocumento,".$this->get('idDocumento') .",idDocumento",
+        //     "nombreDocumento" => "required|string|max:80",
+        //     "directorioDocumento" => "required|string|max:85",
+        //     "tipoDocumento" => "required|string|max:85"
+        // ];     
+        $validacion = array(
+            "codigoDocumento" => "required|string|max:10|unique:documento,codigoDocumento,".$this->get('idDocumento') .",idDocumento",
+            "nombreDocumento" => "required|string|max:80",
+            "directorioDocumento" => "required|string|max:85",
+            "tipoDocumento" => "required");
+        
+        return $validacion;
     }
 }
