@@ -46,7 +46,7 @@
                             left join ".strtolower($tabla)." T 
                             on M.".$tabla."_id".$tabla." = T.id".$tabla."
                             where   M.Compania_idCompania = ".$idCompania ." and 
-                                    M.DocumentoCRM_idDocumentoCRM = '.$idDocumentoCRM.' 
+                                    M.DocumentoCRM_idDocumentoCRM = ".$idDocumentoCRM." 
                             group by nombre".$tabla);
 
                         //and 

@@ -49,8 +49,8 @@
             relacionTablaCampoCRM != "" and 
             mostrarGridDocumentoCRMCampo = 1');
 
-$camposGrid = 'idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM, DATEDIFF(CURDATE(), fechaSolicitudMovimientoCRM) as diasProceso';
-$camposBase = 'idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM, diasProceso';
+$camposGrid = 'IF((fechaVencimientoMovimientoCRM != "0000-00-00 00:00:00" and tipoEstadoCRM NOT IN ("Exitoso","Fallido","Cancelado")), DATEDIFF(fechaVencimientoMovimientoCRM, CURDATE()), 3) as diasFaltantes, idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM, DATEDIFF(CURDATE(), fechaSolicitudMovimientoCRM) as diasProceso';
+$camposBase = 'diasFaltantes, idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM, diasProceso';
 for($i = 0; $i < count($campos); $i++)
 {
     $datos = get_object_vars($campos[$i]); 
@@ -121,12 +121,28 @@ for($i = 0; $i < count($campos); $i++)
                         '</a>';
 
         $campos = explode(',', $camposBase);
+        $estilo = '';
         for($j = 0; $j < count($campos); $j++)
         {
           // if(trim($campos[$j]) == 'asuntoMovimientoCRM')
           //     $row[$i][] = '<p title="'.$datoValor['detallesMovimientoCRM'].'">'.$datoValor[trim($campos[$j])].'</p>';
           // else
-              $row[$i][] = $datoValor[trim($campos[$j])];
+          
+          if(trim($campos[$j]) == 'diasFaltantes')
+          {
+            
+            if($datoValor[trim($campos[$j])] <= 2 )
+                $estilo = 'style="color: red;"';
+             else
+                $estilo = '';
+
+            // if($datoValor[trim($campos[$j])] <= 0)
+              
+          }
+            
+          else
+            
+              $row[$i][] = '<span '.$estilo.'>'.$datoValor[trim($campos[$j])].'</span>';
           
         }
 

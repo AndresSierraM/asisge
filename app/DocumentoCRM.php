@@ -18,6 +18,11 @@ class DocumentoCRM extends Model
     	return $this->hasMany('App\DocumentoCRMCampo','DocumentoCRM_idDocumentoCRM');
     }
 
+    public function documentocrmgrafico()
+    {
+        return $this->hasMany('App\DocumentoCRMGrafico','DocumentoCRM_idDocumentoCRM');
+    }
+
     public function documentocrmcompania()
     {
     	return $this->hasMany('App\DocumentoCRMCompania','DocumentoCRM_idDocumentoCRM');
