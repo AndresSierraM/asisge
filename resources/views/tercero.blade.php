@@ -211,7 +211,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-calendar" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('fechaCreacionTercero',date('Y-m-d'),['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n del tercero','style'=>'width:300px;','readonly'=>true])!!}
+										{!!Form::text('fechaCreacionTercero',(isset($tercero) ? $tercero->fechaCreacionTercero : date('Y-m-d')),['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n del tercero','style'=>'width:300px;','readonly'=>true])!!}
 									</div>
 								</div>
 							</div>

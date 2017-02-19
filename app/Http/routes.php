@@ -182,9 +182,9 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/calcularCuadroMando.php';
     });
 
-    Route::post('consultarExamenMedicoPlanTrabajo', function()
+    Route::post('consultarPlanTrabajo', function()
     {
-        include public_path().'/ajax/consultarExamenMedicoPlanTrabajo.php';
+        include public_path().'/ajax/consultarPlanTrabajo.php';
     });
 
 

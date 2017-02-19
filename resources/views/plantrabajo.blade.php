@@ -6,7 +6,8 @@
 
 <script>
 	$(document).ready(function(){
-		consultarExamenPlanTrabajo('a');
+		consultarPlanTrabajo('2017','a');
+		// consultarExamenPlanTrabajo('a');
 	});
 </script>
 <?php 
@@ -266,19 +267,24 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 				
     <div class="panel-group" id="accordion">
       <?php
-			imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal');
-			imprimirTabla('Grupos de Apoyo', $grupoapoyo, 'grupoapoyo');
-			imprimirTabla('Planes de Capacitación', $capacitacion, 'capacitacion');			
-			imprimirTabla('Programas / Actividades', $programa, 'programa');	
+			// imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal');
+			// imprimirTabla('Grupos de Apoyo', $grupoapoyo, 'grupoapoyo');
+			// imprimirTabla('Planes de Capacitación', $capacitacion, 'capacitacion');			
+			// imprimirTabla('Programas / Actividades', $programa, 'programa');	
 			// imprimirTablaExamenesMedicos('Examenes Médicos', $examen, 'examen');
-			imprimirTabla('Investigacion de Accidentes', $accidente, 'accidente');
-			imprimirTabla('Inspecciones de Seguridad', $inspeccion, 'inspeccion');
-			imprimirTabla('Auditorías', $auditoria, 'auditoria');
-			imprimirTabla('Reporte ACPM', $acpm, 'acpm');
-			imprimirTabla('Atividades de Grupos de Apoyo ', $actividadesgrupoapoyo, 'actividadesgrupoapoyo');
+			// imprimirTabla('Investigacion de Accidentes', $accidente, 'accidente');
+			// imprimirTabla('Inspecciones de Seguridad', $inspeccion, 'inspeccion');
+			// imprimirTabla('Auditorías', $auditoria, 'auditoria');
+			// imprimirTabla('Reporte ACPM', $acpm, 'acpm');
+			// imprimirTabla('Atividades de Grupos de Apoyo ', $actividadesgrupoapoyo, 'actividadesgrupoapoyo');
 		?>
     </div>
-	
-	<div id="examenmedico1"> </div> 
+	<select id="añoPlanTrabajo" class="form-control" onchange="consultarPlanTrabajo(this.value,'a')">
+		<option>2017</option>
+		<option>2016</option>
+	</select>
+
+	<br>
+	<div id="plantrabajo"> </div> 
 	
 @stop

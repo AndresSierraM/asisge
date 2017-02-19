@@ -43,10 +43,10 @@ class ProgramaController extends Controller
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idDocumento = \App\Documento::All()->lists('idDocumento');
-        $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
-        return view('programa',compact('clasificacionriesgo','terceros','companiaobjetivo', 'nombreCompletoTercero', 'idTercero', 'nombreDocumento', 'idDocumento'));
+        return view('programa',compact('clasificacionriesgo','terceros','companiaobjetivo', 'nombreCompletoTercero', 'idTercero', 'nombreDocumentoSoporte', 'idDocumentoSoporte'));
     }
 
     /**
@@ -126,7 +126,7 @@ class ProgramaController extends Controller
               AND pr.Compania_idCompania = ".\Session::get('idCompania'));
 
           
-            $programaDetalle = DB::select("SELECT actividadProgramaDetalle,nombreCompletoTercero,fechaPlaneadaProgramaDetalle,nombreDocumento,recursoPlaneadoProgramaDetalle,recursoEjecutadoProgramaDetalle,fechaEjecucionProgramaDetalle,observacionProgramaDetalle from programadetalle pd LEFT JOIN tercero t ON t.idTercero = pd.Tercero_idResponsable LEFT JOIN documento d ON d.idDocumento = pd.Documento_idDocumento WHERE Programa_idPrograma =  ".$id);
+            $programaDetalle = DB::select("SELECT actividadProgramaDetalle,nombreCompletoTercero,fechaPlaneadaProgramaDetalle,nombreDocumentoSoporte,recursoPlaneadoProgramaDetalle,recursoEjecutadoProgramaDetalle,fechaEjecucionProgramaDetalle,observacionProgramaDetalle from programadetalle pd LEFT JOIN tercero t ON t.idTercero = pd.Tercero_idResponsable LEFT JOIN documentosoporte d ON d.idDocumentoSoporte = pd.Documento_idDocumento WHERE Programa_idPrograma =  ".$id);
 
             
             return view('formatos.programaimpresion',compact('programa','programaDetalle'));
@@ -148,16 +148,16 @@ class ProgramaController extends Controller
         // cuando se modifica  un programa, enviamos los maestros requeridos para el encabezado         
         $clasificacionriesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo','idClasificacionRiesgo');
         $terceros = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero');
-        $companiaobjetivo = \App\CompaniaObjetivo::All()->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
+        $companiaobjetivo = \App\CompaniaObjetivo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
 
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idDocumento = \App\Documento::All()->lists('idDocumento');
-        $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
         return view('programa',
-                    compact('clasificacionriesgo','terceros','companiaobjetivo', 'nombreCompletoTercero', 'idTercero', 'nombreDocumento', 'idDocumento'),
+                    compact('clasificacionriesgo','terceros','companiaobjetivo', 'nombreCompletoTercero', 'idTercero', 'nombreDocumentoSoporte', 'idDocumentoSoporte'),
                     ['programa'=>$programa]);
 
     }
