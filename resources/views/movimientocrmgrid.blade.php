@@ -254,7 +254,7 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
         $('#tmovimientocrm tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
- 
+
             if ( colIdx !== lastIdx ) {
                 $( table.cells().nodes() ).removeClass( 'highlight' );
                 $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
@@ -272,14 +272,22 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
- 
+
+    
     // DataTable
     var table = $('#tmovimientocrm').DataTable();
- 
+
+     // table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+     //        //var cell = table.cell({ row: rowIdx, column: 0 }).node();
+     //          alert('dsaf');
+     //        //$(cell).addClass('warning');
+     //    });
+
     // Apply the search
     table.columns().every( function () {
         var that = this;
  
+        
         $( 'input', this.footer() ).on( 'blur change', function () {
             if ( that.search() !== this.value ) {
                 that
@@ -288,6 +296,8 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
             }
         } );
     })
+
+
 
     
 });

@@ -172,6 +172,32 @@ class DocumentoCRMController extends Controller
 
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarDocumentoCRMGrafico']);
+        \App\DocumentoCRMGrafico::whereIn('idDocumentoCRMGrafico',$idsEliminar)->delete();
+
+        $contador = count($request['idDocumentoCRMGrafico']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+
+            $indice = array(
+             'idDocumentoCRMGrafico' => $request['idDocumentoCRMGrafico'][$i]);
+
+
+            $data = array(
+             'DocumentoCRM_idDocumentoCRM' => $id,
+            'tituloDocumentoCRMGrafico' => $request['tituloDocumentoCRMGrafico'][$i],
+            'tipoDocumentoCRMGrafico' => $request['tipoDocumentoCRMGrafico'][$i],
+            'valorDocumentoCRMGrafico' => $request['valorDocumentoCRMGrafico'][$i],
+            'serieDocumentoCRMGrafico' => $request['serieDocumentoCRMGrafico'][$i]);
+
+             $preguntas = \App\DocumentoCRMGrafico::updateOrCreate($indice, $data);
+
+        }
+
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
         $idsEliminar = explode(',', $request['eliminarDocumentoCRMCompania']);
         \App\DocumentoCRMCompania::whereIn('idDocumentoCRMCompania',$idsEliminar)->delete();
 

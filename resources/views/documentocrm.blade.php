@@ -11,12 +11,16 @@
     var documentocrmcampo = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcampo) : "");?>';
     documentocrmcampo = (documentocrmcampo != '' ? JSON.parse(documentocrmcampo) : '');
 
+    var documentocrmgrafico = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmgrafico) : "");?>';
+    documentocrmgrafico = (documentocrmgrafico != '' ? JSON.parse(documentocrmgrafico) : '');
+
     var documentocrmcompania = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcompania) : "");?>';
     documentocrmcompania = (documentocrmcompania != '' ? JSON.parse(documentocrmcompania) : '');
 
     var documentocrmrol = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmrol) : "");?>';
     documentocrmrol = (documentocrmrol != '' ? JSON.parse(documentocrmrol) : '');
 
+    var valoresGrafico = [0,'','','',''];
     $(document).ready(function(){
 
       protCampos = new Atributos('protCampos','contenedor_protCampos','documentocrmcampo');
@@ -84,6 +88,59 @@
         protCampos.agregarCampos(JSON.stringify(documentocrmcampo[j]),'L');
 
         llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
+      }
+
+      protGraficos = new Atributos('protGraficos','contenedor_protGraficos','documentocrmgrafico');
+
+      protGraficos.altura = '35px';
+      protGraficos.campoid = 'idDocumentoCRMGrafico';
+      protGraficos.campoEliminacion = 'eliminarDocumentoCRMGrafico';
+
+      protGraficos.campos   = [
+      'idDocumentoCRMGrafico',
+      'serieDocumentoCRMGrafico',
+      'tituloDocumentoCRMGrafico',
+      'tipoDocumentoCRMGrafico', 
+      'valorDocumentoCRMGrafico'
+      ];
+
+      protGraficos.etiqueta = [
+      'input',
+      'select',
+      'input',
+      'select',
+      'select'
+      ];
+
+      protGraficos.tipo = [
+      'hidden',
+      '',
+      'text',
+      '',
+      ''
+      ];
+
+      protGraficos.estilo = [
+      '',
+      'width: 200px;height:35px;',
+      'width: 400px;height:35px;',
+      'width: 200px;height:35px;',
+      'width: 200px;height:35px;'
+      ];
+
+      tipoGrafico = [['Barras','Dona','Linea'],['Barras','Dona','Linea']];
+      serieGrafico = [['estadocrm','categoriacrm','lineanegocio','eventocrm','origencrm'],['Estado','Categoría','Línea de Negocio','Evento/Campaña', 'Origen']];
+      valorGrafico = [['Valor','Cantidad'],['Valor','Cantidad']];
+
+      protGraficos.clase    = ['','','','',''];
+      protGraficos.sololectura = [true,false,false,false,false];  
+      protGraficos.funciones = ['','','','',''];
+      protGraficos.completar = ['off','off','off','off','off'];
+      protGraficos.opciones = ['',serieGrafico,'',tipoGrafico,valorGrafico];
+
+      for(var j=0, k = documentocrmgrafico.length; j < k; j++)
+      {
+        protGraficos.agregarCampos(JSON.stringify(documentocrmgrafico[j]),'L');
       }
 
 
@@ -383,6 +440,47 @@
 			                    </div>
 			                  </div>
 
+			                  <div class="panel panel-default">
+			                    <div class="panel-heading">
+			                      <h4 class="panel-title">
+			                        <a data-toggle="collapse" data-parent="#accordion" href="#graficos">Gráficos</a>
+			                      </h4>
+			                    </div>
+			                    <div id="graficos" class="panel-collapse collapse in">
+			                      <div class="panel-body">
+			                        
+								    <div class="panel-body">
+								      <div class="form-group" id='test'>
+								        <div class="col-sm-12">
+								          <div class="panel-body" >
+								            <div class="form-group" id='test'>
+								              <div class="col-sm-12">
+								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+								                  <div style="overflow:auto; height:350px;">
+								                    <div style="width: 100%; display: inline-block;">
+								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="protGraficos.agregarCampos(valoresGrafico,'A');">
+								                        <span class="glyphicon glyphicon-plus"></span>
+								                      </div>
+								                      <div class="col-md-1" style="width: 200px;" >Serie</div>
+								                      <div class="col-md-1" style="width: 400px;" >Título del Gráfico</div>
+								                      <div class="col-md-1" style="width: 200px;" >Tipo</div>
+								                      <div class="col-md-1" style="width: 200px;" >Valor</div>
+								                      <div id="contenedor_protGraficos">
+								                      </div>
+								                    </div>
+								                  </div>
+								                </div>
+								              </div>
+								            </div>
+								          </div>
+								        </div>
+								      </div>  
+								    </div>
+		                         
+			                         
+			                      </div> 
+			                    </div>
+			                  </div>
 							<div class="panel panel-default">
 			                    <div class="panel-heading">
 			                      <h4 class="panel-title">

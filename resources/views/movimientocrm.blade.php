@@ -23,14 +23,22 @@ function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 // si es un documento nuevo e ingresó es porque es Solicitante pero en los permisos puede tener opcion de Aprobador
 $aprobador = (isset($_GET["aprobador"]) ? $_GET["aprobador"] : 0);
 
+// el valor por defecto será SOLICITANTE
 $rolUsuario = 'solicitante';
-if(!isset($documentocrm))
+// si estamos en ADICION
+if(!isset($movimientocrm))
 {
+	// y es APROBADOR
 	if($aprobador == 1)
+	{
 		$rolUsuario = 'aprobador';
-	else
+	}
+	else // sino se asume como SOLICITANTE
+	{
 		$rolUsuario = 'solicitante';
+	}
 }
+// si estamos en EDICION/ELIMINACION
 else
 {
 	// si esta en el documento a modificar en uno de los 3 subrolres 
@@ -39,12 +47,18 @@ else
 		$rolUsuario = 'aprobador';
 	else
 	{
-		if($documentocrm->Tercero_idSupervisor)
+		if($movimientocrm->Tercero_idSupervisor == \Session::get("idTercero"))
+		{
 			$rolUsuario = 'aprobador';
-		elseif($documentocrm->Tercero_idAsesor)
+		}
+		elseif($movimientocrm->Tercero_idAsesor == \Session::get("idTercero"))
+		{	
 			$rolUsuario = 'asesor';
+		}
 		else
+		{
 			$rolUsuario = 'solicitante';
+		}
 	}
 }
 
