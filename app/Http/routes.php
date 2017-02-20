@@ -69,8 +69,9 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
-
-
+    
+    Route::resource ('evaluaciondesempeno','EvaluacionDesempenoController');
+    Route::resource ('entrevistaresultado','EntrevistaResultadoController');
     Route::resource ('competenciarespuesta','CompetenciaRespuestaController');
     Route::resource ('entrevista','EntrevistaController');
     Route::resource ('competencia','CompetenciaController');   
@@ -331,6 +332,10 @@ Route::group(['middleware' => 'auth'], function ()
         Route::get('datosEntrevista', function()
     {
         include public_path().'/ajax/datosEntrevista.php';
+    });
+        Route::get('datosEntrevistaResultado', function()
+    {
+    include public_path().'/ajax/datosEntrevistaResultado.php';
     });
 
     Route::get('datosCompetencia', function()
@@ -893,6 +898,20 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/generarInforme.php';
     });
+    Route::POST('consultarinformeEntrevista', function()
+    {
+    include public_path().'/ajax/consultarinformeEntrevista.php';
+    });
+    Route::post('llenarEntrevistaCompetencia', function()
+    {
+    include public_path().'/ajax/llenarEntrevistaCompetencia.php';
+    });
+
+    Route::post('llenarEntrevistaCompetenciaNueva', function()
+    {
+        include public_path().'/ajax/llenarEntrevistaCompetenciaNueva.php';
+    });
+
 }
 
 Route::get('dropzone','TerceroController@indexdropzone');

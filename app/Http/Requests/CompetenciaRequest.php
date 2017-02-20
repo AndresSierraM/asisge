@@ -25,7 +25,7 @@ class CompetenciaRequest extends Request
     {
         return [
 
-      "nombreCompetencia" => "required|string|max:20|",
+      "nombreCompetencia" => "required|string|max:100|",
       "estadoCompetencia" => "required|"
      
         ];

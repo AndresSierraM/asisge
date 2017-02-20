@@ -53,7 +53,8 @@ class EntrevistaRequest extends Request
             "fechaEntrevista" => "required",
             "Tercero_idEntrevistador" => "required",
             "Cargo_idCargo" => "required",
-            "experienciaAspiranteEntrevista" => 'required|numeric|min:0');
+            "experienciaAspiranteEntrevista" => 'required|numeric|min:0',
+            "TipoIdentificacion_idTipoIdentificacion" => "required");
         
 
          for($i = 0; $i < $EntrevistaHijos; $i++)

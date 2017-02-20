@@ -1,18 +1,16 @@
 <?php 
-
 $idCargo = $_POST['idCargo'];
 
-// consultamos las preguntas que ya han sido guardadas en la entrevista
+// Consultamos las preguntas asociadas al cargo
 $preguntas = DB::Select('
 	SELECT
-	idEntrevistaCompetencia, CompetenciaPregunta_idCompetenciaPregunta,preguntaCompetenciaPregunta,CompetenciaRespuesta_idCompetenciaRespuesta
-  FROM entrevistacompetencia ec
+	NULL as idEntrevistaCompetencia, idCompetenciaPregunta as CompetenciaPregunta_idCompetenciaPregunta, preguntaCompetenciaPregunta, NULL as CompetenciaRespuesta_idCompetenciaRespuesta
+  FROM cargocompetencia cc
   LEFT JOIN competenciapregunta cp
-    On ec.CompetenciaPregunta_idCompetenciaPregunta = cp.idCompetenciaPregunta 
-  LEFT JOIN entrevista e
-    On ec.Entrevista_idEntrevista = e.idEntrevista
+    On cc.Competencia_idCompetencia = cp.Competencia_idCompetencia
+  LEFT JOIN competencia c
+    On cc.Competencia_idCompetencia = c.idCompetencia
     where Cargo_idCargo = '.$idCargo);
-
 
 // consultamos los posibles tipo sde respuestas para las preguntas
 $respuestas = DB::Select('	
@@ -23,3 +21,6 @@ $respuestas = DB::Select('
 $consulta = array($preguntas, $respuestas);
 echo json_encode($consulta);
 ?>
+
+
+

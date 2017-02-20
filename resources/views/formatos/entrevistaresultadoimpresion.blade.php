@@ -1,90 +1,9 @@
-<?php 
+@extends('layouts.formato')
 
-
-		$condicion = $_POST['condicion'];
-
-        $estadoEntrevistaResultado = $_POST['estados'];
-
-        $accion = $_POST['accion'];
-
-        $readonly = '';
-        $disabled = '';
-
-        if ($accion == 'eliminar') 
-        {
-        	$readonly = 'readonly';
-        	$disabled = 'disabled';
-        }
-        else
-        {
-        	$readonly = ''; 
-        	$disabled = '';
-    
-         } 
-        $estado = substr($estadoEntrevistaResultado, 0, strlen($estadoEntrevistaResultado)-1);
-        // el substr es para que llegue a la posicion 0 luego a la 1 y luego a la 2. luego en el strlen recorre el string hasta llegar
-        // al ultimo estado 
-        $estados = explode(',', $estado);
-        // se pone un explode para separarlo por comas 
-        $estadoEntrev = '';
-
-
-        if (isset($estados[2])) 
-            //se empieza preguntando por  la posicion 2 
-        {
-            if ($estados[0] == 1)
-                //para cuando este en la posicion 0 sea el valor del estado 1 
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "EnProceso"';
-            else if ($estados[0] == 2)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Seleccionado"';
-            else if ($estado[0] == 3)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
-
-            if ($estados[1] == 2) 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 2) ? ' or ' : '') . ('estadoEntrevista = "Seleccionado"');
-            else 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 3) ? ' or ' : '') . ('estadoEntrevista = "Rechazado"');
-
-            if ($estados[2] == 3) 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[2] == 3) ? ' or ' : '') . ('estadoEntrevista = "Rechazado"');
-        }
-
-        elseif (isset($estados[1])) 
-        {
-            if ($estados[0] == 1)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "EnProceso"';
-            else if ($estados[0] == 2)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Seleccionado"';
-            else if ($estado[0] == 3)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
-
-            if ($estados[1] == 2) 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 2) ? ' or ' : '') . ('estadoEntrevista = "Seleccionado"');
-            else
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 3) ? ' or ' : '') . ('estadoEntrevista = "Rechazado"');
-        }
-
-        elseif (isset($estados[0])) 
-        {
-            if ($estados[0] == 1)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "EnProceso"';
-            else if ($estados[0] == 2)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Seleccionado"';
-            else if ($estado[0] == 3)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
-        }
-
-        
-        $consulta = DB::Select('
-        SELECT idEntrevista,e.Cargo_idCargo,e.Tercero_idEntrevistador,fechaEntrevista,c.porcentajeEducacionCargo,c.porcentajeExperienciaCargo,c.porcentajeFormacionCargo,c.porcentajeResponsabilidadCargo,c.porcentajeHabilidadCargo,Competencia_idCompetencia,nombre1AspiranteEntrevista,nombre2AspiranteEntrevista,apellido1AspiranteEntrevista,apellido2AspiranteEntrevista,t.nombreCompletoTercero,e.calificacionEducacionEntrevista,e.calificacionFormacionEntrevista,e.calificacionHabilidadCargoEntrevista,e.calificacionHabilidadActitudinalEntrevista,e.experienciaAspiranteEntrevista,e.experienciaRequeridaEntrevista,e.estadoEntrevista,e.TipoIdentificacion_idTipoIdentificacion,e.observacionEntrevista
-        FROM entrevista e
-        Left Join cargo c
-        On e.Cargo_idCargo = c.idCargo
-        left join cargocompetencia cc
-        On cc.Cargo_idCargo = c.idCargo
-        left join tercero t
-        On e.Tercero_idEntrevistador = t.idTercero 
-        WHERE '.$condicion.' and ('.$estadoEntrev.')'); 
+@section('contenido')
+{!!Form::model($consulta)!!}
+<?php
+	
 
 
 $Experienciainfo = '';
@@ -94,6 +13,11 @@ $arrayDatos = '';
 $informehtml = '';
 $datosconsulta = null;
 $respuestaInforme = null;
+
+// for ($i = 0, $c = count($consulta); $i < $c; ++$i) 
+// {
+//   $nombremetadato[$i] = (array) $consulta[$i];
+// }
 
  $informehtml .=   '<div class="container">                                       
   <table class="table table-striped table-bordered table-hover table-condensed">
@@ -174,29 +98,21 @@ $informehtml .= '
       <td>'.$datosconsulta['calificacionHabilidadCargoEntrevista'].'%'.'</td>
           <td></td> 
           <td>'.$respuestaInforme.'%'.'</td>
-          <td> <textarea id="observacionInformeEntrevista" name="observacionInformeEntrevista[]" '; $informehtml.= $readonly.' ></textarea></td>
+          <td>'.$datosconsulta["observacionEntrevista"].'</td>
           <input type="hidden" id="idEntrevista" value ="'.$datosconsulta["idEntrevista"].'" name="idEntrevista[]">
           <input type="hidden" id="TipoIdentificacion_idTipoIdentificacion" value ="'.$datosconsulta["TipoIdentificacion_idTipoIdentificacion"].'" name="TipoIdentificacion_idTipoIdentificacion[]">
-          <td>
-          <select id="seleccionInformeEntrevista" name="seleccionInformeEntrevista[]"'; $informehtml.= $disabled.'>
-          ';
-          	foreach ($consulta as $numEstado => $estado) 
-          		//primero se la consulta se le pone un sombrenombre 
-		    {
-		    	// se hace un forech para saber el estado de la entreevista para que salga en el informe tal cual esta alla.
-		        $informehtml .= '<option value="'.$estado->estadoEntrevistaResultado.'"'.($estado->estadoEntrevistaResultado == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$estado->estadoEntrevistaResultado.'</option>';
-		    }
-          '</select></td> 
+          <td>'.$datosconsulta["estadoEntrevista"].'</td> 
       </tr>
       ';
 
   }
+  
       $informehtml .= '
         </tbody>
         </table>
       </div>';
 
-  $arrayLabels .= "['Experiencia','Educacion','Formación','Habilidades Actitudinales','Habilidades propias del Cargo','Resultado(%)']";
+  $arrayLabels .= "['Nombre', 'Experiencia','Educacion','Formación','Habilidades Actitudinales','Habilidades propias del Cargo','Resultado(%)']";
 
   $arrayDatos .= '['.$Experienciainfo.','.$datosconsulta["calificacionEducacionEntrevista"].','.$datosconsulta["calificacionFormacionEntrevista"].','.$datosconsulta["calificacionHabilidadActitudinalEntrevista"].','.$datosconsulta["calificacionHabilidadCargoEntrevista"].','.$respuestaInforme.']';
 
@@ -251,8 +167,7 @@ function graficoBarra($marco, $arrayLabels, $arrayDatos)
 ';*/
 $informehtml .= graficoBarra('graficoentrevista', $arrayLabels, $arrayDatos);
 
-/* $informehtml.=?> {!! Form::close() !!}
- <?php  */
-echo json_encode($informehtml);
-
+echo $informehtml;
 ?>
+	{!!Form::close()!!}
+@stop

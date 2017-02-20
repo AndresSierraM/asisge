@@ -17,7 +17,7 @@
 								<td>{{$dato->numeroActaCapacitacion}}</td>
 							</tr>
 							<tr>
-								<td>Fecha</td>
+								<td>Fecha</td> 
 								<td>{{$dato->fechaElaboracionActaCapacitacion}}</td>
 							</tr>
 							<tr>

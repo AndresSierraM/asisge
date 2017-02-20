@@ -1,23 +1,74 @@
+// function calificacionHabilidadActitudinal(idRequerido)
+// {
+
+//         // Se crea una variable para que inicie en 0 
+//         var calificarEha = 0;
+//         var resultado = 0;
+//         var valor1 = 100;
+//         // var valor2 = 5;
+//         for (var i = 0; i < EntrevistaCompentencia.contador; i++) 
+//         {
+//             calificarEha += parseFloat($('#CompetenciaRespuesta_idCompetenciaRespuesta'+[i]).val());    
+//         }
+
+//        isNaN(calificarEha = parseFloat($('#porcentajeNormalCompetenciaRespuesta').val()));
+//        resultado = calificarEha;
+       
+
+//     $("#calificacionHabilidadActitudinalEntrevista").val(resultado);
+// }
+
+
 function calificacionEduacionEntrevista()
+{
+        // Se crea una variable para que inicie en 0 
+        var calificarE = 0;
+        var resultado = 0;
+        for (var i = 0; i < Educacionentrevista.contador; i++) 
+        {
+            calificarE += parseFloat($('#porcentajeCargoEducacion'+[i]).val()/100) * parseFloat($('#calificacionEntrevistaEducacion'+[i]).val()/100);    
+        }
+
+       isNaN(resultado = ((calificarE*100)/5)*100);
+       
+    $("#calificacionEducacionEntrevista").val(resultado);
+}
+
+function calificacionFormacionEntrevistas()
 {
     // Se crea una variable para que inicie en 0 
     var calificarE = 0;
-    var resultado = 0;
-    var valor1 = 100;
-    var valor2 = 5;
+    var resultadoF = 0;
+   
 
-    
-    for (var i = 0; i < Educacionentrevista.contador; i++) {
-        calificarE += parseFloat($('#porcentajeCargoEducacion'+[i]).val() * parseFloat($('#calificacionEntrevistaEducacion'+[i]).val()));
-        
-        
+    for (var i = 0; i < Formacionentrevista.contador; i++) 
+    {
+        calificarE +=  parseFloat($('#porcentajeCargoFormacion'+[i]).val()/100) * parseFloat($('#calificacionEntrevistaFormacion'+[i]).val()/100);   
     }
 
-   isNaN(resultado = calificarE/valor1);
+       resultadoF = (((calificarE*100)/5)*100);
+      
 
-   
-$("#calificacionEducacionEntrevista").val(resultado);
+     $("#calificacionFormacionEntrevista").val(resultadoF);
 }
+function calificacionHabilidadEntrevista()
+{
+
+    // Se crea una variable para que inicie en 0 
+    var calificarH =  0;
+    var resultadoh =  0;
+    
+    for (var i = 0; i < Habilidadentrevista.contador; i++)
+     {
+       isNaN(calificarH += parseFloat($('#porcentajeCargoHabilidad'+[i]).val()/100) * parseFloat($('#calificacionEntrevistaHabilidad'+[i]).val()/100));        
+     }
+       isNaN(resultadoh = ((calificarH*100)/5)*100);
+    
+       
+    $("#calificacionHabilidadCargoEntrevista").val(resultadoh);
+}
+
+
 
 
 
@@ -35,6 +86,9 @@ function validarFormulario(event)
     var dato6 = document.getElementById('fechaEntrevista').value;
     var dato7 = document.getElementById('Cargo_idCargo').value;
     var dato8 = document.getElementById('experienciaAspiranteEntrevista').value;
+    var dato9 = document.getElementById('TipoIdentificacion_idTipoIdentificacion').value;
+
+    
 
  
     var EntrevistaHijos = document.querySelectorAll("[name='nombreEntrevistaHijo[]']");
@@ -44,12 +98,12 @@ function validarFormulario(event)
     var EntrevistaEducacion = document.querySelectorAll("[name='calificacionEntrevistaEducacion[]']");
     var EntrevistaHabilidad = document.querySelectorAll("[name='calificacionEntrevistaHabilidad[]']"); 
 
-    var dato9 = [];
     var dato10 = [];
     var dato11 = [];
     var dato12 = [];
-    var dato13= [];
-    var dato14 = [];
+    var dato13 = [];
+    var dato14= [];
+    var dato15 = [];
     
     var valor = '';
     var sw = true;
@@ -57,28 +111,28 @@ function validarFormulario(event)
     
     for(var j=0,i= EntrevistaHijos.length; j<i;j++)
     {
-        dato9[j] = EntrevistaHijos[j].value;
+        dato10[j] = EntrevistaHijos[j].value;
     }
 
     for(var j=0,i= RelacionFamiliar.length; j<i;j++)
     {
-        dato10[j] = RelacionFamiliar[j].value;
+        dato11[j] = RelacionFamiliar[j].value;
     }
      for(var j=0,i= CompetenciaPregunta.length; j<i;j++)
     {
-        dato11[j] = CompetenciaPregunta[j].value;
+        dato12[j] = CompetenciaPregunta[j].value;
     }
      for(var j=0,i= EntrevistaFormacion.length; j<i;j++)
     {
-        dato12[j] = EntrevistaFormacion[j].value;
+        dato13[j] = EntrevistaFormacion[j].value;
     }
      for(var j=0,i= EntrevistaEducacion.length; j<i;j++)
     {
-        dato13[j] = EntrevistaEducacion[j].value;
+        dato14[j] = EntrevistaEducacion[j].value;
     }
      for(var j=0,i= EntrevistaHabilidad.length; j<i;j++)
     {
-        dato14[j] = EntrevistaHabilidad[j].value;
+        dato15[j] = EntrevistaHabilidad[j].value;
     }
 
     $.ajax({
@@ -97,12 +151,13 @@ function validarFormulario(event)
                 fechaEntrevista: dato6, 
                 Cargo_idCargo: dato7,
                 experienciaAspiranteEntrevista: dato8,
-                nombreEntrevistaHijo: dato9,
-                parentescoEntrevistaRelacionFamiliar: dato10,
-                CompetenciaPregunta_idCompetenciaPregunta: dato11,
-                calificacionEntrevistaFormacion: dato12,
-                calificacionEntrevistaEducacion: dato13,
-                calificacionEntrevistaHabilidad: dato14,
+                TipoIdentificacion_idTipoIdentificacion: dato9,
+                nombreEntrevistaHijo: dato10,
+                parentescoEntrevistaRelacionFamiliar: dato11,
+                CompetenciaPregunta_idCompetenciaPregunta: dato12,
+                calificacionEntrevistaFormacion: dato13,
+                calificacionEntrevistaEducacion: dato14,
+                calificacionEntrevistaHabilidad: dato15,
                 // solo se modifica los campos del data
                 },
         success:function(){
@@ -140,6 +195,7 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.Cargo_idCargo === "undefined" ? document.getElementById('Cargo_idCargo').style.borderColor = '' : document.getElementById('Cargo_idCargo').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.experienciaAspiranteEntrevista === "undefined" ? document.getElementById('experienciaAspiranteEntrevista').style.borderColor = '' : document.getElementById('experienciaAspiranteEntrevista').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.TipoIdentificacion_idTipoIdentificacion === "undefined" ? document.getElementById('TipoIdentificacion_idTipoIdentificacion').style.borderColor = '' : document.getElementById('TipoIdentificacion_idTipoIdentificacion').style.borderColor = '#a94442');
 
                 
          
@@ -300,7 +356,7 @@ function compararAniosExperiencia()
         $("#experienciaRequeridaEntrevista").css("font-weight","bold").css("background-color", "#990000");
 }
 
-function llenarEntrevistaCompetencia(idCargo)
+function llenarEntrevistaCompetencia(idCargo, accion)
 {
 
     var token = document.getElementById('token').value;
@@ -309,7 +365,7 @@ function llenarEntrevistaCompetencia(idCargo)
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
             data: {'idCargo': idCargo},
-            url:   'http://'+location.host+'/llenarEntrevistaCompetencia/',
+            url:   'http://'+location.host+'/llenarEntrevistaCompetencia'+accion+'/',
             type:  'post',
             beforeSend: function(){
                 //Lo que se hace antes de enviar el formulario
@@ -319,16 +375,42 @@ function llenarEntrevistaCompetencia(idCargo)
                 document.getElementById("EntrevistaCompetencia_Modulo").innerHTML = '';
                 var valor = new Array();
                 var nombres = new Array();
-
-                for (var i = 0; i < respuesta.length; i++) 
+                var porcentaje = new Array();
+                 
+                //console.log(respuesta);
+               // $("#calificacionHabilidadActitudinalEntrevista").val(respuesta[]["respuestaCompetenciaPregunta"]);
+                for (var i = 0; i < respuesta[0].length; i++) 
                 {
-                    valor[i] = respuesta[i]["idCompetenciaPregunta"];
-                    nombres[i] = respuesta[i]["preguntaCompetenciaPregunta"];
                     
-                    var valores = new Array(0,valor[i],nombres[i],'',1);
+                    
+                    
+                    
+
+                    var porcentajes = Array();  
+                    var titulos = Array();
+                    for (var j = 0; j < respuesta[1].length; j++) 
+                    {
+                
+                        porcentajes[j] = respuesta[1][j]["porcentajeInversoCompetenciaRespuesta"];
+                        titulos[j] = respuesta[1][j]["respuestaCompetenciaRespuesta"];
+                    }
+                   // window.parent.EntrevistaCompentencia.opciones = [porcentajes, titulos]; 
+
+                   var valores = new Array(
+                        respuesta[0][i]["idEntrevistaCompetencia"],
+                        respuesta[0][i]["idCompetenciaPregunta"],
+                        respuesta[0][i]["preguntaCompetenciaPregunta"],
+                        [porcentajes, titulos]);
+
                     window.parent.EntrevistaCompentencia.agregarCampos(valores,'A'); 
 
+                    //SE CREARON DOS VARIABLES para sacar el promedio de los porcentajes y mandarlo al campo con el valor del resultado promedio final y  llamando 
+                     // promediopregunta+= parseFloat($('#porcentajeNormalCompetenciaRespuesta'+[i]).val() + parseFloat($('#porcentajeInversoCompetenciaRespuesta'+[i]).val()));
+                     //  promediopreguntafinal = promediopregunta/dato1;
+                    //finalmente se envia el resultado al campito de calificacion que esta situado debajo de las preguntas 
+                   
                 }  
+                alert(valores);
             },
             error:    function(xhr,err){ 
                 alert("Error");

@@ -1,7 +1,7 @@
 @extends('layouts.grid')
 @section('titulo')<h3 id="titulo"><center>Resultados de Entrevistas</center></h3>@stop
 @section('content')
-
+{!!Html::script('js/entrevistaresultado.js')!!} 
 <style>
     tfoot input {
                 width: 100%;
@@ -88,6 +88,7 @@
 
 <script type="text/javascript">
 
+ 
     $(document).ready( function () {
         
         var lastIdx = null;

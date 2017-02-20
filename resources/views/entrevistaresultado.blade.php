@@ -2,10 +2,41 @@
 @section('titulo')<h3 id="titulo"><center>Resultados de Entrevistas</center></h3>@stop
 @section('content')
 @include('alerts.request')
+{!! Html::script('chart/Chart.js'); !!}
 {!!Html::script('js/entrevistaresultado.js')!!}
 
+<?php
 
+$accion = '';
+// lo que hacemos es pregutnar si existe la accion se pregunta si esa accion es igual a eliminar  es un editar de lo contrario la accion es eliminar
+if (isset($_GET['accion'])) 
+{
+  $accion = 'display:none;';
 
+  if ($_GET['accion'] == 'editar') 
+  {
+      echo 
+    '<input type="hidden" id="accionFormulario" value="editar">
+    <script>
+    alert($(\'#accionFormulario\').val());
+      $(document).ready(function(){
+      consultarInformeEntrevista("$(\'#fechaInicialEntrevistaResultado\').val(), $(\'#fechaFinalEntrevistaResultado\').val(), $(\'#Cargo_idCargo\').val(), $(\'#Tercero_idEntrevistador\').val(), $(\'#accionFormulario\').val()")
+    });
+    </script>';
+  }
+  else if ($_GET['accion'] == 'eliminar')
+  {
+      echo 
+    '<script>
+      $(document).ready(function(){
+      consultarInformeEntrevista("$(\'#fechaInicialEntrevistaResultado\').val(), $(\'#fechaFinalEntrevistaResultado\').val(), $(\'#Cargo_idCargo\').val(), $(\'#Tercero_idEntrevistador\').val(),\'eliminar\'")
+    });
+    </script>';
+  }
+  
+}
+
+?>
 @if(isset($entrevistaresultado))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
       {!!Form::model($entrevistaresultado,['route'=>['entrevistaresultado.destroy',$entrevistaresultado->idEntrevistaResultado],'method'=>'DELETE'])!!}
@@ -20,11 +51,9 @@
 
  <input type="hidden" id="token" value="{{csrf_token()}}"/>              
 <div class="entrevistaresultado-container">
-      <form class="form-horizontal" action="" method="post">
-         <legend class="text-center"></legend>    
 
-                      <!-- Cargo de entrevistaresultado --> 
-                  <div class="form-group" id='test'>
+                      <!-- Cargo de entrevistaresultado            en php se ejecuta la accion para ocultar el div  -->
+                  <div class="form-group" id='test' style="<?php echo $accion ?>">  
                              {!!Form::label('Cargo_idCargo', 'Cargo', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group"  style="padding-left:10px "> 
@@ -40,7 +69,7 @@
                     </div>
                                    <!--  Fecha Entrevista  -->
 
-                     <div class="form-group" id='test'  style="display: inline";>
+                     <div class="form-group" id='test'  style='display: inline; <?php echo $accion ?>'>
                      {!!Form::label('fechaInicialEntrevistaResultado', 'Fecha ', array('class' => 'col-sm-1 control-label')) !!}
                                     <div class="col-md-5 ">
                                             <div class="input-group"  style="padding-left:10px ">
@@ -67,7 +96,7 @@
 
                     
                             <!--  Entrevistador --> 
-                              <div class="form-group "  id='test' >
+                              <div class="form-group "  id='test' style="<?php echo $accion ?>" >
                                   {!!Form::label('Tercero_idEntrevistador', 'Entrevistador', array('class' => 'col-sm-1 control-label')) !!}
                                   <div class="col-sm-11">
                                     <div class="input-group" style="padding-left:10px ">
@@ -84,13 +113,15 @@
                             <!-- </br> -->
 
 
-                              <div class="row">
+                              <div class="row" style="<?php echo $accion ?>">
                                 <div class="form-group" id='test'>
-                                {!!Form::label('estadoEntrevista', 'Estado', array('class' => 'col-sm-1 control-label','style'=>'width:180px;padding-left:30px;')) !!}
+        {!!Form::label('estadoEntrevistaResultado', 'Estado', array('class' => 'col-sm-1 control-label','style'=>'width:180px;padding-left:30px;')) !!}
                                     <div class="col-md-2">
                                         <div class="input-group">
+                                        <!-- se pone null el estado para que laravel solito llene ese campo con lo que trae de la consulta del controlador -->
                                             {!! Form::checkbox('Estado1', 1,false, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado1']) !!} 
-                                            {!!Form::hidden('estadoEntrevista', '1,2,3,', array('id' => 'estadoEntrevista')) !!} En Proceso
+                                            {!!Form::hidden('estadoEntrevistaResultado',null, array('id' => 'estadoEntrevistaResultado')) !!} En Proceso
+                                          
                                         </div>
                                   </div>  
                                   <div class="col-md-2">
@@ -121,22 +152,67 @@
                                               {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
                                             @endif
                                           @else
-                                            {!!Form::button('Consultar',["class"=>"btn btn-warning",'onclick'=>'consultarInformeEntrevista(
+                                            {!!Form::submit('Guardar',["class"=>"btn btn-primary"])!!}  
+                                          @endif
+                                          <!-- Se envia por parametro el valor de estadoEntrevistaResultado lo recibe en el contraoller y en la el js  -->
+                                          {!!Form::button('Consultar',["class"=>"btn btn-warning",'onclick'=>'consultarInformeEntrevista(
                                             $(\'#fechaInicialEntrevistaResultado\').val(),
                                             $(\'#fechaFinalEntrevistaResultado\').val(),
                                             $(\'#Cargo_idCargo option:selected\').val(),
-                                            $(\'#Tercero_idEntrevistador option:selected\').val());'])!!}  
-                                          @endif
-
-                                         {!! Form::close() !!}
+                                            $(\'#Tercero_idEntrevistador option:selected\').val(),\'""\')'])!!}
                             </div>
 
-                      </div>  
+<!-- ;graficoBarra.val() -->
+                   
 
-                        
-     
+                        <!--  SE HACE ESTA FUNCION PARA EJECUTAR LA GRAFICA -->
+<?php
+function graficoBarra($marco, $arrayLabels, $arrayDatos)
+{
+    echo '
+    <script type="text/javascript">
+        
+        var chrt = document.getElementById("'.$marco.'").getContext("2d");
+                var data = {
+                    labels: '.$arrayLabels.'
+                    datasets: [
+                        {
+                            fillColor: "rgba(220,120,220,0.8)",
+                            strokeColor: "rgba(220,120,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: '.$arrayDatos.'
+                        }
+                    ]
+                };
+                var myFirstChart = new Chart(chrt).Bar(data);
 
-    
+        </script>';
+}
+
+
+?>
+<script>
+$(document).ready( function () {
+
+  $("#fechaInicialEntrevistaResultado").datetimepicker
+  (
+    ({
+       format: "YYYY-MM-DD"
+     })
+  );
+
+ $("#fechaFinalEntrevistaResultado").datetimepicker
+  (
+    ({
+       format: "YYYY-MM-DD"
+     })
+  );
+});
+</script>
+
+
+ </div>    
    @stop
    
 

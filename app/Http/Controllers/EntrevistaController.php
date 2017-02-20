@@ -48,7 +48,7 @@ class EntrevistaController extends Controller
  // porque tienes que mandar el ID y la respuesta aparte
          $idRespuesta  = \App\CompetenciaRespuesta::All()->lists('idCompetenciaRespuesta');
         $nombreRespuesta  = \App\CompetenciaRespuesta::All()->lists('respuestaCompetenciaRespuesta');
-
+       
 
 
         $Ciudad_idResidencia = \App\Ciudad::All()->lists('nombreCiudad','idCiudad');
@@ -129,7 +129,8 @@ class EntrevistaController extends Controller
             'calificacionEducacionEntrevista' => $request['calificacionEducacionEntrevista'],  
             'calificacionFormacionEntrevista' => $request['calificacionFormacionEntrevista'],
             'calificacionHabilidadCargoEntrevista'  => $request['calificacionHabilidadCargoEntrevista'],
-            'calificacionHabilidadActitudinalEntrevista' => $request['calificacionHabilidadActitudinalEntrevista']
+            'calificacionHabilidadActitudinalEntrevista' => $request['calificacionHabilidadActitudinalEntrevista'],
+            'observacionEntrevista' => $request['observacionEntrevista']
             ]);
          
 
@@ -301,6 +302,7 @@ class EntrevistaController extends Controller
 
         return redirect('/entrevista'); 
     }
+
 
     /**
      * Display the specified resource.

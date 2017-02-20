@@ -132,22 +132,25 @@ Relacionfamiliar = [valorrelacion,Nombrerelacion];
 
 
 valorCumple = Array('5','4','3','2','1');
-NombreCumple = Array ("Total","y","Parcial","x","No Cumple");
+NombreCumple = Array ("Total","Parcial Avanzado","Parcial Intermedio","Parcial Introductor","No Cumple");
 Cumplimiento = [valorCumple,NombreCumple];
 var Relacionfamilia = [0,0,'','']
 var competenciamodelo = [0,0,'','',''];
 
 // se crean dos variables para busar los datos y comprarlos con su funcion correspondiente
-//educacion
-var evaluacioneducacion = ['onchange','calificareducacion(this.id);']
+//educacion  ademas se adicionan los  onchange del campo nuevo calificacion para que se ejecute al mismo tiempo que cuando se ejecuta la funcion
+//de llenar educacion,formacion, Habilidad
+var evaluacioneducacion = ['onchange','calificareducacion(this.id);calificacionEduacionEntrevista(this.value);']
 //variable para formacion 
-var evaluacionformacion = ['onchange','calificarformacion(this.id);']
+var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionFormacionEntrevistas(this.value);']
+                                                                   
 // Habilidad
- var evaluacionhabilidad = ['onchange','calificarHabilidad(this.id);']
+ var evaluacionhabilidad = ['onchange','calificarHabilidad(this.id);calificacionHabilidadEntrevista(this.value);']
 
- // CALIFICACION DE MULTIREGISTROs 
- //Habilidad 
-  var CalificacionHab = ['onchange','calificacionEduacionEntrevista(this.value);']
+//Competencia
+// Habilidad
+  // var evaluacionCompetencia = ['onchange','calificacionHabilidadActitudinal(this.id)']
+ 
 //VARIABLES
  $(document).ready( function () {
 // // multiregistro Educacion Entrevista primera Multiregistro OPCION GENERAL          
@@ -171,7 +174,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
           Educacionentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Educacionentrevista.opciones = ['','','','',educacion,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,CalificacionHab,''];
+          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,'',''];
 
 // // multiregistro Formacionentrevista Segunda multiregistro OPCION GENERAL
        
@@ -426,7 +429,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                               <!--     {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione", 'onchange'=>'llenarFormacionCargo,llenarEducacionCargo,llenarEntrevistaCompetencia(this.value)'])!!}
  -->
 
-                                                                                {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>'llenarFormacionCargo(this.value); llenarEducacionCargo(this.value); llenarEntrevistaCompetencia(this.value);llenarHabilidadCargo(this.value);'])!!}
+                                                                                {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione" ,'onchange'=>"llenarFormacionCargo(this.value); llenarEducacionCargo(this.value); llenarEntrevistaCompetencia(this.value,($('#idEntrevista').val() == 0 ? 'Nueva': ''));llenarHabilidadCargo(this.value);"])!!}
                                                                                     </div>
                                                                                   </div>
                                                                               </div>
@@ -665,7 +668,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                                         </div>
                                                                                                                           <!-- nuevo campo para Calificacion  -->
                                                                                                          <div class="form-group" id='test' >
-                                                                                                          {!!Form::label('calificacionEducacionEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
+                                                                                                          {!!Form::label('calificacionFormacionEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
                                                                                                           <div class="col-sm-10">
                                                                                                             <div class="input-group" style="padding-left:10px ">
                                                                                                               <span class="input-group-addon">
@@ -708,7 +711,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);']
                                                                                                         </div>
                                                                                                                   <!-- nuevo campo para Calificacion  -->
                                                                                                          <div class="form-group" id='test' >
-                                                                                                          {!!Form::label('calificacionEducacionEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
+                                                                                                          {!!Form::label('calificacionHabilidadCargoEntrevista', 'Calificación', array('class' => 'col-sm-1 control-label'))!!}
                                                                                                           <div class="col-sm-10">
                                                                                                             <div class="input-group" style="padding-left:10px ">
                                                                                                               <span class="input-group-addon">

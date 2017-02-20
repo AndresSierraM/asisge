@@ -10,7 +10,7 @@ class Entrevista extends Model
     protected $table ='entrevista'; //la tabla siempre es en miniscula 
 	protected $primaryKey = 'idEntrevista'; //camello
 	
-	protected $fillable = ['TipoIdentificacion_idTipoIdentificacion','documentoAspiranteEntrevista','estadoEntrevista','nombre1AspiranteEntrevista','nombre2AspiranteEntrevista','apellido1AspiranteEntrevista','apellido2AspiranteEntrevista','Tercero_idAspirante','fechaEntrevista','Tercero_idEntrevistador','Cargo_idCargo','experienciaAspiranteEntrevista','experienciaRequeridaEntrevista','Encuesta_idEncuesta','calificacionEducacionEntrevista','calificacionFormacionEntrevista','calificacionHabilidadCargoEntrevista','calificacionHabilidadActitudinalEntrevista']; 
+	protected $fillable = ['TipoIdentificacion_idTipoIdentificacion','documentoAspiranteEntrevista','estadoEntrevista','nombre1AspiranteEntrevista','nombre2AspiranteEntrevista','apellido1AspiranteEntrevista','apellido2AspiranteEntrevista','Tercero_idAspirante','fechaEntrevista','Tercero_idEntrevistador','Cargo_idCargo','experienciaAspiranteEntrevista','experienciaRequeridaEntrevista','Encuesta_idEncuesta','calificacionEducacionEntrevista','calificacionFormacionEntrevista','calificacionHabilidadCargoEntrevista','calificacionHabilidadActitudinalEntrevista','observacionEntrevista']; 
 
 
 

@@ -133,7 +133,7 @@
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Proceso</div>
+													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Procesos Cargos</div>
 													<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Rutinaria</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Clasificaci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Tipo Riesgo</div>
