@@ -43,4 +43,12 @@ class Tercero extends Model
      {
          return $this->hasMany('App\Entrevista','Tercero_idTercero');
      }
+      public function EvaluacionDesempenio()
+     {
+         return $this->hasMany('App\EvaluacionDesempenio','Tercero_idTercero');
+     }
+      public function Cargo()
+     {
+         return $this->hasMany('App\Cargo','Cargo_idCargo');
+     }
 }

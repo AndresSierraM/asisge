@@ -46,7 +46,7 @@ class EntrevistaResultadoController extends Controller
         $cargo = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCargo','idCargo');
 
        $tercero = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-
+       
 
          
         return view ('entrevistaresultado', compact('idModulo','nombreModulo','cargo','tercero'));

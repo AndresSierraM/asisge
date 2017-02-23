@@ -17,4 +17,9 @@ class CargoResponsabilidad extends Model
 	{
 		return $this->hasOne('App\Cargo','idCargo');
     }
-}
+
+    public function EvaluacionDesempenioResponsabilidad()
+	{
+		return $this->hasMany('App\EvaluacionDesempenioResponsabilidad','CargoResponsabilidad_idCargoResponsabilidad');
+    }
+   }

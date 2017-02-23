@@ -479,6 +479,18 @@ Route::group(['middleware' => 'auth'], function ()
     {
     include public_path().'/ajax/llenarHabilidadCargo.php';
     });
+    Route::post('llenarEvaluacionEducacion', function()
+    {
+    include public_path().'/ajax/llenarEvaluacionEducacion.php';
+    });
+    Route::post('llenarEvaluacionFormacion', function()
+    {
+    include public_path().'/ajax/llenarEvaluacionFormacion.php';
+    });
+    Route::post('llenarEvaluacionHabilidad', function()
+    {
+    include public_path().'/ajax/llenarEvaluacionHabilidad.php';
+    });
 
     Route::post('CargarEntrevista', function()
     {
@@ -657,6 +669,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosGrupoEstado', function()
     {
         include public_path().'/ajax/datosGrupoEstado.php';
+    });
+     Route::get('datosEvaluacionDesempenio', function()
+    {
+        include public_path().'/ajax/datosEvaluacionDesempenio.php';
     });
 
 
@@ -912,6 +928,14 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('llenarEntrevistaCompetenciaNueva', function()
     {
         include public_path().'/ajax/llenarEntrevistaCompetenciaNueva.php';
+    });
+    Route::post('llenarEvaluacionDesempenioCargo', function()
+    {
+        include public_path().'/ajax/llenarEvaluacionDesempenioCargo.php';
+    });
+     Route::post('llenarResponsabilidadCargo', function()
+    {
+        include public_path().'/ajax/llenarResponsabilidadCargo.php';
     });
 
 }

@@ -382,10 +382,7 @@ function llenarEntrevistaCompetencia(idCargo, accion)
                 for (var i = 0; i < respuesta[0].length; i++) 
                 {
                     
-                    
-                    
-                    
-
+        
                     var porcentajes = Array();  
                     var titulos = Array();
                     for (var j = 0; j < respuesta[1].length; j++) 

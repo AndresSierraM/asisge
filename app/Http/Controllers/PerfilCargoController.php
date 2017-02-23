@@ -43,7 +43,7 @@ class PerfilCargoController extends Controller
        
        $idModulo= \App\Modulo::All()->lists('idModulo');
        $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
-       
+    
          
         return view ('perfilcargo', compact('idModulo','nombreModulo'));
     }

@@ -8,7 +8,7 @@ class Cargo extends Model
 {
     protected $table = 'cargo';
     protected $primaryKey = 'idCargo';
-    protected $fillable = ['codigoCargo', 'nombreCargo', 'salarioBaseCargo', 'nivelRiesgoCargo','Cargo_IdDepende','aniosExperienciaCargo', 'objetivoCargo','porcentajeEducacionCargo','porcentajeExperienciaCargo','porcentajeFormacionCargo','porcentajeHabilidadCargo','porcentajeResponsabilidadCargo', 'posicionPredominanteCargo', 'restriccionesCargo', 'responsabilidadesCargo', 'autoridadesCargo', 'Compania_idCompania'];
+    protected $fillable = ['codigoCargo', 'nombreCargo', 'salarioBaseCargo', 'nivelRiesgoCargo','Cargo_IdDepende','aniosExperienciaCargo', 'objetivoCargo','porcentajeEducacionCargo','experienciaCargo','porcentajeExperienciaCargo','porcentajeFormacionCargo','porcentajeHabilidadCargo','porcentajeResponsabilidadCargo', 'posicionPredominanteCargo', 'restriccionesCargo', 'responsabilidadesCargo', 'autoridadesCargo', 'Compania_idCompania'];
     public $timestamps = false;
 
     public function cargoElementoProtecciones()
@@ -58,4 +58,10 @@ class Cargo extends Model
     {
         return $this->hasMany('App\CargoCompetencia','Cargo_idCargo');
     }
+     public function EvaluacionDesempenio()
+    {
+        return $this->hasMany('App\EvaluacionDesempenio','Cargo_idCargo');
+    }
+
+
 }
