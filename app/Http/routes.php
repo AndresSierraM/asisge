@@ -70,7 +70,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     Route::get('logout', 'AuthController@logOut');
     // });
     
-    Route::resource ('evaluaciondesempeno','EvaluacionDesempenoController');
+    Route::resource ('evaluaciondesempenio','EvaluacionDesempenioController');
     Route::resource ('entrevistaresultado','EntrevistaResultadoController');
     Route::resource ('competenciarespuesta','CompetenciaRespuestaController');
     Route::resource ('entrevista','EntrevistaController');

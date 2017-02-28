@@ -38,7 +38,10 @@ class EvaluacionDesempenio extends Model
     {
         return $this->hasMany('App\EvaluacionDesempenioHabilidad','EvaluacionDesempenio_idEvaluacionDesempenio');
     }
-
+     public function EvaluacionAccion()
+    {
+        return $this->hasMany('App\EvaluacionAccion','EvaluacionDesempenio_idEvaluacionDesempenio');
+    }
 
 
 

@@ -1,5 +1,5 @@
 @extends('layouts.vista')
-@section('titulo')<h3 id="titulo"><center>Evaluacion de Desempeño</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Evaluacion de Desempe&ntilde;o</center></h3>@stop
 @section('content')
 @include('alerts.request')
 
@@ -14,13 +14,16 @@
   @else
     {!!Form::open(['route'=>'evaluaciondesempenio.store','method'=>'POST'])!!}
   @endif
-<?php $date = Carbon\Carbon::now();?>
+<!-- <?php $date = Carbon\Carbon::now();?> -->
 
 
 
 
 
 <script>
+
+
+
 // se crean dos variables para busar los datos y comprarlos con su funcion correspondiente
 //educacion  ademas se adicionan los  onchange del campo nuevo calificacion para que se ejecute al mismo tiempo que cuando se ejecuta la funcion
 //de llenar educacion,formacion, Habilidad
@@ -46,7 +49,12 @@ evaluacionFormacion = (evaluacionFormacion != '' ? JSON.parse(evaluacionFormacio
 // SE reciben los datos de la consulta de Habilidad 
 var evaluacionHabilidad = '<?php echo (isset($EvaluacionDesempenioHabilidad) ? json_encode($EvaluacionDesempenioHabilidad) : "");?>';
 evaluacionHabilidad = (evaluacionHabilidad != '' ? JSON.parse(evaluacionHabilidad) : '');
+// COnsultadatos plan accion multi
+var evaluacionplanaccion = '<?php echo (isset($EvaluacionAccion) ? json_encode($EvaluacionAccion) : "");?>';
+evaluacionplanaccion = (evaluacionplanaccion != '' ? JSON.parse(evaluacionplanaccion) : '');
 // -----------------------------------------------------------------------
+
+
 
 
 
@@ -67,8 +75,17 @@ var nombreHabilidad = '<?php echo isset($nombreHabilidad) ? $nombreHabilidad : "
 
 var habilidad = [JSON.parse(idHabilidad),JSON.parse(nombreHabilidad)];
 // ------------------------------------
+          // Plan accion opcion documento 
+var idDocumentoSoporte = '<?php echo isset($idDocumentoSoporte) ? $idDocumentoSoporte : "";?>';
+var nombreDocumentoSoporte = '<?php echo isset($nombreDocumentoSoporte) ? $nombreDocumentoSoporte : "";?>';
 
+var DocumentoSoporte = [JSON.parse(idDocumentoSoporte),JSON.parse(nombreDocumentoSoporte)];
 
+//  Plan accion multi campo responsable
+var idTerceroResponsable = '<?php echo isset($idTerceroResponsable) ? $idTerceroResponsable : "";?>';
+var nombreTerceroResponsable = '<?php echo isset($nombreTerceroResponsable) ? $nombreTerceroResponsable : "";?>';
+
+var TerceroResponsable = [JSON.parse(idTerceroResponsable),JSON.parse(nombreTerceroResponsable)];
 
 
 
@@ -87,14 +104,11 @@ responsabilidadresultado = [valorresponsabilidad,tituloresponsabilidad];
 valorhabilidadprop = Array('0','50','100','110');
 tituloprop = Array ("No Cumple","En Proceso","Cumple","Excede");
 habildadPropCargoResultado = [valorhabilidadprop,tituloprop];
+
+var planaccion = [0,0,'','','','',''];
 $(document).ready(function()
 {
-   //En el momento de editar
-      //Consulta si el campo Tercero_idEmpleado esta lleno (>0) y si es así le envía a campo cargo su valor
-      if(document.getElementById('Tercero_idTercero').value > 0)
-      {
-        llenarCargo(document.getElementById('Tercero_idTercero').value); //llama al metodo llenarCargo y llena el campo cargo
-      }
+
     
 // ----------------------------------------------------------Multiregistro Primera Pestaña
 
@@ -214,7 +228,29 @@ $(document).ready(function()
           
           EvaluacionHabilidad.opciones = ['','','','','',habilidad,habildadPropCargoResultado]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
           EvaluacionHabilidad.funciones  = ['','','','','',evaluacionhabilidad,''];
-          
+//------------------------------------- Multiregistro pestaña pan accion
+
+          EvaluacionAccion = new Atributos('EvaluacionAccion','EvaluacionplanAccion_Modulo','EvaluacionplanAcciondescripcion');
+
+            EvaluacionAccion.campoid = 'idEvaluacionAccion';  //hermanitas             
+            EvaluacionAccion.campoEliminacion = 'eliminarEvaluacionAccion';//hermanitas         Cuando se utilice la funcionalidad 
+            EvaluacionAccion.botonEliminacion = true;//hermanitas
+            // despues del punto son las propiedades que se le van adicionar al objeto
+            EvaluacionAccion.campos = ['idEvaluacionAccion','EvaluacionDesempenio_idEvaluacionDesempenio','actividadEvaluacionAccion','Tercero_idResponsable_Accion','DocumentoSoporte_idDocumentoSoporte','fechaPlaneadaEvaluacionAccion','fechaEjecutadaEvaluacionAccion']; //[arrays ]
+            EvaluacionAccion.altura = '35px;';
+             // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+            EvaluacionAccion.etiqueta = ['input','input','input','select','select','input','input'];
+            EvaluacionAccion.tipo = ['hidden','hidden','input','','','date','date']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+            EvaluacionAccion.estilo = ['','','width: 200px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;'];  
+
+            // estas propiedades no son muy usadas PERO SON UTILES
+            
+            EvaluacionAccion.clase = ['','','','','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+            EvaluacionAccion.sololectura = [false,false,false,false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+            EvaluacionAccion.completar = ['off','off','off','off','off','off','off']; //autocompleta 
+            EvaluacionAccion.opciones = ['','','',TerceroResponsable,DocumentoSoporte,'','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+            EvaluacionAccion.funciones  = ['','','','','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+                  
   //------------------------------- For para cuando se este editando 
         
            for(var j=0, k = evaluacionresponsabilidad.length; j < k; j++)
@@ -239,6 +275,15 @@ $(document).ready(function()
              {
                      EvaluacionHabilidad.agregarCampos(JSON.stringify(evaluacionHabilidad[j]),'L');              
              } 
+
+             // Edicion Multiregistro Plan Accion
+              for(var j=0, k = evaluacionplanaccion.length; j < k; j++)
+             {
+                     EvaluacionAccion.agregarCampos(JSON.stringify(evaluacionplanaccion[j]),'L');              
+             } 
+
+
+
 
  });
    
@@ -268,7 +313,8 @@ $(document).ready(function()
                             {!!Form::hidden('eliminarEvaluacionFormacion',null, array('id' => 'eliminarEvaluacionFormacion'))!!}
                             <!-- id Oculto eliminar Habilidad -->
                             {!!Form::hidden('eliminarEvaluacionHabilidad',null, array('id' => 'eliminarEvaluacionHabilidad'))!!}
-
+                            <!-- Id Oculto Eliminar Plan Accion -->
+                            {!!Form::hidden('eliminarEvaluacionAccion',null, array('id' => 'eliminarEvaluacionAccion'))!!}
                                  
                                  
                             </div>
@@ -282,8 +328,8 @@ $(document).ready(function()
                                   <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
                                   </span>
-                          
-                           {!! Form::text('nombreCargo',null, ['readonly' => 'readonly', 'class'=>'form-control', 'id'=>'nombreCargo','placeholder'=>'Cargo del empleado']) !!}
+                          <!-- Cuando editamos preguntamos en la posicion 0 que es la que contiene el nombre  -->
+                           {!! Form::text('nombreCargo',(isset($cargo) ? $cargo->nombreCargo : null), ['readonly' => 'readonly', 'class'=>'form-control', 'id'=>'nombreCargo','placeholder'=>'Cargo del empleado']) !!}
                            <!-- se llama el idCargo para poner el nombre cuando se selecciona el empleado -->
                                    {!!Form::hidden('Cargo_idCargo',null, array('id' => 'Cargo_idCargo')) !!}
                             </div>
@@ -335,6 +381,7 @@ $(document).ready(function()
                               <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('Habilidades')" href="#Habilidades">Habilidades propias del Cargo</a></li>
                               <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('Resultado')" href="#Resultado">Resultado</a></li>
                               <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('planaccion')" href="#planaccion">Plan Accion</a></li>
+                              <li class=""><a data-toggle="tab"  onclick="mostrarDivGenerales('observacion')" href="#observacion">Observaciones</a></li>
 
                               </ul>
 
@@ -365,7 +412,7 @@ $(document).ready(function()
                                                 <span class="input-group-addon">
                                                   <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
                                                 </span>
-                                                {!!Form::text('PesoPorcentajeResponsabilidad',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                {!!Form::text('PesoPorcentajeResponsabilidad',(isset($cargo) ? $cargo->porcentajeResponsabilidadCargo : 0),['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
                                               </div>
                                             </div>
                                       </div> 
@@ -411,7 +458,7 @@ $(document).ready(function()
                                                                                     <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
                                                                                   </span>
                                                                                   <!-- Se pone la ruta en el campo null para que esta traiga el porcentaje al momento de Editar -->
-                                                                                  {!!Form::text('PesoPorcentajeEducacion',(isset($evaluaciondesempenio->Cargo->porcentajeEducacionCargo) ? $evaluaciondesempenio->Cargo->porcentajeEducacionCargo: null),['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                  {!!Form::text('PesoPorcentajeEducacion',(isset($cargo) ? $cargo->porcentajeEducacionCargo : 0),['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
                                                                               </div>
                                                                           </div>
                                                                     </div>
@@ -461,7 +508,7 @@ $(document).ready(function()
                                                                                     <span class="input-group-addon">
                                                                                       <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
                                                                                     </span>
-                                                                                    {!!Form::text('PesoPorcentajeFormacion',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                    {!!Form::text('PesoPorcentajeFormacion',(isset($cargo) ? $cargo->porcentajeFormacionCargo : 0),['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -504,7 +551,7 @@ $(document).ready(function()
                                                                                         <span class="input-group-addon">
                                                                                           <i class="fa fa-pencil-square-o" style="width: 14px;"></i>
                                                                                         </span>
-                                                                                        {!!Form::text('PesoPorcentajeHabilidad',null,['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
+                                                                                        {!!Form::text('PesoPorcentajeHabilidad',(isset($cargo) ? $cargo->porcentajeHabilidadCargo : 0),['class'=>'form-control','readonly','placeholder'=>'', 'autocomplete' => 'off'])!!}
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -538,13 +585,51 @@ $(document).ready(function()
                                   </div>
 
                                                  <!--  OOPCION 4 -->
-                                   <div id="Resultado" class="tab-pane fade">
+                                   <div style="display:none;" id="Resultado" class="tab-pane fade">
                                     RESULTADO
                                     </div>
-                                              <!--  OOPCION 4 -->
-                                   <div id="planaccion" class="tab-pane fade">
-                                    plan accion
+                                              <!--  OOPCION 5 -->
+                                   <div style="display:none;" id="planaccion" class="tab-pane fade">
+                                    
+                                        <div class="form-group" id='test'>
+                                            <div class="col-sm-12">
+
+                                              <div class="row show-grid">
+                                                <div class="col-md-1" style="width: 40px;height: 35px;" onclick="EvaluacionAccion.agregarCampos(planaccion,'A')">
+                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                </div>
+                                                <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Actividad</div>
+                                                <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Responsable</div>
+                                                <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Documento</div>
+                                                <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">F.Planeada</div>
+                                                <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">F.Ejecutada</div>
+                                                  
+
+                                                <!-- este es el div para donde van insertando los registros --> 
+                                                <div id="EvaluacionplanAccion_Modulo">
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>  
                                     </div>
+                                                 <!--  OOPCION 5 -->
+                                   <div style="display:none;" id="observacion" class="tab-pane fade">
+                                      <!-- Observaciones -->
+                                      <div class="panel-body">
+                                        <font color = "000000">Ingrese las Observaciones</font>
+                                              <div class="form-group" id='test'>
+                                                    <div class="col-sm-10" style="width: 100%;">
+                                                      <div class="input-group">
+                                                        {!!Form::textarea('observacionEvaluacionDesempenio',(isset($evaluaciondesempenio) ? $evaluaciondesempenio->estudioActualEntrevistaPregunta : null),['class'=>'ckeditor','placeholder'=>''])!!}
+                                                      </div>
+                                                    </div>
+                                              </div>
+                                      </div>
+                                    </div>
+
+
+
+                                    
 
                               </div>
 @if(isset($evaluaciondesempenio))
@@ -554,7 +639,7 @@ $(document).ready(function()
       {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
     @endif
 @else
-    {!!Form::submit('Guardar',["class"=>"btn btn-primary"])!!}
+    {!!Form::submit('Guardar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 @endif
   <!-- ,"onclick"=>'validarFormulario(event);' -->
 
@@ -563,12 +648,15 @@ $(document).ready(function()
 
 
 <script type="text/javascript">
-  
-
+  CKEDITOR.replace(('observacionEvaluacionDesempenio'), {
+        fullPage: true,
+        allowedContent: true
+      }); 
+$(document).ready( function () {
     $('#fechaElaboracionEvaluacionDesempenio').datetimepicker({
       format: "YYYY-MM-DD HH:mm:ss"
     });
-
+});
 </script>
    
    @stop

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Perfil de Cargo</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Evaluacion de Desempe&ntilde;o</center></h3>@stop
 @section('content')
 
 <style>
@@ -84,7 +84,10 @@
 
 
 <script type="text/javascript">
-
+function imprimirEvaluacionDesempenio(id)
+    {
+        window.open('evaluaciondesempenio/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
     $(document).ready( function () {
         
         var lastIdx = null;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
- // use App\Http\Requests\evaluaciondesempenioRequest;
+use App\Http\Requests\evaluaciondesempenioRequest;
 use App\Http\Controllers\Controller;
  
 use DB;
@@ -38,6 +38,12 @@ class EvaluacionDesempenioController extends Controller
      */
     public function create()
     {
+        $idTerceroResponsable = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idTercero');
+        $nombreTerceroResponsable = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCompletoTercero');
+        
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
+
         $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
         $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
 
@@ -58,7 +64,7 @@ class EvaluacionDesempenioController extends Controller
        $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
 
 
-           return view ('evaluaciondesempenio', compact('idHabilidad','nombreHabilidad','idFormacion','nombreFormacion','idEducacion','nombreEducacion','idRespuesta','nombreRespuesta','Tercero_idEmpleado','Tercero_idResponsable','idModulo','nombreModulo'));
+           return view ('evaluaciondesempenio', compact('idTerceroResponsable','nombreTerceroResponsable','nombreDocumentoSoporte','idDocumentoSoporte','idHabilidad','nombreHabilidad','idFormacion','nombreFormacion','idEducacion','nombreEducacion','idRespuesta','nombreRespuesta','Tercero_idEmpleado','Tercero_idResponsable','idModulo','nombreModulo'));
     
     }
 
@@ -68,7 +74,7 @@ class EvaluacionDesempenioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(evaluaciondesempenioRequest $request)
     {
     
        \App\EvaluacionDesempenio::create([
@@ -125,7 +131,7 @@ class EvaluacionDesempenioController extends Controller
             ]);
          }
 
-           // Guardado Multiregistro Formacion
+           // Guardado Multiregistro Habilidad
             for ($i=0; $i < count($request['calificacionEvaluacionHabilidad']); $i++) 
          { 
 
@@ -139,7 +145,26 @@ class EvaluacionDesempenioController extends Controller
             ]);
          }
 
-         return redirect('/evaluaciondesempenio');
+              // Guardado Multiregistro Plan Accion
+            for ($i=0; $i < count($request['actividadEvaluacionAccion']); $i++) 
+         { 
+
+             \App\EvaluacionAccion::create([
+            'EvaluacionDesempenio_idEvaluacionDesempenio' => $evaluaciondesempenio->idEvaluacionDesempenio,
+            'actividadEvaluacionAccion' => $request['actividadEvaluacionAccion'][$i],
+            'Tercero_idResponsable' => $request['Tercero_idResponsable_Accion'][$i],
+            'DocumentoSoporte_idDocumentoSoporte' => $request['DocumentoSoporte_idDocumentoSoporte'][$i],
+            'fechaPlaneadaEvaluacionAccion' => $request['fechaPlaneadaEvaluacionAccion'][$i],
+            'fechaEjecutadaEvaluacionAccion' => $request['fechaEjecutadaEvaluacionAccion'][$i]
+         
+
+            ]);
+
+         }
+        
+       
+         
+           return redirect('/evaluaciondesempenio');
     }
 
     /**
@@ -148,9 +173,91 @@ class EvaluacionDesempenioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+             if($_GET['accion'] == 'imprimir')
+        {
+          $evaluaciondesempenio = \App\EvaluacionDesempenio::find($id);
+
+         $EvaluacionDesempenio = DB::select('
+            SELECT 
+            idEvaluacionDesempenio,te.nombreCompletoTercero as nombreEmpleado,tr.nombreCompletoTercero as nombreResponsable, nombreCargo,
+            fechaElaboracionEvaluacionDesempenio,observacionEvaluacionDesempenio
+            FROM evaluaciondesempenio ed
+            LEFT JOIN cargo c ON ed.Cargo_idCargo = c.idCargo
+            LEFT JOIN tercero te ON ed.Tercero_idEmpleado = te.idTercero
+            LEFT JOIN tercero tr ON ed.Tercero_idResponsable = tr.idTercero
+            WHERE idEvaluacionDesempenio = '.$id);
+
+               // Multiregistro consulta de Evaluaciondesempenioeducacion
+          $EvaluacionDesempenioResponsabilidad = DB::Select('
+            SELECT idEvaluacionResponsabilidad,EvaluacionDesempenio_idEvaluacionDesempenio,descripcionCargoResponsabilidad,CargoResponsabilidad_idCargoResponsabilidad,respuestaEvaluacionResponsabilidad
+            FROM  evaluacionresponsabilidad ER
+            LEFT JOIN cargoresponsabilidad CR
+            On ER.CargoResponsabilidad_idCargoResponsabilidad = CR.idCargoResponsabilidad 
+            WHERE ER.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
+
+          $EvaluacionDesempenioEducacion = DB::Select('
+            SELECT  idEvaluacionEducacion,Req.nombrePerfilCargo as nombrePerfilRequerido,
+            Asp.nombrePerfilCargo as nombrePerfilAspirante,calificacionEvaluacionEducacion,porcentajeCargoEducacion
+            FROM evaluacioneducacion EE
+            LEFT JOIN evaluaciondesempenio ed
+            ON EE.EvaluacionDesempenio_idEvaluacionDesempenio = ed.idEvaluacionDesempenio
+            left JOIN perfilcargo Req
+            ON EE.PerfilCargo_idRequerido = Req.idPerfilCargo
+            LEFT JOIN perfilcargo Asp
+            ON EE.PerfilCargo_idAspirante = Asp.idPerfilCargo
+            LEFT JOIN cargoeducacion CE
+            ON EE.PerfilCargo_idRequerido = CE.PerfilCargo_idPerfilCargo and ed.Cargo_idCargo = CE.Cargo_idCargo
+            WHERE EE.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
+
+       
+
+
+          $EvaluacionDesempenioFormacion = DB::Select('
+          SELECT  idEvaluacionFormacion,Req.nombrePerfilCargo as nombrePerfilRequerido,
+            Asp.nombrePerfilCargo as nombrePerfilAspirante,calificacionEvaluacionFormacion,porcentajeCargoFormacion
+            FROM evaluacionformacion EF
+            LEFT JOIN evaluaciondesempenio ed
+            ON EF.EvaluacionDesempenio_idEvaluacionDesempenio = ed.idEvaluacionDesempenio
+            left JOIN perfilcargo Req
+            ON EF.PerfilCargo_idRequerido = Req.idPerfilCargo
+            LEFT JOIN perfilcargo Asp
+            ON EF.PerfilCargo_idAspirante = Asp.idPerfilCargo
+            LEFT JOIN cargoformacion CF
+            ON EF.PerfilCargo_idRequerido = CF.PerfilCargo_idPerfilCargo and ed.Cargo_idCargo = CF.Cargo_idCargo
+            WHERE EF.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
+
+          $EvaluacionDesempenioHabilidad = DB::Select('
+          SELECT  idEvaluacionHabilidad,Req.nombrePerfilCargo as nombrePerfilRequerido,
+            Asp.nombrePerfilCargo as nombrePerfilAspirante,calificacionEvaluacionHabilidad,porcentajeCargoHabilidad
+            FROM evaluacionhabilidad EH
+            LEFT JOIN evaluaciondesempenio ed
+            ON EH.EvaluacionDesempenio_idEvaluacionDesempenio = ed.idEvaluacionDesempenio
+            left JOIN perfilcargo Req
+            ON EH.PerfilCargo_idRequerido = Req.idPerfilCargo
+            LEFT JOIN perfilcargo Asp
+            ON EH.PerfilCargo_idAspirante = Asp.idPerfilCargo
+            LEFT JOIN cargohabilidad CH
+            ON EH.PerfilCargo_idRequerido = CH.PerfilCargo_idPerfilCargo and ed.Cargo_idCargo = CH.Cargo_idCargo
+            WHERE EH.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
+
+          $EvaluacionAccion = DB::Select('
+        
+        SELECT idEvaluacionAccion,EvaluacionDesempenio_idEvaluacionDesempenio,actividadEvaluacionAccion,Tercero_idResponsable,DocumentoSoporte_idDocumentoSoporte,fechaPlaneadaEvaluacionAccion,fechaEjecutadaEvaluacionAccion,nombreCompletoTercero,nombreDocumentoSoporte
+            FROM evaluacionaccion ea
+            LEFT JOIN tercero t 
+            ON ea.Tercero_idResponsable = t.idTercero 
+            LEFT JOIN documentosoporte ds
+            ON ea.DocumentoSoporte_idDocumentoSoporte = ds.idDocumentoSoporte
+            WHERE  ea.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
+                 
+
+
+                
+            return view('formatos.imprimirEvaluacionDesempenio',compact('EvaluacionAccion','EvaluacionDesempenio','EvaluacionDesempenioResponsabilidad','EvaluacionDesempenioEducacion','EvaluacionDesempenioFormacion','EvaluacionDesempenioHabilidad'));
+       } 
+
     }
 
     /**
@@ -162,7 +269,15 @@ class EvaluacionDesempenioController extends Controller
     public function edit($id)
     {
           $evaluaciondesempenio = \App\EvaluacionDesempenio::find($id);
+           $cargo = \App\Cargo::find($evaluaciondesempenio->Cargo_idCargo);
+          // se llama el cargo para el momento de editar 
+          // $cargo = \App\Cargo::where('idCargo','=',$evaluaciondesempenio->Cargo_idCargo)->lists('nombreCargo','porcentajeResponsabilidadCargo','porcentajeEducacionCargo','porcentajeFormacionCargo','porcentajeHabilidadCargo');
 
+        $idTerceroResponsable = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idTercero');
+        $nombreTerceroResponsable = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCompletoTercero');
+
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
         $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
         $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
@@ -234,7 +349,15 @@ $EvaluacionDesempenioHabilidad = DB::Select('
     WHERE  eh.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
 
 
-        return view ('evaluaciondesempenio',['evaluaciondesempenio'=>$evaluaciondesempenio], compact('EvaluacionDesempenioHabilidad','idHabilidad','nombreHabilidad','EvaluacionDesempenioFormacion','idFormacion','nombreFormacion','EvaluacionDesempenioEducacion','EvaluacionDesempenioResponsabilidad','idEducacion','nombreEducacion','idRespuesta','nombreRespuesta','Tercero_idEmpleado','Tercero_idResponsable','idModulo','nombreModulo'));
+$EvaluacionAccion = DB::Select('
+    SELECT
+      idEvaluacionAccion,EvaluacionDesempenio_idEvaluacionDesempenio,actividadEvaluacionAccion,Tercero_idResponsable as Tercero_idResponsable_Accion,DocumentoSoporte_idDocumentoSoporte,fechaPlaneadaEvaluacionAccion,fechaEjecutadaEvaluacionAccion
+    FROM
+      evaluacionaccion ea
+      WHERE ea.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
+
+
+        return view ('evaluaciondesempenio',['evaluaciondesempenio'=>$evaluaciondesempenio], compact('EvaluacionAccion','cargo','idTerceroResponsable','nombreTerceroResponsable','nombreDocumentoSoporte','idDocumentoSoporte','EvaluacionDesempenioHabilidad','idHabilidad','nombreHabilidad','EvaluacionDesempenioFormacion','idFormacion','nombreFormacion','EvaluacionDesempenioEducacion','EvaluacionDesempenioResponsabilidad','idEducacion','nombreEducacion','idRespuesta','nombreRespuesta','Tercero_idEmpleado','Tercero_idResponsable','idModulo','nombreModulo'));
     }
 
     /**
@@ -244,7 +367,7 @@ $EvaluacionDesempenioHabilidad = DB::Select('
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(evaluaciondesempenioRequest $request, $id)
     {
          $evaluaciondesempenio = \App\EvaluacionDesempenio::find($id);
          $evaluaciondesempenio->fill($request->all());
@@ -325,6 +448,31 @@ $EvaluacionDesempenioHabilidad = DB::Select('
             'PerfilCargo_idAspirante' => $request['PerfilCargo_idAspirante_Habilidad'][$i],
             'calificacionEvaluacionEducacion' => $request['calificacionEvaluacionHabilidad'][$i]);
                     $guardar = \App\EvaluacionDesempenioHabilidad::updateOrCreate($indice, $data);
+            }
+
+                 // Update Multiregistro PLan Accion
+
+              $idsEliminar = explode("," , $request['eliminarEvaluacionAccion']);
+                //Eliminar registros de la multiregistro
+                \App\EvaluacionAccion::whereIn('idEvaluacionAccion', $idsEliminar)->delete();
+            // Guardamos el detalle de los modulos
+            for($i = 0; $i < count($request['idEvaluacionAccion']); $i++)
+            {
+                     $indice = array(
+                        'idEvaluacionAccion' => $request['idEvaluacionAccion'][$i]);
+
+                    $data = array(
+            'EvaluacionDesempenio_idEvaluacionDesempenio' => $evaluaciondesempenio->idEvaluacionDesempenio,
+            'actividadEvaluacionAccion' => $request['actividadEvaluacionAccion'][$i],
+            'Tercero_idResponsable' => $request['Tercero_idResponsable_Accion'][$i],
+            'DocumentoSoporte_idDocumentoSoporte' => $request['DocumentoSoporte_idDocumentoSoporte'][$i],
+            'fechaPlaneadaEvaluacionAccion' => $request['fechaPlaneadaEvaluacionAccion'][$i],
+            'fechaEjecutadaEvaluacionAccion' => $request['fechaEjecutadaEvaluacionAccion'][$i]);
+
+
+
+
+                    $guardar = \App\EvaluacionAccion::updateOrCreate($indice, $data);
             }
 
 

@@ -1,3 +1,165 @@
+
+function validarFormulario(event)
+{                                          
+            //                            se llama la vista del formulario
+    var route = "http://"+location.host+"/evaluaciondesempenio";
+    var token = $("#token").val();
+    // Primer campo es el id del formulario
+    var dato0 = document.getElementById('idEvaluacionDesempenio').value;  
+    var dato1 = document.getElementById('Tercero_idEmpleado').value;
+    var dato2 = document.getElementById('Cargo_idCargo').value;
+    var dato3 = document.getElementById('Tercero_idResponsable').value;
+    var dato4 = document.getElementById('fechaElaboracionEvaluacionDesempenio').value;
+    
+
+    
+
+ // Variables de multiregistros 
+    var EvaluacionResponsabilidad = document.querySelectorAll("[name='respuestaEvaluacionResponsabilidad[]']");
+    var EvaluacionEducacion = document.querySelectorAll("[name='PerfilCargo_idAspirante_Educacion[]']"); 
+    var EvaluacionFormacion = document.querySelectorAll("[name='PerfilCargo_idAspirante_Formacion[]']");
+    var EvaluacionHabilidad = document.querySelectorAll("[name='PerfilCargo_idAspirante_Habilidad[]']");
+    var EvaluacionPlanAccion = document.querySelectorAll("[name='actividadEvaluacionAccion[]']");
+
+   
+     
+
+    var dato5 = [];
+    var dato6 = [];
+    var dato7 = [];
+    var dato8 = [];
+    var dato9= [];
+ 
+    var valor = '';
+    var sw = true;
+    
+    
+    for(var j=0,i= EvaluacionResponsabilidad.length; j<i;j++)
+    {
+        dato5[j] = EvaluacionResponsabilidad[j].value;
+    }
+
+    for(var j=0,i= EvaluacionEducacion.length; j<i;j++)
+    {
+        dato6[j] = EvaluacionEducacion[j].value;
+    }
+     for(var j=0,i= EvaluacionFormacion.length; j<i;j++)
+    {
+        dato7[j] = EvaluacionFormacion[j].value;
+    }
+     for(var j=0,i= EvaluacionHabilidad.length; j<i;j++)
+    {
+        dato8[j] = EvaluacionHabilidad[j].value;
+    }
+     for(var j=0,i= EvaluacionPlanAccion.length; j<i;j++)
+    {
+        dato9[j] = EvaluacionPlanAccion[j].value;
+    }
+  
+    $.ajax({
+        async: false,
+        url:route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: {respuesta: 'falso',
+                idEvaluacionDesempenio: dato0,
+                Tercero_idEmpleado: dato1,
+                Cargo_idCargo: dato2,
+                Tercero_idResponsable: dato3,
+                fechaElaboracionEvaluacionDesempenio: dato4, 
+                respuestaEvaluacionResponsabilidad: dato5, 
+                PerfilCargo_idAspirante_Educacion: dato6, 
+                PerfilCargo_idAspirante_Formacion: dato7,
+                PerfilCargo_idAspirante_Habilidad: dato8,
+                actividadEvaluacionAccion: dato9,
+                // solo se modifica los campos del data
+                },
+        success:function(){
+            //$("#msj-success").fadeIn();
+            //console.log(' sin errores');
+
+        },
+        error:function(msj){
+            var mensaje = '';
+            var respuesta = JSON.stringify(msj.responseJSON); 
+            if(typeof respuesta === "undefined")
+            {
+                sw = false;
+                $("#msj").html('');
+                $("#msj-error").fadeOut();
+
+            }
+            else
+            {
+                sw = true;
+                respuesta = JSON.parse(respuesta);
+               
+                (typeof msj.responseJSON.Tercero_idEmpleado === "undefined" ? document.getElementById('Tercero_idEmpleado').style.borderColor = '' : document.getElementById('Tercero_idEmpleado').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.Cargo_idCargo === "undefined" ? document.getElementById('Cargo_idCargo').style.borderColor = '' : document.getElementById('Cargo_idCargo').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.Tercero_idResponsable === "undefined" ? document.getElementById('Tercero_idResponsable').style.borderColor = '' : document.getElementById('Tercero_idResponsable').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.fechaElaboracionEvaluacionDesempenio === "undefined" ? document.getElementById('fechaElaboracionEvaluacionDesempenio').style.borderColor = '' : document.getElementById('fechaElaboracionEvaluacionDesempenio').style.borderColor = '#a94442');
+
+                
+                
+         
+                for(var j=0,i=EvaluacionResponsabilidad.length; j<i;j++)
+                {
+                    (typeof respuesta['respuestaEvaluacionResponsabilidad'+j] === "undefined" 
+                        ? document.getElementById('respuestaEvaluacionResponsabilidad'+j).style.borderColor = '' 
+                        : document.getElementById('respuestaEvaluacionResponsabilidad'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=EvaluacionEducacion.length; j<i;j++)
+                {
+                    (typeof respuesta['PerfilCargo_idAspirante_Educacion'+j] === "undefined" ? document.getElementById('PerfilCargo_idAspirante_Educacion'+j).style.borderColor = '' : document.getElementById('PerfilCargo_idAspirante_Educacion'+j).style.borderColor = '#a94442');
+                }
+
+                 for(var j=0,i=EvaluacionFormacion.length; j<i;j++)
+                {
+                    (typeof respuesta['PerfilCargo_idAspirante_Formacion'+j] === "undefined" 
+                        ? document.getElementById('PerfilCargo_idAspirante_Formacion'+j).style.borderColor = '' 
+                        : document.getElementById('PerfilCargo_idAspirante_Formacion'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=EvaluacionHabilidad.length; j<i;j++)
+                {
+                    (typeof respuesta['PerfilCargo_idAspirante_Habilidad'+j] === "undefined" ? document.getElementById('PerfilCargo_idAspirante_Habilidad'+j).style.borderColor = '' : document.getElementById('PerfilCargo_idAspirante_Habilidad'+j).style.borderColor = '#a94442');
+                }
+
+                 for(var j=0,i=EvaluacionPlanAccion.length; j<i;j++)
+                {
+                    (typeof respuesta['actividadEvaluacionAccion'+j] === "undefined" 
+                        ? document.getElementById('actividadEvaluacionAccion'+j).style.borderColor = '' 
+                        : document.getElementById('actividadEvaluacionAccion'+j).style.borderColor = '#a94442');
+                }
+        
+                
+
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li><br>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
+                $("#msj-error").fadeIn();
+            }
+
+        }
+    });
+
+    if(sw === true)
+        event.preventDefault();
+}
+
+
+
+
+
 function calificarhabilidad(idRequerido)
 {
     // recibimos como parametro el id del campo de educacion requerida, con este tomamos el numero 
@@ -269,6 +431,7 @@ function mostrarDivGenerales(id)
     $("#Habilidades").css('display', 'none');
     $("#Resultado").css('display', 'none');
     $("#planaccion").css('display', 'none');
+    $("#observacion").css('display', 'none');
    
 
     
@@ -283,6 +446,7 @@ function mostrarDivGenerales(id)
     $("#Habilidades").css('display', 'none');
     $("#Resultado").css('display', 'none');
     $("#planaccion").css('display', 'none');
+    $("#observacion").css('display', 'none');
    
   }
 
@@ -294,6 +458,7 @@ function mostrarDivGenerales(id)
     $("#Habilidades").css('display', 'block');
     $("#Resultado").css('display', 'none');
     $("#planaccion").css('display', 'none');
+    $("#observacion").css('display', 'none');
    
   }
 
@@ -305,6 +470,7 @@ function mostrarDivGenerales(id)
     $("#Habilidades").css('display', 'none');
     $("#Resultado").css('display', 'block');
     $("#planaccion").css('display', 'none');
+    $("#observacion").css('display', 'none');
    
   }
     else if (id == 'planaccion')
@@ -315,6 +481,20 @@ function mostrarDivGenerales(id)
     $("#Habilidades").css('display', 'none');
     $("#Resultado").css('display', 'none');
     $("#planaccion").css('display', 'block');
+    $("#observacion").css('display', 'none');
+    
+
+  }
+    else if (id == 'observacion')
+  {
+    
+    $("#Habilidadesactitudinales").css('display', 'none');
+    $("#Responsabilidades").css('display', 'none');
+    $("#Habilidades").css('display', 'none');
+    $("#Resultado").css('display', 'none');
+    $("#planaccion").css('display', 'none');
+    $("#observacion").css('display', 'block');
+    
 
   }
    

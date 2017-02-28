@@ -15,30 +15,43 @@
     else
         $visibleE = 'none;';
 
-    $evaluaciondesempenio = DB::table('evaluaciondesempenio')
-            ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idCargo')
-            ->leftJoin('Tercero','Tercero_idEmpleado', '=','idTercero') 
-            // ->leftJoin('Tercero','Tercero_idResponsable', '=','idTercero')
-            ->select(DB::raw('idEvaluacionDesempenio, tercero.nombreCompletoTercero, nombreCargo,Tercero_idResponsable,fechaElaboracionEvaluacionDesempenio'))
+    $evaluaciondesempenio = DB::Select('
+        SELECT 
+            idEvaluacionDesempenio,
+            te.nombreCompletoTercero as nombreEmpleado,
+            tr.nombreCompletoTercero as nombreResponsable, 
+            nombreCargo,
+            fechaElaboracionEvaluacionDesempenio
+        FROM
+            evaluaciondesempenio ed
+                LEFT JOIN
+            cargo c ON ed.Cargo_idCargo = c.idCargo
+                LEFT JOIN
+            tercero te ON ed.Tercero_idEmpleado = te.idTercero
+                LEFT JOIN
+            tercero tr ON ed.Tercero_idResponsable = tr.idTercero');
            
          
-            ->get();
         $row = array();
 
     foreach ($evaluaciondesempenio as $key => $value) 
-
     {  
-        $row[$key][] = '<a href="evaluaciondesempenio/'.$value->idEvaluacionDesempenio.'/edit">'.
+        $evaluacion = get_object_vars($value);
+        $row[$key][] = '<a href="evaluaciondesempenio/'.$evaluacion['idEvaluacionDesempenio'].'/edit">'.
                             '<span class="glyphicon glyphicon-pencil " style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="evaluaciondesempenio/'.$value->idEvaluacionDesempenio.'/edit?accion=eliminar">'.
+                        '<a href="evaluaciondesempenio/'.$evaluacion['idEvaluacionDesempenio'].'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="imprimirEvaluacionDesempenio('.$evaluacion['idEvaluacionDesempenio'].')">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;';
-        $row[$key][] = $value->idEvaluacionDesempenio;
-        $row[$key][] = $value->nombreCompletoTercero;
-        $row[$key][] = $value->nombreCargo;
-        $row[$key][] = $value->Tercero_idResponsable;
-        $row[$key][] = $value->fechaElaboracionEvaluacionDesempenio;
+
+        $row[$key][] = $evaluacion['idEvaluacionDesempenio'];
+        $row[$key][] = $evaluacion['nombreEmpleado'];
+        $row[$key][] = $evaluacion['nombreCargo'];
+        $row[$key][] = $evaluacion['nombreResponsable'];
+        $row[$key][] = $evaluacion['fechaElaboracionEvaluacionDesempenio'];
         
     }
 

@@ -1,8 +1,9 @@
 <?php
 
         $educacion = DB::table('perfilcargo')
-            ->select(DB::raw('idPerfilCargo,nombrePerfilCargo'))
+            ->select(DB::raw('idPerfilCargo,nombrePerfilCargo,Compania_idCompania'))
             ->where('tipoPerfilCargo','=','Habilidad')
+            ->where('perfilcargo.Compania_idCompania',"=", \Session::get("idCompania"))
             ->get();
     
         $row = array();

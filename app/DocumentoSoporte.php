@@ -12,4 +12,10 @@ class DocumentoSoporte extends Model
     protected $fillable = ['codigoDocumentoSoporte', 'nombreDocumentoSoporte'];
 
     public $timestamps = false;
+
+
+       public function EvaluacionAccion()
+    {
+        return $this->hasMany('App\EvaluacionAccion','DocumentoSoporte_idDocumentoSoporte');
+    }
 }
