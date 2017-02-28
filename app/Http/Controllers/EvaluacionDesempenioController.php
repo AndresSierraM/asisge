@@ -339,12 +339,12 @@ $EvaluacionDesempenioFormacion = DB::Select('
 $EvaluacionDesempenioHabilidad = DB::Select('
   SELECT idEvaluacionHabilidad,EvaluacionDesempenio_idEvaluacionDesempenio,nombrePerfilCargo,PerfilCargo_idRequerido as PerfilCargo_idRequerido_Habilidad,porcentajeCargoHabilidad,PerfilCargo_idAspirante as PerfilCargo_idAspirante_Habilidad,calificacionEvaluacionHabilidad
     FROM
-    evaluacionHabilidad eh
+    evaluacionhabilidad eh
     LEFT JOIN evaluaciondesempenio ed
     ON eh.EvaluacionDesempenio_idEvaluacionDesempenio = ed.idEvaluacionDesempenio 
     LEFT JOIN perfilcargo pc
     ON eh.PerfilCargo_idRequerido = pc.idPerfilCargo
-    LEFT JOIN cargoHabilidad ch
+    LEFT JOIN cargohabilidad ch
     ON eh.PerfilCargo_idRequerido = ch.PerfilCargo_idPerfilCargo and ed.Cargo_idCargo = ch.Cargo_idCargo
     WHERE  eh.EvaluacionDesempenio_idEvaluacionDesempenio = '.$id);
 
