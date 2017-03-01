@@ -28,7 +28,8 @@ class DocumentoCRMRequest extends Request
         $compania = count($this->get('Compania_idCompania'));
         $rol = count($this->get('Rol_idRol'));
 
-        $validacion = array('codigoDocumentoCRM' => "required|string|unique:documentocrm,codigoDocumentoCRM,".$this->get('idDocumentoCRM') .",idDocumentoCRM",
+        $validacion = array(
+            'codigoDocumentoCRM' => "required|string|unique:documentocrm,codigoDocumentoCRM,".$this->get('idDocumentoCRM') .",idDocumentoCRM,Compania_idCompania,".(\Session::get('idCompania')),
             'nombreDocumentoCRM' => "required|string|max:80|unique:documentocrm,nombreDocumentoCRM,".$this->get('idDocumentoCRM') .",idDocumentoCRM");
         
 

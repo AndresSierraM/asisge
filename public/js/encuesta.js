@@ -45,7 +45,7 @@ function validarCampos(event)
         {
             $('.divOpcion'+index ).each(function (reg) 
             {
-                console.log(index+'_'+reg+' / '+$("#valorEncuestaOpcion"+index+'_'+reg).val()+' - '+$("#nombreEncuestaOpcion"+index+'_'+reg).val());
+                //console.log(index+'_'+reg+' / '+$("#valorEncuestaOpcion"+index+'_'+reg).val()+' - '+$("#nombreEncuestaOpcion"+index+'_'+reg).val());
                 if($("#valorEncuestaOpcion"+index+'_'+reg).val() == '' || $("#nombreEncuestaOpcion"+index+'_'+reg).val() == '')
                 {
                     $("#valorEncuestaOpcion"+index+'_'+reg).css('border','solid 1px red');
@@ -115,7 +115,7 @@ function validarFormulario(event)
             var mensaje = '';
             var respuesta = JSON.stringify(msj.responseJSON); 
 
-            console.log(respuesta);
+            //console.log(respuesta);
             if(typeof respuesta === "undefined")
             {
                 sw = false;
@@ -243,10 +243,10 @@ RegistroMulti.prototype.agregarCampos = function(datos, tipo, pos){
     {
 
         this.contador[pos] = 0;
-        console.log('no existe pos '+pos+' = '+this.contador[pos]);
+        //console.log('no existe pos '+pos+' = '+this.contador[pos]);
     }
-    else
-        console.log('SI existe pos '+pos+' = '+this.contador[pos]);
+    //else
+        //console.log('SI existe pos '+pos+' = '+this.contador[pos]);
 
     var valor;
     if(tipo == 'A')

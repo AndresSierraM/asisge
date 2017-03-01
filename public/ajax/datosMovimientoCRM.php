@@ -49,7 +49,7 @@
             relacionTablaCampoCRM != "" and 
             mostrarGridDocumentoCRMCampo = 1');
 
-$camposGrid = 'IF((fechaVencimientoMovimientoCRM != "0000-00-00 00:00:00" and tipoEstadoCRM NOT IN ("Exitoso","Fallido","Cancelado")), DATEDIFF(fechaVencimientoMovimientoCRM, CURDATE()), 3) as diasFaltantes, idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM, DATEDIFF(CURDATE(), fechaSolicitudMovimientoCRM) as diasProceso';
+$camposGrid = 'IF((fechaVencimientoMovimientoCRM != "0000-00-00 00:00:00" and tipoEstadoCRM NOT IN ("Exitoso","Fallido","Cancelado")), DATEDIFF(fechaVencimientoMovimientoCRM, CURDATE()), 3) as diasFaltantes, detallesMovimientoCRM, idMovimientoCRM, numeroMovimientoCRM, asuntoMovimientoCRM, DATEDIFF(CURDATE(), fechaSolicitudMovimientoCRM) as diasProceso';
 $camposBase = 'diasFaltantes, idMovimientoCRM,numeroMovimientoCRM,asuntoMovimientoCRM, diasProceso';
 for($i = 0; $i < count($campos); $i++)
 {
@@ -124,9 +124,6 @@ for($i = 0; $i < count($campos); $i++)
         $estilo = '';
         for($j = 0; $j < count($campos); $j++)
         {
-          // if(trim($campos[$j]) == 'asuntoMovimientoCRM')
-          //     $row[$i][] = '<p title="'.$datoValor['detallesMovimientoCRM'].'">'.$datoValor[trim($campos[$j])].'</p>';
-          // else
           
           if(trim($campos[$j]) == 'diasFaltantes')
           {
@@ -141,8 +138,16 @@ for($i = 0; $i < count($campos); $i++)
           }
             
           else
-            
-              $row[$i][] = '<span '.$estilo.'>'.$datoValor[trim($campos[$j])].'</span>';
+          {
+            if(trim($campos[$j]) != 'detallesMovimientoCRM')
+            {
+
+              if(trim($campos[$j]) == 'asuntoMovimientoCRM')
+              $row[$i][] = '<a href="#" data-toggle="tooltip" data-html="true" data-placement="bottom"  title="'.$datoValor['detallesMovimientoCRM'].'">'.$datoValor[trim($campos[$j])].'</a>';
+              else
+                $row[$i][] = '<span '.$estilo.'>'.$datoValor[trim($campos[$j])].'</span>';
+            }
+          }
           
         }
 

@@ -67,7 +67,8 @@ class DocumentoCRMController extends Controller
             'desdeDocumentoCRM' => $request['desdeDocumentoCRM'], 
             'hastaDocumentoCRM' => $request['hastaDocumentoCRM'], 
             'actualDocumentoCRM' => $request['desdeDocumentoCRM']-1, 
-            'GrupoEstado_idGrupoEstado' => $request['GrupoEstado_idGrupoEstado']
+            'GrupoEstado_idGrupoEstado' => $request['GrupoEstado_idGrupoEstado'],
+            'Compania_idCompania' => \Session::get("idCompania")
             ]);
 
         $documentocrm = \App\DocumentoCRM::All()->last();
@@ -196,26 +197,26 @@ class DocumentoCRMController extends Controller
         }
 
 
-        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
-        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        $idsEliminar = explode(',', $request['eliminarDocumentoCRMCompania']);
-        \App\DocumentoCRMCompania::whereIn('idDocumentoCRMCompania',$idsEliminar)->delete();
+        // // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        // $idsEliminar = explode(',', $request['eliminarDocumentoCRMCompania']);
+        // \App\DocumentoCRMCompania::whereIn('idDocumentoCRMCompania',$idsEliminar)->delete();
 
-        $contador = count($request['idDocumentoCRMCompania']);
+        // $contador = count($request['idDocumentoCRMCompania']);
 
-        for($i = 0; $i < $contador; $i++)
-        {
+        // for($i = 0; $i < $contador; $i++)
+        // {
 
-            $indice = array(
-             'idDocumentoCRMCompania' => $request['idDocumentoCRMCompania'][$i]);
+        //     $indice = array(
+        //      'idDocumentoCRMCompania' => $request['idDocumentoCRMCompania'][$i]);
 
-            $data = array(
-             'DocumentoCRM_idDocumentoCRM' => $id,
-            'Compania_idCompania' => $request['Compania_idCompania'][$i] );
+        //     $data = array(
+        //      'DocumentoCRM_idDocumentoCRM' => $id,
+        //     'Compania_idCompania' => $request['Compania_idCompania'][$i] );
 
-            $preguntas = \App\DocumentoCRMCompania::updateOrCreate($indice, $data);
+        //     $preguntas = \App\DocumentoCRMCompania::updateOrCreate($indice, $data);
 
-        }
+        // }
 
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle

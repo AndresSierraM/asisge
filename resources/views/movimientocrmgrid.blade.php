@@ -265,6 +265,11 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
         } );
 
 
+        $('#tmovimientocrm').on('draw.dt', function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                }); 
+
+
         // Setup - add a text input to each footer cell
     $('#tmovimientocrm tfoot th').each( function () {
         if($(this).index()>0){
@@ -296,7 +301,6 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
             }
         } );
     })
-
 
 
     

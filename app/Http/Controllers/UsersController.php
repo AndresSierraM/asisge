@@ -44,7 +44,7 @@ class UsersController extends Controller
     public function create()
     {
         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
-        $rol = \App\Rol::All()->lists('nombreRol','idRol');
+        $rol = \App\Rol::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreRol','idRol');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         return view('users',compact('compania','selected','rol', 'tercero'));
     }
@@ -90,7 +90,7 @@ class UsersController extends Controller
     {
         $usuario = \App\User::find($id);
         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
-        $rol = \App\Rol::All()->lists('nombreRol','idRol');
+        $rol = \App\Rol::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreRol','idRol');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         return view('users',compact('compania', 'rol','tercero'),['usuario'=>$usuario]);
     }

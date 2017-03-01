@@ -22,7 +22,7 @@ function ConsultarPermisos($vista)
             LEFT JOIN
         paquete AS p ON o.Paquete_idPaquete = p.idPaquete
     WHERE
-        Compania_idCompania = '.\Session::get("idCompania").' AND id = '.\Session::get("idUsuario"). ' AND rutaOpcion = "'.$vista.'"');
+        r.Compania_idCompania = '.\Session::get("idCompania").' AND id = '.\Session::get("idUsuario"). ' AND rutaOpcion = "'.$vista.'"');
 
     return($permiso);
 }

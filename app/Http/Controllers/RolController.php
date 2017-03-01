@@ -57,7 +57,8 @@ class RolController extends Controller
         { 
             \App\Rol::create([
                 'codigoRol' => $request['codigoRol'],
-                'nombreRol' => $request['nombreRol']
+                'nombreRol' => $request['nombreRol'],
+                'Compania_idCompania' => \Session::get("idCompania")
                 ]); 
 
             $rol = \App\Rol::All()->last();

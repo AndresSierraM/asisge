@@ -10,8 +10,8 @@
     var EncuestaDetalle = '<?php echo (isset($encuestaDetalle) ? json_encode($encuestaDetalle) : "");?>';
     EncuestaDetalle = (EncuestaDetalle != '' ? JSON.parse(EncuestaDetalle) : '');
 
-    var EncuestaRol = '<?php echo (isset($encuestaRol) ? json_encode($encuestaRol) : "");?>';
-    EncuestaRol = (EncuestaRol != '' ? JSON.parse(EncuestaRol) : '');
+    // var EncuestaRol = '<?php echo (isset($encuestaRol) ? json_encode($encuestaRol) : "");?>';
+    // EncuestaRol = (EncuestaRol != '' ? JSON.parse(EncuestaRol) : '');
 
   
    
@@ -46,66 +46,66 @@
       }
 
 
-      protRol = new Atributos('protRol','contenedor_protRol','encuestarol');
+      // protRol = new Atributos('protRol','contenedor_protRol','encuestarol');
 
-      protRol.altura = '35px';
-      protRol.campoid = 'idEncuestaRol';
-      protRol.campoEliminacion = 'eliminarRol';
+      // protRol.altura = '35px';
+      // protRol.campoid = 'idEncuestaRol';
+      // protRol.campoEliminacion = 'eliminarRol';
 
-      protRol.campos   = [
-      'idEncuestaRol',
-      'Rol_idRol',
-      'nombreRol',
-      'adicionarEncuestaRol',
-      'modificarEncuestaRol',
-      'consultarEncuestaRol',
-      'eliminarEncuestaRol',
-      'publicarEncuestaRol'
-      ];
+      // protRol.campos   = [
+      // 'idEncuestaRol',
+      // 'Rol_idRol',
+      // 'nombreRol',
+      // 'adicionarEncuestaRol',
+      // 'modificarEncuestaRol',
+      // 'consultarEncuestaRol',
+      // 'eliminarEncuestaRol',
+      // 'publicarEncuestaRol'
+      // ];
 
-      protRol.etiqueta = [
-      'input',
-      'input',
-      'input',
-      'checkbox',
-      'checkbox',
-      'checkbox',
-      'checkbox',
-      'checkbox'
-      ];
+      // protRol.etiqueta = [
+      // 'input',
+      // 'input',
+      // 'input',
+      // 'checkbox',
+      // 'checkbox',
+      // 'checkbox',
+      // 'checkbox',
+      // 'checkbox'
+      // ];
 
-      protRol.tipo = [
-      'hidden',
-      'hidden',
-      'text',
-      'checkbox',
-      'checkbox',
-      'checkbox',
-      'checkbox',
-      'checkbox'
-      ];
+      // protRol.tipo = [
+      // 'hidden',
+      // 'hidden',
+      // 'text',
+      // 'checkbox',
+      // 'checkbox',
+      // 'checkbox',
+      // 'checkbox',
+      // 'checkbox'
+      // ];
 
-      protRol.estilo = [
-      '',
-      '',
-      'width: 530px;height:35px;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;'
-      ];
+      // protRol.estilo = [
+      // '',
+      // '',
+      // 'width: 530px;height:35px;',
+      // 'width: 70px;height:35px; display:inline-block;',
+      // 'width: 70px;height:35px; display:inline-block;',
+      // 'width: 70px;height:35px; display:inline-block;',
+      // 'width: 70px;height:35px; display:inline-block;',
+      // 'width: 70px;height:35px; display:inline-block;'
+      // ];
 
-      protRol.clase    = ['','','','','','','',''];
-      protRol.sololectura = [true,true,true,true,true,true,true,true];  
-      protRol.funciones = ['','','','','','','',''];
-      protRol.completar = ['off','off','off','off','off','off','off','off'];
-      protRol.opciones = ['','','','','','','','']
+      // protRol.clase    = ['','','','','','','',''];
+      // protRol.sololectura = [true,true,true,true,true,true,true,true];  
+      // protRol.funciones = ['','','','','','','',''];
+      // protRol.completar = ['off','off','off','off','off','off','off','off'];
+      // protRol.opciones = ['','','','','','','','']
 
-      for(var j=0, k = EncuestaRol.length; j < k; j++)
-      {
-        protRol.agregarCampos(JSON.stringify(EncuestaRol[j]),'L');
-      }
+      // for(var j=0, k = EncuestaRol.length; j < k; j++)
+      // {
+      //   protRol.agregarCampos(JSON.stringify(EncuestaRol[j]),'L');
+      // }
 
     });
 
@@ -138,7 +138,7 @@
           {!!Form::hidden('totalPreguntas', null, array('id' => 'totalPreguntas')) !!}
           {!!Form::hidden('eliminarPregunta', null, array('id' => 'eliminarPregunta')) !!}
           {!!Form::hidden('eliminarOpcion', null, array('id' => 'eliminarOpcion')) !!}
-          {!!Form::hidden('eliminarRol', null, array('id' => 'eliminarRol')) !!}
+          <!-- {!!Form::hidden('eliminarRol', null, array('id' => 'eliminarRol')) !!} -->
         </div>
       </div>
     </div>
@@ -160,7 +160,7 @@
 
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#preguntas">Preguntas</a></li>
-      <li><a data-toggle="tab" href="#permisos">Permisos</a></li>
+      <!-- <li><a data-toggle="tab" href="#permisos">Permisos</a></li> -->
     </ul>
 
     <div class="tab-content">
@@ -185,7 +185,7 @@
         <!-- </div> -->
           
       </div>
-      <div id="permisos" class="tab-pane fade">
+     <!--  <div id="permisos" class="tab-pane fade">
         <div class="panel-body" >
           <div class="form-group" id='test'>
             <div class="col-sm-12">
@@ -216,7 +216,7 @@
             </div>
           </div>  
         </div>
-      </div> 
+      </div> --> 
     </div>
 
   </fieldset>
@@ -245,10 +245,9 @@
 
 @stop
 
-<div id="ModalRoles" class="modal fade" role="dialog">
+<!-- <div id="ModalRoles" class="modal fade" role="dialog">
   <div class="modal-dialog" style="width:70%;">
 
-    <!-- Modal content-->
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -256,9 +255,9 @@
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
+        //echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
       ?>
       </div>
     </div>
   </div>
-</div>
+</div> -->

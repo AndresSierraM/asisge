@@ -202,28 +202,28 @@ class EncuestaController extends Controller
 
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        $idsEliminar = explode(',', $request['eliminarRol']);
-        \App\EncuestaRol::whereIn('idEncuestaRol',$idsEliminar)->delete();
+        // $idsEliminar = explode(',', $request['eliminarRol']);
+        // \App\EncuestaRol::whereIn('idEncuestaRol',$idsEliminar)->delete();
 
-        $contador = count($request['idEncuestaRol']);
+        // $contador = count($request['idEncuestaRol']);
 
-        for($i = 0; $i < $contador; $i++)
-        {
+        // for($i = 0; $i < $contador; $i++)
+        // {
 
-            $indice = array(
-             'idEncuestaRol' => $request['idEncuestaRol'][$i]);
+        //     $indice = array(
+        //      'idEncuestaRol' => $request['idEncuestaRol'][$i]);
 
-            $data = array(
-            'Encuesta_idEncuesta' => $id,
-            'Rol_idRol' => $request['Rol_idRol'][$i],
-            'adicionarEncuestaRol' => $request['adicionarEncuestaRol'][$i],
-            'modificarEncuestaRol' => $request['modificarEncuestaRol'][$i],
-            'consultarEncuestaRol' => $request['consultarEncuestaRol'][$i],
-            'eliminarEncuestaRol' => $request['eliminarEncuestaRol'][$i],
-            'publicarEncuestaRol' => $request['publicarEncuestaRol'][$i]);
-            $permisos = \App\EncuestaRol::updateOrCreate($indice, $data);
+        //     $data = array(
+        //     'Encuesta_idEncuesta' => $id,
+        //     'Rol_idRol' => $request['Rol_idRol'][$i],
+        //     'adicionarEncuestaRol' => $request['adicionarEncuestaRol'][$i],
+        //     'modificarEncuestaRol' => $request['modificarEncuestaRol'][$i],
+        //     'consultarEncuestaRol' => $request['consultarEncuestaRol'][$i],
+        //     'eliminarEncuestaRol' => $request['eliminarEncuestaRol'][$i],
+        //     'publicarEncuestaRol' => $request['publicarEncuestaRol'][$i]);
+        //     $permisos = \App\EncuestaRol::updateOrCreate($indice, $data);
 
-        }
+        // }
         
     }
 

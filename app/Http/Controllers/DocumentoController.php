@@ -40,8 +40,8 @@ class DocumentoController extends Controller
      */
     public function create()
     {
-        $idRol = \App\Rol::All()->lists('idRol');
-        $nombreRol = \App\Rol::All()->lists('nombreRol');
+        $idRol = \App\Rol::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idRol');
+        $nombreRol = \App\Rol::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreRol');
         $idCompania = \App\Compania::All()->lists('idCompania');
         $nombreCompania = \App\Compania::All()->lists('nombreCompania');
         $sistemainformacion = \App\SistemaInformacion::All()->lists('nombreSistemaInformacion','idSistemaInformacion');
@@ -195,8 +195,8 @@ class DocumentoController extends Controller
     public function edit(Request $request, $id)
     {
         $documento = \App\Documento::find($id);
-        $idRol = \App\Rol::All()->lists('idRol');
-        $nombreRol = \App\Rol::All()->lists('nombreRol');
+        $idRol = \App\Rol::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idRol');
+        $nombreRol = \App\Rol::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreRol');
         $idCompania = \App\Compania::All()->lists('idCompania');
         $nombreCompania = \App\Compania::All()->lists('nombreCompania');
         $sistemainformacion = \App\SistemaInformacion::All()->lists('nombreSistemaInformacion','idSistemaInformacion');

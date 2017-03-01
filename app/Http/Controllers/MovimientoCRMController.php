@@ -112,7 +112,7 @@ class MovimientoCRMController extends Controller
                 FROM  documentocrm D 
                 LEFT JOIN movimientocrm M
                 on D.idDocumentoCRM = M.DocumentoCRM_idDocumentoCRM
-                where   Compania_idCompania = ".\Session::get('idCompania')." and 
+                where   M.Compania_idCompania = ".\Session::get('idCompania')." and 
                         DocumentoCRM_idDocumentoCRM = ".$request['DocumentoCRM_idDocumentoCRM']."
             ) temp");
 

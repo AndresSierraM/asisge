@@ -9,7 +9,7 @@ class Rol extends Model
     protected $table = 'rol';
     protected $primaryKey = 'idRol';
 
-    protected $fillable = ['codigoRol', 'nombreRol'];
+    protected $fillable = ['codigoRol', 'nombreRol','Compania_idCompania'];
 
     public $timestamps = false;
 

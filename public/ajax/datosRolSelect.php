@@ -2,7 +2,8 @@
 
     $consulta = DB::Select(
         'SELECT idRol, nombreRol 
-        FROM rol');
+        FROM rol
+        where Compania_idCompania = '.(\Session::get("idCompania")));
 
     $row = array();
 

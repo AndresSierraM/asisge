@@ -14,8 +14,8 @@
     var documentocrmgrafico = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmgrafico) : "");?>';
     documentocrmgrafico = (documentocrmgrafico != '' ? JSON.parse(documentocrmgrafico) : '');
 
-    var documentocrmcompania = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcompania) : "");?>';
-    documentocrmcompania = (documentocrmcompania != '' ? JSON.parse(documentocrmcompania) : '');
+    // var documentocrmcompania = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcompania) : "");?>';
+    // documentocrmcompania = (documentocrmcompania != '' ? JSON.parse(documentocrmcompania) : '');
 
     var documentocrmrol = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmrol) : "");?>';
     documentocrmrol = (documentocrmrol != '' ? JSON.parse(documentocrmrol) : '');
@@ -145,48 +145,48 @@
 
 
 
-      protCompania = new Atributos('protCompania','contenedor_protCompania','documentocrmcompania');
+      // protCompania = new Atributos('protCompania','contenedor_protCompania','documentocrmcompania');
 
-      protCompania.altura = '35px';
-      protCompania.campoid = 'idDocumentoCRMCompania';
-      protCompania.campoEliminacion = 'eliminarDocumentoCRMCompania';
+      // protCompania.altura = '35px';
+      // protCompania.campoid = 'idDocumentoCRMCompania';
+      // protCompania.campoEliminacion = 'eliminarDocumentoCRMCompania';
 
-      protCompania.campos   = [
-      'idDocumentoCRMCompania',
-      'Compania_idCompania',
-      'nombreCompania'
-      ];
+      // protCompania.campos   = [
+      // 'idDocumentoCRMCompania',
+      // 'Compania_idCompania',
+      // 'nombreCompania'
+      // ];
 
-      protCompania.etiqueta = [
-      'input',
-      'input',
-      'input'
-      ];
+      // protCompania.etiqueta = [
+      // 'input',
+      // 'input',
+      // 'input'
+      // ];
 
-      protCompania.tipo = [
-      'hidden',
-      'hidden',
-      'text'
-      ];
+      // protCompania.tipo = [
+      // 'hidden',
+      // 'hidden',
+      // 'text'
+      // ];
 
-      protCompania.estilo = [
-      '',
-      '',
-      'width: 860px;height:35px;'
-      ];
+      // protCompania.estilo = [
+      // '',
+      // '',
+      // 'width: 860px;height:35px;'
+      // ];
 
-      protCompania.clase    = ['','',''];
-      protCompania.sololectura = [true,true,true];  
-      protCompania.funciones = ['','',''];
-      protCompania.completar = ['off','off','off'];
-      protCompania.opciones = ['','','']
+      // protCompania.clase    = ['','',''];
+      // protCompania.sololectura = [true,true,true];  
+      // protCompania.funciones = ['','',''];
+      // protCompania.completar = ['off','off','off'];
+      // protCompania.opciones = ['','','']
 
-      for(var j=0, k = documentocrmcompania.length; j < k; j++)
-      {
-        protCompania.agregarCampos(JSON.stringify(documentocrmcompania[j]),'L');
+      // for(var j=0, k = documentocrmcompania.length; j < k; j++)
+      // {
+      //   protCompania.agregarCampos(JSON.stringify(documentocrmcompania[j]),'L');
 
-        llenarDatosCompania($('#Compania_idCompania'+j).val(), j);
-      }
+      //   llenarDatosCompania($('#Compania_idCompania'+j).val(), j);
+      // }
 
 
       protRol = new Atributos('protRol','contenedor_protRol','documentocrmrol');
@@ -279,7 +279,7 @@
 						      	{!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
 
 						      	{!!Form::hidden('eliminarDocumentoCRMCampo', '', array('id' => 'eliminarDocumentoCRMCampo'))!!}
-						      	{!!Form::hidden('eliminarDocumentoCRMCompania', '', array('id' => 'eliminarDocumentoCRMCompania'))!!}
+						      	<!-- {!!Form::hidden('eliminarDocumentoCRMCompania', '', array('id' => 'eliminarDocumentoCRMCompania'))!!} -->
 						      	{!!Form::hidden('eliminarDocumentoCRMRol', '', array('id' => 'eliminarDocumentoCRMRol'))!!}
 
 							</div>
@@ -304,20 +304,20 @@
 			                <i class="fa fa-credit-card" ></i>
 			              </span>
 			              {!!Form::select('tipoDocumentoCRM',
-            				array('HelpDesk'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Documento"])!!}
+            				array('HelpDesk'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana','Produccion'=>'Producción'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Documento"])!!}
 			            </div>
 			          </div>
 			        </div>
 
 			        <div class="form-group" >
-			          {!!Form::label('GrupoEstado_idGrupoEstado', 'Estados', array('class' => 'col-sm-2 control-label'))!!}
+			          {!!Form::label('GrupoEstado_idGrupoEstado', 'Grupo Proceso', array('class' => 'col-sm-2 control-label'))!!}
 			          <div class="col-sm-10" >
 			            <div class="input-group">
 			              <span class="input-group-addon">
 			                <i class="fa fa-credit-card" ></i>
 			              </span>
 			              {!!Form::select('GrupoEstado_idGrupoEstado',
-            				$grupoestado, (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de estados"])!!}
+            				$grupoestado, (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de proceso"])!!}
 			            </div>
 			          </div>
 			        </div>
@@ -484,52 +484,16 @@
 							<div class="panel panel-default">
 			                    <div class="panel-heading">
 			                      <h4 class="panel-title">
-			                        <a data-toggle="collapse" data-parent="#accordion" href="#permisos">Permisos</a>
+			                        <a data-toggle="collapse" data-parent="#accordion" href="#permisos">Roles</a>
 			                      </h4>
 			                    </div>
 			                    <div id="permisos" class="panel-collapse collapse in">
 			                      <div class="panel-body">
 			                        
 
-			                <ul class="nav nav-tabs">
-							  <li class="active"><a data-toggle="tab" href="#permCompania">Compañías</a></li>
-							  <li><a data-toggle="tab" href="#permRol">Roles</a></li>
-							</ul>
-
-
 							<div class="tab-content">
-								<div id="permCompania" class="tab-pane fade in active">
-			                        <div class="panel-body" id="permCompania">
-								      <div class="form-group" id='test'>
-								        <div class="col-sm-12">
-								          <div class="panel-body" >
-								            <div class="form-group" id='test'>
-								              <div class="col-sm-12">
-								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-								                  <div style="overflow:auto; height:350px;">
-								                    <div style="width: 100%; display: inline-block;">
-								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCompania();">
-								                        <span class="glyphicon glyphicon-plus"></span>
-								                      </div>
-								                      <div class="col-md-1" style="width: 860px;" >Compania</div>
-								                      
-								                      <div id="contenedor_protCompania">
-								                      </div>
-								                    </div>
-								                  </div>
-								                </div>
-								              </div>
-								            </div>
-								          </div>
-								        </div>
-								      </div>  
-								    </div>
-								</div>
-		                         
-			                        
 							
-  								<div id="permRol" class="tab-pane fade">
-			                        <div class="panel-body" >
+			                                 <div class="panel-body" >
 								      <div class="form-group" id='test'>
 								        <div class="col-sm-12">
 								          <div class="panel-body" >
@@ -559,7 +523,6 @@
 								        </div>
 								      </div>  
 								    </div>
-								</div>  
 							</div>
 
 			                      </div> 

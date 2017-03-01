@@ -13,8 +13,7 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
-
-    $rol = \App\Rol::All();
+    $rol = \App\Rol::where('Compania_idCompania','=',\Session::get("idCompania"))->get();
     $row = array();
 
     foreach ($rol as $key => $value) 
