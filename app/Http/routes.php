@@ -147,7 +147,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('movimientocrm','MovimientoCRMController');
     Route::resource('presupuesto','PresupuestoController');
 
-    Route::resource('tipotarea','TipoTareaCRMController');
+    Route::resource('categoriaagenda','CategoriaAgendaController');
 
     
     // *************************************

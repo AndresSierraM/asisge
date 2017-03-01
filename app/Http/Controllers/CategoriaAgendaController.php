@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class TipoTareaCRMController extends Controller
+class CategoriaAgendaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class TipoTareaCRMController extends Controller
      */
     public function index()
     {
-        return view('tipotareacrmgrid');
+        //
     }
 
     /**
@@ -26,7 +26,7 @@ class TipoTareaCRMController extends Controller
      */
     public function create()
     {
-        return view('tipotareacrm');
+        return view('categoriaagenda');
     }
 
     /**
