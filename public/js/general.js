@@ -368,3 +368,16 @@ Atributos.prototype.cambiarCheckbox = function(campo, registro)
 {
     document.getElementById(campo+registro).value = document.getElementById(campo+"C"+registro).checked ? 1 : 0;
 }
+
+
+function quitarCaracterEspecial(str) {
+    var lower = str.toLowerCase();
+    var upper = str.toUpperCase();
+
+    var res = "";
+    for(var i=0; i<lower.length; ++i) {
+        if(lower[i] != upper[i] || lower[i].trim() === '' || (lower[i].trim() >= 0 && lower[i].trim() <= 9))
+            res += str[i];
+    }
+    return res;
+} 

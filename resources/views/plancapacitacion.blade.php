@@ -33,7 +33,9 @@
 			tema.sololectura = [false,false,false,false,false];
 			tema.completar = ['off','off','off','off','off'];
 			tema.opciones = ['','',tercero,'',''];
-			tema.funciones  = ['','','','',''];
+
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			tema.funciones  = ['',quitacarac,'','',''];
 
 			for(var j=0, k = planCapacitacionTema.length; j < k; j++)
 			{
