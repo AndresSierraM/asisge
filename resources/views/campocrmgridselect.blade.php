@@ -11,7 +11,7 @@
                 border-radius: 4px;
             }
 </style> 
-
+<?php $tipo =  $_GET['tipo'];?>
         <div class="container">
             <div class="row">
                 <div class="container">
@@ -60,12 +60,13 @@
     $(document).ready( function () {
 
         var lastIdx = null;
+        var tipo = '<?php echo $tipo;?>';
         var table = $('#tcampoSelect').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCampoCRMSelect')!!}",
+            "ajax": "{!! URL::to ('/datosCampoCRMSelect?tipo="+tipo+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

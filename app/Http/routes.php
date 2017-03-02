@@ -148,6 +148,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('presupuesto','PresupuestoController');
 
     Route::resource('categoriaagenda','CategoriaAgendaController');
+    Route::resource('agenda','AgendaController');
 
     
     // *************************************
@@ -810,8 +811,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('companiagridselect','DocumentoCRMController@indexCompaniaGrid');
     Route::get('rolgridselect','DocumentoCRMController@indexRolGrid');
     Route::get('actagrupoapoyoselect','ActaGrupoApoyoController@indexActaGrid');
-    Route::get('MovimientocrmVacantegridselect', 'MovimientoCRMController@indexMovimientocrmVacantegridselect');
-    
+    Route::get('MovimientocrmVacantegridselect', 'MovimientoCRMController@indexMovimientocrmVacantegridselect');    
 
 
     Route::get('informeconceptogridselect','VisorInformeController@indexInformeConceptoGrid');

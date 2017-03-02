@@ -137,7 +137,7 @@ class CategoriaAgendaController extends Controller
             $data = array(
             'CategoriaAgenda_idCategoriaAgenda' => $id,
             'CampoCRM_idCampoCRM' => $request['CampoCRM_idCampoCRM'][$i],
-            'obligatorioDocumentoCRMCampo' => $request['obligatorioDocumentoCRMCampo'][$i]);
+            'obligatorioCategoriaAgendaCampo' => $request['obligatorioCategoriaAgendaCampo'][$i]);
 
              $preguntas = \App\CategoriaAgendaCampo::updateOrCreate($indice, $data);
 

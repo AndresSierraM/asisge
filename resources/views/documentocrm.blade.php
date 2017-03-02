@@ -256,303 +256,303 @@
 
  </script>
 
-	@if(isset($documentocrm))
-		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($documentocrm,['route'=>['documentocrm.destroy',$documentocrm->idDocumentoCRM],'method'=>'DELETE'])!!}
-		@else
-			{!!Form::model($documentocrm,['route'=>['documentocrm.update',$documentocrm->idDocumentoCRM],'method'=>'PUT'])!!}
-		@endif
-	@else
-		{!!Form::open(['route'=>'documentocrm.store','method'=>'POST'])!!}
-	@endif
-		<div id='form-section' >
-				<fieldset id="documentocrm-form-fieldset">	
-					<div class="form-group" id='test'>
-						{!!Form::label('codigoDocumentoCRM', 'C&oacute;digo', array('class' => 'col-sm-2 control-label'))!!}
-						<div class="col-sm-10">
-				            <div class="input-group">
-				              	<span class="input-group-addon">
-				                	<i class="fa fa-barcode"></i>
-				              	</span>
-				              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
-								{!!Form::text('codigoDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
-						      	{!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
+      @if(isset($documentocrm))
+            @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+                  {!!Form::model($documentocrm,['route'=>['documentocrm.destroy',$documentocrm->idDocumentoCRM],'method'=>'DELETE'])!!}
+            @else
+                  {!!Form::model($documentocrm,['route'=>['documentocrm.update',$documentocrm->idDocumentoCRM],'method'=>'PUT'])!!}
+            @endif
+      @else
+            {!!Form::open(['route'=>'documentocrm.store','method'=>'POST'])!!}
+      @endif
+            <div id='form-section' >
+                        <fieldset id="documentocrm-form-fieldset">      
+                              <div class="form-group" id='test'>
+                                    {!!Form::label('codigoDocumentoCRM', 'C&oacute;digo', array('class' => 'col-sm-2 control-label'))!!}
+                                    <div class="col-sm-10">
+                                    <div class="input-group">
+                                          <span class="input-group-addon">
+                                          <i class="fa fa-barcode"></i>
+                                          </span>
+                                          <input type="hidden" id="token" value="{{csrf_token()}}"/>
+                                                {!!Form::text('codigoDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
+                                                {!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
 
-						      	{!!Form::hidden('eliminarDocumentoCRMCampo', '', array('id' => 'eliminarDocumentoCRMCampo'))!!}
-						      	<!-- {!!Form::hidden('eliminarDocumentoCRMCompania', '', array('id' => 'eliminarDocumentoCRMCompania'))!!} -->
-						      	{!!Form::hidden('eliminarDocumentoCRMRol', '', array('id' => 'eliminarDocumentoCRMRol'))!!}
+                                                {!!Form::hidden('eliminarDocumentoCRMCampo', '', array('id' => 'eliminarDocumentoCRMCampo'))!!}
+                                                <!-- {!!Form::hidden('eliminarDocumentoCRMCompania', '', array('id' => 'eliminarDocumentoCRMCompania'))!!} -->
+                                                {!!Form::hidden('eliminarDocumentoCRMRol', '', array('id' => 'eliminarDocumentoCRMRol'))!!}
 
-							</div>
-						</div>
-					</div>
-					<div class="form-group" id='test'>
-						{!!Form::label('nombreDocumentoCRM', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
-						<div class="col-sm-10">
-				            <div class="input-group">
-				              	<span class="input-group-addon">
-				                	<i class="fa fa-pencil-square-o"></i>
-				              	</span>
-								{!!Form::text('nombreDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la Línea'])!!}
-				    		</div>
-				    	</div>
-				    </div>	
-				    <div class="form-group" >
-			          {!!Form::label('tipoDocumentoCRM', 'Tipo', array('class' => 'col-sm-2 control-label'))!!}
-			          <div class="col-sm-10" >
-			            <div class="input-group">
-			              <span class="input-group-addon">
-			                <i class="fa fa-credit-card" ></i>
-			              </span>
-			              {!!Form::select('tipoDocumentoCRM',
-            				array('HelpDesk'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana','Produccion'=>'Producción'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Documento"])!!}
-			            </div>
-			          </div>
-			        </div>
+                                          </div>
+                                    </div>
+                              </div>
+                              <div class="form-group" id='test'>
+                                    {!!Form::label('nombreDocumentoCRM', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
+                                    <div class="col-sm-10">
+                                    <div class="input-group">
+                                          <span class="input-group-addon">
+                                          <i class="fa fa-pencil-square-o"></i>
+                                          </span>
+                                                {!!Form::text('nombreDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la Línea'])!!}
+                                    </div>
+                              </div>
+                            </div>  
+                            <div class="form-group" >
+                            {!!Form::label('tipoDocumentoCRM', 'Tipo', array('class' => 'col-sm-2 control-label'))!!}
+                            <div class="col-sm-10" >
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-credit-card" ></i>
+                                </span>
+                                {!!Form::select('tipoDocumentoCRM',
+                                    array('HelpDesk'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana','Produccion'=>'Producción'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Documento"])!!}
+                              </div>
+                            </div>
+                          </div>
 
-			        <div class="form-group" >
-			          {!!Form::label('GrupoEstado_idGrupoEstado', 'Grupo Proceso', array('class' => 'col-sm-2 control-label'))!!}
-			          <div class="col-sm-10" >
-			            <div class="input-group">
-			              <span class="input-group-addon">
-			                <i class="fa fa-credit-card" ></i>
-			              </span>
-			              {!!Form::select('GrupoEstado_idGrupoEstado',
-            				$grupoestado, (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de proceso"])!!}
-			            </div>
-			          </div>
-			        </div>
-				
-					<div class="form-group">
-			          <div class="col-lg-12">
-			            <div class="panel panel-default">
-			              <div class="panel-heading">Configuración</div>
-			              <div class="panel-body">
-			                <div class="panel-group" id="accordion">
+                          <div class="form-group" >
+                            {!!Form::label('GrupoEstado_idGrupoEstado', 'Grupo Proceso', array('class' => 'col-sm-2 control-label'))!!}
+                            <div class="col-sm-10" >
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-credit-card" ></i>
+                                </span>
+                                {!!Form::select('GrupoEstado_idGrupoEstado',
+                                    $grupoestado, (isset($documentocrm) ? $documentocrm->GrupoEstado_idGrupoEstado : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el grupo de proceso"])!!}
+                              </div>
+                            </div>
+                          </div>
+                        
+                              <div class="form-group">
+                            <div class="col-lg-12">
+                              <div class="panel panel-default">
+                                <div class="panel-heading">Configuración</div>
+                                <div class="panel-body">
+                                  <div class="panel-group" id="accordion">
 
-			                  <div class="panel panel-default">
-			                    <div class="panel-heading">
-			                      <h4 class="panel-title">
-			                        <a data-toggle="collapse" data-parent="#accordion" href="#numeracion">Numeración</a>
-			                      </h4>
-			                    </div>
-			                    <div id="numeracion" class="panel-collapse collapse in">
-			                      <div class="panel-body">
-			                        
-									<div class="form-group" >
-						          	{!!Form::label('numeracionDocumentoCRM', 'Tipo Numeración', array('class' => 'col-sm-2 control-label'))!!}
-						          	<div class="col-sm-4" >
-						            	<div class="input-group">
-							              <span class="input-group-addon">
-							                <i class="fa fa-credit-card" ></i>
-							              </span>
-											{!!Form::select('numeracionDocumentoCRM',
-				            				array('Automatica'=>'Automática','Manual'=>'Manual'), 
-				            				(isset($documentocrm) ? $documentocrm->numeracionDocumentoCRM : 'Automatica'),
-				            				["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Numeración"])!!}
-							            </div>
-							          </div>
-							        </div>
-
-
-		                          <div class="form-group" >
-						          	{!!Form::label('longitudDocumentoCRM', 'Longitud', array('class' => 'col-sm-2 control-label'))!!}
-						          	<div class="col-sm-4" >
-						            	<div class="input-group">
-							              <span class="input-group-addon">
-							                <i class="fa fa-credit-card" ></i>
-							              </span>
-							              {!!Form::text('longitudDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa Longitud de numeración'])!!}
-							            </div>
-							          </div>
-							        </div>
-
-									<div class="form-group" >
-						          		{!!Form::label('desdeDocumentoCRM', 'Desde', array('class' => 'col-sm-2 control-label'))!!}
-						          		<div class="col-sm-4" >
-						            		<div class="input-group">
-								              <span class="input-group-addon">
-								                <i class="fa fa-credit-card" ></i>
-								              </span>
-								              {!!Form::text('desdeDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa numeración inicial'])!!}
-							            	</div>
-							          	</div>
-							        </div>
-
-									<div class="form-group" >
-						          		{!!Form::label('hastaDocumentoCRM', 'Hasta', array('class' => 'col-sm-2 control-label'))!!}
-						          		<div class="col-sm-4" >
-						            		<div class="input-group">
-								              <span class="input-group-addon">
-								                <i class="fa fa-credit-card" ></i>
-								              </span>
-								              {!!Form::text('hastaDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa numeración final'])!!}
-							            	</div>
-							          	</div>
-							        </div>
-
-			                         
-			                      </div> 
-			                    </div>
-			                  </div>
-
-			                  <div class="panel panel-default">
-			                    <div class="panel-heading">
-			                      <h4 class="panel-title">
-			                        <a data-toggle="collapse" data-parent="#accordion" href="#contenido">Contenido</a>
-			                      </h4>
-			                    </div>
-			                    <div id="contenido" class="panel-collapse collapse in">
-			                      <div class="panel-body">
-			                        
-								    <div class="panel-body">
-								      <div class="form-group" id='test'>
-								        <div class="col-sm-12">
-								          <div class="panel-body" >
-								            <div class="form-group" id='test'>
-								              <div class="col-sm-12">
-								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-								                  <div style="overflow:auto; height:350px;">
-								                    <div style="width: 100%; display: inline-block;">
-								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCampos();">
-								                        <span class="glyphicon glyphicon-plus"></span>
-								                      </div>
-								                      <div class="col-md-1" style="width: 260px;" >Campo</div>
-								                      <div class="col-md-1" style="width: 100px;" >Consulta</div>
-								                      <div class="col-md-1" style="width: 100px;" >Formulario</div>
-								                      <div class="col-md-1" style="width: 100px;" >Obligatorio</div>
-								                      <div class="col-md-1" style="width: 100px;" >Solicitante</div>
-								                      <div class="col-md-1" style="width: 100px;" >Asesor</div>
-								                      <div class="col-md-1" style="width: 100px;" >Aprobador</div>
-								                      <div id="contenedor_protCampos">
-								                      </div>
-								                    </div>
-								                  </div>
-								                </div>
-								              </div>
-								            </div>
-								          </div>
-								        </div>
-								      </div>  
-								    </div>
-		                         
-			                         
-			                      </div> 
-			                    </div>
-			                  </div>
-
-			                  <div class="panel panel-default">
-			                    <div class="panel-heading">
-			                      <h4 class="panel-title">
-			                        <a data-toggle="collapse" data-parent="#accordion" href="#graficos">Gráficos</a>
-			                      </h4>
-			                    </div>
-			                    <div id="graficos" class="panel-collapse collapse in">
-			                      <div class="panel-body">
-			                        
-								    <div class="panel-body">
-								      <div class="form-group" id='test'>
-								        <div class="col-sm-12">
-								          <div class="panel-body" >
-								            <div class="form-group" id='test'>
-								              <div class="col-sm-12">
-								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-								                  <div style="overflow:auto; height:350px;">
-								                    <div style="width: 100%; display: inline-block;">
-								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="protGraficos.agregarCampos(valoresGrafico,'A');">
-								                        <span class="glyphicon glyphicon-plus"></span>
-								                      </div>
-								                      <div class="col-md-1" style="width: 200px;" >Serie</div>
-								                      <div class="col-md-1" style="width: 400px;" >Título del Gráfico</div>
-								                      <div class="col-md-1" style="width: 200px;" >Tipo</div>
-								                      <div class="col-md-1" style="width: 200px;" >Valor</div>
-								                      <div id="contenedor_protGraficos">
-								                      </div>
-								                    </div>
-								                  </div>
-								                </div>
-								              </div>
-								            </div>
-								          </div>
-								        </div>
-								      </div>  
-								    </div>
-		                         
-			                         
-			                      </div> 
-			                    </div>
-			                  </div>
-							<div class="panel panel-default">
-			                    <div class="panel-heading">
-			                      <h4 class="panel-title">
-			                        <a data-toggle="collapse" data-parent="#accordion" href="#permisos">Roles</a>
-			                      </h4>
-			                    </div>
-			                    <div id="permisos" class="panel-collapse collapse in">
-			                      <div class="panel-body">
-			                        
-
-							<div class="tab-content">
-							
-			                                 <div class="panel-body" >
-								      <div class="form-group" id='test'>
-								        <div class="col-sm-12">
-								          <div class="panel-body" >
-								            <div class="form-group" id='test'>
-								              <div class="col-sm-12">
-								                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-								                  <div style="overflow:auto; height:350px;">
-								                    <div style="width: 100%; display: inline-block;">
-								                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalRol();">
-								                        <span class="glyphicon glyphicon-plus"></span>
-								                      </div>
-								                      <div class="col-md-1" style="width: 530px;" >Rol</div>
-								                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
-									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
-									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Consultar" class="fa fa-search"></span></center></div>
-									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Anular" class="fa fa-trash"></span></center></div>
-									                <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Aprobar" class="fa fa-check"></span></center></div>
-								                      
-								                      <div id="contenedor_protRol">
-								                      </div>
-								                    </div>
-								                  </div>
-								                </div>
-								              </div>
-								            </div>
-								          </div>
-								        </div>
-								      </div>  
-								    </div>
-							</div>
-
-			                      </div> 
-			                    </div>
-			                  </div>
-
-			                  
-			                </div>
-			              </div>
-			            </div>
-			          </div>
-			        </div>	
+                                    <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#numeracion">Numeración</a>
+                                        </h4>
+                                      </div>
+                                      <div id="numeracion" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                          
+                                                      <div class="form-group" >
+                                                {!!Form::label('numeracionDocumentoCRM', 'Tipo Numeración', array('class' => 'col-sm-2 control-label'))!!}
+                                                <div class="col-sm-4" >
+                                                      <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                          <i class="fa fa-credit-card" ></i>
+                                                        </span>
+                                                                  {!!Form::select('numeracionDocumentoCRM',
+                                                            array('Automatica'=>'Automática','Manual'=>'Manual'), 
+                                                            (isset($documentocrm) ? $documentocrm->numeracionDocumentoCRM : 'Automatica'),
+                                                            ["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Numeración"])!!}
+                                                      </div>
+                                                    </div>
+                                                  </div>
 
 
+                                      <div class="form-group" >
+                                                {!!Form::label('longitudDocumentoCRM', 'Longitud', array('class' => 'col-sm-2 control-label'))!!}
+                                                <div class="col-sm-4" >
+                                                      <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                          <i class="fa fa-credit-card" ></i>
+                                                        </span>
+                                                        {!!Form::text('longitudDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa Longitud de numeración'])!!}
+                                                      </div>
+                                                    </div>
+                                                  </div>
 
-				</fieldset>	
+                                                      <div class="form-group" >
+                                                      {!!Form::label('desdeDocumentoCRM', 'Desde', array('class' => 'col-sm-2 control-label'))!!}
+                                                      <div class="col-sm-4" >
+                                                            <div class="input-group">
+                                                              <span class="input-group-addon">
+                                                                <i class="fa fa-credit-card" ></i>
+                                                              </span>
+                                                              {!!Form::text('desdeDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa numeración inicial'])!!}
+                                                            </div>
+                                                      </div>
+                                                  </div>
+
+                                                      <div class="form-group" >
+                                                      {!!Form::label('hastaDocumentoCRM', 'Hasta', array('class' => 'col-sm-2 control-label'))!!}
+                                                      <div class="col-sm-4" >
+                                                            <div class="input-group">
+                                                              <span class="input-group-addon">
+                                                                <i class="fa fa-credit-card" ></i>
+                                                              </span>
+                                                              {!!Form::text('hastaDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa numeración final'])!!}
+                                                            </div>
+                                                      </div>
+                                                  </div>
+
+                                           
+                                        </div> 
+                                      </div>
+                                    </div>
+
+                                    <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#contenido">Contenido</a>
+                                        </h4>
+                                      </div>
+                                      <div id="contenido" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                          
+                                                    <div class="panel-body">
+                                                      <div class="form-group" id='test'>
+                                                        <div class="col-sm-12">
+                                                          <div class="panel-body" >
+                                                            <div class="form-group" id='test'>
+                                                              <div class="col-sm-12">
+                                                                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                                                  <div style="overflow:auto; height:350px;">
+                                                                    <div style="width: 100%; display: inline-block;">
+                                                                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCampos();">
+                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                      </div>
+                                                                      <div class="col-md-1" style="width: 260px;" >Campo</div>
+                                                                      <div class="col-md-1" style="width: 100px;" >Consulta</div>
+                                                                      <div class="col-md-1" style="width: 100px;" >Formulario</div>
+                                                                      <div class="col-md-1" style="width: 100px;" >Obligatorio</div>
+                                                                      <div class="col-md-1" style="width: 100px;" >Solicitante</div>
+                                                                      <div class="col-md-1" style="width: 100px;" >Asesor</div>
+                                                                      <div class="col-md-1" style="width: 100px;" >Aprobador</div>
+                                                                      <div id="contenedor_protCampos">
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>  
+                                                    </div>
+                                     
+                                           
+                                        </div> 
+                                      </div>
+                                    </div>
+
+                                    <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#graficos">Gráficos</a>
+                                        </h4>
+                                      </div>
+                                      <div id="graficos" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                          
+                                                    <div class="panel-body">
+                                                      <div class="form-group" id='test'>
+                                                        <div class="col-sm-12">
+                                                          <div class="panel-body" >
+                                                            <div class="form-group" id='test'>
+                                                              <div class="col-sm-12">
+                                                                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                                                  <div style="overflow:auto; height:350px;">
+                                                                    <div style="width: 100%; display: inline-block;">
+                                                                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="protGraficos.agregarCampos(valoresGrafico,'A');">
+                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                      </div>
+                                                                      <div class="col-md-1" style="width: 200px;" >Serie</div>
+                                                                      <div class="col-md-1" style="width: 400px;" >Título del Gráfico</div>
+                                                                      <div class="col-md-1" style="width: 200px;" >Tipo</div>
+                                                                      <div class="col-md-1" style="width: 200px;" >Valor</div>
+                                                                      <div id="contenedor_protGraficos">
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>  
+                                                    </div>
+                                     
+                                           
+                                        </div> 
+                                      </div>
+                                    </div>
+                                          <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#permisos">Roles</a>
+                                        </h4>
+                                      </div>
+                                      <div id="permisos" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                          
+
+                                          <div class="tab-content">
+                                          
+                                                   <div class="panel-body" >
+                                                      <div class="form-group" id='test'>
+                                                        <div class="col-sm-12">
+                                                          <div class="panel-body" >
+                                                            <div class="form-group" id='test'>
+                                                              <div class="col-sm-12">
+                                                                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                                                  <div style="overflow:auto; height:350px;">
+                                                                    <div style="width: 100%; display: inline-block;">
+                                                                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalRol();">
+                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                      </div>
+                                                                      <div class="col-md-1" style="width: 530px;" >Rol</div>
+                                                                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
+                                                                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
+                                                                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Consultar" class="fa fa-search"></span></center></div>
+                                                                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Anular" class="fa fa-trash"></span></center></div>
+                                                                      <div class="col-md-1" style="width: 70px;height: 42px; cursor:pointer;"><center><span title="Aprobar" class="fa fa-check"></span></center></div>
+                                                                      
+                                                                      <div id="contenedor_protRol">
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>  
+                                                    </div>
+                                          </div>
+
+                                        </div> 
+                                      </div>
+                                    </div>
+
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>    
 
 
 
-
-				@if(isset($documentocrm))
-					{!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
-				@else
-  					{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
- 				@endif
-		</div>
+                        </fieldset> 
 
 
-	{!!Form::close()!!}		
-		<!-- Modal -->
+
+
+                        @if(isset($documentocrm))
+                              {!!Form::submit(((isset($_GET['accion']) and $_GET['accion'] == 'eliminar') ? 'Eliminar' : 'Modificar'),["class"=>"btn btn-primary"])!!}
+                        @else
+                              {!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+                        @endif
+            </div>
+
+
+      {!!Form::close()!!}           
+            <!-- Modal -->
 
 @stop
 <div id="ModalCampos" class="modal fade" role="dialog">
@@ -566,7 +566,7 @@
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/campocrmgridselect"></iframe>'
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/campocrmgridselect?tipo=documentocrm"></iframe>'
       ?>
       </div>
     </div>

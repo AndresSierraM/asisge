@@ -1,8 +1,11 @@
 <?php
 
+    $tipo = $_GET['tipo'];
+
     $consulta = DB::Select(
         'SELECT idCampoCRM, descripcionCampoCRM 
-        FROM campocrm');
+        FROM campocrm
+        WHERE formularioCampoCRM = "'.$tipo.'"');
 
     $row = array();
 

@@ -29,7 +29,7 @@
       'idCategoriaAgendaCampo',
       'CampoCRM_idCampoCRM',
       'nombreCampoCRM',
-      'obligatorioDocumentoCRMCampo',
+      'obligatorioCategoriaAgendaCampo',
       'CategoriaAgenda_idCategoriaAgenda'
       ];
 
@@ -65,7 +65,7 @@
       for(var j=0, k = categoriaagendacampo.length; j < k; j++)
       {
         protCampos.agregarCampos(JSON.stringify(categoriaagendacampo[j]),'L');
-        console.log(JSON.stringify(categoriaagendacampo[j]))
+        llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
       }
 
     });
@@ -73,7 +73,7 @@
   </script>
 
 
-	 @if(isset($categoriaagenda))
+   @if(isset($categoriaagenda))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
       {!!Form::model($categoriaagenda,['route'=>['categoriaagenda.destroy',$categoriaagenda->idCategoriaAgenda],'method'=>'DELETE'])!!}
     @else
@@ -85,57 +85,57 @@
 
 
 <div id='form-section'>
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
   <fieldset id="categoriaagenda-form-fieldset"> 
-      	<div class="form-group" id='test'>
-	        {!!Form::label('codigoCategoriaAgenda', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
-	      <div class="col-sm-10">
-	        <div class="input-group">
-	            <span class="input-group-addon">
-	              <i class="fa fa-barcode"></i>
-	            </span>
-	            {!!Form::text('codigoCategoriaAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa el código del tipo de tarea'])!!}
-	          {!!Form::hidden('idCategoriaAgenda', null, array('id' => 'idCategoriaAgenda')) !!}
-	          {!!Form::hidden('eliminarCategoriaAgenda', null, array('id' => 'eliminarCategoriaAgenda')) !!}
-	        </div>
-	      </div>
-	    </div>
+        <div class="form-group" id='test'>
+          {!!Form::label('codigoCategoriaAgenda', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
+        <div class="col-sm-10">
+          <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-barcode"></i>
+              </span>
+              {!!Form::text('codigoCategoriaAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa el código del tipo de tarea'])!!}
+            {!!Form::hidden('idCategoriaAgenda', null, array('id' => 'idCategoriaAgenda')) !!}
+            {!!Form::hidden('eliminarCategoriaAgenda', null, array('id' => 'eliminarCategoriaAgenda')) !!}
+          </div>
+        </div>
+      </div>
 
 
     
-      	<div class="form-group" id='test'>
+        <div class="form-group" id='test'>
           {!!Form::label('nombreCategoriaAgenda', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-        	  {!!Form::text('nombreCategoriaAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del tipo de tarea'])!!}
+            {!!Form::text('nombreCategoriaAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del tipo de tarea'])!!}
             </div>
           </div>
-      	</div>
+        </div>
 
 
 
-      	<div class="form-group" id='test'>
-	      {!!Form::label('colorCategoriaAgenda', 'Color', array('class' => 'col-sm-2 control-label')) !!}
-	      <div class="col-sm-10">
-	        <div class="input-group">
-	          <span class="input-group-addon">
-	              <i class="fa fa-sliders"></i>
-	          </span>
-	      	  <div id="colorFondoCategoriaAgenda" class="input-group colorpicker-component" style="width: 100%;">
+        <div class="form-group" id='test'>
+        {!!Form::label('colorCategoriaAgenda', 'Color', array('class' => 'col-sm-2 control-label')) !!}
+        <div class="col-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-sliders"></i>
+            </span>
+            <div id="colorFondoCategoriaAgenda" class="input-group colorpicker-component" style="width: 100%;">
         {!!Form::hidden('colorCategoriaAgenda', (isset($categoriaagenda) ? $categoriaagenda->colorCategoriaAgenda : '#255986'), array('id' => 'colorCategoriaAgenda')) !!}
-			  <span class="input-group-addon"><i style="width: 100%;"></i></span>
-			</div>
-	      	  <script>
-				  $(function () {
-				      $('#colorFondoCategoriaAgenda').colorpicker();
-				  });
-			</script>
-	        </div>
-	      </div>
-      	</div>  
+        <span class="input-group-addon"><i style="width: 100%;"></i></span>
+      </div>
+            <script>
+          $(function () {
+              $('#colorFondoCategoriaAgenda').colorpicker();
+          });
+      </script>
+          </div>
+        </div>
+        </div>  
 
       <br><br><br><br><br>
 
@@ -176,17 +176,17 @@
         </div>
     </fieldset>
 
-	@if(isset($categoriaagenda))
- 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-   			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
-  		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
-  		@endif
- 	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
- 	@endif
+  @if(isset($categoriaagenda))
+    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+        {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
+      @else
+        {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+      @endif
+  @else
+      {!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  @endif
 
-	{!! Form::close() !!}
+  {!! Form::close() !!}
 </div>
 @stop
 
@@ -201,7 +201,7 @@
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/campocrmgridselect"></iframe>'
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/campocrmgridselect?tipo=categoriaagenda"></iframe>'
       ?>
       </div>
     </div>
