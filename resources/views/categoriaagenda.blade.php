@@ -11,11 +11,10 @@
 
 
 <script>
-    var idRol = '<?php echo isset($idRol) ? $idRol : "";?>';
-    var nombreRol = '<?php echo isset($nombreRol) ? $nombreRol : "";?>';
 
-    var dependenciapermisos = '<?php echo (isset($categoriaagenda) ? json_encode($categoriaagenda->dependenciaPermiso) : "");?>';
-    dependenciapermisos = (dependenciapermisos != '' ? JSON.parse(dependenciapermisos) : '');
+    var categoriaagendacampo = '<?php echo (isset($categoriaagenda) ? json_encode($categoriaagenda->categoriaagendacampo) : "");?>';
+    categoriaagendacampo = (categoriaagendacampo != '' ? JSON.parse(categoriaagendacampo) : '');
+
     var valorCategoriaAgenda = ['','', 0];
 
     $(document).ready(function(){
@@ -24,53 +23,49 @@
 
       protCampos.altura = '35px';
       protCampos.campoid = 'idCategoriaAgendaCampo';
-      protCampos.campoEliminacion = 'eliminarDocumentoCRMCampo';
+      protCampos.campoEliminacion = 'eliminarCategoriaAgenda';
 
       protCampos.campos   = [
       'idCategoriaAgendaCampo',
-      'CategoriaAgenda_idCategoriaAgenda',
       'CampoCRM_idCampoCRM',
       'nombreCampoCRM',
       'obligatorioDocumentoCRMCampo',
-      'consultaDocumentoCRMCampo'
+      'CategoriaAgenda_idCategoriaAgenda'
       ];
 
       protCampos.etiqueta = [
       'input',
       'input',
       'input',
-      'input',
       'checkbox',
-      'checkbox'
+      'input'
       ];
 
       protCampos.tipo = [
       'hidden',
       'hidden',
-      'hidden',
       'text',
       'checkbox',
-      'checkbox'
+      'hidden'
       ];
 
       protCampos.estilo = [
       '',
       '',
-      '',
-      'width: 560px;height:35px;',
-      'width: 100px;height:35px; display:inline-block;',
-      'width: 100px;height:35px; display:inline-block;'
+      'width: 610px;height:35px;',
+      'width: 150px;height:35px; display:inline-block;',
+      ''
       ];
 
-      protCampos.clase    = ['','','','','','','','',''];
-      protCampos.sololectura = [true,true,true,true,false,false];  
+      protCampos.clase    = ['','','','','','','',''];
+      protCampos.sololectura = [true,true,false,true,true];  
       protCampos.funciones = ['','','','','',''];
-      protCampos.completar = ['off','off','off','off','off','off'];
-      protCampos.opciones = ['','','','','',''];
-      for(var j=0, k = dependenciapermisos.length; j < k; j++)
+      protCampos.completar = ['off','off','off','off','off'];
+      protCampos.opciones = ['','','','',''];
+      for(var j=0, k = categoriaagendacampo.length; j < k; j++)
       {
-        protCampos.agregarCampos(JSON.stringify(dependenciapermisos[j]),'L');
-        console.log(JSON.stringify(dependenciapermisos[j]))
+        protCampos.agregarCampos(JSON.stringify(categoriaagendacampo[j]),'L');
+        console.log(JSON.stringify(categoriaagendacampo[j]))
       }
 
     });
@@ -129,13 +124,13 @@
 	          <span class="input-group-addon">
 	              <i class="fa fa-sliders"></i>
 	          </span>
-	      	  <div id="colorCategoriaAgenda" class="input-group colorpicker-component" style="width: 100%;">
-			  <input id="colorFondoCategoriaAgenda" type="hidden" value="#255986" class="form-control"/>
+	      	  <div id="colorFondoCategoriaAgenda" class="input-group colorpicker-component" style="width: 100%;">
+        {!!Form::hidden('colorCategoriaAgenda', (isset($categoriaagenda) ? $categoriaagenda->colorCategoriaAgenda : '#255986'), array('id' => 'colorCategoriaAgenda')) !!}
 			  <span class="input-group-addon"><i style="width: 100%;"></i></span>
 			</div>
 	      	  <script>
 				  $(function () {
-				      $('#colorCategoriaAgenda').colorpicker();
+				      $('#colorFondoCategoriaAgenda').colorpicker();
 				  });
 			</script>
 	        </div>
@@ -164,9 +159,8 @@
                               <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="abrirModalCampos();">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 560px;">Campo</div>
-                              <div class="col-md-1" style="width: 100px;">Obligatorio</div>
-                              <div class="col-md-1" style="width: 100px;">Consulta</div>
+                              <div class="col-md-1" style="width: 610px;">Campo</div>
+                              <div class="col-md-1" style="width: 150px;">Obligatorio</div>
                               <div id="contenedor_protCampos"> 
                               </div>
                             </div>
@@ -181,22 +175,6 @@
           </div>
         </div>
     </fieldset>
-
-<div id="myModalRol" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:100%;">
-
-    <!-- Modal content-->
-    <div style="" class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Selecci&oacute;n de Roles</h4>
-      </div>
-      <div class="modal-body">
-      <iframe style="width:100%; height:500px; " id="rol" name="rol" src="{!! URL::to ('rolselect')!!}"> </iframe> 
-      </div>
-    </div>
-  </div>
-</div>
 
 	@if(isset($categoriaagenda))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
