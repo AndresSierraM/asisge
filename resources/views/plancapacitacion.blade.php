@@ -25,6 +25,8 @@
 		$(document).ready(function(){
 
 			tema = new Atributos('tema','contenedor_tema','tema_');
+			tema.campoid = 'idPlanCapacitacionTema';
+			tema.campoEliminacion = 'eliminartema';
 			tema.campos = ['idPlanCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaPlanCapacitacionTema', 'horaPlanCapacitacionTema'];
 			tema.etiqueta = ['input','input','select','input','input'];
 			tema.tipo = ['hidden','text','','date','time'];
@@ -86,6 +88,8 @@
 							array('INDUCCION'=>'Inducci&oacute;n', 'REINDUCCION'=>'Reinducci&oacute;n','GENERAL'=>'General'), (isset($planCapacitacion) ? $planCapacitacion->tipoPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el tipo"])!!}
 							{!!Form::hidden('idPlanCapacitacion', 0, array('id' => 'idPlanCapacitacion'))!!}
 							{!!Form::hidden('Users_id', 1, array('id' => 'Users_id'))!!}
+							<!-- iD Eliminar Multregistro -->
+							{!!Form::hidden('eliminartema',null, array('id' => 'eliminartema'))!!}
 						</div>
 					</div>
 				</div>

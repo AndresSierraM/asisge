@@ -40,9 +40,11 @@
     objetivos.campos = ['idCompaniaObjetivo','nombreCompaniaObjetivo'];
     objetivos.etiqueta = ['input','textarea'];
     objetivos.tipo = ['hidden',''];
-    objetivos.estilo = ['','width: 1160px; height: 80px;'];
+    objetivos.estilo = ['','width: 960px; height: 80px;'];
     objetivos.clase = ['','form-control'];
     objetivos.sololectura = [false,false];
+    var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+    objetivos.funciones = ['',quitacarac];
 
     for(var j=0, k = companiaObjetivos.length; j < k; j++)
     {
@@ -256,7 +258,7 @@
                                 <div class="col-md-1" style="width: 40px;" onclick="objetivos.agregarCampos(valor,'A')">
                                   <span class="glyphicon glyphicon-plus"></span>
                                 </div>
-                                <div class="col-md-1" style="width: 1215px;">Objetivos</div>
+                                <div class="col-md-1" style="width: 960px;">Objetivos</div>
                                 <div id="contenedor_objetivos">
                                 </div>
                             </div>

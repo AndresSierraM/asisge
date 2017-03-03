@@ -129,8 +129,8 @@
         inspeccion.sololectura = [false,false,true,true, false,false,false,false,false,false,false,false];
       
         inspeccion.opciones = ['','','','','','','','','',terceroResponsable,'',''];
-
-        inspeccion.funciones = ['','','','','','','','','','','',''];
+        var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+        inspeccion.funciones = ['','','','',quitacarac,'','','',quitacarac,'','',quitacarac];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas

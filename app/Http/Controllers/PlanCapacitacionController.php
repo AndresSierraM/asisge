@@ -142,22 +142,32 @@ class PlanCapacitacionController extends Controller
 
             $planCapacitacion->save();
 
-            \App\PlanCapacitacionTema::where('PlanCapacitacion_idPlanCapacitacion',$id)->delete();
 
-           $contadorDetalle = count($request['nombrePlanCapacitacionTema']);
-            for($i = 0; $i < $contadorDetalle; $i++)
-            {
-                \App\PlanCapacitacionTema::create([
+              $idsEliminar = explode("," , $request['eliminartema']);
+                //Eliminar registros de la multiregistro
+                \App\PlanCapacitacionTema::whereIn('idPlanCapacitacionTema', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idPlanCapacitacionTema']); $i++)
+                {
+                     $indice = array(
+                        'idPlanCapacitacionTema' => $request['idPlanCapacitacionTema'][$i]);
 
-                    'PlanCapacitacion_idPlanCapacitacion' => $id,
-                    'nombrePlanCapacitacionTema' => $request['nombrePlanCapacitacionTema'][$i],
-                    'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
-                    'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],
-                    'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i],
-                    'dictadaPlanCapacitacionTema' => 0,
-                    'cumpleObjetivoPlanCapacitacionTema' => 0
-                ]);
-            }
+                    $data = array(
+                        'PlanCapacitacion_idPlanCapacitacion' => $id,
+                        'nombrePlanCapacitacionTema' => $request['nombrePlanCapacitacionTema'][$i],
+                        'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
+                        'fechaPlanCapacitacionTema' => $request['fechaPlanCapacitacionTema'][$i],
+                        'horaPlanCapacitacionTema' => $request['horaPlanCapacitacionTema'][$i],
+                        'dictadaPlanCapacitacionTema' => 0,
+                        'cumpleObjetivoPlanCapacitacionTema' => 0,
+
+
+
+                        );
+                    $guardar = \App\PlanCapacitacionTema::updateOrCreate($indice, $data);
+                } 
+
+
 
             return redirect('/plancapacitacion');
         }

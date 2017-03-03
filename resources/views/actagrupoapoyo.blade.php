@@ -162,7 +162,8 @@ for ($i=0; $i < count($firmas); $i++)
       actagrupoapoyo.sololectura = [false,false,false,false,false,false,false,false];
       actagrupoapoyo.completar = ['off', 'off','off','off','off','off','off','off'];
       actagrupoapoyo.opciones = ['', tercero, documento,'','','','',''];
-      actagrupoapoyo.funciones  = ['', '','','','','','',''];
+      var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+      actagrupoapoyo.funciones  = [quitacarac, '','','','','','',quitacarac];
 
 
 

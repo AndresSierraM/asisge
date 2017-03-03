@@ -29,6 +29,8 @@
     detalle.estilo = ['','width: 5%;height:35px;','width: 90%;height:35px;'];
     detalle.clase = ['','',''];
     detalle.sololectura = [false,false,false];
+    var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+    detalle.funciones  = ['','',quitacarac];
 
    
     for(var j=0, k = tipoInspeccionPregunta.length; j < k; j++)

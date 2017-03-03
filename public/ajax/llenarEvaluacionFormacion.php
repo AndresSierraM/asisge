@@ -3,7 +3,7 @@
 $idCargo = $_POST['idCargo'];
 
 $consulta = DB::Select('
-	SELECT nombrePerfilCargo, idPerfilCargo,porcentajeCargoFormacion,porcentajeFormacionCargo
+	SELECT nombrePerfilCargo, idPerfilCargo,porcentajeCargoFormacion,porcentajeFormacionCargo,c.Compania_idCompania
 	FROM cargo c
 	LEFT JOIN  cargoformacion cf
 	ON c.idCargo = cf.Cargo_idCargo

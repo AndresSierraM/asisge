@@ -356,10 +356,8 @@ $(document).ready(function()
                                     <i class="fa fa-calendar" style="width: 14px;"></i> 
                                   </span>
                                 
-                                    {!!Form::text('fechaElaboracionEvaluacionDesempenio',(isset($evaluaciondesempenio) ? $evaluaciondesempenio->fechaElaboracionEvaluacionDesempenio : date('Y-m-d-hh:mm:ss')),['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n '])!!}
+                                    {!!Form::text('fechaElaboracionEvaluacionDesempenio',(isset($evaluaciondesempenio) ? $evaluaciondesempenio->fechaElaboracionEvaluacionDesempenio : date('Y-m-d g:ia')),['class'=>'form-control','placeholder'=>'Ingresa la fecha creaci&oacute;n '])!!}
 
-
-                                  
                                  
                             </div>
                         </div>

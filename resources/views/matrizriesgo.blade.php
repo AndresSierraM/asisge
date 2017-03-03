@@ -52,7 +52,8 @@
 			detalle.clase = ['','','','','','','','','','','','','','','','','','','','','','','','','','',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false];
 			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','','', '', '', '',''];
-			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','','','','',eventos3,eventos3,'','',eventos3,'','','','','','','',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			detalle.funciones = ['','','',eventos1,eventos2,'','',eventos4,eventos4,'','',quitacarac,quitacarac,quitacarac,eventos3,eventos3,'','',eventos3,'','','',quitacarac,quitacarac,quitacarac,quitacarac,quitacarac];
 
 			for(var j=0, k = matrizRiesgoDetalle.length; j < k; j++)
 			{

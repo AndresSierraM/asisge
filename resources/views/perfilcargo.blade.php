@@ -46,7 +46,7 @@
                                   <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o"></i>
                                   </span>
-                          {!!Form::text('nombrePerfilCargo',null,['class'=>'form-control','placeholder'=>'Por favor ingrese su Nombre','style'=>'width:100%;,right'])!!}
+                          {!!Form::text('nombrePerfilCargo',null,['class'=>'form-control','placeholder'=>'Por favor ingrese su Nombre','style'=>'width:100%;,right',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
                                                                   
                         </div>
                        </div>

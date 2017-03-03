@@ -37,7 +37,8 @@
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false];
 			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off'];
 			detalle.opciones = ['',tipoNormaLegal,'',expideNormaLegal,'','','','','','','','',''];
-			detalle.funciones  = ['','','','','','','','','','','','',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			detalle.funciones  = ['','',quitacarac,'',quitacarac,quitacarac,quitacarac,quitacarac,quitacarac,'','',quitacarac,quitacarac];
 			for(var j=0, k = matrizLegalDetalle.length; j < k; j++)
 			{
 				detalle.agregarCampos(JSON.stringify(matrizLegalDetalle[j]),'L');

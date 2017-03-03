@@ -31,6 +31,8 @@
     detalle.estilo = ['','width: 950px;height:35px;'];
     detalle.clase = ['',''];
     detalle.sololectura = [false,false];
+    var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+    detalle.funciones  = ['',quitacarac];
 
     salud = new Atributos('salud','contenedor_salud','salud_');
 
@@ -44,6 +46,9 @@
     salud.estilo = ['','width: 950px;height:35px;'];
     salud.clase = ['',''];
     salud.sololectura = [false,false];
+    var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+    salud.funciones  = ['',quitacarac];
+
 
     for(var j=0, k = tipoRiesgoDetalle.length; j < k; j++)
     {

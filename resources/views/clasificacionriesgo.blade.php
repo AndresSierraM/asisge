@@ -39,7 +39,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-				{!!Form::text('nombreClasificacionRiesgo',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la clasificación de riesgo'])!!}
+				{!!Form::text('nombreClasificacionRiesgo',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la clasificación de riesgo',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
     </fieldset>

@@ -474,7 +474,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('tipoContratoTerceroInformacion',
-															array('C'=>'Contratista','TF'=>'T&eacute;rmino Fijo','I'=>'Indefinido','S'=>'Servicios'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->tipoContratoTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de contrato",'style'=>'width:340px;'])!!}
+															array('C'=>'Contratista','TF'=>'T&eacute;rmino Fijo','I'=>'Indefinido','S'=>'Servicios','CL'=>'Contrato por obra o labor','CA'=>'Contrato de aprendizaje','CT'=>'Contrato temporal, ocasional o accidental'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->tipoContratoTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el tipo de contrato",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>

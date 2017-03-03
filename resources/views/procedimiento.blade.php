@@ -25,7 +25,8 @@
       procedimiento.tipo      = ['text',                              '',                             ''];
       procedimiento.estilo    = ['width: 900px;height:35px;',     'width: 300px;height:30px;','width: 300px;height:30px;'];
       procedimiento.clase     = ['',                              'chosen-select form-control',   'chosen-select form-control'];
-      procedimiento.sololectura = [false,false,false];
+
+      procedimiento.funciones  = [quitacarac,'',''];
       procedimiento.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
       procedimiento.idTercero =  JSON.parse(idTercero);
       procedimiento.nombreDocumento =  JSON.parse(nombreDocumento);

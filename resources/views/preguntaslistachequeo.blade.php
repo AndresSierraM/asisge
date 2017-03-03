@@ -26,7 +26,8 @@
 			pregunta.sololectura = [false,false,false];
 			pregunta.completar = ['off','off','off'];
 			pregunta.opciones = ['','',''];
-			pregunta.funciones  = ['','',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			pregunta.funciones  = ['','',quitacarac];
 
 			
 			for(var j=0, k = preguntaListaChequeo.length; j < k; j++)

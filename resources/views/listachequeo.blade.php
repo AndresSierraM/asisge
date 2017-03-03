@@ -24,9 +24,10 @@
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
 			detalle.campos = ['idListaChequeoDetalle', 'PreguntaListaChequeo_idPreguntaListaChequeo','ordenPreguntaListaChequeo','descripcionPreguntaListaChequeo','Tercero_idTercero','respuestaListaChequeoDetalle','conformeListaChequeoDetalle','hallazgoListaChequeoDetalle','observacionListaChequeoDetalle'];
-			detalle.etiqueta = ['input','input','input','input','select','input','checkbox','input','input'];
-			detalle.tipo = ['hidden','hidden','text','text','','text','checkbox','text','text'];
-			detalle.estilo = ['','','width: 50px;height:35px;','width: 250px;height:35px;','width: 150px;height:35px;','width: 200px;height:35px;','width: 90px;height:30px;display:inline-block','width: 120px;height:35px;','width: 210px;height:35px;'];
+			detalle.altura = '35px;'; 
+			detalle.etiqueta = ['input','input','input','textarea','select','input','checkbox','input','input'];
+			detalle.tipo = ['hidden','hidden','text','','','text','checkbox','text','text'];
+			detalle.estilo = ['','','width: 50px;height:35px','width: 400px;height:35px;display:inline-block','width: 150px;height:35px;','width: 200px;height:35px;','width: 90px;height:30px;display:inline-block','width: 120px;height:35px;','width: 210px;height:35px;'];
 			detalle.clase = ['','','','','','','','',''];
 			detalle.sololectura = [false,false,true,true,false,false,true,false,false];
 			detalle.completar = ['off','off','off','off','off','off','off','off'];
@@ -125,7 +126,7 @@
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1" style="width: 50px;display:inline-block;height:60px;">N°</div>
-															<div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Pregunta</div>
+															<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Pregunta</div>
 															<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">A qui&eacute;n</div>
 															<div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Respuesta</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Conforme</div>

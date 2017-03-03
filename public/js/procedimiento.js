@@ -16,6 +16,7 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.nombreDocumento = new Array();
     this.idDocumento = new Array();
     this.eventoclick = new Array();
+    this.funciones = new Array();
 
 };
 

@@ -44,14 +44,14 @@ class EvaluacionDesempenioController extends Controller
         $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
         $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
-        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
-        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
+        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
+        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
         $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
 
-        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('idPerfilCargo');
-        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('nombrePerfilCargo');
+        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
          $idRespuesta  = \App\CompetenciaRespuesta::All()->lists('idCompetenciaRespuesta');
         $nombreRespuesta  = \App\CompetenciaRespuesta::All()->lists('respuestaCompetenciaRespuesta');
@@ -279,14 +279,14 @@ class EvaluacionDesempenioController extends Controller
         $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
         $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
-        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
-        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
+        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
-        $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
+        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('idPerfilCargo');
-        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('nombrePerfilCargo');
+        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
        $idRespuesta  = \App\CompetenciaRespuesta::All()->lists('idCompetenciaRespuesta');
         $nombreRespuesta  = \App\CompetenciaRespuesta::All()->lists('respuestaCompetenciaRespuesta');
