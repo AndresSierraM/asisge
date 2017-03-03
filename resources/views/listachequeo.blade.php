@@ -24,7 +24,7 @@
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
 			detalle.campos = ['idListaChequeoDetalle', 'PreguntaListaChequeo_idPreguntaListaChequeo','ordenPreguntaListaChequeo','descripcionPreguntaListaChequeo','Tercero_idTercero','respuestaListaChequeoDetalle','conformeListaChequeoDetalle','hallazgoListaChequeoDetalle','observacionListaChequeoDetalle'];
-			detalle.altura = '60px;'; 
+			detalle.altura = '67px;'; 
 			detalle.etiqueta = ['input','input','input','textarea','select','input','checkbox','input','input'];
 			detalle.tipo = ['hidden','hidden','text','textarea','','text','checkbox','text','text'];
 			detalle.estilo = ['','','width: 50px;height:60px','vertical-align:top; width: 400px;  height:60px;','width: 150px;height:60px;','width: 200px;height:60px;','width: 90px;height:60px;display:inline-block','width: 120px;height:60px;','width: 210px;height:60px;'];
