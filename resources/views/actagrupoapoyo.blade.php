@@ -116,9 +116,9 @@ for ($i=0; $i < count($firmas); $i++)
     var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
     var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 
-    var idDocumento = '<?php echo isset($idDocumento) ? $idDocumento : "";?>';
-    var nombreDocumento = '<?php echo isset($nombreDocumento) ? $nombreDocumento : "";?>';
-    var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
+    var idDocumentoSoporte = '<?php echo isset($idDocumentoSoporte) ? $idDocumentoSoporte : "";?>';
+    var nombreDocumentoSoporte = '<?php echo isset($nombreDocumentoSoporte) ? $nombreDocumentoSoporte : "";?>';
+    var documento = [JSON.parse(idDocumentoSoporte),JSON.parse(nombreDocumentoSoporte)];
 
     var actaGrupoApoyoDetalle = '<?php echo (isset($actaGrupoApoyo) ? json_encode($actaGrupoApoyo->actaGrupoApoyoDetalle) : "");?>';
 
@@ -169,8 +169,8 @@ for ($i=0; $i < count($firmas); $i++)
 
       actagrupoapoyo.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
       actagrupoapoyo.idTercero =  JSON.parse(idTercero);
-      actagrupoapoyo.nombreDocumento =  JSON.parse(nombreDocumento);
-      actagrupoapoyo.idDocumento =  JSON.parse(idDocumento);
+      actagrupoapoyo.nombreDocumentoSoporte =  JSON.parse(nombreDocumentoSoporte);
+      actagrupoapoyo.idDocumentoSoporte =  JSON.parse(idDocumentoSoporte);
 
       for(var j=0, k = actaGrupoApoyoDetalle.length; j < k; j++)
       {

@@ -24,10 +24,10 @@
 
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
 			detalle.campos = ['idListaChequeoDetalle', 'PreguntaListaChequeo_idPreguntaListaChequeo','ordenPreguntaListaChequeo','descripcionPreguntaListaChequeo','Tercero_idTercero','respuestaListaChequeoDetalle','conformeListaChequeoDetalle','hallazgoListaChequeoDetalle','observacionListaChequeoDetalle'];
-			detalle.altura = '35px;'; 
+			detalle.altura = '60px;'; 
 			detalle.etiqueta = ['input','input','input','textarea','select','input','checkbox','input','input'];
-			detalle.tipo = ['hidden','hidden','text','','','text','checkbox','text','text'];
-			detalle.estilo = ['','','width: 50px;height:35px','width: 400px;height:35px;display:inline-block','width: 150px;height:35px;','width: 200px;height:35px;','width: 90px;height:30px;display:inline-block','width: 120px;height:35px;','width: 210px;height:35px;'];
+			detalle.tipo = ['hidden','hidden','text','textarea','','text','checkbox','text','text'];
+			detalle.estilo = ['','','width: 50px;height:60px','vertical-align:top; width: 400px;  height:60px;','width: 150px;height:60px;','width: 200px;height:60px;','width: 90px;height:60px;display:inline-block','width: 120px;height:60px;','width: 210px;height:60px;'];
 			detalle.clase = ['','','','','','','','',''];
 			detalle.sololectura = [false,false,true,true,false,false,true,false,false];
 			detalle.completar = ['off','off','off','off','off','off','off','off'];
