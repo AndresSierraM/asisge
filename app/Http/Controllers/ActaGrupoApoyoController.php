@@ -40,10 +40,10 @@ class ActaGrupoApoyoController extends Controller
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idDocumento = \App\Documento::All()->lists('idDocumento');
-        $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
-        return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero','nombreDocumento', 'idDocumento'));
+        return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero','nombreDocumentoSoporte', 'idDocumentoSoporte'));
     }
 
     /**
@@ -94,7 +94,7 @@ class ActaGrupoApoyoController extends Controller
              $actagrupoapoyotercero = DB::select("SELECT nombreCompletoTercero,firmaActaGrupoApoyoTercero FROM actagrupoapoyotercero at LEFT JOIN tercero t on t.idTercero = at.Tercero_idParticipante WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
 
           
-            $actagrupoapoyodetalle = DB::select("SELECT actividadGrupoApoyoDetalle,nombreCompletoTercero,fechaPlaneadaActaGrupoApoyoDetalle,nombreDocumento,recursoPlaneadoActaGrupoApoyoDetalle,recursoEjecutadoActaGrupoApoyoDetalle,  fechaEjecucionGrupoApoyoDetalle,observacionGrupoApoyoDetalle FROM actagrupoapoyodetalle ad LEFT JOIN tercero t ON ad.Tercero_idResponsableDetalle = t.idTercero LEFT JOIN documento d ON d.idDocumento = ad.Documento_idDocumento WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
+            $actagrupoapoyodetalle = DB::select("SELECT actividadGrupoApoyoDetalle,nombreCompletoTercero,fechaPlaneadaActaGrupoApoyoDetalle,nombreDocumentoSoporte,recursoPlaneadoActaGrupoApoyoDetalle,recursoEjecutadoActaGrupoApoyoDetalle,  fechaEjecucionGrupoApoyoDetalle,observacionGrupoApoyoDetalle FROM actagrupoapoyodetalle ad LEFT JOIN tercero t ON ad.Tercero_idResponsableDetalle = t.idTercero LEFT JOIN documentosoporte d ON d.idDocumentoSoporte = ad.DocumentoSoporte_idDocumentoSoporte WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
 
             
             return view('formatos.actagrupoapoyoimpresion',compact('actagrupoapoyo','actagrupoapoyotercero','actagrupoapoyodetalle'));
@@ -116,10 +116,10 @@ class ActaGrupoApoyoController extends Controller
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idDocumento = \App\Documento::All()->lists('idDocumento');
-        $nombreDocumento = \App\Documento::All()->lists('nombreDocumento');
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
-        return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero', 'nombreDocumento', 'idDocumento'), ['actaGrupoApoyo'=>$actaGrupoApoyo])
+        return view('actagrupoapoyo', compact('grupoapoyo','idTercero','nombreCompletoTercero', 'nombreDocumentoSoporte', 'idDocumentoSoporte'), ['actaGrupoApoyo'=>$actaGrupoApoyo])
         ;
     }
 
@@ -234,7 +234,7 @@ class ActaGrupoApoyoController extends Controller
                 'actividadGrupoApoyoDetalle' => $request['actividadGrupoApoyoDetalle'][$i],
                 'Tercero_idResponsableDetalle' => $request['Tercero_idResponsableDetalle'][$i],
                 'fechaPlaneadaActaGrupoApoyoDetalle' => $request['fechaPlaneadaActaGrupoApoyoDetalle'][$i],
-                'Documento_idDocumento' => $request['Documento_idDocumento'][$i],
+                'DocumentoSoporte_idDocumentoSoporte' => $request['DocumentoSoporte_idDocumentoSoporte'][$i],
                 'recursoPlaneadoActaGrupoApoyoDetalle' => $request['recursoPlaneadoActaGrupoApoyoDetalle'][$i],
                 'recursoEjecutadoActaGrupoApoyoDetalle' => $request['recursoEjecutadoActaGrupoApoyoDetalle'][$i],
                 'fechaEjecucionGrupoApoyoDetalle' => $request['fechaEjecucionGrupoApoyoDetalle'][$i],

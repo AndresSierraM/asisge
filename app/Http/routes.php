@@ -150,6 +150,8 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('categoriaagenda','CategoriaAgendaController');
     Route::resource('agenda','AgendaController');
 
+    Route::get('eventoagenda','AgendaController@indexAgendaEvento');
+
     
     // *************************************
     // Rutas de Encuestas
@@ -676,6 +678,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosEvaluacionDesempenio.php';
     });
 
+    Route::get('datosCategoriaAgenda', function()
+    {
+        include public_path().'/ajax/datosCategoriaAgenda.php';
+    });
+
 
     Route::get('datosDocumentoCRM', function()
     {
@@ -785,6 +792,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosMovimientocrmVacantegridselect', function()
     {
         include public_path().'/ajax/datosMovimientocrmVacantegridselect.php';
+    });
+
+    Route::get('agregarEventoAgenda', function()
+    {
+        include public_path().'/ajax/agregarEventoAgenda.php';
     });
 
 

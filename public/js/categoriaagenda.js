@@ -1,7 +1,6 @@
 function abrirModalCampos()
 {
     $('#ModalCampos').modal('show');
-
 }
 
 function llenarDatosCampo(id, reg)

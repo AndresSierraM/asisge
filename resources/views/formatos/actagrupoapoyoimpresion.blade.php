@@ -79,11 +79,11 @@
 				       <tr>
 				        <td>{{$dato->actividadGrupoApoyoDetalle}}</td>
 				        <td>{{$dato->nombreCompletoTercero}}</td>
-				        <td>{{$dato->nombreDocumento}}</td>
+				        <td>{{$dato->nombreDocumentoSoporte}}</td>
 				        <td>{{$dato->fechaPlaneadaActaGrupoApoyoDetalle}}</td>
 				        <td>{{$dato->recursoPlaneadoActaGrupoApoyoDetalle}}</td>
-				        <td>{{$dato->recursoEjecutadoActaGrupoApoyoDetalle}}</td>
 				        <td>{{$dato->fechaEjecucionGrupoApoyoDetalle}}</td>
+				        <td>{{$dato->recursoEjecutadoActaGrupoApoyoDetalle}}</td>
 				        <td>{{$dato->observacionGrupoApoyoDetalle}}</td>
 				       </tr>
 				       @endforeach

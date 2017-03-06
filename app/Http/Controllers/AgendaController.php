@@ -16,9 +16,14 @@ class AgendaController extends Controller
      */
     public function index()
     {
+        return view('agenda');
+    }
+
+    public function indexAgendaEvento()
+    {
         $categoriaagenda = \App\CategoriaAgenda::All()->lists('nombreCategoriaAgenda','idCategoriaAgenda');
         $supervisor = \App\Tercero::where('tipoTercero','like','%*01*%')->where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        return view('agenda',compact('categoriaagenda','supervisor')); 
+        return view('agregareventocalendario',compact('categoriaagenda','supervisor'));
     }
 
     /**
@@ -28,7 +33,7 @@ class AgendaController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -39,7 +44,28 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        \App\Agenda::create([
+            'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'],
+            'asuntoAgenda' => $request['asuntoAgenda'],
+            'fechaHoraInicioAgenda' => $request['fechaHoraInicioAgenda'],
+            'fechaHoraFinAgenda' => $request['fechaHoraFinAgenda'],
+            'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
+            'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' or $request['Tercero_idResponsable'] == 0 ? NULL : $request['Tercero_idResponsable']),
+            'MovimientoCRM_idMovimientoCRM' => $request['MovimientoCRM_idMovimientoCRM'],
+            'ubicacionAgenda' => $request['ubicacionAgenda'],
+            'porcentajeEjecucionAgenda' => $request['porcentajeEjecucionAgenda'],
+            'detallesAgenda' => $request['detallesAgenda']
+        ]);
+
+        $agenda = \App\Agenda::All()->last();
+
+        // $this->grabarDetalle($agenda->idAgenda,$request);
+
+        if($request->ajax()) 
+        {
+            return response()->json('Evento creado correctamente');
+        }
+        
     }
 
     /**
@@ -73,7 +99,9 @@ class AgendaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $agenda = \App\Agenda::find($id);
+        $agenda->fill($request->all());
+        $agenda->save();
     }
 
     /**
@@ -85,5 +113,36 @@ class AgendaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function grabarDetalle($id, $request)
+    {
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarCategoriaAgenda']);
+        \App\CategoriaAgendaCampo::whereIn('idCategoriaAgendaCampo',$idsEliminar)->delete();
+
+        $contador = count($request['idCategoriaAgendaCampo']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+
+            $indice = array(
+             'idCategoriaAgendaCampo' => $request['idCategoriaAgendaCampo'][$i]);
+
+            $data = array(
+            'CategoriaAgenda_idCategoriaAgenda' => $id,
+            'CampoCRM_idCampoCRM' => $request['CampoCRM_idCampoCRM'][$i],
+            'obligatorioCategoriaAgendaCampo' => $request['obligatorioCategoriaAgendaCampo'][$i]);
+
+             $preguntas = \App\CategoriaAgendaCampo::updateOrCreate($indice, $data);
+
+        }
+
+        if($request->ajax()) 
+        {
+            return response()->json('Evento creado correctamente');
+        }
+        return redirect('/agenda');
     }
 }
