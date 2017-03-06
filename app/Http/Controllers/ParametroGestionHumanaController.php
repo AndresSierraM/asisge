@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 // use App\Http\Requests\CompetenciaRequest;
 use App\Http\Controllers\Controller;
+use DB;
 include public_path().'/ajax/consultarPermisos.php';
 
 class ParametroGestionHumanaController extends Controller
@@ -17,14 +18,21 @@ class ParametroGestionHumanaController extends Controller
     public function index()
     {
 
-        //    $parametrogestionhumana = \App\PreguntasListaChequeo::where('Compania_idCompania','=', \Session::get('idCompania'))
-        // ->get();
-        // return view('parametrogestionhumana',compact('parametrogestionhumana'));  
-          
+    // Se envian las consultas de la respetivas Multiregistros en el index 
+    
+    $CompetenciaRespuesta = DB::select ('
+        SELECT
+        idCompetenciaRespuesta,respuestaCompetenciaRespuesta,porcentajeNormalCompetenciaRespuesta,porcentajeInversoCompetenciaRespuesta
+        From
+        competenciarespuesta CR');
 
-      
-        
-   return view('parametrogestionhumana');
+    $CompetenciaRango = DB::select ('
+        SELECT
+        idCompetenciaRango,ordenCompetenciaRango,nivelCompetenciaRango,desdeCompetenciaRango,hastaCompetenciaRango
+        FROM
+        competenciarango');
+   
+         return view('parametrogestionhumana',compact('CompetenciaRespuesta','CompetenciaRango'));
   
     }
 
@@ -35,9 +43,10 @@ class ParametroGestionHumanaController extends Controller
      */
     public function create()
     {
+       
          $idModulo= \App\Modulo::All()->lists('idModulo');
          $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
-        return view ('competencia', compact('idModulo','nombreModulo'));
+        return view ('parametrogestionhumana', compact('idModulo','nombreModulo'));
     }
 
     /**
@@ -48,7 +57,49 @@ class ParametroGestionHumanaController extends Controller
      */
     public function store(Request $request)
     {
-    
+
+         // Detalle Competencia Respuesta 
+        $idsEliminar = explode("," , $request['eliminarcompetenciarango']);
+        //Eliminar registros de la multiregistro
+        \App\CompetenciaRango::whereIn('idCompetenciaRango', $idsEliminar)->delete();
+        // Competencia Rango
+          for($i = 0; $i < count($request['ordenCompetenciaRango']); $i++)
+        {
+            $indice = array(
+             'idCompetenciaRango' => $request['idCompetenciaRango'][$i]);
+
+             $data = array(
+             'ordenCompetenciaRango' => $request['ordenCompetenciaRango'][$i],
+             'nivelCompetenciaRango' => $request['nivelCompetenciaRango'][$i],
+             'desdeCompetenciaRango' => $request['desdeCompetenciaRango'][$i],
+             'hastaCompetenciaRango' => $request['hastaCompetenciaRango'][$i]);
+            
+
+            $preguntas = \App\CompetenciaRango::updateOrCreate($indice, $data);
+        }
+
+         // Detalle Competencia Respuesta 
+        $idsEliminar = explode("," , $request['eliminarcompetenciarespuesta']);
+        //Eliminar registros de la multiregistro
+        \App\CompetenciaRespuesta::whereIn('idCompetenciaRespuesta', $idsEliminar)->delete();
+        // Guardado Competencia Respuesta 
+         for($i = 0; $i < count($request['respuestaCompetenciaRespuesta']); $i++)
+        {
+            $indice = array(
+             'idCompetenciaRespuesta' => $request['idCompetenciaRespuesta'][$i]);
+
+             $data = array(
+             'respuestaCompetenciaRespuesta' => $request['respuestaCompetenciaRespuesta'][$i],
+             'porcentajeNormalCompetenciaRespuesta' => $request['porcentajeNormalCompetenciaRespuesta'][$i],
+             'porcentajeInversoCompetenciaRespuesta' => $request['porcentajeInversoCompetenciaRespuesta'][$i]);
+             
+            
+
+            $preguntas = \App\CompetenciaRespuesta::updateOrCreate($indice, $data);
+        }
+
+        
+       
 
         return redirect('/parametrogestionhumana');
     }
@@ -72,10 +123,7 @@ class ParametroGestionHumanaController extends Controller
      */
     public function edit($id)
     {
-         //  $competencia = \App\Competencia::find($id);
-         // $idModulo= \App\Modulo::All()->lists('idModulo');
-         // $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
-        return view ('parametrogestionhumana',['parametrogestionhumana'=>$idNombreAndres], compact('idModulo','nombreModulo'));
+        
     }
 
     /**
@@ -87,13 +135,9 @@ class ParametroGestionHumanaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $Competencia = \App\Competencia::find($id);
-        // $Competencia->fill($request->all());
+       
 
-        // $Competencia->save();
-
-
-        return redirect('parametrogestionhumana');
+      
     }
 
     /**
@@ -104,7 +148,6 @@ class ParametroGestionHumanaController extends Controller
      */
     public function destroy($id)
     {
-         // \App\Competencia::destroy($id);
-        return redirect('/parametrogestionhumana');        
+           // ...
     }
 }

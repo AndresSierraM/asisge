@@ -69,7 +69,8 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
-    
+
+    Route::resource ('parametrogestionhumana','ParametroGestionHumanaController');
     Route::resource ('evaluaciondesempenio','EvaluacionDesempenioController');
     Route::resource ('entrevistaresultado','EntrevistaResultadoController');
     Route::resource ('competenciarespuesta','CompetenciaRespuestaController');
