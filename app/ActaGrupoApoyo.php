@@ -10,14 +10,14 @@ class ActaGrupoApoyo extends Model
     protected $primaryKey = 'idActaGrupoApoyo';
 
     protected $fillable = [
-					    'GrupoApoyo_idGrupoApoyo', 'fechaActaGrupoApoyo', 'horaInicioActaGrupoApoyo', 'horaFinActaGrupoApoyo', 'observacionActaGrupoApoyo', 'Compania_idCompania'
-					    ];
+                        'GrupoApoyo_idGrupoApoyo', 'fechaActaGrupoApoyo', 'horaInicioActaGrupoApoyo', 'horaFinActaGrupoApoyo', 'observacionActaGrupoApoyo', 'Compania_idCompania'
+                        ];
 
     public $timestamps = false;
 
     public function actaGrupoApoyoTema()
     {
-    	return $this->hasMany('App\ActaGrupoApoyoTema','ActaGrupoApoyo_idActaGrupoApoyo');
+        return $this->hasMany('App\ActaGrupoApoyoTema','ActaGrupoApoyo_idActaGrupoApoyo');
     }
     public function actaGrupoApoyoTercero()
     {
