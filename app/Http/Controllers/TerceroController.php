@@ -205,19 +205,20 @@ class TerceroController extends Controller
                 'nombreTerceroProducto' => $request['nombreTerceroProducto'][$i]
                ]);
             }
+            // Se quita Esta mltiregistro ya que es un campo que ya están en cargos / perfiles
 
-            $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
-            for($i = 0; $i < $contadorExamen; $i++)
-            {
-                \App\TerceroExamenMedico::create([
-                'Tercero_idTercero' => $tercero->idTercero,
-                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
-                'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
-                'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
-                'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
-                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
-               ]);
-            }
+            // $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
+            // for($i = 0; $i < $contadorExamen; $i++)
+            // {
+            //     \App\TerceroExamenMedico::create([
+            //     'Tercero_idTercero' => $tercero->idTercero,
+            //     'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
+            //     'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
+            //     'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
+            //     'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
+            //     'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
+            //    ]);
+            // }
 
             $arrayImage = $request['archivoTerceroArray'];
             $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
@@ -357,7 +358,7 @@ class TerceroController extends Controller
 
             \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
             \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
-            \App\TerceroExamenMedico::where('Tercero_idTercero',$id)->delete();
+            // \App\TerceroExamenMedico::where('Tercero_idTercero',$id)->delete();
             // \App\TerceroArchivo::where('Tercero_idTercero',$id)->delete();
             
             $contadorContacto = count($request['nombreTerceroContacto']);
@@ -381,19 +382,19 @@ class TerceroController extends Controller
                 'nombreTerceroProducto' => $request['nombreTerceroProducto'][$i]
                ]);
             }
-
-            $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
-            for($i = 0; $i < $contadorExamen; $i++)
-            {
-                \App\TerceroExamenMedico::create([
-                'Tercero_idTercero' => $id,
-                'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
-                'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
-                'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
-                'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
-                'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
-               ]);
-            }
+            // Se quita Esta mltiregistro ya que es un campo que ya están en cargos / perfiles
+            // $contadorExamen = count($request['TipoExamenMedico_idTipoExamenMedico']);
+            // for($i = 0; $i < $contadorExamen; $i++)
+            // {
+            //     \App\TerceroExamenMedico::create([
+            //     'Tercero_idTercero' => $id,
+            //     'TipoExamenMedico_idTipoExamenMedico' => $request['TipoExamenMedico_idTipoExamenMedico'][$i], 
+            //     'ingresoTerceroExamenMedico' => $request['ingresoTerceroExamenMedico'][$i], 
+            //     'retiroTerceroExamenMedico' => $request['retiroTerceroExamenMedico'][$i], 
+            //     'periodicoTerceroExamenMedico' => $request['periodicoTerceroExamenMedico'][$i], 
+            //     'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'][$i]   
+            //    ]);
+            // }
 
             
             // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE

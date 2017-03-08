@@ -137,7 +137,7 @@ function mostrarPestanas()
         document.getElementById('zona').style.display = 'none';
         document.getElementById('sector').style.display = 'none';
         document.getElementById('pestanaProducto').style.display = 'none';
-        document.getElementById('pestanaExamenes').style.display = 'block';
+        // document.getElementById('pestanaExamenes').style.display = 'block';
         document.getElementById('pestanaEducacion').style.display = 'block';
         document.getElementById('pestanaExperiencia').style.display = 'block';
         document.getElementById('pestanaFormacion').style.display = 'block';
@@ -162,7 +162,7 @@ function mostrarPestanas()
         document.getElementById('sector').style.display = 'inline';
 
         document.getElementById('pestanaProducto').style.display = 'block';
-        document.getElementById('pestanaExamenes').style.display = 'none';
+        // document.getElementById('pestanaExamenes').style.display = 'none';
         document.getElementById('pestanaEducacion').style.display = 'none';
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
@@ -179,7 +179,7 @@ function mostrarPestanas()
 
 
         document.getElementById('pestanaProducto').style.display = 'block';
-        document.getElementById('pestanaExamenes').style.display = 'none';
+        // document.getElementById('pestanaExamenes').style.display = 'none';
         document.getElementById('pestanaEducacion').style.display = 'none';
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
