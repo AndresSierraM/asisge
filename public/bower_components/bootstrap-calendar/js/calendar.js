@@ -918,9 +918,10 @@ if(!String.prototype.formatNum) {
 			self.view(view);
 		});
 		$('.cal-cell').dblclick(function() {
-			var view = $('[data-cal-date]', this).data('cal-view');
-			self.options.day = $('[data-cal-date]', this).data('cal-date');
-			self.view(view);
+			// var view = $('[data-cal-date]', this).data('cal-view');
+			// self.options.day = $('[data-cal-date]', this).data('cal-date');
+			// self.view(view);
+			agregarEvento();
 		});
 
 		this['_update_' + this.options.view]();
@@ -1035,6 +1036,7 @@ if(!String.prototype.formatNum) {
 				week.hide();
 			})
 		;
+		
 
 		week.click(function() {
 			self.options.day = $(this).data('cal-week');
