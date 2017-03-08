@@ -62,16 +62,16 @@
 			productos.clase = ['','',''];
 			productos.sololectura = [false,false,false];
 
-			examen = new Atributos('examen','contenedor_examen','examen');
-			examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
-			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
-			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
-			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
-			examen.clase = ['','','','','',''];
-			examen.sololectura = [false,false,false,false,false,false];
-			examen.completar = ['off','off','off','off','off','off'];
-			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
-			examen.funciones  = ['','','','','',''];
+			// examen = new Atributos('examen','contenedor_examen','examen');
+			// examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
+			// examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
+			// examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
+			// examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
+			// examen.clase = ['','','','','',''];
+			// examen.sololectura = [false,false,false,false,false,false];
+			// examen.completar = ['off','off','off','off','off','off'];
+			// examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
+			// examen.funciones  = ['','','','','',''];
 
 			// archivo = new Atributos('archivo','contenedor_archivo','archivo');
 			// archivo.campos = ['idTerceroArchivo', 'tituloTerceroArchivo','fechaTerceroArchivo','rutaTerceroArchivo'];
