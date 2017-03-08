@@ -28,6 +28,7 @@
     
       {!!Html::script('choosen/chosen.jquery.js'); !!}
       {!!Html::script('choosen/docsupport/prism.js'); !!}
+      {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
 
       <!-- Bootstrap -->
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}

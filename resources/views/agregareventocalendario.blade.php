@@ -4,7 +4,7 @@
 @section('content')
 @include('alerts.request')
 
-{!!Html::script('js/modalagenda.js')!!}
+{!!Html::script('js/agenda.js')!!}
 <!-- Librerías para el selector de colores (color Picker) -->
 {!! Html::style('assets/colorpicker/css/bootstrap-colorpicker.min.css'); !!}
 {!! Html::script('assets/colorpicker/js/bootstrap-colorpicker.js'); !!}
@@ -95,7 +95,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda->CategoriaAgenda_idCategoriaAgenda : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo"])!!}
+              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda->CategoriaAgenda_idCategoriaAgenda : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
             {!!Form::hidden('idAgenda', null, array('id' => 'idAgenda')) !!}
             {!!Form::hidden('eliminarAgenda', null, array('id' => 'eliminarAgenda')) !!}
           </div>
@@ -147,13 +147,73 @@
               <span class="input-group-addon">
                 <i class="fa fa-user"></i>
               </span>
-              {!!Form::select('Tercero_idSupervisor',$supervisor, (isset($agenda) ? $agenda->Tercero_idSupervisor : 0),["class" => "form-control", "placeholder" =>"Seleccione el supervisor"])!!}
+              {!!Form::select('Tercero_idSupervisor',$supervisor, (isset($agenda) ? $agenda->Tercero_idSupervisor : 0),["class" => "form-control", "placeholder" =>"Seleccione el supervisor"])!!}  
           </div>
         </div>
       </div>
 
 
-      <br><br><br>
+      <br><br><br><br><br>
+
+      <div class="form-group" id='MovimientoCRM_idMovimientoCRM' style='display:none;'>
+          {!!Form::label('MovimientoCRM_idMovimientoCRM', 'Caso CRM', array('class' => 'col-sm-2 control-label')) !!}
+        <div class="col-sm-10">
+          <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-bars"></i>
+              </span>
+              {!!Form::select('MovimientoCRM_idMovimientoCRM',$casocrm, (isset($agenda) ? $agenda->MovimientoCRM_idMovimientoCRM : 0),["class" => "form-control", "placeholder" =>"Seleccione un caso del CRM"])!!}  
+          </div>
+        </div>
+      </div>
+
+        <div class="form-group" id='ubicacionAgenda' style='display:none;'>
+          {!!Form::label('ubicacionAgenda', 'Ubicación', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group" >
+             <span class="input-group-addon">
+                <i class="fa fa-sitemap" aria-hidden="true"></i>
+             </span>
+              {!!Form::text('ubicacionAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la ubicacion'])!!}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id='Tercero_idResponsable' style='display:none;'>
+          {!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-2 control-label')) !!}
+        <div class="col-sm-10">
+          <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-user"></i>
+              </span>
+              {!!Form::select('Tercero_idResponsable',$responsable, (isset($agenda) ? $agenda->Tercero_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione un responsable"])!!}  
+          </div>
+        </div>
+      </div>
+
+        <div class="form-group" id='porcentajeEjecucionAgenda' style='display:none;'>
+          {!!Form::label('porcentajeEjecucionAgenda', '% Ejecución', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group" >
+             <span class="input-group-addon">
+                <i class="" aria-hidden="true">%</i>
+             </span>
+              {!!Form::text('porcentajeEjecucionAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese el porcentaje ejecutado'])!!}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id='estadoAgenda' style='display:none;'>
+          {!!Form::label('estadoAgenda', 'Estado', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group" >
+             <span class="input-group-addon">
+                <i class="fa fa-tasks" aria-hidden="true"></i>
+             </span>
+              {!! Form::select('estadoAgenda', ['Sin finalizar' => 'Sin finalizar', 'Finalizado' => 'Finalizado'],null,['class' => 'form-control', 'placeholder' => 'Seleccione un estado']) !!}
+            </div>
+          </div>
+        </div>
 
         <div class="form-group">
           <div class="col-lg-12">
@@ -164,8 +224,8 @@
 
                 <ul class="nav nav-tabs"> <!--Pestañas de navegacion-->
                   <li class="active"><a data-toggle="tab" href="#detalles">Detalles</a></li>
-                  <li><a data-toggle="tab" href="#seguimiento">Seguimiento</a></li>
-                  <li><a data-toggle="tab" href="#asistentes">Asistentes</a></li>
+                  <li id="liseguimiento" style="display:none;"><a data-toggle="tab" href="#seguimiento">Seguimiento</a></li>
+                  <li id="liasistentes" style="display:none;"><a data-toggle="tab" href="#asistentes">Asistentes</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -186,7 +246,7 @@
 
                   </div>
 
-                  <div id="seguimiento" class="tab-pane fade">
+                  <div id="seguimiento" class="tab-pane fade" style="display:none;">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
@@ -206,7 +266,7 @@
 
                   </div>
 
-                  <div id="asistentes" class="tab-pane fade">
+                  <div id="asistentes" style="display:none;" class="tab-pane fade">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>

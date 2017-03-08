@@ -951,6 +951,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/llenarResponsabilidadCargo.php';
     });
 
+    Route::post('mostrarCamposAgenda', function()
+    {
+        include public_path().'/ajax/mostrarCamposAgenda.php';
+    });
+
 }
 
 Route::get('dropzone','TerceroController@indexdropzone');
