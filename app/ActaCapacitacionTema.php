@@ -11,7 +11,7 @@ class ActaCapacitacionTema extends Model
 
     protected $fillable = [
 			'ActaCapacitacion_idActaCapacitacion', 'PlanCapacitacionTema_idPlanCapacitacionTema', 'Tercero_idCapacitador',
-			'fechaActaCapacitacionTema','horaActaCapacitacionTema', 'dictadaActaCapacitacionTema', 
+			'fechaActaCapacitacionTema','horaActaCapacitacionTema','duracionActaCapacitacionTema', 'dictadaActaCapacitacionTema', 
 			'cumpleObjetivoActaCapacitacionTema'];
 
     public $timestamps = false;

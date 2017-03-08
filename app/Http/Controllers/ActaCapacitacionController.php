@@ -99,7 +99,7 @@ class ActaCapacitacionController extends Controller
 
             $planCapacitacionTema = DB::table('plancapacitaciontema as pct')
             ->leftJoin('tercero as t', 'pct.Tercero_idCapacitador', '=', 't.idTercero')
-            ->select(DB::raw('nombrePlanCapacitacionTema, Tercero_idCapacitador, t.nombreCompletoTercero,fechaPlanCapacitacionTema, horaPlanCapacitacionTema,dictadaPlanCapacitacionTema,cumpleObjetivoPlanCapacitacionTema'))
+            ->select(DB::raw('nombrePlanCapacitacionTema, Tercero_idCapacitador, t.nombreCompletoTercero,fechaPlanCapacitacionTema, horaPlanCapacitacionTema,duracionActaCapacitacionTema,dictadaPlanCapacitacionTema,cumpleObjetivoPlanCapacitacionTema'))
             ->orderby('idPlanCapacitacionTema','ASC')
             ->where('PlanCapacitacion_idPlanCapacitacion','=',$idPlanCapacitacion->PlanCapacitacion_idPlanCapacitacion)
             ->get();
@@ -121,7 +121,7 @@ class ActaCapacitacionController extends Controller
         {
 
             $plan = DB::select(
-                'SELECT idPlanCapacitacionTema as PlanCapacitacionTema_idPlanCapacitacionTema, 0 as idActaCapacitacionTema, nombrePlanCapacitacionTema, PCT.Tercero_idCapacitador, fechaPlanCapacitacionTema, horaPlanCapacitacionTema, 1 as dictadaPlanCapacitacionTema,  0 as cumpleObjetivoPlanCapacitacionTema
+                'SELECT idPlanCapacitacionTema as PlanCapacitacionTema_idPlanCapacitacionTema, 0 as idActaCapacitacionTema, nombrePlanCapacitacionTema, PCT.Tercero_idCapacitador, fechaPlanCapacitacionTema, horaPlanCapacitacionTema,duracionActaCapacitacionTema, 1 as dictadaPlanCapacitacionTema,  0 as cumpleObjetivoPlanCapacitacionTema
                 FROM plancapacitaciontema PCT
                 LEFT JOIN actacapacitaciontema ACT
                     ON PCT.idPlanCapacitacionTema = ACT.PlanCapacitacionTema_idPlanCapacitacionTema
@@ -266,6 +266,7 @@ class ActaCapacitacionController extends Controller
                 'Tercero_idCapacitador' => $request['Tercero_idCapacitador'][$i],
                  'fechaActaCapacitacionTema' => $request['fechaActaCapacitacionTema'][$i],
                  'horaActaCapacitacionTema' => $request['horaActaCapacitacionTema'][$i],
+                 'duracionActaCapacitacionTema' => $request['duracionActaCapacitacionTema'][$i],
                  'dictadaActaCapacitacionTema' => $request['dictadaActaCapacitacionTema'][$i],
                  'cumpleObjetivoActaCapacitacionTema' => $request['cumpleObjetivoActaCapacitacionTema'][$i]);
 

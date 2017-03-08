@@ -75,10 +75,10 @@ for ($i=0; $i < count($firmas); $i++)
 			tema.campoid = 'idActaCapacitacionTema';
 			tema.campoEliminacion = 'eliminarTema';
 
-			tema.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','campo','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
+			tema.campos = ['PlanCapacitacionTema_idPlanCapacitacionTema', 'idActaCapacitacionTema', 'nombrePlanCapacitacionTema', 'Tercero_idCapacitador', 'fechaActaCapacitacionTema', 'horaActaCapacitacionTema','duracionActaCapacitacionTema','dictadaActaCapacitacionTema','cumpleObjetivoActaCapacitacionTema'];
 			tema.etiqueta = ['input', 'input','input','select','input','input','input','checkbox','checkbox'];
 			tema.tipo = ['hidden', 'hidden','text','','date','time','','checkbox','checkbox'];
-			tema.estilo = ['', '','width: 250px;height:35px;','width: 250px;height:35px;','width: 130px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;diplay:inline-block','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
+			tema.estilo = ['', '','width: 250px;height:35px;','width: 250px;height:35px;','width: 130px;height:35px;','width: 110px;height:35px;','width: 100px;height:35px;diplay:inline-block','width: 70px;height:33px;display:inline-block;','width: 70px;height:33px;display:inline-block;'];
 			tema.clase = ['','','','','','','','',''];
 			tema.sololectura = [false, false,true,false,false,false,false,false,false];
 			tema.completar = ['off', 'off','off','off','off','off','off','off','off'];
@@ -325,7 +325,7 @@ for ($i=0; $i < count($firmas); $i++)
 															<div class="col-md-1" style="width: 130px;display:inline-block;height:50px;">Fecha</div>
 															<div class="col-md-1" style="width: 110px;display:inline-block;height:50px;">Hora</div>
 															<!-- Nuevo campo duracion horas -->
-															<div class="col-md-1" style="width: 110px;display:inline-block;height:50px;">Duracion Horas</div>
+															<div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Duracion en Horas</div>
 															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Dictado</div>
 															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Cumple Objetivo</div>
 															<div id="contenedor_tema">
