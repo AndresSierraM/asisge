@@ -28,6 +28,7 @@
 			pregunta.completar = ['off','off','off'];
 			pregunta.opciones = ['','',''];
 			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			
 			pregunta.funciones  = ['','',quitacarac];
 
 			
@@ -72,8 +73,11 @@
 						</br></br></br></br>
 					</div>
 				</div>
+		
+               
 			</fieldset>
 		</div>
 	{!!Form::close()!!}
 	
+
 @stop
