@@ -105,7 +105,7 @@ function consultarCamposAgenda(idCategoriaAgenda)
         type:  'post',
 		success: function(respuesta)
 		{
-			alert(respuesta.toSource());
+			// alert(respuesta.toSource());
         	for (var i = 0; i < respuesta.length; i++) 
         	{
         		if (respuesta[i]['nombreCampoCRM'] == 'ubicacionAgenda') 

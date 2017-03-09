@@ -12,60 +12,60 @@
 
 <script>
 
-    var categoriaagendacampo = '<?php echo (isset($agenda) ? json_encode($agenda->categoriaagendacampo) : "");?>';
-    categoriaagendacampo = (categoriaagendacampo != '' ? JSON.parse(categoriaagendacampo) : '');
+    var agendaasistente = '<?php echo (isset($agenda) ? json_encode($agenda->agendaasistente) : "");?>';
+    agendaasistente = (agendaasistente != '' ? JSON.parse(agendaasistente) : '');
 
-    var valorAgenda = ['','', 0];
+    var valorAgendaAsistente = [0, 0, '', '', 0];
 
     $(document).ready(function(){
 
-      protCampos = new Atributos('protCampos','contenedor_protCampos','categoriaagendacampo');
+      asistente = new Atributos('asistente','contenedor_asistente','agendaasistente');
 
-      protCampos.altura = '35px';
-      protCampos.campoid = 'idAgendaCampo';
-      protCampos.campoEliminacion = 'eliminarAgenda';
+      asistente.altura = '35px';
+      asistente.campoid = 'idAgendaAsistente';
+      asistente.campoEliminacion = 'eliminarAgendaAsistente';
 
-      protCampos.campos   = [
-      'idAgendaCampo',
-      'CampoCRM_idCampoCRM',
-      'nombreCampoCRM',
-      'obligatorioAgendaCampo',
+      asistente.campos   = [
+      'idAgendaAsistente',
+      'Tercero_idAsistente',
+      'nombreAgendaAsistente',
+      'correoElectronicoAgendaAsistente',
       'Agenda_idAgenda'
       ];
 
-      protCampos.etiqueta = [
+      asistente.etiqueta = [
       'input',
       'input',
       'input',
-      'checkbox',
+      'input',
       'input'
       ];
 
-      protCampos.tipo = [
+      asistente.tipo = [
       'hidden',
       'hidden',
       'text',
-      'checkbox',
+      'text',
       'hidden'
       ];
 
-      protCampos.estilo = [
+      asistente.estilo = [
       '',
       '',
       'width: 610px;height:35px;',
-      'width: 150px;height:35px; display:inline-block;',
+      'width: 450px;height:35px;',
       ''
       ];
 
-      protCampos.clase    = ['','','','','','','',''];
-      protCampos.sololectura = [true,true,false,true,true];  
-      protCampos.funciones = ['','','','','',''];
-      protCampos.completar = ['off','off','off','off','off'];
-      protCampos.opciones = ['','','','',''];
-      for(var j=0, k = categoriaagendacampo.length; j < k; j++)
+      asistente.clase    = ['','','','','','','',''];
+      asistente.sololectura = [true,true,false,false,true];  
+      asistente.funciones = ['','','','','',''];
+      asistente.completar = ['off','off','off','off','off'];
+      asistente.opciones = ['','','','',''];
+      for(var j=0, k = agendaasistente.length; j < k; j++)
       {
-        protCampos.agregarCampos(JSON.stringify(categoriaagendacampo[j]),'L');
-        llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
+        asistente.agregarCampos(JSON.stringify(agendaasistente[j]),'L');
+        // llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
       }
 
     });
@@ -215,8 +215,10 @@
           </div>
         </div>
 
+        <br><br><br><br><br><br><br><br><br><br><br>
+
         <div class="form-group">
-          <div class="col-lg-12">
+          <div class="col-md-12">
             <div class="panel panel-primary">
               <div class="panel-heading">Contenido</div>
               <div class="panel-body">
@@ -239,7 +241,7 @@
                           <span class="input-group-addon">
                             <i class="fa fa-pencil-square-o"></i>
                           </span>
-                          {!!Form::textarea('detallesAgenda',null,['class'=>'form-control ckeditor','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
+                          {!!Form::textarea('detallesAgenda',null,['class'=>'form-control','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
                         </div>
                       </div>
                     </div>
@@ -256,8 +258,8 @@
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
                               <div class="col-md-1" style="width: 610px;">Campo</div>
-                              <div class="col-md-1" style="width: 150px;">Obligatorio</div>
-                              <div id="contenedor_protCampos"> 
+                              <div class="col-md-1" style="width: 550px;">Obligatorio</div>
+                              <div id="contenedor_asistente"> 
                               </div>
                             </div>
                           </div>
@@ -272,12 +274,12 @@
                         <div class="form-group" id='test'>
                           <div class="col-sm-12">
                             <div class="row show-grid">
-                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="abrirModalCampos();">
+                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="asistente.agregarCampos(valorAgendaAsistente,'A')">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 610px;">Campo</div>
-                              <div class="col-md-1" style="width: 150px;">Obligatorio</div>
-                              <div id="contenedor_protCampos"> 
+                              <div class="col-md-1" style="width: 310px;">Nombre</div>
+                              <div class="col-md-1" style="width: 150px;">Correo Electrónico</div>
+                              <div id="contenedor_asistente"> 
                               </div>
                             </div>
                           </div>
@@ -307,10 +309,10 @@
   {!! Form::close() !!}
 </div>
 <script>
-  CKEDITOR.replace(('detallesAgenda'), {
-      fullPage: true,
-      allowedContent: true
-    });  
+  // CKEDITOR.replace(('detallesAgenda'), {
+  //     fullPage: true,
+  //     allowedContent: true
+  //   });  
 
   $('#fechaHoraInicioAgenda').datetimepicker(({
       format: "YYYY-MM-DD HH:mm:ss"
