@@ -131,7 +131,23 @@ function consultarCamposAgenda(idCategoriaAgenda)
         			$("#asistentes").css('display','block');
         			$("#liasistentes").css('display','block');
         	}
-    	}
+    	},
+    	error: function(xhr,err)
+    	{ 
+			$("#ubicacionAgenda").css('display','none');
+
+			$("#MovimientoCRM_idMovimientoCRM").css('display','none');
+
+			$("#Tercero_idResponsable").css('display','none');
+
+			$("#porcentajeEjecucionAgenda").css('display','none');
+
+			$("#estadoAgenda").css('display','none');
+
+			$("#liseguimiento").css('display','none');
+			
+			$("#liasistentes").css('display','none');
+        }
 	});
 }
 
@@ -154,6 +170,6 @@ function guardarDatos(){
             },
             error: function(){
                 alert('No se pudo guardar el evento.');
-            }
+            },
         });
 }; 

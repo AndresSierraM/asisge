@@ -46,18 +46,22 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        \App\Agenda::create([
+        $indice = array(
+            'idAgenda' => $request['idAgenda']);
+
+        $data = array(
             'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'],
-            'asuntoAgenda' => ($request['asuntoAgenda'] == '' or $request['asuntoAgenda'] == 0 ? NULL : $request['asuntoAgenda']),
-            'fechaHoraInicioAgenda' => ($request['fechaHoraInicioAgenda'] == '' or $request['fechaHoraInicioAgenda'] == 0 ? NULL : $request['fechaHoraInicioAgenda']),
-            'fechaHoraFinAgenda' => ($request['fechaHoraFinAgenda'] == '' or $request['fechaHoraFinAgenda'] == 0 ? NULL : $request['fechaHoraFinAgenda']),
+            'asuntoAgenda' => ($request['asuntoAgenda'] == ''  ? NULL : $request['asuntoAgenda']),
+            'fechaHoraInicioAgenda' => ($request['fechaHoraInicioAgenda'] == '' ? NULL : $request['fechaHoraInicioAgenda']),
+            'fechaHoraFinAgenda' => ($request['fechaHoraFinAgenda'] == '' ? NULL : $request['fechaHoraFinAgenda']),
             'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] == '' or $request['Tercero_idSupervisor'] == 0 ? NULL : $request['Tercero_idSupervisor']),
             'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' or $request['Tercero_idResponsable'] == 0 ? NULL : $request['Tercero_idResponsable']),
             'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'] == '' or $request['MovimientoCRM_idMovimientoCRM'] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM']),
-            'ubicacionAgenda' => ($request['ubicacionAgenda'] == '' or $request['ubicacionAgenda'] == 0 ? NULL : $request['ubicacionAgenda']),
-            'porcentajeEjecucionAgenda' => ($request['porcentajeEjecucionAgenda'] == '' or $request['porcentajeEjecucionAgenda'] == 0 ? NULL : $request['porcentajeEjecucionAgenda']),
-            'detallesAgenda' => ($request['detallesAgenda'] == '' or $request['detallesAgenda'] == 0 ? NULL : $request['detallesAgenda'])
-        ]);
+            'ubicacionAgenda' => ($request['ubicacionAgenda'] == '' ? NULL : $request['ubicacionAgenda']),
+            'porcentajeEjecucionAgenda' => ($request['porcentajeEjecucionAgenda'] == '' ? NULL : $request['porcentajeEjecucionAgenda']),
+            'detallesAgenda' => ($request['detallesAgenda'] == '' ? NULL : $request['detallesAgenda']));
+
+        $preguntas = \App\Agenda::updateOrCreate($indice, $data);
 
         if ($request['idAgenda'] != '') 
         {

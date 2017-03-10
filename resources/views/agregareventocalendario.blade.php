@@ -5,10 +5,6 @@
 @include('alerts.request')
 
 {!!Html::script('js/agenda.js')!!}
-<!-- Librerías para el selector de colores (color Picker) -->
-{!! Html::style('assets/colorpicker/css/bootstrap-colorpicker.min.css'); !!}
-{!! Html::script('assets/colorpicker/js/bootstrap-colorpicker.js'); !!}
-
 
 <script>
 
@@ -75,12 +71,12 @@
 
    @if(isset($agenda))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-      {!!Form::model($agenda,['route'=>['agenda.destroy',$agenda->idagenda],'method'=>'DELETE'])!!}
+      {!!Form::model($agenda,['route'=>['agenda.destroy',$agenda->idAgenda],'method'=>'DELETE'])!!}
     @else
-      {!!Form::model($agenda,['route'=>['agenda.update',$agenda->idagenda],'method'=>'PUT'])!!}
+      {!!Form::model($agenda,['route'=>['agenda.update',$agenda->idAgenda],'method'=>'PUT'])!!}
     @endif
   @else
-      {!!Form::open(['route'=>'agenda.store','method'=>'POST', 'action' => 'AgendaController@store', 'id' => 'agenda' , 'files' => true])!!}
+      {!!Form::open(['route'=>'agenda.store','method'=>'POST', 'action' => 'AgendaController@store', 'id' => 'agenda'])!!}
   @endif
 
 
@@ -97,7 +93,6 @@
               </span>
               {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda->CategoriaAgenda_idCategoriaAgenda : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
             {!!Form::hidden('idAgenda', null, array('id' => 'idAgenda')) !!}
-            {!!Form::hidden('eliminarAgenda', null, array('id' => 'eliminarAgenda')) !!}
           </div>
         </div>
       </div>
@@ -259,7 +254,7 @@
                               </div>
                               <div class="col-md-1" style="width: 610px;">Campo</div>
                               <div class="col-md-1" style="width: 550px;">Obligatorio</div>
-                              <div id="contenedor_asistente"> 
+                              <div id="contenedor_seguimiento"> 
                               </div>
                             </div>
                           </div>
