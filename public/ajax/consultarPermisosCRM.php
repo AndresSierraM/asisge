@@ -18,9 +18,6 @@ SELECT
     aprobarDocumentoCRMRol
 From
   documentocrm 
-  Inner Join documentocrmcompania
-    On documentocrmcompania.DocumentoCRM_idDocumentoCRM =
-    documentocrm.idDocumentoCRM 
   Inner Join documentocrmrol
     On documentocrmrol.DocumentoCRM_idDocumentoCRM = documentocrm.idDocumentoCRM
   Inner Join rol
@@ -29,8 +26,7 @@ From
     On users.Rol_idRol = rol.idRol
 Where
   users.id = '.\Session::get("idUsuario").' And
-  documentocrmcompania.Compania_idCompania = '.\Session::get("idCompania"). 
-  ' AND idDocumentoCRM = "'.$idDoc.'"');
+  idDocumentoCRM = "'.$idDoc.'"');
 
 return($permiso);
 }

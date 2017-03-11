@@ -1,5 +1,11 @@
 <?php 
-
+$idEstadoDefault = null;
+$nombreEstadoDefault = '';
+foreach ($estado as $key => $value) {
+	$idEstadoDefault = $key;
+	$nombreEstadoDefault = $value;
+	break;
+}
 					              
 function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 {
@@ -454,8 +460,8 @@ $fechahora = Carbon\Carbon::now();
 					              	@if(mostrarCampo($arrayCampos, 'Tercero_idSolicitante', $rolUsuario,'select') == '')
 					              		{!!Form::select('Tercero_idSolicitante',$solicitante, (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : $tercero['idTercero']),["class" => "chosen-select form-control"])!!}
 					              	@else
-					        			{!!Form::hidden('Tercero_idSolicitante', (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : null), array('id' => 'Tercero_idSolicitante'))!!}
-										{!!Form::text('nombreSolicitante',(isset($movimientocrm->TerceroSolicitante->nombreCompletoTercero) ? $movimientocrm->TerceroSolicitante->nombreCompletoTercero : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+					        			{!!Form::hidden('Tercero_idSolicitante', (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : $tercero['idTercero']), array('id' => 'Tercero_idSolicitante'))!!}
+										{!!Form::text('nombreSolicitante',(isset($movimientocrm->TerceroSolicitante->nombreCompletoTercero) ? $movimientocrm->TerceroSolicitante->nombreCompletoTercero : $tercero['nombreCompletoTercero']),['readonly'=>'readonly', 'class'=>'form-control'])!!}
 									@endif
 
 				              	
@@ -584,8 +590,9 @@ $fechahora = Carbon\Carbon::now();
 					              	@if(mostrarCampo($arrayCampos, 'EstadoCRM_idEstadoCRM', $rolUsuario,'select') == '')
 					              		{!!Form::select('EstadoCRM_idEstadoCRM',$estado, (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : null),["class" => "chosen-select form-control"])!!}
 					              	@else
-					        			{!!Form::hidden('EstadoCRM_idEstadoCRM', (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : null), array('id' => 'EstadoCRM_idEstadoCRM'))!!}
-										{!!Form::text('nombreEstadoCRM',(isset($movimientocrm->EstadoCRM->nombreEstadoCRM) ? $movimientocrm->EstadoCRM->nombreEstadoCRM : 'N/A'),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+
+					        			{!!Form::hidden('EstadoCRM_idEstadoCRM', (isset($movimientocrm) ? $movimientocrm->EstadoCRM_idEstadoCRM : $idEstadoDefault), array('id' => 'EstadoCRM_idEstadoCRM'))!!}
+										{!!Form::text('nombreEstadoCRM',(isset($movimientocrm->EstadoCRM->nombreEstadoCRM) ? $movimientocrm->EstadoCRM->nombreEstadoCRM : $nombreEstadoDefault),['readonly'=>'readonly', 'class'=>'form-control'])!!}
 									@endif
 					              	
 

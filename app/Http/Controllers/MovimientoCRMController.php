@@ -128,15 +128,15 @@ class MovimientoCRMController extends Controller
             'diasEstimadosSolucionMovimientoCRM' => $request['diasEstimadosSolucionMovimientoCRM'],
             'diasRealesSolucionMovimientoCRM' => $request['diasRealesSolucionMovimientoCRM'],
             'valorMovimientoCRM' => $request['valorMovimientoCRM'],
-            'Tercero_idSolicitante' => $request['Tercero_idSolicitante'],
-            'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
-            'Tercero_idAsesor' => $request['Tercero_idAsesor'],
-            'CategoriaCRM_idCategoriaCRM' => $request['CategoriaCRM_idCategoriaCRM'],
-            'DocumentoCRM_idDocumentoCRM' => $request['DocumentoCRM_idDocumentoCRM'],
-            'LineaNegocio_idLineaNegocio' => $request['LineaNegocio_idLineaNegocio'],
-            'OrigenCRM_idOrigenCRM' => $request['OrigenCRM_idOrigenCRM'],
-            'EstadoCRM_idEstadoCRM' => $request['EstadoCRM_idEstadoCRM'],
-            'AcuerdoServicio_idAcuerdoServicio' => $request['AcuerdoServicio_idAcuerdoServicio'],
+            'Tercero_idSolicitante' => ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null),
+            'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
+            'Tercero_idAsesor' => ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null),
+            'CategoriaCRM_idCategoriaCRM' => ($request['CategoriaCRM_idCategoriaCRM'] != '' ? $request['CategoriaCRM_idCategoriaCRM'] : null),
+            'DocumentoCRM_idDocumentoCRM' => ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null),
+            'LineaNegocio_idLineaNegocio' => ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null),
+            'OrigenCRM_idOrigenCRM' => ($request['OrigenCRM_idOrigenCRM'] != '' ? $request['OrigenCRM_idOrigenCRM'] : null),
+            'EstadoCRM_idEstadoCRM' => ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null),
+            'AcuerdoServicio_idAcuerdoServicio' => ($request['AcuerdoServicio_idAcuerdoServicio'] != '' ? $request['AcuerdoServicio_idAcuerdoServicio'] : null),
             'detallesMovimientoCRM' => $request['detallesMovimientoCRM'],
             'solucionMovimientoCRM' => $request['solucionMovimientoCRM'],
             'Compania_idCompania' => \Session::get('idCompania')
@@ -150,7 +150,7 @@ class MovimientoCRMController extends Controller
         $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
         $arrayImage = explode(",", $arrayImage);
         $ruta = '';
-        for ($i=0; $i <count($arrayImage) ; $i++) 
+        for ($i=0; $i < count($arrayImage) ; $i++) 
         { 
             if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
             {
@@ -167,12 +167,12 @@ class MovimientoCRMController extends Controller
                 {
                     echo "No existe el archivo";
                 }
+                \App\MovimientoCRMArchivo::create([
+                'MovimientoCRM_idMovimientoCRM' => $movimientocrm->idMovimientoCRM,
+                'rutaMovimientoCRMArchivo' => $ruta
+               ]);
             }
 
-            \App\MovimientoCRMArchivo::create([
-            'MovimientoCRM_idMovimientoCRM' => $movimientocrm->idMovimientoCRM,
-            'rutaMovimientoCRMArchivo' => $ruta
-           ]);
         }
 
         // en esta parte es el guardado de la multiregistro VACANTES
@@ -193,21 +193,22 @@ class MovimientoCRMController extends Controller
 
         //********************************
         //
-        // Envio de Correo con Encuesta
+        // Envio de Correo con movimiento crm
         //
         //********************************
         // consultamos el correo del usuario logueado y los correos de los usuarios aprobadores de este documento
-        $correos = DB::select('
-            SELECT  correoElectronicoTercero
+        $correos = DB::select(
+            ($request['Tercero_idSolicitante'] != '' ? 
+                'SELECT  correoElectronicoTercero
                 FROM    users U 
                 LEFT JOIN tercero T 
                 ON U.Tercero_idTercero = T.idTercero
-                WHERE   (U.id = '.$request['Tercero_idSolicitante'].' '.
-                        ($request['Tercero_idAsesor'] != '' ? ' or U.id = '.$request['Tercero_idAsesor'] : '').
+                WHERE   (T.idTercero = '.$request['Tercero_idSolicitante'].' '.
+                        ($request['Tercero_idAsesor'] != '' ? ' or T.idTercero = '.$request['Tercero_idAsesor'] : '').
                         ') and
                         correoElectronicoTercero != "" 
-            UNION DISTINCT
-            SELECT  correoElectronicoTercero 
+            UNION DISTINCT' : '').
+            ' SELECT  correoElectronicoTercero 
                 FROM documentocrmrol DR
                 LEFT JOIN users U
                 ON DR.Rol_idRol = U.Rol_idRol
@@ -215,7 +216,7 @@ class MovimientoCRMController extends Controller
                 ON U.Tercero_idTercero = T.idTercero
                 WHERE   aprobarDocumentoCRMRol = 1 and 
                         DocumentoCRM_idDocumentoCRM = '.$request['DocumentoCRM_idDocumentoCRM'].' and 
-                        U.id IS NOT NULL and 
+                        T.idTercero IS NOT NULL and 
                         correoElectronicoTercero IS NOT NULL and 
                         correoElectronicoTercero != "" and 
                         U.Compania_idCompania = '.\Session::get("idCompania"));
@@ -380,6 +381,16 @@ class MovimientoCRMController extends Controller
 
         $movimientocrm = \App\MovimientoCRM::find($id);
         $movimientocrm->fill($request->all());
+        $movimientocrm->Tercero_idSolicitante = ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null);
+        $movimientocrm->Tercero_idSupervisor = ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null);
+        $movimientocrm->Tercero_idAsesor = ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null);
+        $movimientocrm->CategoriaCRM_idCategoriaCRM = ($request['CategoriaCRM_idCategoriaCRM'] != '' ? $request['CategoriaCRM_idCategoriaCRM'] : null);
+        $movimientocrm->DocumentoCRM_idDocumentoCRM = ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null);
+        $movimientocrm->LineaNegocio_idLineaNegocio = ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null);
+        $movimientocrm->OrigenCRM_idOrigenCRM = ($request['OrigenCRM_idOrigenCRM'] != '' ? $request['OrigenCRM_idOrigenCRM'] : null);
+        $movimientocrm->EstadoCRM_idEstadoCRM = ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null);
+        $movimientocrm->AcuerdoServicio_idAcuerdoServicio = ($request['AcuerdoServicio_idAcuerdoServicio'] != '' ? $request['AcuerdoServicio_idAcuerdoServicio'] : null);
+
         $movimientocrm->save();
 
         $this->grabarDetalle($id, $request);
@@ -446,29 +457,18 @@ class MovimientoCRMController extends Controller
             $guardar = \App\MovimientoCRMCargos::updateOrCreate($indice, $data);
         } 
 
-
+        // por Solicitud de Juan Erasmo, al modificar un documento solo se envia correo
+        // al asesor y al solicitante, se quitó la consulta de los supervisores
         $correos = DB::select('
             SELECT  correoElectronicoTercero
                 FROM    users U 
                 LEFT JOIN tercero T 
                 ON U.Tercero_idTercero = T.idTercero
-                WHERE   (U.id = '.$request['Tercero_idSolicitante'].' '.
-                        ($request['Tercero_idAsesor'] != '' ? ' or U.id = '.$request['Tercero_idAsesor'] : '').
+                WHERE   (T.idTercero = '.$request['Tercero_idSolicitante'].' '.
+                        ($request['Tercero_idAsesor'] != '' ? ' or T.idTercero = '.$request['Tercero_idAsesor'] : '').
                         ') and
-                        correoElectronicoTercero != "" 
-            UNION DISTINCT
-            SELECT  correoElectronicoTercero 
-                FROM documentocrmrol DR
-                LEFT JOIN users U
-                ON DR.Rol_idRol = U.Rol_idRol
-                LEFT JOIN  tercero T
-                ON U.Tercero_idTercero = T.idTercero
-                WHERE   aprobarDocumentoCRMRol = 1 and 
-                        DocumentoCRM_idDocumentoCRM = '.$request['DocumentoCRM_idDocumentoCRM'].' and 
-                        U.id IS NOT NULL and 
-                        correoElectronicoTercero IS NOT NULL and 
-                        correoElectronicoTercero != ""  and 
-                        U.Compania_idCompania = '.\Session::get("idCompania"));
+                        correoElectronicoTercero != ""');
+       
         $datos['correos'] = array();
         for($c = 0; $c < count($correos); $c++)
         {
@@ -487,7 +487,7 @@ class MovimientoCRMController extends Controller
             {
                 $msj->to($datos['correos']);
                 $msj->subject($datos['asunto']);
-                // $msj->attach(public_path().'/plantrabajo.html');
+                // $msj->attach(public_path().'/archivo.html');
             });
         }
         
@@ -509,6 +509,24 @@ class MovimientoCRMController extends Controller
 
     public function grabarDetalle($id, $request)
     {
+
+        $diasEstimados = DB::update(
+            "UPDATE
+             movimientocrm 
+            SET diasEstimadosSolucionMovimientoCRM = HOUR(SEC_TO_TIME(TIMESTAMPDIFF(SECOND, fechaSolicitudMovimientoCRM, fechaEstimadaSolucionMovimientoCRM)))/24 
+            WHERE fechaEstimadaSolucionMovimientoCRM != '0000-00-00 00:00:00' AND 
+                idMovimientoCRM = ".$id);
+
+        $diasReales = DB::update(
+            "UPDATE
+             movimientocrm 
+            LEFT JOIN estadocrm ON EstadoCRM_idEstadoCRM = idEstadoCRM
+            SET fechaRealSolucionMovimientoCRM = NOW(),
+                diasRealesSolucionMovimientoCRM = HOUR(SEC_TO_TIME(TIMESTAMPDIFF(SECOND, fechaSolicitudMovimientoCRM, NOW())))/24 
+            WHERE tipoEstadoCRM IN ('Exitoso','Fallido','Cancelado') AND 
+                diasRealesSolucionMovimientoCRM = 0 AND 
+                idMovimientoCRM = ".$id);
+
         $contadorAsistente = count($request['nombreMovimientoCRMAsistente']);
         for($i = 0; $i < $contadorAsistente; $i++)
         {
@@ -556,8 +574,8 @@ class MovimientoCRMController extends Controller
                 FROM    users U 
                 LEFT JOIN tercero T 
                 ON U.Tercero_idTercero = T.idTercero
-                WHERE   (U.id = '.$datosmovimiento[0]['Tercero_idSolicitante'].' '.
-                        ($datosmovimiento[0]['Tercero_idAsesor'] != '' ? ' or U.id = '.$datosmovimiento[0]['Tercero_idAsesor'] : '').
+                WHERE   (T.idTercero = '.$datosmovimiento[0]['Tercero_idSolicitante'].' '.
+                        ($datosmovimiento[0]['Tercero_idAsesor'] != '' ? ' or T.idTercero = '.$datosmovimiento[0]['Tercero_idAsesor'] : '').
                         ') and
                         correoElectronicoTercero != "" 
             UNION DISTINCT
@@ -569,7 +587,7 @@ class MovimientoCRMController extends Controller
                 ON U.Tercero_idTercero = T.idTercero
                 WHERE   aprobarDocumentoCRMRol = 1 and 
                         DocumentoCRM_idDocumentoCRM = '.$datosmovimiento[0]['DocumentoCRM_idDocumentoCRM'].' and 
-                        U.id IS NOT NULL and 
+                        T.idTercero IS NOT NULL and 
                         correoElectronicoTercero IS NOT NULL and 
                         correoElectronicoTercero != ""  and 
                         U.Compania_idCompania = '.\Session::get("idCompania"));

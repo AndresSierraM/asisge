@@ -36,10 +36,10 @@ class PresupuestoController extends Controller
     public function create()
     {
         $documentocrm = \App\DocumentoCRM::All()->lists('nombreDocumentoCRM','idDocumentoCRM');
-        $idLineaNegocio = \App\LineaNegocio::All()->lists('idLineaNegocio');
-        $nombreLineaNegocio = \App\LineaNegocio::All()->lists('nombreLineaNegocio');
-        $idTercero = \App\Tercero::where("tipoTercero","like","%03%")->lists('idTercero');
-        $nombreTercero = \App\Tercero::where("tipoTercero","like","%03%")->lists('nombreCompletoTercero');
+        // $idLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idLineaNegocio');
+        // $nombreLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreLineaNegocio');
+        $idTercero = \App\Tercero::where("tipoTercero","like","%03%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idTercero');
+        $nombreTercero = \App\Tercero::where("tipoTercero","like","%03%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreCompletoTercero');
         return view('presupuesto',compact('documentocrm','idLineaNegocio','nombreLineaNegocio','idTercero','nombreTercero'));
     }
 

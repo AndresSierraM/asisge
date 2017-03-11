@@ -18,7 +18,8 @@
 <?php 
 
 $consulta = DB::Select('Select idLineaNegocio
-						from lineanegocio');
+						from lineanegocio
+						Where Compania_idCompania = '.\Session::get("idCompania"));
 
 
 $campos = '';
@@ -31,7 +32,7 @@ for ($i=0; $i <count($consulta) ; $i++)
 }
 
 $campos = substr($campos, 0,strlen($campos)-1);
-
+echo $campos;
 $id = isset($presupuesto->idPresupuesto) ? $presupuesto->idPresupuesto : 0; 
 
 
@@ -39,7 +40,7 @@ $consultadetalle = DB::Select('SELECT
 Tercero_idVendedor, '.$campos.' 
 FROM presupuestodetalle
 left join lineanegocio on presupuestodetalle.LineaNegocio_idLineaNegocio = lineanegocio.idLineaNegocio
-where Presupuesto_idPresupuesto = '.$id.'
+where Presupuesto_idPresupuesto = '.$id.' and lineanegocio.Compania_idCompania = '.\Session::get("idCompania").' 
 group by Tercero_idVendedor');
 ?>
 
@@ -63,7 +64,10 @@ group by Tercero_idVendedor');
 
     <?php
 	
-	$lineaNegocio = DB::Select('SELECT idLineaNegocio, nombreLineaNegocio from lineanegocio');    
+	$lineaNegocio = DB::Select(
+		'SELECT idLineaNegocio, nombreLineaNegocio 
+		from lineanegocio
+		Where Compania_idCompania = '.\Session::get("idCompania"));    
 
     $campos = "presupuesto.campos   = ['Tercero_idVendedor',";
     $etiqueta = "presupuesto.etiqueta = ['select',";
