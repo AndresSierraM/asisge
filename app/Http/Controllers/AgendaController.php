@@ -22,8 +22,10 @@ class AgendaController extends Controller
     public function indexAgendaEvento()
     {
         $categoriaagenda = \App\CategoriaAgenda::All()->lists('nombreCategoriaAgenda','idCategoriaAgenda');
+        $casocrm = \App\MovimientoCRM::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('asuntoMovimientoCRM','idMovimientoCRM');
         $supervisor = \App\Tercero::where('tipoTercero','like','%*01*%')->where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        return view('agregareventocalendario',compact('categoriaagenda','supervisor'));
+        $responsable = \App\Tercero::where('tipoTercero','like','%*01*%')->where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        return view('agregareventocalendario',compact('categoriaagenda','supervisor','casocrm','responsable'));
     }
 
     /**
@@ -44,28 +46,32 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        \App\Agenda::create([
+        $indice = array(
+            'idAgenda' => $request['idAgenda']);
+
+        $data = array(
             'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'],
-            'asuntoAgenda' => $request['asuntoAgenda'],
-            'fechaHoraInicioAgenda' => $request['fechaHoraInicioAgenda'],
-            'fechaHoraFinAgenda' => $request['fechaHoraFinAgenda'],
-            'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
+            'asuntoAgenda' => ($request['asuntoAgenda'] == ''  ? NULL : $request['asuntoAgenda']),
+            'fechaHoraInicioAgenda' => ($request['fechaHoraInicioAgenda'] == '' ? NULL : $request['fechaHoraInicioAgenda']),
+            'fechaHoraFinAgenda' => ($request['fechaHoraFinAgenda'] == '' ? NULL : $request['fechaHoraFinAgenda']),
+            'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] == '' or $request['Tercero_idSupervisor'] == 0 ? NULL : $request['Tercero_idSupervisor']),
             'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' or $request['Tercero_idResponsable'] == 0 ? NULL : $request['Tercero_idResponsable']),
-            'MovimientoCRM_idMovimientoCRM' => $request['MovimientoCRM_idMovimientoCRM'],
-            'ubicacionAgenda' => $request['ubicacionAgenda'],
-            'porcentajeEjecucionAgenda' => $request['porcentajeEjecucionAgenda'],
-            'detallesAgenda' => $request['detallesAgenda']
-        ]);
+            'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'] == '' or $request['MovimientoCRM_idMovimientoCRM'] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM']),
+            'ubicacionAgenda' => ($request['ubicacionAgenda'] == '' ? NULL : $request['ubicacionAgenda']),
+            'porcentajeEjecucionAgenda' => ($request['porcentajeEjecucionAgenda'] == '' ? NULL : $request['porcentajeEjecucionAgenda']),
+            'detallesAgenda' => ($request['detallesAgenda'] == '' ? NULL : $request['detallesAgenda']));
 
-        $agenda = \App\Agenda::All()->last();
+        $preguntas = \App\Agenda::updateOrCreate($indice, $data);
 
-        // $this->grabarDetalle($agenda->idAgenda,$request);
-
-        if($request->ajax()) 
+        if ($request['idAgenda'] != '') 
         {
-            return response()->json('Evento creado correctamente');
+            $this->grabarDetalle($request['idAgenda'],$request);
         }
-        
+        else
+        {
+            $agenda = \App\Agenda::All()->last();
+            $this->grabarDetalle($agenda->idAgenda,$request);
+        }
     }
 
     /**
@@ -117,25 +123,45 @@ class AgendaController extends Controller
 
     public function grabarDetalle($id, $request)
     {
-        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
-        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
-        $idsEliminar = explode(',', $request['eliminarCategoriaAgenda']);
-        \App\CategoriaAgendaCampo::whereIn('idCategoriaAgendaCampo',$idsEliminar)->delete();
+        $idsEliminar = explode(',', $request['eliminarAgendaSeguimiento']);
+        \App\AgendaSeguimiento::whereIn('idAgendaSeguimiento',$idsEliminar)->delete();
 
-        $contador = count($request['idCategoriaAgendaCampo']);
+        $contador = count($request['idAgendaSeguimiento']);
 
         for($i = 0; $i < $contador; $i++)
         {
 
             $indice = array(
-             'idCategoriaAgendaCampo' => $request['idCategoriaAgendaCampo'][$i]);
+             'idAgendaSeguimiento' => $request['idAgendaSeguimiento'][$i]);
 
             $data = array(
-            'CategoriaAgenda_idCategoriaAgenda' => $id,
-            'CampoCRM_idCampoCRM' => $request['CampoCRM_idCampoCRM'][$i],
-            'obligatorioCategoriaAgendaCampo' => $request['obligatorioCategoriaAgendaCampo'][$i]);
+            'Agenda_idAgenda' => $id,
+            'fechaHoraAgendaSeguimiento' => $request['fechaHoraAgendaSeguimiento'][$i],
+            'Users_idCrea' => \Session::get('idUsuario'),
+            'detallesAgendaSeguimiento' => $request['detallesAgendaSeguimiento'][$i]);
 
-             $preguntas = \App\CategoriaAgendaCampo::updateOrCreate($indice, $data);
+             $preguntas = \App\AgendaSeguimiento::updateOrCreate($indice, $data);
+
+        }
+
+        $idsEliminar = explode(',', $request['eliminarAgendaAsistente']);
+        \App\AgendaAsistente::whereIn('idAgendaSeguimiento',$idsEliminar)->delete();
+
+        $contador = count($request['idAgendaAsistente']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+
+            $indice = array(
+             'idAgendaAsistente' => $request['idAgendaAsistente'][$i]);
+
+            $data = array(
+            'Agenda_idAgenda' => $id,
+            'Tercero_idAsistente' => ($request['Tercero_idAsistente'][$i] == '' or $request['Tercero_idAsistente'][$i] == 0 ? NULL : $request['Tercero_idAsistente'][$i]),
+            'nombreAgendaAsistente' => ($request['nombreAgendaAsistente'][$i] == '' ? NULL : $request['nombreAgendaAsistente'][$i]),
+            'correoElectronicoAgendaAsistente' => ($request['correoElectronicoAgendaAsistente'][$i] == '' ? NULL : $request['correoElectronicoAgendaAsistente'][$i]));
+
+             $preguntas = \App\AgendaAsistente::updateOrCreate($indice, $data);
 
         }
 

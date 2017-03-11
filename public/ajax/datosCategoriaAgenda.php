@@ -29,7 +29,7 @@
         $row[$key][] = $value['idCategoriaAgenda'];
         $row[$key][] = $value['codigoCategoriaAgenda'];
         $row[$key][] = $value['nombreCategoriaAgenda'];
-        $row[$key][] = $value['abreviaturaCategoriaAgenda'];    
+        $row[$key][] = '<div style="background-color:'.$value['colorCategoriaAgenda'].'">'.$value['colorCategoriaAgenda'].'</div>';  
     }
 
     $output['aaData'] = $row;

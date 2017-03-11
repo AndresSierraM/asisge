@@ -62,7 +62,7 @@
 							<tr>
 								<td>{{$dato->actividadProgramaDetalle}}</td>
 								<td>{{$dato->nombreCompletoTercero}}</td>
-								<td>{{$dato->nombreDocumento}}</td>
+								<td>{{$dato->nombreDocumentoSoporte}}</td>
 								<td>{{$dato->fechaPlaneadaProgramaDetalle}}</td>
 								<td>{{$dato->recursoPlaneadoProgramaDetalle}}</td>
 								<td>{{$dato->fechaEjecucionProgramaDetalle}}</td>

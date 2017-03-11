@@ -62,16 +62,16 @@
 			productos.clase = ['','',''];
 			productos.sololectura = [false,false,false];
 
-			examen = new Atributos('examen','contenedor_examen','examen');
-			examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
-			examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
-			examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
-			examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
-			examen.clase = ['','','','','',''];
-			examen.sololectura = [false,false,false,false,false,false];
-			examen.completar = ['off','off','off','off','off','off'];
-			examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
-			examen.funciones  = ['','','','','',''];
+			// examen = new Atributos('examen','contenedor_examen','examen');
+			// examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
+			// examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
+			// examen.tipo = ['hidden','','checkbox','checkbox','checkbox',''];
+			// examen.estilo = ['','width: 300px;height:35px;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 90px;height:33px;display:inline-block;','width: 300px;height:35px;'];
+			// examen.clase = ['','','','','',''];
+			// examen.sololectura = [false,false,false,false,false,false];
+			// examen.completar = ['off','off','off','off','off','off'];
+			// examen.opciones = ['',listaTarea,'','','',frencuenciaMedicion];
+			// examen.funciones  = ['','','','','',''];
 
 			// archivo = new Atributos('archivo','contenedor_archivo','archivo');
 			// archivo.campos = ['idTerceroArchivo', 'tituloTerceroArchivo','fechaTerceroArchivo','rutaTerceroArchivo'];
@@ -573,7 +573,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('estadoCivilTerceroInformacion',
-															array('CASADO'=>'Casado','SOLTERO'=>'Soltero'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->estadoCivilTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil",'style'=>'width:340px;'])!!}
+															array('CASADO'=>'Casado','SOLTERO'=>'Soltero(a)','ULIBRE'=>'Unión libre','DIVORCIADO'=>'Divorciado(a)','VIUDO'=>'Viudo(a)'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->estadoCivilTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
@@ -760,7 +760,8 @@
 											</div>
 										</div>
 									</div>
-									<div id="pestanaExamenes" class="panel panel-default">
+									<!-- Se quita esta multiregistro  ya que es un campo que ya están en cargos / perfiles -->
+									<!-- <div id="pestanaExamenes" class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
 												<a data-toggle="collapse" data-parent="#accordion" href="#examen">Examenes M&eacute;dicos Requeridos</a>
@@ -786,7 +787,7 @@
 												</div>
 											</div>
 										</div>
-									</div>
+									</div> -->
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">

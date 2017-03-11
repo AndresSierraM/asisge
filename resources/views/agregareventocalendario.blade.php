@@ -4,68 +4,64 @@
 @section('content')
 @include('alerts.request')
 
-{!!Html::script('js/modalagenda.js')!!}
-<!-- Librerías para el selector de colores (color Picker) -->
-{!! Html::style('assets/colorpicker/css/bootstrap-colorpicker.min.css'); !!}
-{!! Html::script('assets/colorpicker/js/bootstrap-colorpicker.js'); !!}
-
+{!!Html::script('js/agenda.js')!!}
 
 <script>
 
-    var categoriaagendacampo = '<?php echo (isset($agenda) ? json_encode($agenda->categoriaagendacampo) : "");?>';
-    categoriaagendacampo = (categoriaagendacampo != '' ? JSON.parse(categoriaagendacampo) : '');
+    var agendaasistente = '<?php echo (isset($agenda) ? json_encode($agenda->agendaasistente) : "");?>';
+    agendaasistente = (agendaasistente != '' ? JSON.parse(agendaasistente) : '');
 
-    var valorAgenda = ['','', 0];
+    var valorAgendaAsistente = [0, 0, '', '', 0];
 
     $(document).ready(function(){
 
-      protCampos = new Atributos('protCampos','contenedor_protCampos','categoriaagendacampo');
+      asistente = new Atributos('asistente','contenedor_asistente','agendaasistente');
 
-      protCampos.altura = '35px';
-      protCampos.campoid = 'idAgendaCampo';
-      protCampos.campoEliminacion = 'eliminarAgenda';
+      asistente.altura = '35px';
+      asistente.campoid = 'idAgendaAsistente';
+      asistente.campoEliminacion = 'eliminarAgendaAsistente';
 
-      protCampos.campos   = [
-      'idAgendaCampo',
-      'CampoCRM_idCampoCRM',
-      'nombreCampoCRM',
-      'obligatorioAgendaCampo',
+      asistente.campos   = [
+      'idAgendaAsistente',
+      'Tercero_idAsistente',
+      'nombreAgendaAsistente',
+      'correoElectronicoAgendaAsistente',
       'Agenda_idAgenda'
       ];
 
-      protCampos.etiqueta = [
+      asistente.etiqueta = [
       'input',
       'input',
       'input',
-      'checkbox',
+      'input',
       'input'
       ];
 
-      protCampos.tipo = [
+      asistente.tipo = [
       'hidden',
       'hidden',
       'text',
-      'checkbox',
+      'text',
       'hidden'
       ];
 
-      protCampos.estilo = [
+      asistente.estilo = [
       '',
       '',
       'width: 610px;height:35px;',
-      'width: 150px;height:35px; display:inline-block;',
+      'width: 450px;height:35px;',
       ''
       ];
 
-      protCampos.clase    = ['','','','','','','',''];
-      protCampos.sololectura = [true,true,false,true,true];  
-      protCampos.funciones = ['','','','','',''];
-      protCampos.completar = ['off','off','off','off','off'];
-      protCampos.opciones = ['','','','',''];
-      for(var j=0, k = categoriaagendacampo.length; j < k; j++)
+      asistente.clase    = ['','','','','','','',''];
+      asistente.sololectura = [true,true,false,false,true];  
+      asistente.funciones = ['','','','','',''];
+      asistente.completar = ['off','off','off','off','off'];
+      asistente.opciones = ['','','','',''];
+      for(var j=0, k = agendaasistente.length; j < k; j++)
       {
-        protCampos.agregarCampos(JSON.stringify(categoriaagendacampo[j]),'L');
-        llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
+        asistente.agregarCampos(JSON.stringify(agendaasistente[j]),'L');
+        // llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
       }
 
     });
@@ -75,12 +71,12 @@
 
    @if(isset($agenda))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-      {!!Form::model($agenda,['route'=>['agenda.destroy',$agenda->idagenda],'method'=>'DELETE'])!!}
+      {!!Form::model($agenda,['route'=>['agenda.destroy',$agenda->idAgenda],'method'=>'DELETE'])!!}
     @else
-      {!!Form::model($agenda,['route'=>['agenda.update',$agenda->idagenda],'method'=>'PUT'])!!}
+      {!!Form::model($agenda,['route'=>['agenda.update',$agenda->idAgenda],'method'=>'PUT'])!!}
     @endif
   @else
-      {!!Form::open(['route'=>'agenda.store','method'=>'POST', 'action' => 'AgendaController@store', 'id' => 'agenda' , 'files' => true])!!}
+      {!!Form::open(['route'=>'agenda.store','method'=>'POST', 'action' => 'AgendaController@store', 'id' => 'agenda'])!!}
   @endif
 
 
@@ -95,9 +91,8 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda->CategoriaAgenda_idCategoriaAgenda : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo"])!!}
+              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda->CategoriaAgenda_idCategoriaAgenda : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
             {!!Form::hidden('idAgenda', null, array('id' => 'idAgenda')) !!}
-            {!!Form::hidden('eliminarAgenda', null, array('id' => 'eliminarAgenda')) !!}
           </div>
         </div>
       </div>
@@ -147,16 +142,78 @@
               <span class="input-group-addon">
                 <i class="fa fa-user"></i>
               </span>
-              {!!Form::select('Tercero_idSupervisor',$supervisor, (isset($agenda) ? $agenda->Tercero_idSupervisor : 0),["class" => "form-control", "placeholder" =>"Seleccione el supervisor"])!!}
+              {!!Form::select('Tercero_idSupervisor',$supervisor, (isset($agenda) ? $agenda->Tercero_idSupervisor : 0),["class" => "form-control", "placeholder" =>"Seleccione el supervisor"])!!}  
           </div>
         </div>
       </div>
 
 
-      <br><br><br>
+      <br><br><br><br><br>
+
+      <div class="form-group" id='MovimientoCRM_idMovimientoCRM' style='display:none;'>
+          {!!Form::label('MovimientoCRM_idMovimientoCRM', 'Caso CRM', array('class' => 'col-sm-2 control-label')) !!}
+        <div class="col-sm-10">
+          <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-bars"></i>
+              </span>
+              {!!Form::select('MovimientoCRM_idMovimientoCRM',$casocrm, (isset($agenda) ? $agenda->MovimientoCRM_idMovimientoCRM : 0),["class" => "form-control", "placeholder" =>"Seleccione un caso del CRM"])!!}  
+          </div>
+        </div>
+      </div>
+
+        <div class="form-group" id='ubicacionAgenda' style='display:none;'>
+          {!!Form::label('ubicacionAgenda', 'Ubicación', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group" >
+             <span class="input-group-addon">
+                <i class="fa fa-sitemap" aria-hidden="true"></i>
+             </span>
+              {!!Form::text('ubicacionAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la ubicacion'])!!}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id='Tercero_idResponsable' style='display:none;'>
+          {!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-2 control-label')) !!}
+        <div class="col-sm-10">
+          <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-user"></i>
+              </span>
+              {!!Form::select('Tercero_idResponsable',$responsable, (isset($agenda) ? $agenda->Tercero_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione un responsable"])!!}  
+          </div>
+        </div>
+      </div>
+
+        <div class="form-group" id='porcentajeEjecucionAgenda' style='display:none;'>
+          {!!Form::label('porcentajeEjecucionAgenda', '% Ejecución', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group" >
+             <span class="input-group-addon">
+                <i class="" aria-hidden="true">%</i>
+             </span>
+              {!!Form::text('porcentajeEjecucionAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese el porcentaje ejecutado'])!!}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" id='estadoAgenda' style='display:none;'>
+          {!!Form::label('estadoAgenda', 'Estado', array('class' => 'col-sm-2 control-label')) !!}
+          <div class="col-sm-10">
+            <div class="input-group" >
+             <span class="input-group-addon">
+                <i class="fa fa-tasks" aria-hidden="true"></i>
+             </span>
+              {!! Form::select('estadoAgenda', ['Sin finalizar' => 'Sin finalizar', 'Finalizado' => 'Finalizado'],null,['class' => 'form-control', 'placeholder' => 'Seleccione un estado']) !!}
+            </div>
+          </div>
+        </div>
+
+        <br><br><br><br><br><br><br><br><br><br><br>
 
         <div class="form-group">
-          <div class="col-lg-12">
+          <div class="col-md-12">
             <div class="panel panel-primary">
               <div class="panel-heading">Contenido</div>
               <div class="panel-body">
@@ -164,8 +221,8 @@
 
                 <ul class="nav nav-tabs"> <!--Pestañas de navegacion-->
                   <li class="active"><a data-toggle="tab" href="#detalles">Detalles</a></li>
-                  <li><a data-toggle="tab" href="#seguimiento">Seguimiento</a></li>
-                  <li><a data-toggle="tab" href="#asistentes">Asistentes</a></li>
+                  <li id="liseguimiento" style="display:none;"><a data-toggle="tab" href="#seguimiento">Seguimiento</a></li>
+                  <li id="liasistentes" style="display:none;"><a data-toggle="tab" href="#asistentes">Asistentes</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -179,14 +236,14 @@
                           <span class="input-group-addon">
                             <i class="fa fa-pencil-square-o"></i>
                           </span>
-                          {!!Form::textarea('detallesAgenda',null,['class'=>'form-control ckeditor','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
+                          {!!Form::textarea('detallesAgenda',null,['class'=>'form-control','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
                         </div>
                       </div>
                     </div>
 
                   </div>
 
-                  <div id="seguimiento" class="tab-pane fade">
+                  <div id="seguimiento" class="tab-pane fade" style="display:none;">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
@@ -196,8 +253,8 @@
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
                               <div class="col-md-1" style="width: 610px;">Campo</div>
-                              <div class="col-md-1" style="width: 150px;">Obligatorio</div>
-                              <div id="contenedor_protCampos"> 
+                              <div class="col-md-1" style="width: 550px;">Obligatorio</div>
+                              <div id="contenedor_seguimiento"> 
                               </div>
                             </div>
                           </div>
@@ -206,18 +263,18 @@
 
                   </div>
 
-                  <div id="asistentes" class="tab-pane fade">
+                  <div id="asistentes" style="display:none;" class="tab-pane fade">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
                           <div class="col-sm-12">
                             <div class="row show-grid">
-                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="abrirModalCampos();">
+                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="asistente.agregarCampos(valorAgendaAsistente,'A')">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 610px;">Campo</div>
-                              <div class="col-md-1" style="width: 150px;">Obligatorio</div>
-                              <div id="contenedor_protCampos"> 
+                              <div class="col-md-1" style="width: 310px;">Nombre</div>
+                              <div class="col-md-1" style="width: 150px;">Correo Electrónico</div>
+                              <div id="contenedor_asistente"> 
                               </div>
                             </div>
                           </div>
@@ -247,10 +304,10 @@
   {!! Form::close() !!}
 </div>
 <script>
-  CKEDITOR.replace(('detallesAgenda'), {
-      fullPage: true,
-      allowedContent: true
-    });  
+  // CKEDITOR.replace(('detallesAgenda'), {
+  //     fullPage: true,
+  //     allowedContent: true
+  //   });  
 
   $('#fechaHoraInicioAgenda').datetimepicker(({
       format: "YYYY-MM-DD HH:mm:ss"
