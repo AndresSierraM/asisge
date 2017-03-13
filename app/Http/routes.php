@@ -69,7 +69,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
-
+    Route::resource ('centrocosto','CentroCostoController');
     Route::resource ('parametrogestionhumana','ParametroGestionHumanaController');
     Route::resource ('evaluaciondesempenio','EvaluacionDesempenioController');
     Route::resource ('entrevistaresultado','EntrevistaResultadoController');
@@ -269,6 +269,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosProceso', function()
     {
         include public_path().'/ajax/datosProceso.php';
+    });
+    Route::get('datosCentroCosto', function()
+    {
+        include public_path().'/ajax/datosCentroCosto.php';
     });
 
     Route::get('datosCompania', function()

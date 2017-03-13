@@ -76,6 +76,7 @@ class TerceroController extends Controller
      */
     public function create()
     {   
+         $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
         $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
@@ -92,7 +93,7 @@ class TerceroController extends Controller
         $empleadorcontratista = \App\Tercero::where('tipoTercero', 'like','%*01*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
       
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa','empleadorcontratista'));
+        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa','empleadorcontratista'));
     }
     /**
      * Store a newly created resource in storage.
@@ -148,6 +149,7 @@ class TerceroController extends Controller
                 'Zona_idZona' => (($request['Zona_idZona'] == '' or $request['Zona_idZona'] == 0) ? null : $request['Zona_idZona']),
                 'SectorEmpresa_idSectorEmpresa' => (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa']),
                 'Tercero_idEmpladorContratista' => (($request['Tercero_idEmpladorContratista'] == '' or $request['Tercero_idEmpladorContratista'] == 0) ? null : $request['Tercero_idEmpladorContratista']),
+                'CentroCosto_idCentroCosto' => (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto']),
                 'Compania_idCompania' => \Session::get('idCompania')
                 ]);
             
@@ -273,6 +275,7 @@ class TerceroController extends Controller
      */
     public function edit($id)
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto');
         $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
         $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
         $idFrecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('idFrecuenciaMedicion');
@@ -290,7 +293,7 @@ class TerceroController extends Controller
 
         $tercero = \App\Tercero::find($id);
 
-        return view('tercero',compact('ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista'),['tercero'=>$tercero]);
+        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -310,6 +313,8 @@ class TerceroController extends Controller
             $tercero->SectorEmpresa_idSectorEmpresa = (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa'
                 ]);
             $tercero->Tercero_idEmpleadorContratista = (($request['Tercero_idEmpleadorContratista'] == '' or $request['Tercero_idEmpleadorContratista'] == 0) ? null : $request['Tercero_idEmpleadorContratista'
+                ]);
+            $tercero->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'
                 ]);
 
             if(null !== Input::file('imagenTercero') )

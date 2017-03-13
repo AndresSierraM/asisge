@@ -489,6 +489,20 @@
 														</div>
 													</div>
 												</div>
+												<!-- Pestaña Centro Costos -->
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('CentroCosto_idCentroCosto', 'Centro de Costos', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-university" style="width: 14px;"></i>
+															</span>
+															{!!Form::select('CentroCosto_idCentroCosto',$centrocosto, (isset($tercero) ? $tercero->CentroCosto_idCentroCosto : 0),["class" => "select form-control", "placeholder" =>"Seleccione",'style'=>'width:340px;'])!!}
+
+															
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
