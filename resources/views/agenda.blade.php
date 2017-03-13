@@ -39,10 +39,6 @@
           </div>
         </div>
       </div>  
-
-      <label class="checkbox">
-        <input type="checkbox" value="#events-modal" id="events-in-modal"> Abrir eventos en una ventana modal
-      </label>  
     </div>
 
     <div class="row">

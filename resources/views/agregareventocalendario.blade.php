@@ -8,6 +8,8 @@
 
 <script>
 
+    var consultarTercero = ['onchange','consultarTercero(this.id, this.value)'];
+
     var agendaasistente = '<?php echo (isset($agenda) ? json_encode($agenda->agendaasistente) : "");?>';
     agendaasistente = (agendaasistente != '' ? JSON.parse(agendaasistente) : '');
 
@@ -48,19 +50,81 @@
       asistente.estilo = [
       '',
       '',
-      'width: 610px;height:35px;',
-      'width: 450px;height:35px;',
+      'width: 310px;height:35px;',
+      'width: 150px;height:35px;',
       ''
       ];
 
       asistente.clase    = ['','','','','','','',''];
       asistente.sololectura = [true,true,false,false,true];  
-      asistente.funciones = ['','','','','',''];
+      asistente.funciones = ['','','',consultarTercero,'',''];
       asistente.completar = ['off','off','off','off','off'];
       asistente.opciones = ['','','','',''];
       for(var j=0, k = agendaasistente.length; j < k; j++)
       {
         asistente.agregarCampos(JSON.stringify(agendaasistente[j]),'L');
+        // llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
+      }
+
+    });
+
+  </script>
+
+  <script>
+
+    var agendaseguimiento = '<?php echo (isset($agenda) ? json_encode($agenda->agendaseguimiento) : "");?>';
+    agendaseguimiento = (agendaseguimiento != '' ? JSON.parse(agendaseguimiento) : '');
+
+    var valorAgendaSeguimiento = [0, 0, '', '', 0];
+
+    $(document).ready(function(){
+
+      seguimiento = new Atributos('seguimiento','contenedor_seguimiento','agendaseguimiento');
+
+      seguimiento.altura = '35px';
+      seguimiento.campoid = 'idAgendaSeguimiento';
+      seguimiento.campoEliminacion = 'eliminarAgendaSeguimiento';
+
+      seguimiento.campos   = [
+      'idAgendaSeguimiento',
+      'Agenda_idAgenda',
+      'fechaHoraAgendaSeguimiento',
+      'detallesAgendaSeguimiento',
+      'Users_idCrea'
+      ];
+
+      seguimiento.etiqueta = [
+      'input',
+      'input',
+      'input',
+      'input',
+      'input'
+      ];
+
+      seguimiento.tipo = [
+      'hidden',
+      'hidden',
+      'text',
+      'text',
+      'hidden'
+      ];
+
+      seguimiento.estilo = [
+      '',
+      '',
+      'width: 150px;height:35px;',
+      'width: 310px;height:35px;',
+      ''
+      ];
+
+      seguimiento.clase    = ['','','','','','','',''];
+      seguimiento.sololectura = [true,true,false,false,true];  
+      seguimiento.funciones = ['','','','','',''];
+      seguimiento.completar = ['off','off','off','off','off'];
+      seguimiento.opciones = ['','','','',''];
+      for(var j=0, k = agendaseguimiento.length; j < k; j++)
+      {
+        seguimiento.agregarCampos(JSON.stringify(agendaseguimiento[j]),'L');
         // llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
       }
 
@@ -221,8 +285,8 @@
 
                 <ul class="nav nav-tabs"> <!--Pestañas de navegacion-->
                   <li class="active"><a data-toggle="tab" href="#detalles">Detalles</a></li>
-                  <li id="liseguimiento" style="display:none;"><a data-toggle="tab" href="#seguimiento">Seguimiento</a></li>
-                  <li id="liasistentes" style="display:none;"><a data-toggle="tab" href="#asistentes">Asistentes</a></li>
+                  <li id="liseguimiento" style="display:none;"><a data-toggle="tab" href="#divseguimiento">Seguimiento</a></li>
+                  <li id="liasistentes" style="display:none;"><a data-toggle="tab" href="#divasistentes">Asistentes</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -243,17 +307,17 @@
 
                   </div>
 
-                  <div id="seguimiento" class="tab-pane fade" style="display:none;">
+                  <div id="divseguimiento" class="tab-pane fade" style="display:none;">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
                           <div class="col-sm-12">
                             <div class="row show-grid">
-                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="abrirModalCampos();">
+                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="seguimiento.agregarCampos(valorAgendaSeguimiento,'A')">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 610px;">Campo</div>
-                              <div class="col-md-1" style="width: 550px;">Obligatorio</div>
+                              <div class="col-md-1" style="width: 150px;">Fecha</div>
+                              <div class="col-md-1" style="width: 310px;">Detalles</div>
                               <div id="contenedor_seguimiento"> 
                               </div>
                             </div>
@@ -263,7 +327,7 @@
 
                   </div>
 
-                  <div id="asistentes" style="display:none;" class="tab-pane fade">
+                  <div id="divasistentes" style="display:none;" class="tab-pane fade">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
@@ -274,7 +338,7 @@
                               </div>
                               <div class="col-md-1" style="width: 310px;">Nombre</div>
                               <div class="col-md-1" style="width: 150px;">Correo Electrónico</div>
-                              <div id="contenedor_asistente"> 
+                              <div id="contenedor_seguimiento"> 
                               </div>
                             </div>
                           </div>
@@ -310,11 +374,47 @@
   //   });  
 
   $('#fechaHoraInicioAgenda').datetimepicker(({
-      format: "YYYY-MM-DD HH:mm:ss"
+      format: "DD-MM-YYYY HH:mm:ss"
     }));
 
     $('#fechaHoraFinAgenda').datetimepicker(({
-      format: "YYYY-MM-DD HH:mm:ss"
+      format: "DD-MM-YYYY HH:mm:ss"
     }));
 </script>
 @stop
+
+<div id="modalTercero" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:50%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Seleccionar terceros</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div class="row">
+              <div class="container">                      
+                <table id="tlistaselect" name="tlistaselect" class="display table-bordered" width="100%">
+                  <thead>
+                    <tr class="btn-primary active">
+                      <th><b>Nombre</b></th>
+                      <th><b>Correo</b></th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="btn-default active">
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

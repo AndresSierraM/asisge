@@ -19,6 +19,27 @@ class AgendaController extends Controller
         return view('agenda');
     }
 
+    public function getAll()
+    {
+        $events = $this->obtenerDatosEvento();
+        echo json_encode(
+            array(
+                "success" => 1,
+                "result" => $events
+            )
+        );
+    }
+
+    public function obtenerDatosEvento()
+    {
+        $query = \App\Agenda::All();
+        // print_r($query);
+        if(count($query) > 0)
+        {
+            return $query;
+        }
+    }
+
     public function indexAgendaEvento()
     {
         $categoriaagenda = \App\CategoriaAgenda::All()->lists('nombreCategoriaAgenda','idCategoriaAgenda');
@@ -46,17 +67,21 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
+        $fechaInicio =  strtotime(substr($request['fechaHoraInicioAgenda'], 6, 4)."-".substr($request['fechaHoraInicioAgenda'], 3, 2)."-".substr($request['fechaHoraInicioAgenda'], 0, 2)." " .substr($request['fechaHoraInicioAgenda'], 10, 6)) * 1000;
+
+        $fechaFin =  strtotime(substr($request['fechaHoraFinAgenda'], 6, 4)."-".substr($request['fechaHoraFinAgenda'], 3, 2)."-".substr($request['fechaHoraFinAgenda'], 0, 2)." " .substr($request['fechaHoraFinAgenda'], 10, 6)) * 1000;
+
         $indice = array(
             'idAgenda' => $request['idAgenda']);
 
         $data = array(
             'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'],
             'asuntoAgenda' => ($request['asuntoAgenda'] == ''  ? NULL : $request['asuntoAgenda']),
-            'fechaHoraInicioAgenda' => ($request['fechaHoraInicioAgenda'] == '' ? NULL : $request['fechaHoraInicioAgenda']),
-            'fechaHoraFinAgenda' => ($request['fechaHoraFinAgenda'] == '' ? NULL : $request['fechaHoraFinAgenda']),
-            'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] == '' or $request['Tercero_idSupervisor'] == 0 ? NULL : $request['Tercero_idSupervisor']),
-            'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' or $request['Tercero_idResponsable'] == 0 ? NULL : $request['Tercero_idResponsable']),
-            'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'] == '' or $request['MovimientoCRM_idMovimientoCRM'] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM']),
+            'fechaHoraInicioAgenda' => $fechaInicio,
+            'fechaHoraFinAgenda' => $fechaFin,
+            'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
+            'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' ? NULL : $request['Tercero_idResponsable']),
+            'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'] == '' ? NULL : $request['MovimientoCRM_idMovimientoCRM']),
             'ubicacionAgenda' => ($request['ubicacionAgenda'] == '' ? NULL : $request['ubicacionAgenda']),
             'porcentajeEjecucionAgenda' => ($request['porcentajeEjecucionAgenda'] == '' ? NULL : $request['porcentajeEjecucionAgenda']),
             'detallesAgenda' => ($request['detallesAgenda'] == '' ? NULL : $request['detallesAgenda']));
@@ -72,6 +97,11 @@ class AgendaController extends Controller
             $agenda = \App\Agenda::All()->last();
             $this->grabarDetalle($agenda->idAgenda,$request);
         }
+    }
+
+    private function _formatDate($date)
+    {
+        return strtotime(substr($date, 6, 4)."-".substr($date, 3, 2)."-".substr($date, 0, 2)." " .substr($date, 10, 6)) * 1000;
     }
 
     /**
@@ -145,7 +175,7 @@ class AgendaController extends Controller
         }
 
         $idsEliminar = explode(',', $request['eliminarAgendaAsistente']);
-        \App\AgendaAsistente::whereIn('idAgendaSeguimiento',$idsEliminar)->delete();
+        \App\AgendaAsistente::whereIn('idAgendaAsistente',$idsEliminar)->delete();
 
         $contador = count($request['idAgendaAsistente']);
 

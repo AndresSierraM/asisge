@@ -152,6 +152,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('agenda','AgendaController');
 
     Route::get('eventoagenda','AgendaController@indexAgendaEvento');
+    Route::get('getAll','AgendaController@getAll');
 
     
     // *************************************
@@ -954,6 +955,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('mostrarCamposAgenda', function()
     {
         include public_path().'/ajax/mostrarCamposAgenda.php';
+    });
+
+    Route::get('datosListaSelectTercero', function()
+    {
+        include public_path().'/ajax/datosListaSelectTercero.php';
     });
 
 }

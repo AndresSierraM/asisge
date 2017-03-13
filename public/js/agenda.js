@@ -8,7 +8,7 @@ $(document).ready(function(){
 
 		//establecemos los valores del calendario
 		var options = {
-			events_source: 'http://'+location.host+'events/getAll',
+			events_source: 'http://'+location.host+'/getAll',
 			view: 'month',
 			language: 'es-ES',
 			tmpl_path: 'http://'+location.host+'/bower_components/bootstrap-calendar/tmpls/',
@@ -124,11 +124,11 @@ function consultarCamposAgenda(idCategoriaAgenda)
         			$("#estadoAgenda").css('display','block');
 
         		if (respuesta[i]['nombreCampoCRM'] == 'seguimientoAgenda') 
-        			$("#seguimiento").css('display','block');
+        			$("#divseguimiento").css('display','block');
         			$("#liseguimiento").css('display','block');
 
         		if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idAsistente') 
-        			$("#asistentes").css('display','block');
+        			$("#divasistentes").css('display','block');
         			$("#liasistentes").css('display','block');
         	}
     	},

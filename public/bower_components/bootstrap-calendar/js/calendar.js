@@ -656,11 +656,11 @@ if(!String.prototype.formatNum) {
 
 	Calendar.prototype._getDayClass = function(class_group, date) {
 		var self = this;
-		var addClass = function(which, to) {
+		var addClass = function(which, fechaHoraFinAgenda) {
 			var cls;
 			cls = (self.options.classes && (class_group in self.options.classes) && (which in self.options.classes[class_group])) ? self.options.classes[class_group][which] : "";
 			if((typeof(cls) == "string") && cls.length) {
-				to.push(cls);
+				fechaHoraFinAgenda.push(cls);
 			}
 		};
 		var classes = [];
@@ -699,44 +699,44 @@ if(!String.prototype.formatNum) {
 	};
 
 	Calendar.prototype.navigate = function(where, next) {
-		var to = $.extend({}, this.options.position);
+		var fechaHoraFinAgenda = $.extend({}, this.options.position);
 		if(where == 'next') {
 			switch(this.options.view) {
 				case 'year':
-					to.start.setFullYear(this.options.position.start.getFullYear() + 1);
+					fechaHoraFinAgenda.start.setFullYear(this.options.position.start.getFullYear() + 1);
 					break;
 				case 'month':
-					to.start.setMonth(this.options.position.start.getMonth() + 1);
+					fechaHoraFinAgenda.start.setMonth(this.options.position.start.getMonth() + 1);
 					break;
 				case 'week':
-					to.start.setDate(this.options.position.start.getDate() + 7);
+					fechaHoraFinAgenda.start.setDate(this.options.position.start.getDate() + 7);
 					break;
 				case 'day':
-					to.start.setDate(this.options.position.start.getDate() + 1);
+					fechaHoraFinAgenda.start.setDate(this.options.position.start.getDate() + 1);
 					break;
 			}
 		} else if(where == 'prev') {
 			switch(this.options.view) {
 				case 'year':
-					to.start.setFullYear(this.options.position.start.getFullYear() - 1);
+					fechaHoraFinAgenda.start.setFullYear(this.options.position.start.getFullYear() - 1);
 					break;
 				case 'month':
-					to.start.setMonth(this.options.position.start.getMonth() - 1);
+					fechaHoraFinAgenda.start.setMonth(this.options.position.start.getMonth() - 1);
 					break;
 				case 'week':
-					to.start.setDate(this.options.position.start.getDate() - 7);
+					fechaHoraFinAgenda.start.setDate(this.options.position.start.getDate() - 7);
 					break;
 				case 'day':
-					to.start.setDate(this.options.position.start.getDate() - 1);
+					fechaHoraFinAgenda.start.setDate(this.options.position.start.getDate() - 1);
 					break;
 			}
 		} else if(where == 'today') {
-			to.start.setTime(new Date().getTime());
+			fechaHoraFinAgenda.start.setTime(new Date().getTime());
 		}
 		else {
 			$.error(this.locale.error_where.format(where))
 		}
-		this.options.day = to.start.getFullYear() + '-' + to.start.getMonthFormatted() + '-' + to.start.getDateFormatted();
+		this.options.day = fechaHoraFinAgenda.start.getFullYear() + '-' + fechaHoraFinAgenda.start.getMonthFormatted() + '-' + fechaHoraFinAgenda.start.getDateFormatted();
 		this.view();
 		if(_.isFunction(next)) {
 			next();
@@ -851,7 +851,7 @@ if(!String.prototype.formatNum) {
 				if(source.length) {
 					loader = function() {
 						var events = [];
-						var params = {from: self.options.position.start.getTime(), to: self.options.position.end.getTime()};
+						var params = {fechaHoraInicioAgenda: self.options.position.start.getTime(), fechaHoraFinAgenda: self.options.position.end.getTime()};
 						if(browser_timezone.length) {
 							params.browser_timezone = browser_timezone;
 						}

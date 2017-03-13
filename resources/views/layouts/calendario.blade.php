@@ -8,9 +8,9 @@
       {!!Html::style('assets/tutorial/css/main.css'); !!}
       {!!Html::style('assets/tutorial/css/callouts.css'); !!}
       
-      {!!Html::style('choosen/docsupport/style.css'); !!}
+      <!-- {!!Html::style('choosen/docsupport/style.css'); !!}
       {!!Html::style('choosen/docsupport/prism.css'); !!}
-      {!!Html::style('choosen/chosen.css'); !!}
+      {!!Html::style('choosen/chosen.css'); !!} -->
       
       <!-- {!!Html::style('sb-admin/bower_components/metisMenu/dist/metisMenu.min.css'); !!} -->
       {!!Html::style('sb-admin/dist/css/sb-admin-2.css'); !!}
@@ -39,14 +39,13 @@
       
       {!!Html::script('assets/tutorial/js/helpers.js'); !!}
       {!!Html::script('assets/tutorial/js/base.js'); !!}
-      {!!Html::script('sb-admin/bower_components/datetimepicker/js/moment.js'); !!}
-      {!!Html::script('sb-admin/bower_components/datetimepicker/js/bootstrap-datetimepicker.min.js'); !!}
-      {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
+      <!-- {!!Html::script('sb-admin/bower_components/datetimepicker/js/bootstrap-datetimepicker.min.js'); !!} -->
+      <!-- {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
       {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput_locale_es.js'); !!}
-      {!!Html::script('sb-admin/bower_components/select2/js/select2.min.js'); !!}
-      {!!Html::script('choosen/chosen.jquery.js'); !!}
-      {!!Html::script('choosen/docsupport/prism.js'); !!}
-      {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
+      {!!Html::script('sb-admin/bower_components/select2/js/select2.min.js'); !!} -->
+      <!-- {!!Html::script('choosen/chosen.jquery.js'); !!}
+      {!!Html::script('choosen/docsupport/prism.js'); !!} -->
+      <!-- {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!} -->
       {!!Html::script('js/general.js')!!}
 
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap-theme.min.css'); !!}
@@ -61,6 +60,7 @@
       {!!Html::script('bower_components/bootstrap-calendar/js/language/es-ES.js'); !!}
       {!!Html::script('bower_components/underscore/underscore-min.js'); !!}
       {!!Html::script('bower_components/bootstrap-calendar/js/calendar.js'); !!}
+      {!!Html::script('bower_components/moment/moment.js'); !!}
 
       {!!Html::script('bower_components/eonasdan-bootstrap-datetimepicker/bootstrap/bootstrap.min.js'); !!}
       {!!Html::script('bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js'); !!}
@@ -71,7 +71,7 @@
       {!! Html::style('css/segmented-controls.css'); !!}
 
 
-        <script type="text/javascript">
+      <!--   <script type="text/javascript">
           $(document).ready(function (){
             var config = {
               '.chosen-select'           : {},
@@ -84,7 +84,7 @@
               $(selector).chosen(config[selector]);
             }
         });
-        </script>
+        </script> -->
 
         <!--  <script>
           function VerificarAbandono(){
