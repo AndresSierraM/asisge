@@ -28,4 +28,12 @@ class CentroCostoRequest extends Request
             "nombreCentroCosto" => "required|string|max:80"
         ];
     }
+    public function messages()
+    {
+        return[
+        'codigoCentroCosto.unique' => 'Este codigo ya se encuentra en uso.',
+        'nombreCentroCosto.required'=> 'El campo nombre Costo es Obligatorio.'
+
+        ];
+    }
 }
