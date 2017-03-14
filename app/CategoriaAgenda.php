@@ -9,7 +9,7 @@ class CategoriaAgenda extends Model
     protected $table = 'categoriaagenda';
     protected $primaryKey = 'idCategoriaAgenda';
 
-    protected $fillable = ['codigoCategoriaAgenda', 'nombreCategoriaAgenda', 'colorCategoriaAgenda'];
+    protected $fillable = ['codigoCategoriaAgenda', 'nombreCategoriaAgenda', 'colorCategoriaAgenda', 'Compania_idCompania'];
 
     public $timestamps = false;
 

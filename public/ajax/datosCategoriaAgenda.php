@@ -15,11 +15,18 @@
     else
         $visibleE = 'none;';
 
-    $categoriaagenda = \App\CategoriaAgenda::All();
+    $categoriaagenda = DB::Select('
+            SELECT 
+                idCategoriaAgenda, codigoCategoriaAgenda, nombreCategoriaAgenda, colorCategoriaAgenda
+            FROM
+                categoriaagenda ca
+            WHERE Compania_idCompania = '. \Session::get('idCompania'));
     $row = array();
 
     foreach ($categoriaagenda as $key => $value) 
     {  
+        $value = get_object_vars($categoriaagenda[$key]);
+
         $row[$key][] = '<a href="categoriaagenda/'.$value['idCategoriaAgenda'].'/edit">'.
                             '<span class="glyphicon glyphicon-pencil" style="display: '.$visibleM.'"></span>'.
                         '</a>&nbsp;'.

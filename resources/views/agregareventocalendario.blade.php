@@ -164,37 +164,37 @@
 
     
         <div class="form-group" id='test'>
-          {!!Form::label('asuntoAgenda', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+          {!!Form::label('title', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-            {!!Form::text('asuntoAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa el asunto de la agenda'])!!}
+            {!!Form::text('title',null,['class'=>'form-control','placeholder'=>'Ingresa el asunto de la agenda'])!!}
             </div>
           </div>
         </div>
 
         <div class="form-group" id='test'>
-           {!!Form::label('fechaHoraInicioAgenda', 'Fecha Inicial', array('class' => 'col-sm-2 control-label')) !!}
+           {!!Form::label('start', 'Fecha Inicial', array('class' => 'col-sm-2 control-label')) !!}
             <div class="col-sm-10">
                 <div class="input-group">
                    <span class="input-group-addon">
                       <i class="fa fa-calendar" aria-hidden="true"></i>
                    </span>
-                    {!!Form::text('fechaHoraInicioAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha inicial'])!!}
+                    {!!Form::text('start',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha inicial'])!!}
                  </div>
             </div>
         </div>
 
         <div class="form-group" id='test'>
-          {!!Form::label('fechaHoraFinAgenda', 'Fecha Final', array('class' => 'col-sm-2 control-label')) !!}
+          {!!Form::label('end', 'Fecha Final', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group" >
              <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
              </span>
-              {!!Form::text('fechaHoraFinAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha final'])!!}
+              {!!Form::text('end',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha final'])!!}
             </div>
           </div>
          </div>
@@ -300,7 +300,7 @@
                           <span class="input-group-addon">
                             <i class="fa fa-pencil-square-o"></i>
                           </span>
-                          {!!Form::textarea('detallesAgenda',null,['class'=>'form-control','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
+                          {!!Form::textarea('body',null,['class'=>'form-control','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
                         </div>
                       </div>
                     </div>

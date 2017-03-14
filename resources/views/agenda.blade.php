@@ -16,6 +16,29 @@
     {!!Form::open(['route'=>'agenda.store','method'=>'POST'])!!}
   @endif
 
+<?php 
+
+$categoria = DB::Select('
+    SELECT
+        codigoCategoriaAgenda, 
+        colorCategoriaAgenda
+    FROM
+        categoriaagenda');
+
+echo '<style type="text/css">';
+for ($i=0; $i < count($categoria); $i++) 
+{ 
+    $datoCategoria = get_object_vars($categoria[$i]);
+
+    echo '.'.$datoCategoria["codigoCategoriaAgenda"].'
+              {
+                background-color: '.$datoCategoria["colorCategoriaAgenda"].';
+              }';
+}
+echo '</style>';
+
+?>
+
 
 <div id='form-section'>
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
@@ -40,6 +63,9 @@
         </div>
       </div>  
     </div>
+    <label class="checkbox">
+        <input type="checkbox" value="#events-modal" id="events-in-modal"> Abrir eventos en una ventana modal
+    </label>  
 
     <div class="row">
       <div id="calendar"></div>
@@ -67,3 +93,23 @@
     </div>
   </div>
 </div>
+
+
+<!--ventana modal para el calendario-->
+    <div class="modal fade" id="events-modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Modal title</h4>
+              </div>
+            <div class="modal-body" style="height: 400px">
+                <p>One fine body&hellip;</p>
+            </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->

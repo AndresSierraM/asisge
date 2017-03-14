@@ -49,7 +49,8 @@ class CategoriaAgendaController extends Controller
         \App\CategoriaAgenda::create([
             'codigoCategoriaAgenda' => $request['codigoCategoriaAgenda'],
             'nombreCategoriaAgenda' => $request['nombreCategoriaAgenda'],
-            'colorCategoriaAgenda' => $request['colorCategoriaAgenda']
+            'colorCategoriaAgenda' => $request['colorCategoriaAgenda'],
+            'Compania_idCompania' => \Session::get('idCompania')
         ]);
 
         $categoriaagenda = \App\CategoriaAgenda::All()->last();
