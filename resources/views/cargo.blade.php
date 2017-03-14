@@ -155,9 +155,9 @@
 			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','Cargo_idCargo','porcentajeCargoResponsabilidad']; //[arrays ]
 			    Responsabilidades.altura = '35px;'; 
 			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-			    Responsabilidades.etiqueta = ['input','input','input','input'];
-			    Responsabilidades.tipo = ['hidden','','hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-			    Responsabilidades.estilo = ['','width: 600px;height:35px;','','width: 100px;height:35px;'];	
+			    Responsabilidades.etiqueta = ['input','textarea','input','input'];
+			    Responsabilidades.tipo = ['hidden','textarea','hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Responsabilidades.estilo = ['','vertical-align:top; width: 600px;  height:35px;','','width: 100px;height:35px;'];	
 
 			    // estas propiedades no son muy usadas PERO SON UTILES
 			    
@@ -565,7 +565,7 @@
 													     <div class="form-group" id='test'>
 															{!!Form::label('porcentajeFormacionCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
 															<div class="col-sm-10">
-																<div class="input-group">
+																<div class="input-group" >
 																	<span class="input-group-addon">
 																		<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 																	</span>
@@ -660,14 +660,14 @@
 														<div class="input-group">
 														<!-- nuevo campo para 	Experiencia peso  -->
 															 
-															     <div class="form-group" id='test'>
-																	{!!Form::label('porcentajeResponsabilidadCargo', '% Peso ', array('class' => 'col-sm-2 control-label'))!!}
+															     <div class="form-group" id='test' style="display:inline-block";>
+																	{!!Form::label('porcentajeResponsabilidadCargo', '% Peso ', array('class' => 'col-sm-1 control-label' ))!!}
 																	<div class="col-sm-10">
-																		<div class="input-group">
+																		<div class="input-group" >
 																			<span class="input-group-addon">
 																				<i class="fa fa-pencil-square-o" ></i>
 																			</span>
-																			{!!Form::text('porcentajeResponsabilidadCargo',(isset($cargo) ? $cargo->porcentajeResponsabilidadCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia'])!!}
+																			{!!Form::text('porcentajeResponsabilidadCargo',(isset($cargo) ? $cargo->porcentajeResponsabilidadCargo : 20),['class'=>'form-control','placeholder'=>'Ingrese el % peso Experiencia','style'=>'width:600px;'])!!}
 																		</div>
 																	</div>
 																</div>
