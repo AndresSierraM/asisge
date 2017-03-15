@@ -415,13 +415,13 @@
 
 				<!-- Depende De -->
 					<div class="form-group" id='test'>
-					{!!Form::label('Cargo_IdDepende', 'Depende De', array('class' => 'col-sm-2 control-label'))!!}
+					{!!Form::label('Cargo_idDepende', 'Depende De', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-						{!!Form::select('Cargo_IdDepende',$cargoPadre, (isset($cargo) ? $cargo->Cargo_IdDepende : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}
+						{!!Form::select('Cargo_idDepende',$cargoPadre, (isset($cargo) ? $cargo->Cargo_idDepende : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}
 						</div>
 					</div>
 				</div>

@@ -100,7 +100,7 @@ class CargoController extends Controller
                 'salarioBaseCargo' => $request['salarioBaseCargo'],
                 'nivelRiesgoCargo' => $request['nivelRiesgoCargo'],
                 //campos adicionales
-                'Cargo_IdDepende' => ($request['Cargo_IdDepende'] == '' or $request['Cago_IdDepende'] == 0) ? null : $request['Cargo_IdDepende'],
+                'Cargo_idDepende' => ($request['Cargo_idDepende'] == '' or $request['Cargo_idDepende'] == 0) ? null : $request['Cargo_idDepende'],
                 'aniosExperienciaCargo' => $request['aniosExperienciaCargo'],
                 'porcentajeCargoEducacion' => $request['porcentajeCargoEducacion'],
                 'porcentajeCargoFormacion' => $request['porcentajeCargoFormacion'],
@@ -145,7 +145,111 @@ class CargoController extends Controller
      */
     public function show($id)
     {
-        //
+         if($_GET['accion'] == 'imprimir')
+         {
+            $cargo = \App\Cargo::find($id);
+
+            // tabla Encabezado Cargo 
+            $Cargo = DB::select('
+             SELECT idCargo,codigoCargo,nombreCargo as nombreCargop,salarioBaseCargo,nivelRiesgoCargo,Cargo_idDepende as nombreDepende,objetivoCargo,porcentajeEducacionCargo,
+             porcentajeExperienciaCargo,porcentajeFormacionCargo,porcentajeHabilidadCargo,porcentajeResponsabilidadCargo,posicionPredominanteCargo
+             ,restriccionesCargo,autoridadesCargo,aniosExperienciaCargo,experienciaCargo
+             FROM cargo
+             WHERE idCargo = '.$id);
+
+            $cargoeducacion = DB::select(
+            "SELECT idCargoEducacion, PerfilCargo_idPerfilCargo as PerfilCargo_idEducacion, nombrePerfilCargo as  nombreEducacion, porcentajeCargoEducacion
+            FROM cargoeducacion  CE
+            LEFT JOIN perfilcargo  PC
+            ON CE.PerfilCargo_idPerfilCargo = PC.idPerfilCargo
+            WHERE Cargo_idCargo = ".$id);
+
+            $cargoformacion = DB::select(
+            "SELECT idCargoFormacion,PerfilCargo_idPerfilCargo as PerfilCargo_idFormacion, nombrePerfilCargo as  nombreFormacion,porcentajeCargoFormacion
+            FROM cargoformacion CF
+            LEFT JOIN perfilcargo PC
+            ON CF.PerfilCargo_idPerfilCargo = PC.idPerfilCargo
+            WHERE Cargo_idCargo = ".$id);
+
+             $cargohabilidad = DB::select(
+            "SELECT idCargoHabilidad,PerfilCargo_idPerfilCargo as PerfilCargo_idHabilidad, nombrePerfilCargo as nombreHabilidad,porcentajeCargoHabilidad
+            FROM cargohabilidad CH
+            LEFT JOIN perfilcargo PC
+            ON CH.PerfilCargo_idPerfilCargo = PC.idPerfilCargo
+            WHERE Cargo_idCargo = ".$id);
+
+            $cargoresponsabilidad = DB::select(
+            "SELECT cr.descripcionCargoResponsabilidad,cr.Cargo_idCargo,cr.porcentajeCargoResponsabilidad,c.idCargo,cr.idCargoResponsabilidad
+            FROM cargo c
+            LEFT JOIN cargoresponsabilidad cr
+            ON cr.Cargo_idCargo =  c.idCargo
+            WHERE  Cargo_idCargo = ".$id);
+
+           $cargocompetencia = DB::select(
+            "SELECT idCargoCompetencia,Competencia_idCompetencia,nombreCompetencia
+            FROM cargocompetencia CC
+            LEFT JOIN competencia CP
+            ON CC.Competencia_idCompetencia = CP.idCompetencia
+            WHERE Cargo_idCargo = ".$id);
+
+
+            $TareaRiesgo = DB::select(
+            "SELECT ctr.Cargo_idCargo,ctr.ListaGeneral_idTareaAltoRiesgo,c.idCargo,lg.nombreListaGeneral
+            FROM cargotareariesgo ctr
+            LEFT JOIN cargo c
+            ON  ctr.Cargo_idCargo = c.idCargo
+            LEFT JOIN  listageneral lg
+            ON  ctr.ListaGeneral_idTareaAltoRiesgo = lg.idListageneral 
+            WHERE ctr.Cargo_idCargo = ".$id);
+
+            $ExamenMedico = DB::select(
+            "SELECT cem.periodicoCargoExamenMedico,IF(periodicoCargoExamenMedico = '1','Si','No') as periodicoCargoExamenMedicoL,cem.retiroCargoExamenMedico,IF(retiroCargoExamenMedico = '1','Si','No') as retiroCargoExamenMedicoL,cem.ingresoCargoExamenMedico,IF(ingresoCargoExamenMedico = '1','Si','No') as ingresoCargoExamenMedicoL,cem.TipoExamenMedico_idTipoExamenMedico,cem.FrecuenciaMedicion_idFrecuenciaMedicion,cem.Cargo_idCargo,tem.nombreTipoExamenMedico,fmed.nombreFrecuenciaMedicion
+            FROM cargoexamenmedico cem
+            LEFT JOIN cargo  c
+            ON cem.Cargo_idCargo = c.idCargo
+            LEFT JOIN tipoexamenmedico tem
+            ON cem.TipoExamenMedico_idTipoExamenMedico = tem.idTipoExamenMedico
+            LEFT JOIN frecuenciamedicion fmed
+            ON cem.FrecuenciaMedicion_idFrecuenciaMedicion = fmed.idFrecuenciaMedicion
+            WHERE Cargo_idCargo = ".$id);
+
+            $CargoVacuna = DB::select(
+            "SELECT cvna.Cargo_idCargo,cvna.ListaGeneral_idVacuna,lgnal.nombreListaGeneral
+            FROM
+            cargovacuna cvna
+            LEFT JOIN listageneral lgnal
+            ON cvna.ListaGeneral_idVacuna = lgnal.idListaGeneral
+            LEFT JOIN cargo c
+            ON cvna.Cargo_idCargo = c.idCargo
+            WHERE Cargo_idCargo = ".$id);
+
+          $elementoproteccion = DB::select(
+          "SELECT cep.Cargo_idCargo,cep.ElementoProteccion_idElementoProteccion,ep.nombreElementoProteccion
+          FROM
+          cargoelementoproteccion cep
+          LEFT JOIN cargo c
+          ON cep.Cargo_idCargo = c.idCargo
+          LEFT JOIN elementoproteccion ep
+          ON cep.ElementoProteccion_idElementoProteccion = ep.idElementoProteccion
+          where Cargo_idCargo = ".$id);
+
+          $Cargodepende = DB::select(
+          "SELECT cs.nombreCargo
+           FROM cargo cp
+           LEFT JOIN cargo cs 
+           ON cp.Cargo_idDepende = cs.idCargo
+           WHERE cp.idCargo = ".$id);
+
+           
+  
+  
+  
+
+
+            
+         }
+
+         return view('formatos.imprimirCargo',compact('Cargo','cargoeducacion','cargoformacion','cargohabilidad','cargoresponsabilidad','cargocompetencia','TareaRiesgo','ExamenMedico','CargoVacuna','elementoproteccion','Cargodepende'));
     }
 
     /**
@@ -215,6 +319,9 @@ class CargoController extends Controller
             WHERE Cargo_idCargo = ".$id);
 
 
+
+
+
          // Se retorna todas las consultas
         return view('cargo',compact('idListaTarea','nombreListaTarea','idTipoExamen','nombreTipoExamen','idListaVacuna','nombreListaVacuna','idListaElemento','nombreListaElemento','idFrecuenciaMedicion','nombreFrecuenciaMedicion','idFrecuenciaMedicion','nombreFrecuenciaMedicion','cargoeducacion','cargoformacion','cargohabilidad','cargocompetencia', 'cargoPadre'),['cargo'=>$cargo]);
 
@@ -233,7 +340,7 @@ class CargoController extends Controller
         {    
             $cargo = \App\Cargo::find($id);
             $cargo->fill($request->all());
-            $cargo->Cargo_IdDepende = ($request['Cargo_IdDepende'] == '' or $request['Cargo_IdDepende'] == 0) ? null : $request['Cargo_IdDepende'];
+            $cargo->Cargo_idDepende = ($request['Cargo_idDepende'] == '' or $request['Cargo_idDepende'] == 0) ? null : $request['Cargo_idDepende'];
 
             $cargo->save();
 

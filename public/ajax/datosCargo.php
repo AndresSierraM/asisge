@@ -25,7 +25,11 @@
                         '</a>&nbsp;'.
                         '<a href="cargo/'.$value['idCargo'].'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp'.
+                        '<a onclick="imprimirCargo('.$value['idCargo'].')">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleE.'"></span>'.
                         '</a>';
+                        ;
         $row[$key][] = $value['idCargo'];
         $row[$key][] = $value['codigoCargo'];
         $row[$key][] = $value['nombreCargo'];   
