@@ -11,7 +11,7 @@ $preguntas = DB::Select('
     On ec.CompetenciaPregunta_idCompetenciaPregunta = cp.idCompetenciaPregunta 
   LEFT JOIN entrevista e
     On ec.Entrevista_idEntrevista = e.idEntrevista
-    where Cargo_idCargo = '.$idCargo);
+    where estadoCompetenciaPregunta = "Activo" and Cargo_idCargo = '.$idCargo);
 
 
 // consultamos los posibles tipo sde respuestas para las preguntas

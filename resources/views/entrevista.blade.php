@@ -443,7 +443,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionF
                                                                                   <i class="fa fa-bars "></i>
                                                                                 </span>
 
-                                                                              {!! Form::select('estadoEntrevista', ['EnProceso' =>'En Proceso','Seleccionado' => 'Seleccionado','Rechazado'=>'Rechazado'],null,['class' => 'form-control',"placeholder"=>"Seleccione el estado"]) !!}                                     
+                                                                              {!! Form::select('estadoEntrevista', ['EnProceso' =>'En Proceso','Seleccionado' => 'Seleccionado','Rechazado'=>'Rechazado'],null,['class' => 'form-control']) !!}                                     
 
                                                                               </div>
                                                                             </div>

@@ -40,6 +40,7 @@ class MovimientoCRMRequest extends Request
             on documentocrmcampo.CampoCRM_idCampoCRM = campocrm.idCampoCRM
             where documentocrm.idDocumentoCRM = '.$id.' and 
                obligatorioDocumentoCRMCampo = 1  and 
+               mostrarVistaDocumentoCRMCampo = 1  and 
                nombreCampoCRM NOT IN ("Tercero_idAsesor","AcuerdoServicio_idAcuerdoServicio","Tercero_idSupervisor") and 
                 '.$rolUsuario.'DocumentoCRMCampo = 1');
 

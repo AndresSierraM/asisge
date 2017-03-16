@@ -27,13 +27,15 @@ class MovimientoCRMController extends Controller
     public function index()
     {
         $idDocumento = $_GET["idDocumentoCRM"];
-        
+        $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
+
         $vista = basename($_SERVER["PHP_SELF"]);
         $datos = consultarPermisosCRM($idDocumento);
         
         $supervisor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $asesor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $acuerdoservicio = \App\AcuerdoServicio::All()->lists('nombreAcuerdoServicio','idAcuerdoServicio');
+        $acuerdoservicio = \App\AcuerdoServicio::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreAcuerdoServicio','idAcuerdoServicio');
+
         if($datos != null)
             return view('movimientocrmgrid', compact('datos','supervisor','asesor','acuerdoservicio'));
         else
