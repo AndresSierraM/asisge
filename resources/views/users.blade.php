@@ -23,7 +23,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-user" style="width: 14px;"></i>
               </span>
               {!!Form::text('name',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del usuario'])!!}
               {!! Form::hidden('id', null, array('id' => 'id')) !!}
@@ -37,7 +37,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-at "></i>
+                <i class="fa fa-at " style="width: 14px;"></i>
               </span>
     				{!!Form::text('email',null,['class'=>'form-control','placeholder'=>'Ingresa el correo electronico'])!!}
             </div>
@@ -49,60 +49,50 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-key "></i>
+                <i class="fa fa-key " style="width: 14px;"></i>
               </span>
             {!!Form::password('password',array('class'=>'form-control','placeholder'=>'Ingresa la contrase&ntilde;a'))!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group" id='test' style="display:inline-block;">
           {!! Form::label('password_confirmation', 'Confirmar Contrase&ntilde;a', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-key "></i>
-              </span>
-            {!!Form::password('password_confirmation',array('class'=>'form-control','placeholder'=>'Ingresa de nuevo la contrase&ntilde;a'))!!}
+            <div class="col-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <i class="fa fa-key " style="width: 14px;"></i>
+                </span>
+              {!!Form::password('password_confirmation',array('class'=>'form-control','placeholder'=>'Ingresa de nuevo la contrase&ntilde;a'))!!}
+              </div>
             </div>
+           <div class="form-group " style="display:inline-block;">
+              {!!Form::label('Tercero_idTercero', 'Tercero Asociado', array('class' => 'col-md-2 control-label'))!!}
+              <div class="col-sm-10" >
+                <div class="input-group" >
+                          <span class="input-group-addon">
+                            <i class="fa fa-bank" style="width: 14px;"></i>
+                          </span>
+                  {!!Form::select('Tercero_idTercero',$tercero, (isset($usuario) ? $usuario->Tercero_idTercero : 0),["class" => "chosen-select form-control"])!!}
+                </div>
+              </div>
+              <div class="form-group " style="display:inline-none;">
+                {!!Form::label('Rol_idRol', 'Rol', array('class' => 'col-md-2 control-label'))!!}
+                <div class="col-sm-10" >
+                  <div class="input-group" >
+                    <span class="input-group-addon">
+                      <i class="fa fa-credit-card" style="width: 14px;" ></i>
+                    </span>
+                    {!!Form::select('Rol_idRol',$rol, (isset($usuario) ? $usuario->Rol_idRol : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Rol"])!!}
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
-            {!!Form::label('Tercero_idTercero', 'Tercero Asociado', array('class' => 'col-sm-2 control-label'))!!}
-            <div class="col-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                          <i class="fa fa-bank"></i>
-                        </span>
-                {!!Form::select('Tercero_idTercero',$tercero, (isset($usuario) ? $usuario->Tercero_idTercero : 0),["class" => "chosen-select form-control"])!!}
-              </div>
-            </div>
-          </div>
-
-
-        <div class="form-group" >
-          {!!Form::label('Rol_idRol', 'Rol', array('class' => 'col-sm-2 control-label'))!!}
-          <div class="col-sm-10" >
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-credit-card" ></i>
-              </span>
-              {!!Form::select('Rol_idRol',$rol, (isset($usuario) ? $usuario->Rol_idRol : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Rol"])!!}
-            </div>
-          </div>
-        </div>
-        <div class="form-group" id='test'>
-            {!!Form::label('Compania_idCompania', 'Compa&ntilde;&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
-            <div class="col-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                          <i class="fa fa-bank"></i>
-                        </span>
-                {!!Form::select('Compania_idCompania',$compania, (isset($usuario) ? $usuario->Compania_idCompania : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione La compa&ntilde;&iacute;a"])!!}
-              </div>
-            </div>
-          </div>
+       
+        
+    
     </fieldset>
 	@if(isset($usuario))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')

@@ -30,7 +30,7 @@ class UsersRequest extends Request
             "password_confirmation" => "required|min:4|max:20",
             "password_confirmation" => "required",
             "Rol_idRol" => 'required',
-            "Compania_idCompania" => "required"
+            // "Compania_idCompania" => "required"
         ];
     }
 }

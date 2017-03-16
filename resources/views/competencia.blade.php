@@ -55,7 +55,7 @@ Estado = [valorEstado,NombreEstado];
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
     competencia.etiqueta = ['input','input','input','select','select','input'];
     competencia.tipo = ['hidden','text','text','','','hidden']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-    competencia.estilo = ['','width: 100px;height:35px;','width: 800px;height:35px;','width: 150px;height:35px;','width: 100px;height:35px;',''];  
+    competencia.estilo = ['','width: 100px;height:35px;','width: 700px;height:35px;','width: 150px;height:35px;','width: 100px;height:35px;',''];  
 
     // estas propiedades no son muy usadas PERO SON UTILES
     
@@ -121,7 +121,7 @@ Estado = [valorEstado,NombreEstado];
                           <span class="glyphicon glyphicon-plus"></span>
                         </div>
                         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">Orden</div>
-                        <div class="col-md-1" style="width: 800px;display:inline-block;height:35px;">Pregunta</div>
+                        <div class="col-md-1" style="width: 700px;display:inline-block;height:35px;">Pregunta</div>
                         <div class="col-md-1" style="width: 150px;display:inline-block;height:35px;">Tipo Respuesta</div>
                         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">Estado</div>
                           

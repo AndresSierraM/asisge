@@ -45,8 +45,7 @@ class EntrevistaRequest extends Request
         $EntrevistaHabilidad = count($this->get('calificacionEntrevistaHabilidad'));
         $EncuestaPregunta = count($this->get('idEncuestaPregunta'));
 
-        $validacion = array(
-            "documentoAspiranteEntrevista" => "required|numeric",
+        $validacion = array("documentoAspiranteEntrevista" => "required|string|max:30|unique:entrevista,documentoAspiranteEntrevista,".$this->get('idEntrevista').",idEntrevista",
             "estadoEntrevista" => "required",
             "nombre1AspiranteEntrevista" => 'required|string|max:20',
             "apellido1AspiranteEntrevista" => 'required|string|max:20',
@@ -54,7 +53,8 @@ class EntrevistaRequest extends Request
             "Tercero_idEntrevistador" => "required",
             "Cargo_idCargo" => "required",
             "experienciaAspiranteEntrevista" => 'required|numeric|min:0',
-            "TipoIdentificacion_idTipoIdentificacion" => "required");
+            "TipoIdentificacion_idTipoIdentificacion" => "required",
+            "experienciaAspiranteEntrevista" => 'required|numeric|min:0');
         
 
          for($i = 0; $i < $EntrevistaHijos; $i++)

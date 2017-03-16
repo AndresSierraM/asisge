@@ -6,7 +6,7 @@ function validarFormulario(event)
     var PorcentajeTotal = validacionPorcentajePeso();
     if(PorcentajeTotal == false)
     {
-        alert ('la sumatoria de %Peso Educacion no debe ser mayor o menor que 100 ');
+        alert ('la sumatoria de %Peso Educación debe ser igual a 100');
         // si hay porcentajes malos, evitamos que el formulario se cierre
         event.preventDefault();
     }
@@ -193,10 +193,15 @@ function validacionesPorcentajeEducacion()
     }
 
     if (valida >100 || valida < 100)
-    {
-        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+    {   
+        $("#educacionalert").html('la sumatoria debe ser 100,valor actual '+valida).css("font-weight","bold").css('display', 'block');
     } 
-
+    else if (valida === 100) 
+        // Si la validacion es igual a 100 debe quitar el div 
+    {
+         $("#educacionalert").html('la sumatoria debe ser 100,valor actual '+valida).css("font-weight","bold").css('display', 'none');
+    }
+ 
 }
 
 
@@ -211,8 +216,13 @@ function validacionesPorcentajeFormacion()
 
     if (validaF >100 || validaF < 100)
     {
-        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+          $("#formacionalert").html('la sumatoria debe ser 100,valor actual '+validaF).css("font-weight","bold").css('display', 'block');
     } 
+    else if (validaF === 100) 
+        // Si la validacion es igual a 100 debe quitar el div 
+    {
+         $("#formacionalert").html('la sumatoria debe ser 100,valor actual '+validaF).css("font-weight","bold").css('display', 'none');
+    }
 
 }
 
@@ -229,8 +239,13 @@ function validacionesPorcentajeHabilidad()
 
     if (validaH >100 || validaH < 100)
     {
-        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+         $("#habilidadalert").html('la sumatoria debe ser 100,valor actual '+validaH).css("font-weight","bold").css('display', 'block');
     } 
+    else if (validaH === 100) 
+        // Si la validacion es igual a 100 debe quitar el div 
+    {
+         $("#habilidadalert").html('la sumatoria debe ser 100,valor actual '+validaH).css("font-weight","bold").css('display', 'none');
+    }
 
 }
 
@@ -248,10 +263,18 @@ function validacionesPorcentajeResponsabilidad()
 
     if (validaH >100 || validaH < 100)
     {
-        alert('La suma de los porcentajes no debe ser mayor o menor que 100')
+          $("#responsabilidaddalert").html('la sumatoria debe ser 100,valor actual '+validaH).css("font-weight","bold").css('display', 'block');
     } 
+    else if (validaH === 100) 
+        // Si la validacion es igual a 100 debe quitar el div 
+    {
+         $("#responsabilidaddalert").html('la sumatoria debe ser 100,valor actual '+validaH).css("font-weight","bold").css('display', 'none');
+    }
 
 }
+
+
+
 
    
 // esta funcion verifica que los % de Peso no excedan 100%

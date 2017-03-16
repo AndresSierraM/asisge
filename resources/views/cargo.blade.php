@@ -455,13 +455,13 @@
 												<a data-toggle="collapse" data-parent="#accordion" href="#educacion">Educaci&oacute;n</a>
 											</h4>
 										</div>
-										<div id="educacion" class="panel-collapse collapse">
+										<div id="educacion" class="panel-collapse collapse" >
 											<div class="panel-body">
 												<div class="form-group" id='test'>
 													<div class="col-sm-10" style="width: 100%;">
 														<div class="input-group">
 														<!-- nuevo campo para 	 peso educacion -->
-													     <div class="form-group" id='test'>
+													     <div class="form-group" id='test' >
 															{!!Form::label('porcentajeEducacionCargo', '% Peso', array('class' => 'col-sm-1 control-label'))!!}
 															<div class="col-sm-10">
 																<div class="input-group">
@@ -485,18 +485,19 @@
 
 														         <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
 														          <!-- este es el div para donde van insertando los registros --> 
-														          <div id="Educacion_Modulo">
+														          <div id="Educacion_Modulo" >
 														          </div>
 														        </div>
 														      </div>
 														    </div> 
-
-
-
 														</div>
 													</div>
+													
 												</div>
 											</div>
+											 <!-- Div que va alertar la sumatoria de las multiregistros % Peso -->
+										    		<div id="educacionalert" class="btn btn-danger" style="display:none;" >
+									    			</div>
 										</div>
 									</div>
 									<div class="panel panel-default">
@@ -594,6 +595,9 @@
 													</div>
 												</div>
 											</div>
+											 <!-- Div que va alertar la sumatoria de las multiregistros % Peso -->
+										    		<div id="formacionalert" class="btn btn-danger" style="display:none;" >
+									    			</div>
 										</div>
 									</div>
 									<!-- cambio de orden aca va hacer habilidades propias del cargo -->
@@ -641,6 +645,9 @@
 													</div>
 												</div>
 											</div>
+											 <!-- Div que va alertar la sumatoria de las multiregistros % Peso -->
+										    		<div id="habilidadalert" class="btn btn-danger" style="display:none;" >
+									    			</div>
 										</div>
 									</div>
 									<!-- Responsabilidades -->
@@ -691,6 +698,9 @@
 													</div>
 												</div>
 											</div>
+											<!-- Div que va alertar la sumatoria de las multiregistros % Peso -->
+										    		<div id="responsabilidaddalert" class="btn btn-danger" style="display:none;" >
+									    			</div>
 										</div>
 
 									</div>
