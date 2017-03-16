@@ -257,7 +257,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 }
 
 
-function calcularIndicadores($fecha)
+function calcularIndicadores($fecha, $idCompania)
 {
 	//-----------------------------------------------------
 	//	CALCULO DE INDICADORES DEL CUADRO DE MANDO
@@ -356,7 +356,7 @@ function calcularIndicadores($fecha)
 	$cuadroMandoObjeto = DB::table('cuadromando as CM')
 	    ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
 	    ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion, operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando, Proceso_idProceso'))
-	    ->where('CM.Compania_idCompania','=', \Session::get('idCompania'))
+	    ->where('CM.Compania_idCompania','=', $idCompania)
 	    ->orderby('idCuadroMando')
 	    ->get();
 	 
@@ -497,12 +497,20 @@ function calcularIndicadores($fecha)
 // si no existe, tomamos el dia de hoy
 $fecha = isset($_GET["fecha"]) ? $_GET["fecha"] : date("Y-m-d");
 
-while($fecha <= date("Y-m-d"))
-{
-	calcularIndicadores($fecha);
-	$fecha = date ( 'Y-m-d' , strtotime ( "+ 1 day" , strtotime($fecha)) );
-	// echo $fecha.'<br>';
+$compania = DB::Select('SELECT idCompania from compania');
+
+for ($i=0; $i < count($compania); $i++) 
+{ 
+	$idCompania = get_object_vars($compania[$i])
+
+	while($fecha <= date("Y-m-d"))
+	{
+		calcularIndicadores($fecha, $idCompania);
+		$fecha = date ( 'Y-m-d' , strtotime ( "+ 1 day" , strtotime($fecha)) );
+		// echo $fecha.'<br>';
+	}
 }
+
 echo 'Fin del proceso de recalculo de indicadores';
 
 ?>

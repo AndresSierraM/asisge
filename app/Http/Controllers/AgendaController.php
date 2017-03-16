@@ -35,7 +35,7 @@ class AgendaController extends Controller
     {
         $query = DB::Select('
                 SELECT 
-                    idAgenda, asuntoAgenda as title, urlAgenda as url, codigoCategoriaAgenda as class, fechaHoraInicioAgenda as start, fechaHoraFinAgenda as end, detallesAgenda as body 
+                    idAgenda, asuntoAgenda as title, urlAgenda as url, codigoCategoriaAgenda as class, fechaHoraInicioAgenda as start, fechaHoraFinAgenda as end, detallesAgenda as body, "si" as event
                 FROM agenda a
                     LEFT JOIN 
                 categoriaagenda ca ON a.CategoriaAgenda_idCategoriaAgenda = ca.idCategoriaAgenda
@@ -86,8 +86,7 @@ class AgendaController extends Controller
             'asuntoAgenda' => ($request['asuntoAgenda'] == ''  ? NULL : $request['asuntoAgenda']),
             'fechaHoraInicioAgenda' => $fechaInicio,
             'fechaHoraFinAgenda' => $fechaFin,
-            'urlAgenda' => $request['urlAgenda'],
-            'claseAgenda' => $request['claseAgenda'],
+            'urlAgenda' => '',
             'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
             'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' ? NULL : $request['Tercero_idResponsable']),
             'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'] == '' ? NULL : $request['MovimientoCRM_idMovimientoCRM']),
