@@ -254,21 +254,21 @@ function validacionesPorcentajeHabilidad()
 function validacionesPorcentajeResponsabilidad()
 {
     // Se crea una variable para que inicie en 0 
-    var validaH = 0;
+    var validaR = 0;
 
     
     for (var i = 0; i < Responsabilidades.contador; i++) {
-        validaH = validaH + parseFloat($('#porcentajeCargoResponsabilidad'+[i]).val());
+        validaR = validaR + parseFloat($('#porcentajeCargoResponsabilidad'+[i]).val());
     }
 
-    if (validaH >100 || validaH < 100)
+    if (validaR >100 || validaR < 100)
     {
-          $("#responsabilidaddalert").html('la sumatoria debe ser 100,valor actual '+validaH).css("font-weight","bold").css('display', 'block');
+          $("#responsabilidaddalert").html('la sumatoria debe ser 100,valor actual '+validaR).css("font-weight","bold").css('display', 'block');
     } 
-    else if (validaH === 100) 
+    else if (validaR === 100) 
         // Si la validacion es igual a 100 debe quitar el div 
     {
-         $("#responsabilidaddalert").html('la sumatoria debe ser 100,valor actual '+validaH).css("font-weight","bold").css('display', 'none');
+         $("#responsabilidaddalert").html('la sumatoria debe ser 100,valor actual '+validaR).css("font-weight","bold").css('display', 'none');
     }
 
 }
