@@ -14,7 +14,7 @@
             {{ Session::get('mensaje_error') }}
         @endif
         
-                {!!Form::email('email','',['class'=> 'form-control','id'=>'nombre','placeholder'=>'Ccorreo'])!!}
+                {!!Form::email('email','',['class'=> 'form-control','id'=>'nombre','placeholder'=>'Correo'])!!}
                 
                 {!!Form::password('password', ['class'=> 'form-control','id'=>'password','placeholder'=>'Contraseña'])!!}
 
