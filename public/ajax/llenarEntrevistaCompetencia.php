@@ -5,7 +5,7 @@ $idCargo = $_POST['idCargo'];
 // consultamos las preguntas que ya han sido guardadas en la entrevista
 $preguntas = DB::Select('
 	SELECT
-	idEntrevistaCompetencia, CompetenciaPregunta_idCompetenciaPregunta,preguntaCompetenciaPregunta,CompetenciaRespuesta_idCompetenciaRespuesta
+	idEntrevistaCompetencia, CompetenciaPregunta_idCompetenciaPregunta,preguntaCompetenciaPregunta,CompetenciaRespuesta_idCompetenciaRespuesta, respuestacompetenciapregunta
   FROM entrevistacompetencia ec
   LEFT JOIN competenciapregunta cp
     On ec.CompetenciaPregunta_idCompetenciaPregunta = cp.idCompetenciaPregunta 

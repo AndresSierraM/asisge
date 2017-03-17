@@ -4,7 +4,7 @@ $idCargo = $_POST['idCargo'];
 // Consultamos las preguntas asociadas al cargo
 $preguntas = DB::Select('
 	SELECT
-	NULL as idEntrevistaCompetencia, idCompetenciaPregunta as CompetenciaPregunta_idCompetenciaPregunta, preguntaCompetenciaPregunta, NULL as CompetenciaRespuesta_idCompetenciaRespuesta
+	NULL as idEntrevistaCompetencia, idCompetenciaPregunta as CompetenciaPregunta_idCompetenciaPregunta, preguntaCompetenciaPregunta, NULL as CompetenciaRespuesta_idCompetenciaRespuesta, respuestacompetenciapregunta
   FROM cargocompetencia cc
   LEFT JOIN competenciapregunta cp
     On cc.Competencia_idCompetencia = cp.Competencia_idCompetencia

@@ -391,7 +391,7 @@ function llenarEntrevistaCompetencia(idCargo, accion)
                         porcentajes[j] = respuesta[1][j]["porcentajeInversoCompetenciaRespuesta"];
                         titulos[j] = respuesta[1][j]["respuestaCompetenciaRespuesta"];
                     }
-                   // window.parent.EntrevistaCompentencia.opciones = [porcentajes, titulos]; 
+                   window.parent.EntrevistaCompentencia.opciones[3] = [porcentajes, titulos]; 
 
                    var valores = new Array(
                         respuesta[0][i]["idEntrevistaCompetencia"],
