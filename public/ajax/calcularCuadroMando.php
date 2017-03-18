@@ -58,9 +58,8 @@ function obtenerGroupBy($idFormula)
 
 // Consultamos la tabla de condicion y la recorremos concatenando los campos 
 // para la clausula WHERE
-function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin)
+function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin, $idCompania)
 {
-
 	// a la condicion de la consulta le debemos adicionar una fecha de corte
 	// y el id de la compañia actual
 	// para adicionar el id de la compania, primero verificamos si en la tabla existe ese campo
@@ -74,7 +73,7 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin)
 	$datowhere = '';
 	// si la tabla tiene campo de id de compania, armamos una condicion con el id de compania de la session actual sino la dejamos en blanco
 	$datowhere = isset(get_object_vars($consulta[0])["COLUMN_NAME"]) 
-		? get_object_vars($consulta[0])["COLUMN_NAME"] .' = '. \Session::get("idCompania"). ' AND '
+		? get_object_vars($consulta[0])["COLUMN_NAME"] .' = '. $idCompania. ' AND '
 		: '';
 	
 	// Si el usuario asocio una fecha de corte, la aplicamos en la condicion
@@ -112,7 +111,7 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin)
 	return $datowhere;
 }
 
-function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
+function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin, $idCompania)
 {
 	//********************************************************
 	// Proceso de Calculo de las formulas del cuadro de mando
@@ -199,7 +198,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin)
 				$groupby = obtenerGroupBy($datosFormula["idCuadroMandoFormula"]);
 
 				// 3.3. CONDICION (Where)
-				$datowhere = obtenerWhere($datosFormula["idCuadroMandoFormula"], $datosFormula["tablaModulo"], $datosFormula["fechaCorteCuadroMandoFormula"], $fechaInicio, $fechaFin);
+				$datowhere = obtenerWhere($datosFormula["idCuadroMandoFormula"], $datosFormula["tablaModulo"], $datosFormula["fechaCorteCuadroMandoFormula"], $fechaInicio, $fechaFin, $idCompania);
 
 				// creamos una sentencia de SQL con los componentes mencionados
 				$sql = 'SELECT '.str_replace('valor', $datosFormula["campoCuadroMandoFormula"], $funcion).
@@ -437,7 +436,7 @@ function calcularIndicadores($fecha, $idCompania)
 				$fechaCorte = $dia;
 				break;
 		}
-		$resultado = calcularFormula($CuadroMando[$i]["idCuadroMando"], $fechaIni, $fechaCorte);
+		$resultado = calcularFormula($CuadroMando[$i]["idCuadroMando"], $fechaIni, $fechaCorte, $idCompania);
 		// Evaluamos si el resultado cumple con la meta del indicador siempre y cuando ya sea la fecha de su corte
 		// si no cumple con la meta, insertamos un registro en el ACPM (Accion Correctiva)
 		// Armamos una comparacion concatenada para luego ejecutarla con el evalecho 
@@ -445,7 +444,8 @@ function calcularIndicadores($fecha, $idCompania)
 		
 		$resp = '';
 		eval('$resp = ('. $resultado .' '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' ? "Si" : "No");');
-		// echo $resp;
+
+		$reporteACPM = \App\ReporteACPM::All()->last();
 
 		if($resp == 'No' )
 		{
@@ -501,11 +501,11 @@ $compania = DB::Select('SELECT idCompania from compania');
 
 for ($i=0; $i < count($compania); $i++) 
 { 
-	$idCompania = get_object_vars($compania[$i])
+	$idCompania = get_object_vars($compania[$i]);
 
 	while($fecha <= date("Y-m-d"))
 	{
-		calcularIndicadores($fecha, $idCompania);
+		calcularIndicadores($fecha, $idCompania["idCompania"]);
 		$fecha = date ( 'Y-m-d' , strtotime ( "+ 1 day" , strtotime($fecha)) );
 		// echo $fecha.'<br>';
 	}

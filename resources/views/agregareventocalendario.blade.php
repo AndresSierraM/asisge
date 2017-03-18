@@ -362,7 +362,7 @@
         {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
       @endif
   @else
-      {!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+      {!!Form::submit('Adicionar',["class"=>"btn btn-primary",'onclick'=>'validarFormulario(event);'])!!}
   @endif
 
   {!! Form::close() !!}
