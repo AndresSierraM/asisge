@@ -112,15 +112,6 @@ class EntrevistaRequest extends Request
     
 
 
-         for($i = 0; $i < $EntrevistaEducacion; $i++)
-        {
-            if(trim($this->get('calificacionEntrevistaEducacion')[$i]) = '')
-            {    
-              $validacion['calificacionEntrevistaEducacion'.$i]  = 'MENSAJE DE PRUEBA EDUCACION ';
-            }
-
-        }
-
         return $validacion;
         
     }

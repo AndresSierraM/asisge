@@ -129,8 +129,7 @@ class EntrevistaController extends Controller
             'calificacionEducacionEntrevista' => $request['calificacionEducacionEntrevista'],  
             'calificacionFormacionEntrevista' => $request['calificacionFormacionEntrevista'],
             'calificacionHabilidadCargoEntrevista'  => $request['calificacionHabilidadCargoEntrevista'],
-            'calificacionHabilidadActitudinalEntrevista' => $request['calificacionHabilidadActitudinalEntrevista'],
-            'observacionEntrevista' => $request['observacionEntrevista']
+            'calificacionHabilidadActitudinalEntrevista' => $request['calificacionHabilidadActitudinalEntrevista']
             ]);
          
 
