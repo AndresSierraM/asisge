@@ -154,6 +154,8 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('eventoagenda','AgendaController@indexAgendaEvento');
     Route::get('getAll','AgendaController@getAll');
 
+    Route::resource('perfilcliente','PerfilClienteController');
+
     
     // *************************************
     // Rutas de Encuestas
@@ -687,6 +689,16 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosCategoriaAgenda', function()
     {
         include public_path().'/ajax/datosCategoriaAgenda.php';
+    });
+
+    Route::get('datosPerfilCliente', function()
+    {
+        include public_path().'/ajax/datosPerfilCliente.php';
+    });
+
+    Route::get('datosPerfilClienteMovimiento', function()
+    {
+        include public_path().'/ajax/datosPerfilClienteMovimiento.php';
     });
 
 

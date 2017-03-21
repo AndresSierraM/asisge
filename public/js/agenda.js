@@ -247,7 +247,7 @@ function guardarDatos(){
             dataType: 'html',
             success: function(result){
                 $(formId)[0].reset();
-                alert(result);
+                location.reload();
                 $('#modalEvento').modal('hide');
             },
             error: function(){

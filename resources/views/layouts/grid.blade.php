@@ -2,6 +2,9 @@
     
     @section('clases')
 
+      {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap-theme.min.css'); !!}
+      {!!Html::style('assets/font-awesome-v4.3.0/css/font-awesome.min.css'); !!}
+
       <style type="text">
           html, body {
           margin: 0;			/* Remove body margin/padding */
