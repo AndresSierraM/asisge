@@ -381,16 +381,21 @@ function llenarEntrevistaCompetencia(idCargo, accion)
                // $("#calificacionHabilidadActitudinalEntrevista").val(respuesta[]["respuestaCompetenciaPregunta"]);
                 for (var i = 0; i < respuesta[0].length; i++) 
                 {
-                    
         
                     var porcentajes = Array();  
                     var titulos = Array();
                     for (var j = 0; j < respuesta[1].length; j++) 
                     {
                 
-                        porcentajes[j] = respuesta[1][j]["porcentajeInversoCompetenciaRespuesta"];
+                        // dependindo si la pregunta tiene respuesta normal o inversa
+                        // le debemos poner en el value uno u otro porcentaje, en la mitad
+                        // del campo de porcentaje le concatemamos el "tipo" que dice si es Normal o Inverso para
+                        // Formar el nombre del campo
+                        porcentajes[j] =  respuesta[1][j]["porcentaje"+respuesta[0][i]["respuestaCompetenciaPregunta"]+"CompetenciaRespuesta"];
                         titulos[j] = respuesta[1][j]["respuestaCompetenciaRespuesta"];
+
                     }
+                    console.log(porcentajes);
                    window.parent.EntrevistaCompentencia.opciones[3] = [porcentajes, titulos]; 
 
                    var valores = new Array(
