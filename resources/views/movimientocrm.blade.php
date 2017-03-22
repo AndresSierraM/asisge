@@ -145,7 +145,7 @@ else
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
-    where idTercero = '.\Session::get('idTercero'));
+    where idTercero = 119');
 $tercero = get_object_vars($tercero[0]); 
 
 
@@ -164,6 +164,7 @@ $fechahora = Carbon\Carbon::now();
 @include('alerts.request')
 
 {!!Html::script('js/movimientocrm.js'); !!}
+{!!Html::script('js/agenda.js'); !!}
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
@@ -254,6 +255,8 @@ $fechahora = Carbon\Carbon::now();
 	@endif
 		<div id='form-section' >
 				<fieldset id="movimientocrm-form-fieldset">	
+				<button type="button" onclick="agregarEvento()" class="btn btn-primary">Añadir evento</button>
+				<br><br><br>
 					<div class="form-group" id='test'>
 						<div class="col-sm-6">
 							<div class="col-sm-4">
@@ -908,6 +911,25 @@ $fechahora = Carbon\Carbon::now();
       <div class="modal-body">
       <?php 
         echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/MovimientocrmVacantegridselect"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grid modal para agregar eventos de agenda -->
+<div id="modalEvento" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Crear un nuevo evento</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/eventoagenda"></iframe>'
       ?>
       </div>
     </div>

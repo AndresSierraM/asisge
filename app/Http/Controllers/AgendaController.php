@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\AgendaRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
@@ -72,7 +73,7 @@ class AgendaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AgendaRequest $request)
     {
         $fechaInicio =  strtotime(substr($request['fechaHoraInicioAgenda'], 6, 4)."-".substr($request['fechaHoraInicioAgenda'], 3, 2)."-".substr($request['fechaHoraInicioAgenda'], 0, 2)." " .substr($request['fechaHoraInicioAgenda'], 10, 6)) * 1000;
 

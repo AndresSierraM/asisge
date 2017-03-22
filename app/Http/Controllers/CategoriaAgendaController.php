@@ -44,7 +44,7 @@ class CategoriaAgendaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoriaAgendaRequest $request)
     {
         \App\CategoriaAgenda::create([
             'codigoCategoriaAgenda' => $request['codigoCategoriaAgenda'],
@@ -93,7 +93,7 @@ class CategoriaAgendaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoriaAgendaRequest $request, $id)
     {
         $categoriaagenda = \App\CategoriaAgenda::find($id);
         

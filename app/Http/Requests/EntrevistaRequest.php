@@ -23,20 +23,7 @@ class EntrevistaRequest extends Request
      */
     public function rules()
     {
- 
-    //     return [
-    //         'documentoAspiranteEntrevista' => 'required|numeric',
-    //         'estadoEntrevista' => 'required',
-    //         '' => 'required|string|max:20',
-    //         'apellido1AspiranteEntrevista' => 'required|string|max:20',
-    //         // 'Tercero_idAspirante' => 'required',
-    //         'fechaEntrevista' => 'required',
-    //         'Tercero_idEntrevistador' => 'required',
-    //         'Cargo_idCargo' => 'required',
-    //         'experienciaAspiranteEntrevista' => 'required|numeric|min:0',
-    //         'experienciaRequeridaEntrevista' => 'required|numeric|min:0',
 
-    // ];
         $EntrevistaHijos = count($this->get('nombreEntrevistaHijo'));
         $RelacionFamiliar = count($this->get('parentescoEntrevistaRelacionFamiliar'));
         $CompetenciaPregunta = count($this->get('CompetenciaPregunta_idCompetenciaPregunta'));
@@ -44,7 +31,7 @@ class EntrevistaRequest extends Request
         $EntrevistaEducacion = count($this->get('calificacionEntrevistaEducacion'));
         $EntrevistaHabilidad = count($this->get('calificacionEntrevistaHabilidad'));
         $EncuestaPregunta = count($this->get('idEncuestaPregunta'));
-
+          
         $validacion = array("documentoAspiranteEntrevista" => "required|string|max:30|unique:entrevista,documentoAspiranteEntrevista,".$this->get('idEntrevista').",idEntrevista",
             "estadoEntrevista" => "required",
             "nombre1AspiranteEntrevista" => 'required|string|max:20',
@@ -94,6 +81,7 @@ class EntrevistaRequest extends Request
             {    
                 $validacion['calificacionEntrevistaEducacion'.$i] =  'required';
             }
+
         }
 
         for($i = 0; $i < $EntrevistaHabilidad; $i++)
@@ -103,10 +91,28 @@ class EntrevistaRequest extends Request
                 $validacion['calificacionEntrevistaHabilidad'.$i] =  'required';
             }
         }
-        
-        
+
         return $validacion;
 
 
+    }
+         
+         public function messages()
+    {
+        $EntrevistaEducacion = count($this->get('calificacionEntrevistaEducacion'));
+        
+        $validacion = array(    
+        'TipoIdentificacion_idTipoIdentificacion.required'=> 'Debe seleccionar el tipo de identificaci&#243;n',
+        'documentoAspiranteEntrevista.unique' => 'Este codigo ya se encuentra en uso.',
+        'Cargo_idCargo.required'=> 'Debe seleccionar el  Cargo.',
+        'nombre1AspiranteEntrevista.required'=> 'El campo primer Nombre es obligatorio.',
+        'apellido1AspiranteEntrevista.required'=> 'El campo primer Apellido es obligatorio.',
+        'fechaEntrevista.required'=> 'El campo fecha de la Entrevista es obligatorio.',
+        'Tercero_idEntrevistador.required'=> 'Debe seleccionar el Entrevistador.');
+    
+
+
+        return $validacion;
+        
     }
 }

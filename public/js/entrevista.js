@@ -97,13 +97,14 @@ function validarFormulario(event)
     var EntrevistaFormacion = document.querySelectorAll("[name='calificacionEntrevistaFormacion[]']"); 
     var EntrevistaEducacion = document.querySelectorAll("[name='calificacionEntrevistaEducacion[]']");
     var EntrevistaHabilidad = document.querySelectorAll("[name='calificacionEntrevistaHabilidad[]']"); 
-
+    
     var dato10 = [];
     var dato11 = [];
     var dato12 = [];
     var dato13 = [];
     var dato14= [];
     var dato15 = [];
+
     
     var valor = '';
     var sw = true;
@@ -234,6 +235,8 @@ function validarFormulario(event)
                 {
                     (typeof respuesta['calificacionEntrevistaHabilidad'+j] === "undefined" ? document.getElementById('calificacionEntrevistaHabilidad'+j).style.borderColor = '' : document.getElementById('calificacionEntrevistaHabilidad'+j).style.borderColor = '#a94442');
                 }
+
+       
 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
@@ -412,7 +415,7 @@ function llenarEntrevistaCompetencia(idCargo, accion)
                     //finalmente se envia el resultado al campito de calificacion que esta situado debajo de las preguntas 
                    
                 }  
-                alert(valores);
+                
             },
             error:    function(xhr,err){ 
                 alert("Error");
