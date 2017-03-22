@@ -33,7 +33,7 @@
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
-    where idTercero = 119');
+    where idTercero = '.\Session::get('idTercero'));
 
 $tercero = get_object_vars($tercero[0]); 
 
