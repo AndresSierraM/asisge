@@ -50,7 +50,7 @@ class AgendaController extends Controller
 
     public function indexAgendaEvento()
     {
-        $categoriaagenda = \App\CategoriaAgenda::All()->lists('nombreCategoriaAgenda','idCategoriaAgenda');
+        $categoriaagenda = \App\CategoriaAgenda::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCategoriaAgenda','idCategoriaAgenda');
         $casocrm = \App\MovimientoCRM::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('asuntoMovimientoCRM','idMovimientoCRM');
         $supervisor = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $responsable = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');

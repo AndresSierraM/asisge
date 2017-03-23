@@ -166,13 +166,13 @@
   <fieldset id="agenda-form-fieldset"> 
 
         <div class="form-group" id='test'>
-          {!!Form::label('CategoriaAgenda_idCategoriaAgenda', 'Tipo', array('class' => 'col-sm-2 control-label')) !!}
+          {!!Form::label('CategoriaAgenda_idCategoriaAgenda', 'Categoria', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda['CategoriaAgenda_idCategoriaAgenda'] : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
+              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda['CategoriaAgenda_idCategoriaAgenda'] : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo de categoria", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
             {!!Form::hidden('idAgenda', (isset($agenda) ? $agenda["idAgenda"] : null), array('id' => 'idAgenda')) !!}
           </div>
         </div>
