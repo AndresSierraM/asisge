@@ -505,8 +505,17 @@ class MovimientoCRMController extends Controller
      */
     public function destroy($id)
     {
+        // con el id de movimiento consultamos que documento crm es 
+        // para ponerlo en el parametro del redirect
+        $documentocrm = DB::select(
+                    'SELECT DocumentoCRM_idDocumentoCRM
+                    FROM movimientocrm
+                    WHERE idMovimientoCRM = '.$id);
+
+        $documentocrm = get_object_vars($documentocrm[0]);
+        
         \App\MovimientoCRM::destroy($id);
-        return redirect('/movimientocrm');
+        return redirect('/movimientocrm?idDocumentoCRM='.$documentocrm['DocumentoCRM_idDocumentoCRM']);
     }
 
     public function grabarDetalle($id, $request)

@@ -35,11 +35,11 @@ class PresupuestoController extends Controller
      */
     public function create()
     {
-        $documentocrm = \App\DocumentoCRM::All()->lists('nombreDocumentoCRM','idDocumentoCRM');
-        // $idLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idLineaNegocio');
-        // $nombreLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreLineaNegocio');
-        $idTercero = \App\Tercero::where("tipoTercero","like","%03%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idTercero');
-        $nombreTercero = \App\Tercero::where("tipoTercero","like","%03%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreCompletoTercero');
+        $documentocrm = \App\DocumentoCRM::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreDocumentoCRM','idDocumentoCRM');
+         $idLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idLineaNegocio');
+        $nombreLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreLineaNegocio');
+        $idTercero = \App\Tercero::where("tipoTercero","like","%01%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idTercero');
+        $nombreTercero = \App\Tercero::where("tipoTercero","like","%01%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreCompletoTercero');
         return view('presupuesto',compact('documentocrm','idLineaNegocio','nombreLineaNegocio','idTercero','nombreTercero'));
     }
 
@@ -60,22 +60,10 @@ class PresupuestoController extends Controller
                 'DocumentoCRM_idDocumentoCRM' => $request['DocumentoCRM_idDocumentoCRM'],
                 ]);
 
-            $lineaNegocio = DB::Select('SELECT idLineaNegocio from lineanegocio');
             $presupuesto = \App\Presupuesto::All()->last();
-            for ($ven=0; $ven < count($request['Tercero_idVendedor']); $ven++) 
-            { 
-                for ($lin=0; $lin < count($lineaNegocio); $lin++) 
-                { 
-                    $idLN = get_object_vars($lineaNegocio[$lin]);
-                    
-                    \App\PresupuestoDetalle::create([
-                    'Tercero_idVendedor' => $request['Tercero_idVendedor'][$ven],
-                    'valorLineaNegocio' => $request['LineaNegocio_'.$idLN["idLineaNegocio"].'_'][$ven],
-                    'Presupuesto_idPresupuesto' => $presupuesto->idPresupuesto,
-                    'LineaNegocio_idLineaNegocio' => $idLN["idLineaNegocio"]
-                    ]);
-                }
-            }
+            
+            $this->GrabarDetalle($presupuesto->idPresupuesto, $request);
+
         }
 
         return redirect('/presupuesto');
@@ -101,11 +89,14 @@ class PresupuestoController extends Controller
     public function edit($id)
     {
         $presupuesto = \App\Presupuesto::find($id);
-        $documentocrm = \App\DocumentoCRM::All()->lists('nombreDocumentoCRM','idDocumentoCRM');
-        $idLineaNegocio = \App\LineaNegocio::All()->lists('idLineaNegocio');
-        $nombreLineaNegocio = \App\LineaNegocio::All()->lists('nombreLineaNegocio');
-        $idTercero = \App\Tercero::where("tipoTercero","like","%03%")->lists('idTercero');
-        $nombreTercero = \App\Tercero::where("tipoTercero","like","%03%")->lists('nombreCompletoTercero');
+        
+        $documentocrm = \App\DocumentoCRM::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreDocumentoCRM','idDocumentoCRM');
+        
+        $idLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idLineaNegocio');
+        $nombreLineaNegocio = \App\LineaNegocio::where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreLineaNegocio');
+        
+        $idTercero = \App\Tercero::where("tipoTercero","like","%01%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('idTercero');
+        $nombreTercero = \App\Tercero::where("tipoTercero","like","%01%")->where('Compania_idCompania','=',\Session::get("idCompania"))->lists('nombreCompletoTercero');
         return view('presupuesto',compact('documentocrm','idLineaNegocio','nombreLineaNegocio','idTercero','nombreTercero'),['presupuesto'=>$presupuesto]);
     }
 
@@ -124,22 +115,7 @@ class PresupuestoController extends Controller
             $presupuesto->fill($request->all());
             $presupuesto->save();
 
-            $lineaNegocio = DB::Select('SELECT idLineaNegocio from lineanegocio');
-            \App\PresupuestoDetalle::where('Presupuesto_idPresupuesto',$id)->delete();
-            for ($ven=0; $ven < count($request['Tercero_idVendedor']); $ven++) 
-            { 
-                for ($lin=0; $lin < count($lineaNegocio); $lin++) 
-                { 
-                    $idLN = get_object_vars($lineaNegocio[$lin]);
-                    
-                    \App\PresupuestoDetalle::create([
-                    'Tercero_idVendedor' => $request['Tercero_idVendedor'][$ven],
-                    'valorLineaNegocio' => $request['LineaNegocio_'.$idLN["idLineaNegocio"].'_'][$ven],
-                    'Presupuesto_idPresupuesto' => $presupuesto->idPresupuesto,
-                    'LineaNegocio_idLineaNegocio' => $idLN["idLineaNegocio"]
-                    ]);
-                }
-            }
+            $this->GrabarDetalle($presupuesto->idPresupuesto, $request);
         }
 
         return redirect('/presupuesto');
@@ -155,5 +131,31 @@ class PresupuestoController extends Controller
     {
         \App\Presupuesto::destroy($id);
         return redirect('/presupuesto');
+    }
+
+
+    function GrabarDetalle($id, $request)
+    {
+        $lineaNegocio = DB::Select(
+            'SELECT idLineaNegocio 
+            FROM    lineanegocio
+            WHERE   Compania_idCompania = '.\Session::get("idCompania"));
+
+        \App\PresupuestoDetalle::where('Presupuesto_idPresupuesto',$id)->delete();
+        
+        for ($ven=0; $ven < count($request['Tercero_idVendedor']); $ven++) 
+        { 
+            for ($lin=0; $lin < count($lineaNegocio); $lin++) 
+            { 
+                $idLN = get_object_vars($lineaNegocio[$lin]);
+                
+                \App\PresupuestoDetalle::create([
+                'Tercero_idVendedor' => $request['Tercero_idVendedor'][$ven],
+                'valorLineaNegocio' => $request['LineaNegocio_'.$idLN["idLineaNegocio"].'_'][$ven],
+                'Presupuesto_idPresupuesto' => $id,
+                'LineaNegocio_idLineaNegocio' => $idLN["idLineaNegocio"]
+                ]);
+            }
+        }
     }
 }

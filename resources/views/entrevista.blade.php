@@ -419,13 +419,13 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionF
 
 
                                                                       <!-- Cargo -->
-                                                                          <div class="form-group col-md-6" id='test'>
-                                                                              {!!Form::label('Cargo_idCargo','Cargo',array('class' => 'col-sm-2 control-label')) !!}
-                                                                                  <div class="col-sm-8">
-                                                                                    <div class="input-group" style="padding-left:15px ">
-                                                                                      <span class="input-group-addon">
-                                                                                        <i class="fa fa-sitemap" style="width: 14px;" aria-hidden="true"></i>
-                                                                                      </span>
+      <div class="form-group col-md-6" id='test'>
+          {!!Form::label('Cargo_idCargo','Cargo',array('class' => 'col-sm-2 control-label')) !!}
+              <div class="col-sm-8">
+                <div class="input-group" style="padding-left:15px ">
+                  <span class="input-group-addon">
+                    <i class="fa fa-sitemap" style="width: 14px;" aria-hidden="true"></i>
+                  </span>
                                                                               <!--     {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevista) ? $entrevista->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione", 'onchange'=>'llenarFormacionCargo,llenarEducacionCargo,llenarEntrevistaCompetencia(this.value)'])!!}
  -->
 

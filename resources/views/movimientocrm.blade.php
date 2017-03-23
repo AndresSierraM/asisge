@@ -243,7 +243,6 @@ $fechahora = Carbon\Carbon::now();
 	});
 </script>
 
-
 	@if(isset($movimientocrm))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($movimientocrm,['route'=>['movimientocrm.destroy',$movimientocrm->idMovimientoCRM],'method'=>'DELETE'])!!}
@@ -274,6 +273,11 @@ $fechahora = Carbon\Carbon::now();
 							      	{!!Form::hidden('eliminardocumentocrmcargo', $id, array('id' => 'eliminardocumentocrmcargo'))!!}
 							      	{!!Form::hidden('rolUsuario', $rolUsuario, array('id' => 'rolUsuario'))!!}
 							      	{!!Form::hidden('nombreDocumentoCRM', $arrayCampos[0]["nombreDocumentoCRM"], array('id' => 'nombreDocumentoCRM'))!!}
+				        			
+				        			{!!Form::hidden('Tercero_idAsesor', (isset($movimientocrm) ? $movimientocrm->Tercero_idAsesor : null), array('id' => 'Tercero_idAsesor'))!!}
+				        			{!!Form::hidden('Tercero_idSupervisor', (isset($movimientocrm) ? $movimientocrm->Tercero_idSupervisor : null), array('id' => 'Tercero_idSupervisor'))!!}
+				        			{!!Form::hidden('AcuerdoServicio_idAcuerdoServicio', (isset($movimientocrm) ? $movimientocrm->AcuerdoServicio_idAcuerdoServicio : null), array('id' => 'AcuerdoServicio_idAcuerdoServicio'))!!}
+
 
 								</div>
 							</div>
