@@ -153,6 +153,7 @@ Route::group(['middleware' => 'auth'], function ()
 
     Route::get('eventoagenda','AgendaController@indexAgendaEvento');
     Route::get('getAll','AgendaController@getAll');
+    Route::get('eliminarAgenda/delete/{id}', 'AgendaController@destroy');
 
     Route::resource('perfilcliente','PerfilClienteController');
 

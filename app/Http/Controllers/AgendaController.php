@@ -36,7 +36,7 @@ class AgendaController extends Controller
     {
         $query = DB::Select('
                 SELECT 
-                    idAgenda, asuntoAgenda as title, urlAgenda as url, codigoCategoriaAgenda as class, fechaHoraInicioAgenda as start, fechaHoraFinAgenda as end, detallesAgenda as body, "si" as event
+                    idAgenda as id, asuntoAgenda as title, urlAgenda as url, codigoCategoriaAgenda as class, fechaHoraInicioAgenda as start, fechaHoraFinAgenda as end, detallesAgenda as body, "si" as event
                 FROM agenda a
                     LEFT JOIN 
                 categoriaagenda ca ON a.CategoriaAgenda_idCategoriaAgenda = ca.idCategoriaAgenda
@@ -52,8 +52,8 @@ class AgendaController extends Controller
     {
         $categoriaagenda = \App\CategoriaAgenda::All()->lists('nombreCategoriaAgenda','idCategoriaAgenda');
         $casocrm = \App\MovimientoCRM::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('asuntoMovimientoCRM','idMovimientoCRM');
-        $supervisor = \App\Tercero::where('tipoTercero','like','%*01*%')->where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        $responsable = \App\Tercero::where('tipoTercero','like','%*01*%')->where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $supervisor = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        $responsable = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         return view('agregareventocalendario',compact('categoriaagenda','supervisor','casocrm','responsable'));
     }
 
@@ -87,7 +87,6 @@ class AgendaController extends Controller
             'asuntoAgenda' => ($request['asuntoAgenda'] == ''  ? NULL : $request['asuntoAgenda']),
             'fechaHoraInicioAgenda' => $fechaInicio,
             'fechaHoraFinAgenda' => $fechaFin,
-            'urlAgenda' => '',
             'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
             'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' ? NULL : $request['Tercero_idResponsable']),
             'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'] == '' ? NULL : $request['MovimientoCRM_idMovimientoCRM']),
@@ -105,6 +104,7 @@ class AgendaController extends Controller
         else
         {
             $agenda = \App\Agenda::All()->last();
+            DB::update('UPDATE agenda SET urlAgenda = "http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?id='.$agenda->idAgenda.'" WHERE idAgenda = '.$agenda->idAgenda);
             $this->grabarDetalle($agenda->idAgenda,$request);
         }
     }
@@ -148,6 +148,12 @@ class AgendaController extends Controller
         $agenda = \App\Agenda::find($id);
         $agenda->fill($request->all());
         $agenda->save();
+
+        if($request->ajax()) 
+        {
+            return response()->json(['Evento creado correctamente']);
+        }
+        return redirect('/agenda');
     }
 
     /**
@@ -158,7 +164,8 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\Agenda::destroy($id);
+        return response()->json(['Cancelado correctamente.']);
     }
 
     public function grabarDetalle($id, $request)
@@ -207,7 +214,7 @@ class AgendaController extends Controller
 
         if($request->ajax()) 
         {
-            return response()->json('Evento creado correctamente');
+            return response()->json(['Evento creado correctamente']);
         }
         return redirect('/agenda');
     }

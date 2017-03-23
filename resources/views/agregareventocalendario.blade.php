@@ -78,7 +78,6 @@
     var valorAgendaSeguimiento = [0, 0, '', '', 0];
 
     $(document).ready(function(){
-
       seguimiento = new Atributos('seguimiento','contenedor_seguimiento','agendaseguimiento');
 
       seguimiento.altura = '35px';
@@ -143,7 +142,25 @@
       {!!Form::open(['route'=>'agenda.store','method'=>'POST', 'action' => 'AgendaController@store', 'id' => 'agenda'])!!}
   @endif
 
+<?php
+  if(isset($_GET['id']))
+  {
+    $datosagenda = DB::Select('SELECT * FROM agenda WHERE idAgenda = '.$_GET['id']);
+    $agenda = get_object_vars($datosagenda[0]);
 
+    $fechaInicio =  substr($agenda['fechaHoraInicioAgenda'], 0, -3);
+    $agenda['fechaHoraInicioAgenda'] = date("d-m-Y H:m:s",$fechaInicio);
+
+    $fechaFin =  substr($agenda['fechaHoraFinAgenda'], 0, -3);
+    $agenda['fechaHoraFinAgenda'] = date("d-m-Y H:m:s",$fechaFin);
+
+    echo "<script> 
+            $(document).ready(function(){
+               consultarCamposAgenda($('#CategoriaAgenda_idCategoriaAgenda').val());
+            });
+          </script>";
+  }
+?>
 <div id='form-section'>
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
   <fieldset id="agenda-form-fieldset"> 
@@ -155,8 +172,8 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda->CategoriaAgenda_idCategoriaAgenda : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
-            {!!Form::hidden('idAgenda', null, array('id' => 'idAgenda')) !!}
+              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda['CategoriaAgenda_idCategoriaAgenda'] : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
+            {!!Form::hidden('idAgenda', (isset($agenda) ? $agenda["idAgenda"] : null), array('id' => 'idAgenda')) !!}
           </div>
         </div>
       </div>
@@ -170,7 +187,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-            {!!Form::text('asuntoAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa el asunto de la agenda'])!!}
+            {!!Form::text('asuntoAgenda',(isset($agenda) ? $agenda['asuntoAgenda'] : null),['class'=>'form-control','placeholder'=>'Ingresa el asunto de la agenda'])!!}
             </div>
           </div>
         </div>
@@ -182,7 +199,7 @@
                    <span class="input-group-addon">
                       <i class="fa fa-calendar" aria-hidden="true"></i>
                    </span>
-                    {!!Form::text('fechaHoraInicioAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha inicial'])!!}
+                    {!!Form::text('fechaHoraInicioAgenda',(isset($agenda) ? $agenda['fechaHoraInicioAgenda'] : null),['class'=> 'form-control','placeholder'=>'Ingrese la fecha inicial'])!!}
                  </div>
             </div>
         </div>
@@ -194,7 +211,7 @@
              <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
              </span>
-              {!!Form::text('fechaHoraFinAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la fecha final'])!!}
+              {!!Form::text('fechaHoraFinAgenda',(isset($agenda) ? $agenda['fechaHoraFinAgenda'] : null),['class'=> 'form-control','placeholder'=>'Ingrese la fecha final'])!!}
             </div>
           </div>
          </div>
@@ -206,7 +223,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-user"></i>
               </span>
-              {!!Form::select('Tercero_idSupervisor',$supervisor, (isset($agenda) ? $agenda->Tercero_idSupervisor : 0),["class" => "form-control", "placeholder" =>"Seleccione el supervisor"])!!}  
+              {!!Form::select('Tercero_idSupervisor',$supervisor, (isset($agenda) ? $agenda['Tercero_idSupervisor'] : null),["class" => "form-control", "placeholder" =>"Seleccione el supervisor"])!!}  
           </div>
         </div>
       </div>
@@ -221,7 +238,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-bars"></i>
               </span>
-              {!!Form::select('MovimientoCRM_idMovimientoCRM',$casocrm, (isset($agenda) ? $agenda->MovimientoCRM_idMovimientoCRM : 0),["class" => "form-control", "placeholder" =>"Seleccione un caso del CRM"])!!}  
+              {!!Form::select('MovimientoCRM_idMovimientoCRM',$casocrm, (isset($agenda) ? $agenda['MovimientoCRM_idMovimientoCRM'] : null),["class" => "form-control", "placeholder" =>"Seleccione un caso del CRM"])!!}  
           </div>
         </div>
       </div>
@@ -233,7 +250,7 @@
              <span class="input-group-addon">
                 <i class="fa fa-sitemap" aria-hidden="true"></i>
              </span>
-              {!!Form::text('ubicacionAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese la ubicacion'])!!}
+              {!!Form::text('ubicacionAgenda',(isset($agenda) ? $agenda['ubicacionAgenda'] : null),['class'=> 'form-control','placeholder'=>'Ingrese la ubicacion'])!!}
             </div>
           </div>
         </div>
@@ -245,7 +262,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-user"></i>
               </span>
-              {!!Form::select('Tercero_idResponsable',$responsable, (isset($agenda) ? $agenda->Tercero_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione un responsable"])!!}  
+              {!!Form::select('Tercero_idResponsable',$responsable, (isset($agenda) ? $agenda['Tercero_idResponsable'] : null),["class" => "form-control", "placeholder" =>"Seleccione un responsable"])!!}  
           </div>
         </div>
       </div>
@@ -257,7 +274,7 @@
              <span class="input-group-addon">
                 <i class="" aria-hidden="true">%</i>
              </span>
-              {!!Form::text('porcentajeEjecucionAgenda',null,['class'=> 'form-control','placeholder'=>'Ingrese el porcentaje ejecutado'])!!}
+              {!!Form::text('porcentajeEjecucionAgenda',(isset($agenda) ? $agenda['porcentajeEjecucionAgenda'] : null),['class'=> 'form-control','placeholder'=>'Ingrese el porcentaje ejecutado'])!!}
             </div>
           </div>
         </div>
@@ -300,7 +317,7 @@
                           <span class="input-group-addon">
                             <i class="fa fa-pencil-square-o"></i>
                           </span>
-                          {!!Form::textarea('detallesAgenda',null,['class'=>'form-control','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
+                          {!!Form::textarea('detallesAgenda',(isset($agenda) ? $agenda['detallesAgenda'] : null),['class'=>'form-control','style'=>'height:100px;','placeholder'=>'Ingresa el detalle de la agenda'])!!}
                         </div>
                       </div>
                     </div>
@@ -360,6 +377,7 @@
         {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
       @else
         {!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+        {!!Form::button('Cancelar cita',["class"=>"btn btn-danger","onclick"=>"cancelarCita($('#idAgenda').val())"])!!}
       @endif
   @else
       {!!Form::submit('Adicionar',["class"=>"btn btn-primary",'onclick'=>'validarFormulario(event);'])!!}
