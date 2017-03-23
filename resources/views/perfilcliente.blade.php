@@ -321,7 +321,8 @@
                                                         agenda a 
                                                         LEFT JOIN categoriaagenda ca on a.CategoriaAgenda_idCategoriaAgenda = ca.idCategoriaAgenda 
                                                     WHERE 
-                                                        MovimientoCRM_idMovimientoCRM IS NULL');
+                                                        MovimientoCRM_idMovimientoCRM IS NULL
+                                                    AND Tercero_idResponsable = '.$_GET['idTercero']);
 
                                                 if (count($tareas) > 0) 
                                                 {
@@ -353,7 +354,8 @@
                                                         agenda a 
                                                         LEFT JOIN categoriaagenda ca on a.CategoriaAgenda_idCategoriaAgenda = ca.idCategoriaAgenda 
                                                     WHERE 
-                                                        MovimientoCRM_idMovimientoCRM IS NOT NULL');
+                                                        MovimientoCRM_idMovimientoCRM IS NOT NULL
+                                                    AND Tercero_idResponsable = '.$_GET['idTercero']);
 
                                                 if (count($eventos) > 0) 
                                                 {
