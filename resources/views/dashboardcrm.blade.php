@@ -4,7 +4,7 @@
 @section('tablero')
 
 {!! Html::script('chart/Chart.js'); !!}
-{!! Html::script('js/dashboardcrm.js'); !!}
+
 
 <?php 
     $idCompania = \Session::get("idCompania");

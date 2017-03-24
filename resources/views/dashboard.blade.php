@@ -9,6 +9,7 @@
 <?php 
     $idCompania = \Session::get("idCompania");
     $mes = date("m");
+    $anomes = date("Y-m");
 ?>
 <!-- Token para ejecuciones de ajax -->
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
@@ -294,37 +295,18 @@
         // -------------------------------------------
             $total = DB::select(
             'SELECT 
-                SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '.$mes.' AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = '.$mes.' AND RET = 1) OR (MOD('.$mes.',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")) , 1 , 0) ) as Tarea,
-                SUM(IF(MONTH(fechaExamenMedico) = '.$mes.', 1, 0 )) as Ejecutado
+                count(*) as Tarea,
+                SUM(IF(fechaExamenMedico != "0000-00-00", 1, 0 )) as Ejecutado
+
             FROM
             (
-                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
-                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoTerceroExamenMedico as ING, retiroTerceroExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico 
-                FROM tercero T
-                left join terceroinformacion TI
-                on T.idTercero = TI.Tercero_idTercero
-                left join cargo C
-                on T.Cargo_idCargo = C.idCargo
-                left join terceroexamenmedico TEM
-                on T.idTercero = TEM.Tercero_idTercero
-                left join frecuenciamedicion FM
-                on TEM.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                left join tipoexamenmedico TET
-                on TEM.TipoExamenMedico_idTipoExamenMedico = TET.idTipoExamenMedico
-                left join examenmedico EM 
-                on T.idTercero = EM.Tercero_idTercero
-                left join examenmedicodetalle EMD
-                on EM.idExamenMedico = EMD.ExamenMedico_idExamenMedico and EMD.TipoExamenMedico_idTipoExamenMedico = TEM.TipoExamenMedico_idTipoExamenMedico
-                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL and 
-                    T.Compania_idCompania = '.$idCompania .' 
-                group by idTercero, idTipoExamenMedico
-             
-            UNION
-
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TEC.nombreTipoExamenMedico, 
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoCargoExamenMedico as ING, retiroCargoExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico
+                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico,
+                    IF(unidadFrecuenciaMedicion IN ("Dias" , "Semanas"),
+                        1,
+                        valorFrecuenciaMedicion
+                    ) AS multiploMes
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero
@@ -347,38 +329,21 @@
             ');
 
         $dato = DB::select(
-            'SELECT  
-                SUM(IF((MONTH(fechaIngresoTerceroInformacion) = '.$mes.' AND ING =1) OR (MONTH(fechaRetiroTerceroInformacion) = '.$mes.' AND RET = 1) OR (MOD('.$mes.',valorFrecuenciaMedicion) = 0 and unidadFrecuenciaMedicion IN ("Meses")) OR (unidadFrecuenciaMedicion IN ("Años")), 1 , 0) ) as Tarea,
-                SUM(IF(MONTH(fechaExamenMedico) = '.$mes.', 1, 0 )) as Ejecutado
+            'SELECT 
+                SUM(IF( (DATE_FORMAT(fechaIngresoTerceroInformacion, "%Y-%m") = "'.$anomes.'" AND ING = 1) OR 
+                (DATE_FORMAT(fechaRetiroTerceroInformacion, "%Y-%m") = "'.$anomes.'" AND RET = 1) OR 
+                (MOD('.$mes.',Examen.multiploMes) = 0 ) , 1 , 0) ) as Tarea,
+                SUM(IF(DATE_FORMAT(fechaExamenMedico, "%Y-%m") = "'.$anomes.'", 1, 0 )) as Ejecutado
+
             FROM
             (
-                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
-                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoTerceroExamenMedico as ING, retiroTerceroExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico 
-                FROM tercero T
-                left join terceroinformacion TI
-                on T.idTercero = TI.Tercero_idTercero
-                left join cargo C
-                on T.Cargo_idCargo = C.idCargo
-                left join terceroexamenmedico TEM
-                on T.idTercero = TEM.Tercero_idTercero
-                left join frecuenciamedicion FM
-                on TEM.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                left join tipoexamenmedico TET
-                on TEM.TipoExamenMedico_idTipoExamenMedico = TET.idTipoExamenMedico
-                left join examenmedico EM 
-                on T.idTercero = EM.Tercero_idTercero
-                left join examenmedicodetalle EMD
-                on EM.idExamenMedico = EMD.ExamenMedico_idExamenMedico and EMD.TipoExamenMedico_idTipoExamenMedico = TEM.TipoExamenMedico_idTipoExamenMedico
-                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL and 
-                    T.Compania_idCompania = '.$idCompania .' 
-                group by idTercero, idTipoExamenMedico
-             
-            UNION
-
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TEC.nombreTipoExamenMedico, 
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoCargoExamenMedico as ING, retiroCargoExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico
+                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico,
+                    IF(unidadFrecuenciaMedicion IN ("Dias" , "Semanas"),
+                        1,
+                        valorFrecuenciaMedicion
+                    ) AS multiploMes
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero

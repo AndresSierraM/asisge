@@ -450,7 +450,7 @@ $informe = '';
         {
             // adicionamos la columna del mes
            
-            $columnas .= "IF(MOD('".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."',GA.multiploMes) = 0, numeroTareas, 0) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+            $columnas .= "IF(MOD(".date("m", strtotime($inicio)).", GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroTareas, 0) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
 
             $columnas .= "SUM(IF(AGA.mesActa = '".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."', numeroCumplidas, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
 
@@ -529,6 +529,7 @@ $informe = '';
             ) AGAD
             on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
             group by idGrupoApoyo');
+        
 
             return imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $fechaInicial, $fechaFinal);
 	}
