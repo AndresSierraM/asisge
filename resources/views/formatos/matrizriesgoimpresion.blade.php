@@ -26,7 +26,7 @@
 		            <table class="table table-striped table-bordered" width="100%">
 						<thead>
 							<tr>
-								<th>Proceso</th>
+								<th>Proceso/Cargos</th>
 								<th>Rutina</th>
 								<th>Clasificaci&oacute;n</th>
 								<th>Tipo Riesgo</th>

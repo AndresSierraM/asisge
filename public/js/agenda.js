@@ -1,91 +1,91 @@
 $(document).ready(function(){
 
 //creamos la fecha actual
-		var date = new Date();
-		var yyyy = date.getFullYear().toString();
-		var mm = (date.getMonth()+1).toString().length == 1 ? "0"+(date.getMonth()+1).toString() : (date.getMonth()+1).toString();
-		var dd  = (date.getDate()).toString().length == 1 ? "0"+(date.getDate()).toString() : (date.getDate()).toString();
+        var date = new Date();
+        var yyyy = date.getFullYear().toString();
+        var mm = (date.getMonth()+1).toString().length == 1 ? "0"+(date.getMonth()+1).toString() : (date.getMonth()+1).toString();
+        var dd  = (date.getDate()).toString().length == 1 ? "0"+(date.getDate()).toString() : (date.getDate()).toString();
 
-		//establecemos los valores del calendario
-		var options = {
-			events_source: 'http://'+location.host+'/getAll',
-			view: 'month',
-			language: 'es-ES',
-			tmpl_path: 'http://'+location.host+'/bower_components/bootstrap-calendar/tmpls/',
-			tmpl_cache: false,
-			day: yyyy+"-"+mm+"-"+dd,
-			time_start: '10:00',
-			time_end: '20:00',
-			time_split: '30',
-			width: '100%',
-			onAfterEventsLoad: function(events) 
-			{
-				if(!events) 
-				{
-					return;
-				}
-				var list = $('#eventlist');
-				list.html('');
+        //establecemos los valores del calendario
+        var options = {
+            events_source: 'http://'+location.host+'/getAll',
+            view: 'month',
+            language: 'es-ES',
+            tmpl_path: 'http://'+location.host+'/bower_components/bootstrap-calendar/tmpls/',
+            tmpl_cache: false,
+            day: yyyy+"-"+mm+"-"+dd,
+            time_start: '10:00',
+            time_end: '20:00',
+            time_split: '30',
+            width: '100%',
+            onAfterEventsLoad: function(events) 
+            {
+                if(!events) 
+                {
+                    return;
+                }
+                var list = $('#eventlist');
+                list.html('');
 
-				$.each(events, function(key, val) 
-				{
-					$(document.createElement('li'))
-						.html('<a href="' + val.url + '">' + val.title + '</a>')
-						.appendTo(list);
-				});
-			},
-			onAfterViewLoad: function(view) 
-			{
-				$('.page-header h3').text(this.getTitle());
-				$('.btn-group button').removeClass('active');
-				$('button[data-calendar-view="' + view + '"]').addClass('active');
-			},
-			classes: {
-				months: {
-					general: 'label'
-				}
-			}
-		};
+                $.each(events, function(key, val) 
+                {
+                    $(document.createElement('li'))
+                        .html('<a href="' + val.url + '">' + val.title + '</a>')
+                        .appendTo(list);
+                });
+            },
+            onAfterViewLoad: function(view) 
+            {
+                $('.page-header h3').text(this.getTitle());
+                $('.btn-group button').removeClass('active');
+                $('button[data-calendar-view="' + view + '"]').addClass('active');
+            },
+            classes: {
+                months: {
+                    general: 'label'
+                }
+            }
+        };
 
-		var calendar = $('#calendar').calendar(options);
+        var calendar = $('#calendar').calendar(options);
 
-		$('.btn-group button[data-calendar-nav]').each(function() 
-		{
-			var $this = $(this);
-			$this.click(function() 
-			{
-				calendar.navigate($this.data('calendar-nav'));
-			});
-		});
+        $('.btn-group button[data-calendar-nav]').each(function() 
+        {
+            var $this = $(this);
+            $this.click(function() 
+            {
+                calendar.navigate($this.data('calendar-nav'));
+            });
+        });
 
-		$('.btn-group button[data-calendar-view]').each(function() 
-		{
-			var $this = $(this);
-			$this.click(function() 
-			{
-				calendar.view($this.data('calendar-view'));
-			});
-		});
+        $('.btn-group button[data-calendar-view]').each(function() 
+        {
+            var $this = $(this);
+            $this.click(function() 
+            {
+                calendar.view($this.data('calendar-view'));
+            });
+        });
 
-		$('#first_day').change(function()
-		{
-			var value = $(this).val();
-			value = value.length ? parseInt(value) : null;
-			calendar.setOptions({first_day: value});
-			calendar.view();
-		});
+        $('#first_day').change(function()
+        {
+            var value = $(this).val();
+            value = value.length ? parseInt(value) : null;
+            calendar.setOptions({first_day: value});
+            calendar.view();
+        });
 
-		$('#events-in-modal').change(function()
-		{
-			var val = $(this).is(':checked') ? $(this).val() : null;
-			calendar.setOptions(
-				{
-					modal: val,
-					modal_type:'iframe'
-				}
-			);
-		});
-	// }(jQuery));
+        $('#events-in-modal').change(function()
+        {
+            var val = $(this).is(':checked') ? $(this).val() : null;
+            calendar.setOptions(
+                {
+                    modal: val,
+                    modal_type:'iframe'
+                }
+            );
+        });
+    // }(jQuery));
 });
 
 function validarFormulario(event)
@@ -168,69 +168,69 @@ function validarFormulario(event)
 
 function agregarEvento()
 {
-	$('#modalEvento').modal('show');
+    $('#modalEvento').modal('show');
 }
 
 function consultarCamposAgenda(idCategoriaAgenda)
 {
-	var token = document.getElementById('token').value;
+    var token = document.getElementById('token').value;
 
-	$.ajax({
-		headers: {'X-CSRF-TOKEN': token},
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
         dataType: "json",
         data: {'idCategoriaAgenda' : idCategoriaAgenda},
         url:   'http://'+location.host+'/mostrarCamposAgenda/',
         type:  'post',
-		success: function(respuesta)
-		{
-			// alert(respuesta.toSource());
-			$("#claseAgenda").val(respuesta[0]['codigoCategoriaAgenda']);
+        success: function(respuesta)
+        {
+            // alert(respuesta.toSource());
+            $("#claseAgenda").val(respuesta[0]['codigoCategoriaAgenda']);
 
-        	for (var i = 0; i < respuesta.length; i++) 
-        	{
-        		if (respuesta[i]['nombreCampoCRM'] == 'ubicacionAgenda') 
-        			$("#ubicacionAgenda").css('display','block');
+            for (var i = 0; i < respuesta.length; i++) 
+            {
+                if (respuesta[i]['nombreCampoCRM'] == 'ubicacionAgenda') 
+                    $("#ubicacionAgenda").css('display','block');
 
-        		if (respuesta[i]['nombreCampoCRM'] == 'MovimientoCRM_idMovimientoCRM') 
-        			$("#MovimientoCRM_idMovimientoCRM").css('display','block');
+                if (respuesta[i]['nombreCampoCRM'] == 'MovimientoCRM_idMovimientoCRM') 
+                    $("#MovimientoCRM_idMovimientoCRM").css('display','block');
 
-        		if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idResponsable') 
-        			$("#Tercero_idResponsable").css('display','block');
+                if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idResponsable') 
+                    $("#Tercero_idResponsable").css('display','block');
 
-        		if (respuesta[i]['nombreCampoCRM'] == 'porcentajeEjecucionAgenda') 
-        			$("#porcentajeEjecucionAgenda").css('display','block');
+                if (respuesta[i]['nombreCampoCRM'] == 'porcentajeEjecucionAgenda') 
+                    $("#porcentajeEjecucionAgenda").css('display','block');
 
-        		if (respuesta[i]['nombreCampoCRM'] == 'estadoAgenda') 
-        			$("#estadoAgenda").css('display','block');
+                if (respuesta[i]['nombreCampoCRM'] == 'estadoAgenda') 
+                    $("#estadoAgenda").css('display','block');
 
-        		if (respuesta[i]['nombreCampoCRM'] == 'seguimientoAgenda') 
-        			$("#divseguimiento").css('display','block');
-        			$("#liseguimiento").css('display','block');
+                if (respuesta[i]['nombreCampoCRM'] == 'seguimientoAgenda') 
+                    $("#divseguimiento").css('display','block');
+                    $("#liseguimiento").css('display','block');
 
-        		if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idAsistente') 
-        			$("#divasistentes").css('display','block');
-        			$("#liasistentes").css('display','block');
-        	}
-    	},
-    	error: function(xhr,err)
-    	{ 
-    		$("#claseAgenda").val('');
+                if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idAsistente') 
+                    $("#divasistentes").css('display','block');
+                    $("#liasistentes").css('display','block');
+            }
+        },
+        error: function(xhr,err)
+        { 
+            $("#claseAgenda").val('');
 
-			$("#ubicacionAgenda").css('display','none');
+            $("#ubicacionAgenda").css('display','none');
 
-			$("#MovimientoCRM_idMovimientoCRM").css('display','none');
+            $("#MovimientoCRM_idMovimientoCRM").css('display','none');
 
-			$("#Tercero_idResponsable").css('display','none');
+            $("#Tercero_idResponsable").css('display','none');
 
-			$("#porcentajeEjecucionAgenda").css('display','none');
+            $("#porcentajeEjecucionAgenda").css('display','none');
 
-			$("#estadoAgenda").css('display','none');
+            $("#estadoAgenda").css('display','none');
 
-			$("#liseguimiento").css('display','none');
-			
-			$("#liasistentes").css('display','none');
+            $("#liseguimiento").css('display','none');
+            
+            $("#liasistentes").css('display','none');
         }
-	});
+    });
 }
 
 function guardarDatos(){
@@ -247,7 +247,8 @@ function guardarDatos(){
             dataType: 'html',
             success: function(result){
                 $(formId)[0].reset();
-                location.reload();
+                alert(result);
+                window.location.replace("http://"+location.host+"/agenda");
                 $('#modalEvento').modal('hide');
             },
             error: function(){
@@ -255,3 +256,30 @@ function guardarDatos(){
             },
         });
 }; 
+
+function cancelarCita(idAgenda)
+{
+    var borrar = confirm("¿Realmente desea cancelar la cita?");
+    if (borrar) 
+    {
+        var token = document.getElementById('token').value;
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {idAgenda: idAgenda},
+            url:  'http://'+location.host+'/eliminarAgenda/delete/'+idAgenda,
+            type:  'get',
+            beforeSend: function(){
+                console.log(idAgenda);
+                },
+            success: function(respuesta){
+                alert(respuesta);
+                window.location.replace("http://"+location.host+"/agenda");
+            },
+            error: function(xhr,err)
+            { 
+                alert("Error");
+            }
+        });
+    }
+}
