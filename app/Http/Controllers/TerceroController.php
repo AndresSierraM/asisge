@@ -473,7 +473,7 @@ class TerceroController extends Controller
                                                                                //Se pone Tercero_id para que solo consulte los que empiezan por esa palabra y se pone la condicion de que no busque tercero en miniscula para las tabjas hijas de tercero
          $consulta = DB::Select("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.`COLUMNS` WHERE COLUMN_NAME like 'Tercero_id%' and TABLE_SCHEMA = 'sisoft' and TABLE_NAME NOT LIKE 'tercero%'");
         //se crea una variable para concatenar 
-        $tablas = '';
+        $tablas = ''; 
         // se crea una variable para el nombre del modulo
         $tercero = 'Tercero';
 
