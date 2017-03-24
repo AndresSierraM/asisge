@@ -32,7 +32,7 @@ for ($i=0; $i <count($consulta) ; $i++)
 }
 
 $campos = substr($campos, 0,strlen($campos)-1);
-echo $campos;
+
 $id = isset($presupuesto->idPresupuesto) ? $presupuesto->idPresupuesto : 0; 
 
 
