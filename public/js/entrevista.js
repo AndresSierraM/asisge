@@ -69,8 +69,28 @@ function calificacionHabilidadEntrevista()
 }
 
 
+function calificacionHabilidadCompetencia()
+{
+    calificacion = 0;
 
+    regs = EntrevistaCompentencia.contador;
 
+    for (var i = 0; i < EntrevistaCompentencia.contador; i++) 
+    {
+        if(typeof $("#CompetenciaRespuesta_idCompetenciaRespuesta"+i).val() != undefined)
+        {
+            isNaN(calificacion += parseFloat($("#CompetenciaRespuesta_idCompetenciaRespuesta"+i).val()));
+        }    
+        else
+        {
+            isNaN(calificacion += 0);
+        }
+    }
+
+    promedio = calificacion/regs;
+
+    $('#calificacionHabilidadActitudinalEntrevista', window.parent.document).val(promedio);
+}
 
 
 function validarFormulario(event)

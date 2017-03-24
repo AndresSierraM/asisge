@@ -141,14 +141,18 @@ var competenciamodelo = [0,0,'','',''];
 //educacion  ademas se adicionan los  onchange del campo nuevo calificacion para que se ejecute al mismo tiempo que cuando se ejecuta la funcion
 //de llenar educacion,formacion, Habilidad
 var evaluacioneducacion = ['onchange','calificareducacion(this.id);calificacionEduacionEntrevista(this.value);']
+var calificacioneducacion = ['onchange','calificacionEduacionEntrevista(this.value);']
 //variable para formacion 
 var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionFormacionEntrevistas(this.value);']
+var calificacionformacion = ['onchange','calificacionFormacionEntrevistas(this.value);']
                                                                    
 // Habilidad
  var evaluacionhabilidad = ['onchange','calificarHabilidad(this.id);calificacionHabilidadEntrevista(this.value);']
+ var calificacionhabilidad = ['onchange','calificacionHabilidadEntrevista(this.value);']
 
 //Competencia
-// Habilidad
+// Habilidad actitudinal
+var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.value);']
   // var evaluacionCompetencia = ['onchange','calificacionHabilidadActitudinal(this.id)']
  
 //VARIABLES
@@ -174,7 +178,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionF
           Educacionentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Educacionentrevista.opciones = ['','','','',educacion,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,'',''];
+          Educacionentrevista.funciones  = ['','','','',evaluacioneducacion,calificacioneducacion,''];
 
 // // multiregistro Formacionentrevista Segunda multiregistro OPCION GENERAL
        
@@ -198,7 +202,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionF
           Formacionentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Formacionentrevista.opciones = ['','','','',formacion,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Formacionentrevista.funciones  = ['','','','',evaluacionformacion,'',''];
+          Formacionentrevista.funciones  = ['','','','',evaluacionformacion,calificacionformacion,''];
 
 
 // // multiregistro habilidad Entrevista tercera multiregistro OPCION Habilidades propias del cargo
@@ -223,7 +227,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionF
           Habilidadentrevista.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           Habilidadentrevista.opciones = ['','','','',habilidad,Cumplimiento,'']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          Habilidadentrevista.funciones  = ['','','','',evaluacionhabilidad,'',''];
+          Habilidadentrevista.funciones  = ['','','','',evaluacionhabilidad,calificacionhabilidad,''];
 
 
 
@@ -301,7 +305,7 @@ var evaluacionformacion = ['onchange','calificarformacion(this.id);calificacionF
           EntrevistaCompentencia.completar = ['off','off','off','off']; //autocompleta 
           
           EntrevistaCompentencia.opciones = ['','','',respuesta]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          EntrevistaCompentencia.funciones  = ['','','','']; 
+          EntrevistaCompentencia.funciones  = ['','','',calificarcompetencia]; 
 
 
 

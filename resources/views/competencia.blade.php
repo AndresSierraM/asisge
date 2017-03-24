@@ -89,7 +89,7 @@ Estado = [valorEstado,NombreEstado];
                                   </span>
                            {!!Form::text('nombreCompetencia',null,['class'=>'form-control','placeholder'=>'Por favor ingrese el Nombre para la Habilidad Actitudinal ','style'=>'width:100%;,right'])!!}
                               {!!Form::hidden('idCompetencia', null, array('id' => 'idCompetencia')) !!}
-                                 
+                              {!!Form::hidden('idsborrados', null, array('id' => 'idsborrados')) !!}
                             </div>
                         </div>
                          <!--   Estado de la Competencia  -->
