@@ -470,12 +470,12 @@ class TerceroController extends Controller
      */
     public function destroy($id)
     {
-                                                                               //Se pone Tercero_id para que solo consulte los que empiezan por esa palabra y se pone la condicion de que no busque tercero en miniscula para las tabjas hijas de tercero
+                                                                               //Se pone Tercero_id para que solo consulte los que empiezan por esa palabra y se pone la condicion (and...not like)de que no busque tercero en miniscula para las tablas hijas de tercero
          $consulta = DB::Select("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.`COLUMNS` WHERE COLUMN_NAME like 'Tercero_id%' and TABLE_SCHEMA = 'sisoft' and TABLE_NAME NOT LIKE 'tercero%'");
         //se crea una variable para concatenar 
         $tablas = ''; 
         // se crea una variable para el nombre del modulo
-        $tercero = 'Tercero';
+        $nombremodulo = 'tercero';
 
         for ($i=0; $i < count($consulta); $i++)
         {
@@ -488,12 +488,13 @@ class TerceroController extends Controller
             {   
                 // se concatena el nombre de cada una de las tablas que recorre el ciclo y simplemente se separan por comas
                 $tablas .= $datosconsulta['TABLE_NAME'].', ';
+
             }   
         }
         if ($tablas != '') 
         {
              //Se envia la variable tablas a la vista Resources/View/alerta.blade
-            return view('alerts.alerta',compact('tablas','tercero'));
+            return view('alerts.alerta',compact('tablas','nombremodulo'));
         }
         else
         {
