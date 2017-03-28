@@ -80,10 +80,6 @@ function calificacionHabilidadCompetencia()
         if(typeof $("#CompetenciaRespuesta_idCompetenciaRespuesta"+i).val() != undefined)
         {
             isNaN(calificacion += parseFloat($("#CompetenciaRespuesta_idCompetenciaRespuesta"+i).val()));
-        }    
-        else
-        {
-            isNaN(calificacion += 0);
         }
     }
 
@@ -395,6 +391,7 @@ function llenarEntrevistaCompetencia(idCargo, accion)
                 },
             success: function(respuesta){
                 // Limpiar el div de la multiregistro
+
                 document.getElementById("EntrevistaCompetencia_Modulo").innerHTML = '';
                 var valor = new Array();
                 var nombres = new Array();
@@ -404,7 +401,6 @@ function llenarEntrevistaCompetencia(idCargo, accion)
                // $("#calificacionHabilidadActitudinalEntrevista").val(respuesta[]["respuestaCompetenciaPregunta"]);
                 for (var i = 0; i < respuesta[0].length; i++) 
                 {
-        
                     var porcentajes = Array();  
                     var titulos = Array();
                     for (var j = 0; j < respuesta[1].length; j++) 

@@ -22,14 +22,12 @@
 
 <script>
 
-
-
- var competencias = '<?php echo (isset($competencia) ? json_encode($competencia->CompetenciaPregunta) : "");?>';
+var competencias = '<?php echo (isset($competencia) ? json_encode($competencia->CompetenciaPregunta) : "");?>';
 competencias = (competencias != '' ? JSON.parse(competencias) : '');
 
 // Se Crea Otra Variable para el Tpo de respuesta 
-valorRespuesta = Array("Normal","Inversa");
-NombreRespuesta = Array ("Normal","Inversa");
+valorRespuesta = Array("Normal","Inverso");
+NombreRespuesta = Array ("Normal","Inverso");
 
 TipoRespuesta = [valorRespuesta,NombreRespuesta];
 
@@ -50,7 +48,7 @@ Estado = [valorEstado,NombreEstado];
     competencia.campoEliminacion = 'idsborrados';//hermanitas         Cuando se utilice la funcionalidad 
     competencia.botonEliminacion = true;//hermanitas
     // despues del punto son las propiedades que se le van adicionar al objeto
-    competencia.campos = ['idCompetenciaPregunta ','ordenCompetenciaPregunta','preguntaCompetenciaPregunta','respuestaCompetenciaPregunta','estadoCompetenciaPregunta','Competencia_idCompetencia']; //[arrays ]
+    competencia.campos = ['idCompetenciaPregunta','ordenCompetenciaPregunta','preguntaCompetenciaPregunta','respuestaCompetenciaPregunta','estadoCompetenciaPregunta','Competencia_idCompetencia']; //[arrays ]
     competencia.altura = '35px;';
      // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
     competencia.etiqueta = ['input','input','input','select','select','input'];

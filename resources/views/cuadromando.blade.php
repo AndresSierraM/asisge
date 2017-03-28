@@ -206,7 +206,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-cogs"></i>
               </span>
-            {!! Form::select('operadorMetaCuadroMando', ['>' => '>', '>=' => '>=', '<' => '<', '<=' => '<=', '=' => '='], null, ['class' => 'select form-control','placeholder'=>'Seleccione'])!!}
+            {!! Form::select('operadorMetaCuadroMando', ['>' => '>', '>=' => '>=', '<' => '<', '<=' => '<=', '==' => '='], null, ['class' => 'select form-control','placeholder'=>'Seleccione'])!!}
             </div>
           </div>
 

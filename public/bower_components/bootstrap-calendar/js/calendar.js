@@ -935,6 +935,7 @@ if(!String.prototype.formatNum) {
 
 		$('a[data-event-id]', this.context).unbind('click');
 
+
 		if(!self.options.modal) {
 			return;
 		}
@@ -958,9 +959,9 @@ if(!String.prototype.formatNum) {
 		$('a[data-event-id]', this.context).on('click', function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-
 			var url = $(this).attr('href');
 			var id = $(this).data("event-id");
+			consultarCamposAgenda('',id);
 			var event = _.find(self.options.events, function(event) {
 				return event.id == id
 			});

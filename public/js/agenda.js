@@ -98,7 +98,7 @@ function validarFormulario(event)
     var dato3 = document.getElementById('fechaHoraInicioAgenda').value;
     var dato4 = document.getElementById('fechaHoraFinAgenda').value;
     var dato5 = document.getElementById('Tercero_idSupervisor').value;
-    var dato6 = document.getElementById('detallesAgenda').value;
+    // var dato6 = document.getElementById('detallesAgenda').value;
 
     var valor = '';
     var sw = true;
@@ -115,8 +115,8 @@ function validarFormulario(event)
                 asuntoAgenda: dato2,
                 fechaHoraInicioAgenda: dato3,
                 fechaHoraFinAgenda: dato4,
-                Tercero_idSupervisor: dato5,
-                detallesAgenda: dato6
+                Tercero_idSupervisor: dato5
+                // detallesAgenda: dato6
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -125,7 +125,6 @@ function validarFormulario(event)
         error:function(msj){
             var mensaje = '';
             var respuesta = JSON.stringify(msj.responseJSON); 
-            alert(respuesta);
             if(typeof respuesta === "undefined")
             {
                 sw = false;
@@ -147,7 +146,7 @@ function validarFormulario(event)
 
                 (typeof msj.responseJSON.Tercero_idSupervisor === "undefined" ? document.getElementById('Tercero_idSupervisor').style.borderColor = '' : document.getElementById('Tercero_idSupervisor').style.borderColor = '#a94442');
 
-                (typeof msj.responseJSON.detallesAgenda === "undefined" ? document.getElementById('detallesAgenda').style.borderColor = '' : document.getElementById('detallesAgenda').style.borderColor = '#a94442');
+                // (typeof msj.responseJSON.detallesAgenda === "undefined" ? document.getElementById('detallesAgenda').style.borderColor = '' : document.getElementById('detallesAgenda').style.borderColor = '#a94442');
 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
@@ -171,20 +170,21 @@ function agregarEvento()
     $('#modalEvento').modal('show');
 }
 
-function consultarCamposAgenda(idCategoriaAgenda)
+function consultarCamposAgenda(idCategoriaAgenda, idAgenda)
 {
+    alert(idAgenda);
     var token = document.getElementById('token').value;
 
     $.ajax({
         headers: {'X-CSRF-TOKEN': token},
         dataType: "json",
-        data: {'idCategoriaAgenda' : idCategoriaAgenda},
+        data: {'idCategoriaAgenda' : idCategoriaAgenda, 'idAgenda': idAgenda},
         url:   'http://'+location.host+'/mostrarCamposAgenda/',
         type:  'post',
         success: function(respuesta)
         {
             // alert(respuesta.toSource());
-            $("#claseAgenda").val(respuesta[0]['codigoCategoriaAgenda']);
+            // $("#claseAgenda").val(respuesta[0]['codigoCategoriaAgenda']);
 
             for (var i = 0; i < respuesta.length; i++) 
             {
