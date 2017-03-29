@@ -26,7 +26,7 @@ class EntrevistaRequest extends Request
 
         $EntrevistaHijos = count($this->get('nombreEntrevistaHijo'));
         $RelacionFamiliar = count($this->get('parentescoEntrevistaRelacionFamiliar'));
-        $CompetenciaPregunta = count($this->get('CompetenciaPregunta_idCompetenciaPregunta'));
+        $CompetenciaPregunta = count($this->get('valorEntrevistaCompetencia'));
         $EntrevistaFormacion = count($this->get('calificacionEntrevistaFormacion'));
         $EntrevistaEducacion = count($this->get('calificacionEntrevistaEducacion'));
         $EntrevistaHabilidad = count($this->get('calificacionEntrevistaHabilidad'));
@@ -62,9 +62,9 @@ class EntrevistaRequest extends Request
         
           for($i = 0; $i < $CompetenciaPregunta; $i++)
         {
-            if(trim($this->get('CompetenciaPregunta_idCompetenciaPregunta')[$i]) == '' or trim($this->get('CompetenciaPregunta_idCompetenciaPregunta')[$i]) == 0)
+            if(trim($this->get('valorEntrevistaCompetencia')[$i]) == '' or trim($this->get('valorEntrevistaCompetencia')[$i]) == 0)
             {    
-                $validacion['CompetenciaPregunta_idCompetenciaPregunta'.$i] =  'required';
+                $validacion['valorEntrevistaCompetencia'.$i] =  'required';
             }
         }
 

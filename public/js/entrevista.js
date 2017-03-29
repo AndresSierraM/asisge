@@ -8,7 +8,7 @@
 //         // var valor2 = 5;
 //         for (var i = 0; i < EntrevistaCompentencia.contador; i++) 
 //         {
-//             calificarEha += parseFloat($('#CompetenciaRespuesta_idCompetenciaRespuesta'+[i]).val());    
+//             calificarEha += parseFloat($('#valorEntrevistaCompetencia'+[i]).val());    
 //         }
 
 //        isNaN(calificarEha = parseFloat($('#porcentajeNormalCompetenciaRespuesta').val()));
@@ -77,9 +77,9 @@ function calificacionHabilidadCompetencia()
 
     for (var i = 0; i < EntrevistaCompentencia.contador; i++) 
     {
-        if(typeof $("#CompetenciaRespuesta_idCompetenciaRespuesta"+i).val() != undefined)
+        if(typeof $("#valorEntrevistaCompetencia"+i).val() != undefined)
         {
-            isNaN(calificacion += parseFloat($("#CompetenciaRespuesta_idCompetenciaRespuesta"+i).val()));
+            isNaN(calificacion += parseFloat($("#valorEntrevistaCompetencia"+i).val()));
         }
     }
 
@@ -419,7 +419,7 @@ function llenarEntrevistaCompetencia(idCargo, accion)
 
                    var valores = new Array(
                         respuesta[0][i]["idEntrevistaCompetencia"],
-                        respuesta[0][i]["idCompetenciaPregunta"],
+                        respuesta[0][i]["CompetenciaPregunta_idCompetenciaPregunta"],
                         respuesta[0][i]["preguntaCompetenciaPregunta"],
                         [porcentajes, titulos]);
 

@@ -172,7 +172,6 @@ function agregarEvento()
 
 function consultarCamposAgenda(idCategoriaAgenda, idAgenda)
 {
-    alert(idAgenda);
     var token = document.getElementById('token').value;
 
     $.ajax({
@@ -248,7 +247,7 @@ function guardarDatos(){
             success: function(result){
                 $(formId)[0].reset();
                 alert(result);
-                window.location.replace("http://"+location.host+"/agenda");
+                window.parent.location.replace("http://"+location.host+"/agenda");
                 $('#modalEvento').modal('hide');
             },
             error: function(){
@@ -274,7 +273,7 @@ function cancelarCita(idAgenda)
                 },
             success: function(respuesta){
                 alert(respuesta);
-                window.location.replace("http://"+location.host+"/agenda");
+                window.parent.location.replace("http://"+location.host+"/agenda");
             },
             error: function(xhr,err)
             { 

@@ -10,7 +10,7 @@ class EntrevistaCompetencia extends Model
     protected $table ='entrevistacompetencia'; //la tabla siempre es en miniscula 
 	protected $primaryKey = 'idEntrevistaCompetencia'; //camello
 	
-	protected $fillable =['Entrevista_idEntrevista','CompetenciaPregunta_idCompetenciaPregunta','CompetenciaRespuesta_idCompetenciaRespuesta'];
+	protected $fillable =['Entrevista_idEntrevista','CompetenciaPregunta_idCompetenciaPregunta','valorEntrevistaCompetencia'];
 
 	public $timestamps = false;
 

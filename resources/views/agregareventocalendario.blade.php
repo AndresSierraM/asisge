@@ -153,6 +153,12 @@
 
     $fechaFin =  substr($agenda['fechaHoraFinAgenda'], 0, -3);
     $agenda['fechaHoraFinAgenda'] = date("d-m-Y H:m:s",$fechaFin);
+
+    echo "<script> 
+            $(document).ready(function(){
+               consultarCamposAgenda($('#CategoriaAgenda_idCategoriaAgenda').val());
+            });
+          </script>";
   }
 ?>
 <div id='form-section'>
@@ -166,7 +172,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-barcode"></i>
               </span>
-              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda['CategoriaAgenda_idCategoriaAgenda'] : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo de categoria", 'onchange'=>'consultarCamposAgenda(this.value,\'\')'])!!}
+              {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda['CategoriaAgenda_idCategoriaAgenda'] : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo de categoria", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
             {!!Form::hidden('idAgenda', (isset($agenda) ? $agenda["idAgenda"] : null), array('id' => 'idAgenda')) !!}
           </div>
         </div>

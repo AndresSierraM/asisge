@@ -223,7 +223,7 @@ class EntrevistaController extends Controller
              \App\EntrevistaCompetencia::create([
              'Entrevista_idEntrevista' => $entrevista->idEntrevista,
             'CompetenciaPregunta_idCompetenciaPregunta' => $request['CompetenciaPregunta_idCompetenciaPregunta'][$i],
-            'CompetenciaRespuesta_idCompetenciaRespuesta' => $request['CompetenciaRespuesta_idCompetenciaRespuesta'][$i]
+            'valorEntrevistaCompetencia' => $request['valorEntrevistaCompetencia'][$i]
            
 
 
@@ -355,10 +355,10 @@ class EntrevistaController extends Controller
         // Cuando editamos la pregunta (Habilidades), debemos enviar los datos de las multiregistro que se deben cargar
         // Consultamos la multiregistro de  Competencia (tabla cargoeducacion )
         $entrevistacompetencia = DB::Select('
-         SELECT idEntrevistaCompetencia,CompetenciaPregunta_idCompetenciaPregunta,preguntaCompetenciaPregunta,CompetenciaRespuesta_idCompetenciaRespuesta
+         SELECT idEntrevistaCompetencia,CompetenciaPregunta_idCompetenciaPregunta,preguntaCompetenciaPregunta,valorEntrevistaCompetencia
             FROM entrevistacompetencia  EC
             LEFT JOIN competenciarespuesta  CR
-            ON EC.CompetenciaRespuesta_idCompetenciaRespuesta = CR.idCompetenciaRespuesta
+            ON EC.valorEntrevistaCompetencia = CR.idCompetenciaRespuesta
             LEFT JOIN competenciapregunta CP
             on  EC.CompetenciaPregunta_idCompetenciaPregunta = CP.idCompetenciaPregunta
             WHERE EC.Entrevista_idEntrevista = '.$id);
@@ -549,7 +549,7 @@ class EntrevistaController extends Controller
                     $data = array(
                         'Entrevista_idEntrevista' => $id,
                         'CompetenciaPregunta_idCompetenciaPregunta' => $request['CompetenciaPregunta_idCompetenciaPregunta'][$i],
-                        'CompetenciaRespuesta_idCompetenciaRespuesta' => $request['CompetenciaRespuesta_idCompetenciaRespuesta'][$i]);
+                        'valorEntrevistaCompetencia' => $request['valorEntrevistaCompetencia'][$i]);
                     $guardar = \App\EntrevistaCompetencia::updateOrCreate($indice, $data);
                 } 
 

@@ -291,7 +291,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
           EntrevistaCompentencia.campoEliminacion = 'eliminarcompetencia';//hermanitas         Cuando se utilice la funcionalidad 
           EntrevistaCompentencia.botonEliminacion = false;//hermanitas
           // despues del punto son las propiedades que se le van adicionar al objeto
-          EntrevistaCompentencia.campos = ['idEntrevistaCompetencia','CompetenciaPregunta_idCompetenciaPregunta','preguntaCompetenciaPregunta','CompetenciaRespuesta_idCompetenciaRespuesta']; //[arrays ]
+          EntrevistaCompentencia.campos = ['idEntrevistaCompetencia','CompetenciaPregunta_idCompetenciaPregunta','preguntaCompetenciaPregunta','valorEntrevistaCompetencia']; //[arrays ]
           EntrevistaCompentencia.altura = '35px;'; 
            // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
           EntrevistaCompentencia.etiqueta = ['input','input','input','select'];
@@ -331,7 +331,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                  {
                 
                    EntrevistaCompentencia.agregarCampos(JSON.stringify(entrevistacompetenciap[j]),'L');
-             
+
                 }  
 
                 //Educacion 
@@ -363,7 +363,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                    {
                   
                      Habilidadentrevista.agregarCampos(JSON.stringify(entrevistahabilidades[j]),'L');
-               
+
                   } 
 
 
@@ -1383,6 +1383,11 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
        format: "YYYY-MM-DD"
      })
   );
+
+  if($("#Cargo_idCargo").val() > 0) 
+  {
+    llenarEntrevistaCompetencia($("#Cargo_idCargo").val(),''); 
+  }
  
 </script> 
 
