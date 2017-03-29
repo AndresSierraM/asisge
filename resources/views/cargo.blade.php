@@ -166,7 +166,8 @@
 			    Responsabilidades.completar = ['off','off','off','off']; //autocompleta 
 			    
 			    Responsabilidades.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-			    Responsabilidades.funciones  = ['','','',validacionesPesoR]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+			    var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			    Responsabilidades.funciones  = ['',quitacarac,'',validacionesPesoR]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
 

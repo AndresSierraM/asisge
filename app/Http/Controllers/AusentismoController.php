@@ -48,6 +48,7 @@ class AusentismoController extends Controller
      */
     public function create()
     {
+        
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         return view('ausentismo',compact('tercero'));
     }
@@ -61,18 +62,44 @@ class AusentismoController extends Controller
     public function store(AusentismoRequest $request)
     {
 
-        if(null !== Input::file('archivoAusentismo') )
-        {
-            $image = Input::file('archivoAusentismo');
-            $imageName = 'ausentismo/'. $request->file('archivoAusentismo')->getClientOriginalName();
+
+        //-------------------------------------------------------------------------------------------------------------
+            // --------------------------------------------------Para  Guardar archivos ---------------------------------
+            
+           
+            $files = Input::file('archivoAusentismo');  // Se recibe el archivo desde el formulario
+            $file = $files;
+            $rutaImagen = '';   //Se iniciliaza la variable vacia que es que va a contener la ruta 
+            $destinationPath = '/ausentismo/';  //Nombre de la carpeta en el disco,public/imagenes una carpeta que se llame ausentismo
+
         
-            $manager = new ImageManager();
-            $manager->make($image->getRealPath())->heighten(1280)->save('images/'. $imageName);
-        }
-        else
-        {
-            $imageName = "";
-        }
+            if(isset($file))   //Se pregunta si subieron algun archivo (Adjuntaron algo)
+            {
+ 
+                $filename = $destinationPath . $file->getClientOriginalName(); // se obtiene el nombre del archivo (la que se subio).
+                \Storage::disk('local')->put($filename, \File::get($file)); //Ruta que va a tener en el servidor.
+                $rutaImagen = 'ausentismo/'.$file->getClientOriginalName(); //Ruta que va a quedar grabada en la bd por ejemplo ausentimos/imagensubida.jpg
+
+                
+                $imageName =  $rutaImagen;   // El campo ['nombre'] le lleve a la ruta $rutaImagen
+            }
+            else
+            {
+                $imageName = ""; //si no hay imagen subida se guarda vacia la ruta
+            }
+
+        // if(null !== Input::file('archivoAusentismo') )
+        // {
+        //     $image = Input::file('archivoAusentismo');
+        //     $imageName = 'ausentismo/'. $request->file('archivoAusentismo')->getClientOriginalName();
+        
+        //     $manager = new ImageManager();
+        //     $manager->make($image->getRealPath())->heighten(1280)->save('images/'. $imageName);
+        // }
+        // else
+        // {
+        //     $imageName = "";
+        // }
 
         \App\Ausentismo::create([
             'Tercero_idTercero' => $request['Tercero_idTercero'],
@@ -84,7 +111,10 @@ class AusentismoController extends Controller
             'diasAusentismo' => $request['diasAusentismo'],
             'Compania_idCompania' => \Session::get('idCompania'),
             'archivoAusentismo' => $imageName
+
             ]);
+
+            
 
         return redirect('/ausentismo');
     }
@@ -110,6 +140,8 @@ class AusentismoController extends Controller
     {
         $ausentismo = \App\Ausentismo::find($id);
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+
+    
         return view('ausentismo',compact('tercero'),['ausentismo'=>$ausentismo]);
     }
 
@@ -124,18 +156,25 @@ class AusentismoController extends Controller
     {
         $ausentismo = \App\Ausentismo::find($id);
         $ausentismo->fill($request->all());
-        
-        $imageName = "";
-        if(null !== Input::file('archivoAusentismo') )
+        // 
+        $imageName = ""; 
+        $files = Input::file('archivoAusentismo');  // Se recibe el archivo desde el formulario
+        $file = $files;
+        $rutaImagen = '';   //Se iniciliaza la variable vacia que es que va a contener la ruta 
+        $destinationPath = '/ausentismo/';  //Nombre de la carpeta en el disco,public/imagenes una carpeta que se llame ausentismo
+
+    
+        if(isset($file))   //Se pregunta si subieron algun archivo (Adjuntaron algo)
         {
-            $image = Input::file('archivoAusentismo');
-            $imageName = 'ausentismo/'. $request->file('archivoAusentismo')->getClientOriginalName();
-        
-            $manager = new ImageManager();
-            $manager->make($image->getRealPath())->save('images/'. $imageName);
-            
+
+            $filename = $destinationPath . $file->getClientOriginalName(); // se obtiene el nombre del archivo (la que se subio).
+            \Storage::disk('local')->put($filename, \File::get($file)); //Ruta que va a tener en el servidor.
+            $rutaImagen = 'ausentismo/'.$file->getClientOriginalName(); //Ruta que va a quedar grabada en la bd por ejemplo ausentimos/imagensubida.jpg   
+            $imageName =  $rutaImagen;   // El campo ['nombre'] le lleve a la ruta $rutaImagen
             $ausentismo->archivoAusentismo = $imageName;
         }
+
+
         
         $ausentismo->save();
 

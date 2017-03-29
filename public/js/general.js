@@ -184,6 +184,15 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             if(this.sololectura[i] === true)
                 input.setAttribute("readOnly", "readOnly");
 
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    input.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+                }
+            }
+
+
             div.appendChild(input);
         }
         else if(this.etiqueta[i] == 'select')

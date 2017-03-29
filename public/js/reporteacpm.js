@@ -4,15 +4,16 @@ function validarFormulario(event)
     var token = $("#token").val();
     var dato0 = document.getElementById('idReporteACPM').value;
     var dato1 = document.getElementById('fechaElaboracionReporteACPM').value;
+
+
     var datoProceso = document.querySelectorAll("[name='Proceso_idProceso[]']");
     var datoModulo = document.querySelectorAll("[name='Modulo_idModulo[]']");
-    var datoResponsableC = document.querySelectorAll("[name='Tercero_idResponsableCorrecion[]']");
-    var datoResponsableA = document.querySelectorAll("[name='Tercero_idResponsablePlanAccion[]']");
+    var tipoReporte = document.querySelectorAll("[name='tipoReporteACPMDetalle[]']");
+
     var dato2 = [];
     var dato3 = [];
     var dato4 = [];
-    var dato5 = [];
-    var dato6 = document.getElementById('numeroReporteACPM').value;
+    var dato5 = document.getElementById('numeroReporteACPM').value;
     
     var valor = '';
     var sw = true;
@@ -27,15 +28,11 @@ function validarFormulario(event)
         dato3[j] = datoModulo[j].value;
     }
 
-    for(var j=0,i=datoResponsableC.length; j<i;j++)
+    for(var j=0,i=tipoReporte.length; j<i;j++)
     {
-        dato4[j] = datoResponsableC[j].value;
+        dato4[j] = tipoReporte[j].value;
     }
 
-    for(var j=0,i=datoResponsableA.length; j<i;j++)
-    {
-        dato5[j] = datoResponsableA[j].value;
-    }
 
     $.ajax({
         async: false,
@@ -48,9 +45,8 @@ function validarFormulario(event)
                 fechaElaboracionReporteACPM: dato1,
                 Proceso_idProceso: dato2,
                 Modulo_idModulo: dato3,
-                Tercero_idResponsableCorrecion: dato4, 
-                Tercero_idResponsablePlanAccion: dato5,
-                numeroReporteACPM: dato6,
+                tipoReporteACPMDetalle: dato4, 
+                numeroReporteACPM: dato5,
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -84,14 +80,9 @@ function validarFormulario(event)
                     (typeof respuesta['Modulo_idModulo'+j] === "undefined" ? document.getElementById('Modulo_idModulo'+j).style.borderColor = '' : document.getElementById('Modulo_idModulo'+j).style.borderColor = '#a94442');
                 }
 
-                for(var j=0,i=datoResponsableC.length; j<i;j++)
+                for(var j=0,i=tipoReporte.length; j<i;j++)
                 {
-                    (typeof respuesta['Tercero_idResponsableCorrecion'+j] === "undefined" ? document.getElementById('Tercero_idResponsableCorrecion'+j).style.borderColor = '' : document.getElementById('Tercero_idResponsableCorrecion'+j).style.borderColor = '#a94442');
-                }
-
-                for(var j=0,i=datoResponsableA.length; j<i;j++)
-                {
-                    (typeof respuesta['Tercero_idResponsablePlanAccion'+j] === "undefined" ? document.getElementById('Tercero_idResponsablePlanAccion'+j).style.borderColor = '' : document.getElementById('Tercero_idResponsablePlanAccion'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['tipoReporteACPMDetalle'+j] === "undefined" ? document.getElementById('tipoReporteACPMDetalle'+j).style.borderColor = '' : document.getElementById('tipoReporteACPMDetalle'+j).style.borderColor = '#a94442');
                 }
 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';

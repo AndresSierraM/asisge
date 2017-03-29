@@ -120,12 +120,14 @@
 				</div>
 		        <div class="form-group"  >
 		        {!! Form::label('archivoAusentismo', 'Soporte de la Ausencia', array('class' => 'col-sm-2 control-label')) !!}
-		          <div class="col-sm-10" >
-		            <div class="panel panel-default">
-		              <input id="archivoAusentismo" name="archivoAusentismo" type="file" value="<?php echo ((isset($ausentismo->archivoAusentismo) and $ausentismo->archivoAusentismo != '') ? 'images/'. $ausentismo->archivoAusentismo : ''); ?>" >
-		            </div>
-		          </div>
+		          	<div class="col-sm-10" >
+			            <div class="panel panel-default">
+			            <!-- En el create va a salir, para adjuntar el archivo-->
+			            <input id="archivoAusentismo" name="archivoAusentismo" type="file" value="<?php echo ((isset($ausentismo->archivoAusentismo) and $ausentismo->archivoAusentismo != '') ? 'images/'. $ausentismo->archivoAusentismo : ''); ?>" >
+			            </div>
+		          	</div>
 		        </div>
+		   
 
 
 				</fieldset>	
@@ -152,23 +154,8 @@
 
         
 
-    $('#archivoAusentismo').fileinput({
-      language: 'es',
-      uploadUrl: '#',
-      allowedFileExtensions : ['jpg', 'png','gif'],
-      initialPreview: [
-       '<?php if(isset($ausentismo->archivoAusentismo))
-            echo Html::image("images/". $ausentismo->archivoAusentismo,"Imagen no encontrada",array("style"=>"height:500px;"));
-                           ;?>'
-            ],
-      dropZoneTitle: 'Seleccione el Archivo',
-      removeLabel: '',
-      uploadLabel: '',
-      browseLabel: '',
-      uploadClass: "",
-      uploadLabel: "",
-      uploadIcon: "",
-    });
 </script>
 
 @stop
+
+

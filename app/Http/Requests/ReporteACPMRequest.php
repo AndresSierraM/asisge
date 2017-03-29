@@ -25,8 +25,8 @@ class ReporteACPMRequest extends Request
     {
         $proceso = count($this->get('Proceso_idProceso'));
         $modulo = count($this->get('Modulo_idModulo'));
-        $responsableC = count($this->get('Tercero_idResponsableCorrecion'));
-        $responsableA = count($this->get('Tercero_idResponsablePlanAccion'));
+        $tipoReporte = count($this->get('tipoReporteACPMDetalle'));
+        
 
         $validacion = array(
             'fechaElaboracionReporteACPM' => 'required|date',
@@ -48,21 +48,16 @@ class ReporteACPMRequest extends Request
             }
         }
 
-        for($i = 0; $i < $responsableC; $i++)
+
+        for($i = 0; $i < $tipoReporte; $i++)
         {
-            if(trim($this->get('Tercero_idResponsableCorrecion')[$i]) == '' or trim($this->get('Tercero_idResponsableCorrecion')[$i]) == 0)
+            if(trim($this->get('tipoReporteACPMDetalle')[$i]) == '' or trim($this->get('tipoReporteACPMDetalle')[$i]) == '') //se pone ' ' en vez de 0, Ya que es un select es con datos quemados.
             {    
-                $validacion['Tercero_idResponsableCorrecion'.$i] =  'required';
+                $validacion['tipoReporteACPMDetalle'.$i] =  'required';
             }
         }
 
-        for($i = 0; $i < $responsableA; $i++)
-        {
-            if(trim($this->get('Tercero_idResponsablePlanAccion')[$i]) == '' or trim($this->get('Tercero_idResponsablePlanAccion')[$i]) == 0)
-            {    
-                $validacion['Tercero_idResponsablePlanAccion'.$i] =  'required';
-            }
-        }
+  
 
         return $validacion;
     }
