@@ -162,7 +162,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-12"> 
+					<div class="col-sm-12">
                 @if(isset($reporteACPM))
 				   @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 				      {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}

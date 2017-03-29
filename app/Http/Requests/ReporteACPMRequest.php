@@ -21,7 +21,7 @@ class ReporteACPMRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules() 
     {
         $proceso = count($this->get('Proceso_idProceso'));
         $modulo = count($this->get('Modulo_idModulo'));
