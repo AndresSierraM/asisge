@@ -264,37 +264,12 @@ $informe = '';
         $columnas = substr($columnas,0, strlen($columnas)-2);
 
         $examen = DB::Select(
-            'SELECT nombreTipoExamenMedico, descripcionTarea, 
-                idFrecuenciaMedicion as idConcepto,
-                '.$columnas.'
-            FROM
-            (
-                SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TET.nombreTipoExamenMedico, 
-                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoTerceroExamenMedico as ING, retiroTerceroExamenMedico as RET,
-                    IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico, idFrecuenciaMedicion, nombreCompletoTercero 
-                FROM tercero T
-                left join terceroinformacion TI
-                on T.idTercero = TI.Tercero_idTercero
-                left join cargo C
-                on T.Cargo_idCargo = C.idCargo
-                left join terceroexamenmedico TEM
-                on T.idTercero = TEM.Tercero_idTercero
-                left join frecuenciamedicion FM
-                on TEM.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                left join tipoexamenmedico TET
-                on TEM.TipoExamenMedico_idTipoExamenMedico = TET.idTipoExamenMedico
-                left join examenmedico EM 
-                on T.idTercero = EM.Tercero_idTercero
-                left join examenmedicodetalle EMD
-                on EM.idExamenMedico = EMD.ExamenMedico_idExamenMedico and EMD.TipoExamenMedico_idTipoExamenMedico = TEM.TipoExamenMedico_idTipoExamenMedico
-                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL and 
-                    T.Compania_idCompania = '.$idCompania .' 
-                group by idTercero
-             
-            UNION
-
+            '
                 SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")") as descripcionTarea,  TEC.nombreTipoExamenMedico, 
-                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, ingresoCargoExamenMedico as ING, retiroCargoExamenMedico as RET,
+                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, fechaCreacionCompania, 
+                    ingresoCargoExamenMedico as ING, 
+                    retiroCargoExamenMedico as RET,
+                    periodicoCargoExamenMedico as PER,
                     IF(EMD.ExamenMedico_idExamenMedico IS NULL , "0000-00-00", EM.fechaExamenMedico) as fechaExamenMedico, idFrecuenciaMedicion, nombreCompletoTercero
                 FROM tercero T
                 left join terceroinformacion TI
@@ -311,13 +286,13 @@ $informe = '';
                 on T.idTercero = EM.Tercero_idTercero
                 left join examenmedicodetalle EMD
                 on EM.idExamenMedico = EMD.ExamenMedico_idExamenMedico and EMD.TipoExamenMedico_idTipoExamenMedico = CE.TipoExamenMedico_idTipoExamenMedico
-                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL  and 
+                left join compania COM
+                on T.Compania_idCompania = COM.idCompania
+                where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL  and nombreCompletoTercero like "'.$letra.'%" and 
                     T.Compania_idCompania = '.$idCompania .' 
-                group by idTercero, idTipoExamenMedico
-            ) Examen
-            where nombreCompletoTercero like "'.$letra.'%"
-            group by idTercero
-            order by nombreCompletoTercero');
+                group by idTercero, idTipoExamenMedico 
+                order by nombreCompletoTercero
+           ');
 
             return imprimirTablaExamenes('Examen Médico', $examen, 'examen', $fechaInicial, $fechaFinal, $año);
 	}
@@ -643,25 +618,25 @@ $informe = '';
     $fechaFinal  = ($año.'-12-31');
 
 
-            $informe .= consultarAccidente($idCompania, $fechaInicial, $fechaFinal);
+         //    $informe .= consultarAccidente($idCompania, $fechaInicial, $fechaFinal);
        
-       		$informe .= consultarGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
+       		// $informe .= consultarGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
        
-       		$informe .= consultarActividadGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
+       		// $informe .= consultarActividadGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
        
             $informe .= consultarExamen($idCompania, $fechaInicial, $fechaFinal, $letra, $año);
      
-            $informe .= consultarInspeccion($idCompania, $fechaInicial, $fechaFinal);
+            // $informe .= consultarInspeccion($idCompania, $fechaInicial, $fechaFinal);
       
-            $informe .= consultarAuditoria($idCompania, $fechaInicial, $fechaFinal);
+            // $informe .= consultarAuditoria($idCompania, $fechaInicial, $fechaFinal);
         
-            $informe .= consultarCapacitacion($idCompania, $fechaInicial, $fechaFinal);
+            // $informe .= consultarCapacitacion($idCompania, $fechaInicial, $fechaFinal);
        
-            $informe .= consultarPrograma($idCompania, $fechaInicial, $fechaFinal);
+            // $informe .= consultarPrograma($idCompania, $fechaInicial, $fechaFinal);
         
-            $informe .= consultarACPM($idCompania, $fechaInicial, $fechaFinal);
+            // $informe .= consultarACPM($idCompania, $fechaInicial, $fechaFinal);
        
-            $informe .= consultarMatriz($idCompania, $fechaInicial, $fechaFinal);
+            // $informe .= consultarMatriz($idCompania, $fechaInicial, $fechaFinal);
 
    	#EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
 function colorTarea($valorTarea, $valorCumplido)
@@ -783,6 +758,16 @@ function colorTarea($valorTarea, $valorCumplido)
 
    function imprimirTablaExamenes($titulo, $informacion, $idtabla, $fechaInicial, $fechaFinal, $año)
    {
+        
+        for($i= 0; $i < count($informacion); $i++)
+        {
+            $registro = get_object_vars($informacion[$i]);
+
+            echo 'ING'.$registro["fechaIngresoTerceroInformacion"].'<br>';
+        }
+
+        return;
+
         $tabla = '';
 
         $tabla .= '        

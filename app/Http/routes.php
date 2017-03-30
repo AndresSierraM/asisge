@@ -169,6 +169,11 @@ Route::group(['middleware' => 'auth'], function ()
             'uses' => 'EncuestaPublicacionController@grabarRespuesta']);
     
 
+    // *************************************
+    // Rutas de Produccion
+    // *************************************
+    Route::resource('lineaproducto','LineaProductoController');
+    Route::resource('sublineaproducto','SublineaProductoController');
 
     // *************************************************
     //
@@ -421,6 +426,18 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/datosPerfilCargo.php';
     });
+
+    // *************************************
+    // Rutas de Produccion
+    // *************************************
+    Route::get('datosLineaProducto', function()
+    {
+        include public_path().'/ajax/datosLineaProducto.php';
+    });    
+    Route::get('datosSublineaProducto', function()
+    {
+        include public_path().'/ajax/datosSublineaProducto.php';
+    });    
 
 
     Route::post('consultarPermisos', function()

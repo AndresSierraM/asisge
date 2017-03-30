@@ -52,6 +52,10 @@ class ProcesoController extends Controller
             'Compania_idCompania' => \Session::get("idCompania")
             ]);
 
+        $proceso = \App\Proceso::All()->last();
+
+        $this->grabarDetalle($proceso->idProceso,$request);
+
         return redirect('/proceso');
     }
 
@@ -92,6 +96,8 @@ class ProcesoController extends Controller
         $proceso->fill($request->all());
         $proceso->save();
 
+        $this->grabarDetalle($id,$request);
+
         return redirect('/proceso');
 
     }
@@ -108,5 +114,32 @@ class ProcesoController extends Controller
     {
         \App\Proceso::destroy($id);
         return redirect('/proceso');
+    }
+
+    protected function grabarDetalle($id, $request)
+    {
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarOperacion']);
+        \App\ProcesoOperacion::whereIn('idProcesoOperacion',$idsEliminar)->delete();
+
+        $contadorDetalle = count($request['ordenProcesoOperacion']);
+        for($i = 0; $i < $contadorDetalle; $i++)
+        {
+            $indice = array(
+             'idProcesoOperacion' => $request['idProcesoOperacion'][$i]);
+
+            $data = array(
+            'Proceso_idProceso' => $id,
+            'ordenProcesoOperacion' => $request['ordenProcesoOperacion'][$i],
+            'nombreProcesoOperacion' => $request['nombreProcesoOperacion'][$i],
+            'samProcesoOperacion' => $request['samProcesoOperacion'][$i],
+            'observacionProcesoOperacion' => $request['observacionProcesoOperacion'][$i] );
+
+
+            $insertar = \App\ProcesoOperacion::updateOrCreate($indice, $data);
+
+        }
     }
 }

@@ -12,4 +12,9 @@ class Proceso extends Model
     protected $fillable = ['codigoProceso', 'nombreProceso', 'Compania_idCompania'];
 
     public $timestamps = false;
+
+    function ProcesoOperacion()
+    {
+    	return $this->hasMany('App\ProcesoOperacion','Proceso_idProceso');
+    }
 }
