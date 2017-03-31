@@ -31,9 +31,13 @@
                         '<a href="ausentismo/'.$value->idAusentismo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;&nbsp;'.
-                        '<a href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
-                            '<span class="glyphicon glyphicon-paperclip" style = "display:'.$visibleE.'"></span>'.
+                        '<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
+                            '<span class="glyphicon glyphicon-paperclip " style = "display:'.$visibleE.'"></span>'.
                         '</a>';
+
+
+                         // '<a onclick="ArchivoAdjunto('.$value['archivoAusentismo'].')">'.
+                        // target="_blank es para que abra en una ventana nueva y no lo descargue"
 
         $row[$key][] = $value->idAusentismo;
         $row[$key][] = $value->nombreAusentismo;

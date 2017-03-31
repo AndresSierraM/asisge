@@ -536,7 +536,7 @@ class TerceroController extends Controller
                 // para cada registro de terceros recorremos las columnas desde la 0 hasta la 22
                 $terceros[$posTer]["idTercero"] = 0;
                 $terceros[$posTer]["Compania_idCompania"] = 0;
-                for ($columna = 0; $columna <= 22; $columna++) {
+                for ($columna = 0; $columna <= 24; $columna++) {
                     // en la fila 4 del archivo de excel (oculta) estan los nombres de los campos de la tabla
                     $campo = $datos->getCellByColumnAndRow($columna, 4)->getValue();
 
@@ -717,40 +717,6 @@ class TerceroController extends Controller
                     }
                 }
 
-
-                //*****************************
-                // Cargo
-                //*****************************
-                // si la celda esta en blanco, reportamos error de obligatoriedad
-                if($terceros[ $posTer]["Cargo_idCargo"] == '' or 
-                    $terceros[ $posTer]["Cargo_idCargo"] == null)
-                {
-                    $terceros[$posTer]["Cargo_idCargo"] = null;
-                    // $errores[$posErr]["linea"] = $fila;
-                    // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    // $errores[$posErr]["mensaje"] = 'Debe diligenciar el código del Cargo';
-                    
-                    // $posErr++;
-                }
-                else
-                {
-                    $consulta = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('codigoCargo','=', $terceros[ $posTer]["Cargo_idCargo"])->lists('idCargo');
-
-                    // si se encuentra el id lo guardamos en el array
-                    if(isset($consulta[0]))
-                        $terceros[$posTer]["Cargo_idCargo"] = $consulta[0];
-                    else
-                    {
-                        $terceros[$posTer]["Cargo_idCargo"] = null;
-                        // $errores[$posErr]["linea"] = $fila;
-                        // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                        // $errores[$posErr]["mensaje"] = 'Código de Cargo '. $terceros[ $posTer]["Cargo_idCargo"]. ' no existe';
-                        
-                        // $posErr++;
-                    }
-                }
-
-
                 //*****************************
                 // Zona
                 //*****************************
@@ -852,44 +818,44 @@ class TerceroController extends Controller
             else
             {
 
-                $fechaNacimiento = ($terceros[$reg]['fechaNacimientoTercero'] + 2 - 25569.833299) * 86400; 
-                $fechaNacimiento = date("Y-m-d",$fechaNacimiento);
-
-                $fechaCreacion = ($terceros[$reg]['fechaCreacionTercero'] + 2 - 25569.833299) * 86400; 
-                $fechaCreacion = date("Y-m-d",$fechaCreacion);
-
-
                 // recorremos el array recibido para insertar o actualizar cada registro
-                for($reg = 0; $reg < count($terceros); $reg++)
+                for($posTer = 0; $posTer < count($terceros); $posTer++) 
                 {
+
+                    $fechaNacimiento = ($terceros[$posTer]['fechaNacimientoTercero'] + 2 - 25569.833299) * 86400; 
+                    $fechaNacimiento = date("Y-m-d",$fechaNacimiento);
+
+                    $fechaCreacion = ($terceros[$posTer]['fechaCreacionTercero'] + 2 - 25569.833299) * 86400; 
+                    $fechaCreacion = date("Y-m-d",$fechaCreacion);
                     
                     $indice = array(
-                          'idTercero' => $terceros[$reg]["idTercero"]);
+                          'idTercero' => $terceros[$posTer]["idTercero"]);
 
                     $data = array(
-                        'TipoIdentificacion_idTipoIdentificacion' => $terceros[$reg]['TipoIdentificacion_idTipoIdentificacion'],
-                        'documentoTercero' => $terceros[$reg]['documentoTercero'],
-                        'nombre1Tercero' => $terceros[$reg]['nombre1Tercero'],
-                        'nombre2Tercero' => $terceros[$reg]['nombre2Tercero'],
-                        'apellido1Tercero' => $terceros[$reg]['apellido1Tercero'],
-                        'apellido2Tercero' => $terceros[$reg]['apellido2Tercero'],
-                        'nombreCompletoTercero' => $terceros[$reg]['nombreCompletoTercero'],
+                        'TipoIdentificacion_idTipoIdentificacion' => $terceros[$posTer]['TipoIdentificacion_idTipoIdentificacion'],
+                        'documentoTercero' => $terceros[$posTer]['documentoTercero'],
+                        'nombre1Tercero' => $terceros[$posTer]['nombre1Tercero'],
+                        'nombre2Tercero' => $terceros[$posTer]['nombre2Tercero'],
+                        'apellido1Tercero' => $terceros[$posTer]['apellido1Tercero'],
+                        'apellido2Tercero' => $terceros[$posTer]['apellido2Tercero'],
+                        'nombreCompletoTercero' => $terceros[$posTer]['nombreCompletoTercero'],
                         'fechaCreacionTercero' => $fechaCreacion,
-                        'estadoTercero' => $terceros[$reg]['estadoTercero'],
-                        'imagenTercero' => $terceros[$reg]['imagenTercero'],
-                        'tipoTercero' => $terceros[$reg]['tipoTercero'],
-                        'direccionTercero' => $terceros[$reg]['direccionTercero'],
-                        'Ciudad_idCiudad' => $terceros[$reg]['Ciudad_idCiudad'],
-                        'telefonoTercero' => $terceros[$reg]['telefonoTercero'],
-                        'faxTercero' => $terceros[$reg]['faxTercero'],
-                        'movil1Tercero' => $terceros[$reg]['movil1Tercero'],
-                        'movil2Tercero' => $terceros[$reg]['movil2Tercero'],
-                        'sexoTercero' => $terceros[$reg]['sexoTercero'],
+                        'estadoTercero' => $terceros[$posTer]['estadoTercero'],
+                        'imagenTercero' => $terceros[$posTer]['imagenTercero'],
+                        'tipoTercero' => $terceros[$posTer]['tipoTercero'],
+                        'direccionTercero' => $terceros[$posTer]['direccionTercero'],
+                        'Ciudad_idCiudad' => $terceros[$posTer]['Ciudad_idCiudad'],
+                        'telefonoTercero' => $terceros[$posTer]['telefonoTercero'],
+                        'faxTercero' => $terceros[$posTer]['faxTercero'],
+                        'movil1Tercero' => $terceros[$posTer]['movil1Tercero'],
+                        'movil2Tercero' => $terceros[$posTer]['movil2Tercero'],
+                        'sexoTercero' => $terceros[$posTer]['sexoTercero'],
                         'fechaNacimientoTercero' => $fechaNacimiento,
-                        'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
-                        'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
-                        'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
-                        'Compania_idCompania' => \Session::get("idCompania")
+                        'correoElectronicoTercero' => $terceros[$posTer]['correoElectronicoTercero'],
+                        'paginaWebTercero' => $terceros[$posTer]['paginaWebTercero'],
+                        'Zona_idZona' => $terceros[$posTer]['Zona_idZona'],
+                        'SectorEmpresa_idSectorEmpresa' => $terceros[$posTer]['SectorEmpresa_idSectorEmpresa'],
+                        'Compania_idCompania' => \Session::get("idCompania") 
                     );
 
                     $tercero = \App\Tercero::updateOrCreate($indice, $data);
@@ -1238,6 +1204,7 @@ class TerceroController extends Controller
                         'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
                         'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
+                        'CentroCosto_idCentroCosto' => $terceros[$reg]['CentroCosto_idCentroCosto'],
                         'Compania_idCompania' => \Session::get("idCompania")
                     );
 
