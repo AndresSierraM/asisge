@@ -18,7 +18,7 @@
     if ($imprimir == 1) 
         $visibleI = 'inline-block;';
     else
-        $visibleI = 'none';
+        $visibleI = 'none;';
     
     $inspeccion = DB::table('inspeccion')
             ->leftJoin('tipoinspeccion', 'TipoInspeccion_idTipoInspeccion', '=', 'idTipoInspeccion')

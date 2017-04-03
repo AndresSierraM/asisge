@@ -1,9 +1,11 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +15,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+      if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
 
     $ausentismo = DB::table('ausentismo')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
@@ -32,7 +38,7 @@
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;&nbsp;'.
                         '<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
-                            '<span class="glyphicon glyphicon-paperclip " style = "display:'.$visibleE.'"></span>'.
+                            '<span class="glyphicon glyphicon-paperclip " style = "display:'.$visibleI.'"></span>'.
                         '</a>';
 
 
