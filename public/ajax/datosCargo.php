@@ -1,9 +1,11 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +15,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+          if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none;';
 
 
     $cargo = \App\Cargo::where('Compania_idCompania','=', \Session::get('idCompania'))->get();
@@ -27,7 +33,7 @@
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp'.
                         '<a onclick="imprimirCargo('.$value['idCargo'].')">'.
-                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleE.'"></span>'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
                         ;
         $row[$key][] = $value['idCargo'];
