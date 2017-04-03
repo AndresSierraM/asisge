@@ -94,7 +94,8 @@
 		recomendacion.clase = ['','','','','','','',''];
 		recomendacion.sololectura = [false,false,false,false,false,false,false,false];
 		recomendacion.opciones = ['','','','','','',medida, proceso];
-		recomendacion.funciones = ['','','','','','','',''];
+		var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+		recomendacion.funciones = ['',quitacarac,'','','','','',''];
 
 
 		for(var j=0, k = accidenteRecomendacion.length; j < k; j++)

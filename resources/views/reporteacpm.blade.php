@@ -53,7 +53,8 @@
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true];
 			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
 			detalle.opciones = ['','','',proceso,modulo,tipo,'','','',tercero,'',tercero,'','','','',''];
-			detalle.funciones  = ['','',eventos1,'','','','','','','','','',eventos2,'',eventos3,'',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			detalle.funciones  = ['','',eventos1,'','','',quitacarac,quitacarac,quitacarac,'',quitacarac,'',eventos2,quitacarac,eventos3,'',''];
 
 			for(var j=0, k = reporteACPMDetalle.length; j < k; j++)
 			{

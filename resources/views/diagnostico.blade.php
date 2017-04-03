@@ -34,6 +34,8 @@
                                 'vertical-align:top; text-align: center; width: 100px;  height:60px;',
                                 'vertical-align:top; resize:none; font-size:10px; width: 420px; height:60px;'];
         diagnostico.clase    = ['','','','',''];
+        var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+        diagnostico.funciones  = ['','','','',quitacarac]; 
         diagnostico.sololectura = [false,true,false,true,false];
         diagnostico.calculo = [false,false,true,false,false];
 

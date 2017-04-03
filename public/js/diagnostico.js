@@ -52,11 +52,16 @@ Atributos.prototype.agregarCampos = function(datos, tipo, grupo){
             input.value = valor[(tipo == 'A' ? i : this.campos[i])];
             input.setAttribute("class", this.clase[i]);
             input.setAttribute("style", this.estilo[i]);
+
+
             if(this.sololectura[i] === true)
                 input.setAttribute("readOnly", "readOnly");
             
             if(this.calculo[i])
                 input.addEventListener("blur", calcularResultado, false);
+
+
+
            
             div.appendChild(input); 
 
@@ -73,6 +78,15 @@ Atributos.prototype.agregarCampos = function(datos, tipo, grupo){
             input.setAttribute("style", this.estilo[i]);
             if(this.sololectura[i] === true)
                 input.setAttribute("readOnly", "readOnly");
+
+            
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    input.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+                }
+            }
             
             div.appendChild(input);
         }

@@ -32,7 +32,8 @@
 			detalle.sololectura = [false,false,true,true,false,false,true,false,false];
 			detalle.completar = ['off','off','off','off','off','off','off','off'];
 			detalle.opciones = ['','','','',tercero,'','','','',''];
-			detalle.funciones  = ['','','','','','','','',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			detalle.funciones  = ['','','',quitacarac,'',quitacarac,'',quitacarac,quitacarac];
 
 			for(var j=0, k = listaChequeoDetalle.length; j < k; j++)
 			{

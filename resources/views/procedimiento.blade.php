@@ -9,8 +9,8 @@
     var idTercero = '<?php echo isset($idTercero) ? $idTercero : "";?>';
     var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
 
-    var idDocumento = '<?php echo isset($idDocumento) ? $idDocumento : "";?>';
-    var nombreDocumento = '<?php echo isset($nombreDocumento) ? $nombreDocumento : "";?>';
+    var idDocumentoSoporte = '<?php echo isset($idDocumentoSoporte) ? $idDocumentoSoporte : "";?>';
+    var nombreDocumentoSoporte = '<?php echo isset($nombreDocumentoSoporte) ? $nombreDocumentoSoporte : "";?>';
 
     var procedimientoDetalle = '<?php echo (isset($procedimiento) ? json_encode($procedimiento->procedimientoDetalle) : "");?>';
     procedimientoDetalle = (procedimientoDetalle != '' ? JSON.parse(procedimientoDetalle) : '');
@@ -25,12 +25,13 @@
       procedimiento.tipo      = ['text',                              '',                             ''];
       procedimiento.estilo    = ['width: 900px;height:35px;',     'width: 300px;height:30px;','width: 300px;height:30px;'];
       procedimiento.clase     = ['',                              'chosen-select form-control',   'chosen-select form-control'];
-
-      procedimiento.funciones  = [quitacarac,'',''];
+      procedimiento.sololectura = [false,false,false];
+      var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+      procedimiento.funciones  = [quitacarac,'','']; 
       procedimiento.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
       procedimiento.idTercero =  JSON.parse(idTercero);
-      procedimiento.nombreDocumento =  JSON.parse(nombreDocumento);
-      procedimiento.idDocumento =  JSON.parse(idDocumento);
+      procedimiento.nombreDocumentoSoporte =  JSON.parse(nombreDocumentoSoporte);
+      procedimiento.idDocumentoSoporte =  JSON.parse(idDocumentoSoporte);
 
 
       for(var j=0, k = procedimientoDetalle.length; j < k; j++)
@@ -42,20 +43,20 @@
 
   </script>
 
-	@if(isset($procedimiento))
-		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($procedimiento,['route'=>['procedimiento.destroy',$procedimiento->idProcedimiento],'method'=>'DELETE', 'files' => true])!!}
-		@else
-			{!!Form::model($procedimiento,['route'=>['procedimiento.update',$procedimiento->idProcedimiento],'method'=>'PUT', 'files' => true])!!}
-		@endif
-	@else
-		{!!Form::open(['route'=>'procedimiento.store','method'=>'POST'])!!}
-	@endif
+  @if(isset($procedimiento))
+    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+      {!!Form::model($procedimiento,['route'=>['procedimiento.destroy',$procedimiento->idProcedimiento],'method'=>'DELETE', 'files' => true])!!}
+    @else
+      {!!Form::model($procedimiento,['route'=>['procedimiento.update',$procedimiento->idProcedimiento],'method'=>'PUT', 'files' => true])!!}
+    @endif
+  @else
+    {!!Form::open(['route'=>'procedimiento.store','method'=>'POST'])!!}
+  @endif
 
 <div id='form-section' >
 
-	<fieldset id="procedimiento-form-fieldset">	
-	    <div class="form-group" id='test'>
+  <fieldset id="procedimiento-form-fieldset"> 
+      <div class="form-group" id='test'>
           {!!Form::label('Proceso_idProceso', 'Proceso ', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
                   <div class="input-group">
@@ -94,8 +95,8 @@
             </div>
           </div>
         </div>
-		
-		          
+    
+              
         <div class="form-group">
           <div class="col-lg-12">
             <div class="panel panel-default">
@@ -229,7 +230,7 @@
   @else
          {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
   @endif
-	{!! Form::close() !!}
+  {!! Form::close() !!}
 
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
@@ -247,6 +248,6 @@
   </script>
 
 
-	</div>
+  </div>
 </div>
 @stop
