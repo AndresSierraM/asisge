@@ -12,6 +12,9 @@
     var idDocumentoSoporte = '<?php echo isset($idDocumentoSoporte) ? $idDocumentoSoporte : "";?>';
     var nombreDocumentoSoporte = '<?php echo isset($nombreDocumentoSoporte) ? $nombreDocumentoSoporte : "";?>';
 
+    var tercero = [JSON.parse(idTercero), JSON.parse(nombreCompletoTercero)];
+    var documentosoporte = [JSON.parse(idDocumentoSoporte), JSON.parse(nombreDocumentoSoporte)];
+
     var procedimientoDetalle = '<?php echo (isset($procedimiento) ? json_encode($procedimiento->procedimientoDetalle) : "");?>';
     procedimientoDetalle = (procedimientoDetalle != '' ? JSON.parse(procedimientoDetalle) : '');
     var valorProcedimiento = ['',0,0];
@@ -21,17 +24,18 @@
 
       procedimiento = new Atributos('procedimiento','contenedor_procedimiento','procedimiento_');
       procedimiento.campos    = ['actividadProcedimientoDetalle', 'Tercero_idResponsable',        'Documento_idDocumento'];
-      procedimiento.etiqueta  = ['input',                          'select1',                       'select2'];
+      procedimiento.etiqueta  = ['input',                          'select',                       'select'];
       procedimiento.tipo      = ['text',                              '',                             ''];
       procedimiento.estilo    = ['width: 900px;height:35px;',     'width: 300px;height:30px;','width: 300px;height:30px;'];
       procedimiento.clase     = ['',                              'chosen-select form-control',   'chosen-select form-control'];
+      procedimiento.opciones  = ['',tercero,documentosoporte]; 
       procedimiento.sololectura = [false,false,false];
       var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
       procedimiento.funciones  = [quitacarac,'','']; 
-      procedimiento.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
-      procedimiento.idTercero =  JSON.parse(idTercero);
-      procedimiento.nombreDocumentoSoporte =  JSON.parse(nombreDocumentoSoporte);
-      procedimiento.idDocumentoSoporte =  JSON.parse(idDocumentoSoporte);
+      // procedimiento.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
+      // procedimiento.idTercero =  JSON.parse(idTercero);
+      // procedimiento.nombreDocumentoSoporte =  JSON.parse(nombreDocumentoSoporte);
+      // procedimiento.idDocumentoSoporte =  JSON.parse(idDocumentoSoporte);
 
 
       for(var j=0, k = procedimientoDetalle.length; j < k; j++)

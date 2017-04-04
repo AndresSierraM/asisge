@@ -1219,12 +1219,16 @@ class TerceroController extends Controller
                     {
                         $tercero = \App\Tercero::All()->last();
                         $idtercero = $tercero->idTercero;
+                        $idTerceroInformacion = \App\TerceroInformacion::where('Tercero_idTercero','=',$idtercero)->lists('idTerceroInformacion');
                     }
                     else
+                    {
                         $idtercero = $terceros[$reg]["idTercero"];
+                        $idTerceroInformacion = \App\TerceroInformacion::where('Tercero_idTercero','=',$idtercero)->lists('idTerceroInformacion');
+                    }
 
                     $indice = array(
-                          'idTerceroInformacion' => 0);
+                          'idTerceroInformacion' => $idTerceroInformacion[0]); 
 
                     $data = array(
                         'Tercero_idTercero' => $idtercero,
@@ -1243,8 +1247,8 @@ class TerceroController extends Controller
                         'tipoViviendaTerceroInformacion' => $terceros[$reg]['tipoViviendaTerceroInformacion'],
                         'tipoTransporteTerceroInformacion' => $terceros[$reg]['tipoTransporteTerceroInformacion'],
                         'HobbyTerceroInformacion' => $terceros[$reg]['HobbyTerceroInformacion'],
-                        'actividadFisicaTerceroInformacion' => $terceros[$reg]['actividadFisicaTerceroInformacion'],
-                        'consumeLicorTerceroInformacion' => $terceros[$reg]['consumeLicorTerceroInformacion'],
+                        'actividadFisicaTerceroInformacion' => ($terceros[$reg]['actividadFisicaTerceroInformacion'] == 'SI' ? 1 : 0),
+                        'consumeLicorTerceroInformacion' => ($terceros[$reg]['consumeLicorTerceroInformacion'] == 'SI' ? 1 : 0),
                         'FrecuenciaMedicion_idConsumeLicor' => ($terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == '' or $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == 0 ? null : $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor']),
                         'consumeCigarrilloTerceroInformacion' =>($terceros[$reg]['consumeCigarrilloTerceroInformacion'] == 'SI' ? 1 : 0)
                         );

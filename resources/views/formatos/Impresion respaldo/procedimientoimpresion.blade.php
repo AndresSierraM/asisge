@@ -40,7 +40,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<?php echo $dato->objetivoProcedimiento;?>
+									{{$dato->objetivoProcedimiento}}
 								</td>
 							</tr>
 						</tbody>
@@ -56,7 +56,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<?php echo $dato->alcanceProcedimiento;?>
+									{{$dato->alcanceProcedimiento}}
 								</td>
 							</tr>
 						</tbody>
@@ -72,7 +72,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<?php echo $dato->responsabilidadProcedimiento;?>
+									{{$dato->responsabilidadProcedimiento}}
 								</td>
 							</tr>
 						</tbody>
