@@ -78,7 +78,7 @@
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o "></i>
             </span>
-			     {!!Form::text('nombreTipoInspeccion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del tipo de Inspecci&oacute;n'])!!}
+			     {!!Form::text('nombreTipoInspeccion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del tipo de Inspecci&oacute;n',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
           </div>
       </div>
       

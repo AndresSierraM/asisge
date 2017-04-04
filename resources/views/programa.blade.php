@@ -93,7 +93,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-calendar" ></i>
               </span>
-              {!!Form::text('nombrePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del programa', 'style'=>'width:340;'])!!}
+              {!!Form::text('nombrePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del programa', 'style'=>'width:340;',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
               <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
             </div>
           </div>
@@ -133,7 +133,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-calendar" ></i>
               </span>
-              {!!Form::text('alcancePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el alcance del programa', 'style'=>'width:340;'])!!}
+              {!!Form::text('alcancePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el alcance del programa', 'style'=>'width:340;',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
         </div>

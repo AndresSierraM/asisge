@@ -79,7 +79,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-calendar" ></i>
               </span>
-              {!!Form::text('nombreProcedimiento',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del procedimiento', 'style'=>'width:340;'])!!}
+              {!!Form::text('nombreProcedimiento',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del procedimiento', 'style'=>'width:340;',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
         </div>

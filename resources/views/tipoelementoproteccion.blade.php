@@ -38,7 +38,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-        {!!Form::text('nombreTipoElementoProteccion',null,['class'=>'form-control','placeholder'=>'Ingresa la descripci&oacute;n'])!!}
+        {!!Form::text('nombreTipoElementoProteccion',null,['class'=>'form-control','placeholder'=>'Ingresa la descripci&oacute;n',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
   
@@ -51,7 +51,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-        {!!Form::textarea('observacionTipoElementoProteccion',null,['class'=>'form-control','style'=>'height:100px','placeholder'=>''])!!}
+        {!!Form::textarea('observacionTipoElementoProteccion',null,['class'=>'form-control','style'=>'height:100px','placeholder'=>'',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
 

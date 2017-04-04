@@ -110,7 +110,7 @@
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-							{!!Form::text('descripcionReporteACPM',null,['class'=>'form-control','placeholder'=>'Digite la descripci&oacute;n'])!!}
+							{!!Form::text('descripcionReporteACPM',null,['class'=>'form-control','placeholder'=>'Digite la descripci&oacute;n',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
 						</div>
 					</div>
 				</div>

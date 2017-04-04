@@ -42,7 +42,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-    				{!!Form::text('nombreElementoProteccion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre'])!!}
+    				{!!Form::text('nombreElementoProteccion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-gavel"></i>
               </span>
-            {!!Form::textarea('normaElementoProteccion',null,['class'=>'form-control','style'=>'height:100px','placeholder'=>''])!!}
+            {!!Form::textarea('normaElementoProteccion',null,['class'=>'form-control','style'=>'height:100px','placeholder'=>'',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('descripcionElementoProteccion',null,['class'=>'form-control','style'=>'height:125px','placeholder'=>''])!!}
+                                {!!Form::textarea('descripcionElementoProteccion',null,['class'=>'form-control','style'=>'height:125px','placeholder'=>'',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
                               </div>
                             </div>
                           </div>
@@ -133,7 +133,7 @@
                                   <span class="input-group-addon">
                                     <i class="fa fa-pencil-square-o "></i>
                                   </span>
-                                  {!!Form::textarea('procesosElementoProteccion',null,['class'=>'form-control','style'=>'height:125px','placeholder'=>''])!!}
+                                  {!!Form::textarea('procesosElementoProteccion',null,['class'=>'form-control','style'=>'height:125px','placeholder'=>'',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
                                 </div>
                               </div>
                             </div>

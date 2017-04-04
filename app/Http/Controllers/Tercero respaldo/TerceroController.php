@@ -891,7 +891,7 @@ class TerceroController extends Controller
                 // para cada registro de empleados recorremos las columnas desde la 0 hasta la 40
                 $terceros[$posTer]["idTercero"] = 0;
                 $terceros[$posTer]["Compania_idCompania"] = 0;
-                for ($columna = 0; $columna <= 41; $columna++) {
+                for ($columna = 0; $columna <= 40; $columna++) {
                     // en la fila 4 del archivo de excel (oculta) estan los nombres de los campos de la tabla
                     $campo = $datos->getCellByColumnAndRow($columna, 4)->getValue();
 
@@ -1133,10 +1133,6 @@ class TerceroController extends Controller
                 
             }
 
-
-
-            
-
             $totalErrores = count($errores);
 
             if($totalErrores > 0)
@@ -1246,7 +1242,7 @@ class TerceroController extends Controller
                         'actividadFisicaTerceroInformacion' => $terceros[$reg]['actividadFisicaTerceroInformacion'],
                         'consumeLicorTerceroInformacion' => $terceros[$reg]['consumeLicorTerceroInformacion'],
                         'FrecuenciaMedicion_idConsumeLicor' => ($terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == '' or $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor'] == 0 ? null : $terceros[$reg]['FrecuenciaMedicion_idConsumeLicor']),
-                        'consumeCigarrilloTerceroInformacion' =>($terceros[$reg]['consumeCigarrilloTerceroInformacion'] == 'SI' ? 1 : 0)
+                        'consumeCigarrilloTerceroInformacion' => $terceros[$reg]['consumeCigarrilloTerceroInformacion']
                         );
 
                     $tercero = \App\TerceroInformacion::updateOrCreate($indice, $data);
