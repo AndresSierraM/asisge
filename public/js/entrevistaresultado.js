@@ -53,21 +53,18 @@ function imprimirInforme(condicion, accion)
 
 
 
-// function seleccionarEstado()
-// {
-//     // Se hace dentro de esta funcion un switch para cambiar el value numero por el nombre como tal de estado
-//             switch(('#Estado').val()) 
-//             {
-                
-//                 case 1 : estado += 'EnProceso,';
-//                     break;
-//                 case 2 :estado += 'EnProceso,';
-//                     break;
-//                 case 3():estado += 'EnProceso,';
-//                     break;
-//             }
-//         $("#estadoEntrevistaResultado").val('#Estado');
-// }
+function seleccionarEstado()
+{
+    estado = '';
+
+    for (var i = 1; i <= 3; i++) 
+    {
+        if($('#Estado'+i).is(':checked')) 
+        estado += i+',';
+    }
+
+    $("#estadoEntrevistaResultado").val(estado);
+}
     
 
 

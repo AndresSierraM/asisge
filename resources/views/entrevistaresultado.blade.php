@@ -115,7 +115,7 @@ if (isset($_GET['accion']))
 
                               <div class="row" style="<?php echo $accion ?>">
                                 <div class="form-group" id='test'>
-        {!!Form::label('estadoEntrevistaResultado', 'Estado', array('class' => 'col-sm-1 control-label','style'=>'width:180px;padding-left:30px;')) !!}
+                                  {!!Form::label('estadoEntrevistaResultado', 'Estado', array('class' => 'col-sm-1 control-label','style'=>'width:180px;padding-left:30px;')) !!}
                                     <div class="col-md-2">
                                         <div class="input-group">
                                         <!-- se pone null el estado para que laravel solito llene ese campo con lo que trae de la consulta del controlador -->

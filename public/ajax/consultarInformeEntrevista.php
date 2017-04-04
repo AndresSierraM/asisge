@@ -21,6 +21,7 @@
         	$disabled = '';
     
          } 
+
         $estado = substr($estadoEntrevistaResultado, 0, strlen($estadoEntrevistaResultado)-1);
         // el substr es para que llegue a la posicion 0 luego a la 1 y luego a la 2. luego en el strlen recorre el string hasta llegar
         // al ultimo estado 
@@ -74,7 +75,8 @@
                 $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
         }
 
-        
+        $and = ($estadoEntrev == '' ? '' : 'and '.$estadoEntrev);
+
         $consulta = DB::Select('
         SELECT idEntrevista,e.Cargo_idCargo,e.Tercero_idEntrevistador,fechaEntrevista,c.porcentajeEducacionCargo,c.porcentajeExperienciaCargo,c.porcentajeFormacionCargo,c.porcentajeResponsabilidadCargo,c.porcentajeHabilidadCargo,Competencia_idCompetencia,nombre1AspiranteEntrevista,nombre2AspiranteEntrevista,apellido1AspiranteEntrevista,apellido2AspiranteEntrevista,t.nombreCompletoTercero,e.calificacionEducacionEntrevista,e.calificacionFormacionEntrevista,e.calificacionHabilidadCargoEntrevista,e.calificacionHabilidadActitudinalEntrevista,e.experienciaAspiranteEntrevista,e.experienciaRequeridaEntrevista,e.estadoEntrevista,e.TipoIdentificacion_idTipoIdentificacion,e.observacionEntrevista
         FROM entrevista e
@@ -84,7 +86,7 @@
         On cc.Cargo_idCargo = c.idCargo
         left join tercero t
         On e.Tercero_idEntrevistador = t.idTercero 
-        WHERE '.$condicion.' and ('.$estadoEntrev.')'); 
+        WHERE '.$condicion.' '.$and); 
 
 
 $Experienciainfo = '';
@@ -159,7 +161,7 @@ $informehtml .= '
       $Sumatoriapesoporcentaje = $datosconsulta['porcentajeEducacionCargo'] + $datosconsulta['porcentajeExperienciaCargo']+ $datosconsulta['porcentajeFormacionCargo'] + $datosconsulta['porcentajeHabilidadCargo'] + $datosconsulta['porcentajeResponsabilidadCargo'];
 
       //finalmente la sumatoria de las multiplicaciones se divide por la sumatoria de los porcentaje peso para obtener el ponderado
-      $respuestaInforme = $Sumatoriamultiplicaciones/$Sumatoriapesoporcentaje;
+      $respuestaInforme = $Sumatoriamultiplicaciones/($Sumatoriapesoporcentaje == 0 ? 1 : $Sumatoriapesoporcentaje);
 
 
 
@@ -180,11 +182,11 @@ $informehtml .= '
           <td>
           <select id="seleccionInformeEntrevista" name="seleccionInformeEntrevista[]"'; $informehtml.= $disabled.'>
           ';
-          	foreach ($consulta as $numEstado => $estado) 
-          		//primero se la consulta se le pone un sombrenombre 
+        foreach ($consulta as $numEstado => $estado) 
 		    {
+          
 		    	// se hace un forech para saber el estado de la entreevista para que salga en el informe tal cual esta alla.
-		        $informehtml .= '<option value="'.$estado->estadoEntrevistaResultado.'"'.($estado->estadoEntrevistaResultado == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$estado->estadoEntrevistaResultado.'</option>';
+		        // $informehtml .= '<option value="'.$estado->estadoEntrevistaResultado.'"'.($estado->estadoEntrevistaResultado == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$estado->estadoEntrevistaResultado.'</option>';
 		    }
           '</select></td> 
       </tr>
