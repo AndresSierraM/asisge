@@ -1,8 +1,7 @@
 
 
-function consultarInformeEntrevista(fechaInicio, fechaFin, Cargo, Tercero, accion)
+function consultarInformeEntrevista(fechaInicio, fechaFin, Cargo, Tercero)
 {
-
     if (fechaInicio == '' || fechaFin == '') 
         alert('Verifique que los campos de fecha esten llenos.');
     else
@@ -17,14 +16,15 @@ function consultarInformeEntrevista(fechaInicio, fechaFin, Cargo, Tercero, accio
         if (fechaInicio != '' && fechaFin != '')
             condicion = condicion + ((condicion !='' && fechaInicio !='') ? ' and ' : '') + 'fechaEntrevista >= "'+fechaInicio+'" and fechaEntrevista <= "'+fechaFin+'"';
         
-        imprimirInforme(condicion, accion);
+        imprimirInforme(condicion);
     }
 }
 
 
-function imprimirInforme(condicion, accion)
+function imprimirInforme(condicion)
 {
     estados = $("#estadoEntrevistaResultado").val();
+    accion = $("#accionFormulario").val();
  
     var token = document.getElementById('token').value; 
 

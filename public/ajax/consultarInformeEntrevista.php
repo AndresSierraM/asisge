@@ -1,7 +1,8 @@
 <?php 
 
 
-		$condicion = $_POST['condicion'];
+    $condicion = $_POST['condicion'];
+
 
         $estadoEntrevistaResultado = $_POST['estados'];
 
@@ -12,13 +13,13 @@
 
         if ($accion == 'eliminar') 
         {
-        	$readonly = 'readonly';
-        	$disabled = 'disabled';
+          $readonly = 'readonly';
+          $disabled = 'disabled';
         }
         else
         {
-        	$readonly = ''; 
-        	$disabled = '';
+          $readonly = ''; 
+          $disabled = '';
     
          } 
 
@@ -176,18 +177,20 @@ $informehtml .= '
       <td>'.$datosconsulta['calificacionHabilidadCargoEntrevista'].'%'.'</td>
           <td></td> 
           <td>'.$respuestaInforme.'%'.'</td>
-          <td> <textarea id="observacionInformeEntrevista" name="observacionInformeEntrevista[]" '; $informehtml.= $readonly.' ></textarea></td>
+          <td> <textarea id="observacionInformeEntrevista" name="observacionInformeEntrevista[]" '; $informehtml.= $readonly.' >'.$datosconsulta['observacionEntrevista'].'</textarea></td>
           <input type="hidden" id="idEntrevista" value ="'.$datosconsulta["idEntrevista"].'" name="idEntrevista[]">
           <input type="hidden" id="TipoIdentificacion_idTipoIdentificacion" value ="'.$datosconsulta["TipoIdentificacion_idTipoIdentificacion"].'" name="TipoIdentificacion_idTipoIdentificacion[]">
           <td>
           <select id="seleccionInformeEntrevista" name="seleccionInformeEntrevista[]"'; $informehtml.= $disabled.'>
           ';
         foreach ($consulta as $numEstado => $estado) 
-		    {
-          
-		    	// se hace un forech para saber el estado de la entreevista para que salga en el informe tal cual esta alla.
-		        // $informehtml .= '<option value="'.$estado->estadoEntrevistaResultado.'"'.($estado->estadoEntrevistaResultado == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$estado->estadoEntrevistaResultado.'</option>';
-		    }
+        {
+          $datosSelect = get_object_vars($estado);
+
+          // print_r($datosSelect);
+          // se hace un forech para saber el estado de la entreevista para que salga en el informe tal cual esta alla.
+            $informehtml .= '<option value="'.$datosSelect['estadoEntrevista'].'"'.($datosSelect['estadoEntrevista'] == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$datosSelect['estadoEntrevista'].'</option>';
+        }
           '</select></td> 
       </tr>
       ';

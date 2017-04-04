@@ -16,20 +16,22 @@ if (isset($_GET['accion']))
   if ($_GET['accion'] == 'editar') 
   {
       echo 
-    '<input type="hidden" id="accionFormulario" value="editar">
+    '
     <script>
-    alert($(\'#accionFormulario\').val());
       $(document).ready(function(){
-      consultarInformeEntrevista("$(\'#fechaInicialEntrevistaResultado\').val(), $(\'#fechaFinalEntrevistaResultado\').val(), $(\'#Cargo_idCargo\').val(), $(\'#Tercero_idEntrevistador\').val(), $(\'#accionFormulario\').val()")
+        $("#accionFormulario").val("editar");
+        consultarInformeEntrevista($(\'#fechaInicialEntrevistaResultado\').val(), $(\'#fechaFinalEntrevistaResultado\').val(), $(\'#Cargo_idCargo\').val(), $(\'#Tercero_idEntrevistador\').val())
     });
     </script>';
   }
   else if ($_GET['accion'] == 'eliminar')
   {
       echo 
-    '<script>
+    '
+    <script>
       $(document).ready(function(){
-      consultarInformeEntrevista("$(\'#fechaInicialEntrevistaResultado\').val(), $(\'#fechaFinalEntrevistaResultado\').val(), $(\'#Cargo_idCargo\').val(), $(\'#Tercero_idEntrevistador\').val(),\'eliminar\'")
+        $("#accionFormulario").val("eliminar");
+        consultarInformeEntrevista($(\'#fechaInicialEntrevistaResultado\').val(), $(\'#fechaFinalEntrevistaResultado\').val(), $(\'#Cargo_idCargo\').val(), $(\'#Tercero_idEntrevistador\').val())
     });
     </script>';
   }
@@ -61,6 +63,8 @@ if (isset($_GET['accion']))
                                     <i class="fa fa-bars"></i> 
                                   </span>
                                   {!!Form::hidden('idEntrevistaResultado', null, array('id' => 'idEntrevistaResultado')) !!}
+
+                                  {!!Form::hidden('accionFormulario', null, array('id' => 'accionFormulario')) !!}
                                
                                   {!!Form::select('Cargo_idCargo',$cargo, (isset($entrevistaresultado) ? $entrevistaresultado->Cargo_idCargo : 0),["class" => "select form-control", "placeholder" =>"Seleccione el Cargo" ])!!}  
                                                                                   
@@ -159,7 +163,7 @@ if (isset($_GET['accion']))
                                             $(\'#fechaInicialEntrevistaResultado\').val(),
                                             $(\'#fechaFinalEntrevistaResultado\').val(),
                                             $(\'#Cargo_idCargo option:selected\').val(),
-                                            $(\'#Tercero_idEntrevistador option:selected\').val(),\'""\')'])!!}
+                                            $(\'#Tercero_idEntrevistador option:selected\').val())'])!!}
                             </div>
 
 <!-- ;graficoBarra.val() -->
