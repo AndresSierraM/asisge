@@ -35,8 +35,13 @@ class CuadroMandoController extends Controller
      */
     public function create()
     {
+        // Se hace una consulta a la tabla compania para traer todas las compañias  as Nombre y as id para enviarlas a la funcion Convertirarray
+        // $compania = DB::Select(
+        //     "SELECT nombreCompania as nombre, idCompania as id
+        //     FROM compania");
+        // $compania = $this->convertirArray($compania);
 
-        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
+         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
 
         $cuadromandoformula = DB::table('cuadromandoformula as CF')
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula');
@@ -52,6 +57,7 @@ class CuadroMandoController extends Controller
 
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -60,10 +66,11 @@ class CuadroMandoController extends Controller
      */
     public function store(CuadroMandoRequest $request)
     {
+
         \App\CuadroMando::create([
             'numeroCuadroMando'=> $request['numeroCuadroMando'],
             'CompaniaObjetivo_idCompaniaObjetivo'=> $request['CompaniaObjetivo_idCompaniaObjetivo'],
-            'Compania_idCompania' => \Session::get('idCompania'),
+            'Compania_idCompania' => ($request['Compania_idCompania'] == '' ? null : $request['Compania_idCompania']),
             'Proceso_idProceso' =>$request['Proceso_idProceso'],
             'objetivoEspecificoCuadroMando' => $request['objetivoEspecificoCuadroMando'],
             'indicadorCuadroMando' => $request['indicadorCuadroMando'],
@@ -74,7 +81,8 @@ class CuadroMandoController extends Controller
             'tipoMetaCuadroMando' => $request['tipoMetaCuadroMando'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
             'visualizacionCuadroMando' => $request['visualizacionCuadroMando'],
-            'Tercero_idResponsable' => $request['Tercero_idResponsable']
+            'Tercero_idResponsable' => $request['Tercero_idResponsable'],
+
             ]);
 
         $cuadromando = \App\CuadroMando::All()->last();
@@ -186,7 +194,9 @@ class CuadroMandoController extends Controller
     {
         $cuadromando = \App\CuadroMando::find($id);
 
-        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
+         $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
+   
+
         $cuadromandoformula = DB::table('cuadromandoformula as CF')
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula')
             ->where('CF.CuadroMando_idCuadroMando','=',$id);
@@ -213,6 +223,7 @@ class CuadroMandoController extends Controller
     {
         $cuadromando = \App\CuadroMando::find($id);
         $cuadromando->fill($request->all());
+        $cuadromando->Compania_idCompania = ($request['Compania_idCompania'] == '' ? null : $request['Compania_idCompania']);
         $cuadromando->save();
         
         \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando','=',$id)->delete();

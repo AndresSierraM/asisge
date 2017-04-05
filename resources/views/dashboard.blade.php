@@ -542,7 +542,7 @@
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
-                            </div>
+                            </div>  
                         </a>
                     </div>
                 </div>
@@ -556,7 +556,8 @@
                 // Consultamos todos los indicadores creados en la compañia actual
                     $cuadroMandoObjeto = DB::table('cuadromando as CM')
                         ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando'))
-                        ->where("Compania_idCompania", $idCompania)
+                        ->where("Compania_idCompania", $idCompania) 
+            
                         ->get();    
 
                     $colores = array("cornflowerblue", "lightskyblue", "lightgreen", "yellowgreen", "orange", "darkorange","red", "blue", "yellow","purple","pink","gray","lime","brown", "navy","olive" ,"fuchshia");

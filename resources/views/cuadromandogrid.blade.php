@@ -111,7 +111,7 @@
             "ajax": "{!! URL::to ('/datosCuadroMando')!!}",
         });*/
         var lastIdx = null;
-        var Adicionar = '<?php echo (isset($datos[0]) ? $dato["adicionarRolOpcion"] : 0);?>';
+        var adicionar = '<?php echo (isset($datos[0]) ? $dato["adicionarRolOpcion"] : 0);?>';
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var table = $('#tcuadromando').DataTable( {
@@ -119,7 +119,7 @@
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCuadroMando?modificar="+modificar+"&eliminar="+eliminar+"&Adicionar="+Adicionar+"')!!}",
+            "ajax": "{!! URL::to ('/datosCuadroMando?adicionar="+adicionar+"&modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

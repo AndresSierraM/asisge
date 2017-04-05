@@ -107,7 +107,7 @@
                         <span class="input-group-addon">
                           <i class="fa fa-bank"></i>
                         </span>
-                {!!Form::select('Compania_idCompania',$compania, (isset($usuario) ? $usuario->Compania_idCompania : 0),["class" => "chosen-select form-control", "placeholder" =>"Todas"])!!}
+                {!!Form::select('Compania_idCompania',$compania, (isset($cuadromando) ? $cuadromando->Compania_idCompania : ''),["class" => "chosen-select form-control", "placeholder" =>"Todas"])!!}
               </div>
             </div>
           </div>
