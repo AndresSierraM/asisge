@@ -36,6 +36,7 @@ class CuadroMandoController extends Controller
     public function create()
     {
 
+        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
 
         $cuadromandoformula = DB::table('cuadromandoformula as CF')
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula');
@@ -47,7 +48,7 @@ class CuadroMandoController extends Controller
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
-        return view('cuadromando',compact('cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'));
+        return view('cuadromando',compact('compania','cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'));
 
     }
 
@@ -185,6 +186,7 @@ class CuadroMandoController extends Controller
     {
         $cuadromando = \App\CuadroMando::find($id);
 
+        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
         $cuadromandoformula = DB::table('cuadromandoformula as CF')
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula')
             ->where('CF.CuadroMando_idCuadroMando','=',$id);
@@ -197,7 +199,7 @@ class CuadroMandoController extends Controller
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $modulo = \App\Modulo::All()->lists('nombreModulo', 'idModulo');
 
-        return view('cuadromando',compact('cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);
+        return view('cuadromando',compact('compania','cuadromandoformula', 'indicador','companiaobjetivo','proceso','frecuenciamedicion','tercero','modulo'),['cuadromando'=>$cuadromando]);
     }
 
     /**

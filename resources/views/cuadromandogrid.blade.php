@@ -52,6 +52,7 @@
                             <li><a class="toggle-vis" data-column="8"><label> Meta</label></a></li>
                             <li><a class="toggle-vis" data-column="9"><label> Frecuencia Medici&oacute;n</label></a></li>
                             <li><a class="toggle-vis" data-column="10"><label> Responsable Medici&oacute;n</label></a></li>
+                            <li><a class="toggle-vis" data-column="11"><label> Compa&ntilde;&iacute;a</label></a></li>
                         </ul>
                     </div>
                     <table id="tcuadromando" name="tcuadromando" class="display table-bordered" width="100%">
@@ -71,6 +72,7 @@
                                 <th><b>Meta</b></th>
                                 <th><b>Frecuencia Medici&oacute;n</b></th>
                                 <th><b>Responsable Medici&oacute;n</b></th>
+                                <th><b>Compa&ntilde;&iacute;a</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -88,6 +90,7 @@
                                 <th>Meta</th>
                                 <th>Frecuencia Medici&oacute;n</th>
                                 <th>Responsable Medici&oacute;n</th>
+                                <th>Compa&ntilde;&iacute;a</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -108,6 +111,7 @@
             "ajax": "{!! URL::to ('/datosCuadroMando')!!}",
         });*/
         var lastIdx = null;
+        var Adicionar = '<?php echo (isset($datos[0]) ? $dato["adicionarRolOpcion"] : 0);?>';
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var table = $('#tcuadromando').DataTable( {
@@ -115,7 +119,7 @@
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosCuadroMando?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosCuadroMando?modificar="+modificar+"&eliminar="+eliminar+"&Adicionar="+Adicionar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

@@ -14,6 +14,7 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    
 
     $cuadromando = DB::table('cuadromando')
             ->leftJoin('companiaobjetivo', 'CompaniaObjetivo_idCompaniaObjetivo', '=', 'idCompaniaObjetivo')
