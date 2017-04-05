@@ -25,58 +25,16 @@
 
         $estado = substr($estadoEntrevistaResultado, 0, strlen($estadoEntrevistaResultado)-1);
         // el substr es para que llegue a la posicion 0 luego a la 1 y luego a la 2. luego en el strlen recorre el string hasta llegar
-        // al ultimo estado 
-        $estados = explode(',', $estado);
-        // se pone un explode para separarlo por comas 
+
         $estadoEntrev = '';
 
-
-        if (isset($estados[2])) 
-            //se empieza preguntando por  la posicion 2 
+        if ($estado != '') 
         {
-            if ($estados[0] == 1)
-                //para cuando este en la posicion 0 sea el valor del estado 1 
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "EnProceso"';
-            else if ($estados[0] == 2)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Seleccionado"';
-            else if ($estado[0] == 3)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
-
-            if ($estados[1] == 2) 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 2) ? ' or ' : '') . ('estadoEntrevista = "Seleccionado"');
-            else 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 3) ? ' or ' : '') . ('estadoEntrevista = "Rechazado"');
-
-            if ($estados[2] == 3) 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[2] == 3) ? ' or ' : '') . ('estadoEntrevista = "Rechazado"');
+          $estadoEntrev = ' AND estadoEntrevista IN ('.str_replace('3', '\'Rechazado\'', str_replace('2', '\'Seleccionado\'', str_replace('1','\'EnProceso\'',$estado))).')';  
         }
 
-        elseif (isset($estados[1])) 
-        {
-            if ($estados[0] == 1)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "EnProceso"';
-            else if ($estados[0] == 2)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Seleccionado"';
-            else if ($estado[0] == 3)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
+        $and = ($estadoEntrev == '' ? '' : $estadoEntrev);
 
-            if ($estados[1] == 2) 
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 2) ? ' or ' : '') . ('estadoEntrevista = "Seleccionado"');
-            else
-                $estadoEntrev = $estadoEntrev . (($estadoEntrev != '' && $estados[1] == 3) ? ' or ' : '') . ('estadoEntrevista = "Rechazado"');
-        }
-
-        elseif (isset($estados[0])) 
-        {
-            if ($estados[0] == 1)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "EnProceso"';
-            else if ($estados[0] == 2)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Seleccionado"';
-            else if ($estado[0] == 3)
-                $estadoEntrev = $estadoEntrev .'estadoEntrevista = "Rechazado"';
-        }
-
-        $and = ($estadoEntrev == '' ? '' : 'and '.$estadoEntrev);
 
         $consulta = DB::Select('
         SELECT idEntrevista,e.Cargo_idCargo,e.Tercero_idEntrevistador,fechaEntrevista,c.porcentajeEducacionCargo,c.porcentajeExperienciaCargo,c.porcentajeFormacionCargo,c.porcentajeResponsabilidadCargo,c.porcentajeHabilidadCargo,Competencia_idCompetencia,nombre1AspiranteEntrevista,nombre2AspiranteEntrevista,apellido1AspiranteEntrevista,apellido2AspiranteEntrevista,t.nombreCompletoTercero,e.calificacionEducacionEntrevista,e.calificacionFormacionEntrevista,e.calificacionHabilidadCargoEntrevista,e.calificacionHabilidadActitudinalEntrevista,e.experienciaAspiranteEntrevista,e.experienciaRequeridaEntrevista,e.estadoEntrevista,e.TipoIdentificacion_idTipoIdentificacion,e.observacionEntrevista
@@ -142,6 +100,8 @@ $informehtml .= '
     
     ';
 
+    $estado = array('EnProceso' => 'EnProceso', 'Seleccionado' => 'Seleccionado', 'Rechazado' => 'Rechazado');
+
     for ($i=0; $i <count($consulta) ; $i++) 
     { 
       $datosconsulta = get_object_vars($consulta[$i]);
@@ -183,13 +143,11 @@ $informehtml .= '
           <td>
           <select id="seleccionInformeEntrevista" name="seleccionInformeEntrevista[]"'; $informehtml.= $disabled.'>
           ';
-        foreach ($consulta as $numEstado => $estado) 
+        foreach ($estado as $numEstado => $posEstado) 
         {
-          $datosSelect = get_object_vars($estado);
-
           // print_r($datosSelect);
           // se hace un forech para saber el estado de la entreevista para que salga en el informe tal cual esta alla.
-            $informehtml .= '<option value="'.$datosSelect['estadoEntrevista'].'"'.($datosSelect['estadoEntrevista'] == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$datosSelect['estadoEntrevista'].'</option>';
+            $informehtml .= '<option value="'.$posEstado.'"'.($posEstado == $datosconsulta["estadoEntrevista"] ? 'selected="selected"' : '') .' >'.$posEstado.'</option>';
         }
           '</select></td> 
       </tr>

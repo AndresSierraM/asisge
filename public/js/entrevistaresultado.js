@@ -32,7 +32,7 @@ function imprimirInforme(condicion)
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
             data: {'condicion': condicion, 'estados': estados, 'accion': accion},
-            url:   'http://'+location.host+'/consultarinformeEntrevista/',
+            url:   'http://'+location.host+'/consultarInformeEntrevista/',
             type:  'POST',
             beforeSend: function(){
                 //Lo que se hace antes de enviar el formulario
@@ -50,9 +50,6 @@ function imprimirInforme(condicion)
 }
 
 
-
-
-
 function seleccionarEstado()
 {
     estado = '';
@@ -65,10 +62,6 @@ function seleccionarEstado()
 
     $("#estadoEntrevistaResultado").val(estado);
 }
-    
-
-
-
  
 function imprimirEntrevistaResultado(id)
 {
