@@ -43,10 +43,10 @@ class ProcedimientoController extends Controller
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        $idDocumento = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
-        $nombreDocumento = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
+        $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
 
-        return view('procedimiento',compact('procesos','idTercero','nombreCompletoTercero','idDocumento','nombreDocumento'));
+        return view('procedimiento',compact('procesos','idTercero','nombreCompletoTercero','idDocumentoSoporte','nombreDocumentoSoporte'));
     }
 
     /**
@@ -121,10 +121,10 @@ class ProcedimientoController extends Controller
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-       $idDocumento = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
-        $nombreDocumento = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
+       $idDocumentoSoporte = \App\DocumentoSoporte::All()->lists('idDocumentoSoporte');
+        $nombreDocumentoSoporte = \App\DocumentoSoporte::All()->lists('nombreDocumentoSoporte');
        
-        return view('procedimiento',compact('procesos','idTercero','nombreCompletoTercero','idDocumento','nombreDocumento'),['procedimiento'=>$procedimiento]);
+        return view('procedimiento',compact('procesos','idTercero','nombreCompletoTercero','idDocumentoSoporte','nombreDocumentoSoporte'),['procedimiento'=>$procedimiento]);
     }
 
     /**

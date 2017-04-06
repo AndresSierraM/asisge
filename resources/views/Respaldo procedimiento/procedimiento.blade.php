@@ -12,15 +12,11 @@
     var idDocumentoSoporte = '<?php echo isset($idDocumentoSoporte) ? $idDocumentoSoporte : "";?>';
     var nombreDocumentoSoporte = '<?php echo isset($nombreDocumentoSoporte) ? $nombreDocumentoSoporte : "";?>';
 
-    var tercero = [idTercero != '' ? JSON.parse(idTercero) : '', 
-                   nombreCompletoTercero != '' ? JSON.parse(nombreCompletoTercero) : ''];
-    var documentosoporte = [idDocumentoSoporte != '' ? JSON.parse(idDocumentoSoporte) : '', 
-                            nombreDocumentoSoporte != '' ? JSON.parse(nombreDocumentoSoporte) : ''];
-
+    var tercero = [JSON.parse(idTercero), JSON.parse(nombreCompletoTercero)];
+    var documentosoporte = [JSON.parse(idDocumentoSoporte), JSON.parse(nombreDocumentoSoporte)];
 
     var procedimientoDetalle = '<?php echo (isset($procedimiento) ? json_encode($procedimiento->procedimientoDetalle) : "");?>';
     procedimientoDetalle = (procedimientoDetalle != '' ? JSON.parse(procedimientoDetalle) : '');
-
     var valorProcedimiento = ['',0,0];
 
     $(document).ready(function(){

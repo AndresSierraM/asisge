@@ -98,7 +98,19 @@
 
 <div id='form-section' >
 
-	<fieldset id="cuadromando-form-fieldset">	
+	<fieldset id="cuadromando-form-fieldset">
+
+    <div class="form-group" id='test'>
+            {!!Form::label('Compania_idCompania', 'Compa&ntilde;&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
+            <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="fa fa-bank"></i>
+                        </span>
+                {!!Form::select('Compania_idCompania',$compania, (isset($cuadromando) ? $cuadromando->Compania_idCompania : ''),["class" => "chosen-select form-control", "placeholder" =>"Todas"])!!}
+              </div>
+            </div>
+          </div>
 
 		<div class="form-group" id='test'>
           {!! Form::label('numeroCuadroMando', 'N&uacute;mero', array('class' => 'col-sm-2 control-label')) !!}
