@@ -256,7 +256,7 @@ function ejecutarInterface(tipo)
             {
                 if(respuesta[0] == true)
                 {
-                    alert(respuesta[1]);
+                    
                     $("#ModalImportacion").modal("hide");
                 }
                 else

@@ -1215,11 +1215,13 @@ class TerceroController extends Controller
 
                     $tercero = \App\Tercero::updateOrCreate($indice, $data);
 
+                    
+
                     if($terceros[$reg]["idTercero"] == 0)
                     {
                         $tercero = \App\Tercero::All()->last();
                         $idtercero = $tercero->idTercero;
-                        $idTerceroInformacion = \App\TerceroInformacion::where('Tercero_idTercero','=',$idtercero)->lists('idTerceroInformacion');
+                        $idTerceroInformacion = array(0 =>'');
                     }
                     else
                     {

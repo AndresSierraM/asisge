@@ -547,19 +547,28 @@
                     </div>
                 </div>
                 
-            </div>
+            </div
             <!-- /.row -->
             <div class="row">
 
 
                 <?php
                 // Consultamos todos los indicadores creados en la compañia actual
-                    $cuadroMandoObjeto = DB::table('cuadromando as CM')
-                        ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando'))
-                        ->where("Compania_idCompania", $idCompania) 
-            
-                        ->get();    
+                    // $cuadroMandoObjeto = DB::table('cuadromando as CM')
+                    //     ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando'))
+                    //     // ->where("Compania_idCompania", $idCompania)
+                    //     // Se hace la condicion con where in para que muestre en el dashboard las compañias logueadas o que esten NULLs que son las que aplican para todas las compañias
+                    //      ->whereIn('Compania_idCompania', [\Session::get('idCompania')]) and whereNull('Compania_idCompania');
+                    //     ->get();
 
+                    //Se hace una consulta que va a tener como condicion traer los registros de la compañia en la que esta logueada y el registro de cuadro de mando que no tenga compañia  (NULL (Selccionada "TODAS"))
+                    $cuadroMandoObjeto = Db::Select('
+                    SELECT idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando
+                    FROM cuadromando CM
+                    WHERE CM.Compania_idCompania = '. \Session::get('idCompania'). ' OR  CM.Compania_idCompania  IS NULL');
+                       
+                        
+                  
                     $colores = array("cornflowerblue", "lightskyblue", "lightgreen", "yellowgreen", "orange", "darkorange","red", "blue", "yellow","purple","pink","gray","lime","brown", "navy","olive" ,"fuchshia");
                     // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
                     foreach ($cuadroMandoObjeto as $key => $value) 

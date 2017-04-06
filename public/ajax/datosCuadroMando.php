@@ -27,7 +27,7 @@
             ->select(DB::raw('idCuadroMando, numeroCuadroMando , nombreCompaniaObjetivo, 
             objetivoEspecificoCuadroMando, indicadorCuadroMando, nombreProceso, formulaCuadroMando, 
             visualizacionCuadroMando, concat(operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando) as tipoMetaCuadroMando, nombreFrecuenciaMedicion, nombreCompletoTercero,compania.nombreCompania'))
-            // ->where('cuadromando.Compania_idCompania','=', \Session::get('idCompania')) NO SE APLICA YA QUE TIENE ADICIONAR 
+            // ->where('cuadromando.Compania_idCompania','=', \Session::get('idCompania')) NO SE APLICA YA QUE TIENE ADICIONAR  Permiso para adiconar
             ->get();
     }
     else 
