@@ -199,6 +199,10 @@ function calificarformacion(idRequerido)
     }
 
 }
+
+
+
+
 function calificareducacion(idRequerido)
 {
     // recibimos como parametro el id del campo de educacion requerida, con este tomamos el numero 
@@ -219,6 +223,79 @@ function calificareducacion(idRequerido)
     }
 
 }
+
+function calificacionEduacion()
+{
+        // Se crea una variable para que inicie en 0 
+        var calificarE = 0;
+        var resultado = 0;
+        for (var i = 0; i < EvaluacionEducacion.contador; i++) 
+        {
+            calificarE += parseFloat($('#porcentajeCargoEducacion'+[i]).val()/100) * parseFloat($('#calificacionEvaluacionEducacion'+[i]).val()/100);    
+        }
+
+       isNaN(resultado = ((calificarE*100)/5)*100);
+       
+    $("#PesoPorcentajeEducacion").val(resultado);
+}
+
+function calificacionFormacion()
+{
+    // Se crea una variable para que inicie en 0 
+    var calificarE = 0;
+    var resultadoF = 0;
+   
+
+    for (var i = 0; i < EvaluacionFormacion.contador; i++) 
+    {
+        calificarE +=  parseFloat($('#porcentajeCargoFormacion'+[i]).val()/100) * parseFloat($('#calificacionEvaluacionFormacion'+[i]).val()/100);   
+    }
+
+       resultadoF = (((calificarE*100)/5)*100);
+      
+
+     $("#PesoPorcentajeFormacion").val(resultadoF);
+}
+function calificacionHabilidad()
+{
+
+    // Se crea una variable para que inicie en 0 
+    var calificarH =  0;
+    var resultadoh =  0;
+    
+    for (var i = 0; i < EvaluacionHabilidad.contador; i++)
+     {
+       isNaN(calificarH += parseFloat($('#porcentajeCargoHabilidad'+[i]).val()/100) * parseFloat($('#calificacionEvaluacionHabilidad'+[i]).val()/100));        
+     }
+       isNaN(resultadoh = ((calificarH*100)/5)*100);
+    
+       
+    $("#PesoPorcentajeHabilidad").val(resultadoh);
+}
+
+
+function calificacionHabilidadCompetencia()
+{
+    calificacion = 0;
+
+    regs = EntrevistaCompentencia.contador;
+
+    for (var i = 0; i < EntrevistaCompentencia.contador; i++) 
+    {
+        if(typeof $("#valorEntrevistaCompetencia"+i).val() != undefined)
+        {
+            isNaN(calificacion += parseFloat($("#valorEntrevistaCompetencia"+i).val()));
+        }
+    }
+
+    promedio = calificacion/regs;
+
+    $('#PesoPorcentajeResponsabilidad', window.parent.document).val(promedio);
+}
+
+
+
+
 
 function llenarEvaluacionHabilidad(idCargo)
 {

@@ -28,12 +28,14 @@
 //educacion  ademas se adicionan los  onchange del campo nuevo calificacion para que se ejecute al mismo tiempo que cuando se ejecuta la funcion
 //de llenar educacion,formacion, Habilidad
 // Calificar Educacion
-var evaluacioneducacion = ['onchange','calificareducacion(this.id);']
+var evaluacioneducacion = ['onchange','calificareducacion(this.id); calificacionEduacion(this.value);']
+var calificacioneducacion = ['onchange','calificacionEduacion(this.value);']
 // Calificar Formacion
-var evaluacionformacion = ['onchange','calificarformacion(this.id);']
+var evaluacionformacion = ['onchange','calificarformacion(this.id); calificacionFormacion(this.value);']
+var calificacionformacion = ['onchange','calificacionFormacion(this.value);']
 // Calificar Habilidad
-var evaluacionhabilidad = ['onchange','calificarhabilidad(this.id);']
-
+var evaluacionhabilidad = ['onchange','calificarhabilidad(this.id); calificacionHabilidad(this.id);']
+var calificacionhabilidad = ['onchange','calificacionHabilidad(this.id);']
 
 
 // ---------------------------------CONSULTAS PARA EDICION DE MULTIREGISTROS 
@@ -181,7 +183,7 @@ $(document).ready(function()
           EvaluacionEducacion.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           EvaluacionEducacion.opciones = ['','','','','',educacion,habildadPropCargoResultado]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          EvaluacionEducacion.funciones  = ['','','','','',evaluacioneducacion,''];
+          EvaluacionEducacion.funciones  = ['','','','','',evaluacioneducacion,calificacioneducacion];
 
 // ---------------------------------------------------------MultiRegistro 3 opcion acordeon formacion 
           EvaluacionFormacion = new Atributos('EvaluacionFormacion','EvaluacionFormacion_Modulo','EvaluacionFormaciondescripcion_');
@@ -204,7 +206,7 @@ $(document).ready(function()
           EvaluacionFormacion.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           EvaluacionFormacion.opciones = ['','','','','',formacion,habildadPropCargoResultado]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          EvaluacionFormacion.funciones  = ['','','','','',evaluacionformacion,''];
+          EvaluacionFormacion.funciones  = ['','','','','',evaluacionformacion,calificacionformacion];
 
           // ---------------------------------------------------------MultiRegistro 3 opcion acordeon Habilidad 
           EvaluacionHabilidad = new Atributos('EvaluacionHabilidad','EvaluacionHabilidad_Modulo','EvaluacionHabilidaddescripcion_');
@@ -227,7 +229,7 @@ $(document).ready(function()
           EvaluacionHabilidad.completar = ['off','off','off','off','off','off','off']; //autocompleta 
           
           EvaluacionHabilidad.opciones = ['','','','','',habilidad,habildadPropCargoResultado]; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          EvaluacionHabilidad.funciones  = ['','','','','',evaluacionhabilidad,''];
+          EvaluacionHabilidad.funciones  = ['','','','','',evaluacionhabilidad,calificacionhabilidad];
 //------------------------------------- Multiregistro pestaña pan accion
 
           EvaluacionAccion = new Atributos('EvaluacionAccion','EvaluacionplanAccion_Modulo','EvaluacionplanAcciondescripcion');
