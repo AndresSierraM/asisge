@@ -18,6 +18,19 @@
 
 
 <?php 
+
+if(isset($entrevista)) 
+{
+  echo 
+  '
+  <script>
+    $(document).ready(function(){
+      llenarHabilidadesActitudinales($(\'#idEntrevista\').val());
+      $("#Cargo_idCargo").prop("disabled", true).trigger("chosen:updated");
+  });
+  </script>';
+}
+
 // if(isset($encuestae))
 // {
 //   // convertimos la consulta en array por facilidad de manejo
@@ -389,7 +402,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                                     <span class="input-group-addon">
                                                                                       <i class="fa fa-credit-card" style="width: 14px;"></i>
                                                                                     </span>
-                                                                                    {!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:268px;'])!!}
+                                                                                    {!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($entrevista) ? $entrevista->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:268px;'])!!}
                                                                                   </div>
                                                                                 </div>
                                                                               </div>
@@ -1384,10 +1397,10 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
      })
   );
 
-  if($("#Cargo_idCargo").val() > 0) 
-  {
-    llenarEntrevistaCompetencia($("#Cargo_idCargo").val(),''); 
-  }
+  // if($("#Cargo_idCargo").val() > 0) 
+  // {
+  //   llenarEntrevistaCompetencia($("#Cargo_idCargo").val(),''); 
+  // }
  
 </script> 
 

@@ -521,6 +521,11 @@ Route::group(['middleware' => 'auth'], function ()
     include public_path().'/ajax/llenarEvaluacionHabilidad.php';
     });
 
+    Route::post('llenarHabilidadesActitudinales', function()
+    {
+        include public_path().'/ajax/llenarHabilidadesActitudinales.php';
+    });
+
     Route::post('CargarEntrevista', function()
     {
         include public_path().'/ajax/CargarEntrevista.php';

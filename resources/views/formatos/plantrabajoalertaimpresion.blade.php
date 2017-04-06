@@ -672,6 +672,12 @@
         $añoFinal += 1;
     }
 
+    if($mesInicial < 12)
+    {
+        $mesInicial += 12;
+        $añoInicial -= 1;
+    }
+
     $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
     $nombreMesPasado = $meses[$mesInicial];
     $nombreMesFuturo = $meses[$mesFinal];

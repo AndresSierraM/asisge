@@ -78,7 +78,7 @@ class EntrevistaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EntrevistaRequest $request)
+    public function store(Request $request)
     {
          if($request['respuesta'] != 'falso')
          {
@@ -121,6 +121,8 @@ class EntrevistaController extends Controller
             'apellido2AspiranteEntrevista' => $request['apellido2AspiranteEntrevista'],
             'fechaEntrevista' => $request ['fechaEntrevista'],
             'Tercero_idEntrevistador' => $request['Tercero_idEntrevistador'],
+            'Tercero_idAspirante' => ($request['Tercero_idAspirante'] == '' ? NULL : $request['Tercero_idEntrevistador']),
+            'Encuesta_idEncuesta' => ($request['Encuesta_idEncuesta'] == '' ? NULL : $request['Encuesta_idEncuesta']),
             'Cargo_idCargo' => $request['Cargo_idCargo'],
             'experienciaAspiranteEntrevista' => $request['experienciaAspiranteEntrevista'],  
             'experienciaRequeridaEntrevista' => $request['experienciaRequeridaEntrevista'],
@@ -431,12 +433,14 @@ class EntrevistaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EntrevistaRequest $request, $id)
+    public function update(Request $request, $id)
     {
           if($request['respuesta'] != 'falso')
           {
  $entrevista = \App\Entrevista::find($id);
                 $entrevista->fill($request->all());
+                $entrevista->Tercero_idAspirante = ($request['Tercero_idAspirante'] == '' ? NULL : $request['Tercero_idAspirante']);
+                $entrevista->Encuesta_idEncuesta = ($request['Encuesta_idEncuesta'] == '' ? NULL : $request['Encuesta_idEncuesta']);
                 $entrevista->save();
 
 
