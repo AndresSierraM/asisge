@@ -257,7 +257,10 @@ function ejecutarInterface(tipo)
                 if(respuesta[0] == true)
                 {
                     
+                    alert(respuesta[1]);
                     $("#ModalImportacion").modal("hide");
+                    // se agrega un reload para cuando carguen un archivo exitoso se recargue la grid.
+                    location.reload();
                 }
                 else
                 {

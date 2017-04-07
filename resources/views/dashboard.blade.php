@@ -561,7 +561,7 @@
                     //      ->whereIn('Compania_idCompania', [\Session::get('idCompania')]) and whereNull('Compania_idCompania');
                     //     ->get();
 
-                    //Se hace una consulta que va a tener como condicion traer los registros de la compañia en la que esta logueada y el registro de cuadro de mando que no tenga compañia  (NULL (Selccionada "TODAS"))
+                    //Se hace una consulta que va a tener como condicion traer los registros de la compañia en la que esta logueada y el registro de cuadro de mando que no tenga compañia  (NULL (Selccionada "TODAS")  Ya que la formula va hacer para todas las empresas)
                     $cuadroMandoObjeto = Db::Select('
                     SELECT idCuadroMando, indicadorCuadroMando, formulaCuadroMando, visualizacionCuadroMando
                     FROM cuadromando CM
