@@ -136,7 +136,7 @@ for ($i=0; $i < count($firmas); $i++)
 	  actagrupoapoyo.campoEliminacion = 'eliminarActividad';
 
 
-      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsableDetalle', 'Documento_idDocumento',
+      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsableDetalle', 'DocumentoSoporte_idDocumentoSoporte',
                             'fechaPlaneadaActaGrupoApoyoDetalle', 'recursoPlaneadoActaGrupoApoyoDetalle', 
                             'fechaEjecucionGrupoApoyoDetalle','recursoEjecutadoActaGrupoApoyoDetalle', 
                              'observacionGrupoApoyoDetalle'];
