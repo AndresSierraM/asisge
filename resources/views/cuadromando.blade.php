@@ -240,7 +240,7 @@
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
-                          <i class="fa fa-exchange"></i>
+                          <i class="fa fa-exchange" style="width: 14px;"></i>
                         </span>
                 {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciamedicion, (isset($cuadromando) ? $cuadromando->FrecuenciaMedicion_idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
               </div>
