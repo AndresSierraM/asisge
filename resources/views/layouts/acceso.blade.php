@@ -20,7 +20,7 @@
 	</div>
 
 	<div id="footer">
-	    <p>SiSoft - Sistema de Gestion en Salud Ocupacional... Asisge S.A. - Todos los derechos reservados</p>
+	    <p>SiSoft - Sistema de Gestion en Salud Ocupacional... Asisge S.A.S.- Todos los derechos reservados</p>
 	</div>
 </body>
 </html>
