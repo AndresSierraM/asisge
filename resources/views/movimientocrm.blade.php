@@ -183,6 +183,9 @@ $fechahora = Carbon\Carbon::now();
 	var movimientocrmvacante = '<?php echo (isset($movimientocrmcargo) ? json_encode($movimientocrmcargo) : "");?>';
 		movimientocrmvacante = (movimientocrmvacante != '' ? JSON.parse(movimientocrmvacante) : '');
 
+	var movimientoCRMTarea = '<?php echo (isset($movimientoCRMTarea) ? json_encode($movimientoCRMTarea) : "");?>';
+	movimientoCRMTarea = (movimientoCRMTarea != '' ? JSON.parse(movimientoCRMTarea) : '');
+
 	var valorAsistentes = [0,'','','','',''];
 	var valorArchivo = [0,'','',''];
 
@@ -233,13 +236,33 @@ $fechahora = Carbon\Carbon::now();
           documentocrmcargo.opciones = ['','','','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
           documentocrmcargo.funciones  = ['','','','','','']; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
-
-
-				for(var j=0, k = movimientocrmvacante.length; j < k; j++)
+		for(var j=0, k = movimientocrmvacante.length; j < k; j++)
 		{
 			documentocrmcargo.agregarCampos(JSON.stringify(movimientocrmvacante[j]),'L');
 			
 		}
+
+		// ************************
+		// T A R E A S
+		// ************************
+
+		tareas = new Atributos('tareas','contenedor_tareas','tareas_');
+
+	    tareas.altura = '35px';
+	    tareas.campoid = 'idMovimientoCRMTarea';
+	    tareas.campoEliminacion = 'eliminarMovimientoCRMTarea';
+
+	    tareas.campos   = ['Categoria_idCategoria', 'nombreCategoriaAgendaTarea', 'descripcionAgendaTarea', 'ubicacionAgendaTarea', 'fechaInicioAgendaTarea', 'fechaFinAgendaTarea', 'horasAgendaTarea', 'pesoAgendaTarea', 'ejecucuionAgendaTarea', 'estadoAgendaTarea', 'idAgenda'];
+	    tareas.etiqueta = ['input', 'input', 'input'];
+	    tareas.tipo     = ['hidden', 'text', 'hidden'];
+	    tareas.estilo   = ['', 'width: 1200px;height:35px;' ,''];
+	    tareas.clase    = ['','', '', ''];
+	    tareas.sololectura = [true,true,true];
+	    for(var j=0, k = movimientoCRMTarea.length; j < k; j++)
+	    {
+	      tareas.agregarCampos(JSON.stringify(movimientoCRMTarea[j]),'L');
+	      console.log(JSON.stringify(movimientoCRMTarea[j]))
+	    }
 	});
 </script>
 
@@ -649,6 +672,12 @@ $fechahora = Carbon\Carbon::now();
 					  		<li><a data-toggle="tab" href="#vacantes">Vacantes</a></li>
 					  		<?php
 						}
+						if(strpos($camposVista, 'tareasMovimientoCRM') !== false)
+						{
+							?>
+					  		<li><a data-toggle="tab" href="#tareas">Tareas</a></li>
+					  		<?php
+						}
 						?>
 					</ul>
 					</div>
@@ -820,6 +849,117 @@ $fechahora = Carbon\Carbon::now();
 	               		 </div>  
               		 </div>
 
+					<?php
+					}
+					if(strpos($camposVista, 'tareasMovimientoCRM') !== false)
+					{ 
+					?>
+					<div id="tareas" class="tab-pane fade">
+					  	<div class="col-sm-12">
+							<div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <i class="fa fa-pencil-square-o"></i> {!!Form::label('', 'Tareas', array())!!}
+                                </div>
+                                <div class="panel-body">
+									<div class="col-sm-12">
+
+									<div class="col-sm-6">
+										<div class="col-sm-2">
+											{!!Form::label('fechaHoraInicioAgenda', 'Fecha de Inicio', array())!!}
+										</div>
+										<div class="col-sm-4">
+								            <div class="input-group">
+								              	<span class="input-group-addon">
+								                	<i class="fa fa-calendar"></i>
+								              	</span>
+												{!!Form::text('fechaHoraInicioAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
+											</div>
+										</div>
+									</div>
+
+									<div class="col-sm-6">
+										<div class="col-sm-2">
+											{!!Form::label('horasDiaAgenda', 'Horas al día', array())!!}
+										</div>
+										<div class="col-sm-4">
+								            <div class="input-group">
+								              	<span class="input-group-addon">
+								                	<i class="fa fa-clock-o"></i>
+								              	</span>
+												{!!Form::text('horasDiaAgenda',null,['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
+											</div>
+										</div>
+									</div>
+
+									<br><br>
+										
+									<div class="row show-grid">
+			                        <div class="col-md-1" style="width: 42px;height: 42px;" onclick="abrirModalVacante();">
+			                          <span class="glyphicon glyphicon-plus"></span>
+			                        </div>
+			                        <div class="col-md-1" style="width: 200px;">Categoria</div>
+			                        <div class="col-md-1" style="width: 200px;">Descripción</div>
+			                        <div class="col-md-1" style="width: 100px;">Ubicación</div>
+			                        <div class="col-md-1" style="width: 100px;">Inicio</div>
+			                        <div class="col-md-1" style="width: 100px;">Fin</div>
+			                        <div class="col-md-1" style="width: 100px;">Horas</div>
+			                        <div class="col-md-1" style="width: 200px;">Responsable</div>
+			                        <div class="col-md-1" style="width: 100px;">%Peso</div>
+			                        <div class="col-md-1" style="width: 100px;">%Ejecucuin</div>
+			                        <div class="col-md-1" style="width: 100px;">Estado</div>
+
+			                        <!-- este es el div para donde van insertando los registros --> 
+			                        <div id="contenedor_tareas">
+			                        </div>
+			                      </div>
+
+			                      	<div class="col-sm-12">
+										<div class="col-sm-2">
+											{!!Form::label('fechaHoraEstimadaFinAgenda', 'Fecha estimada fin', array())!!}
+										</div>
+										<div class="col-sm-4">
+								            <div class="input-group">
+								              	<span class="input-group-addon">
+								                	<i class="fa fa-calendar"></i>
+								              	</span>
+												{!!Form::text('fechaHoraEstimadaFinAgenda',null,['class'=>'form-control','placeholder'=>'Fecha estimada de fin', 'readonly'])!!}
+											</div>
+										</div>
+									</div>
+
+									<div class="col-sm-12">
+										<div class="col-sm-2">
+											{!!Form::label('tiempoTotalAgendaTarea', 'Tiempo total', array())!!}
+										</div>
+										<div class="col-sm-4">
+								            <div class="input-group">
+								              	<span class="input-group-addon">
+								                	<i class="fa fa-clock-o"></i>
+								              	</span>
+												{!!Form::text('tiempoTotalAgendaTarea',null,['class'=>'form-control','placeholder'=>'Tiempo total', 'readonly'])!!}
+											</div>
+										</div>
+									</div>
+
+									<div class="col-sm-12">
+										<div class="col-sm-2">
+											{!!Form::label('porcentajeCumplimientoAgendaTarea', 'Porcentaje cumplimiento', array())!!}
+										</div>
+										<div class="col-sm-4">
+								            <div class="input-group">
+								              	<span class="input-group-addon">
+								                	<i>%</i>
+								              	</span>
+												{!!Form::text('porcentajeCumplimientoAgendaTarea',null,['class'=>'form-control','placeholder'=>'Porcentade de cumplimiento'])!!}
+											</div>
+										</div>
+									</div>
+ 									
+									</div>
+								</div>
+							</div>
+						</div>
+					  </div>
 					<?php
 						}
 					?>

@@ -156,6 +156,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('eliminarAgenda/delete/{id}', 'AgendaController@destroy');
 
     Route::resource('perfilcliente','PerfilClienteController');
+    Route::resource('agendapermiso','AgendaPermisoController');
 
     
     // *************************************
@@ -722,6 +723,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosPerfilClienteMovimiento', function()
     {
         include public_path().'/ajax/datosPerfilClienteMovimiento.php';
+    });
+
+    Route::get('datosAgendaPermiso', function()
+    {
+        include public_path().'/ajax/datosAgendaPermiso.php';
     });
 
 
