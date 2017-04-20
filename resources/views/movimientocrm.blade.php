@@ -864,7 +864,7 @@ $fechahora = Carbon\Carbon::now();
 									<div class="col-sm-12">
 
 									<div class="col-sm-6">
-										<div class="col-sm-2">
+										<div class="col-sm-12">
 											{!!Form::label('fechaHoraInicioAgenda', 'Fecha de Inicio', array())!!}
 										</div>
 										<div class="col-sm-4">
@@ -878,7 +878,7 @@ $fechahora = Carbon\Carbon::now();
 									</div>
 
 									<div class="col-sm-6">
-										<div class="col-sm-2">
+										<div class="col-sm-12">
 											{!!Form::label('horasDiaAgenda', 'Horas al día', array())!!}
 										</div>
 										<div class="col-sm-4">
@@ -891,21 +891,21 @@ $fechahora = Carbon\Carbon::now();
 										</div>
 									</div>
 
-									<br><br>
+									<br><br><br><br>
 										
 									<div class="row show-grid">
 			                        <div class="col-md-1" style="width: 42px;height: 42px;" onclick="abrirModalVacante();">
 			                          <span class="glyphicon glyphicon-plus"></span>
 			                        </div>
-			                        <div class="col-md-1" style="width: 200px;">Categoria</div>
-			                        <div class="col-md-1" style="width: 200px;">Descripción</div>
+			                        <div class="col-md-1" style="width: 150px;">Categoria</div>
+			                        <div class="col-md-1" style="width: 150px;">Descripción</div>
 			                        <div class="col-md-1" style="width: 100px;">Ubicación</div>
-			                        <div class="col-md-1" style="width: 100px;">Inicio</div>
-			                        <div class="col-md-1" style="width: 100px;">Fin</div>
-			                        <div class="col-md-1" style="width: 100px;">Horas</div>
-			                        <div class="col-md-1" style="width: 200px;">Responsable</div>
-			                        <div class="col-md-1" style="width: 100px;">%Peso</div>
-			                        <div class="col-md-1" style="width: 100px;">%Ejecucuin</div>
+			                        <div class="col-md-1" style="width: 80px;">Inicio</div>
+			                        <div class="col-md-1" style="width: 80px;">Fin</div>
+			                        <div class="col-md-1" style="width: 80px;">Horas</div>
+			                        <div class="col-md-1" style="width: 150px;">Responsable</div>
+			                        <div class="col-md-1" style="width: 80px;">%Peso</div>
+			                        <div class="col-md-1" style="width: 100px;">%Ejecucion</div>
 			                        <div class="col-md-1" style="width: 100px;">Estado</div>
 
 			                        <!-- este es el div para donde van insertando los registros --> 
