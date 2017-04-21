@@ -78,7 +78,13 @@ function validarFormulario(event)
 
                 
 
-                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
+                  var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li><br>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
                 $("#msj-error").fadeIn();
             }
 

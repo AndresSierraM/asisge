@@ -53,4 +53,19 @@ class PlanCapacitacionRequest extends Request
         }
         return $validacion;
     }
+    public function messages()
+    {
+      
+        
+        $validacion = array(    
+        'tipoPlanCapacitacion.required'=> 'Debe Seleccionar el tipo de Plan de Capacitaci&#243;n',
+        'nombrePlanCapacitacion.required'=> 'Debe Asignarle un Nombre a est&#233; Plan de Capacitaci&#243;n.',
+        'Tercero_idResponsable.required' => 'Debe Seleccionar un Responsable.',
+      );
+    
+
+
+        return $validacion;
+        
+    }
 }

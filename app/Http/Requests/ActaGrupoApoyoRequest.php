@@ -30,18 +30,20 @@ class ActaGrupoApoyoRequest extends Request
         //     "horaFinActaGrupoApoyo" => "required"
         // ];
 
-        $participante = count($this->get('Tercero_idParticipante'));
+        $datoParticipante = count($this->get('Tercero_idParticipante'));
         $responsabletema = count($this->get('Tercero_idResponsable'));
+        // Dos variables para Multiregistro Grande
         $responsableactividad = count($this->get('Tercero_idResponsableDetalle'));
-        $documento = count($this->get('Documento_idDocumento'));
+        
 
+   
         $validacion = array( 
             "GrupoApoyo_idGrupoApoyo" => "required|integer",
             "fechaActaGrupoApoyo" => "required|date",
             "horaInicioActaGrupoApoyo" => "required",
             "horaFinActaGrupoApoyo" => "required");
         
-        for($i = 0; $i < $participante; $i++)
+        for($i = 0; $i < $datoParticipante; $i++)
         {
             if(trim($this->get('Tercero_idParticipante')[$i]) == '' or trim($this->get('Tercero_idParticipante')[$i]) == 0)
             {    
@@ -57,21 +59,22 @@ class ActaGrupoApoyoRequest extends Request
             }
         }
 
-        for($i = 0; $i < $responsableactividad; $i++)
+        for($i = 0; $i < $datoParticipante; $i++)
         {
-            if(trim($this->get('Tercero_idResponsableDetalle')[$i]) == '' or trim($this->get('Tercero_idResponsableDetalle')[$i]) == 0)
+            if(trim($this->get('Tercero_idParticipante')[$i]) == '' or trim($this->get('Tercero_idParticipante')[$i]) == 0)
+            {    
+                $validacion['Tercero_idParticipante'.$i] =  'required';
+            }
+        }
+
+           for($i = 0; $i < $responsableactividad; $i++)
+        {
+            if(trim($this->get('Tercero_idResponsableDetalle')[$i]) == '' or trim($this->get('Tercero_idResponsableDetalle')[$i]) == '')
             {    
                 $validacion['Tercero_idResponsableDetalle'.$i] =  'required';
             }
         }
 
-        for($i = 0; $i < $documento; $i++)
-        {
-            if(trim($this->get('Documento_idDocumento')[$i]) == '' or trim($this->get('Documento_idDocumento')[$i]) == 0)
-            {    
-                $validacion['Documento_idDocumento'.$i] =  'required';
-            }
-        }
 
         return $validacion;
     }
