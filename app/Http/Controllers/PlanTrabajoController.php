@@ -79,13 +79,14 @@ class PlanTrabajoController extends Controller
             if($registro["PER"] == 1)
             {
                 $periodicidad = $registro['valorFrecuenciaMedicion'] * ($registro['unidadFrecuenciaMedicion'] == 'Años' ? 12 : 1);
-                $ingreso = (int)date("m",strtotime($registro["fechaIngresoTerceroInformacion"]));
+                $ingreso = (int)date("Y-m-d",strtotime($registro["fechaIngresoTerceroInformacion"]));
 
 
                 for($mes = 1; $mes <= 12; $mes++)
                 {
-                    $ingreso += $periodicidad;
-                    if ($ingreso <= 12) 
+                    $ingreso = strtotime("+ ".$periodicidad." MONTHS", strtotime($ingreso));
+                    //$ingreso += $periodicidad;
+                    if (date("Y", $ingreso) == date("Y")) 
                     {
                         $datos[$pos][str_pad($ingreso, 2, '0', STR_PAD_LEFT)] += 1;    
                     }

@@ -174,6 +174,8 @@ Route::group(['middleware' => 'auth'], function ()
     // *************************************
     Route::resource('lineaproducto','LineaProductoController');
     Route::resource('sublineaproducto','SublineaProductoController');
+    Route::resource('tipocalidad','TipoCalidadController');
+    Route::resource('fichatecnica','FichaTecnicaController');
 
     // *************************************************
     //
@@ -437,7 +439,19 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosSublineaProducto', function()
     {
         include public_path().'/ajax/datosSublineaProducto.php';
-    });    
+    }); 
+    Route::get('datosTipoCalidad', function()
+    {
+        include public_path().'/ajax/datosTipoCalidad.php';
+    }); 
+    Route::get('datosFichaTecnica', function()
+    {
+        include public_path().'/ajax/datosFichaTecnica.php';
+    });
+    Route::get('datosProcesoSelect', function()
+    {
+        include public_path().'/ajax/datosProcesoSelect.php';
+    });
 
 
     Route::post('consultarPermisos', function()
