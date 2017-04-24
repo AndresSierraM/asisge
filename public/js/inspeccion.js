@@ -8,12 +8,12 @@ function habilitarSubmit(event)
 
 function validarformulario()
 {
+
     var resp = true;
     // Validamos los datos de detalle
-    for(actual = 0; actual < document.getElementById('registros').value ; actual++)
+    for(actual = 0; actual < inspeccion.contador ; actual++)
     {
-        if(document.getElementById("Tercero_idResponsable"+(actual)) && 
-           document.getElementById("accionMejoraInspeccionDetalle"+(actual)).value != '' && document.getElementById("Tercero_idResponsable"+(actual)).value == 0)
+        if((document.getElementById("Tercero_idResponsable"+(actual)).value == '' ))
         {
             document.getElementById("Tercero_idResponsable"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:#F5A9A9;";
             resp = false;

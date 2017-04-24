@@ -174,12 +174,12 @@ function habilitarSubmit(event)
 
 function validarformulario()
 {
+
     var resp = true;
     // Validamos los datos de detalle
-    for(actual = 0; actual < document.getElementById('registros').value ; actual++)
+    for(actual = 0; actual < procedimiento.contador ; actual++)
     {
-        if(document.getElementById("actividadProcedimientoDetalle"+(actual)) && 
-                (document.getElementById("actividadProcedimientoDetalle"+(actual)).value == ''))
+        if((document.getElementById("actividadProcedimientoDetalle"+(actual)).value == ''))
         {
             document.getElementById("actividadProcedimientoDetalle"+(actual)).style = "width: 500px; height: 35px; background-color:#F5A9A9;";
             resp = false;
