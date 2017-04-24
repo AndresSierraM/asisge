@@ -5,6 +5,7 @@
 @include('alerts.request')
 
 {!!Html::script('js/agenda.js')!!}
+{!!Html::script('js/movimientocrm.js'); !!}
 
 <script>
 
@@ -380,7 +381,19 @@
         {!!Form::button('Cancelar cita',["class"=>"btn btn-danger","onclick"=>"cancelarCita($('#idAgenda').val())"])!!}
       @endif
   @else
+    @if(isset($_GET['crear']))
+      {!!Form::button('Adicionar',["class"=>"btn btn-primary", 'id'=>'btnAdicionarTareaCRM', 'onclick'=>'agregarRegistroTareaCRM(
+      $(\'#CategoriaAgenda_idCategoriaAgenda\').val(),
+      $(\'#CategoriaAgenda_idCategoriaAgenda option:selected\').text(),
+      $(\'#asuntoAgenda\').text(),
+      $(\'#ubicacionAgenda\').text(),
+      $(\'#fechaHoraInicioAgenda\').text(),
+      $(\'#Tercero_idResponsable\').text(),
+      $(\'#Tercero_idResponsable option:selected\').text(),
+      $(\'#estadoAgenda\').text());'])!!}
+    @else
       {!!Form::submit('Adicionar',["class"=>"btn btn-primary",'onclick'=>'validarFormulario(event);'])!!}
+    @endif    
   @endif
 
   {!! Form::close() !!}

@@ -388,3 +388,9 @@ function mostrarModalInterface()
     $("#ModalImportacion").modal("show");
 }
 
+function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, Tercero_idResponsable, nombreResponsable, estadoAgenda)
+{
+    var valores = new Array(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, '', 0, 0, 0, estadoAgenda, 0,);
+    window.parent.tareas.agregarCampos(valores,'A');  
+    window.parent.$("#modalEvento").modal("hide");
+}
