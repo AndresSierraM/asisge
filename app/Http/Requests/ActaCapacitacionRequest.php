@@ -58,4 +58,18 @@ class ActaCapacitacionRequest extends Request
 
         return $validacion;
     }
+
+    public function messages()
+    {
+      
+        
+        $validacion = array(    
+        'PlanCapacitacion_idPlanCapacitacion.required'=> 'Debe Seleccionar el de Plan de Capacitaci&#243;n'
+      );
+    
+
+
+        return $validacion;
+        
+    }
 }

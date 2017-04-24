@@ -49,4 +49,12 @@ class EntregaElementoProteccionRequest extends Request
 
         return $validacion;
     }
+
+     public function messages()
+            {
+                return[
+                'Tercero_idTercero.required' => 'Debe Seleccionar un Empleado.',
+                'fechaEntregaElementoProteccion.required'=> 'Debe Seleccionar la Fecha de Entrega.',
+                ];
+            }
 }
