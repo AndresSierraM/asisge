@@ -10,21 +10,57 @@ function validarformulario()
 {
 
     var resp = true;
+
+
+        // Se hace un if para validar por medio del ID si el campo esta vacio para que este se pinte de Rojo 
+        // de lo contrario se quedara en blanco y dejara guardar.
+        // SI esta vacio este devolvera el campo de color rojo y detendra el formulario 
+        if((document.getElementById("TipoInspeccion_idTipoInspeccion").value == '' ))
+            {
+                // document.getElementById("TipoInspeccion_idTipoInspeccion").style = "background-color:#F5A9A9;";
+                //se deja en false para que no envie el formulario hasta que elijan una opcion del select
+                resp = false;
+            } 
+            else
+                {
+                      // document.getElementById("TipoInspeccion_idTipoInspeccion").style = "background-color:white;";  
+                      resp = true;
+                } 
+        if((document.getElementById("Tercero_idRealizadaPor").value == '' ))
+            {
+                // document.getElementById("Tercero_idRealizadaPor").style = "background-color:#F5A9A9;";
+                //se deja en false para que no envie el formulario hasta que elijan una opcion del select
+                resp = false;
+            } 
+            else
+                {
+                     resp = true;   
+                } 
+         if((document.getElementById("fechaElaboracionInspeccion").value == '' ))
+            {
+                document.getElementById("fechaElaboracionInspeccion").style = "background-color:#F5A9A9;";
+                resp = false;
+            } 
+            else
+                {
+                     document.getElementById("fechaElaboracionInspeccion").style = "background-color:white;";
+                } 
+
     // Validamos los datos de detalle
     for(actual = 0; actual < inspeccion.contador ; actual++)
     {
-        if((document.getElementById("Tercero_idResponsable"+(actual)).value == '' ))
+        if((document.getElementById("situacionInspeccionDetalle"+(actual)).value == '' ))
         {
-            document.getElementById("Tercero_idResponsable"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:#F5A9A9;";
+            document.getElementById("situacionInspeccionDetalle"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:#F5A9A9;";
             resp = false;
             
         } 
         else
         {
-            document.getElementById("Tercero_idResponsable"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:white;";
+            document.getElementById("situacionInspeccionDetalle"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:white;";
+            
         } 
     }
-
     if(resp === true)
     {
         $("form").submit();
@@ -35,6 +71,8 @@ function validarformulario()
     }
 
     return true;
+
+
 }
 
 function cargarArchivoInspeccion(registro, idInspeccionDetalle)

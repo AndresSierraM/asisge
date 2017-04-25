@@ -65,8 +65,8 @@
 								<td>{{$dato->temporalesMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->totalExpuestosMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->fuenteMatrizRiesgoDetalle}}</td>
-								<td>{{$dato->medioMatrizRiesgoDetalle}}</td>
-								<td>{{$dato->personaMatrizRiesgoDetalle}}</td>
+								<!-- <td>{{$dato->medioMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->personaMatrizRiesgoDetalle}}</td> -->
 								<td>{{($dato->nivelDeficienciaMatrizRiesgoDetalle == 10 ? 'Muy Alto' 
 									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 6 ? 'Alto'
 									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 2 ? 'Medio'
