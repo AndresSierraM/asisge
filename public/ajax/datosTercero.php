@@ -15,9 +15,10 @@
         $visibleE = 'none;';
 
     $tercero = DB::table('tercero')
+            ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idCargo') 
             ->leftJoin('tipoidentificacion', 'TipoIdentificacion_idTipoIdentificacion', '=', 'idTipoIdentificacion')
-            ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero'))
-            ->where('Compania_idCompania','=', \Session::get('idCompania'))
+            ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo'))
+            ->where('tercero.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
     $row = array();
@@ -34,7 +35,8 @@
         $row[$key][] = $value->nombreTipoIdentificacion;
         $row[$key][] = $value->documentoTercero;
         $row[$key][] = $value->nombreCompletoTercero;  
-        $row[$key][] = $value->estadoTercero;    
+        $row[$key][] = $value->estadoTercero;
+        $row[$key][] = $value->nombreCargo;    
     }
 
     $output['aaData'] = $row;
