@@ -116,10 +116,10 @@ class AuthController extends Controller
         $request->session()->put('baseDatosCompania', $compania[0]['baseDatosCompania']);
 
         // consultamos el id de usuario para almacenar tambien el id del tercero asociado
-        // $tercero  = \App\User::where('id','=', \Session::get('idUsuario'))->lists('Tercero_idAsociado');
+         $tercero  = \App\User::where('id','=', \Session::get('idUsuario'))->lists('Tercero_idTercero');
         // print_r($tercero);
         // return;
-        // $request->session()->put('idTercero', $tercero[0]);
+         $request->session()->put('idTercero', $tercero[0]);
 
         if ($throttles) {
             $this->clearLoginAttempts($request);

@@ -126,8 +126,8 @@ class MatrizRiesgoController extends Controller
                 'independientesMatrizRiesgoDetalle' => $request['independientesMatrizRiesgoDetalle'][$i],
                 'totalExpuestosMatrizRiesgoDetalle' => $request['totalExpuestosMatrizRiesgoDetalle'][$i],
                 'fuenteMatrizRiesgoDetalle' => $request['fuenteMatrizRiesgoDetalle'][$i],
-                'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
-                'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
+                // 'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
+                // 'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
                 'nivelDeficienciaMatrizRiesgoDetalle' => $request['nivelDeficienciaMatrizRiesgoDetalle'][$i],
                 'nivelExposicionMatrizRiesgoDetalle' => $request['nivelExposicionMatrizRiesgoDetalle'][$i],
                 'nivelProbabilidadMatrizRiesgoDetalle' => $request['nivelProbabilidadMatrizRiesgoDetalle'][$i],
@@ -224,11 +224,11 @@ class MatrizRiesgoController extends Controller
             ->leftJoin('tiporiesgo as tr', 'mrd.TipoRiesgo_idTipoRiesgo', '=', 'tr.idTipoRiesgo')
             ->leftJoin('tiporiesgodetalle as trd', 'mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle', '=', 'trd.idTipoRiesgoDetalle')
             ->leftJoin('tiporiesgosalud as trs', 'mrd.TipoRiesgoSalud_idTipoRiesgoSalud', '=', 'trs.idTipoRiesgoSalud')
-            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.eliminacionMatrizRiesgoDetalle, mrd.sustitucionMatrizRiesgoDetalle, mrd.controlMatrizRiesgoDetalle, mrd.elementoProteccionMatrizRiesgoDetalle,  mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
+            ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.eliminacionMatrizRiesgoDetalle, mrd.sustitucionMatrizRiesgoDetalle, mrd.controlMatrizRiesgoDetalle, mrd.elementoProteccionMatrizRiesgoDetalle,  mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
             ->orderBy('idMatrizRiesgoDetalle', 'ASC')
             ->where('MatrizRiesgo_idMatrizRiesgo','=',$id)
             ->get();
-
+            // Se quita de la consulta estos dos campos mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle,
             
             return view('formatos.matrizriesgoimpresion',['matrizRiesgo'=>$matrizRiesgo], compact('matrizRiesgoDetalle'));
         }
@@ -361,8 +361,8 @@ class MatrizRiesgoController extends Controller
                 'independientesMatrizRiesgoDetalle' => $request['independientesMatrizRiesgoDetalle'][$i],
                 'totalExpuestosMatrizRiesgoDetalle' => $request['totalExpuestosMatrizRiesgoDetalle'][$i],
                 'fuenteMatrizRiesgoDetalle' => $request['fuenteMatrizRiesgoDetalle'][$i],
-                'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
-                'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
+                // 'medioMatrizRiesgoDetalle' => $request['medioMatrizRiesgoDetalle'][$i],
+                // 'personaMatrizRiesgoDetalle' => $request['personaMatrizRiesgoDetalle'][$i],
                 'nivelDeficienciaMatrizRiesgoDetalle' => $request['nivelDeficienciaMatrizRiesgoDetalle'][$i],
                 'nivelExposicionMatrizRiesgoDetalle' => $request['nivelExposicionMatrizRiesgoDetalle'][$i],
                 'nivelProbabilidadMatrizRiesgoDetalle' => $request['nivelProbabilidadMatrizRiesgoDetalle'][$i],
@@ -877,8 +877,8 @@ class MatrizRiesgoController extends Controller
                         'temporalesMatrizRiesgoDetalle' => $matriz[$reg]['temporalesMatrizRiesgoDetalle'],
                         'totalExpuestosMatrizRiesgoDetalle' => ($matriz[$reg]['vinculadosMatrizRiesgoDetalle'] + $matriz[$reg]['temporalesMatrizRiesgoDetalle']),
                         'fuenteMatrizRiesgoDetalle' => $matriz[$reg]['fuenteMatrizRiesgoDetalle'],
-                        'medioMatrizRiesgoDetalle' => $matriz[$reg]['medioMatrizRiesgoDetalle'],
-                        'personaMatrizRiesgoDetalle' => $matriz[$reg]['personaMatrizRiesgoDetalle'],
+                        // 'medioMatrizRiesgoDetalle' => $matriz[$reg]['medioMatrizRiesgoDetalle'],
+                        // 'personaMatrizRiesgoDetalle' => $matriz[$reg]['personaMatrizRiesgoDetalle'],
                         'nivelDeficienciaMatrizRiesgoDetalle' => $matriz[$reg]['nivelDeficienciaMatrizRiesgoDetalle'],
                         'nivelExposicionMatrizRiesgoDetalle' => $matriz[$reg]['nivelExposicionMatrizRiesgoDetalle'],
                         'nivelProbabilidadMatrizRiesgoDetalle' => $nivelProbabilidad,

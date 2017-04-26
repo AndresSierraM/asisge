@@ -174,12 +174,45 @@ function habilitarSubmit(event)
 
 function validarformulario()
 {
+
     var resp = true;
+
+        // Se hace un if para validar por medio del ID si el campo esta vacio para que este se pinte de Rojo 
+        // de lo contrario se quedara en blanco y dejara guardar.
+        // SI esta vacio este devolvera el campo de color rojo y detendra el formulario 
+        if((document.getElementById("Proceso_idProceso").value == '' ))
+            {
+                // document.getElementById("TipoInspeccion_idTipoInspeccion").style = "background-color:#F5A9A9;";
+                //se deja en false para que no envie el formulario hasta que elijan una opcion del select
+                resp = false;
+            } 
+            else
+                {
+                      // document.getElementById("TipoInspeccion_idTipoInspeccion").style = "background-color:white;";  
+                      resp = true;
+                } 
+         if((document.getElementById("nombreProcedimiento").value == '' ))
+            {
+                document.getElementById("nombreProcedimiento").style = "background-color:#F5A9A9;";
+                resp = false;
+            } 
+            else
+                {
+                     document.getElementById("nombreProcedimiento").style = "background-color:white;";
+                } 
+         if((document.getElementById("fechaElaboracionProcedimiento").value == '' ))
+            {
+                document.getElementById("fechaElaboracionProcedimiento").style = "background-color:#F5A9A9;";
+                resp = false;
+            } 
+            else
+                {
+                     document.getElementById("fechaElaboracionProcedimiento").style = "background-color:white;";
+                } 
     // Validamos los datos de detalle
-    for(actual = 0; actual < document.getElementById('registros').value ; actual++)
+    for(actual = 0; actual < procedimiento.contador ; actual++)
     {
-        if(document.getElementById("actividadProcedimientoDetalle"+(actual)) && 
-                (document.getElementById("actividadProcedimientoDetalle"+(actual)).value == ''))
+        if((document.getElementById("actividadProcedimientoDetalle"+(actual)).value == null))
         {
             document.getElementById("actividadProcedimientoDetalle"+(actual)).style = "width: 500px; height: 35px; background-color:#F5A9A9;";
             resp = false;
