@@ -125,7 +125,7 @@
 												<div style="width: 3080px; height: 300px; display: inline-block; ">
 													<div class="col-md-1" style="width: 250px;height:40px;">&nbsp;</div>
 													<div class="col-md-1" style="width: 440px;height:40px;">Peligro</div>
-													<div class="col-md-1" style="width: 270px;height:40px;">Expuestos</div>
+													<div class="col-md-1" style="width: 270px;height:40px;">Expuestos</div> 
 													<div class="col-md-1" style="width: 330px;height:40px;">M&eacute;todos de control existentes</div>
 													<div class="col-md-1" style="width: 770px;height:40px;">Evaluaci&oacute;n de riesgos</div>
 													<div class="col-md-1" style="width: 210px;height:40px;">Valoraci&oacute;n</div>

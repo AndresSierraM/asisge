@@ -227,7 +227,7 @@ class MatrizRiesgoController extends Controller
             ->select(DB::raw('mrd.idMatrizRiesgoDetalle, mrd.MatrizRiesgo_idMatrizRiesgo, mrd.Proceso_idProceso, p.nombreProceso, mrd.rutinariaMatrizRiesgoDetalle, mrd.ClasificacionRiesgo_idClasificacionRiesgo, cr.nombreClasificacionRiesgo, mrd.TipoRiesgo_idTipoRiesgo, tr.nombreTipoRiesgo, mrd.TipoRiesgoDetalle_idTipoRiesgoDetalle, trd.nombreTipoRiesgoDetalle, mrd.TipoRiesgoSalud_idTipoRiesgoSalud, trs.nombreTipoRiesgoSalud, mrd.vinculadosMatrizRiesgoDetalle, mrd.temporalesMatrizRiesgoDetalle, mrd.independientesMatrizRiesgoDetalle, mrd.totalExpuestosMatrizRiesgoDetalle, mrd.fuenteMatrizRiesgoDetalle, mrd.nivelDeficienciaMatrizRiesgoDetalle, mrd.nivelExposicionMatrizRiesgoDetalle, mrd.nivelProbabilidadMatrizRiesgoDetalle, mrd.nombreProbabilidadMatrizRiesgoDetalle, mrd.nivelConsecuenciaMatrizRiesgoDetalle, mrd.nivelRiesgoMatrizRiesgoDetalle, mrd.nombreRiesgoMatrizRiesgoDetalle, mrd.aceptacionRiesgoMatrizRiesgoDetalle, mrd.eliminacionMatrizRiesgoDetalle, mrd.sustitucionMatrizRiesgoDetalle, mrd.controlMatrizRiesgoDetalle, mrd.elementoProteccionMatrizRiesgoDetalle,  mrd.imagenMatrizRiesgoDetalle, mrd.observacionMatrizRiesgoDetalle'))
             ->orderBy('idMatrizRiesgoDetalle', 'ASC')
             ->where('MatrizRiesgo_idMatrizRiesgo','=',$id)
-            ->get();
+            ->get(); 
             // Se quita de la consulta estos dos campos mrd.medioMatrizRiesgoDetalle, mrd.personaMatrizRiesgoDetalle,
             
             return view('formatos.matrizriesgoimpresion',['matrizRiesgo'=>$matrizRiesgo], compact('matrizRiesgoDetalle'));
