@@ -145,7 +145,7 @@ else
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
-    where idTercero = '.\Session::get('idTercero'));
+    where idTercero = 2493');
 $tercero = get_object_vars($tercero[0]); 
 
 
@@ -896,6 +896,11 @@ $fechahora = Carbon\Carbon::now();
 									<br><br><br><br>
 										
 									<div class="row show-grid">
+									  <div style="width: 1052px; display: inline-block; ">
+						              <div class="col-md-1" style="width: 542px;">&nbsp;</div>
+						              <div class="col-md-1" onclick="calcularHoras()" style="width: 80px; height: 42px; cursor:pointer;">
+						              <center><span class="glyphicon glyphicon-refresh"></span></center></div>
+						              <div class="col-md-1" style="width: 430px;">&nbsp;</div>
 			                        <div class="col-md-1" style="width: 42px;height: 42px; cursor:pointer;" onclick="tareas.agregarCampos(valorTarea,'A')">
 			                          <span class="glyphicon glyphicon-plus"></span>
 			                        </div>
@@ -912,6 +917,7 @@ $fechahora = Carbon\Carbon::now();
 
 			                        <!-- este es el div para donde van insertando los registros --> 
 			                        <div id="contenedor_tareas">
+			                        </div>
 			                        </div>
 			                      </div>
 

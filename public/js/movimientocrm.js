@@ -394,3 +394,15 @@ function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubi
     window.parent.tareas.agregarCampos(valores,'A');  
     window.parent.$("#modalEvento").modal("hide");
 }
+
+function calcularHoras()
+{
+    if ($("#fechaHoraInicioAgenda").val() == '' || $("#horasDiaAgenda").val() == '')
+    {
+        alert('Vetifique que los campos fecha de inicio horas a trabajar al día estén llenos.')
+    }
+    else
+    {
+        
+    }
+}
