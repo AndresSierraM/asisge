@@ -35,7 +35,9 @@
 								<th>Planta</th>
 								<th>Temporal</th>
 								<th>Total</th>
-								<th>M&#233;todos de Control Existentes</th>
+								<th>Fuente</th>
+								<th>Medio</th>
+								<th>Persona</th>
 								<th>Nivel deficiencia</th>
 								<th>Nivel exposici&oacute;n</th>
 								<th>Inter. probabilidad</th>
@@ -63,6 +65,8 @@
 								<td>{{$dato->temporalesMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->totalExpuestosMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->fuenteMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->medioMatrizRiesgoDetalle}}</td>
+								<td>{{$dato->personaMatrizRiesgoDetalle}}</td>
 								<td>{{($dato->nivelDeficienciaMatrizRiesgoDetalle == 10 ? 'Muy Alto' 
 									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 6 ? 'Alto'
 									  	: ($dato->nivelDeficienciaMatrizRiesgoDetalle == 2 ? 'Medio'
