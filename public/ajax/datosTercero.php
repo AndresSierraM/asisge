@@ -16,8 +16,9 @@
 
     $tercero = DB::table('tercero')
             ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idCargo') 
+            ->leftJoin('terceroinformacion','Tercero_idTercero','=','idTercero')
             ->leftJoin('tipoidentificacion', 'TipoIdentificacion_idTipoIdentificacion', '=', 'idTipoIdentificacion')
-            ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo'))
+            ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo,fechaIngresoTerceroInformacion'))
             ->where('tercero.Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
@@ -36,7 +37,15 @@
         $row[$key][] = $value->documentoTercero;
         $row[$key][] = $value->nombreCompletoTercero;  
         $row[$key][] = $value->estadoTercero;
-        $row[$key][] = $value->nombreCargo;    
+        $row[$key][] = $value->nombreCargo;
+        // En la salida de la informacion se hace una condicion de que si tiene en 000-000  o no esta diligenciado el campo ,la fecha de ingreso mostrara en la grid el campo vacio.
+        $row[$key][] = ($value->fechaIngresoTerceroInformacion == "0000-00-00" ? "" : $value->fechaIngresoTerceroInformacion);
+
+        
+
+        
+
+        
     }
 
     $output['aaData'] = $row;

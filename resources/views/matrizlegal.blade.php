@@ -14,7 +14,7 @@
 		var matrizLegalDetalle = '<?php echo (isset($matrizLegal) ? json_encode($matrizLegal->matrizLegalDetalles) : "");?>';
 		matrizLegalDetalle = (matrizLegalDetalle != '' ? JSON.parse(matrizLegalDetalle) : '');
 
-		var valor = [0,'','','','','','','','','','0000-00-00','',''];
+		var valor = [0,'','','','','','','','0000-00-00','',''];
 
 		var idTipoNormaLegal = '<?php echo isset($idTipoNormaLegal) ? $idTipoNormaLegal : "";?>';
     	var nombreTipoNormaLegal = '<?php echo isset($nombreTipoNormaLegal) ? $nombreTipoNormaLegal : "";?>';

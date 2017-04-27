@@ -66,6 +66,7 @@
                             <li><a class="toggle-vis" data-column="4"><label> Nombre</label></a></li>
                             <li><a class="toggle-vis" data-column="5"><label> Estado</label></a></li>
                             <li><a class="toggle-vis" data-column="6"><label> Cargo</label></a></li>
+                            <li><a class="toggle-vis" data-column="7"><label> Fecha Ingreso</label></a></li>
                         </ul>
                     </div>
                     <table id="ttercero" name="ttercero" class="display table-bordered" width="100%">
@@ -82,6 +83,7 @@
                                 <th><b>Nombre</b></th>
                                 <th><b>Estado</b></th>
                                 <th><b>Cargo</b></th>
+                                <th><b>Fecha Ingreso</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -95,6 +97,8 @@
                                 <th>Nombre</th>
                                 <th>Estado</th>
                                 <th>Cargo</th>
+                                <th>Fecha Ingreso</th>
+
                             </tr>
                         </tfoot>        
                     </table>
