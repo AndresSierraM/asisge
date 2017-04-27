@@ -124,7 +124,7 @@
 						                <div style="overflow: auto; width: 100%;">
 						                  <div style="width: 2360px; height: 300px; display: inline-block; ">
 						                    <div class="col-md-1" style="width: 1010px;">&nbsp;</div>
-						                    <div class="col-md-1" style="width: 330px; text-align:center;">Controles Existentes</div>
+						                    <div class="col-md-1" style="width: 330px; text-align:center;">&nbsp;</div>
 						                    <div class="col-md-1" style="width: 1000px;">&nbsp;</div>
 						                    
 						                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
@@ -134,7 +134,7 @@
 											<div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Art&iacute;culos Aplicables</div>
 											<div class="col-md-1" style="width: 160px;display:inline-block;height:60px;">Expedida por</div>
 											<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Exigencia</div>
-											<div class="col-md-1" style="width: 330px;display:inline-block;height:60px;"></div>
+											<div class="col-md-1" style="width: 330px;display:inline-block;height:60px;">Controles Existentes</div>
 											<!-- <div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>
 											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medio</div>
 											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div> -->
