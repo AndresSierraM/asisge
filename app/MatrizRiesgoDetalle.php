@@ -9,9 +9,7 @@ class MatrizRiesgoDetalle extends Model
     protected $table = 'matrizriesgodetalle';
     protected $primaryKey = 'idMatrizRiesgoDetalle';
 
-    protected $fillable = ['MatrizRiesgo_idMatrizRiesgo', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'eliminacionMatrizRiesgoDetalle', 'sustitucionMatrizRiesgoDetalle', 'controlMatrizRiesgoDetalle', 'elementoProteccionMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
-
-    // Se quitaron estos dos campos para unificarlos.  medioMatrizRiesgoDetalle,personaMatrizRiesgoDetalle
+    protected $fillable = ['MatrizRiesgo_idMatrizRiesgo', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'eliminacionMatrizRiesgoDetalle', 'sustitucionMatrizRiesgoDetalle', 'controlMatrizRiesgoDetalle', 'elementoProteccionMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
 
     public $timestamps = false;
 

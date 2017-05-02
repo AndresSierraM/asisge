@@ -14,7 +14,7 @@
 		var matrizLegalDetalle = '<?php echo (isset($matrizLegal) ? json_encode($matrizLegal->matrizLegalDetalles) : "");?>';
 		matrizLegalDetalle = (matrizLegalDetalle != '' ? JSON.parse(matrizLegalDetalle) : '');
 
-		var valor = [0,'','','','','','','','','','0000-00-00','',''];
+		var valor = [0,'','','','','','','','0000-00-00','',''];
 
 		var idTipoNormaLegal = '<?php echo isset($idTipoNormaLegal) ? $idTipoNormaLegal : "";?>';
     	var nombreTipoNormaLegal = '<?php echo isset($nombreTipoNormaLegal) ? $nombreTipoNormaLegal : "";?>';
@@ -29,16 +29,16 @@
 			detalle = new Atributos('detalle','contenedor_detalle','detalle_');
 
 			detalle.altura = '36px;';
-			detalle.campos = ['idMatrizLegalDetalle', 'TipoNormaLegal_idTipoNormaLegal', 'articuloAplicableMatrizLegalDetalle', 'ExpideNormaLegal_idExpideNormaLegal', 'exigenciaMatrizLegalDetalle', 'fuenteMatrizLegalDetalle', 'medioMatrizLegalDetalle', 'personaMatrizLegalDetalle', 'herramientaSeguimientoMatrizLegalDetalle', 'cumpleMatrizLegalDetalle', 'fechaVerificacionMatrizLegalDetalle', 'accionEvidenciaMatrizLegalDetalle', 'controlAImplementarMatrizLegalDetalle'];
-			detalle.etiqueta = ['input','select','input','select','input','input','input','input','input','checkbox','input','input','input'];
-			detalle.tipo = ['hidden','','text','','text','text','text','text','text','checkbox','date','text','text'];
-			detalle.estilo = ['','width: 160px;height:35px;','width: 250px;height:35px;','width: 160px;height:35px;','width: 400px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 300px;height:35px;','width: 80px;height:30px;display:inline-block;','width: 150px;height:35px;','width: 120px;height:35px;','width: 350px;height:35px;'];
-			detalle.clase = ['','','','','','','','','','','','','',''];
-			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false];
-			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off'];
-			detalle.opciones = ['',tipoNormaLegal,'',expideNormaLegal,'','','','','','','','',''];
+			detalle.campos = ['idMatrizLegalDetalle', 'TipoNormaLegal_idTipoNormaLegal', 'articuloAplicableMatrizLegalDetalle', 'ExpideNormaLegal_idExpideNormaLegal', 'exigenciaMatrizLegalDetalle', 'fuenteMatrizLegalDetalle', 'herramientaSeguimientoMatrizLegalDetalle', 'cumpleMatrizLegalDetalle', 'fechaVerificacionMatrizLegalDetalle', 'accionEvidenciaMatrizLegalDetalle', 'controlAImplementarMatrizLegalDetalle'];
+			detalle.etiqueta = ['input','select','input','select','input','input','input','checkbox','input','input','input'];
+			detalle.tipo = ['hidden','','text','','text','text','text','checkbox','date','text','text'];
+			detalle.estilo = ['','width: 160px;height:35px;','width: 250px;height:35px;','width: 160px;height:35px;','width: 400px;height:35px;','width: 330px;height:35px;','width: 300px;height:35px;','width: 80px;height:30px;display:inline-block;','width: 150px;height:35px;','width: 120px;height:35px;','width: 350px;height:35px;'];
+			detalle.clase = ['','','','','','','','','','','',''];
+			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false];
+			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off'];
+			detalle.opciones = ['',tipoNormaLegal,'',expideNormaLegal,'','','','','','',''];
 			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
-			detalle.funciones  = ['','',quitacarac,'',quitacarac,quitacarac,quitacarac,quitacarac,quitacarac,'','',quitacarac,quitacarac];
+			detalle.funciones  = ['','',quitacarac,'',quitacarac,quitacarac,quitacarac,'','',quitacarac,quitacarac];
 			for(var j=0, k = matrizLegalDetalle.length; j < k; j++)
 			{
 				detalle.agregarCampos(JSON.stringify(matrizLegalDetalle[j]),'L');
@@ -124,7 +124,7 @@
 						                <div style="overflow: auto; width: 100%;">
 						                  <div style="width: 2360px; height: 300px; display: inline-block; ">
 						                    <div class="col-md-1" style="width: 1010px;">&nbsp;</div>
-						                    <div class="col-md-1" style="width: 330px; text-align:center;">Controles Existentes</div>
+						                    <div class="col-md-1" style="width: 330px; text-align:center;">&nbsp;</div>
 						                    <div class="col-md-1" style="width: 1000px;">&nbsp;</div>
 						                    
 						                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
@@ -134,9 +134,10 @@
 											<div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Art&iacute;culos Aplicables</div>
 											<div class="col-md-1" style="width: 160px;display:inline-block;height:60px;">Expedida por</div>
 											<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Exigencia</div>
-											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>
+											<div class="col-md-1" style="width: 330px;display:inline-block;height:60px;">Controles Existentes</div>
+											<!-- <div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>
 											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medio</div>
-											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
+											<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div> -->
 											<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Herramienta de seguimiento</div>
 											<div class="col-md-1" style="width: 80px;display:inline-block;height:60px;">Se cumple</div>
 											<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha verificaci&oacute;n</div>
