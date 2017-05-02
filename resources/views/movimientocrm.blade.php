@@ -164,7 +164,7 @@ $fechahora = Carbon\Carbon::now();
 @include('alerts.request')
 
 {!!Html::script('js/movimientocrm.js'); !!}
-{!!Html::script('js/agenda.js'); !!}
+
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
@@ -188,11 +188,21 @@ $fechahora = Carbon\Carbon::now();
 
 	var valorAsistentes = [0,'','','','',''];
 	var valorArchivo = [0,'','',''];
+
+	valorEstado =  Array("En proceso", "Finalizado");
+    nombreEstado =  Array("En proceso", "Finalizado");
+
+    var estadoAgendaCRM = [valorEstado,nombreEstado];
+
 	var valorTarea = [0,'','',''];
 
 
 
 	$(document).ready(function(){
+
+							$('#fechaHoraInicioAgenda').datetimepicker(({
+    							format:'YYYY-MM-DD HH:mm:ss'
+							}));
 
 		asistentes = new Atributos('asistentes','contenedor_asistentes','asistentes_');
 		asistentes.campos = ['idMovimientoCRMAsistente','nombreMovimientoCRMAsistente','cargoMovimientoCRMAsistente','telefonoMovimientoCRMAsistente','correoElectronicoMovimientoCRMAsistente'];
@@ -253,12 +263,69 @@ $fechahora = Carbon\Carbon::now();
 	    tareas.campoid = 'idMovimientoCRMTarea';
 	    tareas.campoEliminacion = 'eliminarMovimientoCRMTarea';
 
-	    tareas.campos   = ['Categoria_idCategoria', 'nombreCategoriaAgendaTarea', 'asuntoAgendaTarea', 'ubicacionAgendaTarea', 'fechaInicioAgendaTarea', 'fechaFinAgendaTarea', 'horasAgendaTarea', 'Tercero_idResponsable', 'nombreResponsableAgenda', 'pesoAgendaTarea', 'ejecuionAgendaTarea', 'estadoAgendaTarea', 'idAgenda'];
-	    tareas.etiqueta = ['input', 'input', 'input', 'input', 'input', 'input', 'input', 'input', 'input', 'input', 'input', 'select', 'input'];
-	    tareas.tipo     = ['hidden', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'hidden', 'text', 'text', 'text', '', 'hidden'];
-	    tareas.estilo   = ['', 'width: 120px;height:35px;', 'width: 120px;height:35px;', 'width: 100px;height:35px;', 'width: 80px;height:35px;', 'width: 80px;height:35px;', 'width: 80px;height:35px;', '', 'width: 150px;height:35px;', 'width: 80px;height:35px;', 'width: 100px;height:35px;', 'width: 100px;height:35px;', ''];
+	    tareas.campos   = [
+	    'Categoria_idCategoria', 
+	    'nombreCategoriaAgendaTarea', 
+	    'asuntoAgendaTarea', 
+	    'ubicacionAgendaTarea', 
+	    'fechaInicioAgendaTarea', 
+	    'fechaFinAgendaTarea', 
+	    'horasAgendaTarea', 
+	    'Tercero_idResponsable', 
+	    'nombreResponsableAgenda', 
+	    'pesoAgendaTarea', 
+	    'ejecuionAgendaTarea', 
+	    'estadoAgendaTarea', 
+	    'idAgenda'];
+
+	    tareas.etiqueta = [
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input'];
+
+	    tareas.tipo     = [
+	    'hidden', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'hidden', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'hidden'];
+
+	    tareas.estilo   = [
+	    '', 
+	    'width: 120px;height:35px;', 
+	    'width: 120px;height:35px;', 
+	    'width: 100px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    '', 
+	    'width: 150px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    'width: 100px;height:35px;', 
+	    'width: 100px;height:35px;', 
+	    ''];
+
 	    tareas.clase    = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
-	    tareas.sololectura = [true, true, true, true, true, true, false, true, true, true, false, false, true];
+	    tareas.sololectura = [true, true, true, true, true, true, false, true, true, false, false, false, true];
+	    tareas.opciones ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
 	    for(var j=0, k = movimientoCRMTarea.length; j < k; j++)
 	    {
@@ -1069,21 +1136,3 @@ $fechahora = Carbon\Carbon::now();
   </div>
 </div>
 
-<!-- Grid modal para agregar eventos de agenda -->
-<div id="modalEvento" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:70%;">
-
-    <!-- Modal content-->
-    <div style="" class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Crear un nuevo evento</h4>
-      </div>
-      <div class="modal-body">
-      <?php 
-        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?crear=crm"></iframe>'
-      ?>
-      </div>
-    </div>
-  </div>
-</div>

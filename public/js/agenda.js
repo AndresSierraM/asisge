@@ -1,6 +1,13 @@
 $(document).ready(function(){
 
 //creamos la fecha actual
+
+    if ($('#CategoriaAgenda_idCategoriaAgenda').val() > 0) 
+    {
+        consultarCamposAgenda($('#CategoriaAgenda_idCategoriaAgenda').val());
+    }
+        
+
         var date = new Date();
         var yyyy = date.getFullYear().toString();
         var mm = (date.getMonth()+1).toString().length == 1 ? "0"+(date.getMonth()+1).toString() : (date.getMonth()+1).toString();

@@ -119,6 +119,9 @@ class MovimientoCRMController extends Controller
             ) temp");
 
         $numero = get_object_vars($numero[0])["nuevo"];
+
+        $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
+
         \App\MovimientoCRM::create([
             'numeroMovimientoCRM' => $numero,
             'asuntoMovimientoCRM' => $request['asuntoMovimientoCRM'],
@@ -137,7 +140,7 @@ class MovimientoCRMController extends Controller
             'DocumentoCRM_idDocumentoCRM' => ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null),
             'LineaNegocio_idLineaNegocio' => ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null),
             'OrigenCRM_idOrigenCRM' => ($request['OrigenCRM_idOrigenCRM'] != '' ? $request['OrigenCRM_idOrigenCRM'] : null),
-            'EstadoCRM_idEstadoCRM' => ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null),
+            'EstadoCRM_idEstadoCRM' => $estado,
             'AcuerdoServicio_idAcuerdoServicio' => ($request['AcuerdoServicio_idAcuerdoServicio'] != '' ? $request['AcuerdoServicio_idAcuerdoServicio'] : null),
             'detallesMovimientoCRM' => $request['detallesMovimientoCRM'],
             'solucionMovimientoCRM' => $request['solucionMovimientoCRM'],
@@ -381,6 +384,8 @@ class MovimientoCRMController extends Controller
     public function update(MovimientoCRMRequest $request, $id)
     {
 
+        $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
+
         $movimientocrm = \App\MovimientoCRM::find($id);
         $movimientocrm->fill($request->all());
         $movimientocrm->Tercero_idSolicitante = ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null);
@@ -390,7 +395,7 @@ class MovimientoCRMController extends Controller
         $movimientocrm->DocumentoCRM_idDocumentoCRM = ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null);
         $movimientocrm->LineaNegocio_idLineaNegocio = ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null);
         $movimientocrm->OrigenCRM_idOrigenCRM = ($request['OrigenCRM_idOrigenCRM'] != '' ? $request['OrigenCRM_idOrigenCRM'] : null);
-        $movimientocrm->EstadoCRM_idEstadoCRM = ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null);
+        $movimientocrm->EstadoCRM_idEstadoCRM = $estado;
         $movimientocrm->AcuerdoServicio_idAcuerdoServicio = ($request['AcuerdoServicio_idAcuerdoServicio'] != '' ? $request['AcuerdoServicio_idAcuerdoServicio'] : null);
 
         $movimientocrm->save();
