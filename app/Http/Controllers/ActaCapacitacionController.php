@@ -33,6 +33,38 @@ class ActaCapacitacionController extends Controller
      *
      * @return Response
      */
+
+
+    // Esta funcion es para que cuando suba el archvio vaya al repositorio/temporal y guarde una copia mientras le dan guardar al registro 
+    //Funcion para subir archivos con dropzone
+    public function uploadFiles(Request $request) 
+    {
+ 
+        $input = Input::all();
+ 
+        $rules = array(
+        );
+ 
+        $validation = Validator::make($input, $rules);
+ 
+        if ($validation->fails()) {
+            return Response::make($validation->errors->first(), 400);
+        }
+        
+        $destinationPath = public_path() . '/imagenes/repositorio/temporal'; //Guardo en la carpeta  temporal
+
+        $extension = Input::file('file')->getClientOriginalExtension(); 
+        $fileName = Input::file('file')->getClientOriginalName(); // nombre de archivo
+        $upload_success = Input::file('file')->move($destinationPath, $fileName);
+ 
+        if ($upload_success) {
+            return Response::json('success', 200);
+        } 
+        else {
+            return Response::json('error', 400);
+        }
+    }
+
     public function create()
     {
 
@@ -69,6 +101,39 @@ class ActaCapacitacionController extends Controller
 
             $actaCapacitacion = \App\ActaCapacitacion::All()->last();
             
+           
+
+            // Guardado del dropzone
+                $arrayImage = $request['archivoActaCapacitacionArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/actacapacitacion/'.$arrayImage[$i];
+                        $ruta = '/actacapacitacion/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ActaCapacitacionArchivo::create([
+                        'ActaCapacitacion_idActaCapacitacion' => $actaCapacitacion->idActaCapacitacion,
+                        'rutaActaCapacitacionArchivo' => $ruta
+                       ]);
+                    }
+
+                }
+
+
             //---------------------------------
             // guardamos las tablas de detalle
             //---------------------------------
@@ -186,6 +251,50 @@ class ActaCapacitacionController extends Controller
 
             $actaCapacitacion->save();
 
+            //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
+            if ($request['archivoActaCapacitacionArray'] != '') 
+            {
+                $arrayImage = $request['archivoActaCapacitacionArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/actacapacitacion/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/actacapacitacion/'.$arrayImage[$i];
+
+                            DB::table('actacapacitacionarchivo')->insert(['idActaCapacitacionArchivo' => '0', 'ActaCapacitacion_idActaCapacitacion' =>$id,'rutaActaCapacitacionArchivo' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+
+            // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarArchivo'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ActaCapacitacionArchivo::whereIn('idActaCapacitacionArchivo',$idsEliminar)->delete();
+            }
+
+            // 
+
             \App\ActaCapacitacionAsistente::where('ActaCapacitacion_idActaCapacitacion',$id)->delete();
 
             //---------------------------------
@@ -211,6 +320,9 @@ class ActaCapacitacionController extends Controller
 
     protected function grabarDetalle($id, $request)
     {
+
+
+
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
         $idsEliminar = explode(',', $request['eliminarAsistente']);

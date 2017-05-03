@@ -1,3 +1,14 @@
+// Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
+
 function consultarPlanCapacitacion(tipo)
 {
     if(document.getElementById('PlanCapacitacion_idPlanCapacitacion').value == '')
