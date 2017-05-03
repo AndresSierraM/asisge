@@ -387,7 +387,7 @@ for ($i=0; $i < count($firmas); $i++)
 					                                <div class="panel-body">
 														<div class="col-sm-12">
 															<div id="upload" class="col-md-12">
-															    <div class="dropzone dropzone-previews" id="dropzonemovimientoCRMArchivo">
+															    <div class="dropzone dropzone-previews" id="dropzoneActaCapacitacionArchivo">
 															    </div>  
 															</div>	
 					 									
@@ -492,7 +492,7 @@ for ($i=0; $i < count($firmas); $i++)
 	var baseUrl = "{{ url("/") }}";
     var token = "{{ Session::getToken() }}";
     Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("div#dropzonemovimientoCRMArchivo", {
+    var myDropzone = new Dropzone("div#dropzoneActaCapacitacionArchivo", {
         url: baseUrl + "/dropzone/uploadFiles",
         params: {
             _token: token
