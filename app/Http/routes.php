@@ -152,6 +152,9 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('categoriaagenda','CategoriaAgendaController');
     Route::resource('agenda','AgendaController');
     Route::resource('agendagrid','AgendaController@indexGrid');
+    Route::get('agendagantt', function () {
+        return view('agendagantt');
+    });
 
     Route::get('eventoagenda','AgendaController@indexAgendaEvento');
     Route::get('getAll','AgendaController@getAll');
