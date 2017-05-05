@@ -382,15 +382,16 @@
       @endif
   @else
     @if(isset($_GET['crear']))
-      {!!Form::button('Adicionar',["class"=>"btn btn-primary", 'id'=>'btnAdicionarTareaCRM', 'onclick'=>'agregarRegistroTareaCRM(
+      {!!Form::button('Agregar',["class"=>"btn btn-primary", 'id'=>'btnAdicionarTareaCRM', 'onclick'=>'agregarRegistroTareaCRM(
       $(\'#CategoriaAgenda_idCategoriaAgenda\').val(),
       $(\'#CategoriaAgenda_idCategoriaAgenda option:selected\').text(),
-      $(\'#asuntoAgenda\').text(),
-      $(\'#ubicacionAgenda\').text(),
-      $(\'#fechaHoraInicioAgenda\').text(),
-      $(\'#Tercero_idResponsable\').text(),
+      $(\'#asuntoAgenda\').val(),
+      $(\'#ubicacionAgenda\').val(),
+      $(\'#fechaHoraInicioAgenda\').val(),
+      $(\'#fechaHoraFinAgenda\').val(),
+      $(\'#Tercero_idResponsable\').val(),
       $(\'#Tercero_idResponsable option:selected\').text(),
-      $(\'#estadoAgenda\').text());'])!!}
+      $(\'#estadoAgenda\').val());'])!!}
     @else
       {!!Form::submit('Adicionar',["class"=>"btn btn-primary",'onclick'=>'validarFormulario(event);'])!!}
     @endif    

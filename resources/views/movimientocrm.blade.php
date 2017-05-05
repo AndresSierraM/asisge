@@ -164,6 +164,7 @@ $fechahora = Carbon\Carbon::now();
 @include('alerts.request')
 
 {!!Html::script('js/movimientocrm.js'); !!}
+{!!Html::script('js/agenda.js'); !!}
 
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
@@ -193,10 +194,6 @@ $fechahora = Carbon\Carbon::now();
     nombreEstado =  Array("En proceso", "Finalizado");
 
     var estadoAgendaCRM = [valorEstado,nombreEstado];
-
-	var valorTarea = [0,'','',''];
-
-
 
 	$(document).ready(function(){
 
@@ -264,7 +261,7 @@ $fechahora = Carbon\Carbon::now();
 	    tareas.campoEliminacion = 'eliminarMovimientoCRMTarea';
 
 	    tareas.campos   = [
-	    'Categoria_idCategoria', 
+	    'CategoriaAgenda_idCategoriaAgenda', 
 	    'nombreCategoriaAgendaTarea', 
 	    'asuntoAgendaTarea', 
 	    'ubicacionAgendaTarea', 
@@ -324,7 +321,7 @@ $fechahora = Carbon\Carbon::now();
 	    ''];
 
 	    tareas.clase    = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
-	    tareas.sololectura = [true, true, true, true, true, true, false, true, true, false, false, false, true];
+	    tareas.sololectura = [true, true, true, true, false, false, false, true, true, false, false, false, true];
 	    tareas.opciones ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
 	    for(var j=0, k = movimientoCRMTarea.length; j < k; j++)
@@ -968,7 +965,7 @@ $fechahora = Carbon\Carbon::now();
 						              <div class="col-md-1" onclick="calcularHoras()" style="width: 80px; height: 42px; cursor:pointer;">
 						              <center><span class="glyphicon glyphicon-refresh"></span></center></div>
 						              <div class="col-md-1" style="width: 430px;">&nbsp;</div>
-			                        <div class="col-md-1" style="width: 42px;height: 42px; cursor:pointer;" onclick="tareas.agregarCampos(valorTarea,'A')">
+			                        <div class="col-md-1" style="width: 42px;height: 42px; cursor:pointer;" onclick="abrirModalEvento()">
 			                          <span class="glyphicon glyphicon-plus"></span>
 			                        </div>
 			                        <div class="col-md-1" style="width: 120px;">Categoria</div>
@@ -1136,3 +1133,20 @@ $fechahora = Carbon\Carbon::now();
   </div>
 </div>
 
+<div id="modalEvento" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Crear un nuevo evento</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="eventos" name="eventos" src="http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?crear=crear"></iframe>'
+      ?>
+      </div>
+    </div>
+  </div>
+</div>

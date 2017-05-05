@@ -366,12 +366,35 @@ class MovimientoCRMController extends Controller
             on MC.Cargo_idCargo = C.idCargo
             WHERE idMovimientoCRM = '.$id);
 
+        $movimientoCRMTarea = DB::Select('
+                SELECT 
+                    CategoriaAgenda_idCategoriaAgenda,
+                    nombreCategoriaAgenda as nombreCategoriaAgendaTarea,
+                    asuntoAgenda as asuntoAgendaTarea,
+                    ubicacionAgenda as ubicacionAgendaTarea,
+                    fechaHoraInicioAgenda as fechaInicioAgendaTarea,
+                    fechaHoraFinAgenda as fechaFinAgendaTarea,
+                    horasAgenda as horasAgendaTarea,
+                    Tercero_idResponsable,
+                    nombreCompletoTercero as nombreResponsableAgenda,
+                    pesoAgenda as pesoAgendaTarea,
+                    porcentajeEjecucionAgenda as ejecuionAgendaTarea,
+                    estadoAgenda as estadoAgendaTarea
+                    idAgenda
+                FROM agenda a
+                    LEFT JOIN 
+                categoriaagenda ca ON a.CategoriaAgenda_idCategoriaAgenda = ca.idCategoriaAgenda
+                    LEFT JOIN 
+                tercero t ON a.Tercero_idResponsable = t.idTercero
+                WHERE MovimientoCRM_idMovimientoCRM = '.$id.' 
+                    AND a.Compania_idCompania = '.\Session::get('idCompania'));  
+
 
         // print_r($movimientocrmcargo);
 
 
 
-        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo'),['movimientocrm'=>$movimientocrm]);
+        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -565,44 +588,56 @@ class MovimientoCRMController extends Controller
         // A  G  E  N  D  A
         // ************************
         
-        // for ($i=0; $i < count($request['CategoriaAgenda_idCategoriaAgenda']); $i++) 
-        // { 
-        //     $indice = array(
-        //         'idAgenda' => $request['idAgenda'][$i]);
+        $destinatarioAgenda = '';
 
-        //     $data = array(
-        //     'Categoria_idCategoria' => $request['Categoria_idCategoria'][$i],
-        //     'asuntoAgenda' => $request['asuntoAgendaTarea'][$i],
-        //     'fechaHoraInicioAgenda' => $request['fechaInicioAgendaTarea'][$i],
-        //     'fechaHoraFinAgenda' => $request['fechaFinAgendaTarea'][$i],
-        //     'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
-        //     'MovimientoCRM_idMovimientoCRM' => $id,
-        //     'Tercero_idSupervisor' => $request['Tercero_idSupervisor'],
-        //     'ubicacionAgenda' => $request['ubicacionAgendaTarea'][$i],
-        //     'porcentajeEjecucionAgenda' => $request['ejecuionAgendaTarea'][$i],
-        //     'Compania_idCompania' => $request['correoElectronicoMovimientoCRMAsistente'][$i]);
+        for ($i=0; $i < count($request['CategoriaAgenda_idCategoriaAgenda']); $i++) 
+        { 
+            $fechaInicio =  strtotime(substr($request['fechaInicioAgendaTarea'][$i], 0, 4)."-".substr($request['fechaInicioAgendaTarea'][$i], 5, 2)."-".substr($request['fechaInicioAgendaTarea'][$i], 8, 2)." " .substr($request['fechaInicioAgendaTarea'][$i], 10, 6)) * 1000;
 
-        //     $respuesta = \App\Agenda::updateOrCreate($indice, $data); 
+            $fechaFin =  strtotime(substr($request['fechaFinAgendaTarea'][$i], 0, 4)."-".substr($request['fechaFinAgendaTarea'][$i], 5, 2)."-".substr($request['fechaFinAgendaTarea'][$i], 8, 2)." " .substr($request['fechaFinAgendaTarea'][$i], 10, 6)) * 1000;
 
-        //     if ($request['idAgenda'][$i] == '') 
-        //     {
-        //         $agenda = \App\Agenda::All()->last();
-        //         DB::update('UPDATE agenda SET urlAgenda = "http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?id='.$agenda->idAgenda.'" WHERE idAgenda = '.$agenda->idAgenda);
-        //     } 
-        // }
+            $indice = array(
+                'idAgenda' => $request['idAgenda'][$i]);
 
-        $mail = array();
-        $mail['asuntoCorreoCRM'] = 'Tareas programadas - Agenda CRM';
-        $destinatario = $request['Tercero_idSupervisor'].';'.$request['Tercero_idResponsable'];
-        $mail['mensaje'] = "Se han realizado movimientos en la agenda del CRM.<br><br>
-        Para visualizarlo mejor <a href='http://".$_SERVER['HTTP_HOST']."/agenda'>ve directamente</a> a la agenda.";
-        $mail['destinatarioCorreoCRM'] = explode(';', $destinatario);
-        Mail::send('emails.contact',$mail,function($msj) use ($mail)
+            $data = array(
+                'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'][$i],
+                'asuntoAgenda' => $request['asuntoAgendaTarea'][$i],
+                'fechaHoraInicioAgenda' => $fechaInicio,
+                'fechaHoraFinAgenda' => $fechaFin,
+                'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
+                'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
+                'MovimientoCRM_idMovimientoCRM' => $id,
+                'ubicacionAgenda' => $request['ubicacionAgendaTarea'][$i],
+                'porcentajeEjecucionAgenda' => $request['ejecuionAgendaTarea'][$i],
+                'Compania_idCompania' => \Session::get('idCompania'));
+
+            $respuesta = \App\Agenda::updateOrCreate($indice, $data); 
+
+            if ($request['idAgenda'][$i] == 0) 
+            {
+                $agenda = \App\Agenda::All()->last();
+                DB::update('UPDATE agenda SET urlAgenda = "http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?id='.$agenda->idAgenda.'" WHERE idAgenda = '.$agenda->idAgenda);
+            } 
+
+            $destinatarioAgenda .= $request['Tercero_idResponsable'][$i].';';
+        }
+
+        if ($destinatarioAgenda != '') 
         {
-            $msj->to($mail['destinatarioCorreoCRM']);
-            $msj->subject($mail['asuntoCorreoCRM']);
-        }); 
+            $destinatarioAgenda = substr($destinatarioAgenda, 0, -1);
 
+            $mail = array();
+            $mail['asuntoCorreoCRM'] = 'Tareas programadas - Agenda CRM';
+            $destinatario = $request['Tercero_idSupervisor'].';'.$destinatarioAgenda;
+            $mail['mensaje'] = "Se han realizado movimientos en la agenda del CRM.<br><br>
+            Para visualizarlo mejor <a href='http://".$_SERVER['HTTP_HOST']."/agenda'>ve directamente</a> a la agenda.";
+            $mail['destinatarioCorreoCRM'] = explode(';', $destinatario);
+            Mail::send('emails.contact',$mail,function($msj) use ($mail)
+            {
+                $msj->to($mail['destinatarioCorreoCRM']);
+                $msj->subject($mail['asuntoCorreoCRM']);
+            }); 
+        }
 
     }
 

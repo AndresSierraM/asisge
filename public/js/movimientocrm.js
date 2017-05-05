@@ -388,9 +388,15 @@ function mostrarModalInterface()
     $("#ModalImportacion").modal("show");
 }
 
-function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, Tercero_idResponsable, nombreResponsable, estadoAgenda)
+function abrirModalEvento()
 {
-    var valores = new Array(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, '', 0, 0, 0, estadoAgenda, 0,);
+    $("#modalEvento").modal("show");
+}
+
+function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, fechaHoraFinAgenda, idResponsable, nombreResponsable, estadoAgenda)
+{
+    alert(ubicacionAgenda+'-'+idResponsable);
+    var valores = new Array(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, fechaHoraFinAgenda, 0, 2493, nombreResponsable,0, 0, estadoAgenda, 0);
     window.parent.tareas.agregarCampos(valores,'A');  
     window.parent.$("#modalEvento").modal("hide");
 }
@@ -442,9 +448,6 @@ function sumarHoras(fechaInicial, horaTrabajar, horaDia)
     horas = horaTrabajar/horaDia;
 
     sum = (horaTrabajar >= 1 ? 86400 : 3600);
-
-    alert(horas);
-    alert(sum);
 
     fechaIni = fechaInicial;
     //Dividimos la fecha primero utilizando el espacio para obtener solo la fecha y el tiempo por separado
