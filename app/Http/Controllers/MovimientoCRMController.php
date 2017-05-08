@@ -104,7 +104,7 @@ class MovimientoCRMController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(MovimientoCRMRequest $request)
+    public function store(Request $request)
     {
         $numero = DB::select(
             "SELECT CONCAT(REPEAT('0', longitudDocumentoCRM - LENGTH(ultimo+1)), (ultimo+1)) as nuevo
@@ -240,12 +240,12 @@ class MovimientoCRMController extends Controller
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$movimientocrm->idMovimientoCRM.'?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
             
 
-            Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            {
-                $msj->to($datos['correos']);
-                $msj->subject($datos['asunto']);
-                // $msj->attach(public_path().'/plantrabajo.html');
-            });
+            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            // {
+            //     $msj->to($datos['correos']);
+            //     $msj->subject($datos['asunto']);
+            //     // $msj->attach(public_path().'/plantrabajo.html');
+            // });
         }
         
         return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
@@ -379,7 +379,7 @@ class MovimientoCRMController extends Controller
                     nombreCompletoTercero as nombreResponsableAgenda,
                     pesoAgenda as pesoAgendaTarea,
                     porcentajeEjecucionAgenda as ejecuionAgendaTarea,
-                    estadoAgenda as estadoAgendaTarea
+                    estadoAgenda as estadoAgendaTarea,
                     idAgenda
                 FROM agenda a
                     LEFT JOIN 
@@ -513,12 +513,12 @@ class MovimientoCRMController extends Controller
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$movimientocrm->idMovimientoCRM.'?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
             
 
-            Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            {
-                $msj->to($datos['correos']);
-                $msj->subject($datos['asunto']);
-                // $msj->attach(public_path().'/archivo.html');
-            });
+            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            // {
+            //     $msj->to($datos['correos']);
+            //     $msj->subject($datos['asunto']);
+            //     // $msj->attach(public_path().'/archivo.html');
+            // });
         }
         
 
@@ -590,11 +590,14 @@ class MovimientoCRMController extends Controller
         
         $destinatarioAgenda = '';
 
+        $idsEliminar = explode(',', $request['eliminarAgenda']);
+        \App\Agenda::whereIn('idAgenda',$idsEliminar)->delete();
+
         for ($i=0; $i < count($request['CategoriaAgenda_idCategoriaAgenda']); $i++) 
         { 
-            $fechaInicio =  strtotime(substr($request['fechaInicioAgendaTarea'][$i], 0, 4)."-".substr($request['fechaInicioAgendaTarea'][$i], 5, 2)."-".substr($request['fechaInicioAgendaTarea'][$i], 8, 2)." " .substr($request['fechaInicioAgendaTarea'][$i], 10, 6)) * 1000;
+            $fechaInicio =  strtotime(substr($request['fechaInicioAgendaTarea'][$i], 6, 4)."-".substr($request['fechaInicioAgendaTarea'][$i], 3, 2)."-".substr($request['fechaInicioAgendaTarea'][$i], 0, 2)." " .substr($request['fechaInicioAgendaTarea'][$i], 10, 6)) * 1000;
 
-            $fechaFin =  strtotime(substr($request['fechaFinAgendaTarea'][$i], 0, 4)."-".substr($request['fechaFinAgendaTarea'][$i], 5, 2)."-".substr($request['fechaFinAgendaTarea'][$i], 8, 2)." " .substr($request['fechaFinAgendaTarea'][$i], 10, 6)) * 1000;
+            $fechaFin =  strtotime(substr($request['fechaFinAgendaTarea'][$i], 6, 4)."-".substr($request['fechaFinAgendaTarea'][$i], 3, 2)."-".substr($request['fechaFinAgendaTarea'][$i], 0, 2)." " .substr($request['fechaFinAgendaTarea'][$i], 10, 6)) * 1000;
 
             $indice = array(
                 'idAgenda' => $request['idAgenda'][$i]);
@@ -602,6 +605,7 @@ class MovimientoCRMController extends Controller
             $data = array(
                 'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'][$i],
                 'asuntoAgenda' => $request['asuntoAgendaTarea'][$i],
+                'horasAgenda' => $request['horasDiaAgenda'][$i],
                 'fechaHoraInicioAgenda' => $fechaInicio,
                 'fechaHoraFinAgenda' => $fechaFin,
                 'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
@@ -632,11 +636,11 @@ class MovimientoCRMController extends Controller
             $mail['mensaje'] = "Se han realizado movimientos en la agenda del CRM.<br><br>
             Para visualizarlo mejor <a href='http://".$_SERVER['HTTP_HOST']."/agenda'>ve directamente</a> a la agenda.";
             $mail['destinatarioCorreoCRM'] = explode(';', $destinatario);
-            Mail::send('emails.contact',$mail,function($msj) use ($mail)
-            {
-                $msj->to($mail['destinatarioCorreoCRM']);
-                $msj->subject($mail['asuntoCorreoCRM']);
-            }); 
+            // Mail::send('emails.contact',$mail,function($msj) use ($mail)
+            // {
+            //     $msj->to($mail['destinatarioCorreoCRM']);
+            //     $msj->subject($mail['asuntoCorreoCRM']);
+            // }); 
         }
 
     }
@@ -698,11 +702,11 @@ class MovimientoCRMController extends Controller
             $datos['mensaje'] = $datosmovimiento[0]['detallesMovimientoCRM']. '  
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$datosmovimiento[0]['idMovimientoCRM'].'?idDocumentoCRM='.$datosmovimiento[0]['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
 
-            Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            {
-                $msj->to($datos['correos']);
-                $msj->subject($datos['asunto']);
-            });
+            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            // {
+            //     $msj->to($datos['correos']);
+            //     $msj->subject($datos['asunto']);
+            // });
         }
         
 

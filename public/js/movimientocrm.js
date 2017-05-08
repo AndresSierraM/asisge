@@ -395,10 +395,44 @@ function abrirModalEvento()
 
 function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, fechaHoraFinAgenda, idResponsable, nombreResponsable, estadoAgenda)
 {
-    alert(ubicacionAgenda+'-'+idResponsable);
-    var valores = new Array(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, fechaHoraFinAgenda, 0, 2493, nombreResponsable,0, 0, estadoAgenda, 0);
-    window.parent.tareas.agregarCampos(valores,'A');  
-    window.parent.$("#modalEvento").modal("hide");
+    if (idCategoria == 0) 
+    {
+        alert('Debe seleccionar una categoría.');
+        $("#CategoriaAgenda_idCategoriaAgenda").css("background-color", "red");
+        $("#asuntoAgenda").css("background-color", "");
+        $("#ubicacionAgenda").css("background-color", "");
+        $("#Tercero_idResponsable").css("background-color", "");
+    }
+    else if (asuntoAgenda == '') 
+    {
+        alert('Debe digitar un asunto.');
+        $("#asuntoAgenda").css("background-color", "red");
+        $("#ubicacionAgenda").css("background-color", "");
+        $("#CategoriaAgenda_idCategoriaAgenda").css("background-color", "");
+        $("#Tercero_idResponsable").css("background-color", "red");
+    }
+    else if (ubicacionAgenda == '') 
+    {
+        alert('Debe digitar un asunto.');
+        $("#ubicacionAgenda").css("background-color", "red");
+        $("#asuntoAgenda").css("background-color", "");
+        $("#CategoriaAgenda_idCategoriaAgenda").css("background-color", "");
+        $("#Tercero_idResponsable").css("background-color", "");
+    }
+    else if (idResponsable == 0) 
+    {
+        alert('Debe seleccionar un responsable.');
+        $("#Tercero_idResponsable").css("background-color", "red");
+        $("#asuntoAgenda").css("background-color", "");
+        $("#ubicacionAgenda").css("background-color", "");
+        $("#CategoriaAgenda_idCategoriaAgenda").css("background-color", "");
+    }
+    else
+    {
+        var valores = new Array(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, fechaHoraFinAgenda, 0, idResponsable, nombreResponsable,0, 0, estadoAgenda, 0);
+        window.parent.tareas.agregarCampos(valores,'A');  
+        window.parent.$("#modalEvento").modal("hide");
+    }   
 }
 
 function calcularHoras()
@@ -456,9 +490,9 @@ function sumarHoras(fechaInicial, horaTrabajar, horaDia)
     var time=splitDate[1].split(":");
 
     // Obtenemos los campos individuales para todas las partes de la fecha
-    var yyyy=date[0];
+    var dd =date[0];
     var mm=date[1]-1;
-    var dd =date[2];
+    var yyyy=date[2];
     var hh=time[0];
     var min=time[1];
     var ss=time[2];
@@ -472,7 +506,22 @@ function sumarHoras(fechaInicial, horaTrabajar, horaDia)
  
     fecha.setSeconds(addTime); //Añado el tiempo
 
-    var fechastring = fecha.getFullYear() + '-' + ("0" + (fecha.getMonth() + 1)).slice(-2) + '-' + ("0" + fecha.getDate()).slice(-2) + ' ' + ("0" + fecha.getHours()).slice(-2) + ':' + ("0" + fecha.getMinutes()).slice(-2) + ':' + ("0" + fecha.getSeconds()).slice(-2);
+    var fechastring = ("0" + fecha.getDate()).slice(-2) + '-' + ("0" + (fecha.getMonth() + 1)).slice(-2) + '-' + fecha.getFullYear() + ' ' + ("0" + fecha.getHours()).slice(-2) + ':' + ("0" + fecha.getMinutes()).slice(-2) + ':' + ("0" + fecha.getSeconds()).slice(-2);
 
     return fechastring;
+}
+
+function asignarFechAgenda(inicio, fin, reg)
+{
+    var inicio = new Date();
+    var fechaInicial = ("0" + inicio.getDate()).slice(-2) + '-' + ("0" + (inicio.getMonth() + 1)).slice(-2) + '-' + inicio.getFullYear() + ' ' + ("0" + inicio.getHours()).slice(-2) + ':' + ("0" + inicio.getMinutes()).slice(-2) + ':' + ("0" + inicio.getSeconds()).slice(-2);
+
+    var fin = new Date();
+    var fechaFinal = ("0" + fin.getDate()).slice(-2) + '-' + ("0" + (fin.getMonth() + 1)).slice(-2) + '-' + fin.getFullYear() + ' ' + ("0" + fin.getHours()).slice(-2) + ':' + ("0" + fin.getMinutes()).slice(-2) + ':' + ("0" + fin.getSeconds()).slice(-2);
+
+    $("#fechaInicioAgendaTarea"+reg).val(fechaInicial);
+    $("#fechaFinAgendaTarea"+reg).val(fechaFinal);
+
+    $("#fechaHoraInicioAgenda").val(fechaInicial);
+    $("#fechaHoraEstimadaFinAgenda").val(fechaFinal);
 }

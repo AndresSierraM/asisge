@@ -6,6 +6,13 @@ foreach ($estado as $key => $value) {
 	$nombreEstadoDefault = $value;
 	break;
 }
+
+$camposAgendaTarea = array();
+// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+for ($i = 0, $c = count($movimientoCRMTarea); $i < $c; ++$i) 
+{
+  $camposAgendaTarea[$i] = (array) $movimientoCRMTarea[$i];
+}
 					              
 function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 {
@@ -198,8 +205,11 @@ $fechahora = Carbon\Carbon::now();
 	$(document).ready(function(){
 
 							$('#fechaHoraInicioAgenda').datetimepicker(({
-    							format:'YYYY-MM-DD HH:mm:ss'
+    							format:'DD-MM-YYYY HH:mm:ss'
 							}));
+
+							if ($("#fechaHoraInicioAgenda").val() != '')
+								calcularHoras();
 
 		asistentes = new Atributos('asistentes','contenedor_asistentes','asistentes_');
 		asistentes.campos = ['idMovimientoCRMAsistente','nombreMovimientoCRMAsistente','cargoMovimientoCRMAsistente','telefonoMovimientoCRMAsistente','correoElectronicoMovimientoCRMAsistente'];
@@ -258,7 +268,7 @@ $fechahora = Carbon\Carbon::now();
 
 	    tareas.altura = '35px';
 	    tareas.campoid = 'idMovimientoCRMTarea';
-	    tareas.campoEliminacion = 'eliminarMovimientoCRMTarea';
+	    tareas.campoEliminacion = 'eliminarAgendaTarea';
 
 	    tareas.campos   = [
 	    'CategoriaAgenda_idCategoriaAgenda', 
@@ -328,6 +338,7 @@ $fechahora = Carbon\Carbon::now();
 	    {
 	      tareas.agregarCampos(JSON.stringify(movimientoCRMTarea[j]),'L');
 	      console.log(JSON.stringify(movimientoCRMTarea[j]))
+	      asignarFechAgenda(movimientoCRMTarea[j]['fechaInicioAgendaTarea'], movimientoCRMTarea[j]['fechaFinAgendaTarea'], j);
 	    }
 	});
 </script>
@@ -938,7 +949,7 @@ $fechahora = Carbon\Carbon::now();
 								              	<span class="input-group-addon">
 								                	<i class="fa fa-calendar"></i>
 								              	</span>
-												{!!Form::text('fechaHoraInicioAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
+												{!!Form::text('fechaHoraInicioAgenda',(isset($movimientoCRMTarea) ? $movimientoCRMTarea->fechaInicioAgendaTarea : null),['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
 											</div>
 										</div>
 									</div>
@@ -952,7 +963,7 @@ $fechahora = Carbon\Carbon::now();
 								              	<span class="input-group-addon">
 								                	<i class="fa fa-clock-o"></i>
 								              	</span>
-												{!!Form::text('horasDiaAgenda',null,['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
+												{!!Form::text('horasDiaAgenda',(isset($movimientoCRMTarea) ? $camposAgendaTarea[0]['horasAgenda'] : null),['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
 											</div>
 										</div>
 									</div>
@@ -1026,6 +1037,8 @@ $fechahora = Carbon\Carbon::now();
 											</div>
 										</div>
 									</div>
+
+									{!!Form::hidden('eliminarAgendaTarea', null, array('id' => 'eliminarAgendaTarea'))!!}
  									
 									</div>
 								</div>
@@ -1140,7 +1153,7 @@ $fechahora = Carbon\Carbon::now();
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Crear un nuevo evento</h4>
+        <h4 class="modal-title">Crear una nueva tarea</h4>
       </div>
       <div class="modal-body">
       <?php 

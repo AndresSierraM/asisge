@@ -98,19 +98,19 @@ function consultarCamposAgenda(idCategoriaAgenda, idAgenda)
             for (var i = 0; i < respuesta.length; i++) 
             {
                 if (respuesta[i]['nombreCampoCRM'] == 'ubicacionAgenda') 
-                    $("#ubicacionAgenda").css('display','block');
+                    $("#ubicacion").css('display','block');
 
                 if (respuesta[i]['nombreCampoCRM'] == 'MovimientoCRM_idMovimientoCRM') 
-                    $("#MovimientoCRM_idMovimientoCRM").css('display','block');
+                    $("#MovimientoCRM").css('display','block');
 
                 if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idResponsable') 
-                    $("#Tercero_idResponsable").css('display','block');
+                    $("#Tercero").css('display','block');
 
                 if (respuesta[i]['nombreCampoCRM'] == 'porcentajeEjecucionAgenda') 
-                    $("#porcentajeEjecucionAgenda").css('display','block');
+                    $("#porcentajeEjecucion").css('display','block');
 
                 if (respuesta[i]['nombreCampoCRM'] == 'estadoAgenda') 
-                    $("#estadoAgenda").css('display','block');
+                    $("#estado").css('display','block');
 
                 if (respuesta[i]['nombreCampoCRM'] == 'seguimientoAgenda') 
                     $("#divseguimiento").css('display','block');
@@ -140,6 +140,11 @@ function consultarCamposAgenda(idCategoriaAgenda, idAgenda)
             $("#liasistentes").css('display','none');
         }
     });
+}
+
+function consultarTercero(id, value)
+{
+    alert('id:'+id+' value: '+value);
 }
 
 function guardarDatos(){
