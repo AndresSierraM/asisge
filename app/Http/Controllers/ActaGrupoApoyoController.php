@@ -160,8 +160,16 @@ class ActaGrupoApoyoController extends Controller
           
             $actagrupoapoyodetalle = DB::select("SELECT actividadGrupoApoyoDetalle,nombreCompletoTercero,fechaPlaneadaActaGrupoApoyoDetalle,nombreDocumentoSoporte,recursoPlaneadoActaGrupoApoyoDetalle,recursoEjecutadoActaGrupoApoyoDetalle,  fechaEjecucionGrupoApoyoDetalle,observacionGrupoApoyoDetalle FROM actagrupoapoyodetalle ad LEFT JOIN tercero t ON ad.Tercero_idResponsableDetalle = t.idTercero LEFT JOIN documentosoporte d ON d.idDocumentoSoporte = ad.DocumentoSoporte_idDocumentoSoporte WHERE ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
 
+            // Nuevo campo Temas tratados 
+            $actagrupoapoyotema = DB::select("SELECT agat.temaActaGrupoApoyoTema,agat.desarrolloActaGrupoApoyoTema,
+            agat.observacionActaGrupoApoyoTema,t.nombreCompletoTercero
+            FROM actagrupoapoyotema agat
+            LEFT JOIN tercero t
+            ON agat.Tercero_idResponsable = t.idTercero
+            WHERE  ActaGrupoApoyo_idActaGrupoApoyo = ".$id);
+
             
-            return view('formatos.actagrupoapoyoimpresion',compact('actagrupoapoyo','actagrupoapoyotercero','actagrupoapoyodetalle'));
+            return view('formatos.actagrupoapoyoimpresion',compact('actagrupoapoyo','actagrupoapoyotercero','actagrupoapoyodetalle','actagrupoapoyotema'));
        } 
     }
 

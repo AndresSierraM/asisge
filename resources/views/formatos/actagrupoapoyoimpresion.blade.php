@@ -33,6 +33,9 @@
 				    @endforeach
 				    <table  class="table table-striped table-bordered" width="100%">
 				      <thead>
+				      <tr>
+				        <td>Participantes</td>
+				       </tr>
 				       <tr>
 				        <td>Empleados</td>
 				        <td>Firma</td>
@@ -43,6 +46,30 @@
 				       <tr>
 				        <td>{{$dato->nombreCompletoTercero}}</td>
 				        <td><?php echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaActaGrupoApoyoTercero.'"';?></td>
+				       </tr>
+				       @endforeach
+				      </tbody>
+				     </table>
+				     <!-- Nuevo requerimiento, Temas tratados-->
+				      <table  class="table table-striped table-bordered" width="100%">
+				      <thead>
+				      <tr>
+				        <td>Temas Tratados</td>
+				       </tr>
+				       <tr>
+				        <td>Tema</td>
+				        <td>Desarrollo del Tema</td>
+				        <td>Responsable</td>
+				        <td>Observaciones</td>
+				       </tr>
+				      </thead>
+				      <tbody>
+				       @foreach($actagrupoapoyotema as $dato)
+				       <tr>
+				        <td>{{$dato->temaActaGrupoApoyoTema}}</td>
+				        <td>{{$dato->desarrolloActaGrupoApoyoTema}}</td>
+				        <td>{{$dato->nombreCompletoTercero}}</td>
+				        <td>{{$dato->observacionActaGrupoApoyoTema}}</td>
 				       </tr>
 				       @endforeach
 				      </tbody>
