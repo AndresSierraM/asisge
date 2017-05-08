@@ -61,4 +61,22 @@ class AccidenteRequest extends Request
 
         return $validacion;
     }
+
+    public function messages()
+        {
+        
+            $validacion = array(    
+            'nombreAccidente.required'=> 'Debe Ingresar una Descripci&#243;n del Accidente.',
+            'clasificacionAccidente.required'=> 'Debe Seleccionar la clase del Accidente.',
+            'Tercero_idCoordinador.required'=> 'Debe Seleccionar el Coordinador del equipo de Investigaci&#243;n.',
+            'Ausentismo_idAusentismo.required'=> 'Debe Seleccionar el Ausentismo Relacionado al Accidente.',
+            'Proceso_idProceso.required'=> 'Debe Seleccionar el &#225;rea o secci&#243;n del empleado.',
+
+
+          );
+        
+
+            return $validacion;
+            
+        }
 }

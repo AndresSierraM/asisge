@@ -37,9 +37,7 @@
 								<th>Art&iacute;culos Aplicables</th>
 								<th>Expedida por</th>
 								<th>Exigencia</th>
-								<th>Fuente</th>
-								<th>Medio</th>
-								<th>Persona</th>
+								<th>M&#233;todos de Control Existentes</th>
 								<th>Herramienta de seguimiento</th>
 								<th>Se cumple</th>
 								<th>Fecha verificaci&oacute;n</th>
@@ -55,8 +53,6 @@
 								<td>{{$dato->nombreExpideNormaLegal}}</td>
 								<td>{{$dato->exigenciaMatrizLegalDetalle}}</td>
 								<td>{{$dato->fuenteMatrizLegalDetalle}}</td>
-								<td>{{$dato->medioMatrizLegalDetalle}}</td>
-								<td>{{$dato->personaMatrizLegalDetalle}}</td>
 								<td>{{$dato->herramientaSeguimientoMatrizLegalDetalle}}</td>
 								<td>{{($dato->cumpleMatrizLegalDetalle == 1 ? 'Sí' : 'No')}}</td>
 								<td>{{$dato->fechaVerificacionMatrizLegalDetalle}}</td>

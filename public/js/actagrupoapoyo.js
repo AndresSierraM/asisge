@@ -1,3 +1,15 @@
+// Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
+
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/actagrupoapoyo";
@@ -7,14 +19,18 @@ function validarFormulario(event)
     var dato2 = document.getElementById('fechaActaGrupoApoyo').value;
     var dato3 = document.getElementById('horaInicioActaGrupoApoyo').value;
     var dato4 = document.getElementById('horaFinActaGrupoApoyo').value;
+
+
     var datoParticipante = document.querySelectorAll("[name='Tercero_idParticipante[]']");
-    var datoResponsableTema = document.querySelectorAll("[name='Tercero_idResponsable[]']");
-    var datoResponsableActividad = document.querySelectorAll("[name='Tercero_idResponsableDetalle[]']");
-    var datoDocumento = document.querySelectorAll("[name='Documento_idDocumento[]']");
+    var responsabletema = document.querySelectorAll("[name='Tercero_idResponsable[]']");
+    var responsableactividad = document.querySelectorAll("[name='Tercero_idResponsableDetalle[]']");
+
+
+
     var dato5 = [];
     var dato6 = [];
     var dato7 = [];
-    var dato8 = [];
+    
     
     var valor = '';
     var sw = true;
@@ -24,20 +40,16 @@ function validarFormulario(event)
         dato5[j] = datoParticipante[j].value;
     }
 
-    for(var j=0,i=datoResponsableTema.length; j<i;j++)
+    for(var j=0,i=responsabletema.length; j<i;j++)
     {
-        dato6[j] = datoResponsableTema[j].value;
+        dato6[j] = responsabletema[j].value;
     }
 
-    for(var j=0,i=datoResponsableActividad.length; j<i;j++)
+     for(var j=0,i=responsableactividad.length; j<i;j++)
     {
-        dato7[j] = datoResponsableActividad[j].value;
+        dato7[j] = responsableactividad[j].value;
     }
 
-    for(var j=0,i=datoDocumento.length; j<i;j++)
-    {
-        dato8[j] = datoDocumento[j].value;
-    }
 
     $.ajax({
         async: false,
@@ -52,9 +64,8 @@ function validarFormulario(event)
                 horaInicioActaGrupoApoyo: dato3,
                 horaFinActaGrupoApoyo: dato4, 
                 Tercero_idParticipante: dato5, 
-                Tercero_idResponsable: dato6, 
-                Tercero_idResponsableDetalle: dato7,
-                Documento_idDocumento: dato8
+                Tercero_idResponsable: dato6,
+                Tercero_idResponsableDetalle: dato7
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -88,20 +99,16 @@ function validarFormulario(event)
                     (typeof respuesta['Tercero_idParticipante'+j] === "undefined" ? document.getElementById('Tercero_idParticipante'+j).style.borderColor = '' : document.getElementById('Tercero_idParticipante'+j).style.borderColor = '#a94442');
                 }
 
-                for(var j=0,i=datoResponsableTema.length; j<i;j++)
+                for(var j=0,i=responsabletema.length; j<i;j++)
                 {
                     (typeof respuesta['Tercero_idResponsable'+j] === "undefined" ? document.getElementById('Tercero_idResponsable'+j).style.borderColor = '' : document.getElementById('Tercero_idResponsable'+j).style.borderColor = '#a94442');
                 }
 
-                for(var j=0,i=datoResponsableActividad.length; j<i;j++)
+                 for(var j=0,i=responsableactividad.length; j<i;j++)
                 {
                     (typeof respuesta['Tercero_idResponsableDetalle'+j] === "undefined" ? document.getElementById('Tercero_idResponsableDetalle'+j).style.borderColor = '' : document.getElementById('Tercero_idResponsableDetalle'+j).style.borderColor = '#a94442');
                 }
 
-                for(var j=0,i=datoDocumento.length; j<i;j++)
-                {
-                    (typeof respuesta['Documento_idDocumento'+j] === "undefined" ? document.getElementById('Documento_idDocumento'+j).style.borderColor = '' : document.getElementById('Documento_idDocumento'+j).style.borderColor = '#a94442');
-                }
 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){

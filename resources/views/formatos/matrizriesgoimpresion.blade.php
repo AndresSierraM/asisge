@@ -45,10 +45,9 @@
 								<th>Inter. riesgo</th>
 								<th>Aceptaci&oacute;n riesgo</th>
 								<th>Eliminaci&oacute;n</th>
-								<th>Sustituaci&oacute;n</th>
+								<th>Sustituci&oacute;n</th>
 								<th>Controles</th>
 								<th>Protección Persona</th>
-								<th>Evidencia</th>
 								<th>Observaciones</th>
 							</tr>
 						<thead>
@@ -89,7 +88,6 @@
 								<td>{{$dato->sustitucionMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->controlMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->elementoProteccionMatrizRiesgoDetalle}}</td>
-								<td>{{$dato->imagenMatrizRiesgoDetalle}}</td>
 								<td>{{$dato->observacionMatrizRiesgoDetalle}}</td>
 							</tr>
 						@endforeach

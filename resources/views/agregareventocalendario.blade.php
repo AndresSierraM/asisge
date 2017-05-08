@@ -5,6 +5,7 @@
 @include('alerts.request')
 
 {!!Html::script('js/agenda.js')!!}
+{!!Html::script('js/movimientocrm.js'); !!}
 
 <script>
 
@@ -57,7 +58,7 @@
 
       asistente.clase    = ['','','','','','','',''];
       asistente.sololectura = [true,true,false,false,true];  
-      asistente.funciones = ['','','',consultarTercero,'',''];
+      asistente.funciones = ['','',consultarTercero,'',''];
       asistente.completar = ['off','off','off','off','off'];
       asistente.opciones = ['','','','',''];
       for(var j=0, k = agendaasistente.length; j < k; j++)
@@ -231,7 +232,7 @@
 
       <br><br><br><br><br>
 
-      <div class="form-group" id='MovimientoCRM_idMovimientoCRM' style='display:none;'>
+      <div class="form-group" id='MovimientoCRM' style='display:none;'>
           {!!Form::label('MovimientoCRM_idMovimientoCRM', 'Caso CRM', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
@@ -243,7 +244,7 @@
         </div>
       </div>
 
-        <div class="form-group" id='ubicacionAgenda' style='display:none;'>
+        <div class="form-group" id='ubicacion' style='display:none;'>
           {!!Form::label('ubicacionAgenda', 'Ubicación', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group" >
@@ -255,7 +256,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='Tercero_idResponsable' style='display:none;'>
+        <div class="form-group" id='Tercero' style='display:none;'>
           {!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
@@ -267,7 +268,7 @@
         </div>
       </div>
 
-        <div class="form-group" id='porcentajeEjecucionAgenda' style='display:none;'>
+        <div class="form-group" id='porcentajeEjecucion' style='display:none;'>
           {!!Form::label('porcentajeEjecucionAgenda', '% Ejecución', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group" >
@@ -279,7 +280,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='estadoAgenda' style='display:none;'>
+        <div class="form-group" id='estado' style='display:none;'>
           {!!Form::label('estadoAgenda', 'Estado', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group" >
@@ -355,7 +356,7 @@
                               </div>
                               <div class="col-md-1" style="width: 310px;">Nombre</div>
                               <div class="col-md-1" style="width: 150px;">Correo Electrónico</div>
-                              <div id="contenedor_seguimiento"> 
+                              <div id="contenedor_asistente"> 
                               </div>
                             </div>
                           </div>
@@ -380,7 +381,20 @@
         {!!Form::button('Cancelar cita',["class"=>"btn btn-danger","onclick"=>"cancelarCita($('#idAgenda').val())"])!!}
       @endif
   @else
+    @if(isset($_GET['crear']))
+      {!!Form::button('Agregar',["class"=>"btn btn-primary", 'id'=>'btnAdicionarTareaCRM', 'onclick'=>'agregarRegistroTareaCRM(
+      $(\'#CategoriaAgenda_idCategoriaAgenda\').val(),
+      $(\'#CategoriaAgenda_idCategoriaAgenda option:selected\').text(),
+      $(\'#asuntoAgenda\').val(),
+      $(\'#ubicacionAgenda\').val(),
+      $(\'#fechaHoraInicioAgenda\').val(),
+      $(\'#fechaHoraFinAgenda\').val(),
+      $(\'#Tercero_idResponsable\').val(),
+      $(\'#Tercero_idResponsable option:selected\').text(),
+      $(\'#estadoAgenda\').val());'])!!}
+    @else
       {!!Form::submit('Adicionar',["class"=>"btn btn-primary",'onclick'=>'validarFormulario(event);'])!!}
+    @endif    
   @endif
 
   {!! Form::close() !!}

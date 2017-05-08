@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('cambiopassword', 'CambioPasswordController');
     Route::resource ('centrocosto','CentroCostoController');
     Route::resource ('parametrogestionhumana','ParametroGestionHumanaController');
     Route::resource ('evaluaciondesempenio','EvaluacionDesempenioController');
@@ -150,6 +151,10 @@ Route::group(['middleware' => 'auth'], function ()
 
     Route::resource('categoriaagenda','CategoriaAgendaController');
     Route::resource('agenda','AgendaController');
+    Route::resource('agendagrid','AgendaController@indexGrid');
+    Route::get('agendagantt', function () {
+        return view('agendagantt');
+    });
 
     Route::get('eventoagenda','AgendaController@indexAgendaEvento');
     Route::get('getAll','AgendaController@getAll');
@@ -737,6 +742,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosPerfilClienteMovimiento', function()
     {
         include public_path().'/ajax/datosPerfilClienteMovimiento.php';
+    });
+
+    Route::get('datosAgenda', function()
+    {
+        include public_path().'/ajax/datosAgenda.php';
     });
 
     Route::get('datosAgendaPermiso', function()

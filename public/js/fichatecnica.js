@@ -1,7 +1,7 @@
 
-var AtributosImagen = function(nombreObjeto, nombreContenedor, nombreDiv){
-    this.alto = '350px;';
-    this.ancho = '300px;';
+var AtributosNota = function(nombreObjeto, nombreContenedor, nombreDiv){
+    this.alto = '100px;';
+    this.ancho = '100%;';
     this.campoid = '';
     this.campoEliminacion = '';
     this.botonEliminacion = true;
@@ -12,7 +12,7 @@ var AtributosImagen = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.contador = 0;
 };
 
-AtributosImagen.prototype.agregarImagen = function(datos, tipo){
+AtributosNota.prototype.agregarNota = function(datos, tipo){
 
     var valor;
     if(tipo == 'A')
@@ -44,12 +44,12 @@ AtributosImagen.prototype.agregarImagen = function(datos, tipo){
 
     
     //--------------------
-    // id de la Imagen
+    // id de la Nota
     //--------------------
     var input = document.createElement('input');
     input.type =  "hidden";
-    input.id =  "idFichaTecnicaImagen" + this.contador;
-    input.name =  "idFichaTecnicaImagen[]";
+    input.id =  "idFichaTecnicaNota" + this.contador;
+    input.name =  "idFichaTecnicaNota[]";
     //input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
     input.setAttribute("class", "");
     input.readOnly = "";
@@ -57,43 +57,20 @@ AtributosImagen.prototype.agregarImagen = function(datos, tipo){
     div.appendChild(input);
 
     //--------------------
-    // Titulo de la Imagen
+    // Texto de la Nota
     //--------------------
     var input = document.createElement('input');
     input.type =  "input";
-    input.id =  "tituloFichaTecnicaImagen" + this.contador;
-    input.name =  "tituloFichaTecnicaImagen[]";
-    input.placeholder =  "Título";
+    input.id =  "observacionFichaTecnicaNota" + this.contador;
+    input.name =  "observacionFichaTecnicaNota[]";
+    input.placeholder =  "Descripción";
     //input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
-    input.setAttribute("class", "tituloImagen");
+    input.setAttribute("class", "textoNota");
     input.readOnly = "";
     input.autocomplete = "false";
     div.appendChild(input);
     
-    //--------------------
-    // Ruta de la Imagen
-    //--------------------
-    var input = document.createElement('input');
-    input.type =  'file';
-    input.id =  "rutaFichaTecnicaImagen" + this.contador;
-    input.name =  "rutaFichaTecnicaImagen[]";
-    input.filename = '';
-    input.setAttribute("class", "");
-    div.appendChild(input);
-
-    $('#rutaFichaTecnicaImagen'+ this.contador).fileinput({
-          language: 'es',
-          uploadUrl: '#',
-          allowedFileExtensions : ['jpg', 'png','gif'],
-           initialPreview: ['<?php echo Html::image("images/","Imagen no encontrada",array("style"=>"width:148px;height:158px;"));?>'],
-          dropZoneTitle: 'Seleccione la Imagen',
-          removeLabel: '',
-          uploadLabel: '',
-          browseLabel: '',
-          uploadClass: "",
-          uploadLabel: "",
-          uploadIcon: "",
-        });
+    
         
 
     //--------------------

@@ -528,7 +528,7 @@ class MatrizRiesgoController extends Controller
                 // para cada registro de matriz recorremos las columnas desde la 0 hasta la 24
                 $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = 0;
                 $matriz[$posMatriz]["Compania_idCompania"] = 0;
-                for ($columna = 0; $columna <= 24; $columna++) {
+                for ($columna = 0; $columna <= 18; $columna++) {
                     // en la fila 9 del archivo de excel (oculta) estan los nombres de los campos de la tabla
                     $campo = $datos->getCellByColumnAndRow($columna, 9)->getValue();
 
@@ -709,15 +709,7 @@ class MatrizRiesgoController extends Controller
                     
                     $posErr++;
                 }
-                else
-                {
-                    //buscamos el id en el modelo correspondiente
-                    $consulta = \App\MatrizRiesgoDetalle::where('nivelDeficienciaMatrizRiesgoDetalle','=', $matriz[ $posMatriz]["nivelDeficienciaMatrizRiesgoDetalle"])->lists('idMatrizRiesgoDetalle');
-                    // si se encuentra el id lo guardamos en el array
-
-                    if(isset($consulta[0]))
-                        $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = $consulta[0];
-                }
+                
 
                 //*****************************
                 // Nivel Exposición
@@ -732,15 +724,7 @@ class MatrizRiesgoController extends Controller
                     
                     $posErr++;
                 }
-                else
-                {
-                    //buscamos el id en el modelo correspondiente
-                    $consulta = \App\MatrizRiesgoDetalle::where('nivelExposicionMatrizRiesgoDetalle','=', $matriz[ $posMatriz]["nivelExposicionMatrizRiesgoDetalle"])->lists('idMatrizRiesgoDetalle');
-                    // si se encuentra el id lo guardamos en el array
-
-                    if(isset($consulta[0]))
-                        $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = $consulta[0];
-                }
+                
 
                 //*****************************
                 // Nivel Consecuencia
@@ -755,15 +739,7 @@ class MatrizRiesgoController extends Controller
                     
                     $posErr++;
                 }
-                else
-                {
-                    //buscamos el id en el modelo correspondiente
-                    $consulta = \App\MatrizRiesgoDetalle::where('nivelConsecuenciaMatrizRiesgoDetalle','=', $matriz[ $posMatriz]["nivelConsecuenciaMatrizRiesgoDetalle"])->lists('idMatrizRiesgoDetalle');
-                    // si se encuentra el id lo guardamos en el array
-
-                    if(isset($consulta[0]))
-                        $matriz[$posMatriz]["idMatrizRiesgoDetalle"] = $consulta[0];
-                }
+                
 
                 $posMatriz++;
                 $fila++;
@@ -820,7 +796,7 @@ class MatrizRiesgoController extends Controller
                 {
                     $probabilidad = '';
 
-                    $nivelProbabilidad = ((int)$matriz[$reg]['nivelDeficienciaMatrizRiesgoDetalle'] * (int)['nivelExposicionMatrizRiesgoDetalle']);
+                    $nivelProbabilidad = ((int)$matriz[$reg]['nivelDeficienciaMatrizRiesgoDetalle'] * (int)$matriz[$reg]['nivelExposicionMatrizRiesgoDetalle']);
 
                     if($nivelProbabilidad >= 24 && $nivelProbabilidad <= 40)
                       $probabilidad = 'Muy Alto';
@@ -834,7 +810,7 @@ class MatrizRiesgoController extends Controller
                       $probabilidad = '';  
 
 
-                    $nivelRiesgo = ((int)$probabilidad * (int)$matriz[$reg]['nivelConsecuenciaMatrizRiesgoDetalle']);
+                    $nivelRiesgo = ((int)$nivelProbabilidad * (int)$matriz[$reg]['nivelConsecuenciaMatrizRiesgoDetalle']);
 
                     if($nivelRiesgo >= 600 && $nivelRiesgo <= 4000)
                       { 

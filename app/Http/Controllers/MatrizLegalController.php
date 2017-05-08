@@ -116,8 +116,8 @@ class MatrizLegalController extends Controller
                     'ExpideNormaLegal_idExpideNormaLegal' => $request['ExpideNormaLegal_idExpideNormaLegal'][$i],
                     'exigenciaMatrizLegalDetalle' => $request['exigenciaMatrizLegalDetalle'][$i],
                     'fuenteMatrizLegalDetalle' => $request['fuenteMatrizLegalDetalle'][$i],
-                    'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
-                    'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
+                    // 'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
+                    // 'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
                     'herramientaSeguimientoMatrizLegalDetalle' => $request['herramientaSeguimientoMatrizLegalDetalle'][$i],
                     'cumpleMatrizLegalDetalle' => $request['cumpleMatrizLegalDetalle'][$i],
                     'fechaVerificacionMatrizLegalDetalle' => $request['fechaVerificacionMatrizLegalDetalle'][$i],
@@ -166,11 +166,11 @@ class MatrizLegalController extends Controller
           $matrizLegalDetalle = DB::table('matrizlegaldetalle as mld')
             ->leftJoin('tiponormalegal as tpl', 'mld.TipoNormaLegal_idTipoNormaLegal', '=', 'tpl.idTipoNormaLegal')
             ->leftJoin('expidenormalegal as enl', 'mld.ExpideNormaLegal_idExpideNormaLegal', '=', 'enl.idExpideNormaLegal')
-            ->select(DB::raw('mld.idMatrizLegalDetalle, mld.MatrizLegal_idMatrizLegal, mld.TipoNormaLegal_idTipoNormaLegal, tpl.nombreTipoNormaLegal, mld.articuloAplicableMatrizLegalDetalle, mld.ExpideNormaLegal_idExpideNormaLegal, enl.nombreExpideNormaLegal, mld.exigenciaMatrizLegalDetalle, mld.fuenteMatrizLegalDetalle, mld.medioMatrizLegalDetalle, mld.personaMatrizLegalDetalle, mld.herramientaSeguimientoMatrizLegalDetalle, mld.cumpleMatrizLegalDetalle, mld.fechaVerificacionMatrizLegalDetalle, mld.accionEvidenciaMatrizLegalDetalle, mld.controlAImplementarMatrizLegalDetalle'))
+            ->select(DB::raw('mld.idMatrizLegalDetalle, mld.MatrizLegal_idMatrizLegal, mld.TipoNormaLegal_idTipoNormaLegal, tpl.nombreTipoNormaLegal, mld.articuloAplicableMatrizLegalDetalle, mld.ExpideNormaLegal_idExpideNormaLegal, enl.nombreExpideNormaLegal, mld.exigenciaMatrizLegalDetalle, mld.fuenteMatrizLegalDetalle, mld.herramientaSeguimientoMatrizLegalDetalle, mld.cumpleMatrizLegalDetalle, mld.fechaVerificacionMatrizLegalDetalle, mld.accionEvidenciaMatrizLegalDetalle, mld.controlAImplementarMatrizLegalDetalle'))
             ->orderBy('idMatrizLegalDetalle', 'ASC')
             ->where('MatrizLegal_idMatrizLegal','=',$id)
             ->get();
-
+            // Se quita de la consulta estos dos campos  , mld.medioMatrizLegalDetalle, mld.personaMatrizLegalDetalle,
             return view('formatos.matrizlegalimpresion',['matrizLegal'=>$matrizLegal], compact('matrizLegalDetalle'));
         }
     }
@@ -225,8 +225,8 @@ class MatrizLegalController extends Controller
                     'ExpideNormaLegal_idExpideNormaLegal' => $request['ExpideNormaLegal_idExpideNormaLegal'][$i],
                     'exigenciaMatrizLegalDetalle' => $request['exigenciaMatrizLegalDetalle'][$i],
                     'fuenteMatrizLegalDetalle' => $request['fuenteMatrizLegalDetalle'][$i],
-                    'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
-                    'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
+                    // 'medioMatrizLegalDetalle' => $request['medioMatrizLegalDetalle'][$i],
+                    // 'personaMatrizLegalDetalle' => $request['personaMatrizLegalDetalle'][$i],
                     'herramientaSeguimientoMatrizLegalDetalle' => $request['herramientaSeguimientoMatrizLegalDetalle'][$i],
                     'cumpleMatrizLegalDetalle' => $request['cumpleMatrizLegalDetalle'][$i],
                     'fechaVerificacionMatrizLegalDetalle' => $request['fechaVerificacionMatrizLegalDetalle'][$i],
@@ -511,8 +511,8 @@ class MatrizLegalController extends Controller
                         'ExpideNormaLegal_idExpideNormaLegal' => $matriz[$reg]['ExpideNormaLegal_idExpideNormaLegal'],
                         'exigenciaMatrizLegalDetalle' => $matriz[$reg]['exigenciaMatrizLegalDetalle'],
                         'fuenteMatrizLegalDetalle' => $matriz[$reg]['fuenteMatrizLegalDetalle'],
-                        'medioMatrizLegalDetalle' => $matriz[$reg]['medioMatrizLegalDetalle'],
-                        'personaMatrizLegalDetalle' => $matriz[$reg]['personaMatrizLegalDetalle'],
+                        // 'medioMatrizLegalDetalle' => $matriz[$reg]['medioMatrizLegalDetalle'],
+                        // 'personaMatrizLegalDetalle' => $matriz[$reg]['personaMatrizLegalDetalle'],
                         'herramientaSeguimientoMatrizLegalDetalle' => $matriz[$reg]['herramientaSeguimientoMatrizLegalDetalle'],
                         'cumpleMatrizLegalDetalle' => $matriz[$reg]['cumpleMatrizLegalDetalle'],
                         'fechaVerificacionMatrizLegalDetalle' => $matriz[$reg]['fechaVerificacionMatrizLegalDetalle'],

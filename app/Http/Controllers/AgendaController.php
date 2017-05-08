@@ -21,6 +21,11 @@ class AgendaController extends Controller
         return view('agenda');
     }
 
+    public function indexGrid()
+    {
+        return view('agendagrid');
+    }
+
     public function getAll()
     {
         $events = $this->obtenerDatosEvento();

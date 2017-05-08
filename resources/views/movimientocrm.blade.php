@@ -6,6 +6,13 @@ foreach ($estado as $key => $value) {
 	$nombreEstadoDefault = $value;
 	break;
 }
+
+$camposAgendaTarea = array();
+// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+for ($i = 0, $c = count($movimientoCRMTarea); $i < $c; ++$i) 
+{
+  $camposAgendaTarea[$i] = (array) $movimientoCRMTarea[$i];
+}
 					              
 function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 {
@@ -145,7 +152,7 @@ else
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
-    where idTercero = '.\Session::get('idTercero'));
+    where idTercero = 2493');
 $tercero = get_object_vars($tercero[0]); 
 
 
@@ -165,6 +172,7 @@ $fechahora = Carbon\Carbon::now();
 
 {!!Html::script('js/movimientocrm.js'); !!}
 {!!Html::script('js/agenda.js'); !!}
+
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
@@ -189,9 +197,19 @@ $fechahora = Carbon\Carbon::now();
 	var valorAsistentes = [0,'','','','',''];
 	var valorArchivo = [0,'','',''];
 
+	valorEstado =  Array("En proceso", "Finalizado");
+    nombreEstado =  Array("En proceso", "Finalizado");
 
+    var estadoAgendaCRM = [valorEstado,nombreEstado];
 
 	$(document).ready(function(){
+
+							$('#fechaHoraInicioAgenda').datetimepicker(({
+    							format:'DD-MM-YYYY HH:mm:ss'
+							}));
+
+							if ($("#fechaHoraInicioAgenda").val() != '')
+								calcularHoras();
 
 		asistentes = new Atributos('asistentes','contenedor_asistentes','asistentes_');
 		asistentes.campos = ['idMovimientoCRMAsistente','nombreMovimientoCRMAsistente','cargoMovimientoCRMAsistente','telefonoMovimientoCRMAsistente','correoElectronicoMovimientoCRMAsistente'];
@@ -250,18 +268,77 @@ $fechahora = Carbon\Carbon::now();
 
 	    tareas.altura = '35px';
 	    tareas.campoid = 'idMovimientoCRMTarea';
-	    tareas.campoEliminacion = 'eliminarMovimientoCRMTarea';
+	    tareas.campoEliminacion = 'eliminarAgendaTarea';
 
-	    tareas.campos   = ['Categoria_idCategoria', 'nombreCategoriaAgendaTarea', 'descripcionAgendaTarea', 'ubicacionAgendaTarea', 'fechaInicioAgendaTarea', 'fechaFinAgendaTarea', 'horasAgendaTarea', 'pesoAgendaTarea', 'ejecucuionAgendaTarea', 'estadoAgendaTarea', 'idAgenda'];
-	    tareas.etiqueta = ['input', 'input', 'input'];
-	    tareas.tipo     = ['hidden', 'text', 'hidden'];
-	    tareas.estilo   = ['', 'width: 1200px;height:35px;' ,''];
-	    tareas.clase    = ['','', '', ''];
-	    tareas.sololectura = [true,true,true];
+	    tareas.campos   = [
+	    'CategoriaAgenda_idCategoriaAgenda', 
+	    'nombreCategoriaAgendaTarea', 
+	    'asuntoAgendaTarea', 
+	    'ubicacionAgendaTarea', 
+	    'fechaInicioAgendaTarea', 
+	    'fechaFinAgendaTarea', 
+	    'horasAgendaTarea', 
+	    'Tercero_idResponsable', 
+	    'nombreResponsableAgenda', 
+	    'pesoAgendaTarea', 
+	    'ejecuionAgendaTarea', 
+	    'estadoAgendaTarea', 
+	    'idAgenda'];
+
+	    tareas.etiqueta = [
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input', 
+	    'input'];
+
+	    tareas.tipo     = [
+	    'hidden', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'hidden', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'text', 
+	    'hidden'];
+
+	    tareas.estilo   = [
+	    '', 
+	    'width: 120px;height:35px;', 
+	    'width: 120px;height:35px;', 
+	    'width: 100px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    '', 
+	    'width: 150px;height:35px;', 
+	    'width: 80px;height:35px;', 
+	    'width: 100px;height:35px;', 
+	    'width: 100px;height:35px;', 
+	    ''];
+
+	    tareas.clase    = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
+	    tareas.sololectura = [true, true, true, true, false, false, false, true, true, false, false, false, true];
+	    tareas.opciones ['', '', '', '', '', '', '', '', '', '', '', '', ''];
+
 	    for(var j=0, k = movimientoCRMTarea.length; j < k; j++)
 	    {
 	      tareas.agregarCampos(JSON.stringify(movimientoCRMTarea[j]),'L');
 	      console.log(JSON.stringify(movimientoCRMTarea[j]))
+	      asignarFechAgenda(movimientoCRMTarea[j]['fechaInicioAgendaTarea'], movimientoCRMTarea[j]['fechaFinAgendaTarea'], j);
 	    }
 	});
 </script>
@@ -867,12 +944,12 @@ $fechahora = Carbon\Carbon::now();
 										<div class="col-sm-12">
 											{!!Form::label('fechaHoraInicioAgenda', 'Fecha de Inicio', array())!!}
 										</div>
-										<div class="col-sm-4">
+										<div class="col-sm-12">
 								            <div class="input-group">
 								              	<span class="input-group-addon">
 								                	<i class="fa fa-calendar"></i>
 								              	</span>
-												{!!Form::text('fechaHoraInicioAgenda',null,['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
+												{!!Form::text('fechaHoraInicioAgenda',(isset($movimientoCRMTarea) ? $movimientoCRMTarea->fechaInicioAgendaTarea : null),['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
 											</div>
 										</div>
 									</div>
@@ -881,12 +958,12 @@ $fechahora = Carbon\Carbon::now();
 										<div class="col-sm-12">
 											{!!Form::label('horasDiaAgenda', 'Horas al día', array())!!}
 										</div>
-										<div class="col-sm-4">
+										<div class="col-sm-12">
 								            <div class="input-group">
 								              	<span class="input-group-addon">
 								                	<i class="fa fa-clock-o"></i>
 								              	</span>
-												{!!Form::text('horasDiaAgenda',null,['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
+												{!!Form::text('horasDiaAgenda',(isset($movimientoCRMTarea) ? $camposAgendaTarea[0]['horasAgenda'] : null),['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
 											</div>
 										</div>
 									</div>
@@ -894,11 +971,16 @@ $fechahora = Carbon\Carbon::now();
 									<br><br><br><br>
 										
 									<div class="row show-grid">
-			                        <div class="col-md-1" style="width: 42px;height: 42px;" onclick="abrirModalVacante();">
+									  <div style="width: 1052px; display: inline-block; ">
+						              <div class="col-md-1" style="width: 542px;">&nbsp;</div>
+						              <div class="col-md-1" onclick="calcularHoras()" style="width: 80px; height: 42px; cursor:pointer;">
+						              <center><span class="glyphicon glyphicon-refresh"></span></center></div>
+						              <div class="col-md-1" style="width: 430px;">&nbsp;</div>
+			                        <div class="col-md-1" style="width: 42px;height: 42px; cursor:pointer;" onclick="abrirModalEvento()">
 			                          <span class="glyphicon glyphicon-plus"></span>
 			                        </div>
-			                        <div class="col-md-1" style="width: 150px;">Categoria</div>
-			                        <div class="col-md-1" style="width: 150px;">Descripción</div>
+			                        <div class="col-md-1" style="width: 120px;">Categoria</div>
+			                        <div class="col-md-1" style="width: 120px;">Descripción</div>
 			                        <div class="col-md-1" style="width: 100px;">Ubicación</div>
 			                        <div class="col-md-1" style="width: 80px;">Inicio</div>
 			                        <div class="col-md-1" style="width: 80px;">Fin</div>
@@ -910,6 +992,7 @@ $fechahora = Carbon\Carbon::now();
 
 			                        <!-- este es el div para donde van insertando los registros --> 
 			                        <div id="contenedor_tareas">
+			                        </div>
 			                        </div>
 			                      </div>
 
@@ -954,6 +1037,8 @@ $fechahora = Carbon\Carbon::now();
 											</div>
 										</div>
 									</div>
+
+									{!!Form::hidden('eliminarAgendaTarea', null, array('id' => 'eliminarAgendaTarea'))!!}
  									
 									</div>
 								</div>
@@ -1061,7 +1146,6 @@ $fechahora = Carbon\Carbon::now();
   </div>
 </div>
 
-<!-- Grid modal para agregar eventos de agenda -->
 <div id="modalEvento" class="modal fade" role="dialog">
   <div class="modal-dialog" style="width:70%;">
 
@@ -1069,11 +1153,11 @@ $fechahora = Carbon\Carbon::now();
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Crear un nuevo evento</h4>
+        <h4 class="modal-title">Crear una nueva tarea</h4>
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/eventoagenda"></iframe>'
+        echo '<iframe style="width:100%; height:400px; " id="eventos" name="eventos" src="http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?crear=crear"></iframe>'
       ?>
       </div>
     </div>

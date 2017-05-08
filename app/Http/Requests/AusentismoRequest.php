@@ -33,4 +33,18 @@ class AusentismoRequest extends Request
             "fechaFinAusentismo" => "required|date"
         ];
     }
+
+    public function messages()
+            {
+                return[
+                'Tercero_idTercero.required' => 'Debe Seleccionar un Empleado.',
+                'nombreAusentismo.required'=> 'Debe ingresar la Descripci&#243;n.',
+                'fechaElaboracionAusentismo.required'=> 'Debe Seleccionar la Fecha de Elaboracio&#243;n del Ausentismo.',
+                'tipoAusentismo.required'=> 'Debe Seleccionar el tipo de Ausentismo.',
+                'fechaInicioAusentismo.required'=> 'Debe Seleccionar la Fecha de Inicio del Ausentismo.',
+                'fechaFinAusentismo.required'=> 'Debe Seleccionar la Fecha de Final del Ausentismo.'
+
+                ];
+            }
+    
 }

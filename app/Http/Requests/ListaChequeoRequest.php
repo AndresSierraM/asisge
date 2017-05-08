@@ -41,4 +41,14 @@ class ListaChequeoRequest extends Request
 
         return $validacion;
     }
-}
+
+     public function messages()
+            {
+                return[
+                'numeroListaChequeo.required' => 'Debe Digitar el N&#250;mero.',
+                'fechaElaboracionListaChequeo.required'=> 'Debe Seleccionar la Fecha de Inicio',
+                'PlanAuditoria_idPlanAuditoria.required'=> 'Debe Seleccionar  el plan  de Auditor&#237;a.',
+                'Proceso_idProceso.required'=> 'Debe Seleccionar el Proceso.'
+                ];
+            }
+}   

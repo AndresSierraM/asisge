@@ -104,7 +104,7 @@ class MovimientoCRMController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(MovimientoCRMRequest $request)
+    public function store(Request $request)
     {
         $numero = DB::select(
             "SELECT CONCAT(REPEAT('0', longitudDocumentoCRM - LENGTH(ultimo+1)), (ultimo+1)) as nuevo
@@ -119,6 +119,9 @@ class MovimientoCRMController extends Controller
             ) temp");
 
         $numero = get_object_vars($numero[0])["nuevo"];
+
+        $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
+
         \App\MovimientoCRM::create([
             'numeroMovimientoCRM' => $numero,
             'asuntoMovimientoCRM' => $request['asuntoMovimientoCRM'],
@@ -137,7 +140,7 @@ class MovimientoCRMController extends Controller
             'DocumentoCRM_idDocumentoCRM' => ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null),
             'LineaNegocio_idLineaNegocio' => ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null),
             'OrigenCRM_idOrigenCRM' => ($request['OrigenCRM_idOrigenCRM'] != '' ? $request['OrigenCRM_idOrigenCRM'] : null),
-            'EstadoCRM_idEstadoCRM' => ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null),
+            'EstadoCRM_idEstadoCRM' => $estado,
             'AcuerdoServicio_idAcuerdoServicio' => ($request['AcuerdoServicio_idAcuerdoServicio'] != '' ? $request['AcuerdoServicio_idAcuerdoServicio'] : null),
             'detallesMovimientoCRM' => $request['detallesMovimientoCRM'],
             'solucionMovimientoCRM' => $request['solucionMovimientoCRM'],
@@ -237,12 +240,12 @@ class MovimientoCRMController extends Controller
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$movimientocrm->idMovimientoCRM.'?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
             
 
-            Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            {
-                $msj->to($datos['correos']);
-                $msj->subject($datos['asunto']);
-                // $msj->attach(public_path().'/plantrabajo.html');
-            });
+            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            // {
+            //     $msj->to($datos['correos']);
+            //     $msj->subject($datos['asunto']);
+            //     // $msj->attach(public_path().'/plantrabajo.html');
+            // });
         }
         
         return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
@@ -363,12 +366,35 @@ class MovimientoCRMController extends Controller
             on MC.Cargo_idCargo = C.idCargo
             WHERE idMovimientoCRM = '.$id);
 
+        $movimientoCRMTarea = DB::Select('
+                SELECT 
+                    CategoriaAgenda_idCategoriaAgenda,
+                    nombreCategoriaAgenda as nombreCategoriaAgendaTarea,
+                    asuntoAgenda as asuntoAgendaTarea,
+                    ubicacionAgenda as ubicacionAgendaTarea,
+                    fechaHoraInicioAgenda as fechaInicioAgendaTarea,
+                    fechaHoraFinAgenda as fechaFinAgendaTarea,
+                    horasAgenda as horasAgendaTarea,
+                    Tercero_idResponsable,
+                    nombreCompletoTercero as nombreResponsableAgenda,
+                    pesoAgenda as pesoAgendaTarea,
+                    porcentajeEjecucionAgenda as ejecuionAgendaTarea,
+                    estadoAgenda as estadoAgendaTarea,
+                    idAgenda
+                FROM agenda a
+                    LEFT JOIN 
+                categoriaagenda ca ON a.CategoriaAgenda_idCategoriaAgenda = ca.idCategoriaAgenda
+                    LEFT JOIN 
+                tercero t ON a.Tercero_idResponsable = t.idTercero
+                WHERE MovimientoCRM_idMovimientoCRM = '.$id.' 
+                    AND a.Compania_idCompania = '.\Session::get('idCompania'));  
+
 
         // print_r($movimientocrmcargo);
 
 
 
-        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo'),['movimientocrm'=>$movimientocrm]);
+        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -381,6 +407,8 @@ class MovimientoCRMController extends Controller
     public function update(MovimientoCRMRequest $request, $id)
     {
 
+        $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
+
         $movimientocrm = \App\MovimientoCRM::find($id);
         $movimientocrm->fill($request->all());
         $movimientocrm->Tercero_idSolicitante = ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null);
@@ -390,7 +418,7 @@ class MovimientoCRMController extends Controller
         $movimientocrm->DocumentoCRM_idDocumentoCRM = ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null);
         $movimientocrm->LineaNegocio_idLineaNegocio = ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null);
         $movimientocrm->OrigenCRM_idOrigenCRM = ($request['OrigenCRM_idOrigenCRM'] != '' ? $request['OrigenCRM_idOrigenCRM'] : null);
-        $movimientocrm->EstadoCRM_idEstadoCRM = ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null);
+        $movimientocrm->EstadoCRM_idEstadoCRM = $estado;
         $movimientocrm->AcuerdoServicio_idAcuerdoServicio = ($request['AcuerdoServicio_idAcuerdoServicio'] != '' ? $request['AcuerdoServicio_idAcuerdoServicio'] : null);
 
         $movimientocrm->save();
@@ -485,12 +513,12 @@ class MovimientoCRMController extends Controller
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$movimientocrm->idMovimientoCRM.'?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
             
 
-            Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            {
-                $msj->to($datos['correos']);
-                $msj->subject($datos['asunto']);
-                // $msj->attach(public_path().'/archivo.html');
-            });
+            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            // {
+            //     $msj->to($datos['correos']);
+            //     $msj->subject($datos['asunto']);
+            //     // $msj->attach(public_path().'/archivo.html');
+            // });
         }
         
 
@@ -556,6 +584,64 @@ class MovimientoCRMController extends Controller
 
         }
 
+        // ************************
+        // A  G  E  N  D  A
+        // ************************
+        
+        $destinatarioAgenda = '';
+
+        $idsEliminar = explode(',', $request['eliminarAgenda']);
+        \App\Agenda::whereIn('idAgenda',$idsEliminar)->delete();
+
+        for ($i=0; $i < count($request['CategoriaAgenda_idCategoriaAgenda']); $i++) 
+        { 
+            $fechaInicio =  strtotime(substr($request['fechaInicioAgendaTarea'][$i], 6, 4)."-".substr($request['fechaInicioAgendaTarea'][$i], 3, 2)."-".substr($request['fechaInicioAgendaTarea'][$i], 0, 2)." " .substr($request['fechaInicioAgendaTarea'][$i], 10, 6)) * 1000;
+
+            $fechaFin =  strtotime(substr($request['fechaFinAgendaTarea'][$i], 6, 4)."-".substr($request['fechaFinAgendaTarea'][$i], 3, 2)."-".substr($request['fechaFinAgendaTarea'][$i], 0, 2)." " .substr($request['fechaFinAgendaTarea'][$i], 10, 6)) * 1000;
+
+            $indice = array(
+                'idAgenda' => $request['idAgenda'][$i]);
+
+            $data = array(
+                'CategoriaAgenda_idCategoriaAgenda' => $request['CategoriaAgenda_idCategoriaAgenda'][$i],
+                'asuntoAgenda' => $request['asuntoAgendaTarea'][$i],
+                'horasAgenda' => $request['horasDiaAgenda'][$i],
+                'fechaHoraInicioAgenda' => $fechaInicio,
+                'fechaHoraFinAgenda' => $fechaFin,
+                'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
+                'Tercero_idResponsable' => $request['Tercero_idResponsable'][$i],
+                'MovimientoCRM_idMovimientoCRM' => $id,
+                'ubicacionAgenda' => $request['ubicacionAgendaTarea'][$i],
+                'porcentajeEjecucionAgenda' => $request['ejecuionAgendaTarea'][$i],
+                'Compania_idCompania' => \Session::get('idCompania'));
+
+            $respuesta = \App\Agenda::updateOrCreate($indice, $data); 
+
+            if ($request['idAgenda'][$i] == 0) 
+            {
+                $agenda = \App\Agenda::All()->last();
+                DB::update('UPDATE agenda SET urlAgenda = "http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?id='.$agenda->idAgenda.'" WHERE idAgenda = '.$agenda->idAgenda);
+            } 
+
+            $destinatarioAgenda .= $request['Tercero_idResponsable'][$i].';';
+        }
+
+        if ($destinatarioAgenda != '') 
+        {
+            $destinatarioAgenda = substr($destinatarioAgenda, 0, -1);
+
+            $mail = array();
+            $mail['asuntoCorreoCRM'] = 'Tareas programadas - Agenda CRM';
+            $destinatario = $request['Tercero_idSupervisor'].';'.$destinatarioAgenda;
+            $mail['mensaje'] = "Se han realizado movimientos en la agenda del CRM.<br><br>
+            Para visualizarlo mejor <a href='http://".$_SERVER['HTTP_HOST']."/agenda'>ve directamente</a> a la agenda.";
+            $mail['destinatarioCorreoCRM'] = explode(';', $destinatario);
+            // Mail::send('emails.contact',$mail,function($msj) use ($mail)
+            // {
+            //     $msj->to($mail['destinatarioCorreoCRM']);
+            //     $msj->subject($mail['asuntoCorreoCRM']);
+            // }); 
+        }
 
     }
 
@@ -616,11 +702,11 @@ class MovimientoCRMController extends Controller
             $datos['mensaje'] = $datosmovimiento[0]['detallesMovimientoCRM']. '  
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$datosmovimiento[0]['idMovimientoCRM'].'?idDocumentoCRM='.$datosmovimiento[0]['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
 
-            Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            {
-                $msj->to($datos['correos']);
-                $msj->subject($datos['asunto']);
-            });
+            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            // {
+            //     $msj->to($datos['correos']);
+            //     $msj->subject($datos['asunto']);
+            // });
         }
         
 

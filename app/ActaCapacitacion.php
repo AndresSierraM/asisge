@@ -22,4 +22,9 @@ class ActaCapacitacion extends Model
     {
     	return $this->hasMany('App\ActaCapacitacionTema','ActaCapacitacion_idActaCapacitacion');
     }
+
+     public function ActaCapacitacionArchivo()
+    {
+        return $this->hasMany('App\ActaCapacitacionArchivo','ActaCapacitacion_idActaCapacitacion');
+    }
 }
