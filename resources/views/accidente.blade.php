@@ -94,7 +94,8 @@
 		recomendacion.clase = ['','','','','','','',''];
 		recomendacion.sololectura = [false,false,false,false,false,false,false,false];
 		recomendacion.opciones = ['','','','','','',medida, proceso];
-		recomendacion.funciones = ['','','','','','','',''];
+		var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+		recomendacion.funciones = ['',quitacarac,'','','','','',''];
 
 
 		for(var j=0, k = accidenteRecomendacion.length; j < k; j++)
@@ -182,7 +183,7 @@
 			              	<span class="input-group-addon">
 			                	<i class="fa fa-barcode"></i>
 			              	</span>
-							{!!Form::text('nombreAccidente',null,['class'=>'form-control','placeholder'=>'Ingresa la descripcion del accidente'])!!}
+							{!!Form::text('nombreAccidente',null,['class'=>'form-control','placeholder'=>'Ingresa la descripcion del accidente',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
 						</div>
 					</div>
 				</div>

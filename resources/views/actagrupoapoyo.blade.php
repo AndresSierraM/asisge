@@ -92,7 +92,8 @@ for ($i=0; $i < count($firmas); $i++)
 			tema.sololectura = [false,false,false,false,false];
 			tema.completar = ['off','off','off','off','off'];
 			tema.opciones = ['','','',tercero,''];
-			tema.funciones  = ['','','','',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+			tema.funciones  = ['',quitacarac,quitacarac,'',quitacarac];
 
 
 			for(var j=0, k = actaGrupoApoyoTercero.length; j < k; j++)
@@ -135,7 +136,7 @@ for ($i=0; $i < count($firmas); $i++)
 	  actagrupoapoyo.campoEliminacion = 'eliminarActividad';
 
 
-      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsableDetalle', 'Documento_idDocumento',
+      actagrupoapoyo.campos    = ['actividadGrupoApoyoDetalle', 'Tercero_idResponsableDetalle', 'DocumentoSoporte_idDocumentoSoporte',
                             'fechaPlaneadaActaGrupoApoyoDetalle', 'recursoPlaneadoActaGrupoApoyoDetalle', 
                             'fechaEjecucionGrupoApoyoDetalle','recursoEjecutadoActaGrupoApoyoDetalle', 
                              'observacionGrupoApoyoDetalle'];

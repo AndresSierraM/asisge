@@ -4,6 +4,8 @@
 	{!!Form::model($plantrabajo)!!}
 	<?php
 
+set_time_limit(0);
+
     function base64($archivo)
     {
       
@@ -628,8 +630,8 @@
 
         
         $actividadesgrupoapoyo = DB::select(
-            'SELECT CONCAT(nombreGrupoApoyo, " - ", actividadGrupoApoyoDetalle) as descripcionTarea,
-                idActaGrupoApoyoDetalle as idConcepto,
+            'SELECT concat(IFNULL(nombreModulo,""), " - (", tipoReporteACPMDetalle , ")  ",descripcionReporteACPMDetalle) as descripcionTarea,
+                idReporteACPMDetalle as idConcepto,
                 '.$columnas.'
             From reporteacpmdetalle acpmd
             left join reporteacpm acpm
@@ -670,6 +672,12 @@
     {
         $mesFinal -= 12;
         $añoFinal += 1;
+    }
+
+    if($mesInicial < 0)
+    {
+        $mesInicial += 12;
+        $añoInicial -= 1;
     }
 
     $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');

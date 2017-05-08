@@ -60,7 +60,7 @@
                                       <span class="input-group-addon">
                                         <i class="fa fa-commenting-o"></i>
                                       </span>
-                                {!!Form::textarea('observacionPerfilCargo',null,['class'=>'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
+                                {!!Form::textarea('observacionPerfilCargo',null,['class'=>'form-control','placeholder'=>'','style'=>'width:100%;,right',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
                                                            
                               </div>
                             </br>

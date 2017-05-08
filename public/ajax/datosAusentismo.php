@@ -1,9 +1,11 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +15,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+      if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
 
     $ausentismo = DB::table('ausentismo')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
@@ -31,9 +37,13 @@
                         '<a href="ausentismo/'.$value->idAusentismo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>&nbsp;&nbsp;'.
-                        '<a href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
-                            '<span class="glyphicon glyphicon-paperclip" style = "display:'.$visibleE.'"></span>'.
+                        '<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
+                            '<span class="glyphicon glyphicon-paperclip " style = "display:'.$visibleI.'"></span>'.
                         '</a>';
+
+
+                         // '<a onclick="ArchivoAdjunto('.$value['archivoAusentismo'].')">'.
+                        // target="_blank es para que abra en una ventana nueva y no lo descargue"
 
         $row[$key][] = $value->idAusentismo;
         $row[$key][] = $value->nombreAusentismo;

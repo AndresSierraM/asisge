@@ -66,7 +66,8 @@
 			agenda.sololectura = [false,false,false,false,false,false,false,false];
 			agenda.completar = ['off','off','off','off','off','off','off','off'];
 			agenda.opciones = ['',proceso,tercero,tercero,'','','','',''];
-			agenda.funciones  = ['','','','','','','',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+			agenda.funciones  = ['','','','','','','',quitacarac];
 
 			for(var j=0, k = planAuditoriaAcompanante.length; j < k; j++)
 			{

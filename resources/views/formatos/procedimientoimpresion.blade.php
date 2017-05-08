@@ -40,7 +40,7 @@
 						<tbody>
 							<tr>
 								<td>
-									{{$dato->objetivoProcedimiento}}
+									<?php echo $dato->objetivoProcedimiento;?>
 								</td>
 							</tr>
 						</tbody>
@@ -56,7 +56,7 @@
 						<tbody>
 							<tr>
 								<td>
-									{{$dato->alcanceProcedimiento}}
+									<?php echo $dato->alcanceProcedimiento;?>
 								</td>
 							</tr>
 						</tbody>
@@ -72,7 +72,7 @@
 						<tbody>
 							<tr>
 								<td>
-									{{$dato->responsabilidadProcedimiento}}
+									<?php echo $dato->responsabilidadProcedimiento;?>
 								</td>
 							</tr>
 						</tbody>
@@ -93,7 +93,7 @@
 							<tr>
 								<td>{{$dato->actividadProcedimientoDetalle}}</td>
 								<td>{{$dato->nombreCompletoTercero}}</td>
-								<td>{{$dato->nombreDocumento}}</td>
+								<td>{{$dato->nombreDocumentoSoporte}}</td>
 								
 							</tr>
 							@endforeach

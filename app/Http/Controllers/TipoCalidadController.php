@@ -62,8 +62,8 @@ class TipoCalidadController extends Controller
         \App\TipoCalidad::create([
             'codigoTipoCalidad' => $request['codigoTipoCalidad'],
             'nombreTipoCalidad' => $request['nombreTipoCalidad'],
-            'noConformeTipoCalidad' => (($request['noConformeTipoCalidad'], !== null) ? 1 : 0),
-            'alertaCorreoTipoCalidad' => (($request['alertaCorreoTipoCalidad'], !== null) ? 1 : 0),
+            'noConformeTipoCalidad' => (($request['noConformeTipoCalidad'] !== null) ? 1 : 0),
+            'alertaCorreoTipoCalidad' => (($request['alertaCorreoTipoCalidad'] !== null) ? 1 : 0),
             'paraTipoCalidad' => $request['paraTipoCalidad'],
             'asuntoTipoCalidad' => $request['asuntoTipoCalidad'],
             'mensajeTipoCalidad' => $request['mensajeTipoCalidad'],

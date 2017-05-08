@@ -53,7 +53,8 @@
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true];
 			detalle.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
 			detalle.opciones = ['','','',proceso,modulo,tipo,'','','',tercero,'',tercero,'','','','',''];
-			detalle.funciones  = ['','',eventos1,'','','','','','','','','',eventos2,'',eventos3,'',''];
+			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+			detalle.funciones  = ['','',eventos1,'','','',quitacarac,quitacarac,quitacarac,'',quitacarac,'',eventos2,quitacarac,eventos3,'',''];
 
 			for(var j=0, k = reporteACPMDetalle.length; j < k; j++)
 			{
@@ -109,7 +110,7 @@
 							<span class="input-group-addon">
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
-							{!!Form::text('descripcionReporteACPM',null,['class'=>'form-control','placeholder'=>'Digite la descripci&oacute;n'])!!}
+							{!!Form::text('descripcionReporteACPM',null,['class'=>'form-control','placeholder'=>'Digite la descripci&oacute;n',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
 						</div>
 					</div>
 				</div>

@@ -228,12 +228,12 @@ function validarFormulario(event)
                     (typeof respuesta['parentescoEntrevistaRelacionFamiliar'+j] === "undefined" ? document.getElementById('parentescoEntrevistaRelacionFamiliar'+j).style.borderColor = '' : document.getElementById('parentescoEntrevistaRelacionFamiliar'+j).style.borderColor = '#a94442');
                 }
 
-                 for(var j=0,i=CompetenciaPregunta.length; j<i;j++)
-                {
-                    (typeof respuesta['Proceso_idResponsable'+j] === "undefined" 
-                        ? document.getElementById('CompetenciaPregunta_idCompetenciaPregunta'+j).style.borderColor = '' 
-                        : document.getElementById('CompetenciaPregunta_idCompetenciaPregunta'+j).style.borderColor = '#a94442');
-                }
+                //  for(var j=0,i=CompetenciaPregunta.length; j<i;j++)
+                // {
+                //     (typeof respuesta['Proceso_idResponsable'+j] === "undefined" 
+                //         ? document.getElementById('CompetenciaPregunta_idCompetenciaPregunta'+j).style.borderColor = '' 
+                //         : document.getElementById('CompetenciaPregunta_idCompetenciaPregunta'+j).style.borderColor = '#a94442');
+                // }
 
                 for(var j=0,i=EntrevistaFormacion.length; j<i;j++)
                 {
@@ -707,3 +707,63 @@ function consultarEdadEntrevistado(fecha)
     }
 }
 
+function llenarHabilidadesActitudinales(idEntrevista)
+{
+    var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idEntrevista': idEntrevista},
+            url:   'http://'+location.host+'/llenarHabilidadesActitudinales/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+
+            success: function(respuesta){
+                document.getElementById("EntrevistaCompetencia_Modulo").innerHTML = '';
+                var valor = new Array();
+                var nombres = new Array();
+                var porcentaje = new Array();
+                 
+                //console.log(respuesta);
+               // $("#calificacionHabilidadActitudinalEntrevista").val(respuesta[]["respuestaCompetenciaPregunta"]);
+                for (var i = 0; i < respuesta.length; i++) 
+                {
+                    var porcentajes = Array();  
+                    var titulos = Array();
+                    
+                    // dependindo si la pregunta tiene respuesta normal o inversa
+                    // le debemos poner en el value uno u otro porcentaje, en la mitad
+                    // del campo de porcentaje le concatemamos el "tipo" que dice si es Normal o Inverso para
+                    // Formar el nombre del campo
+// alert(respuesta[i]["respuestaCompetenciaPregunta"]);
+// alert(respuesta[i]['valorEntrevistaCompetencia']);
+                    porcentajes[i] =  respuesta[i]["valorEntrevistaCompetencia"];
+                    titulos[i] = respuesta[i]["respuestaCompetenciaRespuesta"];
+
+                    console.log(porcentajes);
+                    window.parent.EntrevistaCompentencia.opciones[3] = [porcentajes, titulos]; 
+
+                    var valores = new Array(
+                        respuesta[i]["idEntrevistaCompetencia"],
+                        respuesta[i]["CompetenciaPregunta_idCompetenciaPregunta"],
+                        respuesta[i]["preguntaCompetenciaPregunta"],
+                        respuesta[i]["valorEntrevistaCompetencia"]);
+
+                    window.parent.EntrevistaCompentencia.agregarCampos(valores,'A'); 
+
+
+                    //SE CREARON DOS VARIABLES para sacar el promedio de los porcentajes y mandarlo al campo con el valor del resultado promedio final y  llamando 
+                     // promediopregunta+= parseFloat($('#porcentajeNormalCompetenciaRespuesta'+[i]).val() + parseFloat($('#porcentajeInversoCompetenciaRespuesta'+[i]).val()));
+                     //  promediopreguntafinal = promediopregunta/dato1;
+                    //finalmente se envia el resultado al campito de calificacion que esta situado debajo de las preguntas 
+                   
+                }  
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+}

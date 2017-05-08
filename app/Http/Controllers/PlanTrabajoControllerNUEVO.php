@@ -43,8 +43,12 @@ class PlanTrabajoController extends Controller
                 where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL   and 
                     (DATE_FORMAT(CURDATE(),"%Y") >= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") and DATE_FORMAT(CURDATE(),"%Y") <= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") OR DATE_FORMAT(CURDATE(),"%Y") >= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") and DATE_FORMAT(CURDATE(),"%Y") <= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") OR
                         fechaRetiroTerceroInformacion = "0000-00-00") AND
+<<<<<<< HEAD
                         fechaIngresoTerceroInformacion != "0000-00-00" AND
                         idTercero = 4646 and 
+=======
+                        fechaIngresoTerceroInformacion != "0000-00-00" AND  
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
                     estadoTercero = "ACTIVO" AND 
                     T.Compania_idCompania = '.$idCompania .' 
                 order by nombreCompletoTercero, idTercero
@@ -140,8 +144,12 @@ class PlanTrabajoController extends Controller
                 where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL   and 
                     (DATE_FORMAT(CURDATE(),"%Y") >= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") and DATE_FORMAT(CURDATE(),"%Y") <= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") OR DATE_FORMAT(CURDATE(),"%Y") >= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") and DATE_FORMAT(CURDATE(),"%Y") <= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") OR
                         fechaRetiroTerceroInformacion = "0000-00-00") AND
+<<<<<<< HEAD
                         fechaIngresoTerceroInformacion != "0000-00-00" AND
                         idTercero = 4646 and 
+=======
+                        fechaIngresoTerceroInformacion != "0000-00-00" AND 
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
                     estadoTercero = "ACTIVO" AND 
                     EMD.ExamenMedico_idExamenMedico IS NOT NULL AND
                     T.Compania_idCompania = '.$idCompania .' 
@@ -174,13 +182,18 @@ class PlanTrabajoController extends Controller
             echo '<br>';
         }
 
+<<<<<<< HEAD
     // IMPRIMIMOSLA TABLA
     $tabla = '';
+=======
+        $tabla = '';
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
 
         $tabla .= '        
                     <div class="panel panel-primary" style="border:1px solid">
                         <div class="panel-heading">
                           <h4 class="panel-title">
+<<<<<<< HEAD
                             <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
                           </h4>
                         </div>';
@@ -195,10 +208,17 @@ class PlanTrabajoController extends Controller
 
                         $tabla .= 
                         '<div id="'.$idtabla.'" class="panel-collapse"> 
+=======
+                            <a data-toggle="collapse" data-parent="#accordion" href="#examenmedico">Examenes Medicos</a>
+                          </h4>
+                        </div>
+                        <div id="examenmedico" class="panel-collapse"> 
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
                             <div class="panel-body" style="overflow:auto;">
                                 <table  class="table table-striped table-bordered table-hover">
                                     <thead class="thead-inverse">
                                         <tr class="table-info">
+<<<<<<< HEAD
                                             <th scope="col" width="30%">&nbsp;</th>';
                                                
                                             $inicio = $fechaInicial;
@@ -213,12 +233,28 @@ class PlanTrabajoController extends Controller
 
                                 
                                         $tabla .= '
+=======
+                                            <th scope="col" width="30%">&nbsp;</th>
+                                            <th>Enero</th>
+                                            <th>Febrero</th>
+                                            <th>Marzo</th>
+                                            <th>Abril</th>
+                                            <th>Mayo</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Agosto</th>
+                                            <th>Septiembre</th>
+                                            <th>Octubre</th>
+                                            <th>Noviembre</th>
+                                            <th>Diciembre</th>
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
                                             <th>Presupuesto</th>
                                             <th>Costo Real</th>
                                             <th>Cumplimiento</th>
                                         </tr>
                                         </thead>
                                         <tbody>';
+<<<<<<< HEAD
 
                                             $mesesC = 0;
                                             $mesesT = 0;
@@ -262,6 +298,36 @@ class PlanTrabajoController extends Controller
                                   </div> 
                                 </div>
                               </div>';
+=======
+                                        for ($i=0; $i <count($datos); $i++) 
+                                        { 
+                                            $tabla .= 
+                                            '<tr align="center">
+                                            <th scope="row">'.$datos[$i]["Nombre"].'</th>
+                                            <td>'.$this->colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['05T'],$datos[$i]['05C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['06T'],$datos[$i]['06C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['07T'],$datos[$i]['07C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['08T'],$datos[$i]['08C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['09T'],$datos[$i]['09C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['11T'],$datos[$i]['10C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['11T'],$datos[$i]['11C']).'</td>
+                                            <td>'.$this->colorTarea($datos[$i]['12T'],$datos[$i]['12C']).'</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            </tr>';
+                                        }
+                                        $tabla .= '
+                                        </tbody>
+                                </table>
+                            </div> 
+                        </div>
+                    </div>';
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
 
         return $tabla;
 
@@ -284,5 +350,38 @@ class PlanTrabajoController extends Controller
         return $pos;
     }
 
+<<<<<<< HEAD
+=======
+    function colorTarea($valorTarea, $valorCumplido)
+    {
+
+        $icono = '';    
+        $tool = 'Tareas Pendientes : '.number_format($valorTarea,0,'.',',')."\n".
+                'Tareas Realizadas : '.number_format($valorCumplido,0,'.',','); 
+        $etiqueta = '';
+        if($valorTarea != $valorCumplido and $valorCumplido != 0)
+        {
+            $icono = 'Amarillo.png';
+            $etiqueta = '<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';
+        }elseif($valorTarea == $valorCumplido and $valorTarea != 0)
+        {
+            $icono = 'Verde.png';
+        }
+        elseif($valorTarea > 0 and $valorCumplido == 0)
+        {
+            $icono = 'Rojo.png';        
+        }
+
+        if($valorTarea != 0 or $valorCumplido != 0)
+        {
+            $icono =    '<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
+                                <img src="images/iconosmenu/'.$icono.'"  width="30">
+                            </a>'.$etiqueta;    
+        }
+        //$valorTarea .' '. $valorCumplido. 
+        return $icono;
+    }
+
+>>>>>>> 949215231db980a20d07864d701fbafc55d0049a
 
 }

@@ -86,7 +86,7 @@
 			              	<span class="input-group-addon">
 			                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 			              	</span>
-							{!!Form::text('nombreMatrizLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre'])!!}
+							{!!Form::text('nombreMatrizLegal',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
 					    </div>
 					</div>
 				</div>

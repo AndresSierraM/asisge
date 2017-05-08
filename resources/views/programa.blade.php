@@ -11,9 +11,11 @@
     var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
     var tercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
 
-    var idDocumento = '<?php echo isset($idDocumento) ? $idDocumento : "";?>';
-    var nombreDocumento = '<?php echo isset($nombreDocumento) ? $nombreDocumento : "";?>';
-    var documento = [JSON.parse(idDocumento),JSON.parse(nombreDocumento)];
+    var idDocumentoSoporte = '<?php echo isset($idDocumentoSoporte) ? $idDocumentoSoporte : "";?>';
+    var nombreDocumentoSoporte = '<?php echo isset($nombreDocumentoSoporte) ? $nombreDocumentoSoporte : "";?>';
+    var documentosoporte = [JSON.parse(idDocumentoSoporte),JSON.parse(nombreDocumentoSoporte)];
+
+    console.log(nombreDocumentoSoporte);
 
     var programaDetalle = '<?php echo (isset($programa) ? json_encode($programa->programaDetalle) : "");?>';
     programaDetalle = (programaDetalle != '' ? JSON.parse(programaDetalle) : '');
@@ -49,15 +51,16 @@
                             ''];
       programa.sololectura = [false,false,false,false,false,false,false,false];
       programa.completar = ['off', 'off','off','off','off','off','off','off'];
-      programa.opciones = ['', tercero, documento,'','','','',''];
-      programa.funciones  = ['', '','','','','','',''];
+      programa.opciones = ['', tercero, documentosoporte,'','','','',''];
+      var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+      programa.funciones  = [quitacarac, '','','','','','',quitacarac];
 
 
 
       programa.nombreCompletoTercero =  JSON.parse(nombreCompletoTercero);
       programa.idTercero =  JSON.parse(idTercero);
-      programa.nombreDocumento =  JSON.parse(nombreDocumento);
-      programa.idDocumento =  JSON.parse(idDocumento);
+      programa.nombreDocumentoSoporte =  JSON.parse(nombreDocumentoSoporte);
+      programa.idDocumentoSoporte =  JSON.parse(idDocumentoSoporte);
 
 
       for(var j=0, k = programaDetalle.length; j < k; j++)
@@ -69,28 +72,28 @@
 
   </script>
 
-	@if(isset($programa))
-		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($programa,['route'=>['programa.destroy',$programa->idPrograma],'method'=>'DELETE', 'files' => true])!!}
-		@else
-			{!!Form::model($programa,['route'=>['programa.update',$programa->idPrograma],'method'=>'PUT', 'files' => true])!!}
-		@endif
-	@else
-		{!!Form::open(['route'=>'programa.store','method'=>'POST'])!!}
-	@endif
+  @if(isset($programa))
+    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+      {!!Form::model($programa,['route'=>['programa.destroy',$programa->idPrograma],'method'=>'DELETE', 'files' => true])!!}
+    @else
+      {!!Form::model($programa,['route'=>['programa.update',$programa->idPrograma],'method'=>'PUT', 'files' => true])!!}
+    @endif
+  @else
+    {!!Form::open(['route'=>'programa.store','method'=>'POST'])!!}
+  @endif
 
 
 <div id='form-section' >
 
-	<fieldset id="programa-form-fieldset">	
-	      <div class="form-group" id='test'>
+  <fieldset id="programa-form-fieldset">  
+        <div class="form-group" id='test'>
           {!!Form::label('nombrePrograma', 'Programa', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-calendar" ></i>
               </span>
-              {!!Form::text('nombrePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del programa', 'style'=>'width:340;'])!!}
+              {!!Form::text('nombrePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el nombre del programa', 'style'=>'width:340;',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
               <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
             </div>
           </div>
@@ -130,12 +133,12 @@
               <span class="input-group-addon">
                 <i class="fa fa-calendar" ></i>
               </span>
-              {!!Form::text('alcancePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el alcance del programa', 'style'=>'width:340;'])!!}
+              {!!Form::text('alcancePrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa el alcance del programa', 'style'=>'width:340;',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
         </div>
-		
-		    <div class="form-group" id='test'>
+    
+        <div class="form-group" id='test'>
           {!!Form::label('CompaniaObjetivo_idCompaniaObjetivo', 'Objetivo', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -225,7 +228,7 @@
   @else
          {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarformulario(event);'])!!}
   @endif
-	{!! Form::close() !!}
+  {!! Form::close() !!}
 
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
@@ -244,6 +247,6 @@
   </script>
 
 
-	</div>
+  </div>
 </div>
 @stop

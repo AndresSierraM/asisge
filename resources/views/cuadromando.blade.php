@@ -98,14 +98,26 @@
 
 <div id='form-section' >
 
-	<fieldset id="cuadromando-form-fieldset">	
+	<fieldset id="cuadromando-form-fieldset">
+
+    <div class="form-group" id='test'>
+            {!!Form::label('Compania_idCompania', 'Compa&ntilde;&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
+            <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="fa fa-bank"  style="width: 14px;"></i>
+                        </span>
+                {!!Form::select('Compania_idCompania',$compania, (isset($cuadromando) ? $cuadromando->Compania_idCompania : ''),["class" => "chosen-select form-control", "placeholder" =>"Todas"])!!}
+              </div>
+            </div>
+          </div>
 
 		<div class="form-group" id='test'>
           {!! Form::label('numeroCuadroMando', 'N&uacute;mero', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-tachometer"></i>
+                <i class="fa fa-tachometer"  style="width: 14px;"></i>
               </span>
               {!!Form::text('numeroCuadroMando',null,['class'=>'form-control','placeholder'=>'Ingresa el n&uacute;mero'])!!}
               {!! Form::hidden('idCuadroMando', null, array('idCuadroMando' => 'idCuadroMando')) !!}
@@ -118,7 +130,7 @@
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
-                          <i class="fa fa-pencil-square-o"></i>
+                          <i class="fa fa-pencil-square-o"  style="width: 14px;"></i>
                         </span>
                 {!!Form::select('CompaniaObjetivo_idCompaniaObjetivo',$companiaobjetivo, (isset($cuadromando) ? $cuadromando->CompaniaObjetivo_idCompaniaObjetivo : 0),["class" => "chosen-select form-control", 'onchange'=>'llenarObjetivo(this.value)', "placeholder" =>"Seleccione el objetivo"])!!}
               </div>
@@ -132,7 +144,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-bars"></i>
+                <i class="fa fa-bars"  style="width: 14px;"></i>
               </span>
     				{!!Form::textarea('objetivoCalidad',null,['class'=>'form-control','readonly','style'=>'height:100px'])!!}
             </div>
@@ -144,7 +156,7 @@
             <div class="col-sm-10">
               <div class="input-group">
                   <span class="input-group-addon">
-                    <i class="fa fa-sitemap"></i>
+                    <i class="fa fa-sitemap"  style="width: 14px;"></i>
                   </span>
                 {!!Form::select('Proceso_idProceso',$proceso, (isset($cuadromando) ? $cuadromando->Proceso_idProceso : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el proceso"])!!}
               </div>
@@ -156,7 +168,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-bars"></i>
+                <i class="fa fa-bars"  style="width: 14px;"></i>
               </span>
             {!!Form::textarea('objetivoEspecificoCuadroMando',null,['class'=>'form-control','style'=>'height:70px'])!!}
             </div>
@@ -168,7 +180,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-font "></i>
+                <i class="fa fa-font "  style="width: 14px;"></i>
               </span>
             {!!Form::text('indicadorCuadroMando',null,['class'=>'form-control','placeholder'=>'Ingrese el nombre del indicador'])!!}
             </div>
@@ -180,7 +192,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-indent"></i>
+                <i class="fa fa-indent"  style="width: 14px;"></i>
               </span>
             {!!Form::textarea('definicionIndicadorCuadroMando',null,['class'=>'form-control','style'=>'height:70px'])!!}
             </div>
@@ -192,25 +204,25 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-flask "></i>
+                <i class="fa fa-flask "  style="width: 14px;"></i>
               </span>
             {!!Form::text('formulaCuadroMando',null,['class'=>'form-control','readonly', 'onclick' => 'divFormula()'])!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group" id='test' style="display:inline-block">
           {!! Form::label('operadorMetaCuadroMando', 'Meta', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-2">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-cogs"></i>
+                <i class="fa fa-cogs"  style="width: 14px;"></i>
               </span>
             {!! Form::select('operadorMetaCuadroMando', ['>' => '>', '>=' => '>=', '<' => '<', '<=' => '<=', '==' => '='], null, ['class' => 'select form-control','placeholder'=>'Seleccione'])!!}
             </div>
           </div>
 
-          <div class="col-sm-2">
+          <div class="col-sm-2" >
             <div class="input-group">
             {!!Form::text('valorMetaCuadroMando',null,['class'=>'form-control','placeholder'=>'&nbsp;'])!!}
             </div>
@@ -228,7 +240,7 @@
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
-                          <i class="fa fa-exchange"></i>
+                          <i class="fa fa-exchange" style="width: 14px;"></i>
                         </span>
                 {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciamedicion, (isset($cuadromando) ? $cuadromando->FrecuenciaMedicion_idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
               </div>
@@ -240,7 +252,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-table"></i>
+                <i class="fa fa-table"  style="width: 14px;"></i>
               </span>
             {!! Form::select('visualizacionCuadroMando', ['Lineas' => 'Lineas', 'Barras' => 'Barras', 'Dona' => 'Dona', 'Area' => 'Area'], null, ['class' => 'chosen-select form-control','placeholder'=>'Seleccione'])!!}
             </div>
@@ -252,7 +264,7 @@
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
-                          <i class="fa fa-user"></i>
+                          <i class="fa fa-user"  style="width: 14px;"></i>
                         </span>
                 {!!Form::select('Tercero_idResponsable',$tercero, (isset($cuadromando) ? $cuadromando->Tercero_idResponsable : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el responsable"])!!}
               </div>

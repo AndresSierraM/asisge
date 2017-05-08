@@ -1,8 +1,7 @@
 
 
-function consultarInformeEntrevista(fechaInicio, fechaFin, Cargo, Tercero, accion)
+function consultarInformeEntrevista(fechaInicio, fechaFin, Cargo, Tercero)
 {
-
     if (fechaInicio == '' || fechaFin == '') 
         alert('Verifique que los campos de fecha esten llenos.');
     else
@@ -17,14 +16,15 @@ function consultarInformeEntrevista(fechaInicio, fechaFin, Cargo, Tercero, accio
         if (fechaInicio != '' && fechaFin != '')
             condicion = condicion + ((condicion !='' && fechaInicio !='') ? ' and ' : '') + 'fechaEntrevista >= "'+fechaInicio+'" and fechaEntrevista <= "'+fechaFin+'"';
         
-        imprimirInforme(condicion, accion);
+        imprimirInforme(condicion);
     }
 }
 
 
-function imprimirInforme(condicion, accion)
+function imprimirInforme(condicion)
 {
     estados = $("#estadoEntrevistaResultado").val();
+    accion = $("#accionFormulario").val();
  
     var token = document.getElementById('token').value; 
 
@@ -32,7 +32,7 @@ function imprimirInforme(condicion, accion)
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
             data: {'condicion': condicion, 'estados': estados, 'accion': accion},
-            url:   'http://'+location.host+'/consultarinformeEntrevista/',
+            url:   'http://'+location.host+'/consultarInformeEntrevista/',
             type:  'POST',
             beforeSend: function(){
                 //Lo que se hace antes de enviar el formulario
@@ -50,28 +50,18 @@ function imprimirInforme(condicion, accion)
 }
 
 
+function seleccionarEstado()
+{
+    estado = '';
 
+    for (var i = 1; i <= 3; i++) 
+    {
+        if($('#Estado'+i).is(':checked')) 
+        estado += i+',';
+    }
 
-
-// function seleccionarEstado()
-// {
-//     // Se hace dentro de esta funcion un switch para cambiar el value numero por el nombre como tal de estado
-//             switch(('#Estado').val()) 
-//             {
-                
-//                 case 1 : estado += 'EnProceso,';
-//                     break;
-//                 case 2 :estado += 'EnProceso,';
-//                     break;
-//                 case 3():estado += 'EnProceso,';
-//                     break;
-//             }
-//         $("#estadoEntrevistaResultado").val('#Estado');
-// }
-    
-
-
-
+    $("#estadoEntrevistaResultado").val(estado);
+}
  
 function imprimirEntrevistaResultado(id)
 {

@@ -39,7 +39,7 @@
               <span class="input-group-addon">
                 <i class="fa fa-pencil-square-o "></i>
               </span>
-				{!!Form::text('nombreDocumentoSoporte',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del documentosoporte'])!!}
+				{!!Form::text('nombreDocumentoSoporte',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del documentosoporte',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
     </fieldset>

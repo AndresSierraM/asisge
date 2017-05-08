@@ -1,9 +1,175 @@
 
+var AtributosImagen = function(nombreObjeto, nombreContenedor, nombreDiv){
+    this.alto = '350px;';
+    this.ancho = '300px;';
+    this.campoid = '';
+    this.campoEliminacion = '';
+    this.botonEliminacion = true;
+
+    this.nombre = nombreObjeto;
+    this.contenedor = nombreContenedor;
+    this.contenido = nombreDiv;
+    this.contador = 0;
+};
+
+AtributosImagen.prototype.agregarImagen = function(datos, tipo){
+
+    var valor;
+    if(tipo == 'A')
+       valor = datos;
+    else
+        valor = $.parseJSON(datos);
+    
+    var espacio = document.getElementById(this.contenedor);
+   
+    var div = document.createElement('div');
+    div.id = this.contenido+this.contador;
+    div.setAttribute("class", "col-sm-12");
+    div.setAttribute("style",  "height:"+this.alto+"width:"+this.ancho+";margin: 3px 3px 3px 3px; padding: 2px 2px 2px 2px;");
+    
+    // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
+    if(this.botonEliminacion)
+    {
+        var img = document.createElement('i');
+        var caneca = document.createElement('div');
+        caneca.id = 'eliminarRegistro'+ this.contador;
+        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+        caneca.setAttribute("class","col-md-1");
+        caneca.setAttribute("style","width:40px; height:35px;");
+        img.setAttribute("class","glyphicon glyphicon-trash");
+
+        caneca.appendChild(img);
+        div.appendChild(caneca);
+    }
+
+    
+    //--------------------
+    // id de la Imagen
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "hidden";
+    input.id =  "idFichaTecnicaImagen" + this.contador;
+    input.name =  "idFichaTecnicaImagen[]";
+    //input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+    input.setAttribute("class", "");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // Titulo de la Imagen
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "input";
+    input.id =  "tituloFichaTecnicaImagen" + this.contador;
+    input.name =  "tituloFichaTecnicaImagen[]";
+    input.placeholder =  "Título";
+    //input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+    input.setAttribute("class", "tituloImagen");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+    
+    //--------------------
+    // Ruta de la Imagen
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  'file';
+    input.id =  "rutaFichaTecnicaImagen" + this.contador;
+    input.name =  "rutaFichaTecnicaImagen[]";
+    input.filename = '';
+    input.setAttribute("class", "");
+    div.appendChild(input);
+
+    $('#rutaFichaTecnicaImagen'+ this.contador).fileinput({
+          language: 'es',
+          uploadUrl: '#',
+          allowedFileExtensions : ['jpg', 'png','gif'],
+           initialPreview: ['<?php echo Html::image("images/","Imagen no encontrada",array("style"=>"width:148px;height:158px;"));?>'],
+          dropZoneTitle: 'Seleccione la Imagen',
+          removeLabel: '',
+          uploadLabel: '',
+          browseLabel: '',
+          uploadClass: "",
+          uploadLabel: "",
+          uploadIcon: "",
+        });
+        
+
+    //--------------------
+    // Observaciones de la Imagen
+    //--------------------
+    var input = document.createElement('textarea');
+    input.id =  "observacionFichaTecnicaImagen" + this.contador;
+    input.name =  "observacionFichaTecnicaImagen[]";
+    input.placeholder =  "Detalles de la imagen";
+    //input.value = valor[(tipo == 'A' ? i : this.campos[i])];
+    input.setAttribute("class", "observacionImagen");
+    div.appendChild(input);
+
+    // conlos campos de imagen creamos 
+    // un img para mostrarla  en base64
+    // var imagen = document.createElement('img');
+    // imagen.id =  this.campos[i] + this.contador;
+    // imagen.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? 'http://'+location.host+'/imagenes/'+valor[(tipo == 'A' ? i : this.campos[i])] : '');
+    // // ruta = imagen.src;
+    // // src = ruta.substring(ruta.length-4);
+    // // alert(src);
+    // // if (src == '.pdf');
+    // // {
+    // //     imagen.src = 'http://'+location.host+'/images/iconosgenerales/file.png';
+    // // }
+    // imagen.setAttribute("placeholder", 'Vista previa de la imagen');
+    // imagen.setAttribute("class", this.clase[i]);
+    // imagen.setAttribute("style", this.estilo[i]);
+    // imagen.setAttribute("onclick", "mostrarImagen('"+'http://'+location.host+'/imagenes/'+valor[this.campos[i]]+"')");
+    // if(typeof(this.funciones[i]) !== "undefined") 
+    // {
+    //     for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+    //     {
+    //         imagen.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
+    //     }
+    // }
+    // div.appendChild(imagen);
+       
+    espacio.appendChild(div);
+
+    this.contador++;
+}
+
+Atributos.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
+   
+    if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
+        document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
+
+    // aux = elemento.parentNode;
+    // alert(aux);
+    // if(aux );
+        $("#"+elemento).remove();
+
+}
+
+Atributos.prototype.borrarTodosCampos = function(){
+    
+    
+    for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
+    {
+        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
+    }
+    this.contador = 0;
+}
+
+
 $(document).ready(function(){ 
 
     $("div#tabsMaterial").tabs();
     $("div#tabsOperacion").tabs();
 
+    //**************************
+    // 
+    //   P R O C E S O S
+    //
+    //**************************
     proceso = new Atributos('proceso','contenedor_proceso','proceso_');
 
     proceso.altura = '35px';
@@ -28,6 +194,24 @@ $(document).ready(function(){
         adicionarTabMaterial(procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], materiales);
         adicionarTabOperacion(procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], operaciones);
     }
+
+
+    //**************************
+    // 
+    //   I M A G E N E S
+    //
+    //**************************
+    imagen = new AtributosImagen('imagen','contenedor_imagen','imagen_');
+
+    imagen.alto = '300px;';
+    imagen.ancho = '200px;';
+    imagen.campoid = 'idFichaTecnicaImagen';
+    imagen.campoEliminacion = 'eliminarImagen';
+
+    // for(var j=0, k = imagens.length; j < k; j++)
+    // {
+    //     imagen.agregarCampos(JSON.stringify(imagens[j]),'L');
+    // }
 
 });
 
@@ -184,6 +368,7 @@ function adicionarTabMaterial(idTab, nombreTab, datos)
 
 function adicionarTabOperacion(idTab, nombreTab, datos)
 {
+    
     $("div#tabsOperacion ul").append(
         '<li class="active"><a data-toggle="tab" href="#tab' + idTab + '">' + nombreTab + '</a></li>'
     );
@@ -244,6 +429,16 @@ function adicionarTabOperacion(idTab, nombreTab, datos)
 
 }
 
+
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
 
 function habilitarSubmit(event)
 {

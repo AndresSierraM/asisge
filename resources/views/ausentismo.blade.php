@@ -123,7 +123,7 @@
 		          	<div class="col-sm-10" >
 			            <div class="panel panel-default">
 			            <!-- En el create va a salir, para adjuntar el archivo-->
-			            <input id="archivoAusentismo" name="archivoAusentismo" type="file" value="<?php echo ((isset($ausentismo->archivoAusentismo) and $ausentismo->archivoAusentismo != '') ? 'images/'. $ausentismo->archivoAusentismo : ''); ?>" >
+			            <input id="archivoAusentismo" name="archivoAusentismo" type="file" value="<?php echo ((isset($ausentismo->archivoAusentismo) and $ausentismo->archivoAusentismo != '') ? 'imagenes/'. $ausentismo->archivoAusentismo : ''); ?>" >
 			            </div>
 		          	</div>
 		        </div>
