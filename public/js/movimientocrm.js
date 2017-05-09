@@ -536,4 +536,4 @@ function asignarFechAgenda(inicio, fin, reg)
 
     $("#fechaHoraInicioAgenda").val(fechaInicial);
     $("#fechaHoraEstimadaFinAgenda").val(fechaFinal);
-}
+} 

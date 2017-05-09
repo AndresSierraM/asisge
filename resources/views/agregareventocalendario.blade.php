@@ -7,22 +7,6 @@
 {!!Html::script('js/agenda.js')!!}
 {!!Html::script('js/movimientocrm.js'); !!}
 
-<?php
-  if(isset($_GET['id']))
-  {
-      $agendaseguimiento = DB::Select('
-            SELECT 
-                idAgendaSeguimiento, 
-                Agenda_idAgenda, 
-                fechaHoraAgendaSeguimiento, 
-                Users_idCrea, 
-                detallesAgendaSeguimiento
-            FROM
-                agendaseguimiento
-            WHERE Agenda_idAgenda = '.$_GET['id']);
-
-  }
-?>
 <script>
 
     var consultarTercero = ['onchange','consultarTercero(this.id, this.value)'];
@@ -89,9 +73,8 @@
 
   <script>
 
-    var agendaseguimiento = '<?php echo (isset($agendaseguimiento) ? json_encode($agendaseguimiento) : "");?>';
+    var agendaseguimiento = '<?php echo (isset($agendaSeguimiento) ? json_encode($agendaSeguimiento) : "");?>';
     agendaseguimiento = (agendaseguimiento != '' ? JSON.parse(agendaseguimiento) : '');
-    alert(agendaseguimiento);
 
     var valorAgendaSeguimiento = [
                     0,

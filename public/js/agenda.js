@@ -75,11 +75,6 @@ function validarFormulario(event)
         event.preventDefault();
 }
 
-function agregarEvento()
-{
-    $('#modalEvento').modal('show');
-}
-
 function consultarCamposAgenda(idCategoriaAgenda, idAgenda)
 {
     var token = document.getElementById('token').value;

@@ -72,7 +72,7 @@ $query = DB::Select('
             $(function () {
             var tasks = 
             [
-                '.$labels.'
+                '.$labels.' 
             ];
 
             var series = [];

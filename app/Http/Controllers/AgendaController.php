@@ -56,11 +56,26 @@ class AgendaController extends Controller
 
     public function indexAgendaEvento()
     {
+        $agendaSeguimiento = '';
+        if(isset($_GET['id']))
+        {
+            $agendaSeguimiento = DB::Select('
+                SELECT 
+                    idAgendaSeguimiento, 
+                    Agenda_idAgenda, 
+                    fechaHoraAgendaSeguimiento, 
+                    Users_idCrea, 
+                    detallesAgendaSeguimiento
+                FROM
+                    agendaseguimiento
+                WHERE Agenda_idAgenda = '.$_GET['id']);
+        }
+
         $categoriaagenda = \App\CategoriaAgenda::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCategoriaAgenda','idCategoriaAgenda');
         $casocrm = \App\MovimientoCRM::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('asuntoMovimientoCRM','idMovimientoCRM');
         $supervisor = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $responsable = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        return view('agregareventocalendario',compact('categoriaagenda','supervisor','casocrm','responsable'));
+        return view('agregareventocalendario',compact('categoriaagenda','supervisor','casocrm','responsable','agendaSeguimiento'));
     }
 
     /**
@@ -101,6 +116,7 @@ class AgendaController extends Controller
             'ubicacionAgenda' => ($request['ubicacionAgenda'] == '' ? NULL : $request['ubicacionAgenda']),
             'porcentajeEjecucionAgenda' => ($request['porcentajeEjecucionAgenda'] == '' ? NULL : $request['porcentajeEjecucionAgenda']),
             'detallesAgenda' => ($request['detallesAgenda'] == '' ? NULL : $request['detallesAgenda']),
+            'estadoAgenda' => ($request['estadoAgenda'] == '' ? NULL : $request['estadoAgenda']),
             'Compania_idCompania' => \Session::get('idCompania'));
 
         $preguntas = \App\Agenda::updateOrCreate($indice, $data);
