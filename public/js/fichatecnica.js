@@ -2,8 +2,8 @@
 var AtributosNota = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.alto = '100px;';
     this.ancho = '100%;';
-    this.campoid = '';
-    this.campoEliminacion = '';
+    this.campoid = 'idFichaTecnicaNota';
+    this.campoEliminacion = 'eliminarNota';
     this.botonEliminacion = true;
 
     this.nombre = nombreObjeto;
@@ -25,17 +25,17 @@ AtributosNota.prototype.agregarNota = function(datos, tipo){
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
     div.setAttribute("class", "col-sm-12");
-    div.setAttribute("style",  "height:"+this.alto+"width:"+this.ancho+";margin: 3px 3px 3px 3px; padding: 2px 2px 2px 2px;");
+    div.setAttribute("style",  "overflow: auto; background: transparent; height:"+this.alto+"width:"+this.ancho+";margin: 3px 3px 3px 3px; padding: 2px 2px 2px 2px;");
     
     // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
-    if(this.botonEliminacion)
+    if(this.botonEliminacion && tipo == 'A')
     {
         var img = document.createElement('i');
         var caneca = document.createElement('div');
         caneca.id = 'eliminarRegistro'+ this.contador;
         caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
-        caneca.setAttribute("class","col-md-1");
-        caneca.setAttribute("style","width:40px; height:35px;");
+        caneca.setAttribute("class","canecaNota col-md-1");
+        caneca.setAttribute("style","");
         img.setAttribute("class","glyphicon glyphicon-trash");
 
         caneca.appendChild(img);
@@ -50,71 +50,74 @@ AtributosNota.prototype.agregarNota = function(datos, tipo){
     input.type =  "hidden";
     input.id =  "idFichaTecnicaNota" + this.contador;
     input.name =  "idFichaTecnicaNota[]";
-    //input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
+    input.value = valor[(tipo == 'A' ? 0 : "idFichaTecnicaNota")] ;
     input.setAttribute("class", "");
     input.readOnly = "";
     input.autocomplete = "false";
     div.appendChild(input);
 
     //--------------------
-    // Texto de la Nota
+    // id de usuario
     //--------------------
     var input = document.createElement('input');
-    input.type =  "input";
-    input.id =  "observacionFichaTecnicaNota" + this.contador;
-    input.name =  "observacionFichaTecnicaNota[]";
-    input.placeholder =  "Descripción";
-    //input.value = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? valor[(tipo == 'A' ? i : this.campos[i])] : '');
-    input.setAttribute("class", "textoNota");
+    input.type =  "hidden";
+    input.id =  "Users_idUsuario" + this.contador;
+    input.name =  "Users_idUsuario[]";
+    input.value = valor[(tipo == 'A' ? 1 : "Users_idUsuario")] ;
+    input.setAttribute("class", "");
     input.readOnly = "";
     input.autocomplete = "false";
     div.appendChild(input);
-    
-    
-        
 
     //--------------------
-    // Observaciones de la Imagen
+    // Nombre de usuario
     //--------------------
-    var input = document.createElement('textarea');
-    input.id =  "observacionFichaTecnicaImagen" + this.contador;
-    input.name =  "observacionFichaTecnicaImagen[]";
-    input.placeholder =  "Detalles de la imagen";
-    //input.value = valor[(tipo == 'A' ? i : this.campos[i])];
-    input.setAttribute("class", "observacionImagen");
+    var input = document.createElement('input');
+    input.type =  "text";
+    input.id =  "nombreUsuario" + this.contador;
+    input.name =  "nombreUsuario[]";
+    input.value = 'Escrito por: '+valor[(tipo == 'A' ? 2 : "nombreUsuario")] ;
+    input.setAttribute("class", "nombreUsuarioNota");
+    input.readOnly = "readOnly";
+    input.autocomplete = "false";
     div.appendChild(input);
 
-    // conlos campos de imagen creamos 
-    // un img para mostrarla  en base64
-    // var imagen = document.createElement('img');
-    // imagen.id =  this.campos[i] + this.contador;
-    // imagen.src = (typeof(valor[(tipo == 'A' ? i : this.campos[i])]) !== "undefined" ? 'http://'+location.host+'/imagenes/'+valor[(tipo == 'A' ? i : this.campos[i])] : '');
-    // // ruta = imagen.src;
-    // // src = ruta.substring(ruta.length-4);
-    // // alert(src);
-    // // if (src == '.pdf');
-    // // {
-    // //     imagen.src = 'http://'+location.host+'/images/iconosgenerales/file.png';
-    // // }
-    // imagen.setAttribute("placeholder", 'Vista previa de la imagen');
-    // imagen.setAttribute("class", this.clase[i]);
-    // imagen.setAttribute("style", this.estilo[i]);
-    // imagen.setAttribute("onclick", "mostrarImagen('"+'http://'+location.host+'/imagenes/'+valor[this.campos[i]]+"')");
-    // if(typeof(this.funciones[i]) !== "undefined") 
-    // {
-    //     for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
-    //     {
-    //         imagen.setAttribute(this.funciones[i][h], this.funciones[i][h+1]);
-    //     }
-    // }
-    // div.appendChild(imagen);
+    //--------------------
+    // fecha elaboración
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "text";
+    input.id =  "fechaFichaTecnicaNota" + this.contador;
+    input.name =  "fechaFichaTecnicaNota[]";
+    input.value = valor[(tipo == 'A' ? 3 : "fechaFichaTecnicaNota")] ;
+    input.setAttribute("class", "fechaNota");
+    input.readOnly = "readOnly";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // Texto de la Nota
+    //--------------------
+    var input = document.createElement('textarea');
+    input.id =  "observacionFichaTecnicaNota" + this.contador;
+    input.name =  "observacionFichaTecnicaNota[]";
+    input.placeholder =  "Descripción";
+    input.value = valor[(tipo == 'A' ? 4 : "observacionFichaTecnicaNota")] ;
+    input.setAttribute("class", "textoNota");
+    input.readOnly = (tipo == 'L' ? "readOnly" : '');
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    
+
+ 
        
     espacio.appendChild(div);
 
     this.contador++;
 }
 
-Atributos.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
+AtributosNota.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
    
     if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
         document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
@@ -126,7 +129,7 @@ Atributos.prototype.borrarCampos = function(elemento, campoEliminacion, campoid)
 
 }
 
-Atributos.prototype.borrarTodosCampos = function(){
+AtributosNota.prototype.borrarTodosCampos = function(){
     
     
     for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
@@ -175,20 +178,20 @@ $(document).ready(function(){
 
     //**************************
     // 
-    //   I M A G E N E S
+    //   N O T A S 
     //
     //**************************
-    imagen = new AtributosImagen('imagen','contenedor_imagen','imagen_');
+    nota = new AtributosNota('nota','contenedor_nota','nota_');
 
-    imagen.alto = '300px;';
-    imagen.ancho = '200px;';
-    imagen.campoid = 'idFichaTecnicaImagen';
-    imagen.campoEliminacion = 'eliminarImagen';
+    nota.alto = '100px;';
+    nota.ancho = '100%;';
+    nota.campoid = 'idFichaTecnicaNota';
+    nota.campoEliminacion = 'eliminarNota';
 
-    // for(var j=0, k = imagens.length; j < k; j++)
-    // {
-    //     imagen.agregarCampos(JSON.stringify(imagens[j]),'L');
-    // }
+    for(var j=0, k = notas.length; j < k; j++)
+    {
+        nota.agregarNota(JSON.stringify(notas[j]),'L');
+    }
 
 });
 

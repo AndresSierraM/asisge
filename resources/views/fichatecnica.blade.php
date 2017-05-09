@@ -9,6 +9,9 @@
     var procesos = '<?php echo (isset($proceso) ? json_encode($proceso) : "");?>';
     procesos = (procesos != '' ? JSON.parse(procesos) : '');
 
+    var notas = '<?php echo (isset($nota) ? json_encode($nota) : "");?>';
+    notas = (notas != '' ? JSON.parse(notas) : '');
+
     var materiales = '<?php echo (isset($material) ? json_encode($material) : "");?>';
     materiales = (materiales != '' ? JSON.parse(materiales) : '');
 
@@ -16,6 +19,13 @@
     operaciones = (operaciones != '' ? JSON.parse(operaciones) : '');
 
     var valorProceso = ['','','','','','','',''];
+    var valorNota = [
+                    0,
+                    "<?php echo \Session::get("idUsuario");?>",
+                    "<?php echo \Session::get("nombreUsuario");?>",
+                    "<?php echo date('Y-m-d H:i:s');?>",
+                    ''
+                    ];
 
 </script>
 
@@ -107,6 +117,7 @@ $fechahora = Carbon\Carbon::now();
             {!!Form::hidden('eliminarProceso',null,['id'=>'eliminarProceso'])!!}
             {!!Form::hidden('eliminarMaterial',null,['id'=>'eliminarMaterial'])!!}
             {!!Form::hidden('eliminarOperacion',null,['id'=>'eliminarOperacion'])!!}
+            {!!Form::hidden('eliminarNota',null,['id'=>'eliminarNota'])!!}
           </div>
       </div>
     </div>  
@@ -357,7 +368,22 @@ $fechahora = Carbon\Carbon::now();
   </div>
 
   <div id="nota" class="tab-pane fade">
-    
+    <div class="form-group" id='test'>
+        <div class="col-sm-12">
+            <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                <div style="overflow:auto; height:350px;">
+                    <div style="width: 100%; display: inline-block;">
+                        <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="nota.agregarNota(valorNota, 'A');">
+                          <span class="glyphicon glyphicon-plus"></span>
+                        </div>
+                        
+                        <div id="contenedor_nota">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
   </div>
   <div id="auditoria" class="tab-pane fade">

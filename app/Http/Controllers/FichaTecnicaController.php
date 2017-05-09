@@ -212,13 +212,25 @@ class FichaTecnicaController extends Controller
 
         $operacion = $this->convertirArray($operacion);
 
-        
+        $nota = DB::select(
+            'SELECT idFichaTecnicaNota, 
+                    Users_idUsuario,
+                    name as nombreUsuario,
+                    fechaFichaTecnicaNota,
+                    observacionFichaTecnicaNota
+            FROM fichatecnicanota FTN 
+            LEFT JOIN users U 
+            ON FTN.Users_idUsuario = U.id 
+            WHERE FichaTecnica_idFichaTecnica = '.$id);
+
+        $nota = $this->convertirArray($nota);
+
         $linea = \App\LineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaProducto','idLineaProducto');
         $sublinea = \App\SublineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreSublineaProducto','idSublineaProducto');
 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
-        return view('fichatecnica', ['fichatecnica'=>$fichatecnica], compact('linea','sublinea','tercero', 'proceso', 'material', 'operacion'));
+        return view('fichatecnica', ['fichatecnica'=>$fichatecnica], compact('linea','sublinea','tercero', 'proceso', 'material', 'operacion','nota'));
     }
 
     /**
@@ -417,7 +429,29 @@ class FichaTecnicaController extends Controller
 
         }
 
+        // -----------------------------------
+        // NOTAS
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        // -----------------------------------
+        $idsEliminar = explode(',', $request['eliminarNota']);
+        \App\FichaTecnicaNota::whereIn('idFichaTecnicaNota',$idsEliminar)->delete();
 
+        $contador = count($request['idFichaTecnicaNota']);
+        for($i = 0; $i < $contador; $i++)
+        {
+            $indice = array(
+             'idFichaTecnicaNota' => $request['idFichaTecnicaNota'][$i]);
+
+            $data = array(
+            'FichaTecnica_idFichaTecnica' => $id,
+            'Users_idUsuario' => $request['Users_idUsuario'][$i],
+            'fechaFichaTecnicaNota' => $request['fechaFichaTecnicaNota'][$i],
+            'observacionFichaTecnicaNota' => $request['observacionFichaTecnicaNota'][$i] );
+
+            $guardar = \App\FichaTecnicaNota::updateOrCreate($indice, $data);
+
+        }
 
     }
 
