@@ -474,6 +474,18 @@ function calcularHoras()
 
         $("#tiempoTotalAgendaTarea").val(totHoras);
         $("#porcentajeCumplimientoAgendaTarea").val(porEjec);
+
+        calcularPesoTarea($("#tiempoTotalAgendaTarea").val());
+    }
+}
+
+function calcularPesoTarea(tothoras)
+{
+    for (var i = 0; i < tareas.contador; i++) 
+    {
+        peso = (parseFloat($("#horasAgendaTarea"+i).val()) / tothoras)*100;
+
+        $("#pesoAgendaTarea"+i).val(peso);
     }
 }
 

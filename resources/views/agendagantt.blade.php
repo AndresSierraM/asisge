@@ -40,6 +40,10 @@ $query = DB::Select('
         $finicio = substr($inicio, 0, -9);
         $ffin = substr($fin, 0, -9);
 
+        $finicio = date("Y-m-d", strtotime("-1 MONTH", strtotime($finicio)));
+        
+        $ffin  = date("Y-m-d", strtotime("-1 MONTH", strtotime($ffin)));
+
         $agenda['fechaHoraInicioAgenda'] = str_replace('-', ',', $finicio);
         $agenda['fechaHoraFinAgenda'] = str_replace('-', ',', $ffin);
 

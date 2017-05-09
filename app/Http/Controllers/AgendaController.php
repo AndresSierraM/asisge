@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\AgendaRequest;
 use App\Http\Controllers\Controller;
 use DB;
+use Ical\Ical;
 
 class AgendaController extends Controller
 {
@@ -80,6 +81,8 @@ class AgendaController extends Controller
      */
     public function store(AgendaRequest $request)
     {
+        // require_once 'vendor/autoload.php';
+
         $fechaInicio =  strtotime(substr($request['fechaHoraInicioAgenda'], 6, 4)."-".substr($request['fechaHoraInicioAgenda'], 3, 2)."-".substr($request['fechaHoraInicioAgenda'], 0, 2)." " .substr($request['fechaHoraInicioAgenda'], 10, 6)) * 1000;
 
         $fechaFin =  strtotime(substr($request['fechaHoraFinAgenda'], 6, 4)."-".substr($request['fechaHoraFinAgenda'], 3, 2)."-".substr($request['fechaHoraFinAgenda'], 0, 2)." " .substr($request['fechaHoraFinAgenda'], 10, 6)) * 1000;
@@ -111,6 +114,24 @@ class AgendaController extends Controller
             $agenda = \App\Agenda::All()->last();
             DB::update('UPDATE agenda SET urlAgenda = "http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?id='.$agenda->idAgenda.'" WHERE idAgenda = '.$agenda->idAgenda);
             $this->grabarDetalle($agenda->idAgenda,$request);
+
+            // try 
+            // {
+            //     $ical = (new Ical())->setAddress('Colombia')
+            //             ->setDateStart("'".$request["fechaHoraInicioAgenda"]."'")
+            //             ->setDateEnd("'".$request["fechaHoraFinAgenda"]."'")
+            //             ->setDescription("'".$request["asuntoAgenda"]."'")
+            //             ->setSummary('Running')
+            //             ->setFilename(uniqid());
+            //     $ical->addHeader();
+                   
+            //     echo $ical->getICAL();          
+              
+            // } 
+            // catch (\Exception $exc) 
+            // {
+            //     echo $exc->getMessage();
+            // }
         }
     }
 
@@ -201,6 +222,7 @@ class AgendaController extends Controller
 
         $contador = count($request['idAgendaAsistente']);
 
+        $destinatario = '';
         for($i = 0; $i < $contador; $i++)
         {
 
@@ -213,9 +235,26 @@ class AgendaController extends Controller
             'nombreAgendaAsistente' => ($request['nombreAgendaAsistente'][$i] == '' ? NULL : $request['nombreAgendaAsistente'][$i]),
             'correoElectronicoAgendaAsistente' => ($request['correoElectronicoAgendaAsistente'][$i] == '' ? NULL : $request['correoElectronicoAgendaAsistente'][$i]));
 
-             $preguntas = \App\AgendaAsistente::updateOrCreate($indice, $data);
+            $preguntas = \App\AgendaAsistente::updateOrCreate($indice, $data);
 
+            $destinatario = $request['correoElectronicoAgendaAsistente'][$i].',';
         }
+
+        if ($destinatario != '') 
+        {
+            $destinatario = substr($destinatario, 0, -1);
+            $mail = array();
+            $mail['asuntoCorreoAgenda'] = 'Agenda';
+            $mail['mensaje'] = "Se han realizado movimientos en su agenda.<br><br>
+            Para visualizarlo mejor <a href='http://".$_SERVER['HTTP_HOST']."/agenda'>ve directamente</a> a la agenda.";
+            $mail['destinatarioCorreoAgenda'] = explode(',', $destinatario);
+            Mail::send('emails.contact',$mail,function($msj) use ($mail)
+            {
+                $msj->to($mail['destinatarioCorreoAgenda']);
+                $msj->subject($mail['asuntoCorreoAgenda']);
+            });             
+        }
+
 
         if($request->ajax()) 
         {

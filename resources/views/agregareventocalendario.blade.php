@@ -7,6 +7,22 @@
 {!!Html::script('js/agenda.js')!!}
 {!!Html::script('js/movimientocrm.js'); !!}
 
+<?php
+  if(isset($_GET['id']))
+  {
+      $agendaseguimiento = DB::Select('
+            SELECT 
+                idAgendaSeguimiento, 
+                Agenda_idAgenda, 
+                fechaHoraAgendaSeguimiento, 
+                Users_idCrea, 
+                detallesAgendaSeguimiento
+            FROM
+                agendaseguimiento
+            WHERE Agenda_idAgenda = '.$_GET['id']);
+
+  }
+?>
 <script>
 
     var consultarTercero = ['onchange','consultarTercero(this.id, this.value)'];
@@ -73,63 +89,17 @@
 
   <script>
 
-    var agendaseguimiento = '<?php echo (isset($agenda) ? json_encode($agenda->agendaseguimiento) : "");?>';
+    var agendaseguimiento = '<?php echo (isset($agendaseguimiento) ? json_encode($agendaseguimiento) : "");?>';
     agendaseguimiento = (agendaseguimiento != '' ? JSON.parse(agendaseguimiento) : '');
+    alert(agendaseguimiento);
 
-    var valorAgendaSeguimiento = [0, 0, '', '', 0];
-
-    $(document).ready(function(){
-      seguimiento = new Atributos('seguimiento','contenedor_seguimiento','agendaseguimiento');
-
-      seguimiento.altura = '35px';
-      seguimiento.campoid = 'idAgendaSeguimiento';
-      seguimiento.campoEliminacion = 'eliminarAgendaSeguimiento';
-
-      seguimiento.campos   = [
-      'idAgendaSeguimiento',
-      'Agenda_idAgenda',
-      'fechaHoraAgendaSeguimiento',
-      'detallesAgendaSeguimiento',
-      'Users_idCrea'
-      ];
-
-      seguimiento.etiqueta = [
-      'input',
-      'input',
-      'input',
-      'input',
-      'input'
-      ];
-
-      seguimiento.tipo = [
-      'hidden',
-      'hidden',
-      'text',
-      'text',
-      'hidden'
-      ];
-
-      seguimiento.estilo = [
-      '',
-      '',
-      'width: 150px;height:35px;',
-      'width: 310px;height:35px;',
-      ''
-      ];
-
-      seguimiento.clase    = ['','','','','','','',''];
-      seguimiento.sololectura = [true,true,false,false,true];  
-      seguimiento.funciones = ['','','','','',''];
-      seguimiento.completar = ['off','off','off','off','off'];
-      seguimiento.opciones = ['','','','',''];
-      for(var j=0, k = agendaseguimiento.length; j < k; j++)
-      {
-        seguimiento.agregarCampos(JSON.stringify(agendaseguimiento[j]),'L');
-        // llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
-      }
-
-    });
-
+    var valorAgendaSeguimiento = [
+                    0,
+                    "<?php echo \Session::get("idUsuario");?>",
+                    0,
+                    "<?php echo date('Y-m-d H:i:s');?>",
+                    ''
+                    ];
   </script>
 
 
@@ -175,6 +145,8 @@
               </span>
               {!!Form::select('CategoriaAgenda_idCategoriaAgenda',$categoriaagenda, (isset($agenda) ? $agenda['CategoriaAgenda_idCategoriaAgenda'] : 0),["class" => "form-control", "placeholder" =>"Seleccione tipo de categoria", 'onchange'=>'consultarCamposAgenda(this.value)'])!!}
             {!!Form::hidden('idAgenda', (isset($agenda) ? $agenda["idAgenda"] : null), array('id' => 'idAgenda')) !!}
+            {!!Form::hidden('eliminarAgendaAsistente',null,['id'=>'eliminarAgendaAsistente'])!!}
+            {!!Form::hidden('eliminarAgendaSeguimiento',null,['id'=>'eliminarAgendaSeguimiento'])!!}
           </div>
         </div>
       </div>
@@ -325,13 +297,13 @@
 
                   </div>
 
-                  <div id="divseguimiento" class="tab-pane fade" style="display:none;">
+                  <div id="divseguimiento" class="tab-pane fade" >
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
                           <div class="col-sm-12">
                             <div class="row show-grid">
-                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="seguimiento.agregarCampos(valorAgendaSeguimiento,'A')">
+                              <div class="col-md-1" style="width: 40px; height: 42px; cursor: pointer;" onclick="seguimiento.agregarSeguimiento(valorAgendaSeguimiento,'A')">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
                               <div class="col-md-1" style="width: 150px;">Fecha</div>
@@ -345,7 +317,7 @@
 
                   </div>
 
-                  <div id="divasistentes" style="display:none;" class="tab-pane fade">
+                  <div id="divasistentes" class="tab-pane fade">
 
                     <div class="panel-body">
                         <div class="form-group" id='test'>
