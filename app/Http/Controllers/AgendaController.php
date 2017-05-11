@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\AgendaRequest;
 use App\Http\Controllers\Controller;
 use DB;
+use Mail;
 use Ical\Ical;
 
 class AgendaController extends Controller
@@ -57,6 +58,7 @@ class AgendaController extends Controller
     public function indexAgendaEvento()
     {
         $agendaSeguimiento = '';
+        $agendaAsistente = '';
         if(isset($_GET['id']))
         {
             $agendaSeguimiento = DB::Select('
@@ -69,13 +71,30 @@ class AgendaController extends Controller
                 FROM
                     agendaseguimiento
                 WHERE Agenda_idAgenda = '.$_GET['id']);
+
+            $agendaAsistente = DB::Select('
+                SELECT 
+                    idAgendaAsistente,
+                    Agenda_idAgenda, 
+                    Tercero_idAsistente, 
+                    IFNULL(
+                        nombreCompletoTercero, nombreAgendaAsistente
+                    ) as nombreAgendaAsistente, 
+                    IFNULL(
+                        correoElectronicoTercero, correoElectronicoAgendaAsistente
+                    ) as correoElectronicoAgendaAsistente 
+                FROM 
+                    agendaasistente ags 
+                    LEFT JOIN tercero T ON ags.Tercero_idAsistente = t.idTercero 
+                WHERE 
+                    Agenda_idAgenda = '.$_GET['id']);
         }
 
         $categoriaagenda = \App\CategoriaAgenda::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCategoriaAgenda','idCategoriaAgenda');
         $casocrm = \App\MovimientoCRM::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('asuntoMovimientoCRM','idMovimientoCRM');
         $supervisor = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $responsable = \App\Tercero::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        return view('agregareventocalendario',compact('categoriaagenda','supervisor','casocrm','responsable','agendaSeguimiento'));
+        return view('agregareventocalendario',compact('categoriaagenda','supervisor','casocrm','responsable','agendaSeguimiento', 'agendaAsistente'));
     }
 
     /**
@@ -247,7 +266,7 @@ class AgendaController extends Controller
 
             $data = array(
             'Agenda_idAgenda' => $id,
-            'Tercero_idAsistente' => ($request['Tercero_idAsistente'][$i] == '' or $request['Tercero_idAsistente'][$i] == 0 ? NULL : $request['Tercero_idAsistente'][$i]),
+            'Tercero_idAsistente' => ($request['Tercero_idAsistente'][$i] == 0 ? NULL : $request['Tercero_idAsistente'][$i]),
             'nombreAgendaAsistente' => ($request['nombreAgendaAsistente'][$i] == '' ? NULL : $request['nombreAgendaAsistente'][$i]),
             'correoElectronicoAgendaAsistente' => ($request['correoElectronicoAgendaAsistente'][$i] == '' ? NULL : $request['correoElectronicoAgendaAsistente'][$i]));
 
@@ -276,6 +295,8 @@ class AgendaController extends Controller
         {
             return response()->json(['Evento creado correctamente']);
         }
-        return redirect('/agenda');
+        // return redirect('/agenda');
+        // header("Refresh:0");
+        echo "<script type='text/javascript'>window.parent.location.reload()</script>";
     }
 }

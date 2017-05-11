@@ -11,7 +11,7 @@
 
     var consultarTercero = ['onchange','consultarTercero(this.id, this.value)'];
 
-    var agendaasistente = '<?php echo (isset($agenda) ? json_encode($agenda->agendaasistente) : "");?>';
+    var agendaasistente = '<?php echo (isset($agendaAsistente) ? json_encode($agendaAsistente) : "");?>';
     agendaasistente = (agendaasistente != '' ? JSON.parse(agendaasistente) : '');
 
     var valorAgendaAsistente = [0, 0, '', '', 0];
