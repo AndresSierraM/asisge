@@ -579,8 +579,7 @@
                                 ->leftJoin('cuadromando as CM', 'I.CuadroMando_idCuadroMando', '=', 'CM.idCuadroMando')
                                 ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
                                 ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
-                                ->where('I.CuadroMando_idCuadroMando','=',$CuadroMando['idCuadroMando'])
-                                ->where('I.Compania_idCompania','=',\Session::get("idCompania"))
+                                ->where('CuadroMando_idCuadroMando','=',$CuadroMando['idCuadroMando'])
                                 ->get();
                                                 
                         $arrayLabels = '[';
@@ -698,7 +697,7 @@
                                 ->leftJoin('cuadromando as CM', 'I.CuadroMando_idCuadroMando', '=', 'CM.idCuadroMando')
                                 ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
                                 ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
-                                ->where("I.Compania_idCompania", $idCompania)
+                                ->where("Compania_idCompania", $idCompania)
                                 ->get();
                             // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
                             $Indicador = array();

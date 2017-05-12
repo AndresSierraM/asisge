@@ -33,6 +33,39 @@ class ProcedimientoController extends Controller
      *
      * @return Response
      */
+
+      // Esta funcion es para que cuando suba el archvio vaya al repositorio/temporal y guarde una copia mientras le dan guardar al registro 
+    //Funcion para subir archivos con dropzone
+    public function uploadFiles(Request $request) 
+    {
+ 
+        $input = Input::all();
+ 
+        $rules = array(
+        );
+ 
+        $validation = Validator::make($input, $rules);
+ 
+        if ($validation->fails()) {
+            return Response::make($validation->errors->first(), 400);
+        }
+        
+        $destinationPath = public_path() . '/imagenes/repositorio/temporal'; //Guardo en la carpeta  temporal
+
+        $extension = Input::file('file')->getClientOriginalExtension(); 
+        $fileName = Input::file('file')->getClientOriginalName(); // nombre de archivo
+        $upload_success = Input::file('file')->move($destinationPath, $fileName);
+ 
+        if ($upload_success) {
+            return Response::json('success', 200);
+        } 
+        else {
+            return Response::json('error', 400);
+        }
+    }
+
+
+
     public function create()
     {
         // cuando se crea un nuevo procedimiento, enviamos los procesos para el encabezado y los documentos 
@@ -80,6 +113,38 @@ class ProcedimientoController extends Controller
             'actividadProcedimientoDetalle' => $request['actividadProcedimientoDetalle'][$i]
            ]);
         }
+
+
+
+        // Guardado del dropzone
+                $arrayImage = $request['archivoProcedimientoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/procedimiento/'.$arrayImage[$i];
+                        $ruta = '/procedimiento/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ProcedimientoArchivo::create([
+                        'Procedimiento_idProcedimiento' => $procedimiento->idProcedimiento,
+                        'rutaProcedimientoArchivo' => $ruta
+                       ]);
+                    }
+
+                }
 
         return redirect('/procedimiento');
     }
@@ -141,6 +206,7 @@ class ProcedimientoController extends Controller
         $procedimiento->fill($request->all());
         $procedimiento->save();
 
+
         \App\ProcedimientoDetalle::where('Procedimiento_idProcedimiento',$id)->delete();
 
         $contadorDetalle = count($request['Documento_idDocumento']);
@@ -154,6 +220,49 @@ class ProcedimientoController extends Controller
            ]);
         }
 
+        //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
+            if ($request['archivoProcedimientoArray'] != '') 
+            {
+                $arrayImage = $request['archivoProcedimientoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/procedimiento/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/procedimiento/'.$arrayImage[$i];
+
+                            DB::table('actacapacitacionarchivo')->insert(['idActaCapacitacionArchivo' => '0', 'ActaCapacitacion_idActaCapacitacion' =>$id,'rutaActaCapacitacionArchivo' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+
+            // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarArchivo'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ProcedimientoArchivo::whereIn('idProcedimientoArchivo',$idsEliminar)->delete();
+            }
+
+            // 
         return redirect('/procedimiento');
 
     }

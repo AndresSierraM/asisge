@@ -19,4 +19,9 @@ class Procedimiento extends Model
     {
     	return $this->hasMany('App\ProcedimientoDetalle','Procedimiento_idProcedimiento');
     }
+    
+    public function ProcedimientoArchivo()
+    {
+        return $this->hasMany('App\procedimientoarchivo','Procedimiento_idProcedimiento');
+    }
 }
