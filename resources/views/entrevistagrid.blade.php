@@ -50,7 +50,7 @@
                             <li><a class="toggle-vis" data-column="4"><label> Nombre Aspirante</label></a></li>
                             <li><a class="toggle-vis" data-column="5"><label> Cargo</label></a></li>
                              <li><a class="toggle-vis" data-column="6"><label> Entrevistador</label></a></li>
-                              <li><a class="toggle-vis" data-column="6"><label> Estado Entrevista</label></a></li>
+                              <li><a class="toggle-vis" data-column="7"><label> Estado Entrevista</label></a></li>
                         </ul>
                     </div>
                     <table id="tentrevista" name="tentrevista" class="display table-bordered" width="100%">

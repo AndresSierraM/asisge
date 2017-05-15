@@ -127,7 +127,7 @@ class EntrevistaController extends Controller
             'experienciaAspiranteEntrevista' => $request['experienciaAspiranteEntrevista'],  
             'experienciaRequeridaEntrevista' => $request['experienciaRequeridaEntrevista'],
             'TipoIdentificacion_idTipoIdentificacion'  => $request['TipoIdentificacion_idTipoIdentificacion'],
-
+            'Compania_idCompania' => \Session::get('idCompania'),
             'calificacionEducacionEntrevista' => $request['calificacionEducacionEntrevista'],  
             'calificacionFormacionEntrevista' => $request['calificacionFormacionEntrevista'],
             'calificacionHabilidadCargoEntrevista'  => $request['calificacionHabilidadCargoEntrevista'],

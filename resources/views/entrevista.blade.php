@@ -803,7 +803,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                                                                         <i class="fa fa-user-plus" style="width: 14px;" aria-hidden="true"></i>
                                                                                                                  </span>
                                                                      {!!Form::select('estadoCivilEntrevistaPregunta',
-                                                        array('CASADO'=>'Casado','SOLTERO'=>'Soltero'),(isset($entrevista->EntrevistaPregunta) ? $entrevista->EntrevistaPregunta->estadoCivilEntrevistaPregunta : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil"])!!}
+                                                        array('CASADO'=>'Casado','SOLTERO'=>'Soltero(a)','ULIBRE'=>'Unión libre','DIVORCIADO'=>'Divorciado(a)','VIUDO'=>'Viudo(a)'),(isset($entrevista->EntrevistaPregunta) ? $entrevista->EntrevistaPregunta->estadoCivilEntrevistaPregunta : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el estado civil"])!!}
                                                                                                              </div>
                                                                                                       </div>
                                                                                              </div>
