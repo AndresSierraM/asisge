@@ -367,6 +367,26 @@
     $('#fechaHoraFinAgenda').datetimepicker(({
       format: "DD-MM-YYYY HH:mm:ss"
     }));
+
+    $(document).ready(function(){
+    
+      //**************************
+      // 
+      //   S E G U I M I E N T O
+      //
+      //**************************
+      seguimiento = new AtributosSeguimiento('seguimiento','contenedor_seguimiento','seguimiento_');
+
+      seguimiento.alto = '42px;';
+      seguimiento.ancho = '100%;';
+      seguimiento.campoid = 'idAgendaSeguimiento';
+      seguimiento.campoEliminacion = 'eliminarAgendaSeguimiento';
+
+      for(var j=0, k = agendaseguimiento.length; j < k; j++)
+      {
+          seguimiento.agregarSeguimiento(JSON.stringify(agendaseguimiento[j]),'L');
+      }
+    });
 </script>
 @stop
 

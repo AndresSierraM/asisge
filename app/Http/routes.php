@@ -183,6 +183,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('tipocalidad','TipoCalidadController');
     Route::resource('fichatecnica','FichaTecnicaController');
 
+    // *************************************
+    // Rutas de Compras
+    // *************************************
+    Route::resource('tipoproveedor','TipoProveedorController');
+
     // *************************************************
     //
     //  D I S E Ñ A D O R   D E   I N F O R M E S 

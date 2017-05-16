@@ -85,7 +85,7 @@ class AgendaController extends Controller
                     ) as correoElectronicoAgendaAsistente 
                 FROM 
                     agendaasistente ags 
-                    LEFT JOIN tercero T ON ags.Tercero_idAsistente = t.idTercero 
+                    LEFT JOIN tercero T ON ags.Tercero_idAsistente = T.idTercero 
                 WHERE 
                     Agenda_idAgenda = '.$_GET['id']);
         }

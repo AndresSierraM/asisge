@@ -6,7 +6,7 @@ foreach ($estado as $key => $value) {
 	$nombreEstadoDefault = $value;
 	break;
 }
-if (isset($movimientoCRMTarea)) 
+if (!empty($movimientoCRMTarea)) 
 {
 	$camposAgendaTarea = array();
 	// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
@@ -155,7 +155,7 @@ else
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
-    where idTercero = '.\Session::get('idUsuario'));
+    where idTercero = '.\Session::get('idTercero'));
 $tercero = get_object_vars($tercero[0]); 
 
 
