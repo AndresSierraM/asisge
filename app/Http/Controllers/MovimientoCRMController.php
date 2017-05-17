@@ -122,6 +122,9 @@ class MovimientoCRMController extends Controller
 
         $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
 
+        // Se hace un replace para que reemplace las comas por un vacio para que  pueda grabar en BD sin problemas 
+        $valor = str_replace(',', '', $request['valorMovimientoCRM']);
+
         \App\MovimientoCRM::create([
             'numeroMovimientoCRM' => $numero,
             'asuntoMovimientoCRM' => $request['asuntoMovimientoCRM'],
@@ -132,7 +135,7 @@ class MovimientoCRMController extends Controller
             'prioridadMovimientoCRM' => $request['prioridadMovimientoCRM'],
             'diasEstimadosSolucionMovimientoCRM' => $request['diasEstimadosSolucionMovimientoCRM'],
             'diasRealesSolucionMovimientoCRM' => $request['diasRealesSolucionMovimientoCRM'],
-            'valorMovimientoCRM' => $request['valorMovimientoCRM'],
+            'valorMovimientoCRM' => $valor,
             'Tercero_idSolicitante' => ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null),
             'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
             'Tercero_idAsesor' => ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null),
@@ -409,9 +412,13 @@ class MovimientoCRMController extends Controller
     {
 
         $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
+        // Se hace un replace para que reemplace las comas por un vacio para que  pueda grabar en BD sin problemas 
+        $valor = str_replace(',', '', $request['valorMovimientoCRM']);
 
         $movimientocrm = \App\MovimientoCRM::find($id);
         $movimientocrm->fill($request->all());
+        // Luego que busca todos los campos del request se busca valorMoviendto para hacer el replace
+        $movimientocrm->valorMovimientoCRM = $valor;
         $movimientocrm->Tercero_idSolicitante = ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null);
         $movimientocrm->Tercero_idSupervisor = ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null);
         $movimientocrm->Tercero_idAsesor = ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null);

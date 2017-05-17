@@ -206,7 +206,12 @@ $fechahora = Carbon\Carbon::now();
     var estadoAgendaCRM = [valorEstado,nombreEstado];
 
 	$(document).ready(function(){
-
+		// Se agrega  para  cuando esté editando en el ready vuelva a llamar la  función para que el ejecute  y ponga en el input el resultado, separado por puntos
+							if ($("#valorMovimientoCRM").val() != '')
+							{
+								valorDecimal($("#valorMovimientoCRM").val());
+							}
+		 				
 							$('#fechaHoraInicioAgenda').datetimepicker(({
     							format:'DD-MM-YYYY HH:mm:ss'
 							}));
@@ -216,7 +221,6 @@ $fechahora = Carbon\Carbon::now();
 								calcularHoras();
 								calcularPesoTarea($("#tiempoTotalAgendaTarea").val());
 							}
-
 		asistentes = new Atributos('asistentes','contenedor_asistentes','asistentes_');
 		asistentes.campos = ['idMovimientoCRMAsistente','nombreMovimientoCRMAsistente','cargoMovimientoCRMAsistente','telefonoMovimientoCRMAsistente','correoElectronicoMovimientoCRMAsistente'];
 		asistentes.etiqueta = ['input','input','input','input','input'];
@@ -676,8 +680,8 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-
-									{!!Form::text('valorMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el valor del documento', mostrarCampo($arrayCampos, 'valorMovimientoCRM', $rolUsuario,'input')])!!}
+					         		<!-- Se agrega un onchange para que ejecute la funcion -->
+									{!!Form::text('valorMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el valor del documento',"onchange"=>"valorDecimal(this.value);", mostrarCampo($arrayCampos, 'valorMovimientoCRM', $rolUsuario,'input')])!!}
 
 								</div>
 							</div>
