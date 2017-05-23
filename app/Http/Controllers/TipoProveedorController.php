@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class TipoProveedorController extends Controller
 {
@@ -16,7 +18,13 @@ class TipoProveedorController extends Controller
      */
     public function index()
     {
-        return view('tipoproveedorgrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        if($datos != null)
+            return view('tipoproveedorgrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**
@@ -44,7 +52,7 @@ class TipoProveedorController extends Controller
 
         $tipoproveedor = \App\TipoProveedor::All()->last();
 
-        $this->grabarDetalle($request, $tipoproveedor->id)
+        $this->grabarDetalle($request, $tipoproveedor->idTipoProveedor);
 
         return redirect('tipoproveedor');
     }
@@ -100,7 +108,7 @@ class TipoProveedorController extends Controller
     public function destroy($id)
     {
         \App\TipoProveedor::destroy($id);
-        $return redirect('tipoproveedor');
+        return redirect('tipoproveedor');
     }
 
     protected function grabarDetalle($request, $id)

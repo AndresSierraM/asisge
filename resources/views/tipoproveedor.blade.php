@@ -205,7 +205,7 @@
                               <span class="glyphicon glyphicon-plus"></span>
                             </div>
                             <div class="col-md-1" style="width: 700px;">Descripción del criterio</div>
-                            <div class="col-md-1" style="width: 200px;">Descripción del criterio</div>
+                            <div class="col-md-1" style="width: 200px;">Peso del criterio</div>
                             <div id="contenedor_evaluacion"> 
                             </div>
                           </div>

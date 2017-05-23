@@ -759,6 +759,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosAgendaPermiso.php';
     });
 
+    Route::get('datosTipoProveedor', function()
+    {
+        include public_path().'/ajax/datosTipoProveedor.php';
+    });
+
 
     Route::get('datosDocumentoCRM', function()
     {
