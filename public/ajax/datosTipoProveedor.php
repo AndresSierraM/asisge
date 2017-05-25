@@ -15,20 +15,27 @@
     else
         $visibleE = 'none;';
 
-    $tipoproveedor = \App\TipoProveedor::All();
+    $tipoproveedor = DB::Select('
+        SELECT 
+            idTipoProveedor, codigoTipoProveedor, nombreTipoProveedor
+        FROM 
+            tipoproveedor tp
+                LEFT JOIN 
+            compania c ON tp.Compania_idCompania = c.idCompania');
     $row = array();
 
     foreach ($tipoproveedor as $key => $value) 
     {  
-        $row[$key][] = '<a href="tipoproveedor/'.$value['idTipoProveedor'].'/edit">'.
+        $tp = get_object_vars($value);
+        $row[$key][] = '<a href="tipoproveedor/'.$tp['idTipoProveedor'].'/edit">'.
                             '<span class="glyphicon glyphicon-pencil" style="display: '.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="tipoproveedor/'.$value['idTipoProveedor'].'/edit?accion=eliminar">'.
+                        '<a href="tipoproveedor/'.$tp['idTipoProveedor'].'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style="display: '.$visibleE.'"></span>'.
                         '</a>';
-        $row[$key][] = $value['idTipoProveedor'];
-        $row[$key][] = $value['codigoTipoProveedor'];
-        $row[$key][] = $value['nombreTipoProveedor'];
+        $row[$key][] = $tp['idTipoProveedor'];
+        $row[$key][] = $tp['codigoTipoProveedor'];
+        $row[$key][] = $tp['nombreTipoProveedor'];
     }
 
     $output['aaData'] = $row;

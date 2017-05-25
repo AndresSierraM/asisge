@@ -62,6 +62,17 @@
 			productos.clase = ['','',''];
 			productos.sololectura = [false,false,false];
 
+			proveedor = new Atributos('proveedor','contenedor_proveedorseleccion','proveedor_');
+			proveedor.altura = '35px';
+		    proveedor.campoid = 'idProveedorSeleccionTercero';
+		    proveedor.botonEliminacion = false;
+		    proveedor.campos   = ['descripcionTipoProveedorSeleccion', 'cumpleProveedorSeleccionTercero', 'TipoProveedorSeleccion_idTipoProveedorSeleccion', 'Tercero_idTercero',  'idProveedorSeleccionTercero'];
+		    proveedor.etiqueta = ['input', 'checkbox', 'input', 'input', 'input'];
+		    proveedor.tipo     = ['text', '', 'hidden', 'hidden', 'hidden'];
+		    proveedor.estilo   = ['width: 900;height:35px;', 'width: 100px;height:35px;' ,'', '', ''];
+		    proveedor.clase    = ['','', '', '', ''];
+		    proveedor.sololectura = [false,false,true,true,true];
+
 			// examen = new Atributos('examen','contenedor_examen','examen');
 			// examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
 			// examen.etiqueta = ['input','select','checkbox','checkbox','checkbox','select'];
@@ -256,6 +267,18 @@
 													{!!Form::hidden('tipoTercero1','05',false, array('id' => 'tipoTercero5', 'onclick'=>'validarTipoTercero()'))!!}Seguridad Social
 												</label>
 											</div>
+											<div id="tipoproveedor" class="checkbox-inline" style="display: none;" >
+													{!!Form::label('TipoProveedor_idTipoProveedor', 'Proveedor', array('class' => 'col-sm-2 control-label'))!!}
+													<div class="col-sm-10">
+														<div class="input-group" >
+															<span class="input-group-addon">
+																<i class="fa fa-tasks"></i>
+															</span>
+															{!!Form::select('TipoProveedor_idTipoProveedor',$tipoproveedor, (isset($tercero) ? $tercero->TipoProveedor_idTipoProveedor : 0),["class" => " form-control", "placeholder" =>"Seleccione el tipo de proveedor",'style'=>'width:340px;', 'onchange' => 'llenarSeleccionProveedor(this.value)'])!!}
+
+														</div>
+													</div>
+												</div>
 										</div>
 									</div>
 								</div>
@@ -750,6 +773,29 @@
 											</div>
 										</div>
 									</div>
+
+									<div id="pestanaCriterioSeleccion" class="panel panel-default" style="display:none;">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#criterioseleccion">Criterios de selección</a>
+											</h4>
+										</div>
+										<div id="criterioseleccion" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-12">
+														<div class="row show-grid">
+															<div class="col-md-1" style="width: 900px;">Descripción del criterio</div>
+															<div class="col-md-1" style="width: 100px;">Cumple</div>
+															<div id="contenedor_proveedorseleccion">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<div id="pestanaProducto" class="panel panel-default" style="display:none;">
 										<div class="panel-heading">
 											<h4 class="panel-title">

@@ -464,6 +464,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosProcesoSelect.php';
     });
 
+    Route::post('llenarSeleccionTipoProveedor', function()
+    {
+        include public_path().'/ajax/llenarSeleccionTipoProveedor.php';
+    });
+
 
     Route::post('consultarPermisos', function()
     {

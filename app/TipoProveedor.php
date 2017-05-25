@@ -15,7 +15,7 @@ class TipoProveedor extends Model
 
 	public function tipoProveedorSeleccion() 
 	{
-		return $this->hasMany('App\TipoProveedorSeleccion','TipoProveedor_idTipoProveedor');
+		return $this->hasMany('App\TipoProveedorSeleccion','TipoProveedor_idTipoProveedor', 'Compania_idCompania');
 	}
 
 	public function tipoProveedorEvaluacion() 

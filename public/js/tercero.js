@@ -143,6 +143,8 @@ function mostrarPestanas()
         document.getElementById('pestanaFormacion').style.display = 'block';
         document.getElementById('pestanaPersonal').style.display = 'block';
         document.getElementById('pestanaLaboral').style.display = 'block';
+        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
     }
     /*else
     {
@@ -155,7 +157,7 @@ function mostrarPestanas()
         document.getElementById('pestanaLaboral').style.display = 'none';
     }*/
 
-    if(document.getElementById('tipoTercero2').checked || document.getElementById('tipoTercero3').checked  )
+    if(document.getElementById('tipoTercero2').checked)
     {
         document.getElementById('cargo').style.display = 'none';
         document.getElementById('zona').style.display = 'inline';
@@ -168,6 +170,25 @@ function mostrarPestanas()
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
         document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('tipoproveedor').style.display = 'inline-block';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'block';
+    }
+
+    if(document.getElementById('tipoTercero3').checked)
+    {
+        document.getElementById('cargo').style.display = 'none';
+        document.getElementById('zona').style.display = 'inline';
+        document.getElementById('sector').style.display = 'inline';
+
+        document.getElementById('pestanaProducto').style.display = 'block';
+        // document.getElementById('pestanaExamenes').style.display = 'none';
+        document.getElementById('pestanaEducacion').style.display = 'none';
+        document.getElementById('pestanaExperiencia').style.display = 'none';
+        document.getElementById('pestanaFormacion').style.display = 'none';
+        document.getElementById('pestanaPersonal').style.display = 'none';
+        document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
     }
 
     if(document.getElementById('tipoTercero4').checked)
@@ -185,6 +206,8 @@ function mostrarPestanas()
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
         document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
     }
 
 
@@ -281,5 +304,36 @@ function ejecutarInterface(tipo)
 function mostrarModalInterface()
 {
     $("#ModalImportacion").modal("show");
+}
+
+function llenarSeleccionProveedor(idTipoProveedor)
+{
+    var token = document.getElementById('token').value;
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        data: {'idTipoProveedor': idTipoProveedor},
+        url:   'http://'+location.host+'/llenarSeleccionTipoProveedor/',
+        type:  'post',
+        beforeSend: function(){
+            //Lo que se hace antes de enviar el formulario
+            },
+        success: function(respuesta){
+            alert(respuesta.length);
+            for (var i = 0; i < respuesta.length; i++) 
+            {
+                id[i] = respuesta[i]["idTipoProveedorSeleccion"];
+                descripcion[i] = respuesta[i]["descripcionTipoProveedorSeleccion"];
+
+                var valores = new Array(descripcion[i], 0, id[i], '', '');
+                alert(valores);
+                proveedor.agregarCampos(valores,'A'); 
+            }  
+        },
+        error:    function(xhr,err){ 
+            alert("Error");
+        }
+    });
 }
 

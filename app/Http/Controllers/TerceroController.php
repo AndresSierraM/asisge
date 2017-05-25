@@ -92,8 +92,10 @@ class TerceroController extends Controller
 
         $empleadorcontratista = \App\Tercero::where('tipoTercero', 'like','%*01*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
+        $tipoproveedor = \App\TipoProveedor::where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreTipoProveedor', 'idTipoProveedor');
+
       
-        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa','empleadorcontratista'));
+        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa','empleadorcontratista', 'tipoproveedor'));
     }
     /**
      * Store a newly created resource in storage.

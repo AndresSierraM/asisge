@@ -47,7 +47,8 @@ class TipoProveedorController extends Controller
     {
         \App\TipoProveedor::create([
         'codigoTipoProveedor' => $request['codigoTipoProveedor'],
-        'nombreTipoProveedor' => $request['nombreTipoProveedor']
+        'nombreTipoProveedor' => $request['nombreTipoProveedor'],
+        'Compania_idCompania' =>  \Session::get('idCompania')
         ]);
 
         $tipoproveedor = \App\TipoProveedor::All()->last();
@@ -92,6 +93,7 @@ class TipoProveedorController extends Controller
     {
         $tipoproveedor = \App\TipoProveedor::find($id);
         $tipoproveedor->fill($request->all());
+        $tipoproveedor->Compania_idCompania = \Session::get('idCompania');
         $tipoproveedor->save();
 
         $this->grabarDetalle($request, $id);
