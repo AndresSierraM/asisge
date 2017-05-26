@@ -5,7 +5,7 @@ class Tercero extends Model
 {
     protected $table = 'tercero';
     protected $primaryKey = 'idTercero';
-    protected $fillable = ['TipoIdentificacion_idTipoIdentificacion','documentoTercero','nombre1Tercero','nombre2Tercero','apellido1Tercero','apellido2Tercero','nombreCompletoTercero','fechaCreacionTercero','estadoTercero','imagenTercero','tipoTercero','direccionTercero','Ciudad_idCiudad','telefonoTercero','faxTercero','movil1Tercero','movil2Tercero','sexoTercero','correoElectronicoTercero','paginaWebTercero','Cargo_idCargo','Compania_idCompania', 'Zona_idZona', 'SectorEmpresa_idSectorEmpresa', 'Tercero_idEmpleadorContratista','CentroCosto_idCentroCosto'];
+    protected $fillable = ['TipoIdentificacion_idTipoIdentificacion','documentoTercero','nombre1Tercero','nombre2Tercero','apellido1Tercero','apellido2Tercero','nombreCompletoTercero','fechaCreacionTercero','estadoTercero','imagenTercero','tipoTercero','direccionTercero','Ciudad_idCiudad','telefonoTercero','faxTercero','movil1Tercero','movil2Tercero','sexoTercero','correoElectronicoTercero','paginaWebTercero','Cargo_idCargo','Compania_idCompania', 'Zona_idZona', 'SectorEmpresa_idSectorEmpresa', 'Tercero_idEmpleadorContratista','CentroCosto_idCentroCosto', 'TipoProveedor_idTipoProveedor'];
 
     public $timestamps = false;
     
@@ -54,5 +54,10 @@ class Tercero extends Model
        public function CentroCosto()
      {
          return $this->hasMany('App\CentroCosto','CentroCosto_idCentroCosto');
+     }
+
+     public function TipoProveedor()
+     {
+         return $this->hasOne('App\TipoProveedor','idTipoProveedor');
      }
 }

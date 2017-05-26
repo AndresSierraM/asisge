@@ -21,7 +21,8 @@
         FROM 
             tipoproveedor tp
                 LEFT JOIN 
-            compania c ON tp.Compania_idCompania = c.idCompania');
+            compania c ON tp.Compania_idCompania = c.idCompania
+        WHERE idCompania = '.\Session::get('idCompania'));
     $row = array();
 
     foreach ($tipoproveedor as $key => $value) 

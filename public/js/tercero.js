@@ -320,14 +320,11 @@ function llenarSeleccionProveedor(idTipoProveedor)
             //Lo que se hace antes de enviar el formulario
             },
         success: function(respuesta){
-            alert(respuesta.length);
+            $("#contenedor_proveedorseleccion").html('');
+            
             for (var i = 0; i < respuesta.length; i++) 
             {
-                id[i] = respuesta[i]["idTipoProveedorSeleccion"];
-                descripcion[i] = respuesta[i]["descripcionTipoProveedorSeleccion"];
-
-                var valores = new Array(descripcion[i], 0, id[i], '', '');
-                alert(valores);
+                var valores = new Array(respuesta[i]["descripcionTipoProveedorSeleccion"], 0, respuesta[i]["idTipoProveedorSeleccion"], '', '');
                 proveedor.agregarCampos(valores,'A'); 
             }  
         },

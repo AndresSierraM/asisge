@@ -9,13 +9,13 @@ class TipoProveedor extends Model
 	protected $table ='tipoproveedor';
 	protected $primaryKey = 'idTipoProveedor';
 	
-	protected $fillable = ['codigoTipoProveedor', 'nombreTipoProveedor'];
+	protected $fillable = ['codigoTipoProveedor', 'nombreTipoProveedor', 'Compania_idCompania'];
 
 	public $timestamps = false;
 
 	public function tipoProveedorSeleccion() 
 	{
-		return $this->hasMany('App\TipoProveedorSeleccion','TipoProveedor_idTipoProveedor', 'Compania_idCompania');
+		return $this->hasMany('App\TipoProveedorSeleccion','TipoProveedor_idTipoProveedor');
 	}
 
 	public function tipoProveedorEvaluacion() 

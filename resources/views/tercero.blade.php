@@ -24,6 +24,10 @@
 		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
 		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroProductos) : "");?>';
 		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
+
+		var terceroProveedor = '<?php echo (isset($proveedorseleccion) ? json_encode($proveedorseleccion) : "");?>';
+		terceroProveedor = (terceroProveedor != '' ? JSON.parse(terceroProveedor) : '');
+
 		var terceroExamenMedico = '<?php echo (isset($tercero) ? json_encode($tercero->terceroExamenMedicos) : "");?>';
 		terceroExamenMedico = (terceroExamenMedico != '' ? JSON.parse(terceroExamenMedico) : '');
 		var terceroArchivo = '<?php echo (isset($tercero) ? json_encode($tercero->terceroarchivos) : "");?>';
@@ -64,14 +68,14 @@
 
 			proveedor = new Atributos('proveedor','contenedor_proveedorseleccion','proveedor_');
 			proveedor.altura = '35px';
-		    proveedor.campoid = 'idProveedorSeleccionTercero';
+		    proveedor.campoid = 'idTipoProveedorSeleccionTercero';
 		    proveedor.botonEliminacion = false;
-		    proveedor.campos   = ['descripcionTipoProveedorSeleccion', 'cumpleProveedorSeleccionTercero', 'TipoProveedorSeleccion_idTipoProveedorSeleccion', 'Tercero_idTercero',  'idProveedorSeleccionTercero'];
+		    proveedor.campos   = ['descripcionTerceroTipoProveedorSeleccion', 'cumpleTerceroTipoProveedorSeleccion', 'TipoProveedorSeleccion_idTipoProveedorSeleccion', 'Tercero_idTercero',  'idTerceroTipoProveedorSeleccion'];
 		    proveedor.etiqueta = ['input', 'checkbox', 'input', 'input', 'input'];
-		    proveedor.tipo     = ['text', '', 'hidden', 'hidden', 'hidden'];
-		    proveedor.estilo   = ['width: 900;height:35px;', 'width: 100px;height:35px;' ,'', '', ''];
+		    proveedor.tipo     = ['text', 'checkbox', 'hidden', 'hidden', 'hidden'];
+		    proveedor.estilo   = ['width: 900px;height:35px;', 'width: 100px;height:35px; display:inline-block' ,'', '', ''];
 		    proveedor.clase    = ['','', '', '', ''];
-		    proveedor.sololectura = [false,false,true,true,true];
+		    proveedor.sololectura = [true,false,true,true,true];
 
 			// examen = new Atributos('examen','contenedor_examen','examen');
 			// examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
@@ -104,6 +108,11 @@
 			for(var j=0, k = terceroProductos.length; j < k; j++)
 			{
 				productos.agregarCampos(JSON.stringify(terceroProductos[j]),'L');
+			}
+
+			for(var j=0, k = terceroProveedor.length; j < k; j++)
+			{
+				proveedor.agregarCampos(JSON.stringify(terceroProveedor[j]),'L');
 			}
 
 			for(var j=0, k = terceroExamenMedico.length; j < k; j++)

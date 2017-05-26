@@ -17,5 +17,10 @@ class TipoProveedorSeleccion extends Model
 	{
 		return $this->hasOne('App\TipoProveedor','idTipoProveedor');
 	}
+
+	public function tercerotipoproveedorseleccion() 
+	{
+		return $this->hasMany('App\TipoProveedorSeleccion','TipoProveedorSeleccion_idTipoProveedorSeleccion');
+	}
 }
 	

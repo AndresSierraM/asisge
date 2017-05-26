@@ -138,6 +138,7 @@ class TerceroController extends Controller
                 'estadoTercero' => $request['estadoTercero'],
                 'imagenTercero' => 'tercero/'. $imageName,
                 'tipoTercero' => $request['tipoTercero'],
+                'TipoProveedor_idTipoProveedor' => (($request['TipoProveedor_idTipoProveedor'] == '' or $request['TipoProveedor_idTipoProveedor'] == 0) ? null : $request['TipoProveedor_idTipoProveedor']),
                 'direccionTercero' => $request['direccionTercero'],
                 'Ciudad_idCiudad' => $request['Ciudad_idCiudad'],
                 'telefonoTercero' => $request['telefonoTercero'],
@@ -187,6 +188,16 @@ class TerceroController extends Controller
                 ]);
             
            
+            $contadorTipoProveedorSeleccion = count($request['cumpleTerceroTipoProveedorSeleccion']);
+            for($i = 0; $i < $contadorTipoProveedorSeleccion; $i++)
+            {
+                \App\TerceroTipoProveedorSeleccion::create([
+                'cumpleTerceroTipoProveedorSeleccion' => $request['cumpleTerceroTipoProveedorSeleccion'][$i],
+                'Tercero_idTercero' => $tercero->idTercero,
+                'TipoProveedorSeleccion_idTipoProveedorSeleccion' => $request['TipoProveedorSeleccion_idTipoProveedorSeleccion'][$i]
+               ]);
+            }
+
             $contadorContacto = count($request['nombreTerceroContacto']);
             for($i = 0; $i < $contadorContacto; $i++)
             {
@@ -293,9 +304,17 @@ class TerceroController extends Controller
 
         $empleadorcontratista = \App\Tercero::where('tipoTercero', 'like','%*01*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
+        $tipoproveedor = \App\TipoProveedor::where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreTipoProveedor', 'idTipoProveedor');
+
+        $proveedorseleccion = DB::Select('
+            SELECT idTerceroTipoProveedorSeleccion, cumpleTerceroTipoProveedorSeleccion, TipoProveedorSeleccion_idTipoProveedorSeleccion, Tercero_idTercero, descripcionTipoProveedorSeleccion as descripcionTerceroTipoProveedorSeleccion
+            FROM tercerotipoproveedorseleccion ttps
+            LEFT JOIN tipoproveedorseleccion tps ON ttps.TipoProveedorSeleccion_idTipoProveedorSeleccion = tps.idTipoProveedorSeleccion
+            WHERE Tercero_idTercero = '.$id);
+
         $tercero = \App\Tercero::find($id);
 
-        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista'),['tercero'=>$tercero]);
+        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista', 'tipoproveedor', 'proveedorseleccion'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -317,6 +336,9 @@ class TerceroController extends Controller
             $tercero->Tercero_idEmpleadorContratista = (($request['Tercero_idEmpleadorContratista'] == '' or $request['Tercero_idEmpleadorContratista'] == 0) ? null : $request['Tercero_idEmpleadorContratista'
                 ]);
             $tercero->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'
+                ]);
+
+            $tercero->TipoProveedor_idTipoProveedor = (($request['TipoProveedor_idTipoProveedor'] == '' or $request['TipoProveedor_idTipoProveedor'] == 0) ? null : $request['TipoProveedor_idTipoProveedor'
                 ]);
 
             if(null !== Input::file('imagenTercero') )
@@ -362,6 +384,21 @@ class TerceroController extends Controller
                 'consumeCigarrilloTerceroInformacion' => $request['consumeCigarrilloTerceroInformacion']);
 
             $terceroinformacion = \App\TerceroInformacion::updateOrCreate($indice, $data);
+
+            for ($i=0; $i < count($request['cumpleTerceroTipoProveedorSeleccion']); $i++) 
+            { 
+                $indice = array(
+                  'idTerceroTipoProveedorSeleccion' => $request['idTerceroTipoProveedorSeleccion'][$i]);
+
+                $data = array(
+                'cumpleTerceroTipoProveedorSeleccion' => $request['cumpleTerceroTipoProveedorSeleccion'][$i],
+                'Tercero_idTercero' => $id,
+                'TipoProveedorSeleccion_idTipoProveedorSeleccion' => $request['TipoProveedorSeleccion_idTipoProveedorSeleccion'][$i]);
+
+                $datos = \App\TerceroTipoProveedorSeleccion::updateOrCreate($indice, $data);
+            }
+
+            
 
             \App\TerceroContacto::where('Tercero_idTercero',$id)->delete();
             \App\TerceroProducto::where('Tercero_idTercero',$id)->delete();
