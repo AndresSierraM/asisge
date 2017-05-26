@@ -99,6 +99,9 @@ function imprimirCargo(id)
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#tcargo').DataTable( {
+            // Se agregan las dos lineas Dom , y button para que salga la opcion encima de la grid 
+            "dom":'Bftip',
+            "buttons":['excel'],
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,

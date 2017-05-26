@@ -30,7 +30,7 @@
     nombreEvaluacion =  Array("Calidad","Cantidad", "Precio");
     var criterioevaluacion = [valorEvaluacion,nombreEvaluacion];
 
-    var validarPesoEvaluacion = ['onchange','validarPesoEvaluacion()'];
+    var validarPesoEvaluacion = ['onchange','validarPesoCriterioEvaluacion(this.value)'];
 
     var valorCriterioEvaluacion = [0, '', 0, 0];
 
@@ -209,6 +209,7 @@
                             <div id="contenedor_evaluacion"> 
                             </div>
                           </div>
+                          <!-- Se agrega el div para que muestre el error-->
                           <div id="totalevaluacion" class="btn btn-danger" style="display:none;"></div>
                         </div>
                       </div>
