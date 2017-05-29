@@ -469,6 +469,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/llenarSeleccionTipoProveedor.php';
     });
 
+    Route::get('datosFichaTecnicaModal', function()
+    {
+        include public_path().'/ajax/datosFichaTecnicaModal.php';
+    });
+
 
     Route::post('consultarPermisos', function()
     {

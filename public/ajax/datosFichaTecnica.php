@@ -1,6 +1,7 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $tipo = $_GET['tipo'];
 
     $visibleM = '';
     $visibleE = '';
@@ -20,7 +21,9 @@
         ->leftjoin('sublineaproducto as S','F.SublineaProducto_idSublineaProducto','=','S.idSublineaProducto')
         ->leftjoin('tercero as T','F.Tercero_idTercero','=','T.idTercero')
         ->select(DB::raw('idFichaTecnica, referenciaFichaTecnica, nombreFichaTecnica, nombreLineaProducto, nombreSublineaProducto, nombreCompletoTercero, estadoFichaTecnica'))
-        ->where('F.Compania_idCompania','=', \Session::get('idCompania'))->get();
+        ->where('F.Compania_idCompania','=', \Session::get('idCompania'))
+        ->where('tipoFichaTecnica', '=', $tipo)
+        ->get();
 
     $row = array();
 

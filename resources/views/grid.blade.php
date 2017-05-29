@@ -12,6 +12,8 @@
   		
       </style>
 
+      {!!Html::script('js/general.js')!!}
+
       <!-- DataTables -->
         {!!Html::script('DataTables/media/js/jquery.js'); !!}
         {!!Html::script('DataTables/media/js/jquery.dataTables.js'); !!}

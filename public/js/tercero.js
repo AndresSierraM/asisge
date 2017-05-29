@@ -334,3 +334,81 @@ function llenarSeleccionProveedor(idTipoProveedor)
     });
 }
 
+function abrirModalFichaTecnica()
+{
+
+    idTercero = ($("#Tercero_idTercero").val() == '' ? '' : $("#Tercero_idTercero").val());
+
+    window.parent.$("#tfichatecnica tbody tr").each( function () 
+    {
+        $(this).removeClass('selected');
+    });
+
+    var lastIdx = null;
+    window.parent.$("#tfichatecnica").DataTable().ajax.url('http://'+location.host+"/datosFichaTecnicaModal?ficha=tercero").load();
+     // Abrir modal
+    window.parent.$("#modalFichaTecnica").modal()
+
+    $("a.toggle-vis").on( "click", function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr("data-column") );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+    window.parent.$("#tfichatecnica tbody").on( "mouseover", "td", function () 
+    {
+        var colIdx = table.cell(this).index().column;
+
+        if ( colIdx !== lastIdx ) {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+        }
+    }).on( "mouseleave", function () 
+    {
+        $( table.cells().nodes() ).removeClass( "highlight" );
+    } );
+
+
+    // Setup - add a text input to each footer cell
+    window.parent.$("#tfichatecnica tfoot th").each( function () 
+    {
+        var title = window.parent.$("#tfichatecnica thead th").eq( $(this).index() ).text();
+        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+    });
+ 
+    // DataTable
+    var table = window.parent.$("#tfichatecnica").DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () 
+    {
+        var that = this;
+ 
+        $( "input", this.footer() ).on( "blur change", function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    })
+
+    $('#tfichatecnica tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+
+    $('#botonFichaTecnica').click(function() {
+        var datos = table.rows('.selected').data();
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(0, datos[i][2], datos[i][0], datos[i][1]);
+            window.parent.productos.agregarCampos(valores,'A');
+        }
+
+        window.parent.$("#modalFichaTecnica").modal("hide");
+    });
+}

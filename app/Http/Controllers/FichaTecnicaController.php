@@ -39,7 +39,7 @@ class FichaTecnicaController extends Controller
 
     public function index()
     {
-        $vista = basename($_SERVER["PHP_SELF"]);
+        $vista = basename($_SERVER["PHP_SELF"].'?tipo='.$_GET['tipo']);
         $datos = consultarPermisos($vista);
 
         if($datos != null)
@@ -76,6 +76,7 @@ class FichaTecnicaController extends Controller
     {
         
         \App\FichaTecnica::create([
+            'tipoFichaTecnica' => $request['tipoFichaTecnica'],
             'referenciaFichaTecnica' => $request['referenciaFichaTecnica'],
             'nombreFichaTecnica' => $request['nombreFichaTecnica'],
             'fechaCreacionFichaTecnica' => $request['fechaCreacionFichaTecnica'],
@@ -152,7 +153,7 @@ class FichaTecnicaController extends Controller
             }
 
         }
-        return redirect('/fichatecnica');
+        return redirect('/fichatecnica?tipo='.$request['tipoFichaTecnica']);
     }
 
     /**
@@ -334,7 +335,7 @@ class FichaTecnicaController extends Controller
             $idsEliminar = explode(',',$idsEliminar);
             \App\FichaTecnicaImagen::whereIn('idFichaTecnicaImagen',$idsEliminar)->delete();
         }
-       return redirect('/fichatecnica');
+       return redirect('/fichatecnica?tipo='.$request['tipoFichaTecnica']);
     }
 
     /**
@@ -450,6 +451,28 @@ class FichaTecnicaController extends Controller
             'observacionFichaTecnicaNota' => $request['observacionFichaTecnicaNota'][$i] );
 
             $guardar = \App\FichaTecnicaNota::updateOrCreate($indice, $data);
+
+        }
+
+        // -----------------------------------
+        // CRITERIOS
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        // -----------------------------------
+        $idsEliminar = explode(',', $request['eliminarCriterio']);
+        \App\FichaTecnicaCriterio::whereIn('idFichaTecnicaCriterio',$idsEliminar)->delete();
+
+        $contador = count($request['idFichaTecnicaCriterio']);
+        for($i = 0; $i < $contador; $i++)
+        {
+            $indice = array(
+             'idFichaTecnicaCriterio' => $request['idFichaTecnicaCriterio'][$i]);
+
+            $data = array(
+            'FichaTecnica_idFichaTecnica' => $id,
+            'descripcionFichaTecnicaCriterio' => $request['descripcionFichaTecnicaCriterio'][$i]);
+
+            $guardar = \App\FichaTecnicaCriterio::updateOrCreate($indice, $data);
 
         }
 

@@ -81,6 +81,7 @@ class MovimientoCRMController extends Controller
     {
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
+        $documentoTercero = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('tipoDocumentoCRM');
         
         // consultamos los maestros asociados a la compania
         $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
@@ -92,10 +93,10 @@ class MovimientoCRMController extends Controller
         $categoria = \App\CategoriaCRM::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreCategoriaCRM','idCategoriaCRM');
         $origen = \App\OrigenCRM::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreOrigenCRM','idOrigenCRM');
 
+        // Consultamos el tercero a mostrar en el formulario (si hace parte de los campos a mostrar) dependiendo del tipo de Documento CRM
+        $proveedor = ($documentoTercero[0] == 'Compras' ? \App\Tercero::where('tipoTercero','like','%*02*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : ($documentoTercero[0] == 'Comercial') ? \App\Tercero::where('tipoTercero','like','%*03*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : Array());        
 
-        
-
-       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento'));
+       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento', 'proveedor'));
     }
 
     /**
@@ -139,6 +140,7 @@ class MovimientoCRMController extends Controller
             'Tercero_idSolicitante' => ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null),
             'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
             'Tercero_idAsesor' => ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null),
+            'Tercero_idProveedor' => ($request['Tercero_idProveedor'] != '' ? $request['Tercero_idProveedor'] : null),
             'CategoriaCRM_idCategoriaCRM' => ($request['CategoriaCRM_idCategoriaCRM'] != '' ? $request['CategoriaCRM_idCategoriaCRM'] : null),
             'DocumentoCRM_idDocumentoCRM' => ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null),
             'LineaNegocio_idLineaNegocio' => ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null),
@@ -347,6 +349,7 @@ class MovimientoCRMController extends Controller
 
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
+        $documentoTercero = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('tipoDocumentoCRM');
        
 
         // consultamos los maestros asociados a la compania
@@ -391,6 +394,15 @@ class MovimientoCRMController extends Controller
                 WHERE MovimientoCRM_idMovimientoCRM = '.$id.' 
                     AND a.Compania_idCompania = '.\Session::get('idCompania'));  
 
+        // Consultamos el tercero a mostrar en el formulario (si hace parte de los campos a mostrar) dependiendo del tipo de Documento CRM
+        $proveedor = ($documentoTercero[0] == 'Compras' ? \App\Tercero::where('tipoTercero','like','%*02*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : ($documentoTercero[0] == 'Comercial') ? \App\Tercero::where('tipoTercero','like','%*03*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : Array());     
+
+        $movimientoCRMProductoServicio = DB::Select('
+            SELECT idMovimientoCRMProducto, FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaMovimientoCRMProducto, nombreFichaTecnica as descripcionMovimientoCRMProducto, cantidadMovimientoCRMProducto, valorUnitarioMovimientoCRMProducto
+            FROM movimientocrmproducto mcrmp
+            LEFT JOIN fichatecnica ft ON mcrmp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
+            WHERE MovimientoCRM_idMovimientoCRM = '.$id);
+
         // print_r($movimientoCRMTarea);
 
 
@@ -398,7 +410,7 @@ class MovimientoCRMController extends Controller
 
 
 
-        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea'),['movimientocrm'=>$movimientocrm]);
+        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea', 'proveedor', 'movimientoCRMProductoServicio'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -422,6 +434,7 @@ class MovimientoCRMController extends Controller
         $movimientocrm->Tercero_idSolicitante = ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null);
         $movimientocrm->Tercero_idSupervisor = ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null);
         $movimientocrm->Tercero_idAsesor = ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null);
+        $movimientocrm->Tercero_idProveedor = ($request['Tercero_idProveedor'] != '' ? $request['Tercero_idProveedor'] : null);
         $movimientocrm->CategoriaCRM_idCategoriaCRM = ($request['CategoriaCRM_idCategoriaCRM'] != '' ? $request['CategoriaCRM_idCategoriaCRM'] : null);
         $movimientocrm->DocumentoCRM_idDocumentoCRM = ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null);
         $movimientocrm->LineaNegocio_idLineaNegocio = ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null);
@@ -660,6 +673,29 @@ class MovimientoCRMController extends Controller
             }); 
         }
 
+        // ************************
+        // P R O D U C T O S 
+        // ************************
+
+        $idsEliminar = explode(',', $request['eliminarMovimientoCRMPRoducto']);
+        \App\MovimientoCRMProducto::whereIn('idMovimientoCRMProducto',$idsEliminar)->delete();
+
+        echo count($request['cantidadMovimientoCRMProducto']);
+        
+
+        for ($i=0; $i < count($request['cantidadMovimientoCRMProducto']); $i++) 
+        { 
+            $indice = array(
+                'idMovimientoCRMProducto' => $request['idMovimientoCRMProducto'][$i]);
+
+            $data = array(
+                'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'][$i],
+                'cantidadMovimientoCRMProducto' => $request['cantidadMovimientoCRMProducto'][$i],
+                'valorUnitarioMovimientoCRMProducto' => $request['valorUnitarioMovimientoCRMProducto'][$i],
+                'MovimientoCRM_idMovimientoCRM' => $id);
+
+            $respuesta = \App\MovimientoCRMProducto::updateOrCreate($indice, $data); 
+        }
     }
 
     public function guardarAsesorMovimientoCRM()

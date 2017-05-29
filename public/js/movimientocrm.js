@@ -246,7 +246,7 @@ function mostrarModalAsesor(idMovimientoCRM)
                 }
                 $('#Tercero_idAsesor > option[value="'+respuesta["Tercero_idAsesor"]+'"]').attr('selected', 'selected');
                 $('#AcuerdoServicio_idAcuerdoServicio > option[value="'+respuesta["AcuerdoServicio_idAcuerdoServicio"]+'"]').attr('selected', 'selected');
-                $("#diasEstimadosSolucionMovimientoCRM").val(respuesta["diasEstimadosSolucionMovimientoCRM"]);
+                $("#diasEstfichatecnicaadosSolucionMovimientoCRM").val(respuesta["diasEstfichatecnicaadosSolucionMovimientoCRM"]);
 
             },
             error: function(xhr,err)
@@ -280,7 +280,7 @@ function mostrarDiasAcuerdo(idAcuerdo)
                 // asignamos los valores a los campos del modal
                 if(respuesta["tiempoAcuerdoServicio"] !== null)
                 {   
-                    $("#diasEstimadosSolucionMovimientoCRM").val(respuesta["tiempoAcuerdoServicio"]);
+                    $("#diasEstfichatecnicaadosSolucionMovimientoCRM").val(respuesta["tiempoAcuerdoServicio"]);
                 }
 
             },
@@ -298,7 +298,7 @@ function guardarAsesor()
     var idSupervisor = $("#Tercero_idSupervisor").val();
     var idAsesor = $("#Tercero_idAsesor").val();
     var idAcuerdo = $("#AcuerdoServicio_idAcuerdoServicio").val();
-    var diasAcuerdo = $("#diasEstimadosSolucionMovimientoCRM").val();
+    var diasAcuerdo = $("#diasEstfichatecnicaadosSolucionMovimientoCRM").val();
     
     var token = document.getElementById('token').value;
     $.ajax({
@@ -484,7 +484,7 @@ function calcularHoras()
 
             if (i == regFin) 
             {
-                $("#fechaHoraEstimadaFinAgenda").val($("#fechaFinAgendaTarea"+i).val());
+                $("#fechaHoraEstfichatecnicaadaFinAgenda").val($("#fechaFinAgendaTarea"+i).val());
             }
 
             totHoras += parseFloat($("#horasAgendaTarea"+i).val());
@@ -519,24 +519,24 @@ function sumarHoras(fechaInicial, horaTrabajar, horaDia)
     //Dividimos la fecha primero utilizando el espacio para obtener solo la fecha y el tiempo por separado
     var splitDate= fechaIni.split(" ");
     var date=splitDate[0].split("-");
-    var time=splitDate[1].split(":");
+    var tfichatecnicae=splitDate[1].split(":");
 
     // Obtenemos los campos individuales para todas las partes de la fecha
     var dd =date[0];
     var mm=date[1]-1;
     var yyyy=date[2];
-    var hh=time[0];
-    var min=time[1];
-    var ss=time[2];
+    var hh=tfichatecnicae[0];
+    var min=tfichatecnicae[1];
+    var ss=tfichatecnicae[2];
 
     // Creamos la fecha con Javascript
     var fecha = new Date(yyyy,mm,dd,hh,min,ss);
     dia = fecha.getDate();
     mes = fecha.getMonth() + 1;
     anio = fecha.getFullYear();
-    addTime = horas * sum; //Tiempo en segundos
+    addtfichatecnicae = horas * sum; //Tiempo en segundos
  
-    fecha.setSeconds(addTime); //Añado el tiempo
+    fecha.setSeconds(addtfichatecnicae); //Añado el tiempo
 
     var fechastring = ("0" + fecha.getDate()).slice(-2) + '-' + ("0" + (fecha.getMonth() + 1)).slice(-2) + '-' + fecha.getFullYear() + ' ' + ("0" + fecha.getHours()).slice(-2) + ':' + ("0" + fecha.getMinutes()).slice(-2) + ':' + ("0" + fecha.getSeconds()).slice(-2);
 
@@ -555,5 +555,119 @@ function asignarFechAgenda(inicio, fin, reg)
     $("#fechaFinAgendaTarea"+reg).val(fechaFinal);
 
     $("#fechaHoraInicioAgenda").val(fechaInicial);
-    $("#fechaHoraEstimadaFinAgenda").val(fechaFinal);
+    $("#fechaHoraEstfichatecnicaadaFinAgenda").val(fechaFinal);
 } 
+
+function abrirModalFichaTecnica()
+{
+
+    idTercero = ($("#Tercero_idProveedor").val() == '' ? '' : $("#Tercero_idProveedor").val());
+
+    window.parent.$("#tfichatecnica tbody tr").each( function () 
+    {
+        $(this).removeClass('selected');
+    });
+
+    var lastIdx = null;
+    window.parent.$("#tfichatecnica").DataTable().ajax.url('http://'+location.host+"/datosFichaTecnicaModal?ficha=crm&idTercero="+idTercero).load();
+     // Abrir modal
+    window.parent.$("#modalFichaTecnica").modal()
+
+    $("a.toggle-vis").on( "click", function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr("data-column") );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+    window.parent.$("#tfichatecnica tbody").on( "mouseover", "td", function () 
+    {
+        var colIdx = table.cell(this).index().column;
+
+        if ( colIdx !== lastIdx ) {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+        }
+    }).on( "mouseleave", function () 
+    {
+        $( table.cells().nodes() ).removeClass( "highlight" );
+    } );
+
+
+    // Setup - add a text input to each footer cell
+    window.parent.$("#tfichatecnica tfoot th").each( function () 
+    {
+        var title = window.parent.$("#tfichatecnica thead th").eq( $(this).index() ).text();
+        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+    });
+ 
+    // DataTable
+    var table = window.parent.$("#tfichatecnica").DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () 
+    {
+        var that = this;
+ 
+        $( "input", this.footer() ).on( "blur change", function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    })
+
+    $('#tfichatecnica tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+
+    $('#botonFichaTecnica').click(function() {
+        var datos = table.rows('.selected').data();
+
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(datos[i][2], datos[i][0], datos[i][1], '1', '1', '1');
+            window.parent.productoservicio.agregarCampos(valores,'A');
+        }
+
+        calcularTotales();
+
+        window.parent.$("#modalFichaTecnica").modal("hide");
+    });
+}
+
+function calcularValorTotal(registro, tipo)
+{
+    reg = registro;
+    if (tipo == 'cantidad') 
+    {
+        reg = registro.replace('cantidadMovimientoCRMProducto','');
+    }
+    else if(tipo == 'unitario')
+    {
+        reg = registro.replace('valorUnitarioMovimientoCRMProducto','');   
+    }
+
+    valor = parseFloat($("#cantidadMovimientoCRMProducto"+reg).val()) * parseFloat($("#valorUnitarioMovimientoCRMProducto"+reg).val());
+
+    $("#valorTotalMovimientoCRMProducto"+reg).val(valor)
+
+    calcularTotales();
+    
+}
+
+function calcularTotales()
+{
+    total = 0;
+
+    for (var i = 0; i < window.parent.productoservicio.contador; i++) 
+    {
+        total += parseFloat($("#valorTotalMovimientoCRMProducto"+i, window.parent.document).val());
+    }
+            
+    $('#totalProducto', window.parent.document).val(total);
+}

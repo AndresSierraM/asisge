@@ -216,8 +216,7 @@ class TerceroController extends Controller
             {
                 \App\TerceroProducto::create([
                 'Tercero_idTercero' => $tercero->idTercero,
-                'codigoTerceroProducto' => $request['codigoTerceroProducto'][$i],
-                'nombreTerceroProducto' => $request['nombreTerceroProducto'][$i]
+                'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'][$i]
                ]);
             }
             // Se quita Esta mltiregistro ya que es un campo que ya están en cargos / perfiles
@@ -312,9 +311,15 @@ class TerceroController extends Controller
             LEFT JOIN tipoproveedorseleccion tps ON ttps.TipoProveedorSeleccion_idTipoProveedorSeleccion = tps.idTipoProveedorSeleccion
             WHERE Tercero_idTercero = '.$id);
 
+        $terceroproducto = DB::Select('
+            SELECT idTerceroProducto, FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaTerceroProducto, nombreFichaTecnica as descripcionProducto
+            FROM terceroproducto tp
+            LEFT JOIN fichatecnica ft ON tp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
+            WHERE tp.Tercero_idTercero = '.$id);
+
         $tercero = \App\Tercero::find($id);
 
-        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista', 'tipoproveedor', 'proveedorseleccion'),['tercero'=>$tercero]);
+        return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa', 'empleadorcontratista', 'tipoproveedor', 'proveedorseleccion', 'terceroproducto'),['tercero'=>$tercero]);
     }
     /**
      * Update the specified resource in storage.
@@ -417,13 +422,13 @@ class TerceroController extends Controller
                 'correoElectronicoTerceroContacto' => $request['correoElectronicoTerceroContacto'][$i]
                ]);
             }
-            $contadorProducto = count($request['codigoTerceroProducto']);
+
+            $contadorProducto = count($request['FichaTecnica_idFichaTecnica']);
             for($i = 0; $i < $contadorProducto; $i++)
             {
                 \App\TerceroProducto::create([
                 'Tercero_idTercero' => $id,
-                'codigoTerceroProducto' => $request['codigoTerceroProducto'][$i],
-                'nombreTerceroProducto' => $request['nombreTerceroProducto'][$i]
+                'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'][$i]
                ]);
             }
             // Se quita Esta mltiregistro ya que es un campo que ya están en cargos / perfiles

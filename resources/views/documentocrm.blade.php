@@ -304,7 +304,7 @@
                                   <i class="fa fa-credit-card" ></i>
                                 </span>
                                 {!!Form::select('tipoDocumentoCRM',
-                                    array('HelpDesk'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana','Produccion'=>'Producción'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Documento"])!!}
+                                    array('HelpDesk'=>'HelpDesk','Comercial'=>'Comercial','Gestion Humana'=>'Gestión Humana','Produccion'=>'Producción', 'Compras' => 'Compras'), (isset($documentocrm) ? $documentocrm->tipoDocumentoCRM : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de Documento"])!!}
                               </div>
                             </div>
                           </div>

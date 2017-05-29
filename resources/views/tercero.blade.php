@@ -1,4 +1,4 @@
-@extends('layouts.vista')
+@extends('layouts.grid')
 
 @section('titulo')
 	<h3 id="titulo">
@@ -22,7 +22,7 @@
 		
 		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroContactos) : "");?>';
 		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
-		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroProductos) : "");?>';
+		var terceroProductos = '<?php echo (isset($terceroproducto) ? json_encode($terceroproducto) : "");?>';
 		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
 
 		var terceroProveedor = '<?php echo (isset($proveedorseleccion) ? json_encode($proveedorseleccion) : "");?>';
@@ -58,13 +58,21 @@
 			contactos.clase = ['','','','','',''];
 			contactos.sololectura = [false,false,false,false,false,false];
 
+			// productos = new Atributos('productos','contenedor_productos','productos_');
+			// productos.campos = ['idTerceroProducto','codigoTerceroProducto','nombreTerceroProducto'];
+			// productos.etiqueta = ['input','input','input'];
+			// productos.tipo = ['hidden','text','text'];
+			// productos.estilo = ['','width: 380px; height:35px;','width: 750px;height:35px;'];
+			// productos.clase = ['','',''];
+			// productos.sololectura = [false,false,false];
+
 			productos = new Atributos('productos','contenedor_productos','productos_');
-			productos.campos = ['idTerceroProducto','codigoTerceroProducto','nombreTerceroProducto'];
-			productos.etiqueta = ['input','input','input'];
-			productos.tipo = ['hidden','text','text'];
-			productos.estilo = ['','width: 380px; height:35px;','width: 750px;height:35px;'];
-			productos.clase = ['','',''];
-			productos.sololectura = [false,false,false];
+			productos.campos = ['idTerceroProducto','FichaTecnica_idFichaTecnica','referenciaTerceroProducto', 'descripcionProducto'];
+			productos.etiqueta = ['input','input','input','input'];
+			productos.tipo = ['hidden','hidden','text','text'];
+			productos.estilo = ['','','width: 200px;height:35px;','width: 800px;height:35px;'];
+			productos.clase = ['','','',''];
+			productos.sololectura = [false,false,true,true];
 
 			proveedor = new Atributos('proveedor','contenedor_proveedorseleccion','proveedor_');
 			proveedor.altura = '35px';
@@ -816,11 +824,11 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;" onclick="productos.agregarCampos(valorProductos,'A')">
+															<div class="col-md-1" style="width: 40px; height:42px; cursor: pointer;" onclick="abrirModalFichaTecnica()">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 380px;">Referencia</div>
-															<div class="col-md-1" style="width: 750px;">Descripci&oacute;n</div>
+															<div class="col-md-1" style="width: 200px;">Referencia</div>
+															<div class="col-md-1" style="width: 800px;">Descripci&oacute;n</div>
 															<div id="contenedor_productos">
 															</div>
 														</div>
@@ -1092,3 +1100,41 @@ min-height: 0px !important;
 }   
 </style>    
 @stop
+
+<div id="modalFichaTecnica" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:80%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ficha técnica</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="container">
+            <div class="row" style="width:90%;">
+                <div class="container" style="width:100%;">
+                    <table id="tfichatecnica" name="tfichatecnica" class="display table-bordered" width="100%">
+                        <thead>
+                            <tr class="btn-default active">
+                                <th><b>Referencia</b></th>
+                                <th><b>Descripción</b></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="btn-default active">
+                                <th>Referencia</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="modal-footer">
+                        <button id="botonFichaTecnica" name="botonFichaTecnica" type="button" class="btn btn-primary" >Seleccionar</button>
+                    </div>
+				</div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
