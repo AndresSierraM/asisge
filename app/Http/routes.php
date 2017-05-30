@@ -187,6 +187,7 @@ Route::group(['middleware' => 'auth'], function ()
     // Rutas de Compras
     // *************************************
     Route::resource('tipoproveedor','TipoProveedorController');
+    Route::resource('ordencompra','OrdenCompraController');
 
     // *************************************************
     //
@@ -474,6 +475,16 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosFichaTecnicaModal.php';
     });
 
+    Route::get('datosMovimientoCRMModal', function()
+    {
+        include public_path().'/ajax/datosMovimientoCRMModal.php';
+    });
+
+    Route::post('cargarProductosOrdenCompra', function()
+    {
+        include public_path().'/ajax/cargarProductosOrdenCompra.php';
+    });
+    
 
     Route::post('consultarPermisos', function()
     {
