@@ -10,8 +10,8 @@
                 
                 {!!Form::password('password', ["required"=>"required",'class'=> 'form-control','id'=>'password','placeholder' => 'Digite su contraseña'])!!}
 
-                <div class= "caja">
-                    {!!Form::select('Compania_idCompania',$compania, 0,["required"=>"required","placeholder" =>"Seleccione la compañía"])!!}
+                <div class style="top: 130px; left: 145px; position: absolute;width:170px;height:100px;z-index:auto ">
+                    {!!Form::select('Compania_idCompania',$compania, 0,['style' => 'width: 170px;height:100px;', "class" => "chosen-select form-control","required"=>"required","placeholder" =>"Seleccione la compañía"])!!}
                 </div>
                
                 <input type="checkbox" name="recordarme" id="recordarme">

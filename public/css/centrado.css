@@ -21,7 +21,8 @@ background-image: url(../images/fondoprincipal.jpg);
     left: 0;
     bottom: 0;
     right: 0;
-    overflow: hidden;
+    font-size: 90%;
+    /*overflow: hidden;*/
     background-image:url('../images/dni.png');
     background-repeat: no-repeat;
 }

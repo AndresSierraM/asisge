@@ -298,7 +298,8 @@ function guardarAsesor()
     var idSupervisor = $("#Tercero_idSupervisor").val();
     var idAsesor = $("#Tercero_idAsesor").val();
     var idAcuerdo = $("#AcuerdoServicio_idAcuerdoServicio").val();
-    var diasAcuerdo = $("#diasEstfichatecnicaadosSolucionMovimientoCRM").val();
+    var diasAcuerdo = $("#diasEstimadosSolucionMovimientoCRM").val();
+
     
     var token = document.getElementById('token').value;
     $.ajax({
