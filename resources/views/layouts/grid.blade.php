@@ -14,7 +14,6 @@
       {!!Html::style('sb-admin/bower_components/font-awesome/css/font-awesome.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/datetimepicker/css/bootstrap-datetimepicker.min.css'); !!}
       {!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
-      {!!Html::style('sb-admin/bower_components/fileinput/css/fileinput.css'); !!}
 
         <style type="text/css" media="all">
           /* fix rtl for demo */
@@ -36,8 +35,6 @@
 
       {!!Html::script('sb-admin/bower_components/datetimepicker/js/moment.js'); !!}
       {!!Html::script('sb-admin/bower_components/datetimepicker/js/bootstrap-datetimepicker.min.js'); !!}
-      {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
-      {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput_locale_es.js'); !!}
       {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
       {!!Html::script('js/general.js'); !!} 
 
