@@ -15,6 +15,11 @@
 {!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
 
 <?php
+
+//Se pregunta  si existe el id de acta de capacitacion  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
+$idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
+
+
 	// tomamos la imagen de la firma y la convertimos en base 64 para asignarla
 	// al cuadro de imagen y al input oculto de firmabase64
 	$base64 = '';	
@@ -596,48 +601,48 @@
 												<?php
 												
 												// Cuando este editando el archivo 
-												// if ($idActaCapacitaciones != '')  //Se pregunta si el id de acta de capacitacion es diferente de vacio (que es la tabla papá)
-												// {
-												// 	$eliminar = '';
-												// 	$archivoSave = DB::Select('SELECT * from actacapacitacionarchivo where ActaCapacitacion_idActaCapacitacion = '.$idActaCapacitaciones);
-												// 	for ($i=0; $i <count($archivoSave) ; $i++) 
-												// 	{ 
-												// 		$archivoS = get_object_vars($archivoSave[$i]);
+												if ($idAccidentes != '')  //Se pregunta si el id de acta de capacitacion es diferente de vacio (que es la tabla papá)
+												{
+													$eliminar = '';
+													$archivoSave = DB::Select('SELECT * from accidentearchivo where Accidente_idAccidente = '.$idAccidentes);
+													for ($i=0; $i <count($archivoSave) ; $i++) 
+													{ 
+														$archivoS = get_object_vars($archivoSave[$i]);
 
-												// 		echo '<div id="'.$archivoS['idActaCapacitacionArchivo'].'" class="col-lg-4 col-md-4">
-										  //                   <div class="panel panel-yellow" style="border: 1px solid orange;">
-										  //                       <div class="panel-heading">
-										  //                           <div class="row">
-										  //                               <div class="col-xs-3">
-										  //                                   <a target="_blank" 
-										  //                                   	href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaActaCapacitacionArchivo'].'">
-										  //                                   	<i class="fa fa-book fa-5x" style="color: gray;"></i>
-										  //                                   </a>
-										  //                               </div>
+														echo '<div id="'.$archivoS['idAccidenteArchivo'].'" class="col-lg-4 col-md-4">
+										                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+										                        <div class="panel-heading">
+										                            <div class="row">
+										                                <div class="col-xs-3">
+										                                    <a target="_blank" 
+										                                    	href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaAccidenteArchivo'].'">
+										                                    	<i class="fa fa-book fa-5x" style="color: gray;"></i>
+										                                    </a>
+										                                </div>
 
-										  //                               <div class="col-xs-9 text-right">
-										  //                                   <div>'.str_replace('/actacapacitacion/','',$archivoS['rutaActaCapacitacionArchivo']).'
-										  //                                   </div>
-										  //                               </div>
-										  //                           </div>
-										  //                       </div>
-										  //                       <a target="_blank" href="javascript:eliminarDiv('.$archivoS['idActaCapacitacionArchivo'].');">
-										  //                           <div class="panel-footer">
-										  //                               <span class="pull-left">Eliminar Documento</span>
-										  //                               <span class="pull-right"><i class="fa fa-times"></i></span>
-										  //                               <div class="clearfix"></div>
-										  //                           </div>
-										  //                       </a>
-										  //                   </div>
-										  //               </div>';
+										                                <div class="col-xs-9 text-right">
+										                                    <div>'.str_replace('/accidente/','',$archivoS['rutaAccidenteArchivo']).'
+										                                    </div>
+										                                </div>
+										                            </div>
+										                        </div>
+										                        <a target="_blank" href="javascript:eliminarDiv('.$archivoS['idAccidenteArchivo'].');">
+										                            <div class="panel-footer">
+										                                <span class="pull-left">Eliminar Documento</span>
+										                                <span class="pull-right"><i class="fa fa-times"></i></span>
+										                                <div class="clearfix"></div>
+										                            </div>
+										                        </a>
+										                    </div>
+										                </div>';
 
-												// 		echo '<input type="hidden" id="idActaCapacitacionArchivo[]" name="idActaCapacitacionArchivo[]" value="'.$archivoS['idActaCapacitacionArchivo'].'" >
+														echo '<input type="hidden" id="idAccidenteArchivo[]" name="idAccidenteArchivo[]" value="'.$archivoS['idAccidenteArchivo'].'" >
 
-												// 		<input type="hidden" id="rutaActaCapacitacionArchivo[]" name="rutaActaCapacitacionArchivo[]" value="'.$archivoS['rutaActaCapacitacionArchivo'].'" >';
-												// 	}
+														<input type="hidden" id="rutaAccidenteArchivo[]" name="rutaAccidenteArchivo[]" value="'.$archivoS['rutaAccidenteArchivo'].'" >';
+													}
 
-												// 	echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
-												// }
+													echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
+												}
 												
 												 ?>							
 											</div>
