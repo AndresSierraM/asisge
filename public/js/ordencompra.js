@@ -1,3 +1,9 @@
+
+function cambiarEstado(idDocumentoCRM, estado, modificar, eliminar, consultar, aprobar)
+{
+    location.href= 'http://'+location.host+"/ordencompra?idDocumentoCRM="+idDocumentoCRM+"&estado="+estado+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar;
+}
+
 function abrirModalCRM()
 {
     idDocumentoCRM = $("#DocumentoCRM_idDocumentoCRM").val()
@@ -76,7 +82,7 @@ function abrirModalCRM()
             cargarProductos(datos[i][0]);
         };
 
-        $("#requerimientoOrdenCompra").val(requerimiento.substring(0,requerimiento.length-2));
+        $("#requerimientoOrdenCompra").val($("#requerimientoOrdenCompra").val()+', '+requerimiento.substring(0,requerimiento.length-2));
 
         window.parent.$("#modalMovimientoCRM").modal("hide");
     });
@@ -218,4 +224,51 @@ function calcularTotales()
     }
             
     $('#totalProducto', window.parent.document).val(total);
+}
+
+function mostrarModalAutorizador(idOrdenCompra)
+{
+    $("#idOrden").val(idOrdenCompra);
+    $("#modalAutorizador").modal("show");
+}
+
+function autorizarOrdenCompra()
+{
+    idOrdenCompra = $("#idOrden").val();
+    Tercero_idAutorizador = $("#Autorizador").val();
+    fechaAprobacionOrdenCompra = $("#fechaAprobacion").val();
+    estadoOrdenCompra = $("#estadoOrden").val();
+    observacionAprobacionOrdenCompra = $("#observacionOrden").val();
+
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            url:   'http://'+location.host+'/autorizarOrdenCompra',
+            type:  'post',
+            data: {idOrdenCompra : idOrdenCompra,
+                    Tercero_idAutorizador: Tercero_idAutorizador,
+                    fechaAprobacionOrdenCompra: fechaAprobacionOrdenCompra,
+                    estadoOrdenCompra: estadoOrdenCompra,
+                    observacionAprobacionOrdenCompra: observacionAprobacionOrdenCompra},
+            beforeSend: function(){
+                
+                },
+            success: function(respuesta)
+            {
+                alert(respuesta[1]);
+                $("#modalAutorizador").modal("hide");
+                location.reload();
+            },
+            error: function(xhr,err)
+            { 
+                console.log(xhr);
+                alert("Error "+xhr);
+            }
+        });
+}
+
+function imprimirFormato(idOrdenCompra, idDocumentoCRM)
+{
+    window.open('ordencompra/'+idOrdenCompra+'?idDocumentoCRM='+idDocumentoCRM+'&accion=imprimir','ordencompra','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
 }
