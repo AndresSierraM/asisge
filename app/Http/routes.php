@@ -475,6 +475,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosFichaTecnicaModal.php';
     });
 
+    Route::get('datosOrdenCompra', function()
+    {
+        include public_path().'/ajax/datosOrdenCompra.php';
+    });
+
     Route::get('datosMovimientoCRMModal', function()
     {
         include public_path().'/ajax/datosMovimientoCRMModal.php';
@@ -484,7 +489,7 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/cargarProductosOrdenCompra.php';
     });
-    
+
 
     Route::post('consultarPermisos', function()
     {
@@ -797,6 +802,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('guardarAsesorMovimientoCRM', [
             'as' => 'guardarAsesorMovimientoCRM', 
             'uses' => 'MovimientoCRMController@guardarAsesorMovimientoCRM']);
+
+    Route::post('autorizarOrdenCompra', [
+            'as' => 'autorizarOrdenCompra', 
+            'uses' => 'OrdenCompraController@autorizarOrdenCompra']);
 
     Route::post('consultarAsesorMovimientoCRM', [
             'as' => 'consultarAsesorMovimientoCRM', 

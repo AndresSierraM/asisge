@@ -16,7 +16,7 @@
 
 
 <script type="text/javascript">
-  var ordenCompraProductoServicio = '<?php echo (isset($ordenCompraProductoServicio) ? json_encode($ordenCompraProductoServicio) : "");?>';
+  var ordenCompraProductoServicio = '<?php echo (isset($ordenCompraProducto) ? json_encode($ordenCompraProducto) : "");?>';
   ordenCompraProductoServicio = (ordenCompraProductoServicio != '' ? JSON.parse(ordenCompraProductoServicio) : '');
 
   calcultarValorCantidad = ['onchange','calcularValorTotal(this.id, "cantidad")'];
@@ -64,6 +64,8 @@
           </span>
           {!!Form::text('numeroOrdenCompra',(isset($ordencompra) ? $ordencompra->numeroOrdenCompra : $numeroOrden),['class'=>'form-control', 'readonly'])!!}
           {!!Form::hidden('idOrdenCompra', null, array('id' => 'idOrdenCompra')) !!}
+          {!!Form::hidden('fechaAprobacionOrdenCompra', null, array('id' => 'fechaAprobacionOrdenCompra')) !!}
+          {!!Form::hidden('observacionAprobacionOrdenCompra', null, array('id' => 'observacionAprobacionOrdenCompra')) !!}
           {!!Form::hidden('DocumentoCRM_idDocumentoCRM', $_GET['idDocumentoCRM'], array('id' => 'DocumentoCRM_idDocumentoCRM')) !!}
         </div>
       </div>
@@ -76,7 +78,7 @@
           <span class="input-group-addon">
             <i class="fa fa-tasks"></i>
           </span>
-          {!!Form::text('requerimientoOrdenCompra',null,['class'=>'form-control'])!!}
+          {!!Form::text('requerimientoOrdenCompra',null,['class'=>'form-control', 'readonly'])!!}
           <span class="input-group-addon" title="Adicionar requerimientos" style="cursor:pointer;" onclick="abrirModalCRM()">
             <i class="fa fa-file"></i>
           </span>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
+use Mail;
 include public_path().'/ajax/consultarPermisosCRM.php';
 
 class OrdenCompraController extends Controller
@@ -36,11 +37,11 @@ class OrdenCompraController extends Controller
     public function create()
     {
         $num = DB::Select("
-          SELECT 
-             LPAD(IFNULL('0000000001',(MAX(numeroOrdenCompra) + 1)), 10, '0') as numeroOrdenCompra
-          FROM
-              ordencompra
-          WHERE Compania_idCompania = ".\Session::get('idCompania'));
+            SELECT 
+                IF(numeroOrdenCompra IS NULL,'0000000001' ,LPAD((MAX(numeroOrdenCompra) + 1),10,'0')) as numeroOrdenCompra
+            FROM
+                ordencompra
+            WHERE Compania_idCompania = ".\Session::get('idCompania'));
 
         $numeroOrden = get_object_vars($num[0])['numeroOrdenCompra'];
 
@@ -65,11 +66,13 @@ class OrdenCompraController extends Controller
             'fechaElaboracionOrdenCompra' => $request['fechaElaboracionOrdenCompra'],
             'fechaEstimadaOrdenCompra' => $request['fechaEstimadaOrdenCompra'],
             'fechaVencimientoOrdenCompra' => $request['fechaVencimientoOrdenCompra'],
+            'fechaAprobacionOrdenCompra' => $request['fechaAprobacionOrdenCompra'],
             'Tercero_idProveedor' => $request['Tercero_idProveedor'],
             'Tercero_idSolicitante' => $request['Tercero_idSolicitante'],
             'Tercero_idAutorizador' => ($request['Tercero_idAutorizador'] == '' or $request['Tercero_idAutorizador'] == 0 ? NULL : $request['Tercero_idAutorizador']),
             'estadoOrdenCompra' => $request['estadoOrdenCompra'],
             'observacionOrdenCompra' => $request['observacionOrdenCompra'],
+            'observacionAprobacionOrdenCompra' => $request['observacionAprobacionOrdenCompra'],
             'Compania_idCompania' => \Session::get('idCompania')
         ]);
 
@@ -81,7 +84,7 @@ class OrdenCompraController extends Controller
             'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'][$i],
             'cantidadOrdenCompraProducto' => $request['cantidadOrdenCompraProducto'][$i],
             'valorUnitarioOrdenCompraProducto' => $request['valorUnitarioOrdenCompraProducto'][$i],
-            'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'][$i] == '' or $request['MovimientoCRM_idMovimientoCRM'][$i] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM'][$i])
+            'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'][$i] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM'][$i])
             ]);
         }
 
@@ -96,7 +99,44 @@ class OrdenCompraController extends Controller
      */
     public function show($id)
     {
-        //
+        $ordencompra = DB::Select('
+            SELECT 
+                idOrdenCompra,
+                numeroOrdenCompra,
+                requerimientoOrdenCompra,
+                sitioEntregaOrdenCompra,
+                fechaElaboracionOrdenCompra,
+                fechaEstimadaOrdenCompra,
+                fechaVencimientoOrdenCompra,
+                tp.nombreCompletoTercero as nombreProveedor,
+                ts.nombreCompletoTercero as nombreSolicitante,
+                ta.nombreCompletoTercero as nombreAutorizador,
+                estadoOrdenCompra,
+                observacionOrdenCompra,
+                referenciaFichaTecnica as referenciaOrdenCompraProducto, 
+                nombreFichaTecnica as descripcionOrdenCompraProducto, 
+                cantidadOrdenCompraProducto, 
+                valorUnitarioOrdenCompraProducto,
+                cantidadOrdenCompraProducto * valorUnitarioOrdenCompraProducto as valorTotalOrdenCompraProducto
+            FROM
+                ordencompra oc
+                    left join
+                tercero tp ON oc.Tercero_idProveedor = tp.idTercero
+                    left join
+                tercero ts ON oc.Tercero_idSolicitante = ts.idTercero
+                    left join
+                tercero ta ON oc.Tercero_idAutorizador = ta.idTercero
+                    left join
+                ordencompraproducto ocp ON oc.idOrdenCompra = ocp.OrdenCompra_idOrdenCompra
+                    left join
+                fichatecnica ft ON ocp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
+            WHERE
+                idOrdenCompra = '.$id);
+
+            $idDocumentoCRM= $_GET['idDocumentoCRM'];
+            
+
+            return view('formatos.formatoordencompra', compact('ordencompra','idDocumentoCRM'));
     }
 
     /**
@@ -132,7 +172,7 @@ class OrdenCompraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $ordencompra = \App\Dependencia::find($id);
+        $ordencompra = \App\OrdenCompra::find($id);
         $ordencompra->fill($request->all());
         $ordencompra->Tercero_idAutorizador = ($request['Tercero_idAutorizador'] == '' or $request['Tercero_idAutorizador'] == 0) ? null : $request['Tercero_idAutorizador'];
         $ordencompra->save();
@@ -149,7 +189,7 @@ class OrdenCompraController extends Controller
                 'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'][$i],
                 'cantidadOrdenCompraProducto' => $request['cantidadOrdenCompraProducto'][$i],
                 'valorUnitarioOrdenCompraProducto' => $request['valorUnitarioOrdenCompraProducto'][$i],
-                'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'][$i] == '' or $request['MovimientoCRM_idMovimientoCRM'][$i] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM'][$i]));
+                'MovimientoCRM_idMovimientoCRM' => ($request['MovimientoCRM_idMovimientoCRM'][$i] == 0 ? NULL : $request['MovimientoCRM_idMovimientoCRM'][$i]));
 
             $guardar = \App\OrdenCompraProducto::updateOrCreate($indice, $datos);
         }
@@ -167,5 +207,55 @@ class OrdenCompraController extends Controller
     {
         \App\OrdenCompra::destroy($id);
         return redirect('/ordencompra?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
+    }
+
+    public function autorizarOrdenCompra()
+    {
+        $ordencompra = \App\OrdenCompra::find($_POST["idOrdenCompra"]);
+        $ordencompra->Tercero_idAutorizador = $_POST["Tercero_idAutorizador"];
+        $ordencompra->fechaAprobacionOrdenCompra = $_POST["fechaAprobacionOrdenCompra"];
+        $ordencompra->estadoOrdenCompra = $_POST["estadoOrdenCompra"];
+        $ordencompra->observacionAprobacionOrdenCompra = $_POST["observacionAprobacionOrdenCompra"];
+        $ordencompra->save();
+
+        $movimientocrm = DB::Select('SELECT MovimientoCRM_idMovimientoCRM FROM ordencompraproducto WHERE MovimientoCRM_idMovimientoCRM IS NOT NULL AND OrdenCompra_idOrdenCompra = '.$_POST['idOrdenCompra']);
+
+        if ($_POST['estadoOrdenCompra'] == 'Aprobado') 
+        {
+            // for ($i=0; $i < count($movimientocrm); $i++) 
+            // { 
+            //     $movimiento = get_object_vars($movimientocrm[$i]);
+
+            // }   
+
+            $datos = Array();
+
+            $proveedor = DB::select('
+            SELECT correoElectronicoTercero
+            FROM  tercero
+            WHERE idTercero = '.$ordencompra->Tercero_idProveedor);
+
+            $datos['correo'] = 'santi-0310@hotmail.com';
+
+            $datos['asunto'] = 'Aprobación de Orden de Compra número: '.$ordencompra->numeroOrdenCompra;
+            $datos['mensaje'] = $ordencompra->observacionAprobacionOrdenCompra. '  
+                <a href="http://'.$_SERVER["HTTP_HOST"].'/ordencompra/'.$ordencompra->idOrdenCompra.'?idDocumentoCRM='.$ordencompra->DocumentoCRM_idDocumentoCRM.'&accion=imprimir">Ver Orden de compra</a>';
+
+            Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            {
+                $msj->to($datos['correo']);
+                $msj->subject($datos['asunto']);
+            });
+        }
+        else
+        {
+            for ($i=0; $i < count($movimientocrm); $i++) 
+            { 
+                $movimiento = get_object_vars($movimientocrm[$i]);
+
+            }
+        }
+
+        echo json_encode(array(true, 'Se ha guardado exitosamente.'));
     }
 }
