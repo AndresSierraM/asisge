@@ -20,7 +20,7 @@ function buscarAusentismo(){
             dataType: "json",
             data: {'idEmpleado' : idEmpleado},
             url:   'http://'+location.host+'/llenarAusentismo/',
-            type:  'post',
+            type:  'post', 
 		success: function(data){
             
             var select = document.getElementById('Ausentismo_idAusentismo');

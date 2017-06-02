@@ -242,7 +242,7 @@ class ProcedimientoController extends Controller
                             unlink($origen);
                             $ruta = '/procedimiento/'.$arrayImage[$i];
 
-                            DB::table('actacapacitacionarchivo')->insert(['idActaCapacitacionArchivo' => '0', 'ActaCapacitacion_idActaCapacitacion' =>$id,'rutaActaCapacitacionArchivo' => $ruta]);
+                            DB::table('procedimientoarchivo')->insert(['idProcedimientoArchivo' => '0', 'Procedimiento_idProcedimiento' =>$id,'rutaProcedimientoArchivo' => $ruta]);
                         }   
                         else
                         {

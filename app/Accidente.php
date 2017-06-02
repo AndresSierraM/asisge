@@ -51,5 +51,5 @@ class Accidente extends Model
       public function AccidenteArchivo()
     {
     	return $this->hasMany('App\AccidenteArchivo','Accidente_idAccidente');
-    }
+    } 
 }

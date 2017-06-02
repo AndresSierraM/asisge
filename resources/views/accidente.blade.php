@@ -757,6 +757,6 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
                     });
 
 </script>
-
+ 
 
 @stop

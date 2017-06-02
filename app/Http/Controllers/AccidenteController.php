@@ -300,7 +300,7 @@ class AccidenteController extends Controller
                             copy($origen, $destinationPath);
                             unlink($origen);
                             $ruta = '/accidente/'.$arrayImage[$i];
-
+ 
                             DB::table('accidentearchivo')->insert(['idAccidenteArchivo' => '0', 'Accidente_idAccidente' =>$id,'rutaAccidenteArchivo' => $ruta]);
                         }   
                         else
