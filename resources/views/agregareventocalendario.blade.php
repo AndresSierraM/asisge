@@ -137,7 +137,7 @@
 
     
         <div class="form-group" id='test'>
-          {!!Form::label('asuntoAgenda', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+          {!!Form::label('asuntoAgenda', 'Asunto', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">

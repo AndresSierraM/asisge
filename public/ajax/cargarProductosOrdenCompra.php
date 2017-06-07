@@ -4,7 +4,7 @@ $idMovimientoCRM = $_POST['idMovimientoCRM'];
 
 $producto = DB::Select('
     SELECT
-        MovimientoCRM_idMovimientoCRM, idFichaTecnica, referenciaFichaTecnica, nombreFichaTecnica
+        MovimientoCRM_idMovimientoCRM, idFichaTecnica, referenciaFichaTecnica, nombreFichaTecnica, cantidadMovimientoCRMProducto, valorUnitarioMovimientoCRMProducto, cantidadMovimientoCRMProducto * valorUnitarioMovimientoCRMProducto as valorTotalMovimientoCRMProducto
     FROM
         movimientocrmproducto mcrmp
             LEFT JOIN 

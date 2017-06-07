@@ -13,6 +13,33 @@ function abrirModalCRM()
         $(this).removeClass('selected');
     });
 
+    $("#divTabla").html('');
+
+    estructuraTabla = '<div class="row" style="width:90%;">'+
+                        '<div class="container" style="width:100%;">'+
+                            '<table id="tmovimientocrm" name="tmovimientocrm" class="display table-bordered" width="100%">'+
+                              '<thead>'+
+                                  '<tr class="btn-default active">'+
+                                      '<th><b>ID</b></th>'+
+                                      '<th><b>Descripción</b></th> '+       
+                                  '</tr>'+
+                              '</thead>'+
+                              '<tfoot>'+
+                                  '<tr class="btn-default active">'+
+
+                                      '<th>ID</th>'+
+                                      '<th>Descripción</th> '+                            
+                                  '</tr>'+
+                              '</tfoot>'+
+                          '</table>'+
+                          '<div class="modal-footer">'+
+                                '<button id="botonMovimientoCRM" name="botonMovimientoCRM" type="button" class="btn btn-primary" >Seleccionar</button>'+
+                            '</div>'+
+                        '</div>'+
+                     '</div>';
+
+    $("#divTabla").html(estructuraTabla);
+
     var lastIdx = null;
     window.parent.$("#tmovimientocrm").DataTable().ajax.url('http://'+location.host+"/datosMovimientoCRMModal?idDocumentoCRM="+idDocumentoCRM).load();
      // Abrir modal
@@ -82,7 +109,10 @@ function abrirModalCRM()
             cargarProductos(datos[i][0]);
         };
 
-        $("#requerimientoOrdenCompra").val($("#requerimientoOrdenCompra").val()+', '+requerimiento.substring(0,requerimiento.length-2));
+        if ($("#requerimientoOrdenCompra").val() == '') 
+            $("#requerimientoOrdenCompra").val(requerimiento.substring(0,requerimiento.length-2));
+        else
+            $("#requerimientoOrdenCompra").val($("#requerimientoOrdenCompra").val()+', '+requerimiento.substring(0,requerimiento.length-2));
 
         window.parent.$("#modalMovimientoCRM").modal("hide");
     });
@@ -104,7 +134,7 @@ function cargarProductos(idMovimientoCRM)
         success: function(respuesta){
             for (var i = 0; i < respuesta.length; i++) 
             {
-                var valores = new Array(respuesta[i]['idFichaTecnica'], respuesta[i]['referenciaFichaTecnica'], respuesta[i]['nombreFichaTecnica'], '1', '1', '1', 0, respuesta[i]['MovimientoCRM_idMovimientoCRM']);
+                var valores = new Array(respuesta[i]['idFichaTecnica'], respuesta[i]['referenciaFichaTecnica'], respuesta[i]['nombreFichaTecnica'], respuesta[i]['cantidadMovimientoCRMProducto'], respuesta[i]['valorUnitarioMovimientoCRMProducto'], respuesta[i]['valorTotalMovimientoCRMProducto'], 0, respuesta[i]['MovimientoCRM_idMovimientoCRM']);
                 window.parent.producto.agregarCampos(valores,'A');
             }
             calcularTotales();
@@ -121,6 +151,29 @@ function abrirModalFichaTecnica()
     {
         $(this).removeClass('selected');
     });
+    
+    $("#divTablaFichaTecnica").html('');
+
+    estructuraTabla = '<table id="tfichatecnica" name="tfichatecnica" class="display table-bordered" width="100%">'+
+                          '<thead>'+
+                              '<tr class="btn-default active">'+
+                                  '<th><b>Referencia</b></th>'+
+                                  '<th><b>Descripción</b></th> '+       
+                              '</tr>'+
+                          '</thead>'+
+                          '<tfoot>'+
+                              '<tr class="btn-default active">'+
+
+                                  '<th>Referencia</th>'+
+                                  '<th>Descripción</th> '+                            
+                              '</tr>'+
+                          '</tfoot>'+
+                      '</table>'+
+                      '<div class="modal-footer">'+
+                        '<button id="botonFichaTecnica" name="botonFichaTecnica" type="button" class="btn btn-primary" >Seleccionar</button>'+
+                    '</div>';
+
+    $("#divTablaFichaTecnica").html(estructuraTabla);
 
     var lastIdx = null;
     window.parent.$("#tfichatecnica").DataTable().ajax.url('http://'+location.host+"/datosFichaTecnicaModal?ficha=tercero").load();
@@ -220,7 +273,11 @@ function calcularTotales()
 
     for (var i = 0; i < window.parent.producto.contador; i++) 
     {
-        total += parseFloat($("#valorTotalOrdenCompraProducto"+i, window.parent.document).val());
+        if(typeof $("#valorTotalOrdenCompraProducto"+i, window.parent.document).val() != 'undefined' &&
+            $("#valorTotalOrdenCompraProducto"+i, window.parent.document).val() > 0)
+        {
+            total += parseFloat($("#valorTotalOrdenCompraProducto"+i, window.parent.document).val());
+        }
     }
             
     $('#totalProducto', window.parent.document).val(total);

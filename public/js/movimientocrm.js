@@ -415,7 +415,7 @@ function abrirModalEvento()
 }
 
 function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubicacionAgenda, fechaHoraInicioAgenda, fechaHoraFinAgenda, idResponsable, nombreResponsable, estadoAgenda)
-{
+{    
     if (idCategoria == 0) 
     {
         alert('Debe seleccionar una categoría.');
@@ -431,14 +431,6 @@ function agregarRegistroTareaCRM(idCategoria, nombreCategoria, asuntoAgenda, ubi
         $("#ubicacionAgenda").css("background-color", "");
         $("#CategoriaAgenda_idCategoriaAgenda").css("background-color", "");
         $("#Tercero_idResponsable").css("background-color", "red");
-    }
-    else if (ubicacionAgenda == '') 
-    {
-        alert('Debe digitar un asunto.');
-        $("#ubicacionAgenda").css("background-color", "red");
-        $("#asuntoAgenda").css("background-color", "");
-        $("#CategoriaAgenda_idCategoriaAgenda").css("background-color", "");
-        $("#Tercero_idResponsable").css("background-color", "");
     }
     else if (idResponsable == 0) 
     {

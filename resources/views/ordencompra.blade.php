@@ -208,7 +208,11 @@
                   </div>
                 </div>  
 
-                <div class="form-group col-md-12" id='test' style="display:inline-block">
+                <div class="form-group col-md-6" id='test' style="display:inline-block">
+                  <button class="btn btn-primary" type="button" onclick="calcularTotales()">Calcular</button>
+                </div>
+
+                <div class="form-group col-md-6" id='test' style="display:inline-block">
                   {!!Form::label('totalProducto', 'Valor Total Productos: ', array('class' => 'col-sm-2 control-label')) !!}
                   <div class="col-md-8">
                     <div class="input-group">
@@ -273,7 +277,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Ficha técnica</h4>
       </div>
-      <div class="modal-body">
+      <div id="divTablaFichaTecnica" class="modal-body">
         <div class="container">
             <div class="row" style="width:90%;">
                 <div class="container" style="width:100%;">
@@ -310,7 +314,7 @@
         <h4 class="modal-title">Ficha técnica</h4>
       </div>
       <div class="modal-body">
-        <div class="container">
+        <div id="divTabla" class="container">
             <div class="row" style="width:90%;">
                 <div class="container" style="width:100%;">
                     <table id="tmovimientocrm" name="tmovimientocrm" class="display table-bordered" width="100%">
