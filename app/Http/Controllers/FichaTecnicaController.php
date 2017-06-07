@@ -74,85 +74,88 @@ class FichaTecnicaController extends Controller
      */
     public function store(FichaTecnicaRequest $request)
     {
-        
-        \App\FichaTecnica::create([
-            'referenciaFichaTecnica' => $request['referenciaFichaTecnica'],
-            'nombreFichaTecnica' => $request['nombreFichaTecnica'],
-            'fechaCreacionFichaTecnica' => $request['fechaCreacionFichaTecnica'],
-            'estadoFichaTecnica' => $request['estadoFichaTecnica'],
-            'LineaProducto_idLineaProducto' => $request['LineaProducto_idLineaProducto'],
-            'SublineaProducto_idSublineaProducto' => ($request['SublineaProducto_idSublineaProducto'] == '' ? null : $request['SublineaProducto_idSublineaProducto']),
-            'Tercero_idTercero' => ($request['Tercero_idTercero'] == '' ? null : $request['Tercero_idTercero']),
-            'observacionFichaTecnica' => $request['observacionFichaTecnica'],
-            'Compania_idCompania' => \Session::get('idCompania')
-            ]);
+       if($request['respuesta'] != 'falso')
+        {  
+            \App\FichaTecnica::create([
+                'referenciaFichaTecnica' => $request['referenciaFichaTecnica'],
+                'nombreFichaTecnica' => $request['nombreFichaTecnica'],
+                'fechaCreacionFichaTecnica' => $request['fechaCreacionFichaTecnica'],
+                'estadoFichaTecnica' => $request['estadoFichaTecnica'],
+                'LineaProducto_idLineaProducto' => $request['LineaProducto_idLineaProducto'],
+                'SublineaProducto_idSublineaProducto' => ($request['SublineaProducto_idSublineaProducto'] == '' ? null : $request['SublineaProducto_idSublineaProducto']),
+                'Tercero_idTercero' => ($request['Tercero_idTercero'] == '' ? null : $request['Tercero_idTercero']),
+                'observacionFichaTecnica' => $request['observacionFichaTecnica'],
+                'Compania_idCompania' => \Session::get('idCompania')
+                ]);
 
-        $fichatecnica = \App\FichaTecnica::All()->last();
+            $fichatecnica = \App\FichaTecnica::All()->last();
 
-        $this->grabarDetalle($fichatecnica->idFichaTecnica, $request);
+            $this->grabarDetalle($fichatecnica->idFichaTecnica, $request);
 
 
-        $arrayImage = $request['imagenFichaTecnicaArray'];
-        $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
-        $arrayImage = explode(",", $arrayImage);
-        $ruta = '';
-        for ($i=0; $i < count($arrayImage) ; $i++) 
-        { 
-            if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
-            {
-                $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
-                $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
-                $ruta = '/fichatecnica/'.$arrayImage[$i];
-               
-                if (file_exists($origen))
+            $arrayImage = $request['imagenFichaTecnicaArray'];
+            $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+            $arrayImage = explode(",", $arrayImage);
+            $ruta = '';
+            for ($i=0; $i < count($arrayImage) ; $i++) 
+            { 
+                if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
                 {
-                    copy($origen, $destinationPath);
-                    unlink($origen);
-                }   
-                else
-                {
-                    echo "No existe la imagen";
+                    $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                    $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
+                    $ruta = '/fichatecnica/'.$arrayImage[$i];
+                   
+                    if (file_exists($origen))
+                    {
+                        copy($origen, $destinationPath);
+                        unlink($origen);
+                    }   
+                    else
+                    {
+                        echo "No existe la imagen";
+                    }
+                    \App\FichaTecnicaImagen::create([
+                    'FichaTecnica_idFichaTecnica' => $fichatecnica->idFichaTecnica,
+                    'tituloFichaTecnicaImagen' => "", 
+                    'rutaFichaTecnicaImagen' => $ruta
+                   ]);
                 }
-                \App\FichaTecnicaImagen::create([
-                'FichaTecnica_idFichaTecnica' => $fichatecnica->idFichaTecnica,
-                'tituloFichaTecnicaImagen' => "", 
-                'rutaFichaTecnicaImagen' => $ruta
-               ]);
+
             }
+            
+
+
+            $arrayImage = $request['archivoFichaTecnicaArray'];
+            $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+            $arrayImage = explode(",", $arrayImage);
+            $ruta = '';
+            for ($i=0; $i < count($arrayImage) ; $i++) 
+            { 
+                if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                {
+                    $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                    $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
+                    $ruta = '/fichatecnica/'.$arrayImage[$i];
+                   
+                    if (file_exists($origen))
+                    {
+                        copy($origen, $destinationPath);
+                        unlink($origen);
+                    }   
+                    else
+                    {
+                        echo "No existe el archivo";
+                    }
+                    \App\FichaTecnicaArchivo::create([
+                    'FichaTecnica_idFichaTecnica' => $fichatecnica->idFichaTecnica,
+                    'rutaFichaTecnicaArchivo' => $ruta
+                   ]);
+                }
+
+            }
+            return redirect('/fichatecnica');
 
         }
-        
-
-
-        $arrayImage = $request['archivoFichaTecnicaArray'];
-        $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
-        $arrayImage = explode(",", $arrayImage);
-        $ruta = '';
-        for ($i=0; $i < count($arrayImage) ; $i++) 
-        { 
-            if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
-            {
-                $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
-                $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
-                $ruta = '/fichatecnica/'.$arrayImage[$i];
-               
-                if (file_exists($origen))
-                {
-                    copy($origen, $destinationPath);
-                    unlink($origen);
-                }   
-                else
-                {
-                    echo "No existe el archivo";
-                }
-                \App\FichaTecnicaArchivo::create([
-                'FichaTecnica_idFichaTecnica' => $fichatecnica->idFichaTecnica,
-                'rutaFichaTecnicaArchivo' => $ruta
-               ]);
-            }
-
-        }
-        return redirect('/fichatecnica');
     }
 
     /**
@@ -185,7 +188,8 @@ class FichaTecnicaController extends Controller
             FROM fichatecnicaproceso FTP
             LEFT JOIN proceso P 
             ON FTP.Proceso_idProceso = P.idProceso
-            WHERE FichaTecnica_idFichaTecnica = '.$id);
+            WHERE FichaTecnica_idFichaTecnica = '.$id.' 
+            Order by ordenFichaTecnicaProceso');
 
         $proceso = $this->convertirArray($proceso);
 
@@ -242,99 +246,103 @@ class FichaTecnicaController extends Controller
      */
     public function update(FichaTecnicaRequest $request, $id)
     {
-        $fichatecnica = \App\FichaTecnica::find($id);
-        $fichatecnica->fill($request->all());
-        $fichatecnica->SublineaProducto_idSublineaProducto = ($request['SublineaProducto_idSublineaProducto'] == '' ? null : $request['SublineaProducto_idSublineaProducto']);
-        $fichatecnica->Tercero_idTercero = ($request['Tercero_idTercero'] == '' ? null : $request['Tercero_idTercero']);
-        $fichatecnica->save();
+       if($request['respuesta'] != 'falso')
+        { 
+            $fichatecnica = \App\FichaTecnica::find($id);
+            $fichatecnica->fill($request->all());
+            $fichatecnica->SublineaProducto_idSublineaProducto = ($request['SublineaProducto_idSublineaProducto'] == '' ? null : $request['SublineaProducto_idSublineaProducto']);
+            $fichatecnica->Tercero_idTercero = ($request['Tercero_idTercero'] == '' ? null : $request['Tercero_idTercero']);
+            $fichatecnica->save();
 
-        $this->grabarDetalle($id, $request);
+            $this->grabarDetalle($id, $request);
 
-        // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
-        if ($request['archivoFichaTecnicaArray'] != '') 
-        {
-            $arrayImage = $request['archivoFichaTecnicaArray'];
-            $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
-            $arrayImage = explode(",", $arrayImage);
-            $ruta = '';
-
-            for($i = 0; $i < count($arrayImage); $i++)
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
+            if ($request['archivoFichaTecnicaArray'] != '') 
             {
-                if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                $arrayImage = $request['archivoFichaTecnicaArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
                 {
-                    $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
-                    $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
-                    
-                    if (file_exists($origen))
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
                     {
-                        copy($origen, $destinationPath);
-                        unlink($origen);
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/fichatecnica/'.$arrayImage[$i];
+
+                            DB::table('fichatecnicaarchivo')->insert([
+                                'idFichaTecnicaArchivo' => '0', 
+                                'FichaTecnica_idFichaTecnica' =>$id,
+                                'rutaFichaTecnicaArchivo' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarArchivo'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\FichaTecnicaArchivo::whereIn('idFichaTecnicaArchivo',$idsEliminar)->delete();
+            }
+
+
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
+            if ($request['imagenFichaTecnicaArray'] != '') 
+            {
+                $arrayImage = $request['imagenFichaTecnicaArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
                         $ruta = '/fichatecnica/'.$arrayImage[$i];
-
-                        DB::table('fichatecnicaarchivo')->insert([
-                            'idFichaTecnicaArchivo' => '0', 
-                            'FichaTecnica_idFichaTecnica' =>$id,
-                            'rutaFichaTecnicaArchivo' => $ruta]);
-                    }   
-                    else
-                    {
-                        echo "No existe el archivo";
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe la imagen";
+                        }
+                        \App\FichaTecnicaImagen::create([
+                        'FichaTecnica_idFichaTecnica' => $id,
+                        'tituloFichaTecnicaImagen' => "", 
+                        'rutaFichaTecnicaImagen' => $ruta
+                       ]);
                     }
+
                 }
             }
-        }
-        // ELIMINO LOS ARCHIVOS
-        $idsEliminar = $request['eliminarArchivo'];
-        $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
-        if($idsEliminar != '')
-        {
-            $idsEliminar = explode(',',$idsEliminar);
-            \App\FichaTecnicaArchivo::whereIn('idFichaTecnicaArchivo',$idsEliminar)->delete();
-        }
-
-
-        // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
-        if ($request['imagenFichaTecnicaArray'] != '') 
-        {
-            $arrayImage = $request['imagenFichaTecnicaArray'];
-            $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
-            $arrayImage = explode(",", $arrayImage);
-            $ruta = '';
-            for ($i=0; $i < count($arrayImage) ; $i++) 
-            { 
-                if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
-                {
-                    $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
-                    $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
-                    $ruta = '/fichatecnica/'.$arrayImage[$i];
-                   
-                    if (file_exists($origen))
-                    {
-                        copy($origen, $destinationPath);
-                        unlink($origen);
-                    }   
-                    else
-                    {
-                        echo "No existe la imagen";
-                    }
-                    \App\FichaTecnicaImagen::create([
-                    'FichaTecnica_idFichaTecnica' => $id,
-                    'tituloFichaTecnicaImagen' => "", 
-                    'rutaFichaTecnicaImagen' => $ruta
-                   ]);
-                }
-
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarImagen'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\FichaTecnicaImagen::whereIn('idFichaTecnicaImagen',$idsEliminar)->delete();
             }
+           return redirect('/fichatecnica');
+
         }
-        // ELIMINO LOS ARCHIVOS
-        $idsEliminar = $request['eliminarImagen'];
-        $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
-        if($idsEliminar != '')
-        {
-            $idsEliminar = explode(',',$idsEliminar);
-            \App\FichaTecnicaImagen::whereIn('idFichaTecnicaImagen',$idsEliminar)->delete();
-        }
-       return redirect('/fichatecnica');
     }
 
     /**

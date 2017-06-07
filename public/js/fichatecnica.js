@@ -155,6 +155,7 @@ $(document).ready(function(){
     proceso.altura = '35px';
     proceso.campoid = 'idFichaTecnicaProceso';
     proceso.campoEliminacion = 'eliminarProceso';
+    proceso.funcionEliminacion = 'eliminarTabMaterial';
 
     proceso.campos   = ['idFichaTecnicaProceso', 
                     'ordenFichaTecnicaProceso',
@@ -166,13 +167,13 @@ $(document).ready(function(){
     proceso.tipo     = ['hidden','text', 'hidden','text','text'];
     proceso.estilo   = ['','width: 100px;height:35px;','','width: 400px;height:35px;','width: 400px;height:35px;'];
     proceso.clase    = ['','','','',''];      
-    proceso.sololectura = [false,false,false,false,false];
+    proceso.sololectura = [false,false,false,true,false];
     
     for(var j=0, k = procesos.length; j < k; j++)
     {
         proceso.agregarCampos(JSON.stringify(procesos[j]),'L');
-        adicionarTabMaterial(procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], materiales);
-        adicionarTabOperacion(procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], operaciones);
+        adicionarTabMaterial(j, procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], materiales);
+        adicionarTabOperacion(j, procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], operaciones);
     }
 
 
@@ -269,9 +270,9 @@ function abrirModalProceso(materiales, operaciones)
             var valores = new Array(0, '', datos[i][0],datos[i][2],'');
             window.parent.proceso.agregarCampos(valores,'A'); 
 
-            adicionarTabMaterial(datos[i][0], datos[i][2], materiales);
+            adicionarTabMaterial(i, datos[i][0], datos[i][2], materiales);
 
-            adicionarTabOperacion(datos[i][0], datos[i][2], operaciones);
+            adicionarTabOperacion(i, datos[i][0], datos[i][2], operaciones);
             
             
         }
@@ -284,26 +285,26 @@ function abrirModalProceso(materiales, operaciones)
 
 }
 
-function adicionarTabMaterial(idTab, nombreTab, datos)
+function adicionarTabMaterial(cont, idTab, nombreTab, datos)
 {
     $("div#tabsMaterial ul").append(
-        '<li class="active"><a data-toggle="tab" href="#tab' + idTab + '">' + nombreTab + '</a></li>'
+        '<li class="active"><a data-toggle="tab" href="#TabMat' + cont + '">' + nombreTab + '</a></li>'
     );
 
     $("div#tabsMaterial").append(
-        '<div id="tab' + idTab + '" class="tab-pane fade in active">'+
+        '<div id="TabMat' + cont + '" class="tab-pane fade in active">'+
             '<div class="form-group">'+
             '    <div class="col-sm-12">'+
             '        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">'+
             '            <div style="overflow:auto; height:350px;">'+
             '                <div style="width: 100%; display: inline-block;">'+
-            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="material['+idTab+'].agregarCampos([\'\',\'\',\''+idTab+'\',\'0.0000\',\'\'], \'A\');">'+
+            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="material['+cont+'].agregarCampos([\'\',\'\',\''+idTab+'\',\'0.0000\',\'\'], \'A\');">'+
             '                      <span class="glyphicon glyphicon-plus"></span>'+
             '                    </div>'+
             '                    <div class="col-md-1" style="width: 400px;" >Material</div>'+
             '                    <div class="col-md-1" style="width: 200px;" >Consumo Unit</div>'+
             '                    <div class="col-md-1" style="width: 400px;" >Observaciones</div>'+
-            '                    <div id="contenedor_material'+idTab+'">'+
+            '                    <div id="contenedor_material'+cont+'">'+
             '                    </div>'+
             '                </div>'+
             '            </div>'+
@@ -315,35 +316,54 @@ function adicionarTabMaterial(idTab, nombreTab, datos)
     $("div#tabsMaterial").tabs("refresh");
 
 
-    material[idTab] = new Atributos('material['+idTab+']','contenedor_material'+idTab,'material'+idTab+'_');
+    material[cont] = new Atributos('material['+cont+']','contenedor_material'+cont,'material'+cont+'_');
 
-    material[idTab].altura = '35px';
-    material[idTab].campoid = 'idFichaTecnicaMaterial';
-    material[idTab].campoEliminacion = 'eliminarMaterial';
+    material[cont].altura = '35px';
+    material[cont].campoid = 'idFichaTecnicaMaterial';
+    material[cont].campoEliminacion = 'eliminarMaterial';
 
-    material[idTab].campos   = ['idFichaTecnicaMaterial', 
+    material[cont].campos   = ['idFichaTecnicaMaterial', 
                                 'nombreFichaTecnicaMaterial',
                                 'Proceso_idMaterial', 
                                 'consumoFichaTecnicaMaterial', 
                                 'observacionFichaTecnicaMaterial'];
 
-    material[idTab].etiqueta = ['input','input', 'input','input','input'];
-    material[idTab].tipo     = ['hidden','text', 'hidden','text','text'];
-    material[idTab].estilo   = ['','width: 400px;height:35px;','','width: 200px;height:35px; text-align:right;','width: 400px;height:35px;'];
-    material[idTab].clase    = ['','','','',''];      
-    material[idTab].sololectura = [false,false,false,false,false];
+    material[cont].etiqueta = ['input','input', 'input','input','input'];
+    material[cont].tipo     = ['hidden','text', 'hidden','text','text'];
+    material[cont].estilo   = ['','width: 400px;height:35px;','','width: 200px;height:35px; text-align:right;','width: 400px;height:35px;'];
+    material[cont].clase    = ['','','','',''];      
+    material[cont].sololectura = [false,false,false,false,false];
 
     // luego de creada la estructra, adicionamos los datos que estan actualmente en la BD, solo los que pertenezcan al proceso actual
     for(var j=0, k = datos.length; j < k; j++)
     {
         if(datos[j]['Proceso_idMaterial'] == idTab)
-            material[idTab].agregarCampos(JSON.stringify(datos[j]),'L');
+            material[cont].agregarCampos(JSON.stringify(datos[j]),'L');
         
     }
     
 
 }
 
+function eliminarTabMaterial(cont) {
+    var tabIdStr = "#TabMat" + cont
+
+    // Eliminamos los registros para que queden en la variable de ids eliminados
+    // for (var posborrar = 0 ; posborrar < material[cont].contador; posborrar++) 
+    // {
+    //     material[cont].borrarCampos(material[cont].contenido + posborrar, material[cont].campoEliminacion, material[cont].campoid + material[cont].contador);
+    // }
+    material[cont].contador = 0;
+
+    // Elimina el panel
+    $( tabIdStr ).remove();
+    // refresca las pestañas
+    //tabs.tabs( "refresh" );
+
+    // Elimina la pestaña
+    var hrefStr = "a[href='" + tabIdStr + "']"
+    $( hrefStr ).closest("li").remove()
+}
 
 
 function adicionarTabOperacion(idTab, nombreTab, datos)
@@ -420,42 +440,123 @@ function eliminarDiv(idDiv)
     }
 }
 
-function habilitarSubmit(event)
+
+function validarFormulario(event)
 {
-    event.preventDefault();
+    
+    var route = "http://"+location.host+"/fichatecnica";
+    var token = $("#token").val();
+
+    var dato = document.getElementById('idFichaTecnica').value;
+    var dato0 = document.getElementById('referenciaFichaTecnica').value;
+    var dato1 = document.getElementById('nombreFichaTecnica').value;
+    var dato2 = document.getElementById('LineaProducto_idLineaProducto').value;
+
+    var datoOrden = document.querySelectorAll("[name='ordenFichaTecnicaProceso[]']");
+    var datoProc = document.querySelectorAll("[name='nombreProceso[]']");
+    var datoNota = document.querySelectorAll("[name='observacionFichaTecnicaNota[]']");
+   
+    var dato3 = [];
+    var dato4 = [];
+    var dato5 = [];
+  
+   
+
+    var valor = '';
+    var sw = true;
+    
+    for(var j=0,i=datoOrden.length; j<i;j++)
+    {
+        dato3[j] = datoOrden[j].value;
+    }
+
+    
+    for(var j=0,i=datoProc.length; j<i;j++)
+    {
+        dato4[j] = datoProc[j].value;
+    }
+
+    for(var j=0,i=datoNota.length; j<i;j++)
+    {
+        dato5[j] = datoNota[j].value;
+    }
+
     
 
-    validarformulario();
-}
+    $.ajax({
+        async: false,
+        url:route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: {respuesta: 'falso',
+                idFichaTecnica: dato,
+                referenciaFichaTecnica: dato0,
+                nombreFichaTecnica: dato1,
+                LineaProducto_idLineaProducto: dato2,
 
-function validarformulario()
-{
-    var resp = true;
-    // Validamos los datos de detalle
-    for(actual = 0; actual < document.getElementById('registros').value ; actual++)
-    {
-        if(document.getElementById("Tercero_idResponsable"+(actual)) && 
-           document.getElementById("accionMejoraInspeccionDetalle"+(actual)).value != '' && document.getElementById("Tercero_idResponsable"+(actual)).value == 0)
-        {
-            document.getElementById("Tercero_idResponsable"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:#F5A9A9;";
-            resp = false;
+                ordenFichaTecnicaProceso : dato3, 
+                nombreProceso: dato4, 
+                observacionFichaTecnicaNota: dato5
+                },
+        success:function(){
+            //$("#msj-success").fadeIn();
             
-        } 
-        else
-        {
-            document.getElementById("Tercero_idResponsable"+(actual)).style = "vertical-align:top; resize:none; width: 200px; height:60px; background-color:white;";
-        } 
-    }
+            //console.log(' sin errores');
+        },
+        error:function(msj){
+            var mensaje = '';
+            var respuesta = JSON.stringify(msj.responseJSON); 
+            if(typeof respuesta === "undefined")
+            {
+                sw = false;
+                $("#msj").html('');
+                $("#msj-error").fadeOut();
+            }
+            else
+            {
+                sw = true;
+                respuesta = JSON.parse(respuesta);
+                
+                (typeof msj.responseJSON.referenciaFichaTecnica === "undefined" ? document.getElementById('referenciaFichaTecnica').style.borderColor = '' : document.getElementById('referenciaFichaTecnica').style.borderColor = '#a94442');
 
-    if(resp === true)
-    {
-        $("form").submit();
-    }
-    else
-    {
-        alert('Por favor verifique los campos resaltados en rojo, deben ser diligenciados');
-    }
+                (typeof msj.responseJSON.nombreFichaTecnica === "undefined" ? document.getElementById('nombreFichaTecnica').style.borderColor = '' : document.getElementById('nombreFichaTecnica').style.borderColor = '#a94442');
 
-    return true;
+                (typeof msj.responseJSON.LineaProducto_idLineaProducto === "undefined" ? document.getElementById('LineaProducto_idLineaProducto').style.borderColor = '' : document.getElementById('LineaProducto_idLineaProducto').style.borderColor = '#a94442');
+        
+                for(var j=0,i=datoProc.length; j<i;j++)
+                {
+                    (typeof respuesta['ordenFichaTecnicaProceso'+j] === "undefined" 
+                        ? document.getElementById('ordenFichaTecnicaProceso'+j).style.borderColor = '' 
+                        : document.getElementById('ordenFichaTecnicaProceso'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['nombreProceso'+j] === "undefined" 
+                        ? document.getElementById('nombreProceso'+j).style.borderColor = '' 
+                        : document.getElementById('nombreProceso'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=datoNota.length; j<i;j++)
+                {
+                    (typeof respuesta['observacionFichaTecnicaNota'+j] === "undefined" 
+                        ? document.getElementById('observacionFichaTecnicaNota'+j).style.borderColor = '' 
+                        : document.getElementById('observacionFichaTecnicaNota'+j).style.borderColor = '#a94442');
+                }
+
+                
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
+                $("#msj-error").fadeIn();
+            }
+
+        }
+    });
+
+    if(sw === true)
+        event.preventDefault();
 }
 

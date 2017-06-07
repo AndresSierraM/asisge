@@ -46,7 +46,7 @@ class CuadroMandoController extends Controller
         $cuadromandoformula = DB::table('cuadromandoformula as CF')
             ->leftJoin('cuadromandocondicion as CC', 'CF.idCuadroMandoFormula', '=', 'CC.CuadroMandoFormula_idCuadroMandoFormula');
 
-        $indicador = \App\CuadroMando::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('indicadorCuadroMando','idCuadroMando');;
+        $indicador = \App\CuadroMando::All()->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
         $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
@@ -69,9 +69,9 @@ class CuadroMandoController extends Controller
 
         \App\CuadroMando::create([
             'numeroCuadroMando'=> $request['numeroCuadroMando'],
-            'CompaniaObjetivo_idCompaniaObjetivo'=> $request['CompaniaObjetivo_idCompaniaObjetivo'],
+            'CompaniaObjetivo_idCompaniaObjetivo'=> ($request['CompaniaObjetivo_idCompaniaObjetivo'] == '' ? null : $request['CompaniaObjetivo_idCompaniaObjetivo']),
             'Compania_idCompania' => ($request['Compania_idCompania'] == '' ? null : $request['Compania_idCompania']),
-            'Proceso_idProceso' =>$request['Proceso_idProceso'],
+            'Proceso_idProceso' => ($request['Proceso_idProceso'] == '' ? null : $request['Proceso_idProceso']),
             'objetivoEspecificoCuadroMando' => $request['objetivoEspecificoCuadroMando'],
             'indicadorCuadroMando' => $request['indicadorCuadroMando'],
             'definicionIndicadorCuadroMando' => $request['definicionIndicadorCuadroMando'],
@@ -81,7 +81,7 @@ class CuadroMandoController extends Controller
             'tipoMetaCuadroMando' => $request['tipoMetaCuadroMando'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
             'visualizacionCuadroMando' => $request['visualizacionCuadroMando'],
-            'Tercero_idResponsable' => $request['Tercero_idResponsable'],
+            'Tercero_idResponsable' => ($request['Tercero_idResponsable'] == '' ? null : $request['Tercero_idResponsable'])
 
             ]);
 
@@ -202,7 +202,7 @@ class CuadroMandoController extends Controller
             ->where('CF.CuadroMando_idCuadroMando','=',$id);
 
         //$cuadromandoformula = \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando',$id)->list();
-        $indicador = \App\CuadroMando::where('Compania_idCompania','=', \Session::get('idCompania'))->where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
+        $indicador = \App\CuadroMando::where('idCuadroMando','!=',$id)->lists('indicadorCuadroMando','idCuadroMando');;
         $companiaobjetivo = \App\CompaniaObjetivo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompaniaObjetivo','idCompaniaObjetivo');
         $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $frecuenciamedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
@@ -224,6 +224,10 @@ class CuadroMandoController extends Controller
         $cuadromando = \App\CuadroMando::find($id);
         $cuadromando->fill($request->all());
         $cuadromando->Compania_idCompania = ($request['Compania_idCompania'] == '' ? null : $request['Compania_idCompania']);
+        $cuadromando->CompaniaObjetivo_idCompaniaObjetivo = ($request['CompaniaObjetivo_idCompaniaObjetivo'] == '' ? null : $request['CompaniaObjetivo_idCompaniaObjetivo']);
+        $cuadromando->Proceso_idProceso = ($request['Proceso_idProceso'] == '' ? null : $request['Proceso_idProceso']);
+        $cuadromando->Tercero_idResponsable = ($request['Tercero_idResponsable'] == '' ? null : $request['Tercero_idResponsable']);
+
         $cuadromando->save();
         
         \App\CuadroMandoFormula::where('CuadroMando_idCuadroMando','=',$id)->delete();

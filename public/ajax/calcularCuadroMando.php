@@ -63,6 +63,7 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin, 
 	// a la condicion de la consulta le debemos adicionar una fecha de corte
 	// y el id de la compañia actual
 	// para adicionar el id de la compania, primero verificamos si en la tabla existe ese campo
+	echo 'Consulta de tabla '.$tabla.'<br>';
 	$consulta = DB::table('information_schema.COLUMNS')
 				->select(DB::raw('COLUMN_NAME'))
 				->where('TABLE_SCHEMA', '=', ENV('DB_DATABASE','sisoft'))
@@ -70,11 +71,13 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin, 
 				->where('COLUMN_NAME', 'like', '%idCompania%') 
 				->get();
 
+
 	$datowhere = '';
 	// si la tabla tiene campo de id de compania, armamos una condicion con el id de compania de la session actual sino la dejamos en blanco
-	$datowhere = isset(get_object_vars($consulta[0])["COLUMN_NAME"]) 
-		? get_object_vars($consulta[0])["COLUMN_NAME"] .' = '. $idCompania. ' AND '
-		: '';
+	if(isset($consulta[0]))
+		$datowhere = get_object_vars($consulta[0])["COLUMN_NAME"] .' = '. $idCompania. ' AND ';
+	else
+		$datowhere = '';
 	
 	// Si el usuario asocio una fecha de corte, la aplicamos en la condicion
 	$datowhere .= ($campoFecha != null and $campoFecha != '')
@@ -198,6 +201,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin, $idCompania)
 				$groupby = obtenerGroupBy($datosFormula["idCuadroMandoFormula"]);
 
 				// 3.3. CONDICION (Where)
+				print_r($datosFormula);
 				$datowhere = obtenerWhere($datosFormula["idCuadroMandoFormula"], $datosFormula["tablaModulo"], $datosFormula["fechaCorteCuadroMandoFormula"], $fechaInicio, $fechaFin, $idCompania);
 
 				// creamos una sentencia de SQL con los componentes mencionados
@@ -228,7 +232,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin, $idCompania)
 			case 'Indicador':
 				// 4. Cuando la formula contiene un INDICADOR implicito, debemos llamar esta misma funcion recursivamente 
 				// pero con el ID del indicador a calcular
-				$valorIndicador = calcularFormula($datosFormula["CuadroMando_idIndicador"], $fechaInicio, $fechaFin);
+				$valorIndicador = calcularFormula($datosFormula["CuadroMando_idIndicador"], $fechaInicio, $fechaFin, $idCompania);
 
 				// concatenamos a la formula el valor calculado para el indicador
 				$formula .= $valorIndicador;
@@ -355,10 +359,11 @@ function calcularIndicadores($fecha, $idCompania)
 	$cuadroMandoObjeto = DB::table('cuadromando as CM')
 	    ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
 	    ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion, operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando, Proceso_idProceso'))
-	    ->where('CM.Compania_idCompania','=', $idCompania)
 	    ->orderby('idCuadroMando')
 	    ->get();
-	 
+	 print_r($cuadroMandoObjeto);
+/*->where('CM.Compania_idCompania','=', $idCompania)
+	    ->orWhereNull('CM.Compania_idCompania')*/
 
 	// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
 	$CuadroMando = array();
@@ -450,17 +455,17 @@ function calcularIndicadores($fecha, $idCompania)
 		{
 			$reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
 		      From reporteacpm 
-		      where Compania_idCompania = ". \Session::get("idCompania"));
+		      where Compania_idCompania = ".  $idCompania);
 
 		    $reporte = get_object_vars($reporteACPM[0])["idReporteACPM"];
 
 		    if ($reporte == "") 
 		    {
-		    	DB::statement('INSERT into reporteacpm (idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM, Compania_idCompania) values (0, 1, "0000-00-00", "Acciones correctivas, preventivas y de mejora", '.\Session::get("idCompania").')');
+		    	DB::statement('INSERT into reporteacpm (idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM, Compania_idCompania) values (0, 1, "0000-00-00", "Acciones correctivas, preventivas y de mejora", '. $idCompania.')');
 
 		        $reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
 		          From reporteacpm 
-		          where Compania_idCompania = ". \Session::get("idCompania"));
+		          where Compania_idCompania = ".  $idCompania);
 
 		        $reporte = get_object_vars($reporteACPM[0])["idReporteACPM"];
 	        }
@@ -494,7 +499,8 @@ function calcularIndicadores($fecha, $idCompania)
 		// la fecha de calculao, entonces debemos Insertar uno nuevo, sino actulaizamos el existente
 	    $indice = array(
 	    	'CuadroMando_idCuadroMando' => $CuadroMando[$i]["idCuadroMando"],
-	     	'fechaCorteIndicador' => $fechaCorte);
+	     	'fechaCorteIndicador' => $fechaCorte,
+	     	'Compania_idCompania' => $idCompania);
 
 		$data = array(
 			'fechaCalculoIndicador' => date("Y-m-d", $fecha),
@@ -513,14 +519,14 @@ set_time_limit(0);
 // tomamos una fecha inicial para el proceso, que viene como parametro en la variable fecha
 // si no existe, tomamos el dia de hoy
 
-$compania = DB::Select('SELECT idCompania from compania');
-
+$compania = DB::Select('SELECT idCompania from compania where idCompania = 15 ');
+print_r($compania);
 for ($i=0; $i < count($compania); $i++) 
 { 
 	$idCompania = get_object_vars($compania[$i]);
 	
 	$fecha = isset($_GET["fecha"]) ? $_GET["fecha"] : date("Y-m-d");
-	while($fecha <= '2017-01-31')
+	while($fecha <= date("Y-m-d"))
 	{
 		calcularIndicadores($fecha, $idCompania["idCompania"]);
 		$fecha = date ( 'Y-m-d' , strtotime ( "+ 1 day" , strtotime($fecha)) );

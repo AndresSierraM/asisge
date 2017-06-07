@@ -71,6 +71,9 @@ $fechahora = Carbon\Carbon::now();
             <i class="fa fa-pencil-square-o"></i>
           </span>
           {!!Form::select('LineaProducto_idLineaProducto',$linea, @$fichatecnica->LineaProducto_idLineaProducto,["class" => "chosen-select form-control", "placeholder" => "Seleccione"])!!}
+
+          <input type="hidden" id="token" value="{{csrf_token()}}"/>
+
         </div>
       </div>
     </div>	
@@ -116,6 +119,7 @@ $fechahora = Carbon\Carbon::now();
             {!!Form::hidden('idFichaTecnica',null,['id'=>'idFichaTecnica'])!!}
             {!!Form::hidden('eliminarProceso',null,['id'=>'eliminarProceso'])!!}
             {!!Form::hidden('eliminarMaterial',null,['id'=>'eliminarMaterial'])!!}
+
             {!!Form::hidden('eliminarOperacion',null,['id'=>'eliminarOperacion'])!!}
             {!!Form::hidden('eliminarNota',null,['id'=>'eliminarNota'])!!}
           </div>
@@ -190,7 +194,6 @@ $fechahora = Carbon\Carbon::now();
   <li><a data-toggle="tab" href="#operacion">Operaciones</a></li>
   <li><a data-toggle="tab" href="#adjunto">Adjuntos</a></li>
   <li><a data-toggle="tab" href="#nota">Notas</a></li>
-  <li><a data-toggle="tab" href="#auditoria">Auditoría</a></li>
 </ul>
 
 <div class="tab-content">
@@ -386,10 +389,7 @@ $fechahora = Carbon\Carbon::now();
     </div>
 
   </div>
-  <div id="auditoria" class="tab-pane fade">
-    
-
-  </div>
+  
 </div>
 
     <br>
@@ -397,12 +397,14 @@ $fechahora = Carbon\Carbon::now();
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary", "onclick"=>'validarFormulario(event);'])!!}
   		@endif
  	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary", "onclick"=>'validarFormulario(event);'])!!}
  	@endif
-	{!! Form::close() !!}
+
+
+  {!! Form::close() !!}
 </div>
 
 

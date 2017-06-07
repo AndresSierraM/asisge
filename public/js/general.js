@@ -53,6 +53,7 @@ var Atributos = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.campoid = '';
     this.campoEliminacion = '';
     this.botonEliminacion = true;
+    this.funcionEliminacion = '';
     
     this.nombre = nombreObjeto;
     this.contenedor = nombreContenedor;
@@ -96,7 +97,7 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
         var img = document.createElement('i');
         var caneca = document.createElement('div');
         caneca.id = 'eliminarRegistro'+ this.contador;
-        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\'); '+this.funcionEliminacion+'(\''+this.contador+'\');');
         caneca.setAttribute("class","col-md-1");
         caneca.setAttribute("style","width:40px; height:35px;");
         img.setAttribute("class","glyphicon glyphicon-trash");
@@ -352,9 +353,12 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
 }
 
 Atributos.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
-   
+
     if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
+   {     
+
         document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
+    }
 
     // aux = elemento.parentNode;
     // alert(aux);
@@ -368,7 +372,7 @@ Atributos.prototype.borrarTodosCampos = function(){
     
     for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
     {
-        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
+        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+posborrar);
     }
     this.contador = 0;
 }
