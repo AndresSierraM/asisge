@@ -81,6 +81,7 @@ class MovimientoCRMController extends Controller
     {
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
+        $documentoTercero = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('tipoDocumentoCRM');
         
         // consultamos los maestros asociados a la compania
         $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
@@ -92,10 +93,10 @@ class MovimientoCRMController extends Controller
         $categoria = \App\CategoriaCRM::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreCategoriaCRM','idCategoriaCRM');
         $origen = \App\OrigenCRM::where('GrupoEstado_idGrupoEstado','=',$documento[0])->lists('nombreOrigenCRM','idOrigenCRM');
 
+        // Consultamos el tercero a mostrar en el formulario (si hace parte de los campos a mostrar) dependiendo del tipo de Documento CRM
+        $proveedor = ($documentoTercero[0] == 'Compras' ? \App\Tercero::where('tipoTercero','like','%*02*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : ($documentoTercero[0] == 'Comercial') ? \App\Tercero::where('tipoTercero','like','%*03*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : Array());        
 
-        
-
-       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento'));
+       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento', 'proveedor'));
     }
 
     /**
@@ -122,6 +123,9 @@ class MovimientoCRMController extends Controller
 
         $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
 
+        // Se hace un replace para que reemplace las comas por un vacio para que  pueda grabar en BD sin problemas 
+        $valor = str_replace(',', '', $request['valorMovimientoCRM']);
+
         \App\MovimientoCRM::create([
             'numeroMovimientoCRM' => $numero,
             'asuntoMovimientoCRM' => $request['asuntoMovimientoCRM'],
@@ -132,10 +136,11 @@ class MovimientoCRMController extends Controller
             'prioridadMovimientoCRM' => $request['prioridadMovimientoCRM'],
             'diasEstimadosSolucionMovimientoCRM' => $request['diasEstimadosSolucionMovimientoCRM'],
             'diasRealesSolucionMovimientoCRM' => $request['diasRealesSolucionMovimientoCRM'],
-            'valorMovimientoCRM' => $request['valorMovimientoCRM'],
+            'valorMovimientoCRM' => $valor,
             'Tercero_idSolicitante' => ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null),
             'Tercero_idSupervisor' => ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null),
             'Tercero_idAsesor' => ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null),
+            'Tercero_idProveedor' => ($request['Tercero_idProveedor'] != '' ? $request['Tercero_idProveedor'] : null),
             'CategoriaCRM_idCategoriaCRM' => ($request['CategoriaCRM_idCategoriaCRM'] != '' ? $request['CategoriaCRM_idCategoriaCRM'] : null),
             'DocumentoCRM_idDocumentoCRM' => ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null),
             'LineaNegocio_idLineaNegocio' => ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null),
@@ -240,12 +245,12 @@ class MovimientoCRMController extends Controller
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$movimientocrm->idMovimientoCRM.'?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
             
 
-            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            // {
-            //     $msj->to($datos['correos']);
-            //     $msj->subject($datos['asunto']);
-            //     // $msj->attach(public_path().'/plantrabajo.html');
-            // });
+            Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            {
+                $msj->to($datos['correos']);
+                $msj->subject($datos['asunto']);
+                // $msj->attach(public_path().'/plantrabajo.html');
+            });
         }
         
         return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
@@ -344,6 +349,7 @@ class MovimientoCRMController extends Controller
 
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
+        $documentoTercero = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('tipoDocumentoCRM');
        
 
         // consultamos los maestros asociados a la compania
@@ -377,7 +383,6 @@ class MovimientoCRMController extends Controller
                     horasAgenda as horasAgendaTarea,
                     Tercero_idResponsable,
                     nombreCompletoTercero as nombreResponsableAgenda,
-                    pesoAgenda as pesoAgendaTarea,
                     porcentajeEjecucionAgenda as ejecuionAgendaTarea,
                     estadoAgenda as estadoAgendaTarea,
                     idAgenda
@@ -389,12 +394,23 @@ class MovimientoCRMController extends Controller
                 WHERE MovimientoCRM_idMovimientoCRM = '.$id.' 
                     AND a.Compania_idCompania = '.\Session::get('idCompania'));  
 
+        // Consultamos el tercero a mostrar en el formulario (si hace parte de los campos a mostrar) dependiendo del tipo de Documento CRM
+        $proveedor = ($documentoTercero[0] == 'Compras' ? \App\Tercero::where('tipoTercero','like','%*02*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : ($documentoTercero[0] == 'Comercial') ? \App\Tercero::where('tipoTercero','like','%*03*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : Array());     
+
+        $movimientoCRMProductoServicio = DB::Select('
+            SELECT idMovimientoCRMProducto, FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaMovimientoCRMProducto, nombreFichaTecnica as descripcionMovimientoCRMProducto, cantidadMovimientoCRMProducto, valorUnitarioMovimientoCRMProducto
+            FROM movimientocrmproducto mcrmp
+            LEFT JOIN fichatecnica ft ON mcrmp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
+            WHERE MovimientoCRM_idMovimientoCRM = '.$id);
+
+        // print_r($movimientoCRMTarea);
+
 
         // print_r($movimientocrmcargo);
 
 
 
-        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea'),['movimientocrm'=>$movimientocrm]);
+        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea', 'proveedor', 'movimientoCRMProductoServicio'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -408,12 +424,17 @@ class MovimientoCRMController extends Controller
     {
 
         $estado = ($request['porcentajeCumplimientoAgendaTarea'] == 100 ? 5 : ($request['EstadoCRM_idEstadoCRM'] != '' ? $request['EstadoCRM_idEstadoCRM'] : null));
+        // Se hace un replace para que reemplace las comas por un vacio para que  pueda grabar en BD sin problemas 
+        $valor = str_replace(',', '', $request['valorMovimientoCRM']);
 
         $movimientocrm = \App\MovimientoCRM::find($id);
         $movimientocrm->fill($request->all());
+        // Luego que busca todos los campos del request se busca valorMoviendto para hacer el replace
+        $movimientocrm->valorMovimientoCRM = $valor;
         $movimientocrm->Tercero_idSolicitante = ($request['Tercero_idSolicitante'] != ''  ? $request['Tercero_idSolicitante'] : null);
         $movimientocrm->Tercero_idSupervisor = ($request['Tercero_idSupervisor'] != '' ? $request['Tercero_idSupervisor'] : null);
         $movimientocrm->Tercero_idAsesor = ($request['Tercero_idAsesor'] != '' ? $request['Tercero_idAsesor'] : null);
+        $movimientocrm->Tercero_idProveedor = ($request['Tercero_idProveedor'] != '' ? $request['Tercero_idProveedor'] : null);
         $movimientocrm->CategoriaCRM_idCategoriaCRM = ($request['CategoriaCRM_idCategoriaCRM'] != '' ? $request['CategoriaCRM_idCategoriaCRM'] : null);
         $movimientocrm->DocumentoCRM_idDocumentoCRM = ($request['DocumentoCRM_idDocumentoCRM'] != '' ? $request['DocumentoCRM_idDocumentoCRM'] : null);
         $movimientocrm->LineaNegocio_idLineaNegocio = ($request['LineaNegocio_idLineaNegocio'] != '' ? $request['LineaNegocio_idLineaNegocio'] : null);
@@ -513,12 +534,12 @@ class MovimientoCRMController extends Controller
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$movimientocrm->idMovimientoCRM.'?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
             
 
-            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            // {
-            //     $msj->to($datos['correos']);
-            //     $msj->subject($datos['asunto']);
-            //     // $msj->attach(public_path().'/archivo.html');
-            // });
+            Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            {
+                $msj->to($datos['correos']);
+                $msj->subject($datos['asunto']);
+                // $msj->attach(public_path().'/archivo.html');
+            });
         }
         
 
@@ -613,6 +634,7 @@ class MovimientoCRMController extends Controller
                 'MovimientoCRM_idMovimientoCRM' => $id,
                 'ubicacionAgenda' => $request['ubicacionAgendaTarea'][$i],
                 'porcentajeEjecucionAgenda' => $request['ejecuionAgendaTarea'][$i],
+                'estadoAgenda' => $request['estadoAgendaTarea'][$i],
                 'Compania_idCompania' => \Session::get('idCompania'));
 
             $respuesta = \App\Agenda::updateOrCreate($indice, $data); 
@@ -623,26 +645,57 @@ class MovimientoCRMController extends Controller
                 DB::update('UPDATE agenda SET urlAgenda = "http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?id='.$agenda->idAgenda.'" WHERE idAgenda = '.$agenda->idAgenda);
             } 
 
-            $destinatarioAgenda .= $request['Tercero_idResponsable'][$i].';';
+            $destinatarioAgenda .= $request['Tercero_idResponsable'][$i].',';
         }
 
         if ($destinatarioAgenda != '') 
         {
             $destinatarioAgenda = substr($destinatarioAgenda, 0, -1);
+            $destinatario = $destinatarioAgenda;
+            $correos = DB::Select('
+                SELECT  GROUP_CONCAT(correoElectronicoTercero) AS correoElectronicoTercero
+                FROM    users U 
+                LEFT JOIN tercero T 
+                ON U.Tercero_idTercero = T.idTercero
+                WHERE idTercero IN ('.$destinatario.')');
+
+            $correoTercero = get_object_vars($correos[0])['correoElectronicoTercero'];
 
             $mail = array();
             $mail['asuntoCorreoCRM'] = 'Tareas programadas - Agenda CRM';
-            $destinatario = $request['Tercero_idSupervisor'].';'.$destinatarioAgenda;
             $mail['mensaje'] = "Se han realizado movimientos en la agenda del CRM.<br><br>
             Para visualizarlo mejor <a href='http://".$_SERVER['HTTP_HOST']."/agenda'>ve directamente</a> a la agenda.";
-            $mail['destinatarioCorreoCRM'] = explode(';', $destinatario);
-            // Mail::send('emails.contact',$mail,function($msj) use ($mail)
-            // {
-            //     $msj->to($mail['destinatarioCorreoCRM']);
-            //     $msj->subject($mail['asuntoCorreoCRM']);
-            // }); 
+            $mail['destinatarioCorreoCRM'] = explode(',', $correoTercero);
+            Mail::send('emails.contact',$mail,function($msj) use ($mail)
+            {
+                $msj->to($mail['destinatarioCorreoCRM']);
+                $msj->subject($mail['asuntoCorreoCRM']);
+            }); 
         }
 
+        // ************************
+        // P R O D U C T O S 
+        // ************************
+
+        $idsEliminar = explode(',', $request['eliminarMovimientoCRMPRoducto']);
+        \App\MovimientoCRMProducto::whereIn('idMovimientoCRMProducto',$idsEliminar)->delete();
+
+        echo count($request['cantidadMovimientoCRMProducto']);
+        
+
+        for ($i=0; $i < count($request['cantidadMovimientoCRMProducto']); $i++) 
+        { 
+            $indice = array(
+                'idMovimientoCRMProducto' => $request['idMovimientoCRMProducto'][$i]);
+
+            $data = array(
+                'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'][$i],
+                'cantidadMovimientoCRMProducto' => $request['cantidadMovimientoCRMProducto'][$i],
+                'valorUnitarioMovimientoCRMProducto' => $request['valorUnitarioMovimientoCRMProducto'][$i],
+                'MovimientoCRM_idMovimientoCRM' => $id);
+
+            $respuesta = \App\MovimientoCRMProducto::updateOrCreate($indice, $data); 
+        }
     }
 
     public function guardarAsesorMovimientoCRM()
@@ -702,11 +755,11 @@ class MovimientoCRMController extends Controller
             $datos['mensaje'] = $datosmovimiento[0]['detallesMovimientoCRM']. '  
                 <a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm/'.$datosmovimiento[0]['idMovimientoCRM'].'?idDocumentoCRM='.$datosmovimiento[0]['DocumentoCRM_idDocumentoCRM'].'&accion=imprimir">Ver Caso</a>';
 
-            // Mail::send('emails.contact',$datos,function($msj) use ($datos)
-            // {
-            //     $msj->to($datos['correos']);
-            //     $msj->subject($datos['asunto']);
-            // });
+            Mail::send('emails.contact',$datos,function($msj) use ($datos)
+            {
+                $msj->to($datos['correos']);
+                $msj->subject($datos['asunto']);
+            });
         }
         
 

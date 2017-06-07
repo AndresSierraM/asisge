@@ -1,4 +1,4 @@
-@extends('layouts.vista')
+@extends('layouts.grid')
 
 @section('titulo')
 	<h3 id="titulo">
@@ -22,8 +22,12 @@
 		
 		var terceroContactos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroContactos) : "");?>';
 		terceroContactos = (terceroContactos != '' ? JSON.parse(terceroContactos) : '');
-		var terceroProductos = '<?php echo (isset($tercero) ? json_encode($tercero->terceroProductos) : "");?>';
+		var terceroProductos = '<?php echo (isset($terceroproducto) ? json_encode($terceroproducto) : "");?>';
 		terceroProductos = (terceroProductos != '' ? JSON.parse(terceroProductos) : '');
+
+		var terceroProveedor = '<?php echo (isset($proveedorseleccion) ? json_encode($proveedorseleccion) : "");?>';
+		terceroProveedor = (terceroProveedor != '' ? JSON.parse(terceroProveedor) : '');
+
 		var terceroExamenMedico = '<?php echo (isset($tercero) ? json_encode($tercero->terceroExamenMedicos) : "");?>';
 		terceroExamenMedico = (terceroExamenMedico != '' ? JSON.parse(terceroExamenMedico) : '');
 		var terceroArchivo = '<?php echo (isset($tercero) ? json_encode($tercero->terceroarchivos) : "");?>';
@@ -54,13 +58,32 @@
 			contactos.clase = ['','','','','',''];
 			contactos.sololectura = [false,false,false,false,false,false];
 
+			// productos = new Atributos('productos','contenedor_productos','productos_');
+			// productos.campos = ['idTerceroProducto','codigoTerceroProducto','nombreTerceroProducto'];
+			// productos.etiqueta = ['input','input','input'];
+			// productos.tipo = ['hidden','text','text'];
+			// productos.estilo = ['','width: 380px; height:35px;','width: 750px;height:35px;'];
+			// productos.clase = ['','',''];
+			// productos.sololectura = [false,false,false];
+
 			productos = new Atributos('productos','contenedor_productos','productos_');
-			productos.campos = ['idTerceroProducto','codigoTerceroProducto','nombreTerceroProducto'];
-			productos.etiqueta = ['input','input','input'];
-			productos.tipo = ['hidden','text','text'];
-			productos.estilo = ['','width: 380px; height:35px;','width: 750px;height:35px;'];
-			productos.clase = ['','',''];
-			productos.sololectura = [false,false,false];
+			productos.campos = ['idTerceroProducto','FichaTecnica_idFichaTecnica','referenciaTerceroProducto', 'descripcionProducto'];
+			productos.etiqueta = ['input','input','input','input'];
+			productos.tipo = ['hidden','hidden','text','text'];
+			productos.estilo = ['','','width: 200px;height:35px;','width: 800px;height:35px;'];
+			productos.clase = ['','','',''];
+			productos.sololectura = [false,false,true,true];
+
+			proveedor = new Atributos('proveedor','contenedor_proveedorseleccion','proveedor_');
+			proveedor.altura = '35px';
+		    proveedor.campoid = 'idTipoProveedorSeleccionTercero';
+		    proveedor.botonEliminacion = false;
+		    proveedor.campos   = ['descripcionTerceroTipoProveedorSeleccion', 'cumpleTerceroTipoProveedorSeleccion', 'TipoProveedorSeleccion_idTipoProveedorSeleccion', 'Tercero_idTercero',  'idTerceroTipoProveedorSeleccion'];
+		    proveedor.etiqueta = ['input', 'checkbox', 'input', 'input', 'input'];
+		    proveedor.tipo     = ['text', 'checkbox', 'hidden', 'hidden', 'hidden'];
+		    proveedor.estilo   = ['width: 900px;height:35px;', 'width: 100px;height:35px; display:inline-block' ,'', '', ''];
+		    proveedor.clase    = ['','', '', '', ''];
+		    proveedor.sololectura = [true,false,true,true,true];
 
 			// examen = new Atributos('examen','contenedor_examen','examen');
 			// examen.campos = ['idTerceroExamenMedico', 'TipoExamenMedico_idTipoExamenMedico','ingresoTerceroExamenMedico','retiroTerceroExamenMedico','periodicoTerceroExamenMedico','FrecuenciaMedicion_idFrecuenciaMedicion'];
@@ -93,6 +116,11 @@
 			for(var j=0, k = terceroProductos.length; j < k; j++)
 			{
 				productos.agregarCampos(JSON.stringify(terceroProductos[j]),'L');
+			}
+
+			for(var j=0, k = terceroProveedor.length; j < k; j++)
+			{
+				proveedor.agregarCampos(JSON.stringify(terceroProveedor[j]),'L');
 			}
 
 			for(var j=0, k = terceroExamenMedico.length; j < k; j++)
@@ -256,6 +284,18 @@
 													{!!Form::hidden('tipoTercero1','05',false, array('id' => 'tipoTercero5', 'onclick'=>'validarTipoTercero()'))!!}Seguridad Social
 												</label>
 											</div>
+											<div id="tipoproveedor" class="checkbox-inline" style="display: none;" >
+													{!!Form::label('TipoProveedor_idTipoProveedor', 'Proveedor', array('class' => 'col-sm-2 control-label'))!!}
+													<div class="col-sm-10">
+														<div class="input-group" >
+															<span class="input-group-addon">
+																<i class="fa fa-tasks"></i>
+															</span>
+															{!!Form::select('TipoProveedor_idTipoProveedor',$tipoproveedor, (isset($tercero) ? $tercero->TipoProveedor_idTipoProveedor : 0),["class" => " form-control", "placeholder" =>"Seleccione el tipo de proveedor",'style'=>'width:340px;', 'onchange' => 'llenarSeleccionProveedor(this.value)'])!!}
+
+														</div>
+													</div>
+												</div>
 										</div>
 									</div>
 								</div>
@@ -750,6 +790,29 @@
 											</div>
 										</div>
 									</div>
+
+									<div id="pestanaCriterioSeleccion" class="panel panel-default" style="display:none;">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#criterioseleccion">Criterios de selección</a>
+											</h4>
+										</div>
+										<div id="criterioseleccion" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-12">
+														<div class="row show-grid">
+															<div class="col-md-1" style="width: 900px;">Descripción del criterio</div>
+															<div class="col-md-1" style="width: 100px;">Cumple</div>
+															<div id="contenedor_proveedorseleccion">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<div id="pestanaProducto" class="panel panel-default" style="display:none;">
 										<div class="panel-heading">
 											<h4 class="panel-title">
@@ -761,11 +824,11 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;" onclick="productos.agregarCampos(valorProductos,'A')">
+															<div class="col-md-1" style="width: 40px; height:42px; cursor: pointer;" onclick="abrirModalFichaTecnica()">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 380px;">Referencia</div>
-															<div class="col-md-1" style="width: 750px;">Descripci&oacute;n</div>
+															<div class="col-md-1" style="width: 200px;">Referencia</div>
+															<div class="col-md-1" style="width: 800px;">Descripci&oacute;n</div>
 															<div id="contenedor_productos">
 															</div>
 														</div>
@@ -1037,3 +1100,41 @@ min-height: 0px !important;
 }   
 </style>    
 @stop
+
+<div id="modalFichaTecnica" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:80%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ficha técnica</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="container">
+            <div class="row" style="width:90%;">
+                <div class="container" style="width:100%;">
+                    <table id="tfichatecnica" name="tfichatecnica" class="display table-bordered" width="100%">
+                        <thead>
+                            <tr class="btn-default active">
+                                <th><b>Referencia</b></th>
+                                <th><b>Descripción</b></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="btn-default active">
+                                <th>Referencia</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="modal-footer">
+                        <button id="botonFichaTecnica" name="botonFichaTecnica" type="button" class="btn btn-primary" >Seleccionar</button>
+                    </div>
+				</div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

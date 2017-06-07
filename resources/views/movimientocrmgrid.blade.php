@@ -33,7 +33,7 @@
 $tercero  = DB::select(
     'SELECT idTercero, nombreCompletoTercero
     FROM tercero
-    where idTercero = 2493');
+    where idTercero = '.\Session::get('idTercero'));
 
 $tercero = get_object_vars($tercero[0]); 
 
@@ -190,7 +190,7 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
 
 
 
-
+{!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
 
     $(document).ready( function () {
@@ -300,6 +300,15 @@ echo '('.$datos["codigoDocumentoCRM"].') '.$datos["nombreDocumentoCRM"].'<br>['.
                     .draw();
             }
         } );
+
+          // Se agrega la funcion para limpiar los filtros
+
+         $('#btnLimpiarFiltros').click(function() 
+        {
+            that
+                .search('')
+                .draw();
+        });
     })
 
 

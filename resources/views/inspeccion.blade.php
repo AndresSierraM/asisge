@@ -270,20 +270,21 @@
           <div class="form-group" id='test'>
             <div class="col-sm-12">
                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+               <!-- Por peticion de vivi, se pone col xs para que se puedan ver del celular  -->
                   <div style="overflow:auto; height:400px;">
                     <div style="width: 1900px; display: inline-block;">
-                    <div class="col-md-1" style="width: 1220px;">&nbsp;</div>
-                    <div class="col-md-1" style="width: 650px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
+                    <div class="col-md-1 col-xs-1" style="width: 1220px;">&nbsp;</div>
+                    <div class="col-md-1 col-xs-1" style="width: 650px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
                           
-                    <div class="col-md-1" style="width: 60px;">No.</div>
-                    <div class="col-md-2" style="width: 300px;">Pregunta</div>
-                    <div class="col-md-3" style="width: 300px;">Situaci&oacute;n Identificada</div>
-                    <div class="col-md-4" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
-                    <div class="col-md-5" style="width: 100px;">Ubicaci&oacute;n</div>
-                    <div class="col-md-6" style="width: 200px;">Acci&oacute;n de Mejora</div>
-                    <div class="col-md-7" style="width: 200px;">Responsable</div>
-                    <div class="col-md-8" style="width: 150px;">Fecha</div>
-                    <div class="col-md-8" style="width: 300px;">Observaciones</div>
+                    <div class="col-md-1 col-xs-1" style="width: 60px;">No.</div>
+                    <div class="col-md-2 col-xs-1" style="width: 300px;">Pregunta</div>
+                    <div class="col-md-3 col-xs-1" style="width: 300px;">Situaci&oacute;n Identificada</div>
+                    <div class="col-md-4 col-xs-1" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
+                    <div class="col-md-5 col-xs-1" style="width: 100px;">Ubicaci&oacute;n</div>
+                    <div class="col-md-6 col-xs-1" style="width: 200px;">Acci&oacute;n de Mejora</div>
+                    <div class="col-md-7 col-xs-1" style="width: 200px;">Responsable</div>
+                    <div class="col-md-8 col-xs-1" style="width: 150px;">Fecha</div>
+                    <div class="col-md-8 col-xs-0" style="width: 300px;display: inline-block; ">Observaciones</div>
                     
                     <div id="contenedor_detalle">
                     </div>

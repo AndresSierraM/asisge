@@ -1,5 +1,9 @@
+<?php 
+$tipoFicha = $_GET['tipo'];
+$titulo = ($tipoFicha == 'p' ? 'Producto' : ($tipoFicha == 'm' ? 'Materia Prima' : 'Servicio'));
+?>
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Ficha Técnica</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Ficha Técnica <?php echo $titulo ?></center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -55,7 +59,7 @@
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="fichatecnica/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <?php echo '<a href="fichatecnica/create?tipo='.$tipoFicha.'"><span style= "display:'.$visible.'" class="glyphicon glyphicon-plus"></span></a>'; ?>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
@@ -101,12 +105,13 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var tipo = '<?php echo $tipoFicha?>';
         var table = $('#tfichatecnica').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosFichaTecnica?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosFichaTecnica?modificar="+modificar+"&eliminar="+eliminar+"&tipo="+tipo+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

@@ -6,13 +6,16 @@ foreach ($estado as $key => $value) {
 	$nombreEstadoDefault = $value;
 	break;
 }
-
-$camposAgendaTarea = array();
-// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
-for ($i = 0, $c = count($movimientoCRMTarea); $i < $c; ++$i) 
+if (!empty($movimientoCRMTarea)) 
 {
-  $camposAgendaTarea[$i] = (array) $movimientoCRMTarea[$i];
+	$camposAgendaTarea = array();
+	// por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+	for ($i = 0, $c = count($movimientoCRMTarea); $i < $c; ++$i) 
+	{
+	  $camposAgendaTarea[$i] = (array) $movimientoCRMTarea[$i];
+	}	
 }
+
 					              
 function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 {
@@ -159,7 +162,7 @@ $tercero = get_object_vars($tercero[0]);
 $fechahora = Carbon\Carbon::now();
 ?>
 
-@extends('layouts.vista')
+@extends('layouts.grid')
 @section('titulo')<h3 id="titulo">
 <center>
 <?php 
@@ -169,10 +172,8 @@ $fechahora = Carbon\Carbon::now();
 
 @section('content')
 @include('alerts.request')
-
+{!!Html::script('js/agenda.js')!!}
 {!!Html::script('js/movimientocrm.js'); !!}
-{!!Html::script('js/agenda.js'); !!}
-
 
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
@@ -194,23 +195,37 @@ $fechahora = Carbon\Carbon::now();
 	var movimientoCRMTarea = '<?php echo (isset($movimientoCRMTarea) ? json_encode($movimientoCRMTarea) : "");?>';
 	movimientoCRMTarea = (movimientoCRMTarea != '' ? JSON.parse(movimientoCRMTarea) : '');
 
+	var movimientoCRMProductoServicio = '<?php echo (isset($movimientoCRMProductoServicio) ? json_encode($movimientoCRMProductoServicio) : "");?>';
+	movimientoCRMProductoServicio = (movimientoCRMProductoServicio != '' ? JSON.parse(movimientoCRMProductoServicio) : '');
+
 	var valorAsistentes = [0,'','','','',''];
 	var valorArchivo = [0,'','',''];
+	var valorProductoServicio = [0,'','',1,1,1];
 
 	valorEstado =  Array("En proceso", "Finalizado");
     nombreEstado =  Array("En proceso", "Finalizado");
 
     var estadoAgendaCRM = [valorEstado,nombreEstado];
 
-	$(document).ready(function(){
+    calcultarValorCantidad = ['onchange','calcularValorTotal(this.id, "cantidad")'];
+    calcultarValorUnitario = ['onchange','calcularValorTotal(this.id, "unitario")'];
 
+	$(document).ready(function(){
+		// Se agrega  para  cuando esté editando en el ready vuelva a llamar la  función para que el ejecute  y ponga en el input el resultado, separado por puntos
+							if ($("#valorMovimientoCRM").val() != '')
+							{
+								valorDecimal($("#valorMovimientoCRM").val());
+							}
+		 				
 							$('#fechaHoraInicioAgenda').datetimepicker(({
     							format:'DD-MM-YYYY HH:mm:ss'
 							}));
 
 							if ($("#fechaHoraInicioAgenda").val() != '')
+							{
 								calcularHoras();
-
+								calcularPesoTarea($("#tiempoTotalAgendaTarea").val());
+							}
 		asistentes = new Atributos('asistentes','contenedor_asistentes','asistentes_');
 		asistentes.campos = ['idMovimientoCRMAsistente','nombreMovimientoCRMAsistente','cargoMovimientoCRMAsistente','telefonoMovimientoCRMAsistente','correoElectronicoMovimientoCRMAsistente'];
 		asistentes.etiqueta = ['input','input','input','input','input'];
@@ -340,6 +355,36 @@ $fechahora = Carbon\Carbon::now();
 	      console.log(JSON.stringify(movimientoCRMTarea[j]))
 	      asignarFechAgenda(movimientoCRMTarea[j]['fechaInicioAgendaTarea'], movimientoCRMTarea[j]['fechaFinAgendaTarea'], j);
 	    }
+
+	    // *************************
+		// F I C H A  T E C N I C A
+		// *************************
+
+          productoservicio = new Atributos('productoservicio','contenedor_productoservicio','productoservicio_');
+
+          productoservicio.campoid = 'idMovimientoCRMProducto';             
+          productoservicio.campoEliminacion = 'eliminarMovimientoCRMPRoducto';
+          productoservicio.botonEliminacion = true;
+
+          productoservicio.campos = ['FichaTecnica_idFichaTecnica','referenciaMovimientoCRMProducto','descripcionMovimientoCRMProducto','cantidadMovimientoCRMProducto','valorUnitarioMovimientoCRMProducto','valorTotalMovimientoCRMProducto', 'idMovimientoCRMProducto'];
+          productoservicio.altura = '35px;'; 
+
+          productoservicio.etiqueta = ['input','input','input','input','input','input', 'input'];
+          productoservicio.tipo = ['hidden','text','text','text','text','text', 'hidden']; 
+          productoservicio.estilo =  ['','width: 200px;height:35px;','width: 400px; height:35px;','width: 100px; height:35px;','width: 150px; height:35px;','width: 150px; height:35px;', '']; 
+
+          productoservicio.clase = ['','','','','','','']; 
+          productoservicio.sololectura = [false,true,true,false,false,true, false]; 
+          productoservicio.completar = ['off','off','off','off','off','off', 'off']; 
+          productoservicio.opciones = ['','','','','','','']; 
+          productoservicio.funciones  = ['','','',calcultarValorCantidad,calcultarValorUnitario,'',''];
+
+		for(var j=0, k = movimientoCRMProductoServicio.length; j < k; j++)
+		{
+			productoservicio.agregarCampos(JSON.stringify(movimientoCRMProductoServicio[j]),'L');
+			calcularValorTotal(j, '');
+			
+		}
 	});
 </script>
 
@@ -354,8 +399,6 @@ $fechahora = Carbon\Carbon::now();
 	@endif
 		<div id='form-section' >
 				<fieldset id="movimientocrm-form-fieldset">	
-				<button type="button" onclick="agregarEvento()" class="btn btn-primary">Añadir evento</button>
-				<br><br><br>
 					<div class="form-group" id='test'>
 						<div class="col-sm-6">
 							<div class="col-sm-4">
@@ -579,6 +622,34 @@ $fechahora = Carbon\Carbon::now();
 						<?php
 							}
 
+							if(strpos($camposVista, 'Tercero_idProveedor') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('Tercero_idProveedor', 'Proveedor', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	@if(mostrarCampo($arrayCampos, 'Tercero_idProveedor', $rolUsuario,'select') == '')
+					              		{!!Form::select('Tercero_idProveedor',$proveedor, (isset($movimientocrm) ? $movimientocrm->Tercero_idProveedor : $tercero['idTercero']),["class" => "chosen-select form-control", 'placeholder' =>'Seleccione'])!!}
+					              	@else
+					        			{!!Form::hidden('Tercero_idProveedor', (isset($movimientocrm) ? $movimientocrm->Tercero_idProveedor : $tercero['idTercero']), array('id' => 'Tercero_idProveedor'))!!}
+										{!!Form::text('nombreTercero',(isset($movimientocrm->Tercero_idProveedor->nombreCompletoTercero) ? $movimientocrm->Tercero_idProveedor->nombreCompletoTercero : $tercero['nombreCompletoTercero']),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+
+				              	
+
+								</div>
+							</div>
+						</div>
+
+						<?php
+							}
+
 							
 							if(strpos($camposVista, 'CategoriaCRM_idCategoriaCRM') !== false)
 							{ 
@@ -672,8 +743,8 @@ $fechahora = Carbon\Carbon::now();
 					              	<span class="input-group-addon">
 					                	<i class="fa fa-pencil-square-o"></i>
 					              	</span>
-
-									{!!Form::text('valorMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el valor del documento', mostrarCampo($arrayCampos, 'valorMovimientoCRM', $rolUsuario,'input')])!!}
+					         		<!-- Se agrega un onchange para que ejecute la funcion -->
+									{!!Form::text('valorMovimientoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el valor del documento',"onchange"=>"valorDecimal(this.value);", mostrarCampo($arrayCampos, 'valorMovimientoCRM', $rolUsuario,'input')])!!}
 
 								</div>
 							</div>
@@ -753,6 +824,12 @@ $fechahora = Carbon\Carbon::now();
 						{
 							?>
 					  		<li><a data-toggle="tab" href="#tareas">Tareas</a></li>
+					  		<?php
+						}
+						if(strpos($camposVista, 'productoServicioMovimientoCRM') !== false)
+						{
+							?>
+					  		<li><a data-toggle="tab" href="#productoservicio">Productos o Servicios</a></li>
 					  		<?php
 						}
 						?>
@@ -949,7 +1026,7 @@ $fechahora = Carbon\Carbon::now();
 								              	<span class="input-group-addon">
 								                	<i class="fa fa-calendar"></i>
 								              	</span>
-												{!!Form::text('fechaHoraInicioAgenda',(isset($movimientoCRMTarea) ? $movimientoCRMTarea->fechaInicioAgendaTarea : null),['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
+												{!!Form::text('fechaHoraInicioAgenda',(isset($movimientoCRMTarea) and !empty($movimientoCRMTarea)) ? $camposAgendaTarea[0]['fechaInicioAgendaTarea'] : null,['class'=>'form-control','placeholder'=>'Ingresa la fecha de inicio'])!!}
 											</div>
 										</div>
 									</div>
@@ -963,7 +1040,7 @@ $fechahora = Carbon\Carbon::now();
 								              	<span class="input-group-addon">
 								                	<i class="fa fa-clock-o"></i>
 								              	</span>
-												{!!Form::text('horasDiaAgenda',(isset($movimientoCRMTarea) ? $camposAgendaTarea[0]['horasAgenda'] : null),['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
+												{!!Form::text('horasDiaAgenda',(isset($movimientoCRMTarea) and !empty($movimientoCRMTarea)) ? $camposAgendaTarea[0]['horasAgendaTarea'] : null,['class'=>'form-control','placeholder'=>'Horas al día a trabajar'])!!}
 											</div>
 										</div>
 									</div>
@@ -1047,6 +1124,44 @@ $fechahora = Carbon\Carbon::now();
 					  </div>
 					<?php
 						}
+							if(strpos($camposVista, 'productoServicioMovimientoCRM') !== false)
+						{ 
+						?>
+					  	<div id="productoservicio" class="tab-pane fade">
+						   	<div class="form-group" id='test'>
+			                    <div class="col-sm-12">
+			                      	<div class="row show-grid">
+			                        <div class="col-md-1" style="width: 40px;height: 35px; cursor: pointer;" onclick="abrirModalFichaTecnica();">
+			                          <span class="glyphicon glyphicon-plus"></span>
+			                        </div>
+			                        <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Referencia</div>
+			                        <div class="col-md-1" style="width: 400px;display:inline-block;height:35px;">Descripción</div>
+			                        <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">Cantidad</div>
+			                        <div class="col-md-1" style="width: 150px;display:inline-block;height:35px;">Valor Unitario</div>
+			                        <div class="col-md-1" style="width: 150px;display:inline-block;height:35px;">Valor Total</div>
+			                          
+			                        <!-- este es el div para donde van insertando los registros --> 
+			                        <div id="contenedor_productoservicio">
+			                        </div>
+			                      </div>
+		                    	</div>
+	               		 	</div>  
+
+	               		 	<div class="form-group col-md-12" id='test' style="display:inline-block">
+		                      {!!Form::label('totalProducto', 'Valor Total Productos: ', array('class' => 'col-sm-2 control-label')) !!}
+		                      <div class="col-md-8">
+		                        <div class="input-group">
+		                          <span class="input-group-addon">
+		                            <i class="fa fa-dollar"></i>
+		                          </span>
+		                          {!!Form::text('totalProducto',null,['class'=>'form-control','readonly', 'placeholder'=>''])!!}
+		                        </div>
+		                      </div>
+		                    </div>
+		                    {!!Form::hidden('eliminarMovimientoCRMPRoducto', null, array('id' => 'eliminarMovimientoCRMPRoducto'))!!}
+              		 	</div>
+					<?php
+					}
 					?>
 					</div>
 					
@@ -1159,6 +1274,44 @@ $fechahora = Carbon\Carbon::now();
       <?php 
         echo '<iframe style="width:100%; height:400px; " id="eventos" name="eventos" src="http://'.$_SERVER["HTTP_HOST"].'/eventoagenda?crear=crear"></iframe>'
       ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modalFichaTecnica" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:80%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ficha técnica</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="container">
+            <div class="row" style="width:90%;">
+                <div class="container" style="width:100%;">
+                    <table id="tfichatecnica" name="tfichatecnica" class="display table-bordered" width="100%">
+                        <thead>
+                            <tr class="btn-default active">
+                                <th><b>Referencia</b></th>
+                                <th><b>Descripción</b></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="btn-default active">
+                                <th>Referencia</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="modal-footer">
+                        <button id="botonFichaTecnica" name="botonFichaTecnica" type="button" class="btn btn-primary" >Seleccionar</button>
+                    </div>
+				</div>
+            </div>
+        </div>
       </div>
     </div>
   </div>

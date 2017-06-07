@@ -18,7 +18,11 @@
     var operaciones = '<?php echo (isset($operacion) ? json_encode($operacion) : "");?>';
     operaciones = (operaciones != '' ? JSON.parse(operaciones) : '');
 
+    var criterios = '<?php echo (isset($fichatecnica) ? json_encode($fichatecnica->fichatecnicacriterio) : "");?>';
+    criterios = (criterios != '' ? JSON.parse(criterios) : '');
+
     var valorProceso = ['','','','','','','',''];
+    var valorCriterio = ['','',''];
     var valorNota = [
                     0,
                     "<?php echo \Session::get("idUsuario");?>",
@@ -117,11 +121,13 @@ $fechahora = Carbon\Carbon::now();
             </span>
             {!!Form::text('referenciaClienteFichaTecnica',null,['class'=>'form-control', "placeholder" => "Ingrese Referencia del Cliente"])!!}
             {!!Form::hidden('idFichaTecnica',null,['id'=>'idFichaTecnica'])!!}
+            {!!Form::hidden('tipoFichaTecnica',(isset($fichatecnica) ? $fichatecnica->tipoFichaTecnica : $_GET['tipo']),['id'=>'tipoFichaTecnica'])!!}
             {!!Form::hidden('eliminarProceso',null,['id'=>'eliminarProceso'])!!}
             {!!Form::hidden('eliminarMaterial',null,['id'=>'eliminarMaterial'])!!}
 
             {!!Form::hidden('eliminarOperacion',null,['id'=>'eliminarOperacion'])!!}
             {!!Form::hidden('eliminarNota',null,['id'=>'eliminarNota'])!!}
+            {!!Form::hidden('eliminarCriterio',null,['id'=>'eliminarCriterio'])!!}
           </div>
       </div>
     </div>  
@@ -194,6 +200,7 @@ $fechahora = Carbon\Carbon::now();
   <li><a data-toggle="tab" href="#operacion">Operaciones</a></li>
   <li><a data-toggle="tab" href="#adjunto">Adjuntos</a></li>
   <li><a data-toggle="tab" href="#nota">Notas</a></li>
+  <li><a data-toggle="tab" href="#criterios">Criterios de Aceptación</a></li>
 </ul>
 
 <div class="tab-content">
@@ -390,6 +397,26 @@ $fechahora = Carbon\Carbon::now();
 
   </div>
   
+  <div id="criterios" class="tab-pane fade">
+    
+    <div class="form-group" id='test'>
+        <div class="col-sm-12">
+            <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                <div style="overflow:auto; height:350px;">
+                    <div style="width: 100%; display: inline-block;">
+                        <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="criterio.agregarCampos(valorCriterio, 'A');">
+                          <span class="glyphicon glyphicon-plus"></span>
+                        </div>
+                        <div class="col-md-1" style="width: 900px;">Descripción del criterio</div>
+                        <div id="contenedor_criterio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div>
 </div>
 
     <br>

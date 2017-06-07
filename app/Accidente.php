@@ -47,4 +47,9 @@ class Accidente extends Model
     {
     	return $this->hasMany('App\AccidenteEquipo','Accidente_idAccidente');
     }
+
+      public function AccidenteArchivo()
+    {
+    	return $this->hasMany('App\AccidenteArchivo','Accidente_idAccidente');
+    } 
 }

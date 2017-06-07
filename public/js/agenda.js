@@ -197,3 +197,146 @@ function cancelarCita(idAgenda)
         });
     }
 }
+
+// -----------------------------------
+// A G E N D A  S E G U I M I E N T O
+// -----------------------------------
+
+var AtributosSeguimiento = function(nombreObjeto, nombreContenedor, nombreDiv){
+    this.alto = '100px;';
+    this.ancho = '100%;';
+    this.campoid = 'idFichaTecnicaSeguimiento';
+    this.campoEliminacion = 'eliminarSeguimiento';
+    this.botonEliminacion = true;
+
+    this.nombre = nombreObjeto;
+    this.contenedor = nombreContenedor;
+    this.contenido = nombreDiv;
+    this.contador = 0;
+};
+
+AtributosSeguimiento.prototype.agregarSeguimiento = function(datos, tipo){
+
+    var valor;
+    if(tipo == 'A')
+       valor = datos;
+    else
+        valor = $.parseJSON(datos);
+    
+    var espacio = document.getElementById(this.contenedor);
+   
+    var div = document.createElement('div');
+    div.id = this.contenido+this.contador;
+    div.setAttribute("class", "col-sm-12");
+    div.setAttribute("style",  "overflow: auto; background: transparent; height:"+this.alto+"width:"+this.ancho+";margin: 3px 3px 3px 3px; padding: 2px 2px 2px 2px;");
+    
+    // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
+    if(this.botonEliminacion && tipo == 'A')
+    {
+        var img = document.createElement('i');
+        var caneca = document.createElement('div');
+        caneca.id = 'eliminarRegistro'+ this.contador;
+        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+        caneca.setAttribute("class","canecaSeguimiento col-md-1");
+        caneca.setAttribute("style","width:40px; height:35px;");
+        img.setAttribute("class","glyphicon glyphicon-trash");
+
+        caneca.appendChild(img);
+        div.appendChild(caneca);
+    }
+
+    
+    //--------------------
+    // id de seguimiento
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "hidden";
+    input.id =  "idAgendaSeguimiento" + this.contador;
+    input.name =  "idAgendaSeguimiento[]";
+    input.value = valor[(tipo == 'A' ? 0 : "idAgendaSeguimiento")] ;
+    input.setAttribute("class", "");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // id de usuario
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "hidden";
+    input.id =  "Users_idCrea" + this.contador;
+    input.name =  "Users_idCrea[]";
+    input.value = valor[(tipo == 'A' ? 1 : "Users_idCrea")] ;
+    input.setAttribute("class", "");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // id de agenda
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "hidden";
+    input.id =  "Agenda_idAgenda" + this.contador;
+    input.name =  "Agenda_idAgenda[]";
+    input.value = valor[(tipo == 'A' ? 2 : "Agenda_idAgenda")] ;
+    input.setAttribute("class", "");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // Fecha de seguimiento
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "text";
+    input.id =  "fechaHoraAgendaSeguimiento" + this.contador;
+    input.name =  "fechaHoraAgendaSeguimiento[]";
+    input.value = valor[(tipo == 'A' ? 3 : "fechaHoraAgendaSeguimiento")] ;
+    input.setAttribute("class", "fechaNota");
+    input.setAttribute("style","width:150px; height:35px;");
+    input.readOnly = "readOnly";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // Detalles de seguimiento
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "text";
+    input.id =  "detallesAgendaSeguimiento" + this.contador;
+    input.name =  "detallesAgendaSeguimiento[]";
+    input.value = valor[(tipo == 'A' ? 4 : "detallesAgendaSeguimiento")] ;
+    input.setAttribute("class", "");
+    input.setAttribute("style","width:310px; height:35px;");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+ 
+       
+    espacio.appendChild(div);
+
+    this.contador++;
+}
+
+AtributosSeguimiento.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
+   
+    if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
+        document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
+
+    // aux = elemento.parentNode;
+    // alert(aux);
+    // if(aux );
+        $("#"+elemento).remove();
+
+}
+
+AtributosSeguimiento.prototype.borrarTodosCampos = function(){
+    
+    
+    for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
+    {
+        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
+    }
+    this.contador = 0;
+}

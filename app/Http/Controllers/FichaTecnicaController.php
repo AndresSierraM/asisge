@@ -77,6 +77,7 @@ class FichaTecnicaController extends Controller
        if($request['respuesta'] != 'falso')
         {  
             \App\FichaTecnica::create([
+                'tipoFichaTecnica' => $request['tipoFichaTecnica'],
                 'referenciaFichaTecnica' => $request['referenciaFichaTecnica'],
                 'nombreFichaTecnica' => $request['nombreFichaTecnica'],
                 'fechaCreacionFichaTecnica' => $request['fechaCreacionFichaTecnica'],
@@ -459,6 +460,24 @@ class FichaTecnicaController extends Controller
 
             $guardar = \App\FichaTecnicaNota::updateOrCreate($indice, $data);
 
+        }
+
+        // -----------------------------------
+        // CRITERIOS
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        // -----------------------------------
+        $idsEliminar = explode(',', $request['eliminarCriterio']);
+        \App\FichaTecnicaCriterio::whereIn('idFichaTecnicaCriterio',$idsEliminar)->delete();
+        $contador = count($request['idFichaTecnicaCriterio']);
+        for($i = 0; $i < $contador; $i++)
+        {
+            $indice = array(
+             'idFichaTecnicaCriterio' => $request['idFichaTecnicaCriterio'][$i]);
+            $data = array(
+            'FichaTecnica_idFichaTecnica' => $id,
+            'descripcionFichaTecnicaCriterio' => $request['descripcionFichaTecnicaCriterio'][$i]);
+            $guardar = \App\FichaTecnicaCriterio::updateOrCreate($indice, $data);
         }
 
     }

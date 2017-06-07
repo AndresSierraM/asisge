@@ -185,6 +185,12 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('ordenproduccion','OrdenProduccionController');
     Route::resource('factura','FacturaController');
 
+    // *************************************
+    // Rutas de Compras
+    // *************************************
+    Route::resource('tipoproveedor','TipoProveedorController');
+    Route::resource('ordencompra','OrdenCompraController');
+
     // *************************************************
     //
     //  D I S E Ñ A D O R   D E   I N F O R M E S 
@@ -477,6 +483,31 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosFactura.php';
     });
     
+
+    Route::post('llenarSeleccionTipoProveedor', function()
+    {
+        include public_path().'/ajax/llenarSeleccionTipoProveedor.php';
+    });
+
+    Route::get('datosFichaTecnicaModal', function()
+    {
+        include public_path().'/ajax/datosFichaTecnicaModal.php';
+    });
+
+    Route::get('datosOrdenCompra', function()
+    {
+        include public_path().'/ajax/datosOrdenCompra.php';
+    });
+
+    Route::get('datosMovimientoCRMModal', function()
+    {
+        include public_path().'/ajax/datosMovimientoCRMModal.php';
+    });
+
+    Route::post('cargarProductosOrdenCompra', function()
+    {
+        include public_path().'/ajax/cargarProductosOrdenCompra.php';
+    });
 
 
     Route::post('consultarPermisos', function()
@@ -773,6 +804,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosAgendaPermiso.php';
     });
 
+    Route::get('datosTipoProveedor', function()
+    {
+        include public_path().'/ajax/datosTipoProveedor.php';
+    });
+
 
     Route::get('datosDocumentoCRM', function()
     {
@@ -785,6 +821,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('guardarAsesorMovimientoCRM', [
             'as' => 'guardarAsesorMovimientoCRM', 
             'uses' => 'MovimientoCRMController@guardarAsesorMovimientoCRM']);
+
+    Route::post('autorizarOrdenCompra', [
+            'as' => 'autorizarOrdenCompra', 
+            'uses' => 'OrdenCompraController@autorizarOrdenCompra']);
 
     Route::post('consultarAsesorMovimientoCRM', [
             'as' => 'consultarAsesorMovimientoCRM', 

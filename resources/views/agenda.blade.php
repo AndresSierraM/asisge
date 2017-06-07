@@ -4,8 +4,6 @@
 @section('content')
 @include('alerts.request')
 
-{!!Html::script('js/agenda.js')!!}
-
    @if(isset($agenda))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
       {!!Form::model($agenda,['route'=>['agenda.destroy',$agenda->idAgenda],'method'=>'DELETE'])!!}
@@ -76,7 +74,75 @@ echo '</style>';
   {!! Form::close() !!}
 </div>
 <script type="text/javascript">
-  $(document).ready(function(){
+
+function agregarEvento()
+{
+    $('#modalEvento').modal('show');
+}
+
+function consultarCamposAgenda(idCategoriaAgenda, idAgenda)
+{
+    var token = document.getElementById('token').value;
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        data: {'idCategoriaAgenda' : idCategoriaAgenda, 'idAgenda': idAgenda},
+        url:   'http://'+location.host+'/mostrarCamposAgenda/',
+        type:  'post',
+        success: function(respuesta)
+        {
+            // alert(respuesta.toSource());
+            // $("#claseAgenda").val(respuesta[0]['codigoCategoriaAgenda']);
+
+            for (var i = 0; i < respuesta.length; i++) 
+            {
+                if (respuesta[i]['nombreCampoCRM'] == 'ubicacionAgenda') 
+                    $("#ubicacion").css('display','block');
+
+                if (respuesta[i]['nombreCampoCRM'] == 'MovimientoCRM_idMovimientoCRM') 
+                    $("#MovimientoCRM").css('display','block');
+
+                if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idResponsable') 
+                    $("#Tercero").css('display','block');
+
+                if (respuesta[i]['nombreCampoCRM'] == 'porcentajeEjecucionAgenda') 
+                    $("#porcentajeEjecucion").css('display','block');
+
+                if (respuesta[i]['nombreCampoCRM'] == 'estadoAgenda') 
+                    $("#estado").css('display','block');
+
+                if (respuesta[i]['nombreCampoCRM'] == 'seguimientoAgenda') 
+                    $("#divseguimiento").css('display','block');
+                    $("#liseguimiento").css('display','block');
+
+                if (respuesta[i]['nombreCampoCRM'] == 'Tercero_idAsistente') 
+                    $("#divasistentes").css('display','block');
+                    $("#liasistentes").css('display','block');
+            }
+        },
+        error: function(xhr,err)
+        { 
+            $("#claseAgenda").val('');
+
+            $("#ubicacionAgenda").css('display','none');
+
+            $("#MovimientoCRM_idMovimientoCRM").css('display','none');
+
+            $("#Tercero_idResponsable").css('display','none');
+
+            $("#porcentajeEjecucionAgenda").css('display','none');
+
+            $("#estadoAgenda").css('display','none');
+
+            $("#liseguimiento").css('display','none');
+            
+            $("#liasistentes").css('display','none');
+        }
+    });
+}
+
+$(document).ready(function(){
 
 //creamos la fecha actual
 
@@ -84,7 +150,7 @@ echo '</style>';
     {
         consultarCamposAgenda($('#CategoriaAgenda_idCategoriaAgenda').val());
     }
-        
+       
 
         var date = new Date();
         var yyyy = date.getFullYear().toString();

@@ -43,12 +43,10 @@
 				on O.Paquete_idPaquete = P.idPaquete
 				where U.id = '.\Session::get("idUsuario").'
 				GROUP BY P.idPaquete
-				ORDER BY P.ordenPaquete, P.nombrePaquete;');
-			
+				ORDER BY P.ordenPaquete, P.nombrePaquete;');			
 				
 				foreach ($paquetes as $idP => $datosP) 
 				{
-
 					// si el paquete comienza por CRM,consultamos los Movimientos que tiene permisos, de lo contrario consultamos opciones generales con permiso
 					if(substr($datosP->nombrePaquete,0,3) == 'CRM')
 					{
@@ -85,6 +83,27 @@
 						// 		</a>
 						// 	</li>';
 						// }
+					}
+					else if(substr($datosP->nombrePaquete,-6) == 'Compra')
+					{
+						$opciones = DB::select(
+						'Select
+						  CONCAT("ordencompra?idDocumentoCRM=", idDocumentoCRM) as rutaOpcion,
+						  "menu/casocrm.png" as iconoOpcion,
+						  CONCAT("Orden de Compra de ",documentocrm.nombreDocumentoCRM) as nombreOpcion,
+    					  CONCAT("Orden de Compra de ",documentocrm.nombreDocumentoCRM) as nombreCortoOpcion
+						From
+						  documentocrm Inner Join
+						  documentocrmrol
+						    On documentocrmrol.DocumentoCRM_idDocumentoCRM = documentocrm.idDocumentoCRM
+						  Inner Join
+						  rol
+						    On documentocrmrol.Rol_idRol = rol.idRol Inner Join
+						  users
+						    On users.Rol_idRol = rol.idRol
+						Where
+						  users.id = '.\Session::get("idUsuario").'
+						AND tipoDocumentoCRM = "Compras"');
 					}
 					else
 					{

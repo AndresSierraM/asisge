@@ -59,14 +59,14 @@ class EntrevistaController extends Controller
         $idModulo= \App\Modulo::All()->lists('idModulo');
         $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
         
-        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('idPerfilCargo');
-        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('nombrePerfilCargo');
+        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
-        $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
+        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
-        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
+        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
           return view('entrevista',compact('cargo','Tercero','Ciudad_idResidencia','idRespuesta','nombreRespuesta','entrevistapregunta','idEducacion','nombreEducacion','idFormacion','nombreFormacion','encuesta','tipoIdentificacion','idHabilidad','nombreHabilidad'));
 
@@ -127,7 +127,7 @@ class EntrevistaController extends Controller
             'experienciaAspiranteEntrevista' => $request['experienciaAspiranteEntrevista'],  
             'experienciaRequeridaEntrevista' => $request['experienciaRequeridaEntrevista'],
             'TipoIdentificacion_idTipoIdentificacion'  => $request['TipoIdentificacion_idTipoIdentificacion'],
-
+            'Compania_idCompania' => \Session::get('idCompania'),
             'calificacionEducacionEntrevista' => $request['calificacionEducacionEntrevista'],  
             'calificacionFormacionEntrevista' => $request['calificacionFormacionEntrevista'],
             'calificacionHabilidadCargoEntrevista'  => $request['calificacionHabilidadCargoEntrevista'],
@@ -343,15 +343,14 @@ class EntrevistaController extends Controller
          $entrevista = \App\Entrevista::find($id);
          $Tercero = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero'); 
           $cargo = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCargo','idCargo'); 
-        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('idPerfilCargo');
-        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->lists('nombrePerfilCargo');
+        $idEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreEducacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Educacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('idPerfilCargo');
-        $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->lists('nombrePerfilCargo');
+        $idFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreFormacion = \App\PerfilCargo::where('tipoPerfilCargo','=','Formacion')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
-        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('idPerfilCargo');
-        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->lists('nombrePerfilCargo');
-
+        $idHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idPerfilCargo');
+        $nombreHabilidad = \App\PerfilCargo::where('tipoPerfilCargo','=','Habilidad')->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombrePerfilCargo');
 
 
         // Cuando editamos la pregunta (Habilidades), debemos enviar los datos de las multiregistro que se deben cargar

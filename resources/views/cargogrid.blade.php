@@ -99,6 +99,7 @@ function imprimirCargo(id)
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#tcargo').DataTable( {
+          
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,

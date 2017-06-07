@@ -9,7 +9,7 @@ class TerceroProducto extends Model
     protected $table = 'terceroproducto';
     protected $primaryKey = 'idTerceroProducto';
 
-    protected $fillable = ['codigoTerceroProducto','nombreTerceroProducto','Tercero_idTercero'];
+    protected $fillable = ['FichaTecnica_idFichaTecnica','Tercero_idTercero'];
 
     public $timestamps = false;
 

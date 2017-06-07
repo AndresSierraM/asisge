@@ -194,6 +194,32 @@ $(document).ready(function(){
         nota.agregarNota(JSON.stringify(notas[j]),'L');
     }
 
+    //**************************
+    // 
+    //   C R I T E R I O
+    //
+    //**************************
+    criterio = new Atributos('criterio','contenedor_criterio','criterio_');
+
+    criterio.altura = '35px';
+    criterio.campoid = 'idFichaTecnicaCriterio';
+    criterio.campoEliminacion = 'eliminarCriterio';
+
+    criterio.campos   = ['idFichaTecnicaCriterio', 
+                    'descripcionFichaTecnicaCriterio',
+                    'FichaTecnica_idFichaTecnica'];
+
+    criterio.etiqueta = ['input','input', 'input'];
+    criterio.tipo     = ['hidden','text', 'hidden'];
+    criterio.estilo   = ['','width: 900px;height:35px;',''];
+    criterio.clase    = ['','',''];      
+    criterio.sololectura = [true,false,true];
+    
+    for(var j=0, k = criterios.length; j < k; j++)
+    {
+        criterio.agregarCampos(JSON.stringify(criterios[j]),'L');
+    }
+
 });
 
 

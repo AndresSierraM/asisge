@@ -471,6 +471,9 @@ function llenarFormacionCargo(idCargo)
                     window.parent.Formacionentrevista.agregarCampos(valores,'A'); 
 
                 }  
+
+                console.log(respuesta);
+
             },
             error:    function(xhr,err){ 
                 alert("Error");
@@ -497,22 +500,27 @@ function llenarEducacionCargo(idCargo)
                 },
 
             success: function(respuesta){
-              
-                // Limpiar el div de la multiregistro
-                document.getElementById("EducacionEntrevista_Modulo").innerHTML = '';
-                var valor = new Array();
-                var nombres = new Array();
-                var porcentaje = new Array();
-
-                $("#experienciaRequeridaEntrevista").val(respuesta[0]["aniosExperienciaCargo"]);
-                for (var i = 0; i < respuesta.length; i++) 
+                // Ya que esta funcion ademas de cargar lo de perfil cargo carga años de exp
+                // Se pregunta si la respuesta es mayor a 0 para que no muestre registros vacios en Entrevista Pestaña Habilidades propias del Cargo
+                if (respuesta.length > 0) 
                 {
-                    valor[i] = respuesta[i]["idPerfilCargo"];
-                    nombres[i] = respuesta[i]["nombrePerfilCargo"]; 
-                    porcentaje[i] = respuesta[i]["porcentajeCargoEducacion"]; 
+                    // Limpiar el div de la multiregistro
+                    document.getElementById("EducacionEntrevista_Modulo").innerHTML = '';
+                    var valor = new Array();
+                    var nombres = new Array();
+                    var porcentaje = new Array();
 
-                    var valores = new Array(0,nombres[i],valor[i],porcentaje[i],0,0,0);  
-                    window.parent.Educacionentrevista.agregarCampos(valores,'A'); 
+                    $("#experienciaRequeridaEntrevista").val(respuesta[0]["aniosExperienciaCargo"]);
+                    for (var i = 0; i < respuesta.length; i++) 
+                    {
+                        valor[i] = respuesta[i]["idPerfilCargo"];
+                        nombres[i] = respuesta[i]["nombrePerfilCargo"]; 
+                        porcentaje[i] = respuesta[i]["porcentajeCargoEducacion"]; 
+
+                        var valores = new Array(0,nombres[i],valor[i],porcentaje[i],0,0,0);  
+                        window.parent.Educacionentrevista.agregarCampos(valores,'A'); 
+                }
+              
                 }  
             },
             error:    function(xhr,err){ 

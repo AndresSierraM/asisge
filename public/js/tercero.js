@@ -143,6 +143,8 @@ function mostrarPestanas()
         document.getElementById('pestanaFormacion').style.display = 'block';
         document.getElementById('pestanaPersonal').style.display = 'block';
         document.getElementById('pestanaLaboral').style.display = 'block';
+        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
     }
     /*else
     {
@@ -155,7 +157,7 @@ function mostrarPestanas()
         document.getElementById('pestanaLaboral').style.display = 'none';
     }*/
 
-    if(document.getElementById('tipoTercero2').checked || document.getElementById('tipoTercero3').checked  )
+    if(document.getElementById('tipoTercero2').checked)
     {
         document.getElementById('cargo').style.display = 'none';
         document.getElementById('zona').style.display = 'inline';
@@ -168,6 +170,25 @@ function mostrarPestanas()
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
         document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('tipoproveedor').style.display = 'inline-block';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'block';
+    }
+
+    if(document.getElementById('tipoTercero3').checked)
+    {
+        document.getElementById('cargo').style.display = 'none';
+        document.getElementById('zona').style.display = 'inline';
+        document.getElementById('sector').style.display = 'inline';
+
+        document.getElementById('pestanaProducto').style.display = 'block';
+        // document.getElementById('pestanaExamenes').style.display = 'none';
+        document.getElementById('pestanaEducacion').style.display = 'none';
+        document.getElementById('pestanaExperiencia').style.display = 'none';
+        document.getElementById('pestanaFormacion').style.display = 'none';
+        document.getElementById('pestanaPersonal').style.display = 'none';
+        document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
     }
 
     if(document.getElementById('tipoTercero4').checked)
@@ -185,6 +206,8 @@ function mostrarPestanas()
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
         document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
     }
 
 
@@ -283,3 +306,109 @@ function mostrarModalInterface()
     $("#ModalImportacion").modal("show");
 }
 
+function llenarSeleccionProveedor(idTipoProveedor)
+{
+    var token = document.getElementById('token').value;
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        data: {'idTipoProveedor': idTipoProveedor},
+        url:   'http://'+location.host+'/llenarSeleccionTipoProveedor/',
+        type:  'post',
+        beforeSend: function(){
+            //Lo que se hace antes de enviar el formulario
+            },
+        success: function(respuesta){
+            $("#contenedor_proveedorseleccion").html('');
+            
+            for (var i = 0; i < respuesta.length; i++) 
+            {
+                var valores = new Array(respuesta[i]["descripcionTipoProveedorSeleccion"], 0, respuesta[i]["idTipoProveedorSeleccion"], '', '');
+                proveedor.agregarCampos(valores,'A'); 
+            }  
+        },
+        error:    function(xhr,err){ 
+            alert("Error");
+        }
+    });
+}
+
+function abrirModalFichaTecnica()
+{
+
+    idTercero = ($("#Tercero_idTercero").val() == '' ? '' : $("#Tercero_idTercero").val());
+
+    window.parent.$("#tfichatecnica tbody tr").each( function () 
+    {
+        $(this).removeClass('selected');
+    });
+
+    var lastIdx = null;
+    window.parent.$("#tfichatecnica").DataTable().ajax.url('http://'+location.host+"/datosFichaTecnicaModal?ficha=tercero").load();
+     // Abrir modal
+    window.parent.$("#modalFichaTecnica").modal()
+
+    $("a.toggle-vis").on( "click", function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr("data-column") );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+    window.parent.$("#tfichatecnica tbody").on( "mouseover", "td", function () 
+    {
+        var colIdx = table.cell(this).index().column;
+
+        if ( colIdx !== lastIdx ) {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+        }
+    }).on( "mouseleave", function () 
+    {
+        $( table.cells().nodes() ).removeClass( "highlight" );
+    } );
+
+
+    // Setup - add a text input to each footer cell
+    window.parent.$("#tfichatecnica tfoot th").each( function () 
+    {
+        var title = window.parent.$("#tfichatecnica thead th").eq( $(this).index() ).text();
+        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+    });
+ 
+    // DataTable
+    var table = window.parent.$("#tfichatecnica").DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () 
+    {
+        var that = this;
+ 
+        $( "input", this.footer() ).on( "blur change", function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    })
+
+    $('#tfichatecnica tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+
+    $('#botonFichaTecnica').click(function() {
+        var datos = table.rows('.selected').data();
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(0, datos[i][2], datos[i][0], datos[i][1]);
+            window.parent.productos.agregarCampos(valores,'A');
+        }
+
+        window.parent.$("#modalFichaTecnica").modal("hide");
+    });
+}
