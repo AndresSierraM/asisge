@@ -51,7 +51,7 @@
                     <table id="texamenmedico" name="texamenmedico" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:60px;padding: 1px 8px;" data-orderable="false">
                                  <a href="examenmedico/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -79,25 +79,29 @@
 
 {!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
-
+function imprimirExamenMedico(id)
+    {
+        window.open('examenmedico/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
     $(document).ready( function () {
 
         
         /*$('#texamenmedico').DataTable({
             "aProcessing": true,
-            "aServerSide": true,
+            "aServerSide": true, 
             "stateSave":true,
             "ajax": "{!! URL::to ('/datosExamenMedico')!!}",
         });*/
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
         var table = $('#texamenmedico').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosExamenMedico?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosExamenMedico?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

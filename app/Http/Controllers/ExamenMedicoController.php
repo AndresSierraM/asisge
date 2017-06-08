@@ -85,10 +85,10 @@ class ExamenMedicoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show(Request $request)
+    public function show($id, Request $request)
     {
         
-
+ 
         // si recibe el tipo de examen medico (no el id sino la lista que indica si es de ingreso, retiro o periodico)
         // entonces devolvemos una consulta de los nombres de examenes medicos que coninciden con dicha información
         if(isset($request['consulta']))
@@ -130,6 +130,29 @@ class ExamenMedicoController extends Controller
                 }
             }
         }
+
+          //Consulta para formato de impresion
+        $examenmedicoS = DB::SELECT("
+           SELECT tercero.nombreCompletoTercero,cargo.nombreCargo,examenmedico.fechaExamenMedico,examenmedico.tipoExamenMedico
+           FROM examenmedico 
+           LEFT JOIN tercero 
+           ON examenmedico.Tercero_idTercero = tercero.idTercero
+           LEFT JOIN cargo 
+           ON tercero.Cargo_idCargo = cargo.idCargo
+           WHERE examenmedico.idExamenMedico = ".$id);
+
+        $examenmedicodetalles = DB::SELECT("
+            SELECT tpemd.nombreTipoExamenMedico,emd.resultadoExamenMedicoDetalle,emd.fotoExamenMedicoDetalle,emd.observacionExamenMedicoDetalle
+            FROM examenmedicodetalle emd
+            LEFT JOIN tipoexamenmedico tpemd
+            ON emd.TipoExamenMedico_idTipoExamenMedico = tpemd.idTipoExamenMedico
+            WHERE emd.ExamenMedico_idExamenMedico = ".$id);
+
+  
+
+
+
+        return view('formatos.examenmedicoimpresion',compact('examenmedicoS','examenmedicodetalles'));
     }
 
     /**
@@ -174,7 +197,7 @@ class ExamenMedicoController extends Controller
 
             
             $this->grabarDetalle($request, $id);
-            // return redirect('/examenmedico');
+            return redirect('/examenmedico');
         }    
     }
 
@@ -215,22 +238,9 @@ class ExamenMedicoController extends Controller
             $file = $files[$i] ;
             $rutaImagen = '';
             $destinationPath = '/examenmedico/';
-
-            if (\File::get($file) != null) 
-            {
-                    echo "<script type='text/javascript'>alert('Existe.');</script>";
-            }
-            else
-            {
-                    echo "<script type='text/javascript'>alert('El archivo supera el tamaño maximo permitido.');</script>";
-            }
-            return;
-
             if(isset($file))
             {
                 // $byte = filesize($file);
-
-                // echo $byte;
 
                 // $kb = $byte/1024;
 
@@ -252,8 +262,8 @@ class ExamenMedicoController extends Controller
                     $data['fotoExamenMedicoDetalle'] =  $rutaImagen;
                 // }
                 // print_r($file);
-                // $validacion = Validator::make($file->all(), [
-                        // 'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
+                // $validacion = Validator::make($request->all(), [
+                //         'archivoExamenMedicoDetalle' => 'max:2560',//indicamos el valor maximo
                 // ]);
 
                 // if ($validacion->fails()) 

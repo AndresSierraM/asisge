@@ -1,9 +1,11 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
-
+    $imprimir = $_GET['imprimir'];
+ 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +15,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
     $examenmedico = DB::table('examenmedico')
             ->leftJoin('tercero', 'Tercero_idTercero', '=', 'idTercero')
             ->select(DB::raw('idExamenMedico, nombreCompletoTercero, fechaExamenMedico, tipoExamenMedico'))
@@ -28,6 +34,9 @@
                         '</a>&nbsp;'.
                         '<a href="examenmedico/'.$value->idExamenMedico.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a onclick="imprimirExamenMedico('.$value->idExamenMedico.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idExamenMedico;
         $row[$key][] = $value->nombreCompletoTercero;

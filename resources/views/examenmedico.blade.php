@@ -75,15 +75,15 @@
 
   </script>
 
-	@if(isset($examenmedico))
-		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($examenmedico,['route'=>['examenmedico.destroy',$examenmedico->idExamenMedico],'method'=>'DELETE', 'files' => true])!!}
-		@else
-			{!!Form::model($examenmedico,['route'=>['examenmedico.update',$examenmedico->idExamenMedico],'method'=>'PUT', 'files' => true])!!}
-		@endif
-	@else
-		{!!Form::open(['route'=>'examenmedico.store','method'=>'POST', 'files' => true])!!}
-	@endif
+  @if(isset($examenmedico))
+    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+      {!!Form::model($examenmedico,['route'=>['examenmedico.destroy',$examenmedico->idExamenMedico],'method'=>'DELETE', 'files' => true])!!}
+    @else
+      {!!Form::model($examenmedico,['route'=>['examenmedico.update',$examenmedico->idExamenMedico],'method'=>'PUT', 'files' => true])!!}
+    @endif
+  @else
+    {!!Form::open(['route'=>'examenmedico.store','method'=>'POST', 'files' => true])!!}
+  @endif
 
 
 <div id='form-section' >
@@ -99,7 +99,7 @@
       </div>
   </div>
 
-	<fieldset id="examenmedico-form-fieldset">	
+  <fieldset id="examenmedico-form-fieldset">  
 
         <div class="form-group" id='test'>
           {!!Form::label('Tercero_idTercero', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}
@@ -191,7 +191,7 @@
           </div>
         </div>
     </fieldset>
-	@if(isset($examenmedico))
+  @if(isset($examenmedico))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
       @else
@@ -200,10 +200,10 @@
   @else
          {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
   @endif
-  
+   
   
 
-	{!! Form::close() !!}
+  {!! Form::close() !!}
 
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
@@ -220,7 +220,7 @@
   </script>
 
 
-	</div>
+  </div>
 </div>
 
 {!!Html::script('js/signature_pad.js'); !!}

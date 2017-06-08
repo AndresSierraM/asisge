@@ -170,7 +170,7 @@ class CuadroMandoController extends Controller
             }
         }
 
-        return redirect('/cuadromando');
+        return redirect('/cuadromando'); 
     }
 
     /**
@@ -179,9 +179,27 @@ class CuadroMandoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+          $cuadromandoS = DB::SELECT("
+            SELECT c.nombreCompania,cm.numeroCuadroMando,co.nombreCompaniaObjetivo,pr.nombreProceso,
+            cm.objetivoEspecificoCuadroMando,cm.indicadorCuadroMando,cm.definicionIndicadorCuadroMando,
+            cm.formulaCuadroMando,cm.operadorMetaCuadroMando,cm.valorMetaCuadroMando,cm.tipoMetaCuadroMando,
+            fm.nombreFrecuenciaMedicion,cm.visualizacionCuadroMando,t.nombreCompletoTercero
+            FROM cuadromando cm
+            LEFT JOIN compania c
+            ON cm.Compania_idCompania = c.idCompania
+            LEFT JOIN companiaobjetivo co
+            ON cm.CompaniaObjetivo_idCompaniaObjetivo = co.idCompaniaObjetivo
+            LEFT JOIN frecuenciamedicion fm
+            ON cm.FrecuenciaMedicion_idFrecuenciaMedicion = fm.idFrecuenciaMedicion
+            LEFT JOIN proceso pr
+            ON cm.Proceso_idProceso = pr.idProceso
+            LEFT JOIN tercero t
+            ON cm.Tercero_idResponsable = t.idTercero
+            WHERE cm.idCuadromando = ".$id);
+
+        return view('formatos.cuadromandoimpresion',compact('cuadromandoS'));
     }
 
     /**
