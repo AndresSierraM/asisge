@@ -92,7 +92,7 @@
                                 <th>Responsable Medici&oacute;n</th>
                                 <th>Compa&ntilde;&iacute;a</th>
                             </tr>
-                        </tfoot>         
+                        </tfoot>          
                     </table>
                 </div>
             </div>

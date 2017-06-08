@@ -200,7 +200,7 @@
   @else
          {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
   @endif
-   
+    
   
 
   {!! Form::close() !!}

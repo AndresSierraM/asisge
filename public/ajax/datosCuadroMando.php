@@ -4,7 +4,7 @@
     $eliminar = $_GET['eliminar'];
     $adicionar = $_GET['adicionar'];
     $imprimir = $_GET['imprimir'];
- 
+  
     $visibleM = '';
     $visibleE = '';
     $visibleI = '';

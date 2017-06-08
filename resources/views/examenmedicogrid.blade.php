@@ -88,7 +88,7 @@ function imprimirExamenMedico(id)
         
         /*$('#texamenmedico').DataTable({
             "aProcessing": true,
-            "aServerSide": true, 
+            "aServerSide": true,  
             "stateSave":true,
             "ajax": "{!! URL::to ('/datosExamenMedico')!!}",
         });*/

@@ -21,7 +21,7 @@
 							</tr>
 							<tr>
 								<td>Objetivo Estrat&#233;gico</td>
-								<td>{{$dato->nombreCompaniaObjetivo}}</td> 
+								<td>{{$dato->nombreCompaniaObjetivo}}</td>  
 							</tr>
 							<tr>
 								<td>Proceso</td>

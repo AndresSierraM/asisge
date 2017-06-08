@@ -2,7 +2,7 @@
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
     $imprimir = $_GET['imprimir'];
- 
+  
     $visibleM = '';
     $visibleE = '';
     $visibleI = '';

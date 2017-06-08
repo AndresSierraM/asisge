@@ -170,7 +170,7 @@ class CuadroMandoController extends Controller
             }
         }
 
-        return redirect('/cuadromando'); 
+        return redirect('/cuadromando');  
     }
 
     /**

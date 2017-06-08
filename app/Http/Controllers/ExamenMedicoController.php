@@ -88,7 +88,7 @@ class ExamenMedicoController extends Controller
     public function show($id, Request $request)
     {
         
- 
+  
         // si recibe el tipo de examen medico (no el id sino la lista que indica si es de ingreso, retiro o periodico)
         // entonces devolvemos una consulta de los nombres de examenes medicos que coninciden con dicha información
         if(isset($request['consulta']))
