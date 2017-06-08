@@ -39,6 +39,9 @@
                         '</a>&nbsp;&nbsp;'.
                         '<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
                             '<span class="glyphicon glyphicon-paperclip " style = "display:'.$visibleI.'"></span>'.
+                        '</a>&nbsp;&nbsp;'.
+                        '<a onclick="imprimirAusentismo('.$value->idAusentismo.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
 
 

@@ -63,7 +63,7 @@
                     <table id="tausentismo" name="tausentismo" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:60px;padding: 1px 8px;" data-orderable="false">
+                                <th style="width:100px;padding: 1px 8px;" data-orderable="false">
                                  <a href="ausentismo/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -101,7 +101,10 @@
 
 {!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
-
+function imprimirAusentismo(id)
+    {
+        window.open('ausentismo/'+id+'?accion=imprimir','Formato','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
     // function ArchivoAdjunto(archivo) 
     // {
     //     // window.open('href="http://'+location.host+'/imagenes'+archivo+'"');
