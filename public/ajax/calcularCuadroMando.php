@@ -63,7 +63,7 @@ function obtenerWhere($idFormula, $tabla, $campoFecha, $fechaInicio, $fechaFin, 
 	// a la condicion de la consulta le debemos adicionar una fecha de corte
 	// y el id de la compañia actual
 	// para adicionar el id de la compania, primero verificamos si en la tabla existe ese campo
-	echo 'Consulta de tabla '.$tabla.'<br>';
+	//echo 'Consulta de tabla '.$tabla.'<br>';
 	$consulta = DB::table('information_schema.COLUMNS')
 				->select(DB::raw('COLUMN_NAME'))
 				->where('TABLE_SCHEMA', '=', ENV('DB_DATABASE','sisoft'))
@@ -201,7 +201,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin, $idCompania)
 				$groupby = obtenerGroupBy($datosFormula["idCuadroMandoFormula"]);
 
 				// 3.3. CONDICION (Where)
-				print_r($datosFormula);
+				//print_r($datosFormula);
 				$datowhere = obtenerWhere($datosFormula["idCuadroMandoFormula"], $datosFormula["tablaModulo"], $datosFormula["fechaCorteCuadroMandoFormula"], $fechaInicio, $fechaFin, $idCompania);
 
 				// creamos una sentencia de SQL con los componentes mencionados
@@ -217,7 +217,7 @@ function calcularFormula($idCuadroMando, $fechaInicio, $fechaFin, $idCompania)
 				
 				// convertimos el objeto stdClass en array para acceder a sus datos
 				$datosresultado = get_object_vars($resultado[0]); 
-				echo $sql .'<br>';
+				//echo $sql .'<br>';
 				
 				echo '<br>';
 				echo 'valor = '.$datosresultado[$datosFormula["campoCuadroMandoFormula"]].'<br>';
@@ -361,7 +361,7 @@ function calcularIndicadores($fecha, $idCompania)
 	    ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, valorFrecuenciaMedicion, unidadFrecuenciaMedicion, operadorMetaCuadroMando, valorMetaCuadroMando, tipoMetaCuadroMando, Proceso_idProceso'))
 	    ->orderby('idCuadroMando')
 	    ->get();
-	 print_r($cuadroMandoObjeto);
+	 //print_r($cuadroMandoObjeto);
 /*->where('CM.Compania_idCompania','=', $idCompania)
 	    ->orWhereNull('CM.Compania_idCompania')*/
 
@@ -449,48 +449,48 @@ function calcularIndicadores($fecha, $idCompania)
 		$resultado = (($resultado === null or $resultado == '') ? 0 : $resultado);
 		$resp = '';
 
-		eval('$resp = ('. $resultado .' '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' ? "Si" : "No");');
+		// eval('$resp = ('. $resultado .' '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' ? "Si" : "No");');
 		
-		if($resp == 'No' )
-		{
-			$reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
-		      From reporteacpm 
-		      where Compania_idCompania = ".  $idCompania);
+		// if($resp == 'No' )
+		// {
+		// 	$reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
+		//       From reporteacpm 
+		//       where Compania_idCompania = ".  $idCompania);
 
-		    $reporte = get_object_vars($reporteACPM[0])["idReporteACPM"];
+		//     $reporte = get_object_vars($reporteACPM[0])["idReporteACPM"];
 
-		    if ($reporte == "") 
-		    {
-		    	DB::statement('INSERT into reporteacpm (idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM, Compania_idCompania) values (0, 1, "0000-00-00", "Acciones correctivas, preventivas y de mejora", '. $idCompania.')');
+		//     if ($reporte == "") 
+		//     {
+		//     	DB::statement('INSERT into reporteacpm (idReporteACPM, numeroReporteACPM, fechaElaboracionReporteACPM, descripcionReporteACPM, Compania_idCompania) values (0, 1, "0000-00-00", "Acciones correctivas, preventivas y de mejora", '. $idCompania.')');
 
-		        $reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
-		          From reporteacpm 
-		          where Compania_idCompania = ".  $idCompania);
+		//         $reporteACPM = DB::select("Select MAX(idReporteACPM) as idReporteACPM
+		//           From reporteacpm 
+		//           where Compania_idCompania = ".  $idCompania);
 
-		        $reporte = get_object_vars($reporteACPM[0])["idReporteACPM"];
-	        }
+		//         $reporte = get_object_vars($reporteACPM[0])["idReporteACPM"];
+	 //        }
 
-            \App\ReporteACPMDetalle::create([
+  //           \App\ReporteACPMDetalle::create([
 
-                'ReporteACPM_idReporteACPM' => $reporte,
-                'ordenReporteACPMDetalle' => 0,
-                'fechaReporteACPMDetalle' => date("Y-m-d"),
-                'Proceso_idProceso' => $CuadroMando[$i]['Proceso_idProceso'],
-                'Modulo_idModulo' => 1,
-                'tipoReporteACPMDetalle' => 'Correctiva',
-                'descripcionReporteACPMDetalle' => 'El indicador '.$CuadroMando[$i]['indicadorCuadroMando'].' no cumple la meta (Valor '.$resultado.' Meta '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' '.$CuadroMando[$i]["tipoMetaCuadroMando"].')',
-                'analisisReporteACPMDetalle' => '',
-                'correccionReporteACPMDetalle' => '',
-                'Tercero_idResponsableCorrecion' => NULL,
-                'planAccionReporteACPMDetalle' => '',
-                'Tercero_idResponsablePlanAccion' => NULL,
-                'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
-                'estadoActualReporteACPMDetalle' => '',
-                'fechaCierreReporteACPMDetalle' => '0000-00-00',
-                'eficazReporteACPMDetalle' => 0
+  //               'ReporteACPM_idReporteACPM' => $reporte,
+  //               'ordenReporteACPMDetalle' => 0,
+  //               'fechaReporteACPMDetalle' => date("Y-m-d"),
+  //               'Proceso_idProceso' => $CuadroMando[$i]['Proceso_idProceso'],
+  //               'Modulo_idModulo' => 1,
+  //               'tipoReporteACPMDetalle' => 'Correctiva',
+  //               'descripcionReporteACPMDetalle' => 'El indicador '.$CuadroMando[$i]['indicadorCuadroMando'].' no cumple la meta (Valor '.$resultado.' Meta '. $CuadroMando[$i]["operadorMetaCuadroMando"].' '.$CuadroMando[$i]["valorMetaCuadroMando"].' '.$CuadroMando[$i]["tipoMetaCuadroMando"].')',
+  //               'analisisReporteACPMDetalle' => '',
+  //               'correccionReporteACPMDetalle' => '',
+  //               'Tercero_idResponsableCorrecion' => NULL,
+  //               'planAccionReporteACPMDetalle' => '',
+  //               'Tercero_idResponsablePlanAccion' => NULL,
+  //               'fechaEstimadaCierreReporteACPMDetalle' => '0000-00-00',
+  //               'estadoActualReporteACPMDetalle' => '',
+  //               'fechaCierreReporteACPMDetalle' => '0000-00-00',
+  //               'eficazReporteACPMDetalle' => 0
 
-            ]);
-		}
+  //           ]);
+		// }
 
 
 		// verificamos si el resultado hay que insertarlo o actualizarlo en la tabla de indicadores
@@ -519,18 +519,19 @@ set_time_limit(0);
 // tomamos una fecha inicial para el proceso, que viene como parametro en la variable fecha
 // si no existe, tomamos el dia de hoy
 
-$compania = DB::Select('SELECT idCompania from compania where idCompania = 15 ');
-print_r($compania);
+$compania = DB::Select('SELECT idCompania, nombreCompania from compania ');
 for ($i=0; $i < count($compania); $i++) 
 { 
 	$idCompania = get_object_vars($compania[$i]);
+	echo 'INDICADORES PARA : '.$idCompania["nombreCompania"].'<br>';
 	
-	$fecha = isset($_GET["fecha"]) ? $_GET["fecha"] : date("Y-m-d");
-	while($fecha <= date("Y-m-d"))
+	$fechaIni = isset($_GET["fechaIni"]) ? $_GET["fechaIni"] : date("Y-m-d");
+	$fechaFin = isset($_GET["fechaFin"]) ? $_GET["fechaFin"] : date("Y-m-d");
+	while($fechaIni <= $fechaFin)
 	{
-		calcularIndicadores($fecha, $idCompania["idCompania"]);
-		$fecha = date ( 'Y-m-d' , strtotime ( "+ 1 day" , strtotime($fecha)) );
-		// echo $fecha.'<br>';
+		calcularIndicadores($fechaIni, $idCompania["idCompania"]);
+		$fechaIni = date ( 'Y-m-d' , strtotime ( "+ 1 day" , strtotime($fechaIni)) );
+		 echo $fechaIni.'<br>';
 	}
 }
 

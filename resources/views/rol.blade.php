@@ -20,7 +20,7 @@
       permisos.campos   = ['Opcion_idOpcion',   'adicionarRolOpcion','modificarRolOpcion','eliminarRolOpcion','consultarRolOpcion'];
       permisos.etiqueta = ['select',          'checkbox',          'checkbox',          'checkbox',         'checkbox'];
       permisos.tipo     = ['',                'checkbox',           'checkbox',          'checkbox',         'checkbox'];
-      permisos.estilo   = ['width: 600px;height:35px;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;'];
+      permisos.estilo   = ['width: 600px;height:35px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;','width: 70px;height:30px;display:inline-block;'];
       permisos.clase = ['chosen-select form-control','','','',''];
       permisos.sololectura = [false,false,false,false,false];
       permisos.completar = ['off', 'off','off','off','off','off','off','off'];

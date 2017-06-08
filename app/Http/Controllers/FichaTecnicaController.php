@@ -39,7 +39,7 @@ class FichaTecnicaController extends Controller
 
     public function index()
     {
-        $vista = basename($_SERVER["PHP_SELF"]);
+        $vista = basename($_SERVER["PHP_SELF"].'?tipo='.$_GET['tipo']);
         $datos = consultarPermisos($vista);
 
         if($datos != null)
@@ -154,7 +154,7 @@ class FichaTecnicaController extends Controller
                 }
 
             }
-            return redirect('/fichatecnica');
+            return redirect('/fichatecnica?tipo='.$request['tipoFichaTecnica']);
 
         }
     }
@@ -341,7 +341,7 @@ class FichaTecnicaController extends Controller
                 $idsEliminar = explode(',',$idsEliminar);
                 \App\FichaTecnicaImagen::whereIn('idFichaTecnicaImagen',$idsEliminar)->delete();
             }
-           return redirect('/fichatecnica');
+           return redirect('/fichatecnica?tipo='.$request['tipoFichaTecnica']);
 
         }
     }
