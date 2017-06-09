@@ -15,7 +15,7 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
-      if ($imprimir == 1) 
+    if ($imprimir == 1) 
         $visibleI = 'inline-block;';
     else
         $visibleI = 'none';
