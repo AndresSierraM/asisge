@@ -1,9 +1,11 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +15,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
 
     $conformaciongrupoapoyo = DB::table('conformaciongrupoapoyo')
             ->leftJoin('grupoapoyo', 'GrupoApoyo_idGrupoApoyo', '=', 'idGrupoApoyo')
@@ -31,9 +37,12 @@
                         '</a>&nbsp;'.
                         '<a href="conformaciongrupoapoyo/'.$value->idConformacionGrupoApoyo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
-                        '</a>&nbsp;'.
+                        '</a>&nbsp;&nbsp;'.
                         '<a onclick="firmarGrupoApoyo('.$value->idConformacionGrupoApoyo.')">'.
                             '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
+                        '</a>&nbsp;&nbsp;'.
+                         '<a onclick="imprimirConformacionGrupoApoyo('.$value->idConformacionGrupoApoyo.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idConformacionGrupoApoyo;
         $row[$key][] = $value->nombreGrupoApoyo;   

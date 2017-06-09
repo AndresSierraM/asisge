@@ -34,7 +34,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Examen</b></td>  
+				     			<td><b>Examen</b></td> 
 								<td><b>Resultado</b></td>
 								<td><b>Evidencia Fotogr&#225;fica</b></td>
 								<td><b>Observaci&#243;n</b></td>

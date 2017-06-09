@@ -6,6 +6,8 @@
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
+
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else

@@ -85,9 +85,55 @@ class ConformacionGrupoApoyoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+
+        $conformaciongrupoapoyoS = DB::SELECT("
+        SELECT ga.nombreGrupoApoyo,cga.nombreConformacionGrupoApoyo,cga.fechaConformacionGrupoApoyo,cga.fechaConvocatoriaConformacionGrupoApoyo,tr.nombreCompletoTercero as representante,cga.fechaVotacionConformacionGrupoApoyo,tg.nombreCompletoTercero as gerente,cga.fechaActaConformacionGrupoApoyo,cga.horaActaConformacionGrupoApoyo,cga.fechaInicioConformacionGrupoApoyo,cga.fechaFinConformacionGrupoApoyo,cga.fechaConstitucionConformacionGrupoApoyo,tp.nombreCompletoTercero as presidente,ts.nombreCompletoTercero as secretario
+        FROM conformaciongrupoapoyo cga
+        LEFT JOIN grupoapoyo ga
+        ON cga.GrupoApoyo_idGrupoApoyo = ga.idGrupoApoyo
+        LEFT JOIN tercero tr
+        ON cga.Tercero_idRepresentante = tr.idTercero
+        LEFT JOIN tercero tg
+        ON cga.Tercero_idGerente = tg.idTercero
+        LEFT JOIN tercero tp
+        ON cga.Tercero_idPresidente = tp.idTercero
+        LEFT JOIN tercero ts
+        ON cga.Tercero_idSecretario = ts.idTercero
+        WHERE cga.idConformacionGrupoApoyo = ".$id);
+
+
+        $conformaciongrupoapoyojuradoS = DB::SELECT ("
+        SELECT t.nombreCompletoTercero,cgaj.firmaActaConformacionGrupoApoyoTercero
+        FROM conformaciongrupoapoyo cga
+        LEFT JOIN conformaciongrupoapoyojurado cgaj
+        ON cgaj.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+        LEFT JOIN tercero t
+        ON cgaj.Tercero_idJurado = t.idTercero
+        WHERE cgaj.ConformacionGrupoApoyo_idConformacionGrupoApoyo =".$id);
+
+        $conformaciongrupoapoyoresultadoS = DB::SELECT ("
+        SELECT t.nombreCompletoTercero,cgar.votosConformacionGrupoApoyoResultado
+        FROM conformaciongrupoapoyo cga
+        LEFT JOIN conformaciongrupoapoyoresultado cgar
+        ON cgar.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+        LEFT JOIN tercero t
+        ON cgar.Tercero_idCandidato = t.idTercero
+        WHERE cgar.ConformacionGrupoApoyo_idConformacionGrupoApoyo =".$id);
+
+        $conformaciongrupoapoyocomiteS = DB::SELECT("
+            SELECT cgac.nombradoPorConformacionGrupoApoyoComite,IF(nombradoPorConformacionGrupoApoyoComite = 'E','Empresa','Trabajadores') as nombradoPor,t.nombreCompletoTercero as principal,ts.nombreCompletoTercero as suplente
+            FROM conformaciongrupoapoyo cga
+            LEFT JOIN conformaciongrupoapoyocomite cgac
+            ON cgac.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+            LEFT JOIN tercero t
+            ON cgac.Tercero_idPrincipal = t.idTercero
+            LEFT JOIN tercero ts
+            ON cgac.Tercero_idSuplente = ts.idTercero
+            WHERE cgac.ConformacionGrupoApoyo_idConformacionGrupoApoyo = ".$id);
+
+        return view('formatos.conformaciongrupoapoyoimpresion',compact('conformaciongrupoapoyoS','conformaciongrupoapoyojuradoS','conformaciongrupoapoyoresultadoS','conformaciongrupoapoyocomiteS'));
     }
 
     /**
