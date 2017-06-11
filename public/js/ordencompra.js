@@ -1,3 +1,72 @@
+function validarFormulario(event)
+{
+    var route = "http://"+location.host+"/ordencompra";
+    var token = $("#token").val();
+    var dato0 = document.getElementById('idOrdenCompra').value;
+    var dato1 = document.getElementById('sitioEntregaOrdenCompra').value;
+    var dato2 = document.getElementById('fechaElaboracionOrdenCompra').value;
+    var dato3 = document.getElementById('fechaEstimadaOrdenCompra').value;
+    var dato4 = document.getElementById('Tercero_idProveedor').value;
+    
+    var valor = '';
+    var sw = true;
+    
+
+    $.ajax({
+        async: false,
+        url:route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: {respuesta: 'falso',
+                idOrdenCompra: dato0,
+                sitioEntregaOrdenCompra: dato1,
+                fechaElaboracionOrdenCompra: dato2,
+                fechaEstimadaOrdenCompra: dato3,
+                Tercero_idProveedor: dato4
+                },
+        success:function(){
+            //$("#msj-success").fadeIn();
+            //console.log(' sin errores');
+        },
+        error:function(msj){
+            var mensaje = '';
+            var respuesta = JSON.stringify(msj.responseJSON); 
+            if(typeof respuesta === "undefined")
+            {
+                sw = false;
+                $("#msj").html('');
+                $("#msj-error").fadeOut();
+            }
+            else
+            {
+                sw = true;
+                respuesta = JSON.parse(respuesta);
+
+                (typeof msj.responseJSON.sitioEntregaOrdenCompra === "undefined" ? document.getElementById('sitioEntregaOrdenCompra').style.borderColor = '' : document.getElementById('sitioEntregaOrdenCompra').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.fechaElaboracionOrdenCompra === "undefined" ? document.getElementById('fechaElaboracionOrdenCompra').style.borderColor = '' : document.getElementById('fechaElaboracionOrdenCompra').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.fechaEstimadaOrdenCompra === "undefined" ? document.getElementById('fechaEstimadaOrdenCompra').style.borderColor = '' : document.getElementById('fechaEstimadaOrdenCompra').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.Tercero_idProveedor === "undefined" ? document.getElementById('Tercero_idProveedor').style.borderColor = '' : document.getElementById('Tercero_idProveedor').style.borderColor = '#a94442');
+                
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li><br>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
+                $("#msj-error").fadeIn();
+            }
+
+        }
+    });
+
+    if(sw === true)
+        event.preventDefault();
+}
 
 function cambiarEstado(idDocumentoCRM, estado, modificar, eliminar, consultar, aprobar)
 {
