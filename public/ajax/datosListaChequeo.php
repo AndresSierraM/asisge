@@ -36,7 +36,7 @@
                         '</a>&nbsp;'.
                         '<a href="listachequeo/'.$value->idListaChequeo.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
-                        '</a>'.
+                        '</a>&nbsp;&nbsp;'.
                          '<a href="#" onclick="imprimirFormato('.$value->idListaChequeo.');s">'.
                             '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
