@@ -1,5 +1,8 @@
 <?php
 
+
+set_time_limit(0);
+
 $año = $_POST['año'];
 $letra = $_POST['letra'];
 $informe = '';

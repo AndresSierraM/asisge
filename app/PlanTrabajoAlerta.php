@@ -11,7 +11,7 @@ class PlanTrabajoAlerta extends Model
     protected $table ='plantrabajoalerta'; //la tabla siempre es en miniscula 
 	protected $primaryKey = 'idPlanTrabajoAlerta'; //camello
 	
-	protected $fillable = ['nombrePlanTrabajoAlerta', 'correoParaPlanTrabajoAlerta','correoCopiaPlanTrabajoAlerta','correoCopiaOcultaPlanTrabajoAlerta','correoAsuntoPlanTrabajoAlerta','correoMensajePlanTrabajoAlerta','tareaFechaInicioPlanTrabajoAlerta','tareaHoraPlanTrabajoAlerta','tareaIntervaloPlanTrabajoAlerta','tareaDiasPlanTrabajoAlerta','tareaMesesPlanTrabajoAlerta','filtroMesesPasadosPlanTrabajoAlerta','filtroMesesFuturosPlanTrabajoAlerta','filtroEstadosPlanTrabajoAlerta'];
+	protected $fillable = ['nombrePlanTrabajoAlerta', 'correoParaPlanTrabajoAlerta','correoCopiaPlanTrabajoAlerta','correoCopiaOcultaPlanTrabajoAlerta','correoAsuntoPlanTrabajoAlerta','correoMensajePlanTrabajoAlerta','tareaFechaInicioPlanTrabajoAlerta','tareaHoraPlanTrabajoAlerta','tareaIntervaloPlanTrabajoAlerta','tareaDiasPlanTrabajoAlerta','tareaMesesPlanTrabajoAlerta','filtroMesesPasadosPlanTrabajoAlerta','filtroMesesFuturosPlanTrabajoAlerta','filtroEstadosPlanTrabajoAlerta','fechaUltimaAlertaPlanTrabajoAlerta', 'Compania_idCompania'];
 
 
 	// hasta aca primer formulario correomensajeplantrabajoalerta
