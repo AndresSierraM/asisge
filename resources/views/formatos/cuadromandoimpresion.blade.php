@@ -13,7 +13,7 @@
 							</tr>
 							<tr>
 								<td>Compa&#241;ia</td>
-								<td>{{$dato->nombreCompania}}</td>
+								<td>{{$dato->nombreCompania == NULL ? 'Todas' : $dato->nombreCompania }}</td>
 							</tr>
 							<tr>
 								<td>N&#250;mero</td>
