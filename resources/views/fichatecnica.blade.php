@@ -1,6 +1,10 @@
 @extends('layouts.grid')
 
-@section('titulo')<h3 id="titulo"><center>Ficha Técnica</center></h3>@stop
+<?php 
+  $tipoFichaTecnica = (isset($fichatecnica) ? $fichatecnica->tipoFichaTecnica : $_GET['tipo']);
+?>
+
+@section('titulo')<h3 id="titulo"><center>Ficha Técnica <?php echo ($tipoFichaTecnica == 'p' ? ' de Producto' : ($tipoFichaTecnica == 'm' ? ' de Material' : ' de Servicio'))?></center></h3>@stop
 
 @section('content')
 @include('alerts.request')
@@ -98,7 +102,7 @@ $fechahora = Carbon\Carbon::now();
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('Tercero_idTercero', 'Cliente', array())!!}
+        {!!Form::label('Tercero_idTercero', ($tipoFichaTecnica == 'p' ? 'Cliente' : 'Proveedor'), array())!!}
       </div>
       <div class="col-sm-8">
         <div class="input-group">
@@ -112,16 +116,16 @@ $fechahora = Carbon\Carbon::now();
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('referenciaClienteFichaTecnica', 'Referencia Cliente', array())!!}
+        {!!Form::label('referenciaClienteFichaTecnica', 'Referencia '. ($tipoFichaTecnica == 'p' ? 'Cliente' : 'Proveedor'), array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::text('referenciaClienteFichaTecnica',null,['class'=>'form-control', "placeholder" => "Ingrese Referencia del Cliente"])!!}
+            {!!Form::text('referenciaClienteFichaTecnica',null,['class'=>'form-control', "placeholder" => "Ingrese Referencia del ".($tipoFichaTecnica == 'p' ? 'Cliente' : 'Proveedor')])!!}
             {!!Form::hidden('idFichaTecnica',null,['id'=>'idFichaTecnica'])!!}
-            {!!Form::hidden('tipoFichaTecnica',(isset($fichatecnica) ? $fichatecnica->tipoFichaTecnica : $_GET['tipo']),['id'=>'tipoFichaTecnica'])!!}
+            {!!Form::hidden('tipoFichaTecnica',$tipoFichaTecnica,['id'=>'tipoFichaTecnica'])!!}
             {!!Form::hidden('eliminarProceso',null,['id'=>'eliminarProceso'])!!}
             {!!Form::hidden('eliminarMaterial',null,['id'=>'eliminarMaterial'])!!}
 
@@ -195,9 +199,14 @@ $fechahora = Carbon\Carbon::now();
 
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#imagen">Imágenes</a></li>
-  <li><a data-toggle="tab" href="#proceso">Ruta de Procesos</a></li>
-  <li><a data-toggle="tab" href="#material">Materiales</a></li>
-  <li><a data-toggle="tab" href="#operacion">Operaciones</a></li>
+  <?php
+    if($tipoFichaTecnica == 'p')
+    {
+      echo '<li><a data-toggle="tab" href="#proceso">Ruta de Procesos</a></li>
+            <li><a data-toggle="tab" href="#material">Materiales</a></li>
+            <li><a data-toggle="tab" href="#operacion">Operaciones</a></li>';
+    }
+  ?>
   <li><a data-toggle="tab" href="#adjunto">Adjuntos</a></li>
   <li><a data-toggle="tab" href="#nota">Notas</a></li>
   <li><a data-toggle="tab" href="#criterios">Criterios de Aceptación</a></li>
@@ -273,41 +282,48 @@ $fechahora = Carbon\Carbon::now();
     </div>
   </div>
 
-  <div id="proceso" class="tab-pane fade">
-    <div class="form-group" id='test'>
-        <div class="col-sm-12">
-            <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-                <div style="overflow:auto; height:350px;">
-                    <div style="width: 100%; display: inline-block;">
-                        <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="abrirModalProceso(materiales, operaciones);">
-                          <span class="glyphicon glyphicon-plus"></span>
-                        </div>
-                        <div class="col-md-1" style="width: 100px;" >Orden</div>
-                        <div class="col-md-1" style="width: 400px;" >Proceso</div>
-                        <div class="col-md-1" style="width: 400px;" >Observaciones</div>
-                        <div id="contenedor_proceso">
+
+<?php
+  if($tipoFichaTecnica == 'p')
+  {
+      echo '<div id="proceso" class="tab-pane fade">
+        <div class="form-group" id="test">
+            <div class="col-sm-12">
+                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                    <div style="overflow:auto; height:350px;">
+                        <div style="width: 100%; display: inline-block;">
+                            <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="abrirModalProceso(materiales, operaciones);">
+                              <span class="glyphicon glyphicon-plus"></span>
+                            </div>
+                            <div class="col-md-1" style="width: 100px;" >Orden</div>
+                            <div class="col-md-1" style="width: 400px;" >Proceso</div>
+                            <div class="col-md-1" style="width: 400px;" >Observaciones</div>
+                            <div id="contenedor_proceso">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-  </div>
+      </div>
 
-  <div id="material" class="tab-pane fade">
-    <div id='tabsMaterial'>
-      <ul class="nav nav-tabs">
-      </ul>
-    </div>
+      <div id="material" class="tab-pane fade">
+        <div id="tabsMaterial">
+          <ul class="nav nav-tabs">
+          </ul>
+        </div>
 
-  </div>
-  <div id="operacion" class="tab-pane fade">
-    <div id='tabsOperacion'>
-      <ul class="nav nav-tabs">
-      </ul>
-    </div>
+      </div>
+      <div id="operacion" class="tab-pane fade">
+        <div id="tabsOperacion">
+          <ul class="nav nav-tabs">
+          </ul>
+        </div>
 
-  </div>
+      </div>';
+  }
+?>
+
   <div id="adjunto" class="tab-pane fade">
     <div class="col-sm-12">
       <div class="panel panel-primary">
@@ -550,7 +566,7 @@ $fechahora = Carbon\Carbon::now();
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Selecci&oacute;n de Conceptos</h4>
+        <h4 class="modal-title">Selecci&oacute;n de Procesos</h4>
       </div>
       <div class="modal-body">
          <div class="container">
@@ -589,7 +605,74 @@ $fechahora = Carbon\Carbon::now();
                     </table>
 
                     <div class="modal-footer">
-                        <button id="botonCampo" name="botonCampo" type="button" class="btn btn-primary" >Seleccionar</button>
+                        <button id="botonProceso" name="botonProceso" type="button" class="btn btn-primary" >Seleccionar</button>
+                    </div>
+
+                
+
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="ModalMaterial" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;">
+
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Materiales</h4>
+      </div>
+      <div class="modal-body">
+         <div class="container">
+            <div class="row">
+                <div class="container">
+                    <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
+                        <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-th icon-th"></i> 
+                            <span class="caret"></span>
+                        </button>
+                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Referencia</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Descripción</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Línea</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Sublinea</label></a></li>
+                            
+                        </ul>
+                    </div>
+                    
+                    <table id="tmaterial" name="tmaterial" class="display table-bordered" width="100%">
+                        <thead>
+                            <tr class="btn-default active">
+
+                                <th><b>ID</b></th>
+                                <th><b>Referencia</b></th>
+                                <th><b>Descripción</b></th>        
+                                <th><b>Línea</b></th>  
+                                <th><b>Sublinea</b></th>  
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="btn-default active">
+
+                                <th>ID</th>
+                                <th>Referencia</th>
+                                <th>Descripción</th>                             
+                                <th>Linea</th>
+                                <th>Sublinea</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="modal-footer">
+                        <button id="botonMaterial" name="botonMaterial" type="button" class="btn btn-primary" >Seleccionar</button>
                     </div>
 
                 

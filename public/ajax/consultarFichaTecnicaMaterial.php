@@ -6,12 +6,16 @@ $cantidadOP = (($_GET['cantidadOP'] == null or $_GET['cantidadOP'] == '') ? 0 : 
 
 $materiales = DB::select(
             'SELECT 
-            	nombreFichaTecnicaMaterial as nombreOrdenProduccionMaterial, 
+            	FichaTecnica_idMaterial,
+            	referenciaFichaTecnica as referenciaOrdenProduccionMaterial,
+            	nombreFichaTecnica as nombreOrdenProduccionMaterial, 
             	SUM(consumoFichaTecnicaMaterial) as consumoUnitarioOrdenProduccionMaterial,
             	SUM(consumoFichaTecnicaMaterial * '.$cantidadOP.') as consumoTotalOrdenProduccionMaterial
-            FROM fichatecnicamaterial 
+            FROM fichatecnicamaterial FTM 
+            LEFT JOIN fichatecnica FT 
+            ON FTM.FichaTecnica_idMaterial = FT.idFichaTecnica 
             WHERE FichaTecnica_idFichaTecnica = '.$id.'
-            group by nombreFichaTecnicaMaterial');
+            group by FichaTecnica_idMaterial');
 
 echo json_encode($materiales);
 ?>

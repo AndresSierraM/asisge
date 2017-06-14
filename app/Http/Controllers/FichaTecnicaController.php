@@ -60,7 +60,18 @@ class FichaTecnicaController extends Controller
         $linea = \App\LineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaProducto','idLineaProducto');
         $sublinea = \App\SublineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreSublineaProducto','idSublineaProducto');
 
-        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        if($_GET['tipo'] == 'p')
+        {
+            $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+                        ->where('tipoTercero','like','%03%')
+                        ->lists('nombreCompletoTercero','idTercero');
+        }
+        else
+        {
+            $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+                        ->where('tipoTercero','like','%02%')
+                        ->lists('nombreCompletoTercero','idTercero');
+        }
         
         return view('fichatecnica', compact('linea','sublinea','tercero'));
     }
@@ -196,11 +207,15 @@ class FichaTecnicaController extends Controller
 
         $material = DB::select(
             'SELECT idFichaTecnicaMaterial, 
-                    nombreFichaTecnicaMaterial, 
+                    FichaTecnica_idMaterial,
+                    referenciaFichaTecnica as referenciaFichaTecnicaMaterial, 
+                    nombreFichaTecnica as nombreFichaTecnicaMaterial, 
                     Proceso_idProceso as Proceso_idMaterial, 
                     consumoFichaTecnicaMaterial, 
                     observacionFichaTecnicaMaterial
             FROM fichatecnicamaterial FTM
+            LEFT JOIN fichatecnica FT 
+            ON FTM.FichaTecnica_idMaterial = FT.idFichaTecnica
             WHERE FichaTecnica_idFichaTecnica = '.$id);
 
         $material = $this->convertirArray($material);
@@ -233,7 +248,18 @@ class FichaTecnicaController extends Controller
         $linea = \App\LineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaProducto','idLineaProducto');
         $sublinea = \App\SublineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreSublineaProducto','idSublineaProducto');
 
-        $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        if($_GET['tipo'] == 'p')
+        {
+            $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+                        ->where('tipoTercero','like','%03%')
+                        ->lists('nombreCompletoTercero','idTercero');
+        }
+        else
+        {
+            $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+                        ->where('tipoTercero','like','%02%')
+                        ->lists('nombreCompletoTercero','idTercero');
+        }
         
         return view('fichatecnica', ['fichatecnica'=>$fichatecnica], compact('linea','sublinea','tercero', 'proceso', 'material', 'operacion','nota'));
     }
@@ -402,7 +428,7 @@ class FichaTecnicaController extends Controller
 
             $data = array(
             'FichaTecnica_idFichaTecnica' => $id,
-            'nombreFichaTecnicaMaterial' => $request['nombreFichaTecnicaMaterial'][$i],
+            'FichaTecnica_idMaterial' => $request['FichaTecnica_idMaterial'][$i],
             'Proceso_idProceso' => $request['Proceso_idMaterial'][$i],
             'consumoFichaTecnicaMaterial' => $request['consumoFichaTecnicaMaterial'][$i],
             'observacionFichaTecnicaMaterial' => $request['observacionFichaTecnicaMaterial'][$i] );

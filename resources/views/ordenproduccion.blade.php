@@ -218,7 +218,8 @@
             <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
                 <div style="overflow:auto; height:350px;">
                     <div style="width: 100%; display: inline-block;">
-                        <div class="col-md-1" style="width: 500px;" >Material</div>
+                        <div class="col-md-1" style="width: 150px;" >Referencia</div>
+                        <div class="col-md-1" style="width: 350px;" >Material</div>
                         <div class="col-md-1" style="width: 200px;" >Consumo Unitario</div>
                         <div class="col-md-1" style="width: 200px;" >Consumo Total</div>
                         <div id="contenedor_material">

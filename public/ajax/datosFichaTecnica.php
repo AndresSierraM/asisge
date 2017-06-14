@@ -29,10 +29,10 @@
 
     foreach ($fichatecnica as $key => $value) 
     {  
-        $row[$key][] = '<a href="fichatecnica/'.$value->idFichaTecnica.'/edit">'.
+        $row[$key][] = '<a href="fichatecnica/'.$value->idFichaTecnica.'/edit?tipo='.$tipo.'">'.
                             '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="fichatecnica/'.$value->idFichaTecnica.'/edit?accion=eliminar">'.
+                        '<a href="fichatecnica/'.$value->idFichaTecnica.'/edit?accion=eliminar&tipo='.$tipo.'">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idFichaTecnica;

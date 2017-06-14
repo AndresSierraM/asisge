@@ -44,15 +44,17 @@ $(document).ready(function(){
     material.botonEliminacion = false;
 
     material.campos   = ['idOrdenProduccionMaterial', 
+                        'FichaTecnica_idMaterial',
+                        'referenciaOrdenProduccionMaterial', 
                         'nombreOrdenProduccionMaterial', 
                         'consumoUnitarioOrdenProduccionMaterial', 
                         'consumoTotalOrdenProduccionMaterial'];
 
-    material.etiqueta = ['input','input', 'input','input'];
-    material.tipo     = ['hidden','text', 'text','text'];
-    material.estilo   = ['','width: 500px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;'];
-    material.clase    = ['','','','',''];      
-    material.sololectura = [true,true,true,true,true];
+    material.etiqueta = ['input','input','input','input', 'input','input'];
+    material.tipo     = ['hidden','hidden','text','text', 'text','text'];
+    material.estilo   = ['','','width: 150px;height:35px;','width: 350px;height:35px;','width: 200px;height:35px;','width: 200px;height:35px;'];
+    material.clase    = ['','','','','',''];      
+    material.sololectura = [true,true,true,true,true,true];
     
     for(var j=0, k = materiales.length; j < k; j++)
     {
@@ -81,7 +83,7 @@ function cargarProcesos()
         {
             
             // adicionamos los registros de procesos de la ficha tecnica a la orden de produccion
-            for (var i = 0;  i <= data.length; i++) 
+            for (var i = 0;  i < data.length; i++) 
             {
                 valores = Array(0, data[i]["ordenFichaTecnicaProceso"], data[i]["Proceso_idProceso"], data[i]["nombreProceso"], data[i]["observacionFichaTecnicaProceso"]);
                 proceso.agregarCampos(valores,'A');
@@ -119,7 +121,7 @@ function cargarMateriales()
             // adicionamos los registros de materiales de la ficha tecnica a la orden de produccion
             for (var i = 0;  i <= data.length; i++) 
             {
-                valores = Array(0, data[i]["nombreOrdenProduccionMaterial"], data[i]["consumoUnitarioOrdenProduccionMaterial"], data[i]["consumoTotalOrdenProduccionMaterial"]);
+                valores = Array(0, data[i]["FichaTecnica_idMaterial"], data[i]["referenciaOrdenProduccionMaterial"], data[i]["nombreOrdenProduccionMaterial"], data[i]["consumoUnitarioOrdenProduccionMaterial"], data[i]["consumoTotalOrdenProduccionMaterial"]);
                 material.agregarCampos(valores,'A');
             }
 

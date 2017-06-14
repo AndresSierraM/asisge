@@ -466,6 +466,10 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/datosProcesoSelect.php';
     });
+    Route::get('datosMaterialSelect', function()
+    {
+        include public_path().'/ajax/datosMaterialSelect.php';
+    });
     Route::get('datosOrdenProduccion', function()
     {
         include public_path().'/ajax/datosOrdenProduccion.php';

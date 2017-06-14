@@ -57,7 +57,8 @@ class OrdenProduccionController extends Controller
      */
     public function create()
     {
-        $fichatecnica = \App\FichaTecnica::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreFichaTecnica','idFichaTecnica');
+        $fichatecnica = \App\FichaTecnica::where('Compania_idCompania','=', \Session::get('idCompania'))
+            ->where('tipoFichaTecnica','=','p')->lists('nombreFichaTecnica','idFichaTecnica');
 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
@@ -150,16 +151,21 @@ class OrdenProduccionController extends Controller
         $material = DB::select(
             'SELECT idOrdenProduccionMaterial, 
                     OrdenProduccion_idOrdenProduccion, 
-                    nombreOrdenProduccionMaterial, 
+                    FichaTecnica_idMaterial,
+                    referenciaFichaTecnica as referenciaOrdenProduccionMaterial,
+                    nombreFichaTecnica as nombreOrdenProduccionMaterial, 
                     consumoUnitarioOrdenProduccionMaterial, 
                     consumoTotalOrdenProduccionMaterial
             FROM ordenproduccionmaterial OPM
+            LEFT JOIN fichatecnica FT 
+            ON OPM.FichaTecnica_idMaterial = FT.idFichaTecnica
             WHERE OrdenProduccion_idOrdenProduccion = '.$id);
 
         $material = $this->convertirArray($material);
 
 
-         $fichatecnica = \App\FichaTecnica::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreFichaTecnica','idFichaTecnica');
+         $fichatecnica = \App\FichaTecnica::where('Compania_idCompania','=', \Session::get('idCompania'))
+                ->where('tipoFichaTecnica','=','p')->lists('nombreFichaTecnica','idFichaTecnica');
 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
@@ -244,7 +250,7 @@ class OrdenProduccionController extends Controller
 
             $data = array(
             'OrdenProduccion_idOrdenProduccion' => $id,
-            'nombreOrdenProduccionMaterial' => $request['nombreOrdenProduccionMaterial'][$i],
+            'FichaTecnica_idMaterial' => $request['FichaTecnica_idMaterial'][$i],
             'consumoUnitarioOrdenProduccionMaterial' => $request['consumoUnitarioOrdenProduccionMaterial'][$i],
             'consumoTotalOrdenProduccionMaterial' => $request['consumoTotalOrdenProduccionMaterial'][$i]);
 

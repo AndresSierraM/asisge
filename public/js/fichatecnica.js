@@ -286,7 +286,7 @@ function abrirModalProceso(materiales, operaciones)
 
     } );
 
-    window.parent.$('#botonCampo').click(function() {
+    window.parent.$('#botonProceso').click(function() {
         var datos = table.rows('.selected').data();  
         
         
@@ -311,6 +311,84 @@ function abrirModalProceso(materiales, operaciones)
 
 }
 
+function abrirModalMaterial(cont, idProceso)
+{
+    var lastIdx = null;
+    window.parent.$("#tmaterial").DataTable().ajax.url('http://'+location.host+"/datosMaterialSelect").load();
+     // Abrir modal
+    window.parent.$("#ModalMaterial").modal()
+
+    $("a.toggle-vis").on( "click", function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr("data-column") );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+    window.parent.$("#tmaterial tbody").on( "mouseover", "td", function () 
+    {
+        var colIdx = table.cell(this).index().column;
+
+        if ( colIdx !== lastIdx ) {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+        }
+    }).on( "mouseleave", function () 
+    {
+        $( table.cells().nodes() ).removeClass( "highlight" );
+    } );
+
+
+    // Setup - add a text input to each footer cell
+    window.parent.$("#tmaterial tfoot th").each( function () 
+    {
+        var title = window.parent.$("#tmaterial thead th").eq( $(this).index() ).text();
+        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+    });
+ 
+    // DataTable
+    var table = window.parent.$("#tmaterial").DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () 
+    {
+        var that = this;
+ 
+        $( "input", this.footer() ).on( "blur change", function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    })
+
+    window.parent.$('#tmaterial tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+
+        var datos = table.rows('.selected').data();
+
+
+    } );
+
+    window.parent.$('#botonMaterial').click(function() {
+        var datos = table.rows('.selected').data();  
+
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(0, datos[i][0],datos[i][1],datos[i][2],idProceso, 0, '');
+            window.parent.material[cont].agregarCampos(valores,'A'); 
+
+        }
+
+        window.parent.$("#ModalMaterial").modal("hide");
+    });
+
+}
+
 function adicionarTabMaterial(cont, idTab, nombreTab, datos)
 {
     $("div#tabsMaterial ul").append(
@@ -324,12 +402,13 @@ function adicionarTabMaterial(cont, idTab, nombreTab, datos)
             '        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">'+
             '            <div style="overflow:auto; height:350px;">'+
             '                <div style="width: 100%; display: inline-block;">'+
-            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="material['+cont+'].agregarCampos([\'\',\'\',\''+idTab+'\',\'0.0000\',\'\'], \'A\');">'+
+            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="abrirModalMaterial('+cont+','+idTab+');">'+
             '                      <span class="glyphicon glyphicon-plus"></span>'+
             '                    </div>'+
-            '                    <div class="col-md-1" style="width: 400px;" >Material</div>'+
-            '                    <div class="col-md-1" style="width: 200px;" >Consumo Unit</div>'+
-            '                    <div class="col-md-1" style="width: 400px;" >Observaciones</div>'+
+            '                    <div class="col-md-1" style="width: 150px;" >Referencia</div>'+
+            '                    <div class="col-md-1" style="width: 400px;" >Nombre Material</div>'+ 
+            '                    <div class="col-md-1" style="width: 100px;" >Consumo</div>'+
+            '                    <div class="col-md-1" style="width: 300px;" >Observaciones</div>'+
             '                    <div id="contenedor_material'+cont+'">'+
             '                    </div>'+
             '                </div>'+
@@ -349,16 +428,18 @@ function adicionarTabMaterial(cont, idTab, nombreTab, datos)
     material[cont].campoEliminacion = 'eliminarMaterial';
 
     material[cont].campos   = ['idFichaTecnicaMaterial', 
+                                'FichaTecnica_idMaterial',
+                                'referenciaFichaTecnicaMaterial',
                                 'nombreFichaTecnicaMaterial',
                                 'Proceso_idMaterial', 
                                 'consumoFichaTecnicaMaterial', 
                                 'observacionFichaTecnicaMaterial'];
 
-    material[cont].etiqueta = ['input','input', 'input','input','input'];
-    material[cont].tipo     = ['hidden','text', 'hidden','text','text'];
-    material[cont].estilo   = ['','width: 400px;height:35px;','','width: 200px;height:35px; text-align:right;','width: 400px;height:35px;'];
-    material[cont].clase    = ['','','','',''];      
-    material[cont].sololectura = [false,false,false,false,false];
+    material[cont].etiqueta = ['input','input','input','input', 'input','input','input'];
+    material[cont].tipo     = ['hidden','hidden','text','text', 'hidden','text','text'];
+    material[cont].estilo   = ['','','width: 150px;height:35px;','width: 400px;height:35px;','','width: 100px;height:35px; text-align:right;','width: 300px;height:35px;'];
+    material[cont].clase    = ['','','','','','',''];      
+    material[cont].sololectura = [false,false,true,true,false,false,false];
 
     // luego de creada la estructra, adicionamos los datos que estan actualmente en la BD, solo los que pertenezcan al proceso actual
     for(var j=0, k = datos.length; j < k; j++)
@@ -392,28 +473,28 @@ function eliminarTabMaterial(cont) {
 }
 
 
-function adicionarTabOperacion(idTab, nombreTab, datos)
+function adicionarTabOperacion(cont, idTab, nombreTab, datos)
 {
     
     $("div#tabsOperacion ul").append(
-        '<li class="active"><a data-toggle="tab" href="#tab' + idTab + '">' + nombreTab + '</a></li>'
+        '<li class="active"><a data-toggle="tab" href="#tab' + cont + '">' + nombreTab + '</a></li>'
     );
 
     $("div#tabsOperacion").append(
-        '<div id="tab' + idTab + '" class="tab-pane fade in active">'+
+        '<div id="tab' + cont + '" class="tab-pane fade in active">'+
             '<div class="form-group">'+
             '    <div class="col-sm-12">'+
             '        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">'+
             '            <div style="overflow:auto; height:350px;">'+
             '                <div style="width: 100%; display: inline-block;">'+
-            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="operacion['+idTab+'].agregarCampos([\'0\',\''+idTab+'\',\'0\',\'\',\'0.0000\',\'\'], \'A\');">'+
+            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="operacion['+cont+'].agregarCampos([\'0\',\''+idTab+'\',\'0\',\'\',\'0.0000\',\'\'], \'A\');">'+
             '                      <span class="glyphicon glyphicon-plus"></span>'+
             '                    </div>'+
             '                    <div class="col-md-1" style="width: 100px;" >Orden</div>'+
             '                    <div class="col-md-1" style="width: 400px;" >Operacion</div>'+
             '                    <div class="col-md-1" style="width: 100px;" >SAM</div>'+
             '                    <div class="col-md-1" style="width: 400px;" >Observaciones</div>'+
-            '                    <div id="contenedor_operacion'+idTab+'">'+
+            '                    <div id="contenedor_operacion'+cont+'">'+
             '                    </div>'+
             '                </div>'+
             '            </div>'+
@@ -425,30 +506,30 @@ function adicionarTabOperacion(idTab, nombreTab, datos)
     $("div#tabsOperacion").tabs("refresh");
 
 
-    operacion[idTab] = new Atributos('operacion['+idTab+']','contenedor_operacion'+idTab,'operacion'+idTab+'_');
+    operacion[cont] = new Atributos('operacion['+cont+']','contenedor_operacion'+cont,'operacion'+cont+'_');
 
-    operacion[idTab].altura = '35px';
-    operacion[idTab].campoid = 'idFichaTecnicaOperacion';
-    operacion[idTab].campoEliminacion = 'eliminarOperacion';
+    operacion[cont].altura = '35px';
+    operacion[cont].campoid = 'idFichaTecnicaOperacion';
+    operacion[cont].campoEliminacion = 'eliminarOperacion';
 
-    operacion[idTab].campos   = ['idFichaTecnicaOperacion', 
+    operacion[cont].campos   = ['idFichaTecnicaOperacion', 
                                 'Proceso_idOperacion', 
                                 'ordenFichaTecnicaOperacion',
                                 'nombreFichaTecnicaOperacion',
                                 'samFichaTecnicaOperacion', 
                                 'observacionFichaTecnicaOperacion'];
 
-    operacion[idTab].etiqueta = ['input','input', 'input','input','input','input'];
-    operacion[idTab].tipo     = ['hidden', 'hidden','text','text','text','text'];
-    operacion[idTab].estilo   = ['','','width: 100px;height:35px; text-align:right;','width: 400px;height:35px;','width: 100px;height:35px; text-align:right;','width: 400px;height:35px;'];
-    operacion[idTab].clase    = ['','','','','',''];      
-    operacion[idTab].sololectura = [false,false,false,false,false,false];
+    operacion[cont].etiqueta = ['input','input', 'input','input','input','input'];
+    operacion[cont].tipo     = ['hidden', 'hidden','text','text','text','text'];
+    operacion[cont].estilo   = ['','','width: 100px;height:35px; text-align:right;','width: 400px;height:35px;','width: 100px;height:35px; text-align:right;','width: 400px;height:35px;'];
+    operacion[cont].clase    = ['','','','','',''];      
+    operacion[cont].sololectura = [false,false,false,false,false,false];
 
     // luego de creada la estructura, adicionamos los datos que estan actualmente en la BD, solo los que pertenezcan al proceso actual
     for(var j=0, k = datos.length; j < k; j++)
     {
         if(datos[j]['Proceso_idOperacion'] == idTab)
-            operacion[idTab].agregarCampos(JSON.stringify(datos[j]),'L');
+            operacion[cont].agregarCampos(JSON.stringify(datos[j]),'L');
         
     }
     
