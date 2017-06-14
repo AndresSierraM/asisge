@@ -16,7 +16,7 @@ function CargarExamenes(idTercero, idCargo, tipo)
         document.getElementById('contenedor_detalle').innerHTML = '';
         examenmedico.contador = 0;
         if (data) 
-        {
+        {  
           
             var datoExamenTercero = data[0];
             var datoExamenCargo = data[1];

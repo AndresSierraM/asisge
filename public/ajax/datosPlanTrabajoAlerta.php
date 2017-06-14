@@ -18,6 +18,7 @@
     $plantrabajoalerta = DB::table('plantrabajoalerta')
             ->select(DB::raw('idPlanTrabajoAlerta, nombrePlanTrabajoAlerta, correoParaPlanTrabajoAlerta, 
                 correoCopiaPlanTrabajoAlerta, correoAsuntoPlanTrabajoAlerta'))
+            ->where('Compania_idCompania','=',\Session::get('idCompania'))
             ->get();
             //->where('plantrabajoalerta.Compania_idCompania','=', \Session::get('idCompania'))
 

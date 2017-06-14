@@ -15,7 +15,7 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
-      if ($imprimir == 1) 
+    if ($imprimir == 1) 
         $visibleI = 'inline-block;';
     else
         $visibleI = 'none';
@@ -39,6 +39,9 @@
                         '</a>&nbsp;&nbsp;'.
                         '<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$value->archivoAusentismo.'">'.
                             '<span class="glyphicon glyphicon-paperclip " style = "display:'.$visibleI.'"></span>'.
+                        '</a>&nbsp;&nbsp;'.
+                        '<a onclick="imprimirAusentismo('.$value->idAusentismo.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
 
 

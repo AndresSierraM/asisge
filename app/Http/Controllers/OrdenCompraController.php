@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\OrdenCompraRequest;
 use App\Http\Controllers\Controller;
 use DB;
 use Mail;
@@ -56,7 +57,7 @@ class OrdenCompraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrdenCompraRequest $request)
     {
         \App\OrdenCompra::create([
             'DocumentoCRM_idDocumentoCRM' => $request['DocumentoCRM_idDocumentoCRM'],
@@ -69,7 +70,7 @@ class OrdenCompraController extends Controller
             'fechaAprobacionOrdenCompra' => $request['fechaAprobacionOrdenCompra'],
             'Tercero_idProveedor' => $request['Tercero_idProveedor'],
             'Tercero_idSolicitante' => $request['Tercero_idSolicitante'],
-            'Tercero_idAutorizador' => ($request['Tercero_idAutorizador'] == '' or $request['Tercero_idAutorizador'] == 0 ? NULL : $request['Tercero_idAutorizador']),
+            'Tercero_idAutorizador' => ($request['Tercero_idAutorizador'] == '' ? NULL : $request['Tercero_idAutorizador']),
             'estadoOrdenCompra' => $request['estadoOrdenCompra'],
             'observacionOrdenCompra' => $request['observacionOrdenCompra'],
             'observacionAprobacionOrdenCompra' => $request['observacionAprobacionOrdenCompra'],
@@ -170,11 +171,11 @@ class OrdenCompraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OrdenCompraRequest $request, $id)
     {
         $ordencompra = \App\OrdenCompra::find($id);
         $ordencompra->fill($request->all());
-        $ordencompra->Tercero_idAutorizador = ($request['Tercero_idAutorizador'] == '' or $request['Tercero_idAutorizador'] == 0) ? null : $request['Tercero_idAutorizador'];
+        $ordencompra->Tercero_idAutorizador = ($request['Tercero_idAutorizador'] == '') ? null : $request['Tercero_idAutorizador'];
         $ordencompra->save();
 
         $idsEliminar = explode(',', $request['eliminarOrdenCompraProducto']);
@@ -235,7 +236,7 @@ class OrdenCompraController extends Controller
             FROM  tercero
             WHERE idTercero = '.$ordencompra->Tercero_idProveedor);
 
-            $datos['correo'] = 'santi-0310@hotmail.com';
+            $datos['correo'] = get_object_vars($proveedor[0])['correoElectronicoTercero'];
 
             $datos['asunto'] = 'Aprobación de Orden de Compra número: '.$ordencompra->numeroOrdenCompra;
             $datos['mensaje'] = $ordencompra->observacionAprobacionOrdenCompra. '  

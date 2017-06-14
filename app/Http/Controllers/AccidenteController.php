@@ -227,9 +227,61 @@ class AccidenteController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+         
+        $accidenteS = DB::SELECT("  
+        SELECT acc.numeroAccidente,acc.nombreAccidente,acc.clasificacionAccidente,t.nombreCompletoTercero,
+        acc.firmaCoordinadorAccidente,acc.edadEmpleadoAccidente,acc.tiempoServicioAccidente,pr.nombreProceso,
+        acc.enSuLaborAccidente,IF(enSuLaborAccidente = '1','SI','NO') as EnSuLaborAccidenteS,acc.laborAccidente,
+        acc.enLaEmpresaAccidente,IF(enLaEmpresaAccidente = '1','SI','NO') as enLaEmpresaAccidenteS,acc.lugarAccidente,
+        acc.fechaOcurrenciaAccidente,acc.tiempoEnLaborAccidente,acc.tareaDesarrolladaAccidente,acc.descripcionAccidente,
+        acc.observacionTrabajadorAccidente,acc.observacionEmpresaAccidente,acc.naturalezaLesionAccidente,
+        acc.parteCuerpoAfectadaAccidente,acc.tipoAccidente,acc.observacionAccidente,te.nombreCompletoTercero as nombreCompletoEmpleado,au.nombreAusentismo,acc.agenteYMecanismoAccidente,acc.naturalezaLesionAccidente,
+        acc.parteCuerpoAfectadaAccidente,acc.tipoAccidente
+        FROM
+        accidente acc
+        LEFT JOIN tercero t
+        ON acc.Tercero_idCoordinador = t.idTercero
+        LEFT JOIN proceso pr
+        ON acc.Proceso_idProceso = pr.idProceso
+        LEFT JOIN tercero te
+        ON acc.Tercero_idEmpleado = te.idTercero
+        LEFT JOIN ausentismo au
+        on acc.Ausentismo_idAusentismo = au.idAusentismo
+        WHERE acc.idAccidente = ".$id);
+
+
+        $accidenteRecomendacions = DB::SELECT("
+        SELECT accre.controlAccidenteRecomendacion,accre.fuenteAccidenteRecomendacion,IF(fuenteAccidenteRecomendacion = '1','SI','NO') as fuenteAccidenteRecomendacionR,accre.medioAccidenteRecomendacion,IF(medioAccidenteRecomendacion = '1','SI','NO') as medioAccidenteRecomendacionR,accre.personaAccidenteRecomendacion,IF(personaAccidenteRecomendacion = '1','SI','NO') as personaAccidenteRecomendacionR,accre.fechaVerificacionAccidenteRecomendacion,accre.medidaEfectivaAccidenteRecomendacion,
+        pr.nombreProceso
+        FROM
+        accidenterecomendacion accre
+        LEFT JOIN proceso pr 
+        ON accre.Proceso_idResponsable = pr.idProceso
+        WHERE accre.Accidente_idAccidente = ".$id);
+
+
+
+        $accidenteEquipoS = DB::SELECT("
+        SELECT t.nombreCompletoTercero
+        FROM accidenteequipo acceq
+        LEFT JOIN tercero t
+        ON acceq.Tercero_idInvestigador = t.idTercero
+        WHERE acceq.Accidente_idAccidente =".$id);
+
+
+        $accidenteArchivoS = DB::SELECT("
+        SELECT accarc.rutaAccidenteArchivo
+        FROM accidente acc
+        LEFT JOIN accidentearchivo accarc 
+        ON accarc.Accidente_idAccidente = acc.idAccidente
+        WHERE accarc.Accidente_idAccidente =".$id);
+        
+           
+
+        return view('formatos.accidenteimpresion',compact('accidenteS','accidenteRecomendacions','accidenteEquipoS','accidenteArchivoS'));
+
     }
 
     /**

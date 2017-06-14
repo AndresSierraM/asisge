@@ -2,9 +2,12 @@
 
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
+
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -14,6 +17,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
 
     $accidente = DB::table('accidente')
             ->leftJoin('tercero', 'Tercero_idEmpleado', '=', 'idTercero')
@@ -28,13 +35,24 @@
     {  
         $row[$key][] = '<a href="accidente/'.$value->idAccidente.'/edit">'.
                             '<span class="glyphicon glyphicon-pencil " style = "display:'.$visibleM.'"></span>'.
-                        '</a>&nbsp;'.
+                        '</a>&nbsp;&nbsp;'.
                         '<a href="accidente/'.$value->idAccidente.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
-                        '</a>&nbsp;'.
+                        '</a>&nbsp;&nbsp;'.
                         '<a onclick="firmarAccidente('.$value->idAccidente.')">'.
                             '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
+                        '</a>&nbsp;&nbsp;'.
+                         '<a onclick="imprimirAccidente('.$value->idAccidente.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
+
+
+
+
+
+
+
+                        
         $row[$key][] = $value->idAccidente;
         $row[$key][] = $value->numeroAccidente;
         $row[$key][] = $value->nombreCompletoTercero;

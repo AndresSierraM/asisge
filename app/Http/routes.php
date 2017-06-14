@@ -219,6 +219,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/consultarPlanTrabajo.php';
     });
 
+    Route::get('generarAlertaPlanTrabajo', function()
+    {
+        include public_path().'/ajax/generarAlertaPlanTrabajo.php';
+    });
+
 
     Route::post('importarTerceroProveedor', [
             'as' => 'importarTerceroProveedor', 

@@ -72,7 +72,7 @@
 						<tbody>
 							<tr>
 								<td>
-									{{$dato->observacionesListaChequeo}}
+									<?php echo $dato->observacionesListaChequeo;?>
 								</td>
 							</tr>
 						</tbody>

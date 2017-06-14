@@ -14,4 +14,8 @@ class LineaProducto extends Model
     public $timestamps = false;
 
    
+   public function SublineaProducto()
+	{
+		return $this->hasMany('App\SublineaProducto','LineaProducto_idLineaProducto');
+    }
 }

@@ -16,7 +16,7 @@
 
 	$fechaMes = null;
 	$horaMes = null;
-	
+
 if(isset($plantrabajoalerta))
 {
 
@@ -112,7 +112,7 @@ if(isset($plantrabajoalerta))
 			<div class="col-sm-11">
 				<div class="input-group">
 			         <span class="input-group-addon">
-			                <i class="fa fa-user"></i>
+			                <i class="fa fa-user " style="width: 14px;"></i>
 			         </span>
 			             {!!Form::text('nombrePlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese el nombre de la alerta'])!!}
 			     </div>
@@ -143,7 +143,7 @@ if(isset($plantrabajoalerta))
 			<div class="col-sm-11">
 				<div class="input-group">
 			         <span class="input-group-addon">
-			                <i class="fa fa-user"></i>
+			                <i class="fa fa-user" style="width: 14px;"></i>
 			         </span>
 			             {!!Form::text('correoParaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese correo destinatario'])!!}
 			             {!!Form::hidden('idPlanTrabajoAlerta', null, array('id' => 'idPlanTrabajoAlerta')) !!}
@@ -159,7 +159,7 @@ if(isset($plantrabajoalerta))
 			<div class="col-sm-11">
 				 <div class="input-group">
 				       <span class="input-group-addon">
-				                <i class="fa fa-files-o"></i>
+				                <i class="fa fa-files-o" style="width: 14px;"></i>
 				       </span>
 				            	{!!Form::text('correoCopiaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese correo para copia','style'=>'width:100%;,right'])!!}
 				 </div>
@@ -172,7 +172,7 @@ if(isset($plantrabajoalerta))
 				        <div class="col-sm-11">
 				            <div class="input-group">
 				              <span class="input-group-addon">
-				                <i class="fa fa-clipboard"></i>
+				                <i class="fa fa-clipboard" style="width: 14px;"></i>
 				              </span>
 							{!!Form::text('correoCopiaOcultaPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese correo para copia oculta','style'=>'width:100%;,right'])!!}
 			            	</div>
@@ -186,7 +186,7 @@ if(isset($plantrabajoalerta))
 			          <div class="col-sm-11">
 			            <div class="input-group">
 			              <span class="input-group-addon">
-			                <i class="fa fa-pencil-square"></i>
+			                <i class="fa fa-pencil-square" style="width: 14px;"></i>
 			              </span>
 						{!!Form::text('correoAsuntoPlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'Ingrese Asunto ','style'=>'width:100%;,right'])!!}
 			            </div>
@@ -200,7 +200,7 @@ if(isset($plantrabajoalerta))
 			          <div class="col-sm-12">
 			            <div class="input-group">
 			              <span class="input-group-addon">
-			                <i class="fa fa-commenting-o"></i>
+			                <i class="fa fa-commenting-o" style="width: 14px;"></i>
 			              </span>
 							{!!Form::textarea('correoMensajePlanTrabajoAlerta',null,['class'=> 'form-control','placeholder'=>'','style'=>'width:600px;,right'])!!}
 			            </div>
@@ -652,12 +652,12 @@ if(isset($plantrabajoalerta))
 
     function seleccionarDia()
     {
+    	
     	var dias = '';
     	for(var i = 1; i <= 7; i++)
     	{
     		if($("#Dia"+i).prop('checked') == true)
     			dias += i+',';
-
     	}
     	 $('#tareaDiasPlanTrabajoAlerta').val(dias);
 

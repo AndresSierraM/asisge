@@ -66,6 +66,8 @@ class PlanTrabajoAlertaController extends Controller
             'filtroMesesPasadosPlanTrabajoAlerta' => $request ['filtroMesesPasadosPlanTrabajoAlerta'],
             'filtroMesesFuturosPlanTrabajoAlerta' => $request ['filtroMesesFuturosPlanTrabajoAlerta'],
             'filtroEstadosPlanTrabajoAlerta' => $request ['filtroEstadosPlanTrabajoAlerta'],
+            'fechaUltimaAlertaPlanTrabajoAlerta' => $request ['tareaFechaInicioPlanTrabajoAlertaDia'],
+            'Compania_idCompania' =>  \Session::get('idCompania')
             ]);
         }
         else
@@ -87,6 +89,8 @@ class PlanTrabajoAlertaController extends Controller
                 'filtroMesesPasadosPlanTrabajoAlerta' => $request ['filtroMesesPasadosPlanTrabajoAlerta'],
                 'filtroMesesFuturosPlanTrabajoAlerta' => $request ['filtroMesesFuturosPlanTrabajoAlerta'],
                 'filtroEstadosPlanTrabajoAlerta' => $request ['filtroEstadosPlanTrabajoAlerta'],
+                'fechaUltimaAlertaPlanTrabajoAlerta' => $request ['tareaFechaInicioPlanTrabajoAlertaSemana'],
+                'Compania_idCompania' =>  \Session::get('idCompania')
 
                 ]);
             }
@@ -106,6 +110,8 @@ class PlanTrabajoAlertaController extends Controller
                 'filtroMesesPasadosPlanTrabajoAlerta' => $request ['filtroMesesPasadosPlanTrabajoAlerta'],
                 'filtroMesesFuturosPlanTrabajoAlerta' => $request ['filtroMesesFuturosPlanTrabajoAlerta'],
                 'filtroEstadosPlanTrabajoAlerta' => $request ['filtroEstadosPlanTrabajoAlerta'],
+                'fechaUltimaAlertaPlanTrabajoAlerta' => $request ['tareaFechaInicioPlanTrabajoAlertaMes'],
+                'Compania_idCompania' =>  \Session::get('idCompania')
                 ]);
             }
         }

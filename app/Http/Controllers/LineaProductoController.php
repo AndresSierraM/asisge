@@ -66,6 +66,23 @@ class LineaProductoController extends Controller
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 
+
+
+        // en esta parte es el guardado de la multiregistro descripcion
+         //Primero consultar el ultimo id guardado
+         $lineaproducto = \App\lineaproducto::All()->last();
+         //for para guardar cada registro de la multiregistro
+
+         for ($i=0; $i < count($request['nombreSublineaProducto']); $i++) 
+         { 
+             \App\SublineaProducto::create([
+            'LineaProducto_idLineaProducto' => $lineaproducto->idLineaProducto,
+            'codigoSublineaProducto' => $request['codigoSublineaProducto'][$i],
+            'nombreSublineaProducto' => $request['nombreSublineaProducto'][$i],
+            'Compania_idCompania' => \Session::get('idCompania')
+            ]);
+         }
+
         return redirect('/lineaproducto');
     }
 
@@ -89,8 +106,17 @@ class LineaProductoController extends Controller
     public function edit($id)
     {
         $lineaproducto = \App\LineaProducto::find($id);
+
+
+        //Hacemos una consulta para devolver los datos de la multiregistro
+        $sublinea = DB::Select('
+         SELECT slp.codigoSublineaProducto,slp.nombreSublineaProducto
+         FROM lineaproducto lp
+         LEFT JOIN sublineaproducto slp
+         ON  lp.idLineaProducto = slp.LineaProducto_idLineaProducto
+         WHERE slp.LineaProducto_idLineaProducto ='.$id);
         
-        return view('lineaproducto', ['lineaproducto'=>$lineaproducto]);
+        return view('lineaproducto',compact('sublinea'),['lineaproducto'=>$lineaproducto]);
     }
 
     /**
@@ -105,6 +131,24 @@ class LineaProductoController extends Controller
         $lineaproducto = \App\LineaProducto::find($id);
         $lineaproducto->fill($request->all());
         $lineaproducto->save();
+
+
+         $idsEliminar = explode("," , $request['eliminarsublinea']);
+        //Eliminar registros de la multiregistro
+        \App\SublineaProducto::whereIn('idSublineaProducto', $idsEliminar)->delete();
+
+        for ($i=0; $i < count($request['nombreSublineaProducto']); $i++) 
+        { 
+            $indice = array(
+                'idSublineaProducto' => $request['idSublineaProducto'][$i]);
+
+            $data = array(
+                'LineaProducto_idLineaProducto' => $id,
+                'codigoSublineaProducto' => $request['codigoSublineaProducto'][$i],
+                'nombreSublineaProducto' => $request['nombreSublineaProducto'][$i]);
+
+            $guardar = \App\SublineaProducto::updateOrCreate($indice, $data);
+        }
 
        return redirect('/lineaproducto');
     }

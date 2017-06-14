@@ -3,9 +3,11 @@
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
     $adicionar = $_GET['adicionar'];
-
+    $imprimir = $_GET['imprimir'];
+  
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -15,6 +17,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
 
      if ($adicionar == 1) 
     {
@@ -55,6 +61,9 @@
                         '</a>&nbsp;'.
                         '<a href="cuadromando/'.$value->idCuadroMando.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
+                        '</a>'. 
+                        '<a onclick="imprimirCuadroMando('.$value->idCuadroMando.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->numeroCuadroMando;
         $row[$key][] = $value->nombreCompaniaObjetivo;

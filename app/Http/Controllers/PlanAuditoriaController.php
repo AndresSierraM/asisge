@@ -116,9 +116,54 @@ class PlanAuditoriaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        
+        $planAuditoriaS = DB::SELECT("
+        SELECT pa.numeroPlanAuditoria,pa.fechaInicioPlanAuditoria,pa.fechaFinPlanAuditoria,
+        pa.organismoPlanAuditoria,pa.Tercero_AuditorLider,pa.objetivoPlanAuditoria,pa.alcancePlanAuditoria,pa.criterioPlanAuditoria,pa.recursosPlanAuditoria,pa.observacionesPlanAuditoria,pa.aprobacionPlanAuditoria,pa.fechaEntregaPlanAuditoria,t.nombreCompletoTercero
+        FROM planauditoria pa
+        LEFT JOIN tercero t
+        ON pa.Tercero_AuditorLider = t.idTercero
+        where idPlanAuditoria =".$id);
+
+        $PlanAuditoriaAcompananteS = DB::SELECT("
+        SELECT t.nombreCompletoTercero
+        FROM planauditoria pa
+        LEFT JOIN planauditoriaacompanante paac
+        ON pa.idPlanAuditoria = paac.PlanAuditoria_idPlanAuditoria
+        LEFT JOIN tercero t
+        ON paac.Tercero_idAcompanante = t.idTercero
+        WHERE paac.PlanAuditoria_idPlanAuditoria =".$id);
+
+
+        $PlanAuditoriaNotificadoS = DB::SELECT("
+        SELECT tn.nombreCompletoTercero
+        FROM planauditoria pa
+        LEFT JOIN planauditorianotificado pan
+        ON pa.idPlanAuditoria = pan.PlanAuditoria_idPlanAuditoria
+        LEFT JOIN tercero tn
+        ON pan.Tercero_idNotificado = tn.idTercero
+        WHERE pan.PlanAuditoria_idPlanAuditoria =".$id);
+
+
+        $planauditoriaagendaS = DB::SELECT("
+        SELECT p.nombreProceso,ta.nombreCompletoTercero as auditado,paa.Tercero_Auditor,paa.fechaPlanAuditoriaAgenda,
+        paa.horaInicioPlanAuditoriaAgenda,paa.horaFinPlanAuditoriaAgenda,paa.lugarPlanAuditoriaAgenda,tau.nombreCompletoTercero as auditor
+        FROM
+        planauditoria pa
+        LEFT JOIN planauditoriaagenda paa
+        ON paa.PlanAuditoria_idPlanAuditoria = pa.idPlanAuditoria
+        LEFT JOIN proceso p 
+        ON paa.Proceso_idProceso = p.idProceso
+        LEFT JOIN tercero ta
+        ON paa.Tercero_Auditado = ta.idTercero
+        LEFT JOIN tercero tau
+        ON paa.Tercero_Auditor = tau.idTercero
+        WHERE paa.PlanAuditoria_idPlanAuditoria = ".$id);
+
+        return view('formatos.planauditoriaimpresion',compact('planAuditoriaS','PlanAuditoriaAcompananteS','PlanAuditoriaNotificadoS','planauditoriaagendaS'));
+        
     }
 
     /**

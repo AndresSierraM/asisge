@@ -15,6 +15,45 @@
 		{!!Form::open(['route'=>'lineaproducto.store','method'=>'POST'])!!}
 	@endif
 
+<script>
+
+
+//se llama la consulta (entrevistacompetencia) que se hace en el controlador para llenar la multiregistro cuando se este editando
+ var SubLineaProductoE = '<?php echo (isset($sublinea) ? json_encode($sublinea) : "");?>';
+SubLineaProductoE = (SubLineaProductoE != '' ? JSON.parse(SubLineaProductoE) : '');
+
+var sublineaproductoM = [0,'',''];
+$(document).ready( function () {
+
+// // multiregistro Educacion Entrevista primera Multiregistro OPCION GENERAL          
+          sublineaproducto = new Atributos('sublineaproducto','sublineaproducto_Modulo','sublineadescripcion_');
+          sublineaproducto.campoid = 'idLineaProducto';  //hermanitas             
+          sublineaproducto.campoEliminacion = 'eliminarsublinea';//hermanitas         Cuando se utilice la funcionalidad 
+          sublineaproducto.botonEliminacion = true;//hermanitas
+          // despues del punto son las propiedades que se le van adicionar al objeto
+          sublineaproducto.campos = ['LineaProducto_idLineaProducto','codigoSublineaProducto','nombreSublineaProducto']; //[arrays ]
+          sublineaproducto.altura = '35px;'; 
+           // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
+          sublineaproducto.etiqueta = ['input','input','input'];
+          sublineaproducto.tipo = ['hidden','text','text']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+          sublineaproducto.estilo = ['', 'width:300px; height:35px;','width:300px; height:35px;'];
+          // estas propiedades no son muy usadas PERO SON UTILES
+          sublineaproducto.clase = ['','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+          sublineaproducto.sololectura = [false,false,false,]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+          sublineaproducto.completar = ['off','off','off']; //autocompleta 
+          sublineaproducto.opciones = ['','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+          sublineaproducto.funciones  = ['','',''];
+
+
+        //Llenado de campos de las Multiregistros  EntrevistaHijoPregunta 
+              for(var j=0, k = SubLineaProductoE.length; j < k; j++)
+              {
+                 sublineaproducto.agregarCampos(JSON.stringify(SubLineaProductoE[j]),'L');
+               }
+});
+
+</script>
+
 <div id='form-section' >
 	<fieldset id="lineaproducto-form-fieldset">	
 		<div class="form-group" id='test'>
@@ -26,23 +65,51 @@
               </span>
               {!!Form::text('codigoLineaProducto',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
               {!! Form::hidden('idLineaProducto', null, array('id' => 'idLineaProducto')) !!}
+              {!!Form::hidden('eliminarsublinea', null, array('id' => 'eliminarsublinea')) !!}
             </div>
           </div>
         </div>
+    		<div class="form-group" id='test'>
+              {!! Form::label('nombreLineaProducto', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
+              <div class="col-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-pencil-square-o "></i>
+                  </span>
+    				{!!Form::text('nombreLineaProducto',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la Línea',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
+                </div>
+              </div>
+        </div>
 
 
-		
-		<div class="form-group" id='test'>
-          {!! Form::label('nombreLineaProducto', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
-          <div class="col-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
-              </span>
-				{!!Form::text('nombreLineaProducto',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la Línea',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
+        <div class="form-group">
+          <div class="col-lg-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading">Detalle</div>
+              <div class="panel-body">
+                <div class="panel-group" id="accordion">
+                   <div class="panel-body">
+                      <div class="form-group" id='test'>
+                          <div class="col-sm-12">
+                              <div class="row show-grid">
+                              <div class="col-md-1" style="width: 40px;height: 35px;" onclick="sublineaproducto.agregarCampos(sublineaproductoM,'A')">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                  </div>
+                                  <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Codigo SubLinea</div>
+                                  <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Nombre Sublinea</div>        
+                                  <!-- este es el div para donde van insertando los registros --> 
+                                  <div id="sublineaproducto_Modulo">
+                                  </div>
+                              </div>
+                          </div>
+                      </div> 
+                    </div>
+                 </div>
+              </div>
             </div>
           </div>
         </div>
+       
     </fieldset>
     <br>
 	@if(isset($lineaproducto))

@@ -118,7 +118,7 @@ class ListaChequeoController extends Controller
     public function show($id, Request $request)
     {
         if(isset($request['accion']) and $request['accion'] == 'imprimir')
-        {
+        { 
             $listaChequeo = DB::table('listachequeo as lc')
                 ->leftJoin('proceso as p', 'lc.Proceso_idProceso', '=', 'p.idProceso')
                 ->leftJoin('planauditoria as pa', 'lc.PlanAuditoria_idPlanAuditoria', '=', 'pa.idPlanAuditoria')

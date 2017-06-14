@@ -125,9 +125,17 @@ class AusentismoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $ausentismoS = DB::SELECT(" 
+        SELECT t.nombreCompletoTercero,aus.nombreAusentismo,aus.tipoAusentismo,aus.fechaElaboracionAusentismo,aus.fechaInicioAusentismo,aus.fechaFinAusentismo,aus.diasAusentismo,aus.archivoAusentismo
+        FROM ausentismo aus
+        LEFT JOIN tercero t 
+        ON aus.Tercero_idTercero = t.idTercero
+        WHERE aus.idAusentismo = ".$id);
+
+        return view('formatos.ausentismoimpresion',compact('ausentismoS'));
+       
     }
 
     /**
