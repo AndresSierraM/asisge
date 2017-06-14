@@ -71,17 +71,11 @@ class LineaProductoController extends Controller
         // en esta parte es el guardado de la multiregistro descripcion
          //Primero consultar el ultimo id guardado
          $lineaproducto = \App\lineaproducto::All()->last();
-         //for para guardar cada registro de la multiregistro
-
-         for ($i=0; $i < count($request['nombreSublineaProducto']); $i++) 
-         { 
-             \App\SublineaProducto::create([
-            'LineaProducto_idLineaProducto' => $lineaproducto->idLineaProducto,
-            'codigoSublineaProducto' => $request['codigoSublineaProducto'][$i],
-            'nombreSublineaProducto' => $request['nombreSublineaProducto'][$i],
-            'Compania_idCompania' => \Session::get('idCompania')
-            ]);
-         }
+         //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+            $this->grabarDetalle($lineaproducto->idLineaProducto, $request);
+       
 
         return redirect('/lineaproducto');
     }
@@ -108,9 +102,9 @@ class LineaProductoController extends Controller
         $lineaproducto = \App\LineaProducto::find($id);
 
 
-        //Hacemos una consulta para devolver los datos de la multiregistro
+        //Hacemos una consulta para devolver los datos de la multiregistro con todos los campos igual 
         $sublinea = DB::Select('
-         SELECT slp.codigoSublineaProducto,slp.nombreSublineaProducto
+         SELECT  slp.idSublineaProducto,slp.codigoSublineaProducto,slp.nombreSublineaProducto
          FROM lineaproducto lp
          LEFT JOIN sublineaproducto slp
          ON  lp.idLineaProducto = slp.LineaProducto_idLineaProducto
@@ -133,22 +127,10 @@ class LineaProductoController extends Controller
         $lineaproducto->save();
 
 
-         $idsEliminar = explode("," , $request['eliminarsublinea']);
-        //Eliminar registros de la multiregistro
-        \App\SublineaProducto::whereIn('idSublineaProducto', $idsEliminar)->delete();
-
-        for ($i=0; $i < count($request['nombreSublineaProducto']); $i++) 
-        { 
-            $indice = array(
-                'idSublineaProducto' => $request['idSublineaProducto'][$i]);
-
-            $data = array(
-                'LineaProducto_idLineaProducto' => $id,
-                'codigoSublineaProducto' => $request['codigoSublineaProducto'][$i],
-                'nombreSublineaProducto' => $request['nombreSublineaProducto'][$i]);
-
-            $guardar = \App\SublineaProducto::updateOrCreate($indice, $data);
-        }
+        //---------------------------------
+        // guardamos las tablas de detalle
+        //---------------------------------
+        $this->grabarDetalle($lineaproducto->idLineaProducto, $request);
 
        return redirect('/lineaproducto');
     }
@@ -163,6 +145,27 @@ class LineaProductoController extends Controller
     {
         \App\LineaProducto::destroy($id);
         return redirect('/lineaproducto');
+    }
+    protected function grabarDetalle($id, $request)
+    {
+
+         $idsEliminar = explode("," , $request['eliminarsublinea']);
+        //Eliminar registros de la multiregistro
+        \App\SublineaProducto::whereIn('idSublineaProducto', $idsEliminar)->delete();
+        $contador = count($request['idSublineaProducto']);
+        for ($i=0; $i < $contador; $i++) 
+        { 
+            $indice = array(
+                'idSublineaProducto' => $request['idSublineaProducto'][$i]);
+
+            $data = array(
+                'LineaProducto_idLineaProducto' => $id,
+                'codigoSublineaProducto' => $request['codigoSublineaProducto'][$i],
+                'nombreSublineaProducto' => $request['nombreSublineaProducto'][$i]);
+
+            $guardar = \App\SublineaProducto::updateOrCreate($indice, $data);
+        }
+
     }
 
 
