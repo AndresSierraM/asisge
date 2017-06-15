@@ -34,6 +34,13 @@
                     "<?php echo date('Y-m-d H:i:s');?>",
                     ''
                     ];
+// $(document).ready(function(){ 
+// // Se crea la variable para cuando la sublinea ya exista
+// sublinea = "<?php echo @$sublineaproducto->LineaProducto_idLineaProducto;?>";
+// if ($("#LineaProducto_idLineaProducto").length > 0  && $("#LineaProducto_idLineaProducto").val() !== '') 
+// }
+
+
 
 </script>
 
@@ -78,10 +85,8 @@ $fechahora = Carbon\Carbon::now();
           <span class="input-group-addon">
             <i class="fa fa-pencil-square-o"></i>
           </span>
-          {!!Form::select('LineaProducto_idLineaProducto',$linea, @$fichatecnica->LineaProducto_idLineaProducto,["class" => "chosen-select form-control", "placeholder" => "Seleccione"])!!}
-
+          {!!Form::select('LineaProducto_idLineaProducto',$linea, @$fichatecnica->LineaProducto_idLineaProducto,["class" => "chosen-select form-control", "placeholder" => "Seleccione",'onchange'=>"llamarsublinea(this.value,sublineas);"])!!}
           <input type="hidden" id="token" value="{{csrf_token()}}"/>
-
         </div>
       </div>
     </div>	
@@ -95,7 +100,7 @@ $fechahora = Carbon\Carbon::now();
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::select('SublineaProducto_idSublineaProducto',$sublinea, @$fichatecnica->SublineaProducto_idSublineaProducto ,["class" => "chosen-select form-control", "placeholder" => "Seleccione"])!!}
+            {!!Form::select('SublineaProducto_idSublineaProducto',$sublinea, @$fichatecnica->SublineaProducto_idSublineaProducto,["class" => "chosen-select form-control", "placeholder" => "Seleccione"])!!}
           </div>
       </div>
     </div>  
