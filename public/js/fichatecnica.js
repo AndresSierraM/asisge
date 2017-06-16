@@ -29,9 +29,7 @@ function llamarsublinea(id, valor)
                 option = document.createElement('option');
                 option.value = data[i]['idSublineaProducto'];
                 option.text = data[i]['nombreSublineaProducto'];
-
                 option.selected = (valor == data[i]['idSublineaProducto'] ? true : false);
-
                 select.appendChild(option);
             }
 
@@ -189,11 +187,14 @@ AtributosNota.prototype.borrarTodosCampos = function(){
 
 $(document).ready(function(){ 
 // Se crea la variable para cuando la sublinea ya exista
-sublineas = "<?php echo @$sublineaproducto->LineaProducto_idLineaProducto;?>";
+sublineas = "<?php echo @$fichatecnica->SublineaProducto_idSublineaProducto;?>";
 if ($("#LineaProducto_idLineaProducto").length > 0  && $("#LineaProducto_idLineaProducto").val() !== '') 
 {
-    llamarsublinea($("#LineaProducto_idLineaProducto").val(),sublinea);
+    llamarsublinea($("#LineaProducto_idLineaProducto").val(),sublineas);
+    $("#SublineaProducto_idSublineaProducto").prop("disabled", true).val(sublineas).trigger("chosen:updated").prop('selected','selected');
+    $("#LineaProducto_idLineaProducto").prop("disabled", true).trigger("chosen:updated");
 }
+
 
 
 
