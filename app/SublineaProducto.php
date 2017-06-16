@@ -9,13 +9,13 @@ class SublineaProducto extends Model
     protected $table = 'sublineaproducto';
     protected $primaryKey = 'idSublineaProducto';
 
-    protected $fillable = ['LineaProducto_idLineaProducto','codigoSublineaProducto', 'nombreSublineaProducto', 'Compania_idCompania'];
+    protected $fillable = ['LineaProducto_idLineaProducto','codigoSublineaProducto', 'nombreSublineaProducto'];
 
     public $timestamps = false;
 
    
    public function LineaProducto()
 	{
-		return $this->hasMany('App\LineaProducto','idLineaProducto');
+		return $this->hasOne('App\LineaProducto','idLineaProducto');
     }
 }

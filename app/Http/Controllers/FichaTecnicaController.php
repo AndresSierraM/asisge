@@ -58,7 +58,7 @@ class FichaTecnicaController extends Controller
     public function create()
     {
         $linea = \App\LineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaProducto','idLineaProducto');
-        $sublinea = \App\SublineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreSublineaProducto','idSublineaProducto');
+        $sublinea = \App\SublineaProducto::where('LineaProducto_idLineaProducto','=', 'idLineaProducto')->lists('nombreSublineaProducto','idSublineaProducto');
 
         if($_GET['tipo'] == 'p')
         {
@@ -246,7 +246,7 @@ class FichaTecnicaController extends Controller
         $nota = $this->convertirArray($nota);
 
         $linea = \App\LineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaProducto','idLineaProducto');
-        $sublinea = \App\SublineaProducto::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreSublineaProducto','idSublineaProducto');
+         $sublinea = \App\SublineaProducto::where('LineaProducto_idLineaProducto','=', 'idLineaProducto')->lists('nombreSublineaProducto','idSublineaProducto');
 
         if($_GET['tipo'] == 'p')
         {

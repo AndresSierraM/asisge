@@ -529,6 +529,10 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/consultarPermisos.php';
     });
     //Ajax de Maestros
+    Route::get('llamarsublinea', function()
+    {
+        include public_path().'/ajax/llamarsublinea.php';
+    });
     Route::post('llenarCargo', function()
     {
         include public_path().'/ajax/llenarCargo.php';

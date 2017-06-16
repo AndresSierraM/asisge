@@ -4,6 +4,7 @@
 
 @section('content')
   @include('alerts.request')
+{!!Html::script('js/lineaproducto.js')!!}
 
 	@if(isset($lineaproducto))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -16,36 +17,34 @@
 	@endif
 
 <script>
-
-
-//se llama la consulta (entrevistacompetencia) que se hace en el controlador para llenar la multiregistro cuando se este editando
  var SubLineaProductoE = '<?php echo (isset($sublinea) ? json_encode($sublinea) : "");?>';
 SubLineaProductoE = (SubLineaProductoE != '' ? JSON.parse(SubLineaProductoE) : '');
 
 var sublineaproductoM = [0,'',''];
 $(document).ready( function () {
 
-// // multiregistro Educacion Entrevista primera Multiregistro OPCION GENERAL          
+// // multiregistro          
           sublineaproducto = new Atributos('sublineaproducto','sublineaproducto_Modulo','sublineadescripcion_');
-          sublineaproducto.campoid = 'idLineaProducto';  //hermanitas             
+          sublineaproducto.campoid = 'idSublineaProducto';  //hermanitas             
           sublineaproducto.campoEliminacion = 'eliminarsublinea';//hermanitas         Cuando se utilice la funcionalidad 
           sublineaproducto.botonEliminacion = true;//hermanitas
           // despues del punto son las propiedades que se le van adicionar al objeto
-          sublineaproducto.campos = ['LineaProducto_idLineaProducto','codigoSublineaProducto','nombreSublineaProducto']; //[arrays ]
+          sublineaproducto.campos = ['idSublineaProducto','codigoSublineaProducto','nombreSublineaProducto']; //[arrays ]
           sublineaproducto.altura = '35px;'; 
            // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
           sublineaproducto.etiqueta = ['input','input','input'];
           sublineaproducto.tipo = ['hidden','text','text']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-          sublineaproducto.estilo = ['', 'width:300px; height:35px;','width:300px; height:35px;'];
+          sublineaproducto.estilo = ['','width:300px; height:35px;','width:300px; height:35px;'];
           // estas propiedades no son muy usadas PERO SON UTILES
-          sublineaproducto.clase = ['','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+          sublineaproducto.clase = ['',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
           sublineaproducto.sololectura = [false,false,false,]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
           sublineaproducto.completar = ['off','off','off']; //autocompleta 
           sublineaproducto.opciones = ['','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
-          sublineaproducto.funciones  = ['','',''];
+          var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
+          sublineaproducto.funciones  = ['','',quitacarac];
 
 
-        //Llenado de campos de las Multiregistros  EntrevistaHijoPregunta 
+        //Llenado de campos de las Multiregistro
               for(var j=0, k = SubLineaProductoE.length; j < k; j++)
               {
                  sublineaproducto.agregarCampos(JSON.stringify(SubLineaProductoE[j]),'L');
@@ -66,6 +65,7 @@ $(document).ready( function () {
               {!!Form::text('codigoLineaProducto',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
               {!! Form::hidden('idLineaProducto', null, array('id' => 'idLineaProducto')) !!}
               {!!Form::hidden('eliminarsublinea', null, array('id' => 'eliminarsublinea')) !!}
+              <input type="hidden" id="token" value="{{csrf_token()}}"/>
             </div>
           </div>
         </div>
@@ -116,10 +116,10 @@ $(document).ready( function () {
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else
-   			{!!Form::submit('Modificar',["class"=>"btn btn-primary"])!!}
+   			{!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
   		@endif
  	@else
-  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary"])!!}
+  		{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
  	@endif
 	{!! Form::close() !!}
 </div>

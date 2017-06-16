@@ -1,3 +1,50 @@
+function llamarsublinea(id, valor) 
+{   
+    //Se toma por medio de Id el de la linea selccionada
+    var select = document.getElementById('LineaProducto_idLineaProducto').value;
+    var token = document.getElementById('token').value;
+    $.ajax(
+    {
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        url:'http://'+location.host+'/llamarsublinea', /*Funcion para ejecutar  el Ajax para que consulte en la BD la tabla de sublineas */
+        data:{idLineaProducto: id}, // Este id lo envia por get para el ajax
+        type:  'get',   
+        beforeSend: function(){},
+        success: function(data)
+        {
+            /* cuando reciba la consulta, va a tomar el nombre de la lista de sublineas*/
+            $('#SublineaProducto_idSublineaProducto').html('');
+            var select = document.getElementById('SublineaProducto_idSublineaProducto');
+            /*Recibe el nombre hasta aca*/
+            // Estas Option se utilizan para que agregue una primera opcion que diga seleccione 
+            option = document.createElement('option');
+            option.value = '';
+            option.text = 'Seleccione';
+            select.appendChild(option);
+            //Recorre los registros de sublineas para irlos  creando como opciones en esa lista
+            for (var i = 0;  i <= data.length; i++) 
+            {
+
+                option = document.createElement('option');
+                option.value = data[i]['idSublineaProducto'];
+                option.text = data[i]['nombreSublineaProducto'];
+
+                option.selected = (valor == data[i]['idSublineaProducto'] ? true : false);
+
+                select.appendChild(option);
+            }
+
+
+
+        },
+        error:    function(xhr,err)
+        {
+            alert('Se ha producido un error: ' +err);
+        }
+    });
+};
+
 
 var AtributosNota = function(nombreObjeto, nombreContenedor, nombreDiv){
     this.alto = '100px;';
@@ -141,6 +188,14 @@ AtributosNota.prototype.borrarTodosCampos = function(){
 
 
 $(document).ready(function(){ 
+// Se crea la variable para cuando la sublinea ya exista
+sublineas = "<?php echo @$sublineaproducto->LineaProducto_idLineaProducto;?>";
+if ($("#LineaProducto_idLineaProducto").length > 0  && $("#LineaProducto_idLineaProducto").val() !== '') 
+{
+    llamarsublinea($("#LineaProducto_idLineaProducto").val(),sublinea);
+}
+
+
 
     $("div#tabsMaterial").tabs();
     $("div#tabsOperacion").tabs();
