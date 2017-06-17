@@ -183,6 +183,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('tipocalidad','TipoCalidadController');
     Route::resource('fichatecnica','FichaTecnicaController');
     Route::resource('ordenproduccion','OrdenProduccionController');
+    Route::resource('ordentrabajo','OrdenTrabajoController');
     Route::resource('factura','FacturaController');
 
     // *************************************
@@ -479,6 +480,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosOrdenProduccion', function()
     {
         include public_path().'/ajax/datosOrdenProduccion.php';
+    });
+     Route::get('datosOrdenTrabajo', function()
+    {
+        include public_path().'/ajax/datosOrdenTrabajo.php';
     });
     Route::get('consultarFichaTecnicaProceso', function()
     {

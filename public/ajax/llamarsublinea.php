@@ -3,7 +3,7 @@
     $id = (isset($_GET['idLineaProducto']) ? $_GET['idLineaProducto'] : 0);
     
     $sublinea = DB::select(
-    'SELECT nombreSublineaProducto, idSublineaProducto
+    'SELECT nombreSublineaProducto,idSublineaProducto
     FROM sublineaproducto
     WHERE LineaProducto_idLineaProducto = '.$id);
 
