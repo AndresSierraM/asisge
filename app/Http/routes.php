@@ -190,6 +190,7 @@ Route::group(['middleware' => 'auth'], function ()
     // *************************************
     Route::resource('tipoproveedor','TipoProveedorController');
     Route::resource('ordencompra','OrdenCompraController');
+    Route::resource('recibocompra','ReciboCompraController');
 
     // *************************************************
     //
@@ -518,6 +519,10 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/cargarProductosOrdenCompra.php';
     });
 
+    Route::get('datosOrdenCompraModal', function()
+    {
+        include public_path().'/ajax/datosOrdenCompraModal.php';
+    });
 
     Route::post('consultarPermisos', function()
     {
