@@ -2,6 +2,9 @@
 
 <?php 
   $tipoFichaTecnica = (isset($fichatecnica) ? $fichatecnica->tipoFichaTecnica : $_GET['tipo']);
+
+
+
 ?>
 
 @section('titulo')<h3 id="titulo"><center>Ficha Técnica <?php echo ($tipoFichaTecnica == 'p' ? ' de Producto' : ($tipoFichaTecnica == 'm' ? ' de Material' : ' de Servicio'))?></center></h3>@stop
@@ -34,6 +37,17 @@
                     "<?php echo date('Y-m-d H:i:s');?>",
                     ''
                     ];
+
+$(document).ready(function(){ 
+
+  sublineas = "<?php echo @$fichatecnica->SublineaProducto_idSublineaProducto;?>";
+  if ($("#LineaProducto_idLineaProducto").length > 0  && $("#LineaProducto_idLineaProducto").val() !== '') 
+  {
+      llamarsublinea($("#LineaProducto_idLineaProducto").val(),sublineas);
+      $("#SublineaProducto_idSublineaProducto").trigger("chosen:updated").prop('selected','selected');
+      $("#LineaProducto_idLineaProducto").trigger("chosen:updated").prop('selected','selected');
+  }
+  });              
 
 
 
