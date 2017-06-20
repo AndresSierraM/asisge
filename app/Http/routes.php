@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('actoinseguro', 'ActoInseguroController');
     Route::resource('cambiopassword', 'CambioPasswordController');
     Route::resource ('centrocosto','CentroCostoController');
     Route::resource ('parametrogestionhumana','ParametroGestionHumanaController');
@@ -643,6 +644,10 @@ Route::group(['middleware' => 'auth'], function ()
     // ---------------------------------
 
 
+    Route::get('datosActoInseguro', function()
+    {
+        include public_path().'/ajax/datosActoInseguro.php';
+    });
     Route::get('datosDiagnostico', function()
     {
         include public_path().'/ajax/datosDiagnostico.php';
