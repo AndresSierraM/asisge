@@ -524,6 +524,11 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/cargarProductosOrdenCompra.php';
     });
 
+    Route::post('cargarResultadoReciboOrdenCompra', function()
+    {
+        include public_path().'/ajax/cargarResultadoReciboOrdenCompra.php';
+    });
+
     Route::get('datosOrdenCompraModal', function()
     {
         include public_path().'/ajax/datosOrdenCompraModal.php';

@@ -21,11 +21,14 @@
   var nombreTipoCalidad = '<?php echo isset($nombreTipoCalidad) ? $nombreTipoCalidad : "";?>';
   var tipocalidad = [JSON.parse(idTipoCalidad), JSON.parse(nombreTipoCalidad)];
 
-  var reciboordencompra = '<?php echo (isset($reciboCompraProducto) ? json_encode($reciboCompraProducto) : "");?>';
-  reciboordencompra = (reciboordencompra != '' ? JSON.parse(reciboordencompra) : '');
+  var recibocompra = '<?php echo (isset($reciboCompra) ? json_encode($reciboCompra) : "");?>';
+  recibocompra = (recibocompra != '' ? JSON.parse(recibocompra) : '');
 
-  calcultarValorCantidad = ['onchange','calcularValorTotal(this.id, "cantidad")'];
-  calcultarValorUnitario = ['onchange','calcularValorTotal(this.id, "unitario")'];
+  var resultadocompra = '<?php echo (isset($resultadoCompra) ? json_encode($resultadoCompra) : "");?>';
+  resultadocompra = (resultadocompra != '' ? JSON.parse(resultadocompra) : '');
+
+  calcultarValorCantidad = ['onchange','calcularValorTotal(this.id, "cantidad"); calcularTotalRecibo();'];
+  calcultarValorUnitario = ['onchange','calcularValorTotal(this.id, "unitario"); calcularTotalRecibo();'];
 
   valorReciboCompra = ['','','',1,1,1,''];
 
@@ -91,9 +94,77 @@
       producto.opciones = ['','','','','',tipocalidad,'', '', '', '']; 
       producto.funciones  = ['','','','',calcultarValorCantidad,'','', calcultarValorUnitario, '', ''];
 
-    for(var j=0, k = reciboordencompra.length; j < k; j++)
+    for(var j=0, k = recibocompra.length; j < k; j++)
     {
-      producto.agregarCampos(JSON.stringify(reciboordencompra[j]),'L');
+      producto.agregarCampos(JSON.stringify(recibocompra[j]),'L');
+      calcularValorTotal(j, ''); 
+    }
+
+    ////////////////////////////
+    //R E S U L T A D O
+    ///////////////////////////
+
+      resultado = new Atributos('resultado','contenedor_resultado','resultados_');
+
+      resultado.altura = '35px';
+      resultado.campoid = 'idReciboCompraProducto';
+      resultado.campoEliminacion = 'eliminarReciboCompraProducto';
+      resultado.botonEliminacion = false;
+
+      resultado.campos   = [
+      'descripcionReciboCompraResultado',
+      'valorCompraReciboCompraResultado',
+      'valorReciboReciboCompraResultado',
+      'diferenciaReciboCompraResultado',
+      'porcentajeReciboCompraResultado',
+      'pesoReciboCompraResultado',
+      'resultadoReciboCompraResultado',
+      'idReciboCompraResultado',
+      'ReciboCompra_idReciboCompra'];
+
+      resultado.etiqueta = [
+      'input',
+      'input',
+      'input',
+      'input',
+      'input',
+      'input',
+      'input',
+      'input',
+      'input'];
+
+      resultado.tipo     = [
+      'text',
+      'text',
+      'text',
+      'text',
+      'text',
+      'text',
+      'text',
+      'hidden',
+      'hidden'];
+      
+      resultado.estilo   = [
+      'width: 200px;height:35px;',
+      'width: 200px;height:35px;',
+      'width: 200px; height:35px;',
+      'width: 100px;height:35px;',
+      'width: 100px;height:35px;',
+      'width: 100px;height:35px;',
+      'width: 100px;height:35px;',
+      '',
+      ''
+      ];
+
+      resultado.clase = ['','','','','','','','','']; 
+      resultado.sololectura = [true,true,true,true,false,false,true,false,true]; 
+      resultado.completar = ['off','off','off','off','off','off', 'off', 'off', 'off']; 
+      resultado.opciones = ['','','','','',tipocalidad,'', '', '']; 
+      resultado.funciones  = ['','','','',calcultarValorCantidad,'','', calcultarValorUnitario, ''];
+
+    for(var j=0, k = resultadocompra.length; j < k; j++)
+    {
+      resultado.agregarCampos(JSON.stringify(resultadocompra[j]),'L');
       calcularValorTotal(j, ''); 
     }
   });
@@ -212,7 +283,7 @@
         <div class="form-group">
           <div class="col-lg-12">
             <div class="panel panel-primary">
-              <div class="panel-heading">Reciboes</div>
+              <div class="panel-heading">Recibos</div>
               <div class="panel-body">
                 <div class="form-group" id='test'>
                   <div class="col-sm-12">
@@ -253,6 +324,28 @@
                 {!!Form::hidden('eliminarReciboCompraProducto', null, array('id' => 'eliminarReciboCompraProducto'))!!}
               </div>
             </div>
+
+            <div class="panel panel-primary">
+              <div class="panel-heading">Resultados</div>
+              <div class="panel-body">
+                <div class="form-group" id='test'>
+                  <div class="col-sm-12">
+                    <div class="row show-grid">
+                      <div class="col-md-1" style="width: 200px;display:inline-block;height:50px;">Resultado del recibo</div>
+                      <div class="col-md-1" style="width: 200px;display:inline-block;height:50px;">Orden de Compra</div>
+                      <div class="col-md-1" style="width: 200px;display:inline-block;height:50px;">Recibo</div>
+                      <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Diferencia</div>
+                      <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Porcentaje</div>
+                      <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Peso</div>
+                      <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Resultado</div>
+
+                      <div id="contenedor_resultado">
+                      </div>
+                    </div>
+                  </div>
+                </div>  
+            </div>
+
           </div>
         </div>
 

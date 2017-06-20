@@ -187,6 +187,7 @@ function abrirModalOrdenCompra()
             $("#Tercero_idProveedor").val(datos[0][3]);
 
             cargarProductos(datos[0][0]);
+            cargarRecibos(datos[0][3], datos[0][2]);
         }
 
         window.parent.$("#modalOrdenCompra").modal("hide");
@@ -216,6 +217,65 @@ function cargarProductos(idOrdenCompra)
                 window.parent.producto.agregarCampos(valores,'A');
             }
             calcularTotales();
+        },
+        error:    function(xhr,err){ 
+            alert("Error");
+        }
+    });
+}
+
+function cargarRecibos(idProveedor, fechaEstimada)
+{
+    var token = document.getElementById('token').value;
+
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        data: {'idProveedor': idProveedor},
+        url:   'http://'+location.host+'/cargarResultadoReciboOrdenCompra/',
+        type:  'post',
+        beforeSend: function(){
+            //Lo que se hace antes de enviar el formulario
+            },
+        success: function(respuesta){
+
+            $("#contenedor_resultado").html('');
+            for (var i = 0; i < respuesta.length; i++) 
+            {   
+                if(respuesta[i]['descripcionTipoProveedorEvaluacion'] == 'Fecha de Entrega')
+                {
+                    var fechaIni = fechaEstimada;
+                    var fechaFin = $("#fechaElaboracionReciboCompra").val();
+
+                    var fecha1 = new Date(fechaIni.substring(0,4),fechaIni.substring(5,7)-1);
+	                var fecha2 = new Date(fechaFin.substring(0,4),fechaFin.substring(5,7)-1);
+	                var diasDif = fecha2.getTime() - fecha1.getTime();
+	                var dias = Math.floor(diasDif/(1000 * 60 * 60 * 24));
+                    
+                    var valores = new Array(respuesta[i]['descripcionTipoProveedorEvaluacion'], fechaEstimada, $("#fechaElaboracionReciboCompra").val(), dias, 0, respuesta[i]['pesoTipoProveedorEvaluacion'], 0, '', '');
+                    window.parent.resultado.agregarCampos(valores,'A');
+                }
+                else if(respuesta[i]['descripcionTipoProveedorEvaluacion'] == 'Calidad')
+                {
+                    var valores = new Array(respuesta[i]['descripcionTipoProveedorEvaluacion'], 0, 0, 0, 0, respuesta[i]['pesoTipoProveedorEvaluacion'], 0, '', '');
+                    window.parent.resultado.agregarCampos(valores,'A');
+                }
+                else if(respuesta[i]['descripcionTipoProveedorEvaluacion'] == 'Cantidad')
+                {
+                    total = 0;
+                    for(var j = 0; j < producto.contador; j++)
+                    {
+                        total += parseFloat($("#cantidadOrdenCompraProducto"+j).val());
+                    }
+                    var valores = new Array(respuesta[i]['descripcionTipoProveedorEvaluacion'], total, 0, 0, 0, respuesta[i]['pesoTipoProveedorEvaluacion'], 0, '', '');
+                    window.parent.resultado.agregarCampos(valores,'A');
+                }
+                else if(respuesta[i]['descripcionTipoProveedorEvaluacion'] == 'Precio')
+                {
+                    var valores = new Array(respuesta[i]['descripcionTipoProveedorEvaluacion'], 0, 0, 0, 0, respuesta[i]['pesoTipoProveedorEvaluacion'], 0, '', '');
+                    window.parent.resultado.agregarCampos(valores,'A');
+                }
+            }
         },
         error:    function(xhr,err){ 
             alert("Error");
@@ -257,6 +317,56 @@ function calcularTotales()
     }
             
     $('#totalProducto', window.parent.document).val(total);
+}
+
+function calcularTotalRecibo()
+{
+    for(var i = 0; i < resultado.contador; i++)
+    {
+        if($("#descripcionReciboCompraResultado"+i).val() == 'Cantidad')
+        {
+            total = 0;
+            for(var j = 0; j < producto.contador; j++)
+            {
+                total += parseFloat($("#cantidadReciboCompraProducto"+j).val());
+            }
+
+            $("#valorReciboReciboCompraResultado"+i).val(total);
+            dif = parseFloat($("#valorCompraReciboCompraResultado"+i).val()) - parseFloat($("#valorReciboReciboCompraResultado"+i).val());
+            $("#diferenciaReciboCompraResultado"+i).val(dif);
+
+            porc = 1-(parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()));
+            $("#porcentajeReciboCompraResultado"+i).val(porc);
+
+            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
+            $("#resultadoReciboCompraResultado"+i).val(result);
+        }
+        // else if($("#descripcionReciboCompraResultado"+i).val() == 'Calidad')
+        // {
+
+        // }
+        else if($("#descripcionReciboCompraResultado"+i).val() == 'Precio')
+        {
+            totaloc = 0;
+            totalrecibo = 0;
+            for(var j = 0; j < producto.contador; j++)
+            {
+                totaloc += parseFloat($("#cantidadReciboCompraProducto"+j).val()) * parseFloat($("#valorUnitarioOrdenCompraProducto"+j).val());
+                totalrecibo += parseFloat($("#cantidadReciboCompraProducto"+j).val()) * parseFloat($("#valorUnitarioReciboCompraProducto"+j).val());
+            }
+            $("#valorCompraReciboCompraResultado"+i).val(totaloc);
+            $("#valorReciboReciboCompraResultado"+i).val(totalrecibo);
+
+            dif = parseFloat($("#valorCompraReciboCompraResultado"+i).val()) - parseFloat($("#valorReciboReciboCompraResultado"+i).val());
+            $("#diferenciaReciboCompraResultado"+i).val(dif);
+
+            porc = 1-(parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()));
+            $("#porcentajeReciboCompraResultado"+i).val(porc);
+
+            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
+            $("#resultadoReciboCompraResultado"+i).val(result);
+        }
+    }
 }
 
 function imprimirFormato(idOrdenCompra, idDocumentoCRM)
