@@ -14,11 +14,10 @@ class ActoInseguro extends Model
 
 	public $timestamps = false;
 
-// public function EntrevistaEducacion()
-// 	{
-// 		return $this->hasMany('App\EntrevistaEducacion','Entrevista_idEntrevista');
-//     }
-
+  public function ActoInseguroArchivo()
+    {
+        return $this->hasMany('App\ActoInseguroArchivo','ActoInseguro_idActoInseguro');
+    }
     
 }
 

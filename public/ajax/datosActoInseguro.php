@@ -38,9 +38,9 @@
         $row[$key][] = $actoinseguroC['idActoInseguro'];
         $row[$key][] = $actoinseguroC['EmpleadoReporta'];
         $row[$key][] = ($actoinseguroC['fechaElaboracionActoInseguro'] == '0000-00-00' ? "" : $actoinseguroC['fechaElaboracionActoInseguro']);
-        $row[$key][] = $actoinseguroC['estadoActoInseguro'];    
+        $row[$key][] = ($actoinseguroC['estadoActoInseguro'] == 'PLANACCION' ? "En Plan de Accion" : $actoinseguroC['estadoActoInseguro']);    
          // En la salida de la informacion se hace una condicion de que si tiene en 000-000  o no esta diligenciado el campo ,la fecha de ingreso mostrara en la grid el campo vacio.
-        $row[$key][] = ($actoinseguroC['fechaSolucionActoInseguro'] == '0000-00-00' ? "" : $actoinseguroC['fechaElaboracionActoInseguro']);
+        $row[$key][] = ($actoinseguroC['fechaSolucionActoInseguro'] == '0000-00-00' ? "" : $actoinseguroC['fechaSolucionActoInseguro']);
         $row[$key][] = $actoinseguroC['EmpleadoSoluciona'];
     }
 
