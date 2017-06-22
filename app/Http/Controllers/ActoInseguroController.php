@@ -92,7 +92,9 @@ class ActoInseguroController extends Controller
                 'consecuenciasActoInseguro' => $request['consecuenciasActoInseguro'],
                 'estadoActoInseguro' => $request['estadoActoInseguro'],
                 'fechaSolucionActoInseguro' => $request['fechaSolucionActoInseguro'],
-                'Tercero_idEmpleadoSoluciona' => ($request['Tercero_idEmpleadoSoluciona'] == '' ? NULL : $request['Tercero_idEmpleadoSoluciona'])
+                'Tercero_idEmpleadoSoluciona' => ($request['Tercero_idEmpleadoSoluciona'] == '' ? NULL : $request['Tercero_idEmpleadoSoluciona']),
+                'Compania_idCompania' => \Session::get('idCompania'),
+                'solucionActoInseguro' => $request['solucionActoInseguro']
                 ]);
 
          $actoinseguro = \App\ActoInseguro::All()->last();
@@ -235,6 +237,16 @@ class ActoInseguroController extends Controller
                     }
                 }
             }
+              // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarArchivo'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ActoInseguroArchivo::whereIn('idActoInseguroArchivo',$idsEliminar)->delete();
+            }
+
 
             // verificamos si es un plan de acción, insertamos un registro en el ACPM (Accion Correctiva)
             if($request['estadoActoInseguro'] == 'PLANACCION')

@@ -10,7 +10,7 @@ class ActoInseguro extends Model
     protected $table ='actoinseguro'; //la tabla siempre es en miniscula 
 	protected $primaryKey = 'idActoInseguro'; //camello
 	
-	protected $fillable = ['Tercero_idEmpleadoReporta','fechaElaboracionActoInseguro','descripcionActoInseguro','consecuenciasActoInseguro','estadoActoInseguro','fechaSolucionActoInseguro','Tercero_idEmpleadoSoluciona']; 
+	protected $fillable = ['Tercero_idEmpleadoReporta','fechaElaboracionActoInseguro','descripcionActoInseguro','consecuenciasActoInseguro','estadoActoInseguro','fechaSolucionActoInseguro','Tercero_idEmpleadoSoluciona','Compania_idCompania','solucionActoInseguro']; 
 
 	public $timestamps = false;
 

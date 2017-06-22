@@ -22,8 +22,8 @@
           LEFT JOIN tercero ter
           ON ter.idTercero = actin.Tercero_idEmpleadoReporta
           LEFT JOIN tercero tes
-          ON tes.idTercero = actin.Tercero_idEmpleadoSoluciona');
-            
+          ON tes.idTercero = actin.Tercero_idEmpleadoSoluciona
+          WHERE actin.Compania_idCompania = '.\Session::get('idCompania'));
     $row = array();
 
     foreach ($actoinseguro as $key => $value) 

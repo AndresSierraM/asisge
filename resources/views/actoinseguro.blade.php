@@ -10,6 +10,7 @@
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
 {!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
 
+
 	@if(isset($actoinseguro))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
 			{!!Form::model($actoinseguro,['route'=>['actoinseguro.destroy',$actoinseguro->idActoInseguro],'method'=>'DELETE'])!!}
@@ -92,6 +93,25 @@ $idActoInseguroS = (isset($actoinseguro) ? $actoinseguro->idActoInseguro : 0);
                                         <div class="col-sm-10 " style="width: 100%;">
                                           <div class="input-group">
                                             {!!Form::textarea('consecuenciasActoInseguro',null,['class'=>'ckeditor','placeholder'=>'Ingresa los objetivos'])!!}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>                                
+                                </div>
+                                <!-- Solucion acto inseguro -->
+                                <div class="panel panel-default">
+                                  <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                      <a data-toggle="collapse" data-parent="#accordion" href="#solucion">Soluci&#243;n</a>
+                                    </h4>
+                                  </div>
+                                  <div id="solucion" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                      <div class="form-group" id='test'>
+                                        <div class="col-sm-10 " style="width: 100%;">
+                                          <div class="input-group">
+                                            {!!Form::textarea('solucionActoInseguro',null,['class'=>'ckeditor','placeholder'=>'Ingresa los objetivos'])!!}
                                           </div>
                                         </div>
                                       </div>
@@ -225,7 +245,7 @@ $idActoInseguroS = (isset($actoinseguro) ? $actoinseguro->idActoInseguro : 0);
 
 <script>
 
- CKEDITOR.replace(('descripcionActoInseguro','consecuenciasActoInseguro'), {
+ CKEDITOR.replace(('descripcionActoInseguro','consecuenciasActoInseguro','solucionActoInseguro'), {
         fullPage: true,
         allowedContent: true
       }); 
