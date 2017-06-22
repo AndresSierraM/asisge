@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
+include public_path().'/ajax/consultarPermisos.php';
 
 class ReciboCompraController extends Controller
 {
@@ -17,7 +18,13 @@ class ReciboCompraController extends Controller
      */
     public function index()
     {
-        return view('recibocompragrid');
+        $vista = basename($_SERVER["PHP_SELF"]);
+        $datos = consultarPermisos($vista);
+
+        if($datos != null)
+            return view('recibocompragrid', compact('datos'));
+        else
+            return view('accesodenegado');
     }
 
     /**
@@ -97,14 +104,22 @@ class ReciboCompraController extends Controller
         $idTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('idTipoCalidad');
         $nombreTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreTipoCalidad');
 
-        $reciboCompraProducto = DB::Select('
-            SELECT idReciboCompraProducto, FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaOrdenCompraProducto, nombreFichaTecnica as descripcionOrdenCompraProducto, cantidadOrdenCompraProducto, TipoCalidad_idTipoCalidad, valorUnitarioReciboCompraProducto,
+        $reciboCompraProducto = DB::Select(
+            'SELECT idReciboCompraProducto, rcp.FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaReciboCompraProducto, nombreFichaTecnica as descripcionReciboCompraProducto, cantidadOrdenCompraProducto, cantidadReciboCompraProducto, TipoCalidad_idTipoCalidad, valorUnitarioOrdenCompraProducto, valorUnitarioReciboCompraProducto, cantidadReciboCompraProducto * valorUnitarioReciboCompraProducto as valorTotalReciboCompraProducto
             FROM recibocompraproducto rcp
-            LEFT JOIN fichatecnica ft ON ocp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
-            LEFT JOIN tipocalidad tc ON rcp.TipoCalidad_idTipoCalidad = tp.idTipoCalidad
+            LEFT JOIN fichatecnica ft ON rcp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
+            LEFT JOIN tipocalidad tc ON rcp.TipoCalidad_idTipoCalidad = tc.idTipoCalidad
+            LEFT JOIN recibocompra rc ON rcp.ReciboCompra_idReciboCompra = rc.idReciboCompra
+            LEFT JOIN ordencompra oc ON rc.OrdenCompra_idOrdenCompra = oc.idOrdenCompra
+            LEFT JOIN ordencompraproducto ocp ON oc.idOrdenCompra = ocp.OrdenCompra_idOrdenCompra
             WHERE ReciboCompra_idReciboCompra = '.$id);
 
-        return view('recibocompra',compact('reciboCompraProducto', 'idTipoCalidad', 'nombreTipoCalidad'), ['recibocompra' => $recibocompra]);
+        $resultadoCompra = DB::Select(
+            'SELECT idReciboCompraResultado, descripcionReciboCompraResultado, valorCompraReciboCompraResultado, valorReciboReciboCompraResultado,diferenciaReciboCompraResultado, porcentajeReciboCompraResultado, pesoReciboCompraResultado, resultadoReciboCompraResultado
+            FROM recibocompraresultado
+            WHERE ReciboCompra_idReciboCompra = '.$id);
+            
+        return view('recibocompra',compact('reciboCompraProducto', 'resultadoCompra', 'idTipoCalidad', 'nombreTipoCalidad'), ['recibocompra' => $recibocompra]);
     }
 
     /**
@@ -156,6 +171,26 @@ class ReciboCompraController extends Controller
             'valorUnitarioReciboCompraProducto' => $request['valorUnitarioReciboCompraProducto'][$i] );
 
             $guardar = \App\ReciboCompraProducto::updateOrCreate($indice, $data);
+
+        }
+
+        $contador = count($request['idReciboCompraResultado']);
+        for($i = 0; $i < $contador; $i++)
+        {
+            $indice = array(
+             'idReciboCompraResultado' => $request['idReciboCompraResultado'][$i]);
+
+            $data = array(
+            'ReciboCompra_idReciboCompra' => $id,
+            'descripcionReciboCompraResultado' => $request['descripcionReciboCompraResultado'][$i],
+            'valorCompraReciboCompraResultado' => $request['valorCompraReciboCompraResultado'][$i],
+            'valorReciboReciboCompraResultado' => $request['valorReciboReciboCompraResultado'][$i],
+            'diferenciaReciboCompraResultado' => $request['diferenciaReciboCompraResultado'][$i],
+            'porcentajeReciboCompraResultado' => $request['porcentajeReciboCompraResultado'][$i],
+            'pesoReciboCompraResultado' => $request['pesoReciboCompraResultado'][$i],
+            'resultadoReciboCompraResultado' => $request['resultadoReciboCompraResultado'][$i] );
+
+            $guardar = \App\ReciboCompraResultado::updateOrCreate($indice, $data);
 
         }
     }

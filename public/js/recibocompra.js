@@ -213,7 +213,7 @@ function cargarProductos(idOrdenCompra)
             $("#contenedor_recibo").html('');
             for (var i = 0; i < respuesta.length; i++) 
             {
-                var valores = new Array(respuesta[i]['idFichaTecnica'], respuesta[i]['referenciaFichaTecnica'], respuesta[i]['nombreFichaTecnica'], respuesta[i]['cantidadOrdenCompraProducto'], 0, '', respuesta[i]['valorUnitarioOrdenCompraProducto'], 0, 0, 0);
+                var valores = new Array(respuesta[i]['idFichaTecnica'], respuesta[i]['referenciaFichaTecnica'], respuesta[i]['nombreFichaTecnica'], respuesta[i]['cantidadOrdenCompraProducto'], 0, '', '', respuesta[i]['valorUnitarioOrdenCompraProducto'], 0, 0, 0);
                 window.parent.producto.agregarCampos(valores,'A');
             }
             calcularTotales();
@@ -335,16 +335,43 @@ function calcularTotalRecibo()
             dif = parseFloat($("#valorCompraReciboCompraResultado"+i).val()) - parseFloat($("#valorReciboReciboCompraResultado"+i).val());
             $("#diferenciaReciboCompraResultado"+i).val(dif);
 
-            porc = 1-(parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()));
+            porc = (parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()))*100;
             $("#porcentajeReciboCompraResultado"+i).val(porc);
 
             result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
             $("#resultadoReciboCompraResultado"+i).val(result);
         }
-        // else if($("#descripcionReciboCompraResultado"+i).val() == 'Calidad')
-        // {
+        else if($("#descripcionReciboCompraResultado"+i).val() == 'Calidad')
+        {
+            totalcalidadoc = 0;
+            totalcalidadrecibo = 0
+            // if($("#productoConformeTipoCalidad"+i).val() == 0)
+            // {
+                for(var j = 0; j < producto.contador; j++)
+                {
+                    totalcalidadoc += parseFloat($("#cantidadReciboCompraProducto"+j).val());
+                }
+                
+                for(var j = 0; j < producto.contador; j++)
+                {
+                    totalcalidadrecibo += parseFloat($("#cantidadReciboCompraProducto"+j).val());
+                }
+            // }
 
-        // }
+            alert(totalcalidadoc);
+            
+            $("#valorCompraReciboCompraResultado"+i).val(totalcalidadoc);
+            $("#valorReciboReciboCompraResultado"+i).val(totalcalidadrecibo);
+
+            dif = parseFloat($("#valorCompraReciboCompraResultado"+i).val()) - parseFloat($("#valorReciboReciboCompraResultado"+i).val());
+            $("#diferenciaReciboCompraResultado"+i).val(dif);
+
+            porc = (parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()))*100;
+            $("#porcentajeReciboCompraResultado"+i).val(porc);
+
+            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
+            $("#resultadoReciboCompraResultado"+i).val(result);
+        }
         else if($("#descripcionReciboCompraResultado"+i).val() == 'Precio')
         {
             totaloc = 0;
@@ -360,13 +387,38 @@ function calcularTotalRecibo()
             dif = parseFloat($("#valorCompraReciboCompraResultado"+i).val()) - parseFloat($("#valorReciboReciboCompraResultado"+i).val());
             $("#diferenciaReciboCompraResultado"+i).val(dif);
 
-            porc = 1-(parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()));
+            porc = (parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()))*100;
             $("#porcentajeReciboCompraResultado"+i).val(porc);
 
             result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
             $("#resultadoReciboCompraResultado"+i).val(result);
         }
     }
+}
+
+function consultarNoConformeTipoCalidad(registro, idTipoCalidad)
+{
+    // var token = document.getElementById('token').value;
+
+    // $.ajax({
+    //     headers: {'X-CSRF-TOKEN': token},
+    //     dataType: "json",
+    //     data: {'idTipoCalidad': idTipoCalidad},
+    //     url:   'http://'+location.host+'/consultarNoConformeTipoCalidad/',
+    //     type:  'post',
+    //     beforeSend: function(){
+    //         //Lo que se hace antes de enviar el formulario
+    //         },
+    //     success: function(respuesta){
+    //         reg = registro.replace("TipoCalidad_idTipoCalidad", "", registro);
+
+    //         $("#productoConformeTipoCalidad"+reg).val(respuesta['noConformeTipoCalidad'])
+    //         calcularTotalRecibo();
+    //     },
+    //     error:    function(xhr,err){ 
+    //         alert("Error");
+    //     }
+    // });
 }
 
 function imprimirFormato(idOrdenCompra, idDocumentoCRM)

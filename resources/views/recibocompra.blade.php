@@ -21,7 +21,7 @@
   var nombreTipoCalidad = '<?php echo isset($nombreTipoCalidad) ? $nombreTipoCalidad : "";?>';
   var tipocalidad = [JSON.parse(idTipoCalidad), JSON.parse(nombreTipoCalidad)];
 
-  var recibocompra = '<?php echo (isset($reciboCompra) ? json_encode($reciboCompra) : "");?>';
+  var recibocompra = '<?php echo (isset($reciboCompraProducto) ? json_encode($reciboCompraProducto) : "");?>';
   recibocompra = (recibocompra != '' ? JSON.parse(recibocompra) : '');
 
   var resultadocompra = '<?php echo (isset($resultadoCompra) ? json_encode($resultadoCompra) : "");?>';
@@ -29,6 +29,7 @@
 
   calcultarValorCantidad = ['onchange','calcularValorTotal(this.id, "cantidad"); calcularTotalRecibo();'];
   calcultarValorUnitario = ['onchange','calcularValorTotal(this.id, "unitario"); calcularTotalRecibo();'];
+  consultarNoConformeTipoCalidad = ['onchange','consultarNoConformeTipoCalidad(this.id, this.value); calcularTotalRecibo();'];
 
   valorReciboCompra = ['','','',1,1,1,''];
 
@@ -47,6 +48,7 @@
       'cantidadOrdenCompraProducto',
       'cantidadReciboCompraProducto',
       'TipoCalidad_idTipoCalidad',
+      'productoConformeTipoCalidad',
       'valorUnitarioOrdenCompraProducto',
       'valorUnitarioReciboCompraProducto',
       'valorTotalReciboCompraProducto',
@@ -62,6 +64,7 @@
       'input',
       'input',
       'input',
+      'input',
       'input'];
 
       producto.tipo     = [
@@ -70,8 +73,9 @@
       'text',
       'text',
       'text',
-      'text',
       '',
+      'hidden',
+      'text',
       'text',
       'text',
       'hidden'];
@@ -83,16 +87,17 @@
       'width: 100px;height:35px;',
       'width: 100px;height:35px;',
       'width: 100px;height:35px;',
+      '',
       'width: 100px;height:35px;',
       'width: 100px;height:35px;',
       'width: 100px;height:35px;',
       ''];
 
-      producto.clase = ['','','','','','','','','','']; 
-      producto.sololectura = [true,true,true,true,false,false,true,false,true,false]; 
-      producto.completar = ['off','off','off','off','off','off', 'off', 'off', 'off', 'off']; 
-      producto.opciones = ['','','','','',tipocalidad,'', '', '', '']; 
-      producto.funciones  = ['','','','',calcultarValorCantidad,'','', calcultarValorUnitario, '', ''];
+      producto.clase = ['','','','','','','','','','','']; 
+      producto.sololectura = [true,true,true,true,false,false,true,true,false,true,true]; 
+      producto.completar = ['off','off','off','off','off','off', 'off', 'off', 'off', 'off', 'off']; 
+      producto.opciones = ['','','','','',tipocalidad,'','', '', '', '']; 
+      producto.funciones  = ['','','','',calcultarValorCantidad,consultarNoConformeTipoCalidad,'','', calcultarValorUnitario, '', ''];
 
     for(var j=0, k = recibocompra.length; j < k; j++)
     {
@@ -107,7 +112,7 @@
       resultado = new Atributos('resultado','contenedor_resultado','resultados_');
 
       resultado.altura = '35px';
-      resultado.campoid = 'idReciboCompraProducto';
+      resultado.campoid = 'idReciboCompraResultado';
       resultado.campoEliminacion = 'eliminarReciboCompraProducto';
       resultado.botonEliminacion = false;
 

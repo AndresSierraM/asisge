@@ -535,6 +535,16 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosOrdenCompraModal.php';
     });
 
+    Route::get('datosReciboCompra', function()
+    {
+        include public_path().'/ajax/datosReciboCompra.php';
+    });
+
+    Route::post('consultarNoConformeTipoCalidad', function()
+    {
+        include public_path().'/ajax/consultarNoConformeTipoCalidad.php';
+    });
+
     Route::post('consultarPermisos', function()
     {
         include public_path().'/ajax/consultarPermisos.php';
