@@ -2,9 +2,11 @@
 
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -14,6 +16,11 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none;';
 
     $recibocompra = DB::Select(
         'SELECT idReciboCompra, numeroReciboCompra, numeroOrdenCompra, fechaElaboracionReciboCompra, fechaEstimadaOrdenCompra, fechaRealReciboCompra, estadoReciboCompra, name
@@ -30,6 +37,9 @@
                         '</a>&nbsp;'.
                         '<a href="recibocompra/'.$rc['idReciboCompra'].'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style="display: '.$visibleE.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a href="#" onclick="imprimirFormato('.$rc['idReciboCompra'].');">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $rc['idReciboCompra'];
         $row[$key][] = $rc['numeroReciboCompra'];

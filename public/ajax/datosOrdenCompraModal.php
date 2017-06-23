@@ -5,7 +5,8 @@ $oc = DB::Select('
         idOrdenCompra, numeroOrdenCompra, fechaEstimadaOrdenCompra, nombreCompletoTercero, idTercero
     from
         ordencompra oc
-    left join tercero t on oc.Tercero_idProveedor = t.idTercero');
+    left join tercero t on oc.Tercero_idProveedor = t.idTercero
+    where oc.Compania_idCompania = '.\Session::get('idCompania'));
 
 $row = array();
 

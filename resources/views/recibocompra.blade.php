@@ -29,7 +29,7 @@
 
   calcultarValorCantidad = ['onchange','calcularValorTotal(this.id, "cantidad"); calcularTotalRecibo();'];
   calcultarValorUnitario = ['onchange','calcularValorTotal(this.id, "unitario"); calcularTotalRecibo();'];
-  consultarNoConformeTipoCalidad = ['onchange','consultarNoConformeTipoCalidad(this.id, this.value); calcularTotalRecibo();'];
+  consultarNoConforme = ['onchange','consultarNoConformeTipoCalidad(this.id, this.value);'];
 
   valorReciboCompra = ['','','',1,1,1,''];
 
@@ -97,12 +97,13 @@
       producto.sololectura = [true,true,true,true,false,false,true,true,false,true,true]; 
       producto.completar = ['off','off','off','off','off','off', 'off', 'off', 'off', 'off', 'off']; 
       producto.opciones = ['','','','','',tipocalidad,'','', '', '', '']; 
-      producto.funciones  = ['','','','',calcultarValorCantidad,consultarNoConformeTipoCalidad,'','', calcultarValorUnitario, '', ''];
+      producto.funciones  = ['','','','',calcultarValorCantidad,consultarNoConforme,'','', calcultarValorUnitario, '', ''];
 
     for(var j=0, k = recibocompra.length; j < k; j++)
     {
       producto.agregarCampos(JSON.stringify(recibocompra[j]),'L');
       calcularValorTotal(j, ''); 
+      consultarNoConformeTipoCalidad('TipoCalidad_idTipoCalidad'+j,recibocompra[j]['TipoCalidad_idTipoCalidad']);
     }
 
     ////////////////////////////
@@ -113,7 +114,7 @@
 
       resultado.altura = '35px';
       resultado.campoid = 'idReciboCompraResultado';
-      resultado.campoEliminacion = 'eliminarReciboCompraProducto';
+      resultado.campoEliminacion = 'eliminarReciboCompraResultado';
       resultado.botonEliminacion = false;
 
       resultado.campos   = [
@@ -171,6 +172,8 @@
     {
       resultado.agregarCampos(JSON.stringify(resultadocompra[j]),'L');
       calcularValorTotal(j, ''); 
+      calcularTotales();
+
     }
   });
 </script>
@@ -200,7 +203,7 @@
           <span class="input-group-addon">
             <i class="fa fa-tasks"></i>
           </span>
-          {!!Form::text('numeroOrdenCompra',null,['class'=>'form-control', 'readonly', 'id' => 'numeroOrdenCompra'])!!}
+          {!!Form::text('numeroOrdenCompra',(isset($ordencompra) ? $ordencompra['numeroOrdenCompra'] : null),['class'=>'form-control', 'readonly', 'id' => 'numeroOrdenCompra'])!!}
           {!!Form::hidden('OrdenCompra_idOrdenCompra', null, array('id' => 'OrdenCompra_idOrdenCompra')) !!}
           <span class="input-group-addon" title="Adicionar orden de compra" style="cursor:pointer;" onclick="abrirModalOrdenCompra()">
             <i class="fa fa-file"></i>
@@ -228,7 +231,7 @@
           <span class="input-group-addon">
             <i class="fa fa-calendar"></i>
           </span>
-          {!!Form::text('fechaEstimadaReciboCompra',null,['class'=>'form-control', 'readonly'])!!}
+          {!!Form::text('fechaEstimadaReciboCompra',(isset($ordencompra) ? $ordencompra['fechaEstimadaReciboCompra'] : null),['class'=>'form-control', 'readonly'])!!}
         </div>
       </div>
     </div>
@@ -252,7 +255,7 @@
           <span class="input-group-addon">
             <i class="fa fa-user"></i>
           </span>
-          {!!Form::text('nombreProveedor',null,['class'=>'form-control', 'readonly', 'id' => 'nombreProveedor'])!!}
+          {!!Form::text('nombreProveedor',(isset($ordencompra) ? $ordencompra['nombreProveedor'] : null),['class'=>'form-control', 'readonly', 'id' => 'nombreProveedor'])!!}
           {!!Form::hidden('Tercero_idProveedor', (isset($ordencompra) ? $ordencompra['Tercero_idProveedor'] : null), array('id' => 'Tercero_idProveedor')) !!}
         </div>
       </div>
@@ -293,8 +296,7 @@
                 <div class="form-group" id='test'>
                   <div class="col-sm-12">
                     <div class="row show-grid">
-                      <div class="col-md-1" style="width: 40px;height: 50px; cursor: pointer;" onclick="producto.agregarCampos(valorReciboCompra,'A')">
-                        <span class="glyphicon glyphicon-plus"></span>
+                      <div class="col-md-1" style="width: 40px;height: 50px;">
                       </div>
                       <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Referencia</div>
                       <div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Descripción</div>
@@ -348,7 +350,21 @@
                       </div>
                     </div>
                   </div>
-                </div>  
+                </div> 
+
+                <div class="form-group col-md-6" id='test' style="display:inline-block">
+                  {!!Form::label('totalResultado', 'Valor Total Resultados: ', array('class' => 'col-sm-2 control-label')) !!}
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        <i class="fa fa-dollar"></i>
+                      </span>
+                      {!!Form::text('totalResultado',null,['class'=>'form-control','readonly', 'placeholder'=>''])!!}
+                    </div>
+                  </div>
+                </div>
+              </div>
+                  {!!Form::hidden('eliminarReciboCompraResultado', null, array('id' => 'eliminarReciboCompraResultado'))!!}
             </div>
 
           </div>

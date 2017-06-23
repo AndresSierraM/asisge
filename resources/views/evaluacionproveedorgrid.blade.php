@@ -1,8 +1,8 @@
 @extends('layouts.grid') 
-@section('titulo')<h3 class="pestana" id="titulo"><center>Recibo de Compra</h3>@stop
+@section('titulo')<h3 class="pestana" id="titulo"><center>Evaluación de Proveedor</h3>@stop
 @section('content')
 {!!Form::model($datos)!!}
-{!!Html::script('js/recibocompra.js'); !!}
+{!!Html::script('js/evaluacionproveedor.js'); !!}
 <style>
     tfoot input {
                 width: 100%;
@@ -46,31 +46,27 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> >Recibo</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Orden de Compra</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Elaboración</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Estimado de Entrega</label></a></li>
-                            <li><a class="toggle-vis" data-column="6"><label> Entrega Real</label></a></li>
-                            <li><a class="toggle-vis" data-column="7"><label> Estado</label></a></li>
-                            <li><a class="toggle-vis" data-column="8"><label> Elaborado por</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Proveedor</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Elaboración</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Fecha Inicial</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Fecha Final</label></a></li>
+                            <li><a class="toggle-vis" data-column="6"><label> Elaborador por</label></a></li>
                         </ul>
                     </div>
-                    <table id="trecibocompra" name="trecibocompra" class="display table-bordered" width="100%">
+                    <table id="tevaluacion" name="tevaluacion" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-primary active">
                                 <th style="width:60px;padding: 1px 8px;" data-orderable="false">
-                                <a href="recibocompra/create"><span style= "display: <?php echo $visible;?> color:white;" class="glyphicon glyphicon-plus"></span></a>
+                                <a href="evaluacionproveedor/create"><span style= "display: <?php echo $visible;?> color:white;" class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span style="color:white" class="glyphicon glyphicon-refresh"></span></a>
                                  <a><span class="glyphicon glyphicon-remove-sign" style="color:white; cursor:pointer;" id="btnLimpiarFiltros"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Recibo</b></th>
-                                <th><b>Orden de Compra</b></th>
+                                <th><b>Proveedor</b></th>
                                 <th><b>Elaboración</b></th>
-                                <th><b>Estimado de Entrega</b></th>
-                                <th><b>Entrega Real</b></th>
-                                <th><b>Estado</b></th>
-                                <th><b>Elaborado por</b></th>
+                                <th><b>Fecha Inicial</b></th>
+                                <th><b>Fecha Final</b></th>
+                                <th><b>Elaborador por</b></th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -79,13 +75,11 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Recibo</th>
-                                <th>Orden de Compra</th>
+                                <th>Proveedor</th>
                                 <th>Elaboración</th>
-                                <th>Estimado de Entrega</th>
-                                <th>Entrega Real</th>
-                                <th>Estado</th>
-                                <th>Elaborado por</th>
+                                <th>Fecha Inicial</th>
+                                <th>Fecha Final</th>
+                                <th>Elaborador por</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -99,22 +93,22 @@
     $(document).ready( function () {
 
         
-        /*$('#trecibocompra').DataTable({
+        /*$('#tevaluacion').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosReciboCompra')!!}",
+            "ajax": "{!! URL::to ('/datosEvaluacionProveedor')!!}",
         });*/
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
-        var table = $('#trecibocompra').DataTable( {
+        var table = $('#tevaluacion').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosReciboCompra?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
+            "ajax": "{!! URL::to ('/datosEvaluacionProveedor?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -151,7 +145,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#trecibocompra tbody')
+        $('#tevaluacion tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -166,15 +160,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#trecibocompra tfoot th').each( function () {
+    $('#tevaluacion tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#trecibocompra thead th').eq( $(this).index() ).text();
+        var title = $('#tevaluacion thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#trecibocompra').DataTable();
+    var table = $('#tevaluacion').DataTable();
  
     // Apply the search
     table.columns().every( function () {

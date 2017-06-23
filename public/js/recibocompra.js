@@ -1,17 +1,19 @@
 function validarFormulario(event)
 {
-    var route = "http://"+location.host+"/ordencompra";
+    var route = "http://"+location.host+"/recibocompra";
     var token = $("#token").val();
-    var dato0 = document.getElementById('idOrdenCompra').value;
-    var dato1 = document.getElementById('sitioEntregaOrdenCompra').value;
-    var dato2 = document.getElementById('fechaElaboracionOrdenCompra').value;
-    var dato3 = document.getElementById('fechaEstimadaOrdenCompra').value;
-    var dato4 = document.getElementById('Tercero_idProveedor').value;
-    var dato5 = document.getElementById('estadoReciboOrdenCompra').value;
+    var dato0 = document.getElementById('idReciboCompra').value;
+    var dato1 = document.getElementById('fechaRealReciboCompra').value;
+    var datoTipoCalidad = document.querySelectorAll("[name='TipoCalidad_idTipoCalidad[]']");
+    var dato2 = [];
     
     var valor = '';
     var sw = true;
     
+    for(var j=0,i=datoTipoCalidad.length; j<i;j++)
+    {
+        dato2[j] = datoTipoCalidad[j].value;
+    }
 
     $.ajax({
         async: false,
@@ -20,12 +22,9 @@ function validarFormulario(event)
         type: 'POST',
         dataType: 'json',
         data: {respuesta: 'falso',
-                idOrdenCompra: dato0,
-                sitioEntregaOrdenCompra: dato1,
-                fechaElaboracionOrdenCompra: dato2,
-                fechaEstimadaOrdenCompra: dato3,
-                Tercero_idProveedor: dato4,
-                estadoReciboOrdenCompra: dato5
+                idReciboCompra: dato0,
+                fechaRealReciboCompra: dato1,
+                TipoCalidad_idTipoCalidad: dato2
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -45,15 +44,12 @@ function validarFormulario(event)
                 sw = true;
                 respuesta = JSON.parse(respuesta);
 
-                (typeof msj.responseJSON.sitioEntregaOrdenCompra === "undefined" ? document.getElementById('sitioEntregaOrdenCompra').style.borderColor = '' : document.getElementById('sitioEntregaOrdenCompra').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.fechaRealReciboCompra === "undefined" ? document.getElementById('fechaRealReciboCompra').style.borderColor = '' : document.getElementById('fechaRealReciboCompra').style.borderColor = '#a94442');
 
-                (typeof msj.responseJSON.fechaElaboracionOrdenCompra === "undefined" ? document.getElementById('fechaElaboracionOrdenCompra').style.borderColor = '' : document.getElementById('fechaElaboracionOrdenCompra').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.fechaEstimadaOrdenCompra === "undefined" ? document.getElementById('fechaEstimadaOrdenCompra').style.borderColor = '' : document.getElementById('fechaEstimadaOrdenCompra').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.Tercero_idProveedor === "undefined" ? document.getElementById('Tercero_idProveedor').style.borderColor = '' : document.getElementById('Tercero_idProveedor').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.estadoReciboOrdenCompra === "undefined" ? document.getElementById('estadoReciboOrdenCompra').style.borderColor = '' : document.getElementById('estadoReciboOrdenCompra').style.borderColor = '#a94442');
+                for(var j=0,i=datoTipoCalidad.length; j<i;j++)
+                {
+                    (typeof respuesta['TipoCalidad_idTipoCalidad'+j] === "undefined" ? document.getElementById('TipoCalidad_idTipoCalidad'+j).style.borderColor = '' : document.getElementById('TipoCalidad_idTipoCalidad'+j).style.borderColor = '#a94442');
+                }
                 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
@@ -239,6 +235,13 @@ function cargarRecibos(idProveedor, fechaEstimada)
             },
         success: function(respuesta){
 
+            ids = '';
+            for (var i = 0; i < resultado.contador; i++) 
+            {
+                ids += $("#idReciboCompraResultado"+i).val()+',';
+            }
+            $("#eliminarReciboCompraResultado").val(ids);
+
             $("#contenedor_resultado").html('');
             for (var i = 0; i < respuesta.length; i++) 
             {   
@@ -297,26 +300,33 @@ function calcularValorTotal(registro, tipo)
 
     valor = parseFloat($("#cantidadReciboCompraProducto"+reg).val()) * parseFloat($("#valorUnitarioReciboCompraProducto"+reg).val());
 
-    $("#valorTotalReciboCompraProducto"+reg).val(valor)
-
-    calcularTotales();
-    
+    $("#valorTotalReciboCompraProducto"+reg).val(valor)    
 }
 
 function calcularTotales()
 {
-    total = 0;
+    totalrecibo = 0;
+    totalproducto = 0;
 
     for (var i = 0; i < window.parent.producto.contador; i++) 
     {
         if(typeof $("#valorTotalReciboCompraProducto"+i, window.parent.document).val() != 'undefined' &&
             $("#valorTotalReciboCompraProducto"+i, window.parent.document).val() > 0)
         {
-            total += parseFloat($("#valorTotalReciboCompraProducto"+i, window.parent.document).val());
+            totalrecibo += parseFloat($("#valorTotalReciboCompraProducto"+i, window.parent.document).val());
+        }
+    }
+
+    for(var i = 0; i < resultado.contador; i++)
+    {
+        if(typeof $("#resultadoReciboCompraResultado"+i, window.parent.document).val() != 'undefined')
+        {
+            totalproducto += parseFloat($("#resultadoReciboCompraResultado"+i, window.parent.document).val());
         }
     }
             
-    $('#totalProducto', window.parent.document).val(total);
+    $('#totalProducto', window.parent.document).val(totalrecibo);
+    $('#totalResultado', window.parent.document).val(totalproducto);
 }
 
 function calcularTotalRecibo()
@@ -345,20 +355,19 @@ function calcularTotalRecibo()
         {
             totalcalidadoc = 0;
             totalcalidadrecibo = 0
-            // if($("#productoConformeTipoCalidad"+i).val() == 0)
-            // {
-                for(var j = 0; j < producto.contador; j++)
-                {
-                    totalcalidadoc += parseFloat($("#cantidadReciboCompraProducto"+j).val());
-                }
-                
-                for(var j = 0; j < producto.contador; j++)
-                {
+            
+            for(var j = 0; j < producto.contador; j++)
+            {
+                totalcalidadoc += parseFloat($("#cantidadReciboCompraProducto"+j).val());
+            }
+
+            for(var j = 0; j < producto.contador; j++)
+            {
+                if($("#productoConformeTipoCalidad"+j).val() == 0 && $("#productoConformeTipoCalidad"+j).val() != '' && $("#productoConformeTipoCalidad"+j).val() != 1)
+                {   
                     totalcalidadrecibo += parseFloat($("#cantidadReciboCompraProducto"+j).val());
                 }
-            // }
-
-            alert(totalcalidadoc);
+            }
             
             $("#valorCompraReciboCompraResultado"+i).val(totalcalidadoc);
             $("#valorReciboReciboCompraResultado"+i).val(totalcalidadrecibo);
@@ -369,7 +378,7 @@ function calcularTotalRecibo()
             porc = (parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()))*100;
             $("#porcentajeReciboCompraResultado"+i).val(porc);
 
-            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
+            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) * parseFloat($("#pesoReciboCompraResultado"+i).val())/100;
             $("#resultadoReciboCompraResultado"+i).val(result);
         }
         else if($("#descripcionReciboCompraResultado"+i).val() == 'Precio')
@@ -390,38 +399,40 @@ function calcularTotalRecibo()
             porc = (parseFloat($("#diferenciaReciboCompraResultado"+i).val()) / parseFloat($("#valorCompraReciboCompraResultado"+i).val()))*100;
             $("#porcentajeReciboCompraResultado"+i).val(porc);
 
-            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) - parseFloat($("#pesoReciboCompraResultado"+i).val());
+            result = parseFloat($("#porcentajeReciboCompraResultado"+i).val()) * parseFloat($("#pesoReciboCompraResultado"+i).val())/100;
             $("#resultadoReciboCompraResultado"+i).val(result);
         }
     }
+
+    calcularTotales();
 }
 
 function consultarNoConformeTipoCalidad(registro, idTipoCalidad)
 {
-    // var token = document.getElementById('token').value;
+    var token = document.getElementById('token').value;
 
-    // $.ajax({
-    //     headers: {'X-CSRF-TOKEN': token},
-    //     dataType: "json",
-    //     data: {'idTipoCalidad': idTipoCalidad},
-    //     url:   'http://'+location.host+'/consultarNoConformeTipoCalidad/',
-    //     type:  'post',
-    //     beforeSend: function(){
-    //         //Lo que se hace antes de enviar el formulario
-    //         },
-    //     success: function(respuesta){
-    //         reg = registro.replace("TipoCalidad_idTipoCalidad", "", registro);
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        data: {'idTipoCalidad': idTipoCalidad},
+        url:   'http://'+location.host+'/consultarNoConformeTipoCalidad/',
+        type:  'post',
+        beforeSend: function(){
+            //Lo que se hace antes de enviar el formulario
+            },
+        success: function(respuesta){
+            reg = registro.replace("TipoCalidad_idTipoCalidad", "", registro);
+            $("#productoConformeTipoCalidad"+reg).val(respuesta[0]['noConformeTipoCalidad']);
 
-    //         $("#productoConformeTipoCalidad"+reg).val(respuesta['noConformeTipoCalidad'])
-    //         calcularTotalRecibo();
-    //     },
-    //     error:    function(xhr,err){ 
-    //         alert("Error");
-    //     }
-    // });
+            calcularTotalRecibo();
+        },
+        error:    function(xhr,err){ 
+            alert("Error");
+        }
+    });
 }
 
-function imprimirFormato(idOrdenCompra, idDocumentoCRM)
+function imprimirFormato(idReciboCompra)
 {
-    window.open('ordencompra/'+idOrdenCompra+'?idDocumentoCRM='+idDocumentoCRM+'&accion=imprimir','ordencompra','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    window.open('recibocompra/'+idReciboCompra+'?idReciboCompra='+idReciboCompra+'&accion=imprimir','ordencompra','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
 }

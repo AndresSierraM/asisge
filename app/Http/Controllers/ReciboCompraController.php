@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\ReciboCompraRequest;
 use App\Http\Controllers\Controller;
 use DB;
 include public_path().'/ajax/consultarPermisos.php';
@@ -61,23 +62,26 @@ class ReciboCompraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReciboCompraRequest $request)
     {
-        \App\ReciboCompra::Create([
-            'numeroReciboCompra' => $request['numeroReciboCompra'],
-            'OrdenCompra_idOrdenCompra' => $request['OrdenCompra_idOrdenCompra'],
-            'fechaElaboracionReciboCompra' => $request['fechaElaboracionReciboCompra'],
-            'fechaRealReciboCompra' => $request['fechaRealReciboCompra'],
-            'Users_idCrea' => $request['Users_idCrea'],
-            'estadoReciboCompra' => $request['estadoReciboCompra'],
-            'observacionReciboCompra' => $request['observacionReciboCompra']
-        ]);
+        if($request['respuesta'] != 'falso')
+        {    
+            \App\ReciboCompra::Create([
+                'numeroReciboCompra' => $request['numeroReciboCompra'],
+                'OrdenCompra_idOrdenCompra' => $request['OrdenCompra_idOrdenCompra'],
+                'fechaElaboracionReciboCompra' => $request['fechaElaboracionReciboCompra'],
+                'fechaRealReciboCompra' => $request['fechaRealReciboCompra'],
+                'Users_idCrea' => $request['Users_idCrea'],
+                'estadoReciboCompra' => $request['estadoReciboCompra'],
+                'observacionReciboCompra' => $request['observacionReciboCompra']
+            ]);
 
-        $recibocompra = \App\ReciboCompra::All()->last();
+            $recibocompra = \App\ReciboCompra::All()->last();
 
-        $this->grabarDetalle($request, $recibocompra->idReciboCompra);
+            $this->grabarDetalle($request, $recibocompra->idReciboCompra);
 
-        return view('recibocompra');
+            return redirect('recibocompra');
+        }
     }
 
     /**
@@ -86,9 +90,32 @@ class ReciboCompraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $recibocompra = DB::Select(
+            'SELECT numeroReciboCompra, numeroOrdenCompra, fechaElaboracionReciboCompra, fechaEstimadaOrdenCompra, fechaRealReciboCompra, nombreCompletoTercero, name, estadoReciboCompra, observacionReciboCompra
+            FROM recibocompra rc 
+            LEFT JOIN ordencompra oc ON rc.OrdenCompra_idOrdenCompra = oc.idOrdenCompra
+            LEFT JOIN tercero t ON oc.Tercero_idProveedor = t.idTercero
+            LEFT JOIN users u ON rc.Users_idCrea = u.id
+            WHERE idReciboCompra = '.$id);
+
+        $recibocompraproducto = DB::Select(
+            'SELECT idReciboCompraProducto, rcp.FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaReciboCompraProducto, nombreFichaTecnica as descripcionReciboCompraProducto, cantidadOrdenCompraProducto, cantidadReciboCompraProducto, nombreTipoCalidad, TipoCalidad_idTipoCalidad, valorUnitarioOrdenCompraProducto, valorUnitarioReciboCompraProducto, cantidadReciboCompraProducto * valorUnitarioReciboCompraProducto as valorTotalReciboCompraProducto
+            FROM recibocompraproducto rcp
+            LEFT JOIN fichatecnica ft ON rcp.FichaTecnica_idFichaTecnica = ft.idFichaTecnica
+            LEFT JOIN tipocalidad tc ON rcp.TipoCalidad_idTipoCalidad = tc.idTipoCalidad
+            LEFT JOIN recibocompra rc ON rcp.ReciboCompra_idReciboCompra = rc.idReciboCompra
+            LEFT JOIN ordencompra oc ON rc.OrdenCompra_idOrdenCompra = oc.idOrdenCompra
+            LEFT JOIN ordencompraproducto ocp ON oc.idOrdenCompra = ocp.OrdenCompra_idOrdenCompra
+            WHERE ReciboCompra_idReciboCompra = '.$id);
+
+        $recibocompraresultado = DB::Select(
+            'SELECT idReciboCompraResultado, descripcionReciboCompraResultado, valorCompraReciboCompraResultado, valorReciboReciboCompraResultado,diferenciaReciboCompraResultado, porcentajeReciboCompraResultado, pesoReciboCompraResultado, resultadoReciboCompraResultado
+            FROM recibocompraresultado
+            WHERE ReciboCompra_idReciboCompra = '.$id);
+
+            return view('formatos.recibocompraimpresion', compact('recibocompra','recibocompraproducto','recibocompraresultado'));
     }
 
     /**
@@ -103,6 +130,14 @@ class ReciboCompraController extends Controller
 
         $idTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('idTipoCalidad');
         $nombreTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=',\Session::get('idCompania'))->lists('nombreTipoCalidad');
+
+        $oc = DB::Select(
+        'SELECT numeroOrdenCompra, fechaEstimadaOrdenCompra as fechaEstimadaReciboCompra, Tercero_idProveedor, nombreCompletoTercero as nombreProveedor
+        FROM ordencompra oc 
+        LEFT JOIN tercero t ON oc.Tercero_idProveedor = t.idTercero
+        WHERE idOrdenCompra = '.$recibocompra->OrdenCompra_idOrdenCompra);
+
+        $ordencompra = get_object_vars($oc[0]);
 
         $reciboCompraProducto = DB::Select(
             'SELECT idReciboCompraProducto, rcp.FichaTecnica_idFichaTecnica, referenciaFichaTecnica as referenciaReciboCompraProducto, nombreFichaTecnica as descripcionReciboCompraProducto, cantidadOrdenCompraProducto, cantidadReciboCompraProducto, TipoCalidad_idTipoCalidad, valorUnitarioOrdenCompraProducto, valorUnitarioReciboCompraProducto, cantidadReciboCompraProducto * valorUnitarioReciboCompraProducto as valorTotalReciboCompraProducto
@@ -119,7 +154,7 @@ class ReciboCompraController extends Controller
             FROM recibocompraresultado
             WHERE ReciboCompra_idReciboCompra = '.$id);
             
-        return view('recibocompra',compact('reciboCompraProducto', 'resultadoCompra', 'idTipoCalidad', 'nombreTipoCalidad'), ['recibocompra' => $recibocompra]);
+        return view('recibocompra',compact('ordencompra' ,'reciboCompraProducto', 'resultadoCompra', 'idTipoCalidad', 'nombreTipoCalidad'), ['recibocompra' => $recibocompra]);
     }
 
     /**
@@ -129,15 +164,18 @@ class ReciboCompraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ReciboCompraRequest $request, $id)
     {
-        $recibocompra = \App\ReciboCompra::find($id);
-        $recibocompra->fill($request->all());
-        $recibocompra->save();
+        if($request['respuesta'] != 'falso')
+        {    
+            $recibocompra = \App\ReciboCompra::find($id);
+            $recibocompra->fill($request->all());
+            $recibocompra->save();
 
-        $this->grabarDetalle($request, $id);
+            $this->grabarDetalle($request, $id);
 
-        return view('recibocompra');
+            return redirect('recibocompra');
+        }
     }
 
     /**
@@ -174,6 +212,8 @@ class ReciboCompraController extends Controller
 
         }
 
+        $idsEliminar = explode(',', $request['eliminarReciboCompraResultado']);
+        \App\ReciboCompraResultado::whereIn('idReciboCompraResultado',$idsEliminar)->delete();
         $contador = count($request['idReciboCompraResultado']);
         for($i = 0; $i < $contador; $i++)
         {

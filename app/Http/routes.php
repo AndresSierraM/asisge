@@ -193,6 +193,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('tipoproveedor','TipoProveedorController');
     Route::resource('ordencompra','OrdenCompraController');
     Route::resource('recibocompra','ReciboCompraController');
+    Route::resource('evaluacionproveedor','EvaluacionProveedorController');
 
     // *************************************************
     //
@@ -543,6 +544,16 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('consultarNoConformeTipoCalidad', function()
     {
         include public_path().'/ajax/consultarNoConformeTipoCalidad.php';
+    });
+
+    Route::post('cargarResultadoProveedor', function()
+    {
+        include public_path().'/ajax/cargarResultadoProveedor.php';
+    });
+
+    Route::get('datosEvaluacionProveedor', function()
+    {
+        include public_path().'/ajax/datosEvaluacionProveedor.php';
     });
 
     Route::post('consultarPermisos', function()
