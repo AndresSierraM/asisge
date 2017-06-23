@@ -31,7 +31,9 @@
         $visible = 'none;';
     }
 ?>
-        <div class="container">
+
+    <!-- Se hace una mejora agregando a la grid un col-sm para ver en celular con un overflow auto -->
+        <div class="container col-sm-12" style="overflow: auto;">
             <div class="row">
                 <div class="container">
                     <br>
