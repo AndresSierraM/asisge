@@ -7,54 +7,9 @@
 <!-- {!!Html::script('js/diagnostico.js')!!} -->
   <script>
 
-    // var diagnosticoDetalle = '<?php echo (isset($preguntas) ? json_encode($preguntas) : "");?>';
-
-    // diagnosticoDetalle = (diagnosticoDetalle != '' ? JSON.parse(diagnosticoDetalle) : '');
-    // var valorPermisos = [0,'','',0,0,0,0];
+     // var Diagnostico = '<?php echo (isset($diagnostico) ? json_encode($diagnostico) : "");?>';
 
     $(document).ready(function(){
-
-        // creamos los titulos del detalle por cada grupo de preguntas
-        // titulos = new Titulos('Titdiagnostico','Titcontenedor_diagnostico','Titdiagnostico_');
-        // titulos.texto   = ['Pregunta', 'Puntuacion', 'Resultado','Acción de Mejora'];
-        // titulos.estilo   = ['width: 500px;', 'width: 100px;',     'width: 100px;',  'width: 420px;'];
-        // titulos.clase   = ['col-md-1','col-md-1','col-md-1','col-md-1'];
-
-        // // creamos los campos del detalle por cada pregunta, en los cuales solo se llenan 3 campos
-        // // puntuacion (digitado por el susuario de 1 a 5 )
-        // // resultado, calculado por el sistema (resultado = puntuacion * 20  expresado como porcentaje)
-        // // mejora (digitado por le usuario, editor de texto libre)
-        // diagnostico = new Atributos('diagnostico','Titcontenedor_diagnostico','diagnostico_');
-        // diagnostico.campos   = ['DiagnosticoPregunta_idDiagnosticoPregunta',  'detalleDiagnosticoPregunta', 'puntuacionDiagnosticoDetalle',   'resultadoDiagnosticoDetalle','mejoraDiagnosticoDetalle'];
-        // diagnostico.etiqueta = ['input',                                      'textarea',                   'input',                          'input',                      'textarea'];
-        // diagnostico.tipo     = ['hidden',                                     'textarea',                   'text',                           'text',                       'textarea'];
-        // diagnostico.estilo   = ['',                                           
-        //                         'vertical-align:top; resize:none; font-size:10px; width: 500px; height:60px;', 
-        //                         'vertical-align:top; text-align: center; width: 100px;  height:60px;',
-        //                         'vertical-align:top; text-align: center; width: 100px;  height:60px;',
-        //                         'vertical-align:top; resize:none; font-size:10px; width: 420px; height:60px;'];
-        // diagnostico.clase    = ['','','','',''];
-        // var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"]; 
-        // diagnostico.funciones  = ['','','','',quitacarac]; 
-        // diagnostico.sololectura = [false,true,false,true,false];
-        // diagnostico.calculo = [false,false,true,false,false];
-
-        // // hacemos un rompimiento de control para agrupar las preguntas
-        // grupo = '';
-        // for(var j=0, k = diagnosticoDetalle.length; j < k; j++)
-        // {
-        //   // cada que cambie el grupo de preguntas, ponemos titulos
-        //   if(grupo != diagnosticoDetalle[j]["nombreDiagnosticoGrupo"])
-        //   {
-        //     grupo = diagnosticoDetalle[j]["nombreDiagnosticoGrupo"];
-
-        //     // llena los titulos de preguntas
-        //     titulos.agregarTitulos(diagnosticoDetalle[j]["idDiagnosticoGrupo"], grupo);
-        //   }
-        //   // llena los campos de preguntas
-        //   diagnostico.agregarCampos(JSON.stringify(diagnosticoDetalle[j]),'L', diagnosticoDetalle[j]["idDiagnosticoGrupo"]);
-        // }
-        // document.getElementById('registros').value = j ;
 
 
     });
@@ -62,15 +17,6 @@
     
   </script>
 
-	@if(isset($diagnostico))
-		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($diagnostico,['route'=>['diagnostico.destroy',$diagnostico->idDiagnostico],'method'=>'DELETE', 'files' => true])!!}
-		@else
-			{!!Form::model($diagnostico,['route'=>['diagnostico.update',$diagnostico->idDiagnostico],'method'=>'PUT', 'files' => true])!!}
-		@endif
-	@else
-		{!!Form::open(['route'=>'diagnostico.store','method'=>'POST', 'files' => true])!!}
-	@endif
 
 
 <div id='form-section' >
@@ -84,8 +30,8 @@
                 <i class="fa fa-barcode"></i>
               </span>
               {!!Form::text('codigoDiagnostico',null,['class'=>'form-control','placeholder'=>'Ingresa el codigo del diagnostico 2'])!!}
-              {!! Form::hidden('idDiagnostico', null, array('id' => 'idDiagnostico')) !!}
-              {!! Form::hidden('registros', 0, array('id' => 'registros')) !!}
+             <!--  {!! Form::hidden('idDiagnostico', null, array('id' => 'idDiagnostico')) !!}
+              {!! Form::hidden('registros', 0, array('id' => 'registros')) !!} -->
               <input type="hidden" id="token" value="{{csrf_token()}}"/>
             </div>
           </div>
@@ -190,8 +136,100 @@
               </div>
             </div>
           </div>
+          <!-- Div para el armado de la tabla Dinamica -->
+          <div class="panel-body">
+            <div class="form-group" id='test'>
+              <div id="diagnostico2" class="col-sm-12">
+                  <!-- Se pregunta si existe la variable que se manda desde el contraroller -->
+              <?php 
+                if (isset($diagnostico)) 
+                {
+                                
+               $datos = array();
+               // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
+                   for ($i = 0, $c = count($diagnostico); $i < $c; ++$i) 
+                   {
+                      $datos[$i] = (array) $diagnostico[$i];
+                      
+                   }
 
-          <table class="table table-striped table-bordered" width="100%" cellpadding="0" cellspacing="0" bordercolor="#000000">
+                echo '<table  class="table table-striped table-bordered table-hover">';
+                $i = 0;
+                // Se crea una variable que a llevar el total de los registros contados
+                $total = count($diagnostico);
+
+
+                // Ciclo principal que recorre toda la consulta, Que hace el primer rompimiento, "Nivel 1 de tabla diagnostico"
+
+                // El primer while va hacer el primer Rompimiento que se va a encargar en devolver los titulos.
+                while ($i < $total)   
+                {
+                 $niveles = $datos[$i]['tituloDiagnosticoNivel1'];
+
+                   echo '
+                  <thead class="thead-inverse">  
+                      <tr class="table-info">
+                     <th colspan="20" style=" background-color:#255986; color:white;">'.$datos[$i]['tituloDiagnosticoNivel1'].'</th>                
+                    </tr>                  
+                  </thead>';
+
+                // se hace rompimiento de aca en adelante para los demas niveles  
+                while ($i < $total and $niveles == $datos[$i]["tituloDiagnosticoNivel1"])
+                  {
+                      // dentro de acada while se va crear una variable que contenga almenos el titulo para comprarlo con el sigueinte
+                      $nivel2 = $datos[$i]['tituloDiagnosticoNivel2'];
+                      echo '
+                        <thead class="thead-inverse">  
+                          <tr class="table-info">
+                          <th colspan="20" style=" background-color:#1B43AB; color:white;">'.$datos[$i]['tituloDiagnosticoNivel2'].'('.$datos[$i]['valorDiagnosticoNivel2'].'%)'.'</th>                
+                          </tr>
+                          
+                        </thead>';    
+
+                         while ($i < $total and $nivel2 == $datos[$i]["tituloDiagnosticoNivel2"])
+                        {
+                            $nivel3 = $datos[$i]['tituloDiagnosticoNivel3'];
+                            echo '
+                          <thead class="thead-inverse">  
+                            <tr class="table-info">
+                            <th colspan="20" style=" background-color:#041F64; color:white;">'.$datos[$i]['tituloDiagnosticoNivel3'].'('.$datos[$i]['valorDiagnosticoNivel3'].'%)'.'</th>                
+                            </tr>                          
+                          </thead>';
+
+                          while ($i < $total and $nivel3 == $datos[$i]["tituloDiagnosticoNivel3"])
+                            {
+                              $nivel4 = $datos[$i]['tituloDiagnosticoNivel4'];
+                              echo '
+                              <tbody>
+
+                                    <tr>
+                                      <td style=" background-color:#058451; color:white;">'.$datos[$i]['numeroDiagnosticoNivel4'].' '.$datos[$i]['tituloDiagnosticoNivel4'].'</td>
+                                      <td style=" background-color:#058451; color:white;">'.$datos[$i]['valorDiagnosticoNivel4'].'</td>
+                                      <td><select name="select" >
+                                        <option value="CUMPLE">Cumple</option> 
+                                        <option value="NOCUMPLE" selected>No Cumple</option>
+                                        <option value="NOAPLICA">No Aplica</option>
+                                      </select></td>
+                                      <td>resultado</td>
+                                      <td><textarea name="textarea"></textarea></td>                              
+                                    </tr>                                   
+                                  </tbody
+                              </thead>';
+                              $i++;
+                              //al final del ultimo while tiene que haber una virable incremental í++
+                            }  
+
+                        }  
+                    }    
+                }
+                echo '</table>';
+                }
+
+               ?>              
+              </div>
+            </div>
+          </div>
+  <!--         <table class="table table-striped table-bordered" width="100%" cellpadding="0" cellspacing="0" bordercolor="#000000">
             <tbody>
             <th>1.Planeacion</th>
               <tr>
@@ -286,9 +324,9 @@
                 <td colspan="5"> RESULTADO RECUSSOS</td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
     </fieldset>
-	@if(isset($diagnostico))
+<!-- 	@if(isset($diagnostico))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
       @<?php else: ?>
@@ -296,7 +334,7 @@
       @endif
   @else
          {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
-  @endif
+  @endif -->
   
   
 

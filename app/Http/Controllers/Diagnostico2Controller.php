@@ -45,8 +45,26 @@ class Diagnostico2Controller extends Controller
         //     ->orderBy('ordenDiagnosticoPregunta', 'ASC')
             //->skip(0)->take(3)
             // ->get();
+        $diagnostico = DB::select('
+        SELECT diag1.idDiagnosticoNivel1,diag1.numeroDiagnosticoNivel1,diag1.tituloDiagnosticoNivel1,diag2.numeroDiagnosticoNivel2,
+        diag2.tituloDiagnosticoNivel2,diag2.valorDiagnosticoNivel2,diag3.numeroDiagnosticoNivel3,diag3.tituloDiagnosticoNivel3,
+        diag3.valorDiagnosticoNivel3,diag4.numeroDiagnosticoNivel4,diag4.tituloDiagnosticoNivel4,diag4.valorDiagnosticoNivel4
+        FROM
+          diagnosticonivel1 diag1
+          LEFT JOIN diagnosticonivel2 diag2
+          ON diag2.DiagnosticoNivel1_idDiagnosticoNivel1 = diag1.idDiagnosticoNivel1
+          LEFT JOIN diagnosticonivel3 diag3
+          ON diag3.DiagnosticoNivel2_idDiagnosticoNivel2 = diag2.idDiagnosticoNivel2
+          LEFT JOIN diagnosticonivel4 diag4
+          ON diag4.DiagnosticoNivel3_idDiagnosticoNivel3 = diag3.idDiagnosticoNivel3
+          ORDER BY idDiagnosticoNivel1 ASC,idDiagnosticoNivel2 ASC,idDiagnosticoNivel3 ASC,idDiagnosticoNivel4 ASC,tituloDiagnosticoNivel1,tituloDiagnosticoNivel2,tituloDiagnosticoNivel3,tituloDiagnosticoNivel4');
+        // Se organiza por un order By que sean ascendetes los id de las tablas para que cuando se visualice se vea tal cual en la tabla 
 
-        return view('diagnostico2',compact(''));
+
+
+      
+
+        return view('diagnostico2',compact('diagnostico'));
     }
 
     /**
