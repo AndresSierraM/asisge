@@ -46,7 +46,7 @@ class Diagnostico2Controller extends Controller
             //->skip(0)->take(3)
             // ->get();
         $diagnostico = DB::select('
-        SELECT diag1.idDiagnosticoNivel1,diag1.numeroDiagnosticoNivel1,diag1.tituloDiagnosticoNivel1,diag2.numeroDiagnosticoNivel2,
+        SELECT diag1.idDiagnosticoNivel1,diag2.idDiagnosticoNivel2,diag1.numeroDiagnosticoNivel1,diag1.tituloDiagnosticoNivel1,diag2.numeroDiagnosticoNivel2,
         diag2.tituloDiagnosticoNivel2,diag2.valorDiagnosticoNivel2,diag3.numeroDiagnosticoNivel3,diag3.tituloDiagnosticoNivel3,
         diag3.valorDiagnosticoNivel3,diag4.numeroDiagnosticoNivel4,diag4.tituloDiagnosticoNivel4,diag4.valorDiagnosticoNivel4
         FROM

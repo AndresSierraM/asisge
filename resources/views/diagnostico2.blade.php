@@ -7,7 +7,7 @@
 <!-- {!!Html::script('js/diagnostico.js')!!} -->
   <script>
 
-     // var Diagnostico = '<?php echo (isset($diagnostico) ? json_encode($diagnostico) : "");?>';
+     
 
     $(document).ready(function(){
 
@@ -164,64 +164,106 @@
                 // El primer while va hacer el primer Rompimiento que se va a encargar en devolver los titulos.
                 while ($i < $total)   
                 {
-                 $niveles = $datos[$i]['tituloDiagnosticoNivel1'];
+                   $niveles = $datos[$i]['tituloDiagnosticoNivel1'];
+                   
 
-                   echo '
-                  <thead class="thead-inverse">  
-                      <tr class="table-info">
-                     <th colspan="20" style=" background-color:#255986; color:white;">'.$datos[$i]['tituloDiagnosticoNivel1'].'</th>                
-                    </tr>                  
-                  </thead>';
+                     echo '
+                    <thead class="thead-inverse">  
+                        <tr class="table-info">
+                       <th colspan="20" style=" background-color:#255986; color:white;">'.$datos[$i]['numeroDiagnosticoNivel1'].'. '.$datos[$i]['tituloDiagnosticoNivel1'].'</th>                
+                      </tr>                                    
+                    </thead>';
 
-                // se hace rompimiento de aca en adelante para los demas niveles  
-                while ($i < $total and $niveles == $datos[$i]["tituloDiagnosticoNivel1"])
-                  {
-                      // dentro de acada while se va crear una variable que contenga almenos el titulo para comprarlo con el sigueinte
-                      $nivel2 = $datos[$i]['tituloDiagnosticoNivel2'];
-                      echo '
-                        <thead class="thead-inverse">  
-                          <tr class="table-info">
-                          <th colspan="20" style=" background-color:#1B43AB; color:white;">'.$datos[$i]['tituloDiagnosticoNivel2'].'('.$datos[$i]['valorDiagnosticoNivel2'].'%)'.'</th>                
-                          </tr>
+
+                  
+                  // se hace rompimiento de aca en adelante para los demas niveles  
+                  while ($i < $total and $niveles == $datos[$i]["tituloDiagnosticoNivel1"])
+                    {
+                        // dentro de acada while se va crear una variable que contenga almenos el titulo para comprarlo con el sigueinte
+                        $nivel2 = $datos[$i]['tituloDiagnosticoNivel2'];
+                        $porcnivel2 = $datos[$i]['valorDiagnosticoNivel2'];
+                        echo '
+                          <thead class="thead-inverse">  
+                            <tr class="table-info">
+                            <th colspan="20" style=" background-color:#1B43AB; color:white;">'.$datos[$i]['tituloDiagnosticoNivel2'].'('.$datos[$i]['valorDiagnosticoNivel2'].'%)'.'</th>                
+                            </tr>                            
+                          </thead>';    
+
                           
-                        </thead>';    
+                           while ($i < $total and $nivel2 == $datos[$i]["tituloDiagnosticoNivel2"])
+                            {
 
-                         while ($i < $total and $nivel2 == $datos[$i]["tituloDiagnosticoNivel2"])
-                        {
-                            $nivel3 = $datos[$i]['tituloDiagnosticoNivel3'];
+                                $nivel3 = $datos[$i]['tituloDiagnosticoNivel3'];
+                                echo '
+                              <thead class="thead-inverse">  
+                                <tr class="table-info">
+                                <th colspan="20" style=" background-color:#041F64; color:white;">'.$datos[$i]['tituloDiagnosticoNivel3'].'('.$datos[$i]['valorDiagnosticoNivel3'].'%)'.'</th>                
+                                </tr>                          
+                              </thead>';
+                            
+                              while ($i < $total and $nivel3 == $datos[$i]["tituloDiagnosticoNivel3"])
+                                {
+                                  
+                                  $nivel4 = $datos[$i]['tituloDiagnosticoNivel4'];
+                                  // se ocultan los 2 id de dianostico nivel 1 y 2 para saber en que linea va al momento de hacer la suma del valor 
+                                  echo '
+                                  <tbody>
+
+                                        <tr>
+                                          <td style=" background-color:#058451; color:white;">'.$datos[$i]['numeroDiagnosticoNivel4'].' '.$datos[$i]['tituloDiagnosticoNivel4'].'</td>
+                                          <td style=" background-color:#058451;"><input type="text" id="valor'.$i.'" name="valor[]" value="'.$datos[$i]['valorDiagnosticoNivel4'].'" readonly="readonly">                                          
+                                          <input type="hidden" id="idDiagnosticoNivel1" name="idDiagnosticoNivel1" value="'.$datos[$i]["idDiagnosticoNivel1"].'" >
+                                          <input type="hidden" id="idDiagnosticoNivel2" name="idDiagnosticoNivel2" value="'.$datos[$i]["idDiagnosticoNivel2"].'" >
+                                    
+                                          </td>
+                                          <td><select id="estadodiagnostico'.$i.'" name="estadodiagnostico[]" onchange="calcularResultado('.$i.');">
+                                            <option value="CUMPLE">Cumple</option> 
+                                            <option value="NOCUMPLE" selected>No Cumple</option>
+                                            <option value="NOAPLICA">No Aplica</option>
+                                          </select></td>
+                                          <td><input type="text" id="resultado'.$i.'" name="resultado[]" value="0" readonly="readonly">                                          
+                                          </td>
+                                          <td><textarea  id="observacioneDiagnostico'.$i.'" type="textarea" name="observacioneDiagnostico[]"></textarea></td>                              
+                                        </tr> 
+
+                                      </tbody
+                                  </thead>';
+                                  $i++;
+                                  //al final del ultimo while tiene que haber una virable incremental í++
+                                }      
+                              
+                            } 
+                            // RESULTADO DE NIVEL 2 
                             echo '
                           <thead class="thead-inverse">  
                             <tr class="table-info">
-                            <th colspan="20" style=" background-color:#041F64; color:white;">'.$datos[$i]['tituloDiagnosticoNivel3'].'('.$datos[$i]['valorDiagnosticoNivel3'].'%)'.'</th>                
-                            </tr>                          
+                            <th colspan="3" style=" background-color:#1B43AB; color:white;">RESULTADO  '.$nivel2.'('.$porcnivel2.'%)'.'</th>
+                            <th><input type="text" id="resultadonivel2" name="resultadonivel2[]" value="0" readonly="readonly"></th>                
+                            </tr>                            
                           </thead>';
+                      }
+                      // aca termina eel nivel 1 se podria poner un espacio en blanco 
+                       echo '
+                    <thead class="thead-inverse">  
+                        <tr class="table-info">
+                       <th colspan="3" style=" background-color:#255986; color:white;">RESULTADO '.$niveles.' (PUNTAJE MÁXIMO 25%)</th>
+                       <th><input type="text" id="resultadonivel3" name="resultadonivel3[]" value="0" readonly="readonly"></th>              
+                      </tr>
+                      <tr class="table-info">
+                       <th colspan="20" >&nbsp;</th>                
+                      </tr>                                    
+                    </thead>'; 
+                } 
+                // RESULTADO FINAL
 
-                          while ($i < $total and $nivel3 == $datos[$i]["tituloDiagnosticoNivel3"])
-                            {
-                              $nivel4 = $datos[$i]['tituloDiagnosticoNivel4'];
-                              echo '
-                              <tbody>
-
-                                    <tr>
-                                      <td style=" background-color:#058451; color:white;">'.$datos[$i]['numeroDiagnosticoNivel4'].' '.$datos[$i]['tituloDiagnosticoNivel4'].'</td>
-                                      <td style=" background-color:#058451; color:white;">'.$datos[$i]['valorDiagnosticoNivel4'].'</td>
-                                      <td><select name="select" >
-                                        <option value="CUMPLE">Cumple</option> 
-                                        <option value="NOCUMPLE" selected>No Cumple</option>
-                                        <option value="NOAPLICA">No Aplica</option>
-                                      </select></td>
-                                      <td>resultado</td>
-                                      <td><textarea name="textarea"></textarea></td>                              
-                                    </tr>                                   
-                                  </tbody
-                              </thead>';
-                              $i++;
-                              //al final del ultimo while tiene que haber una virable incremental í++
-                            }  
-
-                        }  
-                    }    
-                }
+                 echo '
+                    <thead class="thead-inverse">  
+                       <tr class="table-info">
+                       <th colspan="4" style=" background-color:gray; color:white;">RESULTADO DIAGNÓSTICO</th>
+                       <th><input type="text" id="asd" name="as[]" value="0" readonly="readonly" onchange="asd>
+                       </th>                
+                      </tr>                                                        
+                    </thead>';              
                 echo '</table>';
                 }
 
@@ -229,102 +271,6 @@
               </div>
             </div>
           </div>
-  <!--         <table class="table table-striped table-bordered" width="100%" cellpadding="0" cellspacing="0" bordercolor="#000000">
-            <tbody>
-            <th>1.Planeacion</th>
-              <tr>
-                <td colspan="2">Estándar</td>
-                <th>Item del estandar</th>
-                <th>Valor</th>
-                <th>Calificación</th>
-                <th>Resultado Item</th>
-                <th>Observaciones</th>
-              </tr>
-              <tr>
-                <td rowspan="11">Recursos</td>
-                <td rowspan="8" style="width:20px">Recursos financieros, técnicos,  humanos y de otra índole requeridos para coordinar y desarrollar el Sistema de Gestión de la Seguridad y la Salud en el Trabajo (SG-SST) (4%)</td>
-                <td>1.1.1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.2</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.3</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.4</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.5</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.6</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.7</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.1.8</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td rowspan="3"> Capacitación en el Sistema de Gestión de la Seguridad y la Salud en el Trabajo (6%)</td>
-                <td>1.2.1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.2.2</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>1.2.3</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td colspan="5"> RESULTADO RECUSSOS</td>
-              </tr>
-            </tbody>
-          </table> -->
     </fieldset>
 <!-- 	@if(isset($diagnostico))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
@@ -346,6 +292,33 @@
         $('#fechaElaboracionDiagnostico').datetimepicker(({
       format: "YYYY-MM-DD"
     }));
+
+      function calcularResultado(linea)
+      {
+
+          // tomamos el valor de la lista seleccionado por el usuario
+          var lista = $("#estadodiagnostico"+linea).val();
+
+          // dependiendo del valor devolvemos un resultado en el input correspondiente
+          // si NO CUMPLE el valor es cero (0), de lo contrario es el mismo valor del campo Valor
+          if(lista == 'NOCUMPLE')
+              $("#resultado"+linea).val(0);
+          else
+              $("#resultado"+linea).val($("#valor"+linea).val());          
+      }
+      // Se calcula el resultado solamente del nivel 2 que es solo sumar el resultado
+      function calcularResultadoNivel2()
+      {
+        $variable = 0;
+        $variable += $resultado[$i]
+
+        for (var i = 0; i < resultado.contador; i++) 
+        {
+          $("#resultado"+[i]).val();
+        }
+        $("#resultado"+[i]).val($("#valor"+linea).val()); 
+      }
+
 
   </script>
 
