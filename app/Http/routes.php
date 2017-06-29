@@ -492,6 +492,18 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/consultarFichaTecnicaMaterial.php';
     });
+    Route::get('consultarOrdenProduccionProceso', function()
+    {
+        include public_path().'/ajax/consultarOrdenProduccionProceso.php';
+    });
+    Route::get('consultarOrdenTrabajoPendiente', function()
+    {
+        include public_path().'/ajax/consultarOrdenTrabajoPendiente.php';
+    });
+    Route::get('consultarOrdenTrabajoOperaciones', function()
+    {
+        include public_path().'/ajax/consultarOrdenTrabajoOperaciones.php';
+    });
     Route::get('datosFactura', function()
     {
         include public_path().'/ajax/datosFactura.php';

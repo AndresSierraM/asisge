@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
- use App\Http\Requests\OrdenTrabajoRequest;
+//use App\Http\Requests\OrdenTrabajoRequest;
 
 //use Intervention\Image\ImageManagerStatic as Image;
 use Input;
@@ -56,8 +56,14 @@ class OrdenTrabajoController extends Controller
     public function create()
     {
         $ordenproduccion = \App\OrdenProduccion::where('Compania_idCompania','=', \Session::get('idCompania'))->where('estadoOrdenProduccion','!=','Cerrada')->lists('numeroOrdenProduccion','idOrdenProduccion');
+        $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
+        $idTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTipoCalidad');
+        $nombreTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoCalidad');
+        $operacion = \App\OrdenTrabajoOperacion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idOrdenTrabajoDetalle', 
+                    'TipoCalidad_idTipoCalidad',
+                    'cantidadOrdenTrabajoDetalle');
 
-        return view('ordentrabajo', compact('ordenproduccion'));
+        return view('ordentrabajo', compact('ordenproduccion','proceso','idTipoCalidad','nombreTipoCalidad','operacion'));
     }
 
     
@@ -67,9 +73,9 @@ class OrdenTrabajoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(OrdenTrabajoRequest $request)
+    public function store(Request $request)
     {
-        if($request['respuesta'] != 'falso')
+        //if($request['respuesta'] != 'falso')
         {
         
             $numero = DB::select(
@@ -86,13 +92,9 @@ class OrdenTrabajoController extends Controller
             \App\OrdenTrabajo::create([
                 'numeroOrdenTrabajo' => $numero,
                 'fechaElaboracionOrdenTrabajo' => $request['fechaElaboracionOrdenTrabajo'],
-                'Tercero_idCliente' => $request['Tercero_idCliente'],
-                'numeroPedidoOrdenTrabajo' => $request['numeroPedidoOrdenTrabajo'],
-                'prioridadOrdenTrabajo' => $request['prioridadOrdenTrabajo'],
-                'fechaMaximaEntregaOrdenTrabajo' => ($request['fechaMaximaEntregaOrdenTrabajo'] == '' ? null : $request['fechaMaximaEntregaOrdenTrabajo']),
-                'FichaTecnica_idFichaTecnica' => $request['FichaTecnica_idFichaTecnica'],
-                'especificacionOrdenTrabajo' => ($request['especificacionOrdenTrabajo'] == '' ? null : $request['especificacionOrdenTrabajo']),
-                'cantidadOrdenTrabajo' => 0,
+                'OrdenProduccion_idOrdenProduccion' => $request['OrdenProduccion_idOrdenProduccion'],
+                'Proceso_idProceso' => $request['Proceso_idProceso'],
+                'cantidadOrdenTrabajo' => $request['cantidadOrdenTrabajo'],
                 'estadoOrdenTrabajo' => $request['estadoOrdenTrabajo'],
                 'observacionOrdenTrabajo' => ($request['observacionOrdenTrabajo'] == '' ? null : $request['observacionOrdenTrabajo']),
 
@@ -101,6 +103,7 @@ class OrdenTrabajoController extends Controller
 
             $ordentrabajo = \App\OrdenTrabajo::All()->last();
 
+            $this->grabarDetalle($ordentrabajo->idOrdenTrabajo, $request);
 
             return redirect('/ordentrabajo');
         }
@@ -126,13 +129,27 @@ class OrdenTrabajoController extends Controller
     public function edit($id)
     {
         $ordentrabajo = \App\OrdenTrabajo::find($id);
-
-       
-
         $ordenproduccion = \App\OrdenProduccion::where('Compania_idCompania','=', \Session::get('idCompania'))->where('estadoOrdenProduccion','!=','Cerrada')->lists('numeroOrdenProduccion','idOrdenProduccion');
+        $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
+        $idTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTipoCalidad');
+        $nombreTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoCalidad');
+        $detalle = DB::select(
+            'SELECT idOrdenTrabajoDetalle, 
+                    TipoCalidad_idTipoCalidad,
+                    cantidadOrdenTrabajoDetalle
+                FROM ordentrabajodetalle
+                WHERE OrdenTrabajo_idOrdenTrabajo = '. $id );
 
-        
-        return view('ordentrabajo', ['ordentrabajo'=>$ordentrabajo], compact('ordenproduccion'));
+        $operacion = DB::select(
+            'SELECT idOrdenTrabajoOperacion,
+                    ordenOrdenTrabajoOperacion, 
+                    nombreOrdenTrabajoOperacion, 
+                    samOrdenTrabajoOperacion
+                FROM ordentrabajooperacion
+                WHERE OrdenTrabajo_idOrdenTrabajo = '. $id );
+
+        //$detalle = $this->convertirArray($detalle);
+        return view('ordentrabajo', ['ordentrabajo'=>$ordentrabajo], compact('ordenproduccion','proceso','idTipoCalidad','nombreTipoCalidad','detalle','operacion'));
     }
 
     /**
@@ -142,15 +159,15 @@ class OrdenTrabajoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(OrdenTrabajoRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        if($request['respuesta'] != 'falso')
+        //if($request['respuesta'] != 'falso')
         {
             $ordentrabajo = \App\OrdenTrabajo::find($id);
             $ordentrabajo->fill($request->all());
             $ordentrabajo->save();
 
-            //$this->grabarDetalle($id, $request);
+            $this->grabarDetalle($id, $request);
 
             
            return redirect('/ordentrabajo');
@@ -173,51 +190,45 @@ class OrdenTrabajoController extends Controller
      public function grabarDetalle($id, $request)
     {
         // -----------------------------------
-        // PROCESOS
+        // DETALLE
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
         // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
         // -----------------------------------
-        $idsEliminar = explode(',', $request['eliminarProceso']);
-        \App\OrdenTrabajoProceso::whereIn('idOrdenTrabajoProceso',$idsEliminar)->delete();
+        $idsEliminar = explode(',', $request['eliminarDetalle']);
+        \App\OrdenTrabajoDetalle::whereIn('idOrdenTrabajoDetalle',$idsEliminar)->delete();
 
-        $contador = count($request['idOrdenTrabajoProceso']);
+        $contador = count($request['idOrdenTrabajoDetalle']);
         for($i = 0; $i < $contador; $i++)
         {
             $indice = array(
-             'idOrdenTrabajoProceso' => $request['idOrdenTrabajoProceso'][$i]);
+             'idOrdenTrabajoDetalle' => $request['idOrdenTrabajoDetalle'][$i]);
 
             $data = array(
             'OrdenTrabajo_idOrdenTrabajo' => $id,
-            'ordenOrdenTrabajoProceso' => $request['ordenOrdenTrabajoProceso'][$i],
-            'Proceso_idProceso' => $request['Proceso_idProceso'][$i],
-            'observacionOrdenTrabajoProceso' => $request['observacionOrdenTrabajoProceso'][$i] );
+            'TipoCalidad_idTipoCalidad' => $request['TipoCalidad_idTipoCalidad'][$i],
+            'cantidadOrdenTrabajoDetalle' => $request['cantidadOrdenTrabajoDetalle'][$i] );
 
-            $guardar = \App\OrdenTrabajoProceso::updateOrCreate($indice, $data);
+            $guardar = \App\OrdenTrabajoDetalle::updateOrCreate($indice, $data);
 
         }
 
 
         // -----------------------------------
-        // MATERIALES
-        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
-        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        // OPERACIONES
         // -----------------------------------
-        $idsEliminar = explode(',', $request['eliminarMaterial']);
-        \App\OrdenTrabajoMaterial::whereIn('idOrdenTrabajoMaterial',$idsEliminar)->delete();
-
-        $contador = count($request['idOrdenTrabajoMaterial']);
+        $contador = count($request['idOrdenTrabajoOperacion']);
         for($i = 0; $i < $contador; $i++)
         {
             $indice = array(
-             'idOrdenTrabajoMaterial' => $request['idOrdenTrabajoMaterial'][$i]);
+             'idOrdenTrabajoOperacion' => $request['idOrdenTrabajoOperacion'][$i]);
 
             $data = array(
             'OrdenTrabajo_idOrdenTrabajo' => $id,
-            'FichaTecnica_idMaterial' => $request['FichaTecnica_idMaterial'][$i],
-            'consumoUnitarioOrdenTrabajoMaterial' => $request['consumoUnitarioOrdenTrabajoMaterial'][$i],
-            'consumoTotalOrdenTrabajoMaterial' => $request['consumoTotalOrdenTrabajoMaterial'][$i]);
+            'ordenOrdenTrabajoOperacion' => $request['ordenOrdenTrabajoOperacion'][$i],
+            'nombreOrdenTrabajoOperacion' => $request['nombreOrdenTrabajoOperacion'][$i],
+            'samOrdenTrabajoOperacion' => $request['samOrdenTrabajoOperacion'][$i]);
 
-            $guardar = \App\OrdenTrabajoMaterial::updateOrCreate($indice, $data);
+            $guardar = \App\OrdenTrabajoOperacion::updateOrCreate($indice, $data);
 
         }
 
