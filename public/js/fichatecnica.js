@@ -13,6 +13,7 @@ function llamarsublinea(id, valor)
         beforeSend: function(){},
         success: function(data)
         {
+            
             /* cuando reciba la consulta, va a tomar el nombre de la lista de sublineas*/
             $('#SublineaProducto_idSublineaProducto').html('');
             var select = document.getElementById('SublineaProducto_idSublineaProducto');
@@ -23,15 +24,13 @@ function llamarsublinea(id, valor)
             option.text = 'Seleccione';
             select.appendChild(option);
             //Recorre los registros de sublineas para irlos  creando como opciones en esa lista
-            for (var i = 0;  i <= data.length; i++) 
+            for (var i = 0;  i < data.length; i++) 
             {
 
                 option = document.createElement('option');
                 option.value = data[i]['idSublineaProducto'];
                 option.text = data[i]['nombreSublineaProducto'];
-
                 option.selected = (valor == data[i]['idSublineaProducto'] ? true : false);
-
                 select.appendChild(option);
             }
 
@@ -188,12 +187,8 @@ AtributosNota.prototype.borrarTodosCampos = function(){
 
 
 $(document).ready(function(){ 
-// Se crea la variable para cuando la sublinea ya exista
-sublineas = "<?php echo @$sublineaproducto->LineaProducto_idLineaProducto;?>";
-if ($("#LineaProducto_idLineaProducto").length > 0  && $("#LineaProducto_idLineaProducto").val() !== '') 
-{
-    llamarsublinea($("#LineaProducto_idLineaProducto").val(),sublinea);
-}
+
+
 
 
 

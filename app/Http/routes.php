@@ -69,6 +69,8 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('diagnostico2', 'Diagnostico2Controller');
+    Route::resource('actoinseguro', 'ActoInseguroController');
     Route::resource('cambiopassword', 'CambioPasswordController');
     Route::resource ('centrocosto','CentroCostoController');
     Route::resource ('parametrogestionhumana','ParametroGestionHumanaController');
@@ -191,6 +193,8 @@ Route::group(['middleware' => 'auth'], function ()
     // *************************************
     Route::resource('tipoproveedor','TipoProveedorController');
     Route::resource('ordencompra','OrdenCompraController');
+    Route::resource('recibocompra','ReciboCompraController');
+    Route::resource('evaluacionproveedor','EvaluacionProveedorController');
 
     // *************************************************
     //
@@ -535,6 +539,35 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/cargarProductosOrdenCompra.php';
     });
 
+    Route::post('cargarResultadoReciboOrdenCompra', function()
+    {
+        include public_path().'/ajax/cargarResultadoReciboOrdenCompra.php';
+    });
+
+    Route::get('datosOrdenCompraModal', function()
+    {
+        include public_path().'/ajax/datosOrdenCompraModal.php';
+    });
+
+    Route::get('datosReciboCompra', function()
+    {
+        include public_path().'/ajax/datosReciboCompra.php';
+    });
+
+    Route::post('consultarNoConformeTipoCalidad', function()
+    {
+        include public_path().'/ajax/consultarNoConformeTipoCalidad.php';
+    });
+
+    Route::post('cargarResultadoProveedor', function()
+    {
+        include public_path().'/ajax/cargarResultadoProveedor.php';
+    });
+
+    Route::get('datosEvaluacionProveedor', function()
+    {
+        include public_path().'/ajax/datosEvaluacionProveedor.php';
+    });
 
     Route::post('consultarPermisos', function()
     {
@@ -645,6 +678,10 @@ Route::group(['middleware' => 'auth'], function ()
     // ---------------------------------
 
 
+    Route::get('datosActoInseguro', function()
+    {
+        include public_path().'/ajax/datosActoInseguro.php';
+    });
     Route::get('datosDiagnostico', function()
     {
         include public_path().'/ajax/datosDiagnostico.php';

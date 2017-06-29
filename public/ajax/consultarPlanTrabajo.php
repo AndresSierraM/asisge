@@ -16,6 +16,13 @@ $informe = '';
         return $meses[$mes];
     }
 
+    function nombreMesMinuscula($fecha)
+    {
+        $mes = (int) date("m", strtotime($fecha));
+        $meses = array('', 'enero','febrero','marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
+        return $meses[$mes];
+    }
+
     function buscarTerceroExamen($idTercero, $idExamen, $datos)
     {
         $pos = -1;
@@ -80,7 +87,7 @@ $informe = '';
                 Aus.Compania_idCompania = '.$idCompania .' 
             group by Aus.Tercero_idTercero;');
 
-        return imprimirTabla('Accidente', $accidente, 'accidente', $fechaInicial, $fechaFinal);
+        return imprimirTabla('Accidente', $accidente, 'accidente', $fechaInicial, $fechaFinal, 3);
 	}
 
     // -------------------------------------------
@@ -131,7 +138,7 @@ $informe = '';
             Where  PA.Compania_idCompania = '.$idCompania .' 
             group by idPlanAuditoriaAgenda;');
 
-            return imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $fechaInicial, $fechaFinal);
+            return imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria', $fechaInicial, $fechaFinal, 32);
 	}
 
 
@@ -187,7 +194,7 @@ $informe = '';
             Where  PC.Compania_idCompania = '.$idCompania .'
             group by idPlanCapacitacion');
 
-            return imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $fechaInicial, $fechaFinal);
+            return imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion', $fechaInicial, $fechaFinal, 36);
 	}
 
     // -------------------------------------------
@@ -232,7 +239,7 @@ $informe = '';
             Where  P.Compania_idCompania = '.$idCompania .' 
             Group by idPrograma');
 
-            return imprimirTabla('Programas', $programa, 'programa', $fechaInicial, $fechaFinal);   
+            return imprimirTabla('Programas', $programa, 'programa', $fechaInicial, $fechaFinal, 40);   
 	}
 
     // -------------------------------------------
@@ -341,7 +348,7 @@ $informe = '';
 
         $examen = DB::Select(
             '   SELECT idTercero, idTipoExamenMedico,  fechaCreacionCompania, 
-                       EM.fechaExamenMedico
+                       EM.fechaExamenMedico, idExamenMedico
                 FROM tercero T
                 left join terceroinformacion TI
                 on T.idTercero = TI.Tercero_idTercero
@@ -372,6 +379,8 @@ $informe = '';
         {
             $registro = get_object_vars($examen[$i]);
             $pos = buscarTerceroExamen($registro["idTercero"], $registro["idTipoExamenMedico"], $datos);
+
+            $datos[$pos]['idConcepto'] = $registro["idExamenMedico"];
 
             // CUMPLIMIENTO
            if($registro["fechaExamenMedico"] != '0000-00-00' and 
@@ -421,6 +430,8 @@ $informe = '';
                                             <th>Presupuesto</th>
                                             <th>Costo Real</th>
                                             <th>Cumplimiento</th>
+                                            <th>Meta</th>
+                                            <th>Observación</th>
                                         </tr>
                                         </thead>
                                         <tbody>';
@@ -428,8 +439,18 @@ $informe = '';
                                         { 
                                             $tabla .= 
                                             '<tr align="center">
-                                            <th scope="row">'.$datos[$i]["Nombre"].'</th>
-                                            <td>'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'</td>
+                                                <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="22">
+
+
+                                            <th scope="row">'
+                                                .$datos[$i]["Nombre"].
+                                            '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
+                                            </th>
+                                            <td>
+                                                '.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).
+                                            '<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'">
+                                            </td>
+                                            
                                             <td>'.colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
                                             <td>'.colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
                                             <td>'.colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
@@ -500,7 +521,7 @@ $informe = '';
             Where TI.Compania_idCompania = '.$idCompania .' 
             group by idTipoInspeccion');
 
-            return imprimirTabla('Inspección', $inspeccion, 'inspeccion', $fechaInicial, $fechaFinal);
+            return imprimirTabla('Inspección', $inspeccion, 'inspeccion', $fechaInicial, $fechaFinal, 24);
 	}
 
     // -------------------------------------------
@@ -562,7 +583,7 @@ $informe = '';
             Where MR.Compania_idCompania = '.$idCompania .' 
             group by idMatrizRiesgo');
 
-            return imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal', $fechaInicial, $fechaFinal);
+            return imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal', $fechaInicial, $fechaFinal, 30);
     }
 
     // -------------------------------------------
@@ -665,7 +686,7 @@ $informe = '';
             group by idGrupoApoyo');
         
 
-            return imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $fechaInicial, $fechaFinal);
+            return imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $fechaInicial, $fechaFinal, 9);
 	}
 
     // -------------------------------------------
@@ -717,7 +738,7 @@ $informe = '';
             and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania and fechaEjecucionGrupoApoyoDetalle >= fechaCreacionCompania
             Group by ga.idGrupoApoyo, idActaGrupoApoyoDetalle');
 
-			return imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $fechaInicial, $fechaFinal);
+			return imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo', $fechaInicial, $fechaFinal, 43);
 	}
 
     // -------------------------------------------
@@ -765,7 +786,7 @@ $informe = '';
             Group by idReporteACPMDetalle
             order by fechaReporteACPMDetalle, descripcionReporteACPMDetalle');
 
-            return imprimirTabla('Reporte ACPM', $actividadesgrupoapoyo, 'reporteacpm', $fechaInicial, $fechaFinal);
+            return imprimirTabla('Reporte ACPM', $actividadesgrupoapoyo, 'reporteacpm', $fechaInicial, $fechaFinal, 1);
     }
 
 
@@ -828,7 +849,21 @@ function colorTarea($valorTarea, $valorCumplido)
     return $icono;
 }
 
-   function imprimirTabla($titulo, $informacion, $idtabla, $fechaInicial, $fechaFinal)
+function valorTarea($valorTarea, $valorCumplido)
+{
+
+    $valor = '';    
+    $valor = number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',');
+
+    if ($valorTarea == 0 and $valorCumplido == 0) 
+    {
+        $valor = '';
+    }
+    
+    return $valor;
+}
+
+   function imprimirTabla($titulo, $informacion, $idtabla, $fechaInicial, $fechaFinal, $Modulo)
    {
    		$tabla = '';
 
@@ -861,17 +896,29 @@ function colorTarea($valorTarea, $valorCumplido)
                                             <th>Presupuesto</th>
                                             <th>Costo Real</th>
                                             <th>Cumplimiento</th>
+                                            <th >Meta</th>
+                                            <th >Observación</th>
                                         </tr>
                     					</thead>
                     					<tbody>';
 
                                             $mesesC = 0;
                                             $mesesT = 0;
-
+                                            $valorTarea = 0;
+                                            $valorCumplido = 0;
+                                            $total = 0;
                                             foreach($informacion as $dato)
                                             {
-                                                $tabla .='<tr align="center">
-                                                    <th scope="row">'.$dato->descripcionTarea.'</th>';
+                                                $tabla .='
+                                                <tr align="center">
+                                                    <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$Modulo.'">
+
+                                                    <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato->idConcepto.'">
+
+                                                    <th scope="row">'
+                                                        .$dato->descripcionTarea.
+                                                        '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato->descripcionTarea.'">
+                                                    </th>';
                                                
                                                 $inicio = $fechaInicial;
                                                 $anioAnt = date("Y", strtotime($inicio));
@@ -888,21 +935,45 @@ function colorTarea($valorTarea, $valorCumplido)
                                                     $mesesC += '$tarea = '.'$dato->'.nombreMes($inicio).date("Y", strtotime($inicio)).'C;' ;
 
                                                     // adicionamos la columna del mes
-                                                    $tabla .= '<td >'. colorTarea($tarea, $cumplido).'</td>';
+                                                    $tabla .= '
+                                                    <td>'
+                                                        .colorTarea($tarea, $cumplido).
+                                                    '   <input type="hidden" id="'.nombreMesMinuscula($inicio).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($inicio).'planTrabajoDetalle[]" value="'.valorTarea($tarea, $cumplido).'">
+                                                    </td>';
+
+                                                    $valorTarea += $tarea;
+                                                    $valorCumplido += $cumplido;
                                                     //Avanzamos al siguiente mes
                                                     $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
                                                 }
 
-                                                $tabla.=
-                                                '<td>'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'</td>
-                                                <td>'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'</td>';
+                                                    $tabla.=
+                                                    '<td>'
+                                                        .(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').
+                                                    '<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'">
+                                                    </td>
+                                                    <td>'
+                                                        .(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').
+                                                    '<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">
+                                                    </td>';
 
-                                            $total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
+                                                    $total = number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',');
 
-                                        $tabla.= '<td>'.$total.'</td>';
+                                                    $tabla.= '
+                                                    <td>'
+                                                        .$total.
+                                                    '<input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.$total.'">
+                                                    </td>
 
-                                
-                                        $tabla .= '</tr>';
+                                                    <td>
+                                                        <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]">
+                                                    </td>
+
+                                                    <td>
+                                                        <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                        </textarea>
+                                                    </td>
+                                                </tr>';
                                             }
 
 
@@ -914,103 +985,6 @@ function colorTarea($valorTarea, $valorCumplido)
 
 	    return $tabla;
    }
-
-   function imprimirTablaExamenes($titulo, $datos, $idtabla, $fechaInicial, $fechaFinal, $año)
-   {
-        // $tabla = '';
-
-        // $tabla .= '        
-        //             <div class="panel panel-primary" style="border:1px solid">
-        //                 <div class="panel-heading">
-        //                   <h4 class="panel-title">
-        //                     <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
-        //                   </h4>
-        //                 </div>';
-        //                 $tabla .= 
-        //                 '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value)" value="" type="button">Todos</button>';
-        //                 for($i=65; $i<=90; $i++) 
-        //                 {  
-        //                     $letra = chr($i);  
-        //                     $tabla .= 
-        //                     '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value)" value="'.$letra.'" type="button">'.$letra.'</button>';
-        //                 }
-
-        //                 $tabla .= 
-        //                 '<div id="'.$idtabla.'" class="panel-collapse"> 
-        //                     <div class="panel-body" style="overflow:auto;">
-        //                         <table  class="table table-striped table-bordered table-hover">
-        //                             <thead class="thead-inverse">
-        //                                 <tr class="table-info">
-        //                                     <th scope="col" width="30%">&nbsp;</th>';
-                                               
-        //                                     $inicio = $fechaInicial;
-        //                                     $anioAnt = date("Y", strtotime($inicio));
-        //                                     while($inicio < $fechaFinal)
-        //                                     {
-        //                                         // adicionamos la columna del mes
-        //                                         $tabla .= '<th >'. nombreMes($inicio).'</th>';
-        //                                         //Avanzamos al siguiente mes
-        //                                         $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
-        //                                     }
-
-                                
-        //                                 $tabla .= '
-        //                                     <th>Presupuesto</th>
-        //                                     <th>Costo Real</th>
-        //                                     <th>Cumplimiento</th>
-        //                                 </tr>
-        //                                 </thead>
-        //                                 <tbody>';
-
-        //                                     $mesesC = 0;
-        //                                     $mesesT = 0;
-
-        //                                     foreach($informacion as $dato)
-        //                                     {
-        //                                         $tabla .='<tr align="center">
-        //                                             <th scope="row">'.$dato->descripcionTarea.'</th>';
-                                               
-        //                                         $inicio = $fechaInicial;
-        //                                         $anioAnt = date("Y", strtotime($inicio));
-        //                                         while($inicio < $fechaFinal)
-        //                                         {
-        //                                             $resultado = '$tarea = '.'$dato->'.nombreMes($inicio).date("Y", strtotime($inicio)).'T;';
-        //                                             eval("$resultado");
-
-        //                                             $resultado = '$cumplido = '.'$dato->'.nombreMes($inicio).date("Y", strtotime($inicio)).'C;';
-        //                                             eval("$resultado");
-
-        //                                             $mesesT += '$tarea = '.(int)'$dato->'.nombreMes($inicio).date("Y", strtotime($inicio)).'T;';
-
-        //                                             $mesesC += '$tarea = '.(int)'$dato->'.nombreMes($inicio).date("Y", strtotime($inicio)).'C;' ;
-
-        //                                             // adicionamos la columna del mes
-        //                                             $tabla .= '<td >'. colorTarea($tarea, $cumplido).'</td>';
-        //                                             //Avanzamos al siguiente mes
-        //                                             $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
-        //                                         }
-
-        //                                         $tabla.=
-        //                                         '<td>'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'</td>
-        //                                         <td>'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'</td>';
-
-        //                                     $total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
-
-        //                                 $tabla.= '<td>'.$total.'</td>';
-                                
-        //                                 $tabla .= '</tr>';
-        //                                     }
-
-
-        //                     $tabla.='   </tbody>
-        //                             </table>
-        //                           </div> 
-        //                         </div>
-        //                       </div>';
-
-        // return $tabla;
-   }
-
 
     echo json_encode($informe);
 

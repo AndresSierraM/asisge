@@ -250,18 +250,18 @@ if(isset($plantrabajoalerta))
 					{!!Form::label('filtroEstadosPlanTrabajoAlerta', 'Estado', array('class' => 'col-sm-1 control-label')) !!}
 					    <div class="col-md-1">Pendiente
 							    <div class="input-group">
-							        {!! Form::checkbox('Estado1', 1,true, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado1']) !!} 
+							        {!! Form::checkbox('Estado1', 1,false, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado1']) !!} 
 							        {!!Form::hidden('filtroEstadosPlanTrabajoAlerta', '1,2,3,', array('id' => 'filtroEstadosPlanTrabajoAlerta')) !!}
 							    </div>
 						</div>	
 						<div class="col-md-1">En proceso
 							    <div class="input-group">
-							         {!! Form::checkbox('Estado2', 1, true, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado2'] ) !!} 
+							         {!! Form::checkbox('Estado2', 1, false, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado2'] ) !!} 
 							    </div>
 						</div>
 						<div class="col-md-1">Terminados
 							     <div class="input-group">
-							          {!! Form::checkbox('Estado3', 1, true, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado3']) !!} 
+							          {!! Form::checkbox('Estado3', 1, false, ['onclick' => 'seleccionarEstado();', 'id' => 'Estado3']) !!} 
 							     </div>
 						</div>		
 				    	</div> 
@@ -341,7 +341,7 @@ if(isset($plantrabajoalerta))
 				<div class="form-group" id='test'>
 			         <div class="col-sm-12">
 			            <div class="input-group">
-			           {!! Form::checkbox('tareaDiaLaboralPlanTrabajoAlerta', 1, true) !!} Ejecutar solo en días laborales
+			           {!! Form::checkbox('tareaDiaLaboralPlanTrabajoAlerta', 1, false) !!} Ejecutar solo en días laborales
 			            </div>
 			         </div>
 			    </div>
@@ -431,28 +431,28 @@ if(isset($plantrabajoalerta))
 					<div class="row">
 					    <div class="col-md-1">Lunes
 							    <div class="input-group">
-							        {!! Form::checkbox('Dia1', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia1']) !!} 
-							         {!! Form::hidden('tareaDiasPlanTrabajoAlerta', '1,2,3,4,5,', array('id' => 'tareaDiasPlanTrabajoAlerta')) !!}
+							        {!! Form::checkbox('Dia1', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia1']) !!} 
+							         {!! Form::hidden('tareaDiasPlanTrabajoAlerta', null, array('id' => 'tareaDiasPlanTrabajoAlerta')) !!}
 							    </div>
 						</div>	
 						<div class="col-md-1">Martes
 							    <div class="input-group">
-							         {!! Form::checkbox('Dia2', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia2']) !!} 
+							         {!! Form::checkbox('Dia2', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia2']) !!} 
 							    </div>
 						</div>
 						<div class="col-md-1">Miercoles
 							     <div class="input-group">
-							          {!! Form::checkbox('Dia3', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia3']) !!} 
+							          {!! Form::checkbox('Dia3', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia3']) !!} 
 							     </div>
 						</div>
 						<div class="col-md-1">Jueves
 							  <div class="input-group">
-							   {!! Form::checkbox('Dia4', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia4']) !!} 
+							   {!! Form::checkbox('Dia4', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia4']) !!} 
 							   </div>
 						</div>
 						<div class="col-md-1">Viernes
 							  <div class="input-group">
-							   {!! Form::checkbox('Dia5', 1, true, ['onclick' => 'seleccionarDia();', 'id' => 'Dia5']) !!} 
+							   {!! Form::checkbox('Dia5', 1, false, ['onclick' => 'seleccionarDia();', 'id' => 'Dia5']) !!} 
 							  </div>
 					    </div>
 						<div class="col-md-1">Sabado
@@ -513,34 +513,34 @@ if(isset($plantrabajoalerta))
 					<div class="row">
 						    <div class="col-md-1">Enero
 								    <div class="input-group">
-								        {!! Form::checkbox('Mes1', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes1']) !!} 
+								        {!! Form::checkbox('Mes1', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes1']) !!} 
 
-								        {!!Form::hidden('tareaMesesPlanTrabajoAlerta','1,2,3,4,5,6,7,8,9,10,11,12,', array('id' => 'tareaMesesPlanTrabajoAlerta')) !!}
+								        {!!Form::hidden('tareaMesesPlanTrabajoAlerta',null, array('id' => 'tareaMesesPlanTrabajoAlerta')) !!}
 								    </div>
 							</div>	
 							<div class="col-md-1">Febrero
 								    <div class="input-group">
-								         {!! Form::checkbox('Mes2', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes2']) !!} 
+								         {!! Form::checkbox('Mes2', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes2']) !!} 
 								    </div>
 							</div>
 							<div class="col-md-1">Marzo
 								     <div class="input-group">
-								          {!! Form::checkbox('Mes3', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes3']) !!} 
+								          {!! Form::checkbox('Mes3', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes3']) !!} 
 								     </div>
 							</div>
 							<div class="col-md-1">Abril
 								  <div class="input-group">
-								   {!! Form::checkbox('Mes4', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes4']) !!} 
+								   {!! Form::checkbox('Mes4', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes4']) !!} 
 								   </div>
 							</div>
 							<div class="col-md-1">Mayo
 								  <div class="input-group">
-								   {!! Form::checkbox('Mes5', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes5']) !!} 
+								   {!! Form::checkbox('Mes5', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes5']) !!} 
 								   </div>
 						    </div>
 							<div class="col-md-1">Junio
 								  <div class="input-group">
-								   {!! Form::checkbox('Mes6', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes6']) !!} 
+								   {!! Form::checkbox('Mes6', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes6']) !!} 
 								    </div>
 							</div>
 							  
@@ -550,32 +550,32 @@ if(isset($plantrabajoalerta))
 					<div class="row">
 						    <div class="col-md-1">Julio
 								    <div class="input-group">
-								        {!! Form::checkbox('Mes7', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes7']) !!} 
+								        {!! Form::checkbox('Mes7', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes7']) !!} 
 								    </div>
 							</div>	
 							<div class="col-md-1">Agosto
 								    <div class="input-group">
-								         {!! Form::checkbox('Mes8', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes8']) !!} 
+								         {!! Form::checkbox('Mes8', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes8']) !!} 
 								    </div>
 							</div>
 							<div class="col-md-1">Septiembre
 								     <div class="input-group">
-								          {!! Form::checkbox('Mes9', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes9']) !!} 
+								          {!! Form::checkbox('Mes9', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes9']) !!} 
 								     </div>
 							</div>
 							<div class="col-md-1">Octubre
 								  <div class="input-group">
-								   {!! Form::checkbox('Mes10', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes10']) !!} 
+								   {!! Form::checkbox('Mes10', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes10']) !!} 
 								   </div>
 							</div>
 							<div class="col-md-1">Noviembre 
 								  <div class="input-group">
-								   {!! Form::checkbox('Mes11', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes11']) !!} 
+								   {!! Form::checkbox('Mes11', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes11']) !!} 
 								   </div>
 						    </div>
 							<div class="col-md-1">Diciembre
 								  <div class="input-group">
-								   {!! Form::checkbox('Mes12', 1, true, ['onclick' => 'seleccionarMes();', 'id' => 'Mes12']) !!} 
+								   {!! Form::checkbox('Mes12', 1, false, ['onclick' => 'seleccionarMes();', 'id' => 'Mes12']) !!} 
 								   </div>
 
 							</div>
@@ -669,8 +669,8 @@ if(isset($plantrabajoalerta))
     	for(var j = 1; j <= 12; j++)
     	{
     		if($("#Mes"+j).prop('checked') == true)
-
-    			Meses += j+',';
+    			// Meses += j+',';
+    			Meses += String("0" + j+',').slice(-3)
 
     	}
     	 $('#tareaMesesPlanTrabajoAlerta').val(Meses);

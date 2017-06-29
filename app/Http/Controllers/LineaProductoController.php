@@ -59,6 +59,9 @@ class LineaProductoController extends Controller
      */
     public function store(LineaProductoRequest $request)
     {
+
+      if($request['respuesta'] != 'falso')
+        {  
         
         \App\LineaProducto::create([
             'codigoLineaProducto' => $request['codigoLineaProducto'],
@@ -75,9 +78,9 @@ class LineaProductoController extends Controller
         // guardamos las tablas de detalle
         //---------------------------------
             $this->grabarDetalle($lineaproducto->idLineaProducto, $request);
-       
-
+        
         return redirect('/lineaproducto');
+        }
     }
 
     /**
@@ -122,6 +125,8 @@ class LineaProductoController extends Controller
      */
     public function update(LineaProductoRequest $request, $id)
     {
+      if($request['respuesta'] != 'falso')
+        {  
         $lineaproducto = \App\LineaProducto::find($id);
         $lineaproducto->fill($request->all());
         $lineaproducto->save();
@@ -133,6 +138,7 @@ class LineaProductoController extends Controller
         $this->grabarDetalle($lineaproducto->idLineaProducto, $request);
 
        return redirect('/lineaproducto');
+       }
     }
 
     /**

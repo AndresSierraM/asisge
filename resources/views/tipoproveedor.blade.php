@@ -26,8 +26,8 @@
     var proveedorevaluacion = '<?php echo (isset($tipoproveedor) ? json_encode($tipoproveedor->tipoProveedorEvaluacion) : "");?>';
     proveedorevaluacion = (proveedorevaluacion != '' ? JSON.parse(proveedorevaluacion) : '');
 
-    valorEvaluacion =  Array("Calidad","Cantidad", "Precio");
-    nombreEvaluacion =  Array("Calidad","Cantidad", "Precio");
+    valorEvaluacion =  Array("Fecha de Entrega","Calidad","Cantidad", "Precio");
+    nombreEvaluacion =  Array("Fecha de Entrega","Calidad","Cantidad", "Precio");
     var criterioevaluacion = [valorEvaluacion,nombreEvaluacion];
 
     var validarPesoEvaluacion = ['onchange','validarPesoCriterioEvaluacion(this.value)'];

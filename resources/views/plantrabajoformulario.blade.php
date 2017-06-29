@@ -3,8 +3,7 @@
 
 @section('content')
 @include('alerts.request')
-
-{!!Html::style('css/signature-pad.css'); !!} 
+{!!Html::script('js/plantrabajo.js')!!}
 
 <?php
   // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
@@ -107,358 +106,7 @@
     </fieldset>
  </div>
 
-
-<?php 
-function colorTarea($valorTarea, $valorCumplido)
-{
-
-	$icono = '';	
-	$tool = 'Tareas Pendientes : '.number_format($valorTarea,0,'.',',')."\n".
-			'Tareas Realizadas : '.number_format($valorCumplido,0,'.',',');	
-	$etiqueta = '';
-	if($valorTarea != $valorCumplido and $valorCumplido != 0)
-	{
-		$icono = 'Amarillo.png';
-		$etiqueta = '<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';
-	}elseif($valorTarea == $valorCumplido and $valorTarea != 0)
-	{
-		$icono = 'Verde.png';
-	}
-	elseif($valorTarea > 0 and $valorCumplido == 0)
-	{
-		$icono = 'Rojo.png';		
-	}
-
-	if($valorTarea != 0 or $valorCumplido != 0)
-	{
-		$icono = 	'<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
-							<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/'.$icono.'"  width="30">
-						</a>'.$etiqueta;	
-	}
-	//$valorTarea .' '. $valorCumplido. 
-	return $icono;
-}
-
-function valorTarea($valorTarea, $valorCumplido)
-{
-
-	$valor = '';	
-	$valor = number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',');
-
-	if ($valorTarea == 0 and $valorCumplido == 0) 
-	{
-		$valor = '';
-	}
-	
-	return $valor;
-}
-
-
-
-function imprimirTabla($titulo, $informacion , $idtabla, $cargo, $idModulo)
-{
-	echo '<div class="panel panel-primary">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
-              </h4>
-            </div>
-            <div id="'.$idtabla.'" class="panel-collapse">
-              <div class="panel-body" style="overflow:auto;">
-                    <table  class="table table-striped table-bordered table-hover" style="width:100%;" >
-						<thead class="thead-inverse">
-							<tr class="table-info">
-								<th scope="col" width="30%">&nbsp;</th>
-								<th >Enero</th>
-								<th >Febrero</th>
-								<th >Marzo</th>
-								<th >Abril</th>
-								<th >Mayo</th>
-								<th >Junio</th>
-								<th >Julio</th>
-								<th >Agosto</th>
-								<th >Septiembre</th>
-								<th >Octubre</th>
-								<th >Noviembre</th>
-								<th >Diciembre</th>
-								<th >Presupuesto</th>
-								<th >Costo Real</th>
-								<th >Cumplimiento</th>
-								<th >Meta</th>
-								<th >Responsable</th>
-								<th >Observación</th>
-							</tr>
-						</thead>
-						<tbody>';
-
-							foreach($informacion as $dato)
-							{
-								echo '<tr align="center">
-								<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$idModulo.'">
-									<th scope="row">'.$dato->descripcionTarea.'</th>
-									<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato->idConcepto.'">
-
-									<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$dato->TipoExamenMedico_idTipoExamenMedico.'">
-
-									<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato->descripcionTarea.'">
-
-									<td>'.colorTarea($dato->EneroT, $dato->EneroC).'</td>
-									<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.valorTarea($dato->EneroT, $dato->EneroC).'">
-
-									<td>'.colorTarea($dato->FebreroT, $dato->FebreroC).'</td>
-									<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.valorTarea($dato->FebreroT, $dato->FebreroC).'">
-
-									<td>'.colorTarea($dato->MarzoT, $dato->MarzoC).'</td>
-									<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.valorTarea($dato->MarzoT, $dato->MarzoC).'">
-
-									<td>'.colorTarea($dato->AbrilT, $dato->AbrilC).'</td>
-									<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.valorTarea($dato->AbrilT, $dato->AbrilC).'">
-
-									<td>'.colorTarea($dato->MayoT, $dato->MayoC).'</td>
-									<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.valorTarea($dato->MayoT, $dato->MayoC).'">
-
-									<td>'.colorTarea($dato->JunioT, $dato->JunioC).'</td>
-									<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.valorTarea($dato->JunioT, $dato->JunioC).'">
-
-									<td>'.colorTarea($dato->JulioT, $dato->JulioC).'</td>
-									<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.valorTarea($dato->JulioT, $dato->JulioC).'">
-
-									<td>'.colorTarea($dato->AgostoT, $dato->AgostoC).'</td>
-									<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.valorTarea($dato->AgostoT, $dato->AgostoC).'">
-
-									<td>'.colorTarea($dato->SeptiembreT, $dato->SeptiembreC).'</td>
-									<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.valorTarea($dato->SeptiembreT, $dato->SeptiembreC).'">
-
-									<td>'.colorTarea($dato->OctubreT, $dato->OctubreC).'</td>
-									<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.valorTarea($dato->OctubreT, $dato->OctubreC).'">
-
-									<td>'.colorTarea($dato->NoviembreT, $dato->NoviembreC).'</td>
-									<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.valorTarea($dato->NoviembreT, $dato->NoviembreC).'">
-
-									<td>'.colorTarea($dato->DiciembreT, $dato->DiciembreC).'</td>
-									<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.valorTarea($dato->DiciembreT, $dato->DiciembreC).'">
-
-									<td>'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'</td>
-									<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'">
-
-         							<td>'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'</td>
-         							<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">';
-
-         							$mesesC = ((int)$dato->EneroC + 
-											(int)$dato->FebreroC + 
-											(int)$dato->MarzoC + 
-											(int)$dato->AbrilC + 
-											(int)$dato->MayoC + 
-											(int)$dato->JunioC + 
-											(int)$dato->JulioC + 
-											(int)$dato->AgostoC + 
-											(int)$dato->SeptiembreC + 
-											(int)$dato->OctubreC + 
-											(int)$dato->NoviembreC + 
-											(int)$dato->DiciembreC);
-
-									$mesesT = (((int)$dato->EneroT + 
-										   	(int)$dato->FebreroT + 
-										   	(int)$dato->MarzoT + 
-										   	(int)$dato->AbrilT + 
-										   	(int)$dato->MayoT + 
-										   	(int)$dato->JunioT + 
-										   	(int)$dato->JulioT + 
-										   	(int)$dato->AgostoT + 
-										   	(int)$dato->SeptiembreT + 
-										   	(int)$dato->OctubreT + 
-										   	(int)$dato->NoviembreT + 
-										   	(int)$dato->DiciembreT));
-
-									$total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
-
-									echo '<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" readonly value="'.$total.'"></td>
-
-									<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
-
-									<td>';?>
-										{!!Form::select('Cargo_idResponsable[]',$cargo, (isset($plantrabajoformulario) ? $plantrabajoformulario->Cargo_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
-									<?php 
-									echo '</td>
-									<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
-								</tr>';
-							}
-						
-						echo '</tbody>
-					</table>
-		          </div> 
-		        </div>
-		      </div>';
-}
-
-function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, $idModulo)
-{
-	echo '<div class="panel panel-primary">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
-              </h4>
-            </div>
-            <div id="'.$idtabla.'" class="panel-collapse">
-              <div class="panel-body" style="overflow:auto;">';
-
-    $dato = array();
-    for ($i=0; $i < count($informacion); $i++) 
-    { 
-   		$dato[] = get_object_vars($informacion[$i]);
-    }
-
-    // hacemos rompimiento por el campo de Tipo de examen medico
-    $reg = 0;
-    while ($reg < count($dato)) 
-    {
-    	$examenAnt = $dato[$reg]['nombreTipoExamenMedico'];
-    
-    	echo '<div class="panel panel-primary">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#'.str_replace(" ", "_", $examenAnt).'" href="#'.str_replace(" ", "_", $examenAnt).'">'.$examenAnt.'</a>	
-              </h4>
-            </div>
-            <div id="'.str_replace(" ", "_", $examenAnt).'" class="panel-collapse">
-              <div class="panel-body" style="overflow:auto;">';
-
-      	echo  '<table  class="table table-striped table-bordered table-hover" style="width:100%;" >
-				<thead class="thead-inverse">
-					<tr class="table-info">
-						<th scope="col" width="30%">&nbsp;</th>
-						<th >Enero</th>
-						<th >Febrero</th>
-						<th >Marzo</th>
-						<th >Abril</th>
-						<th >Mayo</th>
-						<th >Junio</th>
-						<th >Julio</th>
-						<th >Agosto</th>
-						<th >Septiembre</th>
-						<th >Octubre</th>
-						<th >Noviembre</th>
-						<th >Diciembre</th>
-						<th >Presupuesto</th>
-						<th >Costo Real</th>
-						<th >Cumplimiento</th>
-						<th >Meta</th>
-						<th >Responsable</th>
-						<th >Observación</th>
-					</tr>
-				</thead>
-				<tbody>';
-
-    	while ($reg < count($dato) AND $examenAnt == $dato[$reg]['nombreTipoExamenMedico']) 
-    	{		
-			echo '<tr align="center">
-				<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$idModulo.'">
-				<th scope="row">'.$dato[$reg]["descripcionTarea"].'</th>
-
-				<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato[$reg]["idConcepto"].'">
-
-				<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$dato[$reg]["TipoExamenMedico_idTipoExamenMedico"].'">
-
-				<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato[$reg]["descripcionTarea"].'">
-
-				<td>'.colorTarea($dato[$reg]["EneroT"], $dato[$reg]["EneroC"]).'</td>
-				<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["EneroT"], $dato[$reg]["EneroC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["FebreroT"], $dato[$reg]["FebreroC"]).'</td>
-				<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["FebreroT"], $dato[$reg]["FebreroC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["MarzoT"], $dato[$reg]["MarzoC"]).'</td>
-				<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["MarzoT"], $dato[$reg]["MarzoC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["AbrilT"], $dato[$reg]["AbrilC"]).'</td>
-				<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["AbrilT"], $dato[$reg]["AbrilC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["MayoT"], $dato[$reg]["MayoC"]).'</td>
-				<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["MayoT"], $dato[$reg]["MayoC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["JunioT"], $dato[$reg]["JunioC"]).'</td>
-				<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["JunioT"], $dato[$reg]["JunioC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["JulioT"], $dato[$reg]["JulioC"]).'</td>
-				<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["JunioT"], $dato[$reg]["JunioC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["AgostoT"], $dato[$reg]["AgostoT"]).'</td>
-				<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["AgostoT"], $dato[$reg]["AgostoT"]).'">
-
-				<td>'.colorTarea($dato[$reg]["SeptiembreT"], $dato[$reg]["SeptiembreC"]).'</td>
-				<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["SeptiembreT"], $dato[$reg]["SeptiembreC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["OctubreT"], $dato[$reg]["OctubreC"]).'</td>
-				<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["OctubreT"], $dato[$reg]["OctubreC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'</td>
-				<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["NoviembreT"], $dato[$reg]["NoviembreC"]).'">
-
-				<td>'.colorTarea($dato[$reg]["DiciembreT"], $dato[$reg]["DiciembreC"]).'</td>
-				<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.valorTarea($dato[$reg]["DiciembreT"], $dato[$reg]["DiciembreC"]).'">
-
-				<td>'.(isset($dato[$reg]['PresupuestoT']) ? $dato[$reg]['PresupuestoT'] : '&nbsp;').'</td>
-				<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoT']) ? $dato[$reg]['PresupuestoT'] : '&nbsp;').'">
-
-         		<td>'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'</td>
-         		<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato[$reg]['PresupuestoC']) ? $dato[$reg]['PresupuestoC'] : '&nbsp;').'">';
-
-         		$mesesC = ((int)$dato[$reg]["EneroC"] + 
-							(int)$dato[$reg]["FebreroC"] + 
-							(int)$dato[$reg]["MarzoC"] + 
-							(int)$dato[$reg]["AbrilC"] + 
-							(int)$dato[$reg]["MayoC"] + 
-							(int)$dato[$reg]["JunioC"] + 
-							(int)$dato[$reg]["JulioC"] + 
-							(int)$dato[$reg]["AgostoC"] + 
-							(int)$dato[$reg]["SeptiembreC"] + 
-							(int)$dato[$reg]["OctubreC"] + 
-							(int)$dato[$reg]["NoviembreC"] + 
-							(int)$dato[$reg]["DiciembreC"]);
-
-				$mesesT = (((int)$dato[$reg]["EneroT"] + 
-						   	(int)$dato[$reg]["FebreroT"] + 
-						   	(int)$dato[$reg]["MarzoT"] + 
-						   	(int)$dato[$reg]["AbrilT"] + 
-						   	(int)$dato[$reg]["MayoT"] + 
-						   	(int)$dato[$reg]["JunioT"] + 
-						   	(int)$dato[$reg]["JulioT"] + 
-						   	(int)$dato[$reg]["AgostoT"] + 
-						   	(int)$dato[$reg]["SeptiembreT"] + 
-						   	(int)$dato[$reg]["OctubreT"] + 
-						   	(int)$dato[$reg]["NoviembreT"] + 
-						   	(int)$dato[$reg]["DiciembreT"]));
-
-				$total = number_format(($mesesC / ($mesesT == 0 ? 1: $mesesT) *100),1,'.',',');
-
-				echo'<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" readonly value="'.$total.'"></td>
-
-				<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]"></td>
-
-				<td>';?>
-					{!!Form::select('Cargo_idResponsable[]',$cargo, (isset($plantrabajoformulario) ? $plantrabajoformulario->Cargo_idResponsable : 0),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
-				<?php 
-				echo '</td>
-				<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]"></textarea></td>
-			</tr>';
-			$reg++;
-		}
-
-		echo '</tbody>
-			</table>
-          </div> 
-        </div>
-      </div>';
-	}
-	echo '</div> 
-	  </div>
-	</div>';
-
-}
-?>
-
-		
-
+<input type="hidden" id="token" value="{{csrf_token()}}"/>
 <style>
     .info {
             background-color: blue,
@@ -466,6 +114,14 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
         }
 
 </style>
+
+	<select id="añoPlanTrabajo" class="form-control" onchange="consultarPlanTrabajo(this.value,'a')">
+		<option>2017</option>
+		<option>2016</option>
+	</select>
+
+	<br>
+	<div id="plantrabajo"> </div> 
 				
     <div class="panel-group" id="accordion">
       <?php
@@ -804,16 +460,12 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla, $cargo, 
   			}
   			else
   			{
-				imprimirTabla('Accidente', $accidente, 'accidente',$Cargo_idResponsable, 3);
-				imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo',$Cargo_idResponsable, 9);
-				imprimirTabla('Acta Reunión - Actividades', $actividadesgrupoapoyo, 'actividadesgrupoapoyo',$Cargo_idResponsable, 43);
-				imprimirTablaExamenesMedicos('Examen Médico', $examen, 'examen',$Cargo_idResponsable, 22);
-				imprimirTabla('Inspección', $inspeccion, 'inspeccion',$Cargo_idResponsable, 24);
-				imprimirTabla('Plan de Auditoría', $auditoria, 'auditoria',$Cargo_idResponsable, 32);
-				imprimirTabla('Plan de Capacitación', $capacitacion, 'capacitacion',$Cargo_idResponsable, 36);	
-				imprimirTabla('Programas', $programa, 'programa', $Cargo_idResponsable, 40);	
-				imprimirTabla('Reporte ACPM', $acpm, 'acpm', $Cargo_idResponsable, 1);
-				imprimirTabla('Revision de Información', $matrizlegal, 'matrizlegal',$Cargo_idResponsable, 30);
+				echo "
+				<script>
+					$(document).ready(function(){
+						consultarPlanTrabajo('2017','a');
+					});
+				</script>";
 			}
 		?>
     </div>

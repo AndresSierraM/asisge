@@ -128,83 +128,96 @@ function generarAlerta($idCompania)
 	    // cerramos el archivo (fclose)
 	    fclose($arch);
 
-	    //Programación diaria 
-	    if ($plan['tareaDiasPlanTrabajoAlerta'] != '') 
+	    //Programación mensual
+	    if ($plan['tareaMesesPlanTrabajoAlerta'] != '') 
         {
-        	if (date('Y-m-d H-m-s') > date('Y-m-d H-m-s', strtotime($plan['fechaUltimaAlertaPlanTrabajoAlerta']))) 
-        	{
+            $mes = strpos($plan['tareaMesesPlanTrabajoAlerta'], date('m'));
 
-		        $fechaActualizacion = date("Y-m-d", strtotime('+'.$plan['tareaIntervaloPlanTrabajoAlerta'].' day',  strtotime ($plan['fechaUltimaAlertaPlanTrabajoAlerta'])));
+            if($mes !== false and date('m') > date('m', strtotime($plan['fechaUltimaAlertaPlanTrabajoAlerta'])))
+            {
+                enviarCorreo($plan['correoAsuntoPlanTrabajoAlerta'], $plan['correoParaPlanTrabajoAlerta'], $plan['correoCopiaPlanTrabajoAlerta'], $plan['correoCopiaOcultaPlanTrabajoAlerta'], $plan['correoMensajePlanTrabajoAlerta'], $informe);
 
-		        DB::Update('UPDATE plantrabajoalerta SET fechaUltimaAlertaPlanTrabajoAlerta = "'.$fechaActualizacion.'" WHERE idPlanTrabajoAlerta = '.$plan['idPlanTrabajoAlerta']);
-        	}
+                DB::Update('UPDATE plantrabajoalerta SET fechaUltimaAlertaPlanTrabajoAlerta = "'.date('Y-m-d').'" WHERE idPlanTrabajoAlerta = '.$plan['idPlanTrabajoAlerta']);
+            }   
         }
         else
         {
-        	//Programación mensual
-        	if ($plan['tareaMesesPlanTrabajoAlerta'] != '') 
-        	{
-        		if (date('Y-m-d H-m-s') > date('Y-m-d H-m-s', strtotime($plan['fechaUltimaAlertaPlanTrabajoAlerta']))) 
-	        	{
-			        $fechaActualizacion = date("Y-m-d", strtotime('+'.$plan['tareaIntervaloPlanTrabajoAlerta'].' month',  strtotime ($plan['fechaUltimaAlertaPlanTrabajoAlerta'])));
-
-			        DB::Update('UPDATE plantrabajoalerta SET fechaUltimaAlertaPlanTrabajoAlerta = "'.$fechaActualizacion.'" WHERE idPlanTrabajoAlerta = '.$plan['idPlanTrabajoAlerta']);
-	        	}
-        	}
         	//Programación semanal
+        	if ($plan['tareaDiasPlanTrabajoAlerta'] != '') 
+        	{
+                $dia = strpos($plan['tareaDiasPlanTrabajoAlerta'], date('w'));
+
+                if ($dia !== false and date('d') > date('d', strtotime($plan['fechaUltimaAlertaPlanTrabajoAlerta']))) 
+                {
+                    enviarCorreo($plan['correoAsuntoPlanTrabajoAlerta'], $plan['correoParaPlanTrabajoAlerta'], $plan['correoCopiaPlanTrabajoAlerta'], $plan['correoCopiaOcultaPlanTrabajoAlerta'], $plan['correoMensajePlanTrabajoAlerta'], $informe);
+
+                    DB::Update('UPDATE plantrabajoalerta SET fechaUltimaAlertaPlanTrabajoAlerta = "'.date('Y-m-d').'" WHERE idPlanTrabajoAlerta = '.$plan['idPlanTrabajoAlerta']);
+                }                    
+        	}
+        	//Programación diaria
         	else
         	{
-        		if (date('Y-m-d H-m-s') > date('Y-m-d H-m-s', strtotime($plan['fechaUltimaAlertaPlanTrabajoAlerta']))) 
+        		if (date("d", strtotime('+'.$plan['tareaIntervaloPlanTrabajoAlerta'].' day',  strtotime ($plan['fechaUltimaAlertaPlanTrabajoAlerta']))) ==  date('d')) 
 	        	{
-			        $fechaActualizacion = date("Y-m-d", strtotime('+'.$plan['tareaIntervaloPlanTrabajoAlerta'].' week',  strtotime ($plan['fechaUltimaAlertaPlanTrabajoAlerta'])));
+                    enviarCorreo($plan['correoAsuntoPlanTrabajoAlerta'], $plan['correoParaPlanTrabajoAlerta'], $plan['correoCopiaPlanTrabajoAlerta'], $plan['correoCopiaOcultaPlanTrabajoAlerta'], $plan['correoMensajePlanTrabajoAlerta'], $informe);
 
-			        DB::Update('UPDATE plantrabajoalerta SET fechaUltimaAlertaPlanTrabajoAlerta = "'.$fechaActualizacion.'" WHERE idPlanTrabajoAlerta = '.$plan['idPlanTrabajoAlerta']);
+			        DB::Update('UPDATE plantrabajoalerta SET fechaUltimaAlertaPlanTrabajoAlerta = "'.date('Y-m-d').'" WHERE idPlanTrabajoAlerta = '.$plan['idPlanTrabajoAlerta']);
 	        	}
         	}
         }
 
-        $plan['mensaje'] = $plan['correoMensajePlanTrabajoAlerta'].'<br><br>'.$informe;
+    }
+}
 
-	    if ($plan['correoCopiaPlanTrabajoAlerta'] != '' and $plan['correoCopiaOcultaPlanTrabajoAlerta'] != '')
-	    {
-	        Mail::send('emails.contact',$plan,function($msj) use ($plan)
-	        {
-	            $msj->to($plan['correoParaPlanTrabajoAlerta']);
-	            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
-	            $msj->cc($plan['correoCopiaPlanTrabajoAlerta']);    
-	            $msj->bcc($plan['correoCopiaOcultaPlanTrabajoAlerta']);
-	            $msj->attach(public_path().'/plantrabajo.html'); 
-	        }); 
-	    }
-	    else if($plan['correoCopiaOcultaPlanTrabajoAlerta'] !== '')
-	    {
-	        Mail::send('emails.contact',$plan,function($msj) use ($plan)
-	        { 
-	            $msj->to($plan['correoParaPlanTrabajoAlerta']);
-	            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
-	            $msj->bcc($plan['correoCopiaOcultaPlanTrabajoAlerta']);    
-	            $msj->attach(public_path().'/plantrabajo.html');
-	        }); 
-	    }
-	    else if($plan['correoCopiaPlanTrabajoAlerta'] !== '')
-	    {
-	        Mail::send('emails.contact',$plan,function($msj) use ($plan)
-	        { 
-	            $msj->to($plan['correoParaPlanTrabajoAlerta']);
-	            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
-	            $msj->cc($plan['correoCopiaPlanTrabajoAlerta']);    
-	            $msj->attach(public_path().'/plantrabajo.html');
-	        }); 
-	    }
-	    else
-	    {
-	        Mail::send('emails.contact',$plan,function($msj) use ($plan)
-	        {
-	            $msj->to($plan['correoParaPlanTrabajoAlerta']);
-	            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
-	            $msj->attach(public_path().'/plantrabajo.html');
-	        }); 
-	    }
+#ENVÍO EL CORREO ELECTRÓNICO
+function enviarCorreo($asunto, $para, $cc, $cco, $mensaje, $archivo)
+{
+    $plan = array();
+    $plan['correoAsuntoPlanTrabajoAlerta'] = $asunto;
+    $plan['correoParaPlanTrabajoAlerta'] = $para;
+    $plan['correoCopiaPlanTrabajoAlerta'] = $cc;
+    $plan['correoCopiaOcultaPlanTrabajoAlerta'] = $cco;
+    $plan['mensaje'] = $mensaje.'<br><br>'.$archivo;
+
+    if ($plan['correoCopiaPlanTrabajoAlerta'] != '' and $plan['correoCopiaOcultaPlanTrabajoAlerta'] != '')
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan, $archivo)
+        {
+            $msj->to($plan['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
+            $msj->cc($plan['correoCopiaPlanTrabajoAlerta']);    
+            $msj->bcc($plan['correoCopiaOcultaPlanTrabajoAlerta']);
+            $msj->attach(public_path().'/plantrabajo.html'); 
+        }); 
+    }
+    else if($plan['correoCopiaOcultaPlanTrabajoAlerta'] !== '')
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan, $archivo)
+        { 
+            $msj->to($plan['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
+            $msj->bcc($plan['correoCopiaOcultaPlanTrabajoAlerta']);
+            $msj->attach(public_path().'/plantrabajo.html'); 
+        }); 
+    }
+    else if($plan['correoCopiaPlanTrabajoAlerta'] !== '')
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan, $archivo)
+        { 
+            $msj->to($plan['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
+            $msj->cc($plan['correoCopiaPlanTrabajoAlerta']);    
+            $msj->attach(public_path().'/plantrabajo.html'); 
+        }); 
+    }
+    else
+    {
+        Mail::send('emails.contact',$plan,function($msj) use ($plan, $archivo)
+        {
+            $msj->to($plan['correoParaPlanTrabajoAlerta']);
+            $msj->subject($plan['correoAsuntoPlanTrabajoAlerta']);
+            $msj->attach(public_path().'/plantrabajo.html'); 
+        }); 
     }
 }
 
