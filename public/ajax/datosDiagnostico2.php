@@ -21,36 +21,13 @@
         $visibleI = 'inline-block;';
     else
         $visibleI = 'none;';
-    
-    // $diagnostico = DB::table('diagnostico')
-    //         ->leftJoin('diagnosticodetalle', 'idDiagnostico', '=', 'Diagnostico_idDiagnostico')
-    //         ->select(DB::raw('idDiagnostico, codigoDiagnostico, nombreDiagnostico, fechaElaboracionDiagnostico, AVG(resultadoDiagnosticoDetalle) as resultadoDiagnosticoDetalle'))
-    //         ->where('Compania_idCompania','=', \Session::get('idCompania'))
-    //         ->groupby('idDiagnostico')
-    //         ->get();
+   
 
     $diagnostico2 = DB::SELECT('
         SELECT diag2.idDiagnostico2,diag2.codigoDiagnostico2,diag2.nombreDiagnostico2,diag2.fechaElaboracionDiagnostico2
         FROM diagnostico2 diag2
         WHERE diag2.Compania_idCompania = '.\Session::get('idCompania'));
 
-    // $diagnostico = DB::select(
-    //     'SELECT D.idDiagnostico, D.codigoDiagnostico, D.nombreDiagnostico, D.fechaElaboracionDiagnostico, AVG(DR.resultadoDiagnosticoDetalle) as resultadoDiagnosticoDetalle
-    //     FROM diagnostico D
-    //     LEFT JOIN 
-    //     (
-    //         SELECT idDiagnostico, AVG(resultadoDiagnosticoDetalle) as resultadoDiagnosticoDetalle
-    //         FROM diagnostico D
-    //         LEFT JOIN diagnosticodetalle DD
-    //             ON D.idDiagnostico =  DD.Diagnostico_idDiagnostico
-    //         LEFT JOIN diagnosticopregunta DP
-    //             ON DD.DiagnosticoPregunta_idDiagnosticoPregunta = DP.idDiagnosticoPregunta
-    //         WHERE D.Compania_idCompania = '. \Session::get('idCompania').'  
-    //         GROUP BY D.idDiagnostico, DiagnosticoGrupo_idDiagnosticoGrupo
-    //     ) DR
-    //         ON D.idDiagnostico =  DR.idDiagnostico
-    //     WHERE D.Compania_idCompania = '. \Session::get('idCompania').'  
-    //     GROUP BY D.idDiagnostico');
 
 
     $row = array();
@@ -62,10 +39,10 @@
                         '</a>&nbsp;'.
                         '<a href="diagnostico2/'.$value->idDiagnostico2.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleM.'"></span>'.
-                        '</a>&nbsp;'.
-                        '<a href="#" onclick="imprimirFormato('.$value->idDiagnostico2.');">'.
-                            '<span class="glyphicon glyphicon-print"  style = "display:'.$visibleI.'"></span>'.
-                        '</a>';
+                        '</a>&nbsp;';
+                        // '<a onclick="imprimirDiagnostico2('.$value->idDiagnostico2.')">'.
+                        //     '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
+                        // '</a>';
         $row[$key][] = $value->idDiagnostico2;
         $row[$key][] = $value->codigoDiagnostico2;
         $row[$key][] = $value->nombreDiagnostico2; 

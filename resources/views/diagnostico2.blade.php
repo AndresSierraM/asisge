@@ -2,16 +2,14 @@
 @section('titulo')<h3 id="titulo"><center>Diagn&oacute;stico General (Version 2)</center></h3>@stop
 @section('content')
 @include('alerts.request')
-
-
-<!-- {!!Html::script('js/diagnostico.js')!!} -->
+{!!Html::script('js/diagnostico2.js')!!}
   <script>
 
      
 
     $(document).ready(function()
     {
-      // Ejecuta la funcon para que cargue los resultados en el edit,update 
+      // Ejecuta la funcon para que cargue los resultados en el edit
       sumarResultado();
     });
 
@@ -167,7 +165,7 @@
                 if (isset($diagnostico2)) 
                 {
                   // Se queman los campos del select para cuando este editando el registro
-               $estado = array('NOCUMPLE' => 'NO CUMPLE','CUMPLE' => 'CUMPLE','NOAPLICA' => 'NO APLICA');  
+               $estado = array('' => 'SELECCIONE','NOCUMPLE' => 'NOCUMPLE','CUMPLE' => 'CUMPLE','NO APLICA' => 'NO APLICA');  
 
                $datos = array();
                // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
@@ -289,7 +287,7 @@
                     <thead class="thead-inverse">  
                        <tr class="table-info">
                        <th colspan="4" style=" background-color:gray; color:white;">RESULTADO DIAGNÓSTICO</th>
-                       <th><input type="text" id="resultadodiagnostico" name="resultadodiagnostico[]" value="0" readonly="readonly" onchange="asd">
+                       <th><input type="text" id="resultadodiagnostico" name="resultadodiagnostico[]" value="0" readonly="readonly">
                        </th>                
                       </tr>                                                        
                     </thead>';              
@@ -300,7 +298,7 @@
               </div>
             </div>
           </div>
-    </fieldset>
+    </fieldset> 
   @if(isset($diagnostico2))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
         {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
@@ -330,7 +328,8 @@
 
           // dependiendo del valor devolvemos un resultado en el input correspondiente
           // si NO CUMPLE el valor es cero (0), de lo contrario es el mismo valor del campo Valor
-          if(lista == 'NOCUMPLE')
+
+          if(lista == 'NOCUMPLE' || lista == 'SELECCIONE') 
               $("#resultadoDiagnostico2Detalle"+linea).val(0);
           else
               $("#resultadoDiagnostico2Detalle"+linea).val($("#puntuacionDiagnostico2Detalle"+linea).val());  
