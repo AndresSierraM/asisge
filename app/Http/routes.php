@@ -677,7 +677,10 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
 
-
+   Route::get('datosDiagnostico2', function()
+    {
+        include public_path().'/ajax/datosDiagnostico2.php';
+    });
     Route::get('datosActoInseguro', function()
     {
         include public_path().'/ajax/datosActoInseguro.php';

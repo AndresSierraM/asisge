@@ -45,22 +45,21 @@
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="2"><label> Código</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
-                            <li><a class="toggle-vis" data-column="4"><label> Fecha</label></a></li>
-                            <li><a class="toggle-vis" data-column="5"><label> Resultado</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Fecha</label></a></li>  
+
                         </ul>
                     </div>
-                    <table id="tdiagnostico" name="tdiagnostico" class="display table-bordered" width="100%">
+                    <table id="tdiagnostico2" name="tdiagnostico2" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:55px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="diagnostico/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="diagnostico2/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
                                 <th><b>Código</b></th>
                                 <th><b>Nombre</b></th>
-                                <th><b>Fecha</b></th>
-                                <th><b>Resultado</b></th>    
+                                <th><b>Fecha</b></th>                            
                             </tr>
                         </thead>
                                         <tfoot>
@@ -72,7 +71,6 @@
                                 <th>Codigo</th>
                                 <th>Nombre</th>
                                 <th>Fecha</th>
-                                <th>Resultado</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -84,15 +82,15 @@
 <script type="text/javascript">
 
 
-    function imprimirFormato(id)
-    {
-        window.open('diagnostico/'+id+'?accion=imprimir','diagnostico','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
-    }
+    // function imprimirFormato(id)
+    // {
+    //     window.open('diagnostico/'+id+'?accion=imprimir','diagnostico','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    // }
 
     $(document).ready( function () {
 
         
-        /*$('#tdiagnostico').DataTable({
+        /*$('#tdiagnostico2').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
@@ -102,12 +100,12 @@
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
-        var table = $('#tdiagnostico').DataTable( {
+        var table = $('#tdiagnostico2').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosDiagnostico?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
+            "ajax": "{!! URL::to ('/datosDiagnostico2?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -144,7 +142,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tdiagnostico tbody')
+        $('#tdiagnostico2 tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -159,15 +157,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tdiagnostico tfoot th').each( function () {
+    $('#tdiagnostico2 tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tdiagnostico thead th').eq( $(this).index() ).text();
+        var title = $('#tdiagnostico2 thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tdiagnostico').DataTable();
+    var table = $('#tdiagnostico2').DataTable();
  
     // Apply the search
     table.columns().every( function () {
