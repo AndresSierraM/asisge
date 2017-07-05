@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Diagnostico;
+use App\Diagnostico2;
 use App\Http\Requests;
 use App\Http\Requests\Diagnostico2Request;
 use App\Http\Controllers\Controller;
@@ -101,40 +101,7 @@ class Diagnostico2Controller extends Controller
      */
     public function show($id, Diagnostico2Request $request)
     {
-     if(isset($request['accion']) and $request['accion'] == 'imprimir')
-         {
-
-        $diagnosticoEncabezado = DB::select('
-            SELECT diagenca.idDiagnostico2,diagenca.codigoDiagnostico2,diagenca.fechaElaboracionDiagnostico2,diagenca.nombreDiagnostico2,diagenca.equiposCriticosDiagnostico2,diagenca.herramientasCriticasDiagnostico2,
-            diagenca.observacionesDiagnostico2
-  
-            FROM diagnostico2 diagenca
-            WHERE diagenca.idDiagnostico2 = '.$id);
-
-         $diagnostico2 = DB::select('
-            SELECT idDiagnostico2Detalle,diag2.idDiagnostico2,diagn4.idDiagnosticoNivel4,diagn1.idDiagnosticoNivel1,diagn2.idDiagnosticoNivel2,diagn1.numeroDiagnosticoNivel1,
-            diagn1.tituloDiagnosticoNivel1,diagn2.numeroDiagnosticoNivel2,diagn2.tituloDiagnosticoNivel2,
-            diagn2.valorDiagnosticoNivel2,diagn3.numeroDiagnosticoNivel3,diagn3.tituloDiagnosticoNivel3,
-            diagn3.valorDiagnosticoNivel3,diagn4.numeroDiagnosticoNivel4,diagn4.tituloDiagnosticoNivel4,
-            diagn4.valorDiagnosticoNivel4,diag2.codigoDiagnostico2,diag2d.idDiagnostico2Detalle,diag2d.DiagnosticoNivel4_idDiagnosticoNivel4,diag2d.puntuacionDiagnostico2Detalle,
-            diag2d.respuestaDiagnostico2Detalle,diag2d.resultadoDiagnostico2Detalle,diag2d.mejoraDiagnostico2Detalle,
-            diag2d.Diagnostico2_idDiagnostico2
-            FROM
-              diagnostico2detalle diag2d
-              LEFT JOIN diagnosticonivel4 diagn4
-              ON diag2d.DiagnosticoNivel4_idDiagnosticoNivel4 = diagn4.idDiagnosticoNivel4
-              LEFT JOIN diagnosticonivel3 diagn3
-              ON diagn4.DiagnosticoNivel3_idDiagnosticoNivel3 = diagn3.idDiagnosticoNivel3
-              LEFT JOIN diagnosticonivel2 diagn2
-              ON diagn3.DiagnosticoNivel2_idDiagnosticoNivel2 = diagn2.idDiagnosticoNivel2
-              LEFT JOIN diagnosticonivel1 diagn1
-              ON diagn2.DiagnosticoNivel1_idDiagnosticoNivel1 = diagn1.idDiagnosticoNivel1
-              LEFT JOIN diagnostico2 diag2
-              ON diag2d.Diagnostico2_idDiagnostico2 = diag2.idDiagnostico2
-              where diag2d.Diagnostico2_idDiagnostico2 = '.$id);    
-
-            return view('formatos.diagnostico2impresion',['diagnostico2'=>$diagnostico2], compact('diagnostico2','diagnosticoEncabezado'));
-         }
+     // Se envia por paremetros en la grid a la nueva ffuncion llamada Consultardiagnostico
     }
 
     /**
@@ -222,5 +189,41 @@ class Diagnostico2Controller extends Controller
 
         \App\Diagnostico2::destroy($id);
         return redirect('/diagnostico2');
+    }
+
+      public function consultardiagnostico()
+    {
+        $id= $_GET['id'];
+
+        $diagnosticoEncabezado = DB::select('
+            SELECT diagenca.idDiagnostico2,diagenca.codigoDiagnostico2,diagenca.fechaElaboracionDiagnostico2,diagenca.nombreDiagnostico2,diagenca.equiposCriticosDiagnostico2,diagenca.herramientasCriticasDiagnostico2,
+            diagenca.observacionesDiagnostico2
+  
+            FROM diagnostico2 diagenca
+            WHERE diagenca.idDiagnostico2 = '.$id);
+
+         $diagnostico2 = DB::select('
+            SELECT idDiagnostico2Detalle,diag2.idDiagnostico2,diagn4.idDiagnosticoNivel4,diagn1.idDiagnosticoNivel1,diagn2.idDiagnosticoNivel2,diagn1.numeroDiagnosticoNivel1,
+            diagn1.tituloDiagnosticoNivel1,diagn2.numeroDiagnosticoNivel2,diagn2.tituloDiagnosticoNivel2,
+            diagn2.valorDiagnosticoNivel2,diagn3.numeroDiagnosticoNivel3,diagn3.tituloDiagnosticoNivel3,
+            diagn3.valorDiagnosticoNivel3,diagn4.numeroDiagnosticoNivel4,diagn4.tituloDiagnosticoNivel4,
+            diagn4.valorDiagnosticoNivel4,diag2.codigoDiagnostico2,diag2d.idDiagnostico2Detalle,diag2d.DiagnosticoNivel4_idDiagnosticoNivel4,diag2d.puntuacionDiagnostico2Detalle,
+            diag2d.respuestaDiagnostico2Detalle,diag2d.resultadoDiagnostico2Detalle,diag2d.mejoraDiagnostico2Detalle,
+            diag2d.Diagnostico2_idDiagnostico2,diagn1.valorDiagnosticoNivel1
+            FROM
+              diagnostico2detalle diag2d
+              LEFT JOIN diagnosticonivel4 diagn4
+              ON diag2d.DiagnosticoNivel4_idDiagnosticoNivel4 = diagn4.idDiagnosticoNivel4
+              LEFT JOIN diagnosticonivel3 diagn3
+              ON diagn4.DiagnosticoNivel3_idDiagnosticoNivel3 = diagn3.idDiagnosticoNivel3
+              LEFT JOIN diagnosticonivel2 diagn2
+              ON diagn3.DiagnosticoNivel2_idDiagnosticoNivel2 = diagn2.idDiagnosticoNivel2
+              LEFT JOIN diagnosticonivel1 diagn1
+              ON diagn2.DiagnosticoNivel1_idDiagnosticoNivel1 = diagn1.idDiagnosticoNivel1
+              LEFT JOIN diagnostico2 diag2
+              ON diag2d.Diagnostico2_idDiagnostico2 = diag2.idDiagnostico2
+              where diag2d.Diagnostico2_idDiagnostico2 = '.$id);    
+
+            return view('formatos.diagnostico2impresion',['diagnostico2'=>$diagnostico2], compact('diagnostico2','diagnosticoEncabezado'));
     }
 }

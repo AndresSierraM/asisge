@@ -27,7 +27,7 @@
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
       {!!Form::model($diagnostico2,['route'=>['diagnostico2.destroy',$idDiagnostico2],'method'=>'DELETE', 'files' => true])!!}
     @endif
-    @if($idDiagnostico2 != '')
+    @if(!isset($_GET['accion']) and ($idDiagnostico2 != ''))
       {!!Form::model($diagnostico2,['route'=>['diagnostico2.update',$idDiagnostico2],'method'=>'PUT', 'files' => true])!!}
     @endif
     @if($idDiagnostico2 == '')
@@ -301,9 +301,9 @@
     </fieldset> 
   @if(isset($diagnostico2))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-        {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+        {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
     @endif
-    @if($idDiagnostico2 != '')
+    @if(!isset($_GET['accion']) and ($idDiagnostico2 != ''))
         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
     @endif
     @if($idDiagnostico2 == '')

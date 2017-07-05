@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     Route::get('logout', 'AuthController@logOut');
     // });
     Route::resource('diagnostico2', 'Diagnostico2Controller');
+    Route::get('consultardiagnostico', 'Diagnostico2Controller@consultardiagnostico');
     Route::resource('actoinseguro', 'ActoInseguroController');
     Route::resource('cambiopassword', 'CambioPasswordController');
     Route::resource ('centrocosto','CentroCostoController');

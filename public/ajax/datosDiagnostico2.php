@@ -39,10 +39,10 @@
                         '</a>&nbsp;'.
                         '<a href="diagnostico2/'.$value->idDiagnostico2.'/edit?accion=eliminar">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleM.'"></span>'.
-                        '</a>&nbsp;';
-                        // '<a onclick="imprimirDiagnostico2('.$value->idDiagnostico2.')">'.
-                        //     '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
-                        // '</a>';
+                        '</a>&nbsp;'.
+                        '<a onclick="imprimirDiagnostico2('.$value->idDiagnostico2.')">'.
+                            '<span class="glyphicon glyphicon-print" style = "cursor:pointer; display:'.$visibleI.'"></span>'.
+                        '</a>';
         $row[$key][] = $value->idDiagnostico2;
         $row[$key][] = $value->codigoDiagnostico2;
         $row[$key][] = $value->nombreDiagnostico2; 

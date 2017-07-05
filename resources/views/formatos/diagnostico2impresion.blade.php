@@ -1,10 +1,13 @@
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 @extends('layouts.formato')
 
 
 @section('contenido')
 
 {!!Form::model($diagnostico2)!!}
-
 
 		<div class="col-lg-12">
             <div class="panel panel-default" >
@@ -79,9 +82,13 @@
                 // El primer while va hacer el primer Rompimiento que se va a encargar en devolver los titulos.
                 while ($i < $total)   
                 {
+
                    $niveles = $datos[$i]['tituloDiagnosticoNivel1'];
                    $idniveles = $datos[$i]['idDiagnosticoNivel1'];
+                    // Se crea la variable papa que es la que va acomular cada nivel mediano
+                   $totalAcumulador= 0;
 
+                   
                      echo '
                     <thead class="thead-inverse">  
                         <tr class="table-info">
@@ -93,11 +100,13 @@
                   
                   // se hace rompimiento de aca en adelante para los demas niveles  
                   while ($i < $total and $niveles == $datos[$i]["tituloDiagnosticoNivel1"])
-                    {
+                    {     
+                    // Se crea una variable para el acumulador
+                    	$totalRegistros= 0;               	
                         // dentro de acada while se va crear una variable que contenga almenos el titulo para comprarlo con el sigueinte
                         $nivel2 = $datos[$i]['tituloDiagnosticoNivel2'];
                         $porcnivel2 = $datos[$i]['valorDiagnosticoNivel2'];
-                        $idnivel2 = $datos[$i]['idDiagnosticoNivel2'];
+                        $idnivel2 = $datos[$i]['idDiagnosticoNivel2'];                     	
                         echo '
                           <thead class="thead-inverse">  
                             <tr class="table-info">
@@ -108,6 +117,7 @@
                           
                            while ($i < $total and $nivel2 == $datos[$i]["tituloDiagnosticoNivel2"])
                             {
+
 
                                 $nivel3 = $datos[$i]['tituloDiagnosticoNivel3'];
                                 echo '
@@ -121,7 +131,9 @@
                                 {
                             
                                   $nivel4 = $datos[$i]['tituloDiagnosticoNivel4'];
-                                  // se ocultan los 2 id de dianostico nivel 1 y 2 para saber en que linea va al momento de hacer la suma del valor  
+   
+                                  $totalRegistros += $datos[$i]['resultadoDiagnostico2Detalle'];
+
                                   echo '
                                   <tbody>
 
@@ -135,85 +147,186 @@
 
                                       </tbody
                                   </thead>';
+
+                               
                                   $i++;
                                   //al final del ultimo while tiene que haber una virable incremental í++
                                 }      
                               
                             } 
-                            // RESULTADO DE NIVEL 2 
+                            // RESULTADO DE NIVEL 2  recursos
                             echo '
                           <thead class="thead-inverse">  
                             <tr class="table-info">
                             <th colspan="3" style=" background-color:#1B43AB; color:white;">RESULTADO  '.$nivel2.'('.$porcnivel2.'%)'.'</th>
-                            <th><input type="text" id="resultadonivel2_'.$idnivel2.'" name="resultadonivel2[]" value="0" readonly="readonly"></th>                
+                            <th><input type="text" id="resultadonivel2_'.$idnivel2.'" name="resultadonivel2[]" value='.$totalRegistros.' readonly="readonly"></th>                
                             </tr>                            
                           </thead>';
+                          $totalAcumulador += $totalRegistros;
                       }
-                      // aca termina eel nivel 1 se podria poner un espacio en blanco 
+                      // aca termina eel nivel 1 se podria poner un espacio en blanco Resultado de planificacion
                        echo '
                     <thead class="thead-inverse">  
                         <tr class="table-info">
                        <th colspan="3" style=" background-color:#255986; color:white;">RESULTADO '.$niveles.' (PUNTAJE MÁXIMO 25%)</th>
-                       <th><input type="text" id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value="0" readonly="readonly"></th>              
+                       <th><input type="text" id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$totalAcumulador.' readonly="readonly"></th>              
                       </tr>
                       <tr class="table-info">
                        <th colspan="20" >&nbsp;</th>                
                       </tr>                                    
                     </thead>'; 
                 } 
-                // RESULTADO FINAL
-
-                 echo '
-                    <thead class="thead-inverse">  
-                       <tr class="table-info">
-                       <th colspan="4" style=" background-color:gray; color:white;">RESULTADO DIAGNÓSTICO</th>
-                       <th><input type="text" id="resultadodiagnostico" name="resultadodiagnostico[]" value="0" readonly="readonly">
-                       </th>                
-                      </tr>                                                        
-                    </thead>';              
+       
+                        
                 echo '</table>';
-                }
+                }	
 
                ?>            
 						</tbody>
 					</table>
-									<!-- SE HACE DENTRO DE ESTA TABLA el debido rompimiento para armar la tabla   -->
-					<table class="table table-striped table-bordered" width="100%">
+									<!-- SE HACE DENTRO DE ESTA TABLA el debido rompimiento para armar la tabla  que hace el calculo para la grafica -->
+					<table id="TablaGrafico" class="table table-striped table-bordered" width="100%">
 						<thead>					
 						<tr>
 							<td style="background-color:#DCDCDC">ASPECTO A EVALUAR</td>
-							<td style="background-color:#DCDCDC">PUNTAJE M&#193;XIMA</td>
+							<td style="background-color:#DCDCDC">PUNTAJE M&#193;XIMO</td>
 							<td style="background-color:#DCDCDC">PUNTAJE OBTENIDO</td>
 							<td style="background-color:#DCDCDC">CUMPLIMIENTO (%)</td>	
 						<tbody>
 						<?php
+						 if (isset($diagnosticoEncabezado)) 
+                			{	
+                				// Se trae el total que ya esta convertido mas arriba 
+                				$total = count($diagnostico2);					
+			                   	$j=0; 
+                				// Se crea una variable que a llevar el total de los registros contados
+                				$total = count($diagnostico2);
+								$suma = 0;
+								$conteo = 0;
+								$arrayGrafico = '';
+								// Variable en 0 para acumular los valores de la columna PUNTAJE OBTENIDO
+								$totalObtenido = 0;
+								$cumplimiento = 0;
+								// Para el Valor diagnostico 1 
+								$ValorNivel1 = 0;
+								// Se hace un rompimiento para los titulos, luego otro para los valores
+								while($j < $total)
+						        {			
+
+					        	 $niveles = $datos[$j]['tituloDiagnosticoNivel1'];
+					        	 $idniveles = $datos[$j]['idDiagnosticoNivel1'];
+					        	 // Se crea la variable par aalmacenar el valor de puntaje maximo
+						         $totalMaximo = 0;
+						         
+						         $resultadoTotalRegistrosObtenidos = 0;
+						         
+
+									echo '<tr>
+											<td>'.$datos[$j]["tituloDiagnosticoNivel1"].'</td>
+											<th>'.$datos[$j]["valorDiagnosticoNivel1"].'</th>
+											';					
+									$ValorNivel1 += $datos[$j]["valorDiagnosticoNivel1"];
+									// Se crea una variable para mandar el valor que ya fue incrementado COn la J
+									$ValorNivel1Incrementado = $datos[$j]["valorDiagnosticoNivel1"]; 
+
+
+									 while ($j < $total and $niveles == $datos[$j]["tituloDiagnosticoNivel1"])
+								        {		
+
+								        	
+								          // Se crea una variable para el acumulador
+                    					$totalRegistrosObtenido= 0;   	                            						 								       							                            			
+								        $nivel2 = $datos[$j]['tituloDiagnosticoNivel2'];		        							
+											
+										while ($j < $total and $nivel2 == $datos[$j]["tituloDiagnosticoNivel2"])
+                            				{		
+
+                        					    $nivel3 = $datos[$j]['tituloDiagnosticoNivel3'];
+                        						 	
+
+                            					    while ($j < $total and $nivel3 == $datos[$j]["tituloDiagnosticoNivel3"])
+                            					    {     
+                            					    	$totalRegistrosObtenido += $datos[$j]['resultadoDiagnostico2Detalle'];
+                            					    
+                            					    	$conteo++;
+														$j++;
+
+
+
+                            					    }    
+                            					    
+
+                        					}   
+                        					$resultadoTotalRegistrosObtenidos += $totalRegistrosObtenido;
+
+										}
+
+										// se imprime el th despues de los rompimientos para tener el acumulado al final OBTENIDO
+										echo '
+										<th>'.$resultadoTotalRegistrosObtenidos.'</th>
+										<th>'.(($resultadoTotalRegistrosObtenidos / $ValorNivel1Incrementado) *100).'</th>
+										</tr>';
+
+										$totalMaximo += $ValorNivel1;
+										$totalObtenido += $resultadoTotalRegistrosObtenidos;
+										$cumplimiento += (($resultadoTotalRegistrosObtenidos / $ValorNivel1Incrementado) *100);
+								}
 								
-							$suma = 0;
-							$conteo = 0;
-							$arrayGrafico = '';
+								
+								
+								 // Aca se imprimen los imput para los resultados Maximo,Obtendo y Total
+                       echo '                       
+	                    <thead class="thead-inverse">  
+	                        <tr class="table-info">
+	                       <th><b>TOTAL</b></th>
+	                       <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1PuntajeMaximo[]" value= '.$totalMaximo.'  readonly="readonly"></th>              
+	                       <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$totalObtenido.' readonly="readonly"></th>
+	                        <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$cumplimiento.' readonly="readonly"></th>	  
+	                      </tr>    
+	                      </tr>
 
-
-							// Se hace un rompimiento para los titulos, luego otro para los valores
-							while($i < $total)
-					        {
-
-								echo '<tr>
-										<td>'.$datos[$i]["tituloDiagnosticoNivel1"].'</td>										
-									</tr>';
-							}
+	                    </thead>'; 
+							}								
 						?>
 						</tbody>
 					</table>
 
-					<div id="resultado" style="height: 250px; width: 800px;"></div>
+					<div id="graficaChart" style="height: 250px; width: 800px;">
+						
+					</div>
 
 				</div>
 			</div>
 		</div>
 
 
+<script>
+	Highcharts.chart('graficaChart', {
+    data: {
+        table: 'TablaGrafico'
+    },
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'RESULTADO DIAGNÓSTICO'
+    },
+    yAxis: {
+        allowDecimals: false,
+        title: {
+            text: ''
+        }
+    },
+    tooltip: {
+        formatter: function () {
+            return '<b>' + this.series.name + '</b><br/>' +
+                this.point.y + ' ' + this.point.name.toLowerCase();
+        }
+    }
+});
+</script>
+
 
 	{!!Form::close()!!}
-
 	
 @stop
