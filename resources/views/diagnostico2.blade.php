@@ -234,8 +234,8 @@
                                   <tbody>
 
                                         <tr>
-                                          <td style=" background-color:#058451; color:white;">'.$datos[$i]['numeroDiagnosticoNivel4'].' '.$datos[$i]['tituloDiagnosticoNivel4'].'</td>
-                                          <td style=" background-color:#058451;"><input type="text" id="puntuacionDiagnostico2Detalle'.$i.'" name="puntuacionDiagnostico2Detalle[]" value="'.$datos[$i]['valorDiagnosticoNivel4'].'" readonly="readonly">                                          
+                                          <td style=" background-color:#CACACA;" '.$datos[$i]['numeroDiagnosticoNivel4'].' <b>'.$datos[$i]['tituloDiagnosticoNivel4'].'</b></td>
+                                          <td style=" background-color:#CACACA;"><input type="text" id="puntuacionDiagnostico2Detalle'.$i.'" name="puntuacionDiagnostico2Detalle[]" value="'.$datos[$i]['valorDiagnosticoNivel4'].'" readonly="readonly">                                          
                                           <input type="hidden" id="idDiagnosticoNivel1_'.$i.'" name="idDiagnosticoNivel1[]" value="'.$datos[$i]["idDiagnosticoNivel1"].'" >
                                           <input type="hidden" id="idDiagnosticoNivel2_'.$i.'" name="idDiagnosticoNivel2[]" value="'.$datos[$i]["idDiagnosticoNivel2"].'" >
                                           <input type="hidden" id="idDiagnosticoNivel4_'.$i.'" name="idDiagnosticoNivel4[]" value="'.$datos[$i]["idDiagnosticoNivel4"].'">

@@ -138,7 +138,7 @@
                                   <tbody>
 
                                         <tr>
-                                          <td style=" background-color:#058451; color:white;">'.$datos[$i]['numeroDiagnosticoNivel4'].' '.$datos[$i]['tituloDiagnosticoNivel4'].'</td>
+                                          <td style=" background-color:#CACACA;">'.$datos[$i]['numeroDiagnosticoNivel4'].' <b>'.$datos[$i]['tituloDiagnosticoNivel4'].'</b></td>
                                           <td>'.$datos[$i]['valorDiagnosticoNivel4'].'</td>
                                           <td>'.$datos[$i]["respuestaDiagnostico2Detalle"].'</td>
                                           <td>'.$datos[$i]['resultadoDiagnostico2Detalle'].'</td>
