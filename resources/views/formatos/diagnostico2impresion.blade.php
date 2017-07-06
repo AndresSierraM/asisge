@@ -269,7 +269,7 @@
 
 										$totalMaximo += $ValorNivel1;
 										$totalObtenido += $resultadoTotalRegistrosObtenidos;
-										$cumplimiento += (($resultadoTotalRegistrosObtenidos / $ValorNivel1Incrementado) *100);
+										// $cumplimiento += (($resultadoTotalRegistrosObtenidos / $ValorNivel1Incrementado) *100);
 								}
 								
 								
@@ -280,14 +280,15 @@
 	                        <tr class="table-info">
 	                       <th><b>TOTAL</b></th>
 	                       <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1PuntajeMaximo[]" value= '.$totalMaximo.'  readonly="readonly"></th>              
-	                       <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$totalObtenido.' readonly="readonly"></th>
-	                        <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$cumplimiento.' readonly="readonly"></th>	  
+	                       <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$totalObtenido.' readonly="readonly"></th>	                     
 	                      </tr>    
 	                      </tr>
 
 	                    </thead>'; 
 							}								
 						?>
+
+            <!--    <th><input  id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$cumplimiento.' readonly="readonly"></th>   -->
 						</tbody>
 					</table>
 

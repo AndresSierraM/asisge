@@ -304,10 +304,10 @@
         {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
     @endif
     @if(!isset($_GET['accion']) and ($idDiagnostico2 != ''))
-        {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+        {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarFormularioREQUEST(event);"])!!}
     @endif
     @if($idDiagnostico2 == '')
-        {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}      
+        {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormularioREQUEST(event);'])!!}      
     @endif
   @endif
 

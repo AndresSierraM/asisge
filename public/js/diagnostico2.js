@@ -59,24 +59,57 @@ function validarFormularioREQUEST(event)
 
                     (typeof respuesta['respuestaDiagnostico2Detalle'+j] === "undefined" ? document.getElementById('respuestaDiagnostico2Detalle'+j).style.borderColor = '' : document.getElementById('respuestaDiagnostico2Detalle'+j).style.borderColor = '#a94442');
                 }
-                $("#msj").html('Los campos bordeados en rojo son obligatorios.');
+                
+
+                var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
+                $.each(respuesta,function(index, value){
+                    mensaje +='<li>' +value+'</li>';
+                });
+                mensaje +='</ul>';
+               
+                $("#msj").html(mensaje);
                 $("#msj-error").fadeIn();
             }
 
         }
     });
 
-    //if(sw === true)
+    if(sw === true)
         event.preventDefault();
 }
 
 
 
-function habilitarSubmit(event)
-{
-    event.preventDefault();
-    
 
-    validarFormularioREQUEST(event);
-}
 
+// function validarformulario()
+// {
+//     var resp = true;
+//     // Validamos los datos de detalle
+//     for(actual = 0; actual < document.getElementById('respuestaDiagnostico2Detalle').value ; actual++)
+//     {
+//         if(document.getElementById("respuestaDiagnostico2Detalle"+(actual)) && 
+//             (document.getElementById("respuestaDiagnostico2Detalle"+(actual)).value == '' ||  
+//             document.getElementById("respuestaDiagnostico2Detalle"+(actual)).value == 0))
+//         {
+//             document.getElementById("respuestaDiagnostico2Detalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:#F5A9A9;";
+//             resp = false;
+            
+//         } 
+//         else
+//         {
+//             document.getElementById("respuestaDiagnostico2Detalle"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:white;";
+//         } 
+//     }
+
+//     if(resp === true)
+//     {
+//         $("form").submit();
+//     }
+//     else
+//     {
+//         alert('Por favor verifique los campos bordeados en rojo)');
+//     }
+
+//     return true;
+// }
