@@ -199,7 +199,6 @@
             </div>
           </div>
         </div>
-
           <div class="form-group" id='test'>
               {!!Form::label('Tercero_idRealizadaPor', 'Realizada Por', array('class' => 'col-sm-2 control-label'))!!}       
               <div class="col-sm-10">
@@ -215,9 +214,6 @@
               </div>
             </div>
           </div>
-
-        
-
         <div class="form-group" id='test'>
           {!!Form::label('fechaElaboracionInspeccion', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
@@ -229,9 +225,18 @@
             </div>
           </div>
         </div>
-		
-
-        
+        <!-- Nuevo Campo Centro de Costos  -->
+          <div class="form-group">
+                  {!!Form::label('CentroCosto_idCentroCosto', 'Centro de Costos', array('class' => 'col-sm-2 control-label'))!!}
+                <div class="col-sm-10" ">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="fa fa-university" style="width: 14px;"></i>
+                    </span>
+                    {!!Form::select('CentroCosto_idCentroCosto',$centrocosto, (isset($inspeccion) ? $inspeccion->CentroCosto_idCentroCosto : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}                    
+                  </div>
+                </div>
+          </div>
         <div class="form-group">
           <div class="col-lg-12">
             <div class="panel panel-default">

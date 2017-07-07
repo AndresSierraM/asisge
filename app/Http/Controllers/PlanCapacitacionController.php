@@ -35,10 +35,11 @@ class PlanCapacitacionController extends Controller
      */
     public function create()
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
-        return view('plancapacitacion',compact('tercero','idTercero','nombreCompletoTercero'));
+        return view('plancapacitacion',compact('centrocosto','tercero','idTercero','nombreCompletoTercero'));
     }
 
     /**
@@ -60,7 +61,8 @@ class PlanCapacitacionController extends Controller
                 'fechaInicioPlanCapacitacion' => $request['fechaInicioPlanCapacitacion'],
                 'fechaFinPlanCapacitacion' => $request['fechaFinPlanCapacitacion'],
                 'metodoEficaciaPlanCapacitacion' => $request['metodoEficaciaPlanCapacitacion'],
-                'Compania_idCompania' => \Session::get('idCompania')
+                'Compania_idCompania' => \Session::get('idCompania'),
+                'CentroCosto_idCentroCosto' => (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'])
                 ]);
 
             $planCapacitacion = \App\PlanCapacitacion::All()->last();
@@ -118,12 +120,13 @@ class PlanCapacitacionController extends Controller
      */
     public function edit($id)
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
         $planCapacitacion = \App\PlanCapacitacion::find($id);
-        return view('plancapacitacion',compact('tercero','idTercero','nombreCompletoTercero'),['planCapacitacion'=>$planCapacitacion]);
+        return view('plancapacitacion',compact('centrocosto','tercero','idTercero','nombreCompletoTercero'),['planCapacitacion'=>$planCapacitacion]);
     }
 
     /**
@@ -139,6 +142,8 @@ class PlanCapacitacionController extends Controller
         {
             $planCapacitacion = \App\PlanCapacitacion::find($id);
             $planCapacitacion->fill($request->all());
+
+            $planCapacitacion->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto']);
 
             $planCapacitacion->save();
 

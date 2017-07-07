@@ -44,13 +44,14 @@ class InspeccionController extends Controller
      */
     public function create()
     {
+         $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $tipoinspeccion = \App\TipoInspeccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoInspeccion','idTipoInspeccion');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
 
-        return view('inspeccion',compact('tipoinspeccion','tercero','idTercero','nombreCompletoTercero'));
+        return view('inspeccion',compact('centrocosto','tipoinspeccion','tercero','idTercero','nombreCompletoTercero'));
     }
 
     /**
@@ -68,7 +69,8 @@ class InspeccionController extends Controller
                 'Tercero_idRealizadaPor' => $request['Tercero_idRealizadaPor'],
                 'fechaElaboracionInspeccion' => $request['fechaElaboracionInspeccion'],
                 'observacionesInspeccion' => $request['observacionesInspeccion'],
-                'Compania_idCompania' => \Session::get('idCompania')
+                'Compania_idCompania' => \Session::get('idCompania'),
+                'CentroCosto_idCentroCosto' => (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'])
                 ]); 
 
             $inspeccion = \App\Inspeccion::All()->last();
@@ -179,7 +181,7 @@ class InspeccionController extends Controller
      */
     public function edit($id)
     {
-
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $tipoinspeccion = \App\TipoInspeccion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoInspeccion','idTipoInspeccion');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         
@@ -200,7 +202,7 @@ class InspeccionController extends Controller
             ->where('Inspeccion_idInspeccion','=',$id)
             ->get();
 
-       return view('inspeccion',compact('tipoinspeccion','tercero','idTercero','nombreCompletoTercero', 'preguntas'),['inspeccion'=>$inspeccion]);
+       return view('inspeccion',compact('centrocosto','tipoinspeccion','tercero','idTercero','nombreCompletoTercero', 'preguntas'),['inspeccion'=>$inspeccion]);
     }
 
     /**
@@ -216,6 +218,8 @@ class InspeccionController extends Controller
         {
             $inspeccion = \App\Inspeccion::find($id);
             $inspeccion->fill($request->all());
+            $inspeccion->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'
+                ]);
 
             // armamos una ruta para el archivo de imagen y volvemos a actualizar el registro
             // esto es porque la creamos con el ID del accidente y debiamos grabar primero para obtenerlo

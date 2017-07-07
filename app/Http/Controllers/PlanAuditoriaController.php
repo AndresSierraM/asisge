@@ -35,12 +35,13 @@ class PlanAuditoriaController extends Controller
      */
     public function create()
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
         $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
-        return view('planauditoria',compact('tercero','idTercero','nombreCompletoTercero','idProceso','nombreProceso'));
+        return view('planauditoria',compact('centrocosto','tercero','idTercero','nombreCompletoTercero','idProceso','nombreProceso'));
     }
 
     /**
@@ -66,7 +67,8 @@ class PlanAuditoriaController extends Controller
                     'observacionesPlanAuditoria' => $request['observacionesPlanAuditoria'],
                     'aprobacionPlanAuditoria' => $request['aprobacionPlanAuditoria'],
                     'fechaEntregaPlanAuditoria' => $request['fechaEntregaPlanAuditoria'],
-                    'Compania_idCompania' => \Session::get('idCompania')
+                    'Compania_idCompania' => \Session::get('idCompania'),
+                    'CentroCosto_idCentroCosto' => (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'])
                 ]);
 
             $planAuditoria = \App\PlanAuditoria::All()->last();
@@ -174,6 +176,7 @@ class PlanAuditoriaController extends Controller
      */
     public function edit($id)
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $idTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTercero');
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
@@ -182,7 +185,7 @@ class PlanAuditoriaController extends Controller
 
         $planAuditoria = \App\PlanAuditoria::find($id);
         
-        return view('planauditoria',compact('tercero','idTercero','nombreCompletoTercero','idProceso','nombreProceso'),['planAuditoria'=>$planAuditoria]);
+        return view('planauditoria',compact('centrocosto','tercero','idTercero','nombreCompletoTercero','idProceso','nombreProceso'),['planAuditoria'=>$planAuditoria]);
     }
 
     /**
@@ -199,6 +202,7 @@ class PlanAuditoriaController extends Controller
 
             $planAuditoria = \App\PlanAuditoria::find($id);
             $planAuditoria->fill($request->all());
+            $planAuditoria->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto']);
 
             $planAuditoria->save();
 

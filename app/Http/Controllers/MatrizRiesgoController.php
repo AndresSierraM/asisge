@@ -75,13 +75,14 @@ class MatrizRiesgoController extends Controller
      */
     public function create()
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
         $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
         $idClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('idClasificacionRiesgo');
         $nombreClasificacionRiesgo = \App\ClasificacionRiesgo::All()->lists('nombreClasificacionRiesgo');
         
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','frecuenciaMedicion'));
+        return view('matrizriesgo',compact('centrocosto','idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','frecuenciaMedicion'));
     }
 
     /**
@@ -106,7 +107,8 @@ class MatrizRiesgoController extends Controller
               'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
               'fechaActualizacionMatrizRiesgo' => date("Y-m-d"),
               'Compania_idCompania' => \Session::get('idCompania'),
-              'Users_id' => \Session::get('idUsuario')
+              'Users_id' => \Session::get('idUsuario'),
+              'CentroCosto_idCentroCosto' => (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'])
               ]);
           
           $matrizRiesgo = \App\MatrizRiesgo::All()->last();
@@ -303,6 +305,7 @@ class MatrizRiesgoController extends Controller
      */
     public function edit($id)
     {
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $frecuenciaMedicion = \App\FrecuenciaMedicion::All()->lists('nombreFrecuenciaMedicion','idFrecuenciaMedicion');
         $idProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idProceso');
         $nombreProceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso');
@@ -311,7 +314,7 @@ class MatrizRiesgoController extends Controller
 
         
         $matrizRiesgo = \App\MatrizRiesgo::find($id);
-        return view('matrizriesgo',compact('idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
+        return view('matrizriesgo',compact('centrocosto','idProceso','nombreProceso','idClasificacionRiesgo','nombreClasificacionRiesgo','frecuenciaMedicion'),['matrizRiesgo'=>$matrizRiesgo]);
     }
 
     /**
@@ -329,7 +332,8 @@ class MatrizRiesgoController extends Controller
           $matrizRiesgo = \App\MatrizRiesgo::find($id);
           $matrizRiesgo->fill($request->all());
           $matrizRiesgo->fechaActualizacionMatrizRiesgo = date("Y-m-d");
-
+          $matrizRiesgo->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'
+                ]);
 
           /*if(null !== Input::file('imagenTercero') )
           {
