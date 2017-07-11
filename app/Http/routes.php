@@ -678,6 +678,11 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
 
+    Route::post('llenarCentroCostoActaCapacitacion', function()
+    {
+        include public_path().'/ajax/llenarCentroCostoActaCapacitacion.php';
+    });
+
    Route::get('datosDiagnostico2', function()
     {
         include public_path().'/ajax/datosDiagnostico2.php';
