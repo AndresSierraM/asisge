@@ -45,7 +45,7 @@
 				       @foreach($actagrupoapoyotercero as $dato)
 				       <tr>
 				        <td>{{$dato->nombreCompletoTercero}}</td>
-				        <td><?php echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaActaGrupoApoyoTercero.'"';?></td>
+				        <td><?php echo '<img style="width:25%; height:25%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaActaGrupoApoyoTercero.'"';?></td>
 				       </tr>
 				       @endforeach
 				      </tbody>

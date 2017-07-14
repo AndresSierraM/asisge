@@ -107,12 +107,24 @@
 					<div class="col-sm-10" >
 					  <div class="input-group">
 					    <span class="input-group-addon">
-					      <i class="fa fa-caret-square-o-down" ></i>
+					      <i class="fa fa-caret-square-o-down" style="width: 14px;"></i>
 					    </span>
 					    {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciaMedicion, (isset($matrizRiesgo) ? $matrizRiesgo->idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
 					  </div>
 					</div>
 				</div>
+				<!-- Nuevo campo Centro de Costos -->
+		     	<div class="form-group">
+                  {!!Form::label('CentroCosto_idCentroCosto', 'Centro de Costos', array('class' => 'col-sm-2 control-label'))!!}
+	            	<div class="col-sm-10" ">
+	                  <div class="input-group">
+	                    <span class="input-group-addon">
+	                      <i class="fa fa-university" style="width: 14px;"></i>
+	                    </span>
+	                    {!!Form::select('CentroCosto_idCentroCosto',$centrocosto, (isset($matrizRiesgo) ? $matrizRiesgo->CentroCosto_idCentroCosto : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}                    
+	                  </div>
+	                </div>
+          		</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">

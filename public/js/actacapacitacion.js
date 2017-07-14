@@ -1,3 +1,31 @@
+function llenarCentroCosto(idPlanCapacitacion)
+{
+    var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'idPlanCapacitacion': idPlanCapacitacion},
+            url:   'http://'+location.host+'/llenarCentroCostoActaCapacitacion/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+
+            success: function(respuesta){ 
+            $("#CentroCosto_idCentroCosto").val(respuesta[0]["nombreCentroCosto"]);
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+
+
+                
+
+}
+
+
 // Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
 function eliminarDiv(idDiv)
 {

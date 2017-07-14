@@ -165,7 +165,34 @@ class PlanTrabajoAlertaController extends Controller
         $plantrabajoalerta = \App\PlanTrabajoAlerta::find($id);
         $idModulo= \App\Modulo::All()->lists('idModulo');
         $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
-        return view ('plantrabajoalerta', compact('idModulo','nombreModulo'),['plantrabajoalerta'=>$plantrabajoalerta]);
+
+
+        $tareaDiaMes = DB::Select('
+        SELECT pta.tareaDiasPlanTrabajoAlerta,pta.tareaMesesPlanTrabajoAlerta
+        FROM plantrabajoalerta pta
+        WHERE  pta.idPlanTrabajoAlerta ='.$id);
+
+        // Se convierte en object vars para facilidad de manejo y se envia para recibirla en el blade.
+        //---------------
+        //Chekbox de Dias
+        //---------------
+        $CheckboxDia = get_object_vars($tareaDiaMes[0])['tareaDiasPlanTrabajoAlerta'];
+
+        $CheckboxDia=  substr($CheckboxDia, 0, -1);
+        // Se hace un explode para separarlo por "," los valores traidos por bd 
+        $variableComaDia = explode(',',$CheckboxDia);
+        //---------------
+        //Chekbox de Meses
+        //---------------
+        $CheckboxMes = get_object_vars($tareaDiaMes[0])['tareaMesesPlanTrabajoAlerta'];
+        // para borrar la ultima posicion
+        $CheckboxMes=  substr($CheckboxMes, 0, -1);    
+        // Se hace un explode para separarlo por "," los valores traidos por bd 
+        $variableComaMes = explode(',',$CheckboxMes);
+
+    
+
+        return view ('plantrabajoalerta', compact('variableComaMes','variableComaDia','idModulo','nombreModulo'),['plantrabajoalerta'=>$plantrabajoalerta]);
     }
 
     /**

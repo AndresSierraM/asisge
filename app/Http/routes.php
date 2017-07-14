@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     Route::get('logout', 'AuthController@logOut');
     // });
     Route::resource('diagnostico2', 'Diagnostico2Controller');
+    Route::get('consultardiagnostico', 'Diagnostico2Controller@consultardiagnostico');
     Route::resource('actoinseguro', 'ActoInseguroController');
     Route::resource('cambiopassword', 'CambioPasswordController');
     Route::resource ('centrocosto','CentroCostoController');
@@ -698,7 +699,15 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
 
+    Route::post('llenarCentroCostoActaCapacitacion', function()
+    {
+        include public_path().'/ajax/llenarCentroCostoActaCapacitacion.php';
+    });
 
+   Route::get('datosDiagnostico2', function()
+    {
+        include public_path().'/ajax/datosDiagnostico2.php';
+    });
     Route::get('datosActoInseguro', function()
     {
         include public_path().'/ajax/datosActoInseguro.php';

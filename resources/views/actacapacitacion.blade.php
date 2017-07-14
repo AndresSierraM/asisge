@@ -22,6 +22,7 @@
 
 <?php
 
+
 $firmas = isset($actaCapacitacion->actaCapacitacionAsistentes) ? $actaCapacitacion->actaCapacitacionAsistentes : null;
 
 //Se pregunta  si existe el id de acta de capacitacion  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
@@ -54,9 +55,19 @@ for ($i=0; $i < count($firmas); $i++)
 
 }
 
-
-
 ?>
+<script>
+ $(document).ready(function()
+    {
+	// Se ejecuta la funcion cuando este cargando el documento para que muestre la opcion seleccionada
+	// Se pregunta con if si existe algun valor apra que ejecute la funcion de lo contrario que no ejecute nada 
+		if($("#PlanCapacitacion_idPlanCapacitacion").val() > 0)
+		{
+			llenarCentroCosto($("#PlanCapacitacion_idPlanCapacitacion").val());		
+			$("#CentroCosto_idCentroCosto").prop("disabled", true).trigger("chosen:updated");
+		}
+    });
+</script>
 
 
 	<script>
@@ -196,7 +207,7 @@ for ($i=0; $i < count($firmas); $i++)
 								<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 							</span>
 							{!!Form::select('PlanCapacitacion_idPlanCapacitacion',
-							$planCapacitacion, (isset($actaCapacitacion) ? $actaCapacitacion->PlanCapacitacion_idPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el plan", 'onchange'=>'consultarPlanCapacitacion(\'Completo\');'])!!}
+							$planCapacitacion, (isset($actaCapacitacion) ? $actaCapacitacion->PlanCapacitacion_idPlanCapacitacion : 0),["class" => "form-control", "placeholder" =>"Seleccione el plan",'onchange'=>'consultarPlanCapacitacion(\'Completo\');llenarCentroCosto(this.value);'])!!}
 						</div>
 					</div>
 				</div>
@@ -222,6 +233,18 @@ for ($i=0; $i < count($firmas); $i++)
 						</div>
 					</div>
 				</div>
+				<!-- Nuevo Campo Centro de Costos  -->
+	          		<div class="form-group">
+			                  {!!Form::label('CentroCosto_idCentroCosto', 'Centro de Costos', array('class' => 'col-sm-2 control-label'))!!}
+			                <div class="col-sm-10" ">
+			                  <div class="input-group">
+			                    <span class="input-group-addon">
+			                      <i class="fa fa-university" style="width: 14px;"></i>
+			                    </span>			            
+			                    {!!Form::text('CentroCosto_idCentroCosto',null,['class'=>'form-control','readonly','placeholder'=>'Seleccione un Plan de Capacitaci&oacute;n', 'autocomplete' => 'off'])!!}                  
+			                  </div>
+			                </div>
+		          	</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">

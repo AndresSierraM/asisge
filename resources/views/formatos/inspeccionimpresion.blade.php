@@ -21,7 +21,7 @@
 							</tr>
 							<tr>
 								<td>Firma</td>
-								<td><?php echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaRealizadaPorInspeccion.'"';?></td>
+								<td><?php echo '<img style="width:25%; height:25%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaRealizadaPorInspeccion.'"';?></td>
 							</tr>
 							<tr>
 								<td>Fecha Elaboración</td>
@@ -35,12 +35,12 @@
 				        <td>
 				         Objetivos
 				        </td>
-				       </tr>
+				       </tr><
 				      </thead>
 				      <tbody>
 				       <tr>
-				        <td>
-				         {{$dato->observacionesInspeccion}}
+				        <td>				         
+				         <?php echo $dato->observacionesInspeccion;?>
 				        </td>
 				       </tr>
 				      </tbody>

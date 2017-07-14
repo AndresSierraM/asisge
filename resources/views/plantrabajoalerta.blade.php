@@ -17,6 +17,8 @@
 	$fechaMes = null;
 	$horaMes = null;
 
+	$intento = null;
+
 if(isset($plantrabajoalerta))
 {
 
@@ -42,9 +44,81 @@ if(isset($plantrabajoalerta))
 			$intervaloDia = $plantrabajoalerta->tareaIntervaloPlanTrabajoAlerta;
 		}
 	}
+
 }
 
 ?>
+
+<?php 
+
+
+
+?>
+<script>
+		// -------------
+		// CheckBox Dia
+		// -------------
+// Variable que se envia desde el controller EDIT  (Se recibe acá).
+var ChekboxDia = '<?php echo isset($variableComaDia) ? json_encode($variableComaDia) : "";?>';
+ChekboxDia = (ChekboxDia != '' ? JSON.parse(ChekboxDia) : '');
+
+
+		// -------------
+		// CheckBox Meses
+		// -------------
+// Variable que se envia desde el controller EDIT  para MESES (Se recibe acá).
+var ChekboxMes = '<?php echo isset($variableComaMes) ? json_encode($variableComaMes) : "";?>';
+ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
+
+	$(document).ready(function(){	
+		// -------------
+		// CheckBox Dia
+		// -------------
+		// Se pregunta si al respuesta que s eenvia de la consulta convertida en el controller  es mayor a 0 para que entre a este ciclo 
+		if (ChekboxDia.length > 0) 
+		{
+			// Luego se recorre los dias que hay en los chekbox de 0 al 7 ya que son de lunes a domingo 
+			// i = a datos en el fomulario
+			for (var i = 1; i < 7; i++) 
+			{
+				// Luego se recorre la posicion j con los datos de la bd 
+				for(var j=0, k = ChekboxDia.length; j < k; j++)
+				{
+					//se pone la condicion de que si i = J es decir, si el dia (en el blade) tiene valor en el j (BD)
+					if (i == ChekboxDia[j]) 
+					{
+						// Finalmente se pone el campo llamado Dia y que se recorra la posicion J que es la de BD, que  contine  la posicion de los que llevaban chulito.
+						$("#Dia"+ChekboxDia[j]).prop("checked",true); 
+					}
+				}
+			}
+		}
+		// -------------
+		// CheckBox Meses
+		// -------------
+		// Se pregunta si al respuesta que s eenvia de la consulta convertida en el controller  es mayor a 0 para que entre a este ciclo 
+		if (ChekboxMes.length > 0) 
+		{		
+			// Luego se recorre los dias que hay en los chekbox de 0 al 7 ya que son de lunes a domingo 
+			// i = a datos en el fomulario
+			for (var i = 1; i < 12; i++) 
+			{
+				// Luego se recorre la posicion j con los datos de la bd 
+				for(var j=0, k = ChekboxMes.length; j < k; j++)
+				{
+					//se pone la condicion de que si i = J es decir, si el dia (en el blade) tiene valor en el j (BD)
+					if (i == ChekboxMes[j]) 
+					{
+						// En este cambio ya que es con la posicion que tienee en el formulario ya que s ehizo un cambio que la base de datos guarde con un 0 antes 
+						// Lo que se hace es if (i == ChekboxMes[j])  medeiante de esta comparacion para saber el valor por cada mes 
+						$("#Mes"+i).prop("checked",true); 
+					}
+				}
+			}
+		}
+	});
+
+</script>
 
 <script>
   // tomamos los valores de los modulos enviados desde el controlador, y los almacenamos en un array convertidos en formato json
@@ -221,7 +295,7 @@ if(isset($plantrabajoalerta))
 					<div class="col-sm-11">
 					        <div class="input-group">	
 					              <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					              </span>
 					             {!!Form::text('filtroMesesPasadosPlanTrabajoAlerta',(isset($plantrabajoalerta) ? $plantrabajoalerta->filtroMesesPasadosPlanTrabajoAlerta : 1),['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					        </div>
@@ -234,7 +308,7 @@ if(isset($plantrabajoalerta))
 					       <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					              </span>
 					             {!!Form::text('filtroMesesFuturosPlanTrabajoAlerta',(isset($plantrabajoalerta )? $plantrabajoalerta->filtroMesesFuturosPlanTrabajoAlerta : 1),['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
@@ -313,7 +387,7 @@ if(isset($plantrabajoalerta))
 					          <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					              </span>
 					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaDia',$fechaDia,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
@@ -328,7 +402,7 @@ if(isset($plantrabajoalerta))
 					          <div class="col-sm-11">
 					            <div class="input-group">
 					              <span class="input-group-addon">
-					                <i class="fa fa-clock-o"></i>
+					                <i class="fa fa-clock-o" style="width: 14px;"></i>
 					              </span>
 					             {!!Form::text('tareaHoraPlanTrabajoAlertaDia',$horaDia,['class'=> 'form-control','placeholder'=>'','style'=>'width:100%;,right'])!!}
 				            	</div>
@@ -352,7 +426,7 @@ if(isset($plantrabajoalerta))
 			          <div class="col-md-8">
 			            <div class="input-group">
 			              <span class="input-group-addon">
-			                <i class="fa fa-bars"></i>
+			                <i class="fa fa-bars" style="width: 14px;"></i>
 			              </span> 
 			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaDia',$intervaloDia,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
@@ -382,7 +456,7 @@ if(isset($plantrabajoalerta))
 					<div class="col-sm-11">
 					    <div class="input-group">	
 					        <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					        </span>
 					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaSemana',$fechaSemana,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					     </div>
@@ -395,7 +469,7 @@ if(isset($plantrabajoalerta))
 					      <div class="col-sm-11">
 					        <div class="input-group">	
 					              <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					              </span>
 					              {!!Form::text('tareaHoraPlanTrabajoAlertaSemana',$horaSemana,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
 					         </div>
@@ -409,8 +483,8 @@ if(isset($plantrabajoalerta))
 			          {!!Form::label('tareaIntervaloPlanTrabajoAlertaSemana', 'Cada', array('class' => 'col-sm-1 control-label')) !!}
 			        <div class="col-md-3">
 			            <div class="input-group">
-			              <span class="input-group-addon">
-			                <i class="fa fa-bars"></i>
+			              <span class="input-group-addon" style="padding-left:10px ">
+			                <i class="fa fa-bars" style="width: 14px;" ></i>
 			              </span> 
 			              {!!Form::text('tareaIntervaloPlanTrabajoAlertaSemana',$intervaloSemana,['class'=>'form-control','placeholder'=>'Ingrese la periodidad de dias', 'autocomplete' => 'off'])!!}
 			              <span class="input-group-addon">
@@ -485,7 +559,7 @@ if(isset($plantrabajoalerta))
 					       <div class="col-sm-11">
 					            <div class="input-group">	
 					              <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					              </span>
 					             {!!Form::text('tareaFechaInicioPlanTrabajoAlertaMes',$fechaMes,['class'=> 'form-control','placeholder'=>'Ingrese la fecha de inicio','style'=>'width:100%;,right'])!!}
 					            </div>
@@ -498,7 +572,7 @@ if(isset($plantrabajoalerta))
 					      <div class="col-sm-11">
 					        <div class="input-group">	
 					              <span class="input-group-addon">
-					                <i class="fa fa-calendar"></i>
+					                <i class="fa fa-calendar" style="width: 14px;"></i>
 					              </span>
 					             {!!Form::text('tareaHoraPlanTrabajoAlertaMes',$horaMes,['class'=> 'form-control','placeholder'=>'Ingrese la hora de inicio','style'=>'width:100%;,right'])!!}
 					         </div>

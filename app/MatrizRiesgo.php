@@ -9,7 +9,7 @@ class MatrizRiesgo extends Model
     protected $table = 'matrizriesgo';
     protected $primaryKey = 'idMatrizRiesgo';
 
-    protected $fillable = ['nombreMatrizRiesgo','fechaElaboracionMatrizRiesgo','Users_id','FrecuenciaMedicion_idFrecuenciaMedicion','fechaActualizacionMatrizRiesgo', 'Compania_idCompania'];
+    protected $fillable = ['nombreMatrizRiesgo','fechaElaboracionMatrizRiesgo','Users_id','FrecuenciaMedicion_idFrecuenciaMedicion','fechaActualizacionMatrizRiesgo','CentroCosto_idCentroCosto', 'Compania_idCompania'];
 
     public $timestamps = false;
 
@@ -17,4 +17,8 @@ class MatrizRiesgo extends Model
     {
 		return $this->hasMany('App\MatrizRiesgoDetalle','MatrizRiesgo_idMatrizRiesgo');
     }
+    public function CentroCosto()
+     {
+         return $this->hasMany('App\CentroCosto','CentroCosto_idCentroCosto');
+     }
 }
