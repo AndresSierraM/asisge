@@ -79,7 +79,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 		{
 			// Luego se recorre los dias que hay en los chekbox de 0 al 7 ya que son de lunes a domingo 
 			// i = a datos en el fomulario
-			for (var i = 1; i < 7; i++) 
+			for (var i = 1; i < 8; i++) 
 			{
 				// Luego se recorre la posicion j con los datos de la bd 
 				for(var j=0, k = ChekboxDia.length; j < k; j++)
@@ -101,7 +101,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 		{		
 			// Luego se recorre los dias que hay en los chekbox de 0 al 7 ya que son de lunes a domingo 
 			// i = a datos en el fomulario
-			for (var i = 1; i < 12; i++) 
+			for (var i = 1; i < 14; i++) 
 			{
 				// Luego se recorre la posicion j con los datos de la bd 
 				for(var j=0, k = ChekboxMes.length; j < k; j++)
