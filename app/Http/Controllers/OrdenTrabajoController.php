@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-//use App\Http\Requests\OrdenTrabajoRequest;
+use App\Http\Requests\OrdenTrabajoRequest;
 
 //use Intervention\Image\ImageManagerStatic as Image;
 use Input;
@@ -59,11 +59,9 @@ class OrdenTrabajoController extends Controller
         $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $idTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTipoCalidad');
         $nombreTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoCalidad');
-        $operacion = \App\OrdenTrabajoOperacion::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idOrdenTrabajoDetalle', 
-                    'TipoCalidad_idTipoCalidad',
-                    'cantidadOrdenTrabajoDetalle');
+        
 
-        return view('ordentrabajo', compact('ordenproduccion','proceso','idTipoCalidad','nombreTipoCalidad','operacion'));
+        return view('ordentrabajo', compact('ordenproduccion','proceso','idTipoCalidad','nombreTipoCalidad'));
     }
 
     
@@ -73,9 +71,9 @@ class OrdenTrabajoController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(OrdenTrabajoRequest $request)
     {
-        //if($request['respuesta'] != 'falso')
+        if($request['respuesta'] != 'falso')
         {
         
             $numero = DB::select(
@@ -147,8 +145,7 @@ class OrdenTrabajoController extends Controller
                     samOrdenTrabajoOperacion
                 FROM ordentrabajooperacion
                 WHERE OrdenTrabajo_idOrdenTrabajo = '. $id );
-
-        //$detalle = $this->convertirArray($detalle);
+                
         return view('ordentrabajo', ['ordentrabajo'=>$ordentrabajo], compact('ordenproduccion','proceso','idTipoCalidad','nombreTipoCalidad','detalle','operacion'));
     }
 
@@ -159,9 +156,9 @@ class OrdenTrabajoController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(OrdenTrabajoRequest $request, $id)
     {
-        //if($request['respuesta'] != 'falso')
+        if($request['respuesta'] != 'falso')
         {
             $ordentrabajo = \App\OrdenTrabajo::find($id);
             $ordentrabajo->fill($request->all());
@@ -170,7 +167,7 @@ class OrdenTrabajoController extends Controller
             $this->grabarDetalle($id, $request);
 
             
-           return redirect('/ordentrabajo');
+            return redirect('/ordentrabajo');
         }
     }
 
@@ -215,7 +212,12 @@ class OrdenTrabajoController extends Controller
 
         // -----------------------------------
         // OPERACIONES
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
         // -----------------------------------
+        $idsEliminar = explode(',', $request['eliminarOperacion']);
+        \App\OrdenTrabajoOperacion::whereIn('idOrdenTrabajoOperacion',$idsEliminar)->delete();
+
         $contador = count($request['idOrdenTrabajoOperacion']);
         for($i = 0; $i < $contador; $i++)
         {

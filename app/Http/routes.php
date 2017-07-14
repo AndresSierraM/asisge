@@ -186,6 +186,8 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('fichatecnica','FichaTecnicaController');
     Route::resource('ordenproduccion','OrdenProduccionController');
     Route::resource('ordentrabajo','OrdenTrabajoController');
+    Route::resource('ejecuciontrabajo','EjecucionTrabajoController');
+    Route::resource('consultaordenproduccion','ConsultaOrdenProduccionController');
     Route::resource('factura','FacturaController');
 
     // *************************************
@@ -484,10 +486,15 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/datosOrdenProduccion.php';
     });
-     Route::get('datosOrdenTrabajo', function()
+    Route::get('datosOrdenTrabajo', function()
     {
         include public_path().'/ajax/datosOrdenTrabajo.php';
     });
+    Route::get('datosEjecucionTrabajo', function()
+    {
+        include public_path().'/ajax/datosEjecucionTrabajo.php';
+    });
+
     Route::get('consultarFichaTecnicaProceso', function()
     {
         include public_path().'/ajax/consultarFichaTecnicaProceso.php';
@@ -508,6 +515,20 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/consultarOrdenTrabajoOperaciones.php';
     });
+    
+    Route::get('consultarOrdenTrabajo', function()
+    {
+        include public_path().'/ajax/consultarOrdenTrabajo.php';
+    });
+    Route::get('consultarEjecucionTrabajoPendiente', function()
+    {
+        include public_path().'/ajax/consultarEjecucionTrabajoPendiente.php';
+    });
+    Route::get('datosConsultaOrdenProduccion', function()
+    {
+        include public_path().'/ajax/datosConsultaOrdenProduccion.php';
+    });
+
     Route::get('datosFactura', function()
     {
         include public_path().'/ajax/datosFactura.php';

@@ -1,12 +1,13 @@
 @extends('layouts.grid')
 
-@section('titulo')<h3 id="titulo"><center>Orden de Trabajo</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Ejecución de Trabajo</center></h3>@stop
 
 @section('content')
 @include('alerts.request')
 
 
 <script type="">
+  var idOrdenTrabajo ='<?php echo isset($ejecuciontrabajo) ? $ejecuciontrabajo->OrdenTrabajo_idOrdenTrabajo : "";?>'; 
   var idTipoCalidad = '<?php echo isset($idTipoCalidad) ? $idTipoCalidad : "";?>';
   var nombreTipoCalidad = '<?php echo isset($nombreTipoCalidad) ? $nombreTipoCalidad : "";?>';
   var tipocalidad = [JSON.parse(idTipoCalidad),JSON.parse(nombreTipoCalidad)];
@@ -14,24 +15,20 @@
   var detalles = '<?php echo (isset($detalle) ? json_encode($detalle) : "");?>';
   detalles = (detalles != '' ? JSON.parse(detalles) : '');
 
-  var operaciones = '<?php echo (isset($operacion) ? json_encode($operacion) : "");?>';
-  operaciones = (operaciones != '' ? JSON.parse(operaciones) : '');
-
-  var idProceso = "<?php echo (isset($ordentrabajo->Proceso_idProceso) ? $ordentrabajo->Proceso_idProceso : 0);?>";
   valorDetalle = Array(0, 0, '', 0);
 </script>
 
-{!!Html::script('js/ordentrabajo.js')!!}
+{!!Html::script('js/ejecuciontrabajo.js')!!}
 
 
-	@if(isset($ordentrabajo))
+	@if(isset($ejecuciontrabajo))
 		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-			{!!Form::model($ordentrabajo,['route'=>['ordentrabajo.destroy',$ordentrabajo->idOrdenTrabajo],'method'=>'DELETE'])!!}
+			{!!Form::model($ejecuciontrabajo,['route'=>['ejecuciontrabajo.destroy',$ejecuciontrabajo->idEjecucionTrabajo],'method'=>'DELETE'])!!}
 		@else
-			{!!Form::model($ordentrabajo,['route'=>['ordentrabajo.update',$ordentrabajo->idOrdenTrabajo],'method'=>'PUT'])!!}
+			{!!Form::model($ejecuciontrabajo,['route'=>['ejecuciontrabajo.update',$ejecuciontrabajo->idEjecucionTrabajo],'method'=>'PUT'])!!}
 		@endif
 	@else
-		{!!Form::open(['route'=>'ordentrabajo.store','method'=>'POST'])!!}
+		{!!Form::open(['route'=>'ejecuciontrabajo.store','method'=>'POST'])!!}
 	@endif
 
 <?php 
@@ -41,23 +38,22 @@
 
 
 <div id='form-section' >
-	<fieldset id="ordentrabajo-form-fieldset">	
+	<fieldset id="ejecuciontrabajo-form-fieldset">	
     
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('numeroOrdenTrabajo', 'Número O.T.', array())!!}
+        {!!Form::label('numeroEjecucionTrabajo', 'Número E.T.', array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::text('numeroOrdenTrabajo',(isset($ordentrabajo) ? null : 'Automático'),['class'=>'form-control', "placeholder" => "Número Orden Trabajo", "readOnly"=>"readOnly"])!!}
-            {!!Form::hidden('idOrdenTrabajo',null,['id'=>'idOrdenTrabajo'])!!}
+            {!!Form::text('numeroEjecucionTrabajo',(isset($ejecuciontrabajo) ? null : 'Automático'),['class'=>'form-control', "placeholder" => "Número Ejecución Trabajo", "readOnly"=>"readOnly"])!!}
+            {!!Form::hidden('idEjecucionTrabajo',null,['id'=>'idEjecucionTrabajo'])!!}
             {!!Form::hidden('eliminarDetalle',null,['id'=>'eliminarDetalle'])!!}
-            {!!Form::hidden('eliminarOperacion',null,['id'=>'eliminarOperacion'])!!}
-            
+           
             <input type="hidden" id="token" value="{{csrf_token()}}"/>
           </div>
       </div>
@@ -65,42 +61,56 @@
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('fechaElaboracionOrdenTrabajo', 'Fecha Elaboración', array())!!}
+        {!!Form::label('fechaElaboracionEjecucionTrabajo', 'Fecha Elaboración', array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::text('fechaElaboracionOrdenTrabajo',(isset($ordentrabajo) ? $ordentrabajo->fechaElaboracionOrdenTrabajo : $fechahora),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+            {!!Form::text('fechaElaboracionEjecucionTrabajo',(isset($ejecuciontrabajo) ? $ejecuciontrabajo->fechaElaboracionEjecucionTrabajo : $fechahora),['readonly'=>'readonly', 'class'=>'form-control'])!!}
           </div>
       </div>
     </div>  
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('OrdenProduccion_idOrdenProduccion', 'Número O.P.', array())!!}
+        {!!Form::label('OrdenTrabajo_idOrdenTrabajo', 'Número O.T                                                                                                                                                                                                                                                                                                                                                                       .', array())!!}
       </div>
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
             <i class="fa fa-pencil-square-o"></i>
           </span>
-          {!!Form::select('OrdenProduccion_idOrdenProduccion',$ordenproduccion, @$ordentrabajo->OrdenProduccion_idOrdenProduccion,["onchange" => "cargarDatosOrdenTrabajo('".@$ordentrabajo->Proceso_idProceso."');", "class" => "chosen-select form-control", "placeholder" => "Seleccione la Orden de Producción"])!!}
+          {!!Form::select('OrdenTrabajo_idOrdenTrabajo',$ordentrabajo, @$ejecuciontrabajo->OrdenTrabajo_idOrdenTrabajo,["onchange" => "cargarDatosOrdenTrabajo();cargarDatosEjecucionTrabajoPendiente();", "class" => "chosen-select form-control", "placeholder" => "Seleccione la Orden de Trabajo"])!!}
         </div>
       </div>
     </div> 
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('Proceso_idProceso', 'Proceso', array())!!}
+        {!!Form::label('numeroOrdenProduccion', 'Número O.P', array())!!}
       </div>
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
             <i class="fa fa-pencil-square-o"></i>
           </span>
-          {!!Form::select('Proceso_idProceso',$proceso, @$ordentrabajo->Proceso_idProceso,["onchange" => "cargarOrdenTrabajoPendiente(); cargarOrdenTrabajoOperaciones();", "class" => "form-control", "placeholder" => "Seleccione el Proceso"])!!}
+            {!!Form::text('numeroOrdenProduccion',null,['readonly'=>'readonly', 'class'=>'form-control'])!!}
+        </div>
+      </div>
+    </div> 
+
+    <div class="col-sm-6">
+      <div class="col-sm-4">
+        {!!Form::label('nombreProceso', 'Proceso', array())!!}
+      </div>
+      <div class="col-sm-8">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <i class="fa fa-pencil-square-o"></i>
+          </span>
+            {!!Form::text('nombreProceso',null,['readonly'=>'readonly', 'class'=>'form-control'])!!}
         </div>
       </div>
     </div> 
@@ -114,21 +124,21 @@
           <span class="input-group-addon">
             <i class="fa fa-pencil-square-o"></i>
           </span>
-            {!!Form::text('nombreCompletoTercero',(isset($ordentrabajo) ? $ordentrabajo->nombreCompletoTercero : ''),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+            {!!Form::text('nombreCompletoTercero',(isset($ejecuciontrabajo) ? $ejecuciontrabajo->nombreCompletoTercero : ''),['readonly'=>'readonly', 'class'=>'form-control'])!!}
         </div>
       </div>
     </div>  
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('numeroPedidoOrdenTrabajo', 'Orden Compra No.', array())!!}
+        {!!Form::label('numeroPedidoEjecucionTrabajo', 'Orden Compra No.', array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::text('numeroPedidoOrdenTrabajo',null,['readonly'=>'readonly', 'class'=>'form-control'])!!}
+            {!!Form::text('numeroPedidoEjecucionTrabajo',null,['readonly'=>'readonly', 'class'=>'form-control'])!!}
           </div>
       </div>
     </div>  
@@ -163,35 +173,35 @@
     
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('especificacionOrdenTrabajo', 'Especificación', array())!!}
+        {!!Form::label('especificacionEjecucionTrabajo', 'Especificación', array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::text('especificacionOrdenTrabajo',null,['readonly'=>'readonly', 'class'=>'form-control'])!!}
+            {!!Form::text('especificacionEjecucionTrabajo',null,['readonly'=>'readonly', 'class'=>'form-control'])!!}
           </div>
       </div>
     </div>  
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('estadoOrdenTrabajo', 'Estado', array())!!}
+        {!!Form::label('estadoEjecucionTrabajo', 'Estado', array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o"></i>
             </span>
-            {!!Form::text('estadoOrdenTrabajo', @$ordentrabajo->estadoOrdenTrabajo,['readonly'=>'readonly', 'class'=>'form-control'])!!}
+            {!!Form::text('estadoEjecucionTrabajo', @$ejecuciontrabajo->estadoEjecucionTrabajo,['readonly'=>'readonly', 'class'=>'form-control'])!!}
           </div>
       </div>
     </div> 
 
     <div class="col-sm-6">
       <div class="col-sm-4">
-        {!!Form::label('cantidadOrdenTrabajo', 'Cantidad', array())!!}
+        {!!Form::label('cantidadEjecucionTrabajo', 'Cantidad', array())!!}
       </div>
       <div class="col-sm-8">
           <div class="input-group">
@@ -199,7 +209,7 @@
               <i class="fa fa-pencil-square-o"></i>
             </span>
             {!!Form::hidden('cantidadPendiente',null,['id'=>'cantidadPendiente'])!!}
-            {!!Form::text('cantidadOrdenTrabajo',null,['class'=>'form-control', "placeholder" => "Cantidad a producir", "readOnly" => "readOnly"])!!}
+            {!!Form::text('cantidadEjecucionTrabajo',null,['class'=>'form-control', "placeholder" => "Cantidad a producir", "readOnly" => "readOnly"])!!}
           </div>
       </div>
     </div> 
@@ -207,7 +217,6 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#detalle">Cantidades</a></li>
-    <li><a data-toggle="tab" href="#operacion">Operaciones</a></li>
   </ul>
 
   <div class="tab-content">
@@ -232,29 +241,10 @@
       </div>
     </div>
 
-    <div id="operacion" class="tab-pane fade">
-      <div class="form-group" id='test'>
-          <div class="col-sm-12">
-              <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-                  <div style="overflow:auto; height:350px;">
-                      <div style="width: 100%; display: inline-block;">
-                          <div class="col-md-1" style="width: 100px;" >Orden</div>
-                          <div class="col-md-1" style="width: 400px;" >Operacion</div>
-                          <div class="col-md-1" style="width: 150px;" >SAM (min)</div>
-                          <div id="contenedor_operacion">
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-
-    
   </div>
 
     <br>
-	@if(isset($ordentrabajo))
+	@if(isset($ejecuciontrabajo))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else

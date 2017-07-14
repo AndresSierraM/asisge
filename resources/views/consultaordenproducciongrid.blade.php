@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Orden de Trabajo</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Consulta de Trazabilidad de Producción</center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -31,9 +31,8 @@
         $visible = 'none;';
     }
 ?>
-        <div class="container">
-            <div class="row">
-                <div class="container">
+        <div  style="overflow: auto; margin: 10px 10px 10px 10px;">
+            
                     <br>
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
                         <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
@@ -41,61 +40,64 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Número O.T.</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Número O.P.</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Fecha Elaboración</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Cliente</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Proceso</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Número O.P.</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Orden de Compra</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Referencia</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Especificaciones</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Cantidad</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Secuencia</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Proceso</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Calidad</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Cantidad O.P</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Cantidad O.T</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Cantidad E.T</label></a></li>
+                            <li><a class="toggle-vis" data-column="3"><label> Diferencia</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Estado</label></a></li>
                         </ul>
                     </div>
-                    <table id="tordentrabajo" name="tordentrabajo" class="display table-bordered" width="100%">
+                    <table id="tconsultaordenproduccion" name="tconsultaordenproduccion" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="ordentrabajo/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
-                                 <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
-                                </th>
                                 <th><b>ID</b></th>
-                                <th><b>Número O.T.</b></th>
+                                <th><b>Número O.P.</b></th>
                                 <th><b>Fecha Elaboración</b></th>
                                 <th><b>Cliente</b></th>
-                                <th><b>Proceso</b></th>
-                                <th><b>Número O.P.</b></th>
                                 <th><b>Orden de Compra</b></th>
                                 <th><b>Referencia</b></th>
                                 <th><b>Especificaciones</b></th>
-                                <th><b>Cantidad</b></th>
+                                <th><b>Secuencia</b></th>
+                                <th><b>Proceso</b></th>
+                                <th><b>Calidad</b></th>
+                                <th><b>Cantidad O.P</b></th>
+                                <th><b>Cantidad O.T</b></th>
+                                <th><b>Cantidad E.T</b></th>
+                                <th><b>Diferencia</b></th>
                                 <th><b>Estado</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
                             <tr class="btn-default active">
-                                <th style="width:40px;padding: 1px 8px;">
-                                    &nbsp;
-                                </th>
                                 <th>ID</th>
-                                <th>Número O.T.</th>
+                                <th>Número O.P.</th>
                                 <th>Fecha Elaboración</th>
                                 <th>Cliente</th>
-                                <th>Proceso</th>
-                                <th>Número O.P.</th>
                                 <th>Orden de Compra</th>
                                 <th>Referencia</th>
                                 <th>Especificaciones</th>
-                                <th>Cantidad</th>
+                                <th>Secuencia</th>
+                                <th>Proceso</th>
+                                <th>Calidad</th>
+                                <th>Cantidad O.P</th>
+                                <th>Cantidad O.T</th>
+                                <th>Cantidad E.T</th>
+                                <th>Diferencia</th>
                                 <th>Estado</th>
                             </tr>
                         </tfoot>        
                     </table>
-                </div>
-            </div>
+               
         </div>
 
 
@@ -104,21 +106,21 @@
     $(document).ready( function () {
 
         
-        /*$('#tordentrabajo').DataTable({
+        /*$('#tconsultaordenproduccion').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosOrdenTrabajo')!!}",
+            "ajax": "{!! URL::to ('/datosConsultaOrdenProduccion')!!}",
         });*/
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
-        var table = $('#tordentrabajo').DataTable( {
+        var table = $('#tconsultaordenproduccion').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosOrdenTrabajo?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosConsultaOrdenProduccion?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -155,7 +157,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tordentrabajo tbody')
+        $('#tconsultaordenproduccion tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -170,15 +172,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tordentrabajo tfoot th').each( function () {
+    $('#tconsultaordenproduccion tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tordentrabajo thead th').eq( $(this).index() ).text();
+        var title = $('#tconsultaordenproduccion thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tordentrabajo').DataTable();
+    var table = $('#tconsultaordenproduccion').DataTable();
  
     // Apply the search
     table.columns().every( function () {

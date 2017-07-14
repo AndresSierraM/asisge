@@ -106,7 +106,7 @@ class OrdenProduccionController extends Controller
 
             $ordenproduccion = \App\OrdenProduccion::All()->last();
 
-            //$this->grabarDetalle($ordenproduccion->idOrdenProduccion, $request);
+            $this->grabarDetalle($ordenproduccion->idOrdenProduccion, $request);
 
 
             return redirect('/ordenproduccion');

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Orden de Trabajo</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Ejecución de Trabajo</center></h3>@stop
 @section('content')
 <style>
     tfoot input {
@@ -43,31 +43,33 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> Iconos</label></a></li>
                             <li><a class="toggle-vis" data-column="1"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Número O.T.</label></a></li>
+                            <li><a class="toggle-vis" data-column="2"><label> Número E.T.</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Fecha Elaboración</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Cliente</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Proceso</label></a></li>
-                            <li><a class="toggle-vis" data-column="2"><label> Número O.P.</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Orden de Compra</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Referencia</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Especificaciones</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Cantidad</label></a></li>
-                            <li><a class="toggle-vis" data-column="3"><label> Estado</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Cliente</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Número O.P.</label></a></li>
+                            <li><a class="toggle-vis" data-column="6"><label> Número O.T.</label></a></li>
+                            <li><a class="toggle-vis" data-column="6"><label> Proceso</label></a></li>
+                            <li><a class="toggle-vis" data-column="7"><label> Orden de Compra</label></a></li>
+                            <li><a class="toggle-vis" data-column="8"><label> Referencia</label></a></li>
+                            <li><a class="toggle-vis" data-column="9"><label> Especificaciones</label></a></li>
+                            <li><a class="toggle-vis" data-column="10"><label> Cantidad</label></a></li>
+                            <li><a class="toggle-vis" data-column="11"><label> Estado</label></a></li>
                         </ul>
                     </div>
-                    <table id="tordentrabajo" name="tordentrabajo" class="display table-bordered" width="100%">
+                    <table id="tejecuciontrabajo" name="tejecuciontrabajo" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="ordentrabajo/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="ejecuciontrabajo/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Número O.T.</b></th>
+                                <th><b>Número E.T.</b></th>
                                 <th><b>Fecha Elaboración</b></th>
                                 <th><b>Cliente</b></th>
-                                <th><b>Proceso</b></th>
                                 <th><b>Número O.P.</b></th>
+                                <th><b>Número O.T.</b></th>
+                                <th><b>Proceso</b></th>
                                 <th><b>Orden de Compra</b></th>
                                 <th><b>Referencia</b></th>
                                 <th><b>Especificaciones</b></th>
@@ -81,11 +83,12 @@
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Número O.T.</th>
+                                <th>Número E.T.</th>
                                 <th>Fecha Elaboración</th>
                                 <th>Cliente</th>
-                                <th>Proceso</th>
                                 <th>Número O.P.</th>
+                                <th>Número O.T.</th>
+                                <th>Proceso</th>
                                 <th>Orden de Compra</th>
                                 <th>Referencia</th>
                                 <th>Especificaciones</th>
@@ -104,21 +107,21 @@
     $(document).ready( function () {
 
         
-        /*$('#tordentrabajo').DataTable({
+        /*$('#tejecuciontrabajo').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosOrdenTrabajo')!!}",
+            "ajax": "{!! URL::to ('/datosEjecucionTrabajo')!!}",
         });*/
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
-        var table = $('#tordentrabajo').DataTable( {
+        var table = $('#tejecuciontrabajo').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosOrdenTrabajo?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosEjecucionTrabajo?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -155,7 +158,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#tordentrabajo tbody')
+        $('#tejecuciontrabajo tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -170,15 +173,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#tordentrabajo tfoot th').each( function () {
+    $('#tejecuciontrabajo tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#tordentrabajo thead th').eq( $(this).index() ).text();
+        var title = $('#tejecuciontrabajo thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#tordentrabajo').DataTable();
+    var table = $('#tejecuciontrabajo').DataTable();
  
     // Apply the search
     table.columns().every( function () {

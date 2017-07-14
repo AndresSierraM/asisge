@@ -9,7 +9,7 @@ class OrdenTrabajoOperacion extends Model
     protected $table = 'ordentrabajooperacion';
     protected $primaryKey = 'idOrdenTrabajoOperacion';
 
-    protected $fillable = ['OrdenTrabajo_idOrdenTrabajo', 'ordenOrdenTrabajoDetalle', 'nombreOrdenTrabajoDetalle', 'samOrdenTrabajoDetalle'];
+    protected $fillable = ['OrdenTrabajo_idOrdenTrabajo', 'ordenOrdenTrabajoOperacion', 'nombreOrdenTrabajoOperacion', 'samOrdenTrabajoOperacion'];
 
     public $timestamps = false;
 

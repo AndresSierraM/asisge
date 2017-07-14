@@ -1,7 +1,8 @@
 
 $(document).ready(function(){ 
 
-    cargarDatosOrdenTrabajo(idProceso);
+    // carga los datos del encabezado 
+    cargarDatosOrdenTrabajo(idOrdenTrabajo);
 
     //**************************
     // 
@@ -11,12 +12,12 @@ $(document).ready(function(){
     detalle = new Atributos('detalle','contenedor_detalle','detalle_');
 
     detalle.altura = '35px';
-    detalle.campoid = 'idOrdenTrabajoDetalle';
+    detalle.campoid = 'idEjecucionTrabajoDetalle';
     detalle.campoEliminacion = 'eliminarDetalle';
 
-    detalle.campos   = ['idOrdenTrabajoDetalle', 
+    detalle.campos   = ['idEjecucionTrabajoDetalle', 
                     'TipoCalidad_idTipoCalidad',
-                    'cantidadOrdenTrabajoDetalle'];
+                    'cantidadEjecucionTrabajoDetalle'];
 
     detalle.etiqueta = ['input', 'select','input'];
     detalle.tipo     = ['hidden', '','text'];
@@ -32,81 +33,14 @@ $(document).ready(function(){
        
     }
 
-    //**************************
-    // 
-    //   O P E R A C I O N E S
-    //
-    //**************************
-    operacion = new Atributos('operacion','contenedor_operacion','operacion_');
-
-    operacion.altura = '35px';
-    operacion.campoid = 'idOrdenTrabajoOperacion';
-    operacion.campoEliminacion = 'eliminarOperacion';
-    operacion.botonEliminacion = false;
-
-    operacion.campos   = ['idOrdenTrabajoOperacion',
-                        'ordenOrdenTrabajoOperacion', 
-                        'nombreOrdenTrabajoOperacion', 
-                        'samOrdenTrabajoOperacion'];
-
-    operacion.etiqueta = ['input','input','input','input'];
-    operacion.tipo     = ['hidden','text','text','text'];
-    operacion.estilo   = ['','width: 100px;height:35px;','width: 400px;height:35px;','width: 150px;height:35px;'];
-    operacion.clase    = ['','','',''];      
-    operacion.sololectura = [true,true,true,true];
-
-    for(var j=0, k = operaciones.length; j < k; j++)
-    {
-        operacion.agregarCampos(JSON.stringify(operaciones[j]),'L');
-    }
-
+    
 });
 
-function cargarOrdenTrabajoPendiente() 
-{
-    detalle.borrarTodosCampos();
-    
-    var idOP = document.getElementById('OrdenProduccion_idOrdenProduccion').value;
-    var idPRO = document.getElementById('Proceso_idProceso').value;
-    if(idOP == '' || idPRO == '')
-        return;
 
-    var token = document.getElementById('token').value;
-    $.ajax(
-    {
-        headers: {'X-CSRF-TOKEN': token},
-        dataType: "json",
-        url:'/consultarOrdenTrabajoPendiente',
-        data:{idOrdenProduccion: idOP,
-            idProceso: idPRO},
-        type:  'get',
-        beforeSend: function(){},
-        success: function(data)
-        {
-            $("#cantidadOrdenTrabajo").val(0);
-            var TotUnidades = 0;
-            // adicionamos los registros de Cantidades por tipo de calidad de la orden de producciom a la orden de trabajo
-            for (var i = 0;  i < data.length; i++) 
-            {
-                valores = Array(0, data[i]["TipoCalidad_idTipoCalidad"], data[i]["cantidadPendiente"]);
-                detalle.agregarCampos(valores,'A');
-
-                TotUnidades = parseFloat(TotUnidades) + parseFloat(data[i]["cantidadPendiente"]);
-            }
-            $("#cantidadOrdenTrabajo").val(TotUnidades);
-            $("#cantidadPendiente").val(TotUnidades);
-        },
-        error:    function(xhr,err)
-        {
-            alert('Se ha producido un error: '+err);
-        }
-    });
-};
-
-function cargarDatosOrdenTrabajo(valorProceso) 
+function cargarDatosOrdenTrabajo(idOrdenTrabajo) 
 {
     
-    var id = document.getElementById('OrdenProduccion_idOrdenProduccion').value;
+    var id = document.getElementById('OrdenTrabajo_idOrdenTrabajo').value;
     
     if(id == '')
         return;
@@ -116,8 +50,8 @@ function cargarDatosOrdenTrabajo(valorProceso)
     {
         headers: {'X-CSRF-TOKEN': token},
         dataType: "json",
-        url:'/consultarOrdenProduccionProceso',
-        data:{idOrdenProduccion: id},
+        url:'/consultarOrdenTrabajo',
+        data:{idOrdenTrabajo: id},
         type:  'get',
         beforeSend: function(){},
         success: function(data)
@@ -126,29 +60,13 @@ function cargarDatosOrdenTrabajo(valorProceso)
             $("#referenciaFichaTecnica").val(data[0]["referenciaFichaTecnica"]);
             $("#nombreFichaTecnica").val(data[0]["nombreFichaTecnica"]);
             $("#especificacionOrdenTrabajo").val(data[0]["especificacionOrdenProduccion"]);
+            $("#nombreProceso").val(data[0]["nombreProceso"]);
             $("#nombreCompletoTercero").val(data[0]["nombreCompletoTercero"]);
-            $("#numeroPedidoOrdenTrabajo").val(data[0]["numeroPedidoOrdenProduccion"]);
-            $("#estadoOrdenTrabajo").val('Activo');
+            $("#numeroOrdenProduccion").val(data[0]["numeroOrdenProduccion"]);
+            $("#numeroPedidoEjecucionTrabajo").val(data[0]["numeroPedidoOrdenProduccion"]);
+            $("#estadoEjecucionTrabajo").val('Activo');
 
-
-            $('#Proceso_idProceso').html('');
-            var select = document.getElementById('Proceso_idProceso');
-
-            option = document.createElement('option');
-            option.value = '';
-            option.text = 'Seleccione el Proceso';
-            select.appendChild(option);
-            for (var i = 0;  i < data.length; i++) 
-            {
-                option = document.createElement('option');
-                option.value = data[i]['Proceso_idProceso'];
-                option.text = data[i]['nombreProceso'];
-
-                option.selected = (valorProceso == data[i]['Proceso_idProceso'] ? true : false);
-
-                select.appendChild(option);
-            }
-
+            
         },
         error:    function(xhr,err)
         {
@@ -157,12 +75,13 @@ function cargarDatosOrdenTrabajo(valorProceso)
     });
 };
 
-function cargarOrdenTrabajoOperaciones() 
+
+function cargarDatosEjecucionTrabajoPendiente(idOrdenTrabajo) 
 {
-    operacion.borrarTodosCampos();
-    var idOP = document.getElementById('OrdenProduccion_idOrdenProduccion').value;
-    var idPRO = document.getElementById('Proceso_idProceso').value;
-    if(idOP == '' || idPRO == '')
+    detalle.borrarTodosCampos();
+    var id = document.getElementById('OrdenTrabajo_idOrdenTrabajo').value;
+    
+    if(id == '')
         return;
 
     var token = document.getElementById('token').value;
@@ -170,23 +89,26 @@ function cargarOrdenTrabajoOperaciones()
     {
         headers: {'X-CSRF-TOKEN': token},
         dataType: "json",
-        url:'/consultarOrdenTrabajoOperaciones',
-        data:{idOrdenProduccion: idOP,
-            idProceso: idPRO},
+        url:'/consultarEjecucionTrabajoPendiente',
+        data:{idOrdenTrabajo: id},
         type:  'get',
         beforeSend: function(){},
         success: function(data)
         {
-            
+
+            $("#cantidadEjecucionTrabajo").val(0);
+            var TotUnidades = 0;
             // adicionamos los registros de Cantidades por tipo de calidad de la orden de producciom a la orden de trabajo
             for (var i = 0;  i < data.length; i++) 
             {
-                valores = Array(0, data[i]["ordenFichaTecnicaOperacion"], 
-                                    data[i]["nombreFichaTecnicaOperacion"], 
-                                    data[i]["samFichaTecnicaOperacion"]);
+                valores = Array(0, data[i]["TipoCalidad_idTipoCalidad"], data[i]["cantidadPendiente"]);
+                detalle.agregarCampos(valores,'A');
 
-                operacion.agregarCampos(valores,'A');
+                TotUnidades = parseFloat(TotUnidades) + parseFloat(data[i]["cantidadPendiente"]);
             }
+            $("#cantidadEjecucionTrabajo").val(TotUnidades);
+            $("#cantidadPendiente").val(TotUnidades);
+            
         },
         error:    function(xhr,err)
         {
@@ -196,16 +118,14 @@ function cargarOrdenTrabajoOperaciones()
 };
 
 
-
 function calcularTotalUnidades()
 {
-    $("#cantidadOrdenTrabajo").val(0);
+    $("#cantidadEjecucionTrabajo").val(0);
     for (var i = 0;  i < detalle.contador; i++) 
     {
-        $("#cantidadOrdenTrabajo").val(parseFloat($("#cantidadOrdenTrabajo").val()) + parseFloat($("#cantidadOrdenTrabajoDetalle"+i).val()));
+        $("#cantidadEjecucionTrabajo").val(parseFloat($("#cantidadEjecucionTrabajo").val()) + parseFloat($("#cantidadEjecucionTrabajoDetalle"+i).val()));
     }
 }
-
 
 function validarFormulario(event)
 {
