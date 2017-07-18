@@ -25,9 +25,16 @@ class TerceroController extends Controller
      *
      * @return Response
      */
+
+    // Primero se busca el modelo del Modulo  para enviar por parametros.
+    public function find(Route $route){
+        $this->tercero = \App\Tercero::find($route->getParameter('tercero'));
+        return $this->tercero;
+    }
     public function index()
     {
-        $vista = basename($_SERVER["PHP_SELF"]);
+        // Se recibe el parametro que se crea en el modulo "OPCION"
+        $vista = basename($_SERVER["PHP_SELF"].'?tipoTercero='.$_GET['tipoTercero']);
         $datos = consultarPermisos($vista);
 
         if($datos != null)
@@ -76,6 +83,8 @@ class TerceroController extends Controller
      */
     public function create()
     {   
+
+   
          $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto'); 
         $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
         $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
@@ -93,7 +102,7 @@ class TerceroController extends Controller
         $empleadorcontratista = \App\Tercero::where('tipoTercero', 'like','%*01*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
         $tipoproveedor = \App\TipoProveedor::where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreTipoProveedor', 'idTipoProveedor');
-
+        
       
         return view('tercero',compact('centrocosto','ciudad','tipoIdentificacion','cargo','idTipoExamen','nombreTipoExamen','idFrecuenciaMedicion','nombreFrecuenciaMedicion','frecuenciaAlcohol', 'zona', 'sectorempresa','empleadorcontratista', 'tipoproveedor'));
     }
@@ -153,6 +162,8 @@ class TerceroController extends Controller
                 'SectorEmpresa_idSectorEmpresa' => (($request['SectorEmpresa_idSectorEmpresa'] == '' or $request['SectorEmpresa_idSectorEmpresa'] == 0) ? null : $request['SectorEmpresa_idSectorEmpresa']),
                 'Tercero_idEmpladorContratista' => (($request['Tercero_idEmpladorContratista'] == '' or $request['Tercero_idEmpladorContratista'] == 0) ? null : $request['Tercero_idEmpladorContratista']),
                 'CentroCosto_idCentroCosto' => (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto']),
+                'observacionTercero' => $request["observacionTercero"],            
+                'contratistaTercero' => isset($request['contratistaTercero']) ? 1 : 0,
                 'Compania_idCompania' => \Session::get('idCompania')
                 ]);
             
@@ -265,7 +276,7 @@ class TerceroController extends Controller
                ]);
             }
             
-            return redirect('/tercero');
+            return redirect('/tercero?tipoTercero='.$request['tipoTercero']);
         }
     }
     
@@ -287,6 +298,7 @@ class TerceroController extends Controller
      */
     public function edit($id)
     {
+
         $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto');
         $idTipoExamen = \App\TipoExamenMedico::All()->lists('idTipoExamenMedico');
         $nombreTipoExamen = \App\TipoExamenMedico::All()->lists('nombreTipoExamenMedico');
@@ -345,6 +357,9 @@ class TerceroController extends Controller
 
             $tercero->TipoProveedor_idTipoProveedor = (($request['TipoProveedor_idTipoProveedor'] == '' or $request['TipoProveedor_idTipoProveedor'] == 0) ? null : $request['TipoProveedor_idTipoProveedor'
                 ]);
+            // Checlbbox de contratista
+             $tercero->contratistaTercero = isset($request['contratistaTercero']) ? 1 : 0;
+       
 
             if(null !== Input::file('imagenTercero') )
             {
@@ -503,7 +518,7 @@ class TerceroController extends Controller
                 $idsEliminar = explode(',',$idsEliminar);
                 \App\TerceroArchivo::whereIn('idTerceroArchivo',$idsEliminar)->delete();
             }
-            return redirect('/tercero');
+            return redirect('/tercero?tipoTercero='.$request['tipoTercero']);
         }
     }
     /**

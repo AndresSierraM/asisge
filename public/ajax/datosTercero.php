@@ -1,6 +1,8 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    // Se pregunta por el tipo
+    $tipo = $_GET['tipoTercero'];
 
     $visibleM = '';
     $visibleE = '';
@@ -20,16 +22,17 @@
             ->leftJoin('tipoidentificacion', 'TipoIdentificacion_idTipoIdentificacion', '=', 'idTipoIdentificacion')
             ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo,fechaIngresoTerceroInformacion'))
             ->where('tercero.Compania_idCompania','=', \Session::get('idCompania'))
+            ->where('tipoTercero', '=', $tipo)
             ->get();
 
     $row = array();
 
     foreach ($tercero as $key => $value) 
     {  
-        $row[$key][] = '<a href="tercero/'.$value->idTercero.'/edit?idTercero='.$value->idTercero.'&accion=editar">'.
+        $row[$key][] = '<a href="tercero/'.$value->idTercero.'/edit?tipo='.$tipo.'">'.
                             '<span class="glyphicon glyphicon-pencil" style = "display:'.$visibleM.'"></span>'.
                         '</a>&nbsp;'.
-                        '<a href="tercero/'.$value->idTercero.'/edit?idTercero='.$value->idTercero.'&accion=eliminar">'.
+                        '<a href="tercero/'.$value->idTercero.'/edit?accion=eliminar&tipo='.$tipo.'">'.
                             '<span class="glyphicon glyphicon-trash" style = "display:'.$visibleE.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idTercero;

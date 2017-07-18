@@ -1,9 +1,15 @@
 @extends('layouts.grid')
 
+
+<?php 
+// se crea una variable para tipo Tercero
+  $tipoTercero = (isset($tercero) ? $tercero->tipoTercero : $_GET['tipoTercero']);
+?>
 @section('titulo')
 	<h3 id="titulo">
-		<center>Terceros</center>
+		<center><?php echo ($tipoTercero == '*01*' ? 'Tercero Tipo Empleado' : ($tipoTercero == '*02*' ? 'Proveedor/Contratistas' : ($tipoTercero == '*03*' ? 'Tercero Tipo Cliente' : 'Proveedor/Contratistas'))) ?></center>
 	</h3>
+
 @stop
 @section('content')
 @include('alerts.request')
@@ -15,8 +21,9 @@
 
 <?php
 	$terceroinformacion = (isset($tercero) ? $tercero->terceroInformaciones : "");
-
-	$idTerceroA = (isset($_GET['accion']) ? $_GET['idTercero'] : '');
+	//Se pregunta  si existe el id tercero  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
+	$idTerceroA = (isset($tercero) ? $tercero->idTercero : 0);
+	// $idTerceroA = (isset($_GET['accion']) ? $_GET['idTercero'] : '');
 ?>
 	<script>
 		
@@ -30,8 +37,9 @@
 
 		var terceroExamenMedico = '<?php echo (isset($tercero) ? json_encode($tercero->terceroExamenMedicos) : "");?>';
 		terceroExamenMedico = (terceroExamenMedico != '' ? JSON.parse(terceroExamenMedico) : '');
-		var terceroArchivo = '<?php echo (isset($tercero) ? json_encode($tercero->terceroarchivos) : "");?>';
-		terceroArchivo = (terceroArchivo != '' ? JSON.parse(terceroArchivo) : '');
+		// var terceroArchivo = '<?php echo (isset($tercero) ? json_encode($tercero->terceroarchivos) : "");?>';
+		// terceroArchivo = (terceroArchivo != '' ? JSON.parse(terceroArchivo) : '');
+
 		var valorContactos = [0,'','','','',''];
 		var valorProductos = [0,'',''];
 		var valorExamen = [0,0,0,0,0,0];
@@ -47,8 +55,11 @@
 		var frencuenciaMedicion = [JSON.parse(idFrecuenciaMedicion),JSON.parse(nombreFrecuenciaMedicion)];
 
 		$(document).ready(function(){
-
-			seleccionarTipoTercero();
+			// Se eecuta la funcion modificada para que muestre las pestañas
+			mostrarPestanas();
+			// Se ejecuta nuevamente la funcion del chulo contratista
+   			validarconstratista();
+			// seleccionarTipoTercero();
 
 			contactos = new Atributos('contactos','contenedor_contactos','contactos_');
 			contactos.campos = ['idTerceroContacto','nombreTerceroContacto','cargoTerceroContacto','telefonoTerceroContacto','movilTerceroContacto','correoElectronicoTerceroContacto'];
@@ -128,10 +139,10 @@
 				examen.agregarCampos(JSON.stringify(terceroExamenMedico[j]),'L');
 			}
 
-			for(var j=0, k = terceroArchivo.length; j < k; j++)
-			{
-				archivo.agregarCampos(JSON.stringify(terceroArchivo[j]),'L');
-			}
+			// for(var j=0, k = terceroArchivo.length; j < k; j++)
+			// {
+			// 	archivo.agregarCampos(JSON.stringify(terceroArchivo[j]),'L');
+			// }
 
 			
 
@@ -161,6 +172,8 @@
 										</span>
 										{!! Form::hidden('idTercero', null, array('id' => 'idTercero')) !!}
 										{!! Form::hidden('idTerceroInformacion', (isset($tercero->idTerceroInformacion) ? $tercero->idTerceroInformacion->idTerceroInformacion : null), array('id' => 'idTerceroInformacion')) !!}
+										<!-- Se oculta el Tipo de Tercero que llega -->
+										 {!!Form::hidden('tipoTercero',$tipoTercero,['id'=>'tipoTercero'])!!}
 										{!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($tercero) ? $tercero->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:300px;'])!!}
 									</div>
 								</div>
@@ -177,7 +190,7 @@
 								</div>
 							</div>
 							<br/><br/><br/>
-							<div class="form-group" style="width:565px; display: inline;">
+							<div class="form-group" style="width:565px; display: none;" id="nombre1">
 								{!!Form::label('nombre1Tercero', 'Primer Nombre', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -188,7 +201,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: inline;">
+							<div class="form-group" style="width:565px; display: none;" id="nombre2">
 								{!!Form::label('nombre2Tercero', 'Segundo Nombre', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -199,18 +212,18 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: inline;">
+							<div class="form-group" style="width:565px; display: none;" id="apellido1">
 								{!!Form::label('apellido1Tercero', 'Primer Apellido', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
 										<span class="input-group-addon">
 											<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('apellido1Tercero',null,['class'=>'form-control','placeholder'=>'Ingresa el primer apellido del tercero','style'=>'width:300px;','id'=>'apellido1Tercero', 'onchange'=>'llenaNombreTercero()'])!!}
+										{!!Form::text('apellido1Tercero',(isset($tercero) ? $tercero->apellido1Tercero : ''),['class'=>'form-control','placeholder'=>'Ingresa el primer apellido del tercero','style'=>'width:300px;','id'=>'apellido1Tercero', 'onchange'=>'llenaNombreTercero()'])!!}
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: inline;">
+							<div class="form-group" style="width:565px; display: none;" id="apellido2">
 								{!!Form::label('apellido2Tercero', 'Segundo Apellido', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -221,18 +234,31 @@
 									</div>
 								</div>
 							</div>
+							<!-- Se hace un if para volver dinamico el nombre de Nombre completo Tercero y su place holder -->
+							<?php 
+							if (isset($tipoTercero)) 
+							{								
+								//Variable que contiene  el Label con su mensaje personalizado depndiendo que tipo de tercero es 
+								 $NombreDinamicoLabel = ($tipoTercero == '*01*' ? 'Nombre Completo' : ($tipoTercero == '*02*' ? 'Nombre-Raz&oacute;n Social' : ($tipoTercero == '*03*' ? 'Nombre-Raz&oacute;n Social' : 'Nombre-Raz&oacute;n Social')));
+
+								 //Variable que contiene  el place holder con su mensaje personalizado depndiendo que tipo de tercero es 
+								 $NombreDinamicoPlace = ($tipoTercero == '*01*' ? 'Nombre completo del Tercero' : ($tipoTercero == '*02*' ? 'Nombre o Raz&oacute;n Social' : ($tipoTercero == '*03*' ? 'Nombre o Raz&oacute;n Social' : 'Nombre o Raz&oacute;n Social')));
+
+
+							}
+							?>
 							<div class="form-group" style="width:1000px; display: inline;">
-								{!!Form::label('nombreCompletoTercero', 'Nombre Completo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+								{!!Form::label('nombreCompletoTercero', $NombreDinamicoLabel, array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:820px;">
 									<div class="input-group">
 										<span class="input-group-addon">
 											<i class="fa fa-navicon" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>'Nombre completo del Tercero','style'=>'width:820px;','readonly'=>true])!!}
+										{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>$NombreDinamicoPlace,'style'=>'width:820px;','readonly'=>true])!!}
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: inline;">
+							<div class="form-group" style="width:565px; display: inline;" id="fechacreacion">
 								{!!Form::label('fechaCreacionTercero', 'Fecha Creaci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -253,13 +279,28 @@
 										{!!Form::select('estadoTercero',array('ACTIVO'=>'Activo','INACTIVO'=>'Inactivo'),(isset($tercero) ? $tercero->estadoTercero : 0),["class" => "chosen-select form-control",'style'=>'width:300px;'])!!}
 									</div>
 								</div>
+							</div>											
+							<div class="form-group" style="width:565px; display: none;" id="tipoproveedor">						
+								{!!Form::label('TipoProveedor_idTipoProveedor', 'Proveedor', array('class' => 'col-sm-2 control-label','style' => 'width:180px;'))!!}
+								<div class="col-sm-10" style="width:340px;">
+									<div class="input-group" >
+										<span class="input-group-addon">
+											<i class="fa fa-tasks" style="width: 14px;"></i>
+										</span>
+										{!!Form::select('TipoProveedor_idTipoProveedor',$tipoproveedor, (isset($tercero) ? $tercero->TipoProveedor_idTipoProveedor : 0),["class" => " form-control", "placeholder" =>"Seleccione el tipo de proveedor",'style'=>'width:300px;', 'onchange' => 'llenarSeleccionProveedor(this.value)'])!!}
+
+									</div>
+								</div>
 							</div>
-							<div class="form-group" style="width:1000px; display: inline;">
+																		
+							<!-- Se pone en comentario los chulos de los tipos de tercero -->	
+													<!--  Se deja este div para que cuando salga el proveedor salga bien centrado-->
+							<div class="form-group" style="width:1000px; display: inline;" id="contenedorproveedor">
 								<div class="col-lg-12">
-									<div class="panel panel-default">
+									<!-- <div class="panel panel-default"> -->
 										<div class="panel-body">
-											{!! Form::hidden('tipoTercero', null, array('id' => 'tipoTercero')) !!}
-											<div class="checkbox-inline">
+											<!-- {!! Form::hidden('tipoTercero', null, array('id' => 'tipoTercero')) !!} -->
+										<!-- 	<div class="checkbox-inline">
 												<label>
 													{!!Form::checkbox('tipoTercero1','01',false, array('id' => 'tipoTercero1', 'onclick'=>'validarTipoTercero()'))!!}Empleado
 												</label>
@@ -283,26 +324,18 @@
 												<label>
 													{!!Form::hidden('tipoTercero1','05',false, array('id' => 'tipoTercero5', 'onclick'=>'validarTipoTercero()'))!!}Seguridad Social
 												</label>
-											</div>
-											<div id="tipoproveedor" class="checkbox-inline" style="display: none;" >
-													{!!Form::label('TipoProveedor_idTipoProveedor', 'Proveedor', array('class' => 'col-sm-2 control-label'))!!}
-													<div class="col-sm-10">
-														<div class="input-group" >
-															<span class="input-group-addon">
-																<i class="fa fa-tasks"></i>
-															</span>
-															{!!Form::select('TipoProveedor_idTipoProveedor',$tipoproveedor, (isset($tercero) ? $tercero->TipoProveedor_idTipoProveedor : 0),["class" => " form-control", "placeholder" =>"Seleccione el tipo de proveedor",'style'=>'width:340px;', 'onchange' => 'llenarSeleccionProveedor(this.value)'])!!}
-
-														</div>
-													</div>
-												</div>
+											</div> -->
+											
 										</div>
 									</div>
-								</div>
+								<!-- </div> -->
 							</div>
 						</td>
-						<td>
-							<div class="form-group" style="width:250px; display: inline;" >
+						<td>	
+							<!--DIv que se va a ocultar para que no se desarme  el encabezado  -->
+							<div class="form-group" style="width:250px; display: none;" id="imagentercerooculta"></div>	
+								<!-- Imagen de tercero  -->
+							<div class="form-group" style="width:250px; display: none;" id="imagentercero">
 								<div class="col-sm-10" style="width:250px;">
 									<div class="panel panel-default">
 										<input id="imagenTercero" name="imagenTercero" type="file" >
@@ -339,7 +372,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('direccionTercero', 'Direcci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('direccionTercero', 'Direcci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -360,8 +393,8 @@
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('faxTercero', 'Fax', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+												<div class="form-group" style="width:600px; display: inline;" id="fax">
+													{!!Form::label('faxTercero', 'Fax', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -383,7 +416,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('movil2Tercero', 'M&oacute;vil 2', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('movil2Tercero', 'M&oacute;vil 2', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -393,7 +426,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="width:600px; display: inline;">
+												<div class="form-group" style="width:600px; display: inline;" id="sexo">
 													{!!Form::label('sexoTercero', 'Sexo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
@@ -407,7 +440,7 @@
 													</div>
 												</div>
 												<div class="form-group" style="width:600px; display: inline;">
-													{!!Form::label('correoElectronicoTercero', 'E-Mail', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('correoElectronicoTercero', 'E-Mail', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -417,7 +450,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="width:600px; display: inline;">
+												<div class="form-group" style="width:600px; display: inline;" id="pagina">
 													{!!Form::label('paginaWebTercero', 'P&aacute;gina Web', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
@@ -428,8 +461,10 @@
 														</div>
 													</div>
 												</div>
+
+												
 												<div class="form-group" style="width:600px; display: none;" id="cargo">
-													{!!Form::label('Cargo_idCargo', 'Cargo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('Cargo_idCargo', 'Cargo', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -439,8 +474,9 @@
 														</div>
 													</div>
 												</div>
+
 												<div class="form-group" style="width:600px; display: none;" id="zona">
-													{!!Form::label('Zona_idZona', 'Zona', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('Zona_idZona', 'Zona', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -449,9 +485,10 @@
 															{!!Form::select('Zona_idZona',$zona, (isset($tercero) ? $tercero->Zona_idZona : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la zona",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
-												</div>
+												</div>		
+
 												<div class="form-group" style="width:600px; display: none;" id="sector">
-													{!!Form::label('SectorEmpresa_idSectorEmpresa', 'Sector Empresa', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
+													{!!Form::label('SectorEmpresa_idSectorEmpresa', 'Sector Empresa', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
 															<span class="input-group-addon">
@@ -459,8 +496,10 @@
 															</span>
 															{!!Form::select('SectorEmpresa_idSectorEmpresa',$sectorempresa, (isset($tercero) ? $tercero->SectorEmpresa_idSectorEmpresa : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el sector empresarial",'style'=>'width:340px;'])!!}
 														</div>
-													</div>
+													</div>													
 												</div>
+													
+
 												<div class="form-group" style="width:600px; display: none;" id="contratista">
 													{!!Form::label('Tercero_idEmpleadorContratista', 'Empleador', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
@@ -472,13 +511,30 @@
 														</div>
 													</div>
 												</div>
-											</div>
+												<!-- Chekbox para contratista  con funcion para desaparecer el tipoproveedor-->
+												<div class="form-group" style="width:600px; display: inline;" id="checkboxcontratista">
+													{!!Form::label('contratistaTercero', 'Contratista', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-right:100px '))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">											
+															{!!Form::checkbox('contratistaTercero',1,null, array('id' => 'contratistaTercero','style'=>'width:40px;height:30px','onchange' => 'validarconstratista()'))!!}
+														</div>
+													</div>
+												</div>
+											</div>											
 										</div>
 									</div>
+									<?php 
+									// Se hace una validacion depndiendo del tipo de tercero para el acordeoon llamado infomracion laboral cambie su titulo dependiendo si es 01 = laboral o los demas  Contratactual
+									if (isset($tipoTercero)) 
+									{
+									 $tipolaboral = ($tipoTercero == '*01*' ? 'Informaci&oacute;n Laboral' : ($tipoTercero == '*02*' ? 'Informaci&oacute;n Contractual' : $tipoTercero == '*03*' ? 'Informaci&oacute;n Contractual' : 'Informaci&oacute;n Contractual'));
+									
+									}
+									?>
 									<div class="panel panel-default" style="display:none;" id="pestanaLaboral">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#laboral">Informaci&oacute;n Laboral</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#laboral"><?php echo $tipolaboral ?></a>
 											</h4>
 										</div>
 										<div id="laboral" class="panel-collapse collapse">
@@ -774,7 +830,7 @@
 												<div class="form-group" id='test'>
 													<div class="col-sm-12">
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;" onclick="contactos.agregarCampos(valorContactos,'A')">
+															<div class="col-md-1" style="width: 40px;height:40px;" onclick="contactos.agregarCampos(valorContactos,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1" style="width: 330px;">Nombre</div>
@@ -837,6 +893,22 @@
 											</div>
 										</div>
 									</div>
+									<!-- Nuevo Div Notas OBSERVACIONES -->
+									<div id="pestanaobservacion" class="panel panel-default" style="display:none;">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#notas">Notas/Observaciones</a>
+											</h4>
+										</div>
+										
+										<div id="notas" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													{!!Form::textarea('observacionTercero',(isset($tercero) ? $tercero->observacionTercero : null),['class'=>'ckeditor','placeholder'=>'Ingresa la experiencia'])!!}
+												</div>
+											</div>
+										</div>										
+									</div>
 									<!-- Se quita esta multiregistro  ya que es un campo que ya están en cargos / perfiles -->
 									<!-- <div id="pestanaExamenes" class="panel panel-default">
 										<div class="panel-heading">
@@ -865,71 +937,81 @@
 											</div>
 										</div>
 									</div> -->
-									<div class="panel panel-default">
+																			<!-- Ya que el panel cuando aparece el dropzone desaparece, se le agrega un style inline-block y el tamaño completo para que este no desaparezca -->
+									<div class="panel panel-default" style="display:inline-block;width:100%">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#archivos" href="#archivos">Archivos</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#archivos">Archivos</a>
 											</h4>
 										</div>
 										<div id="archivos" class="panel-collapse collapse">
-											<div class="panel-body">
-												<div class="form-group" id='test'>
-													<div class="col-sm-12">
-														<!-- <div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="archivo.agregarCampos(valorArchivo,'A')">
-																<span class="glyphicon glyphicon-plus"></span>
-															</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">T&iacute;tulo</div>
-															<div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Fecha</div>
-															<div class="col-md-1" style="width: 600px;display:inline-block;height:60px;">Ruta</div>
-															<div id="contenedor_archivo">
-															</div>
-														</div> -->
+											<div class="col-sm-12">
+												<!-- <div class="panel panel-default">  SE QUITA POR PETICION DE ANDRES-->  <!--se cambia la clase panel-primary AZUL por default para que salga gris   -->
+					                                <div class="panel-heading ">
+					                                    <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
+					                                </div>
+					                                <div class="panel-body">
+														<div class="col-sm-12">
+															<div id="upload" class="col-md-12">
+															    <div class="dropzone dropzone-previews" id="dropzoneTerceroArchivo" style="overflow: auto;">
+															    </div>  
+															</div>	
+					 									
+															
+															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">		
+															{!!Form::hidden('archivoTerceroArray', null, array('id' => 'archivoTerceroArray'))!!}
+																<?php
+																
+																// Cuando este editando el archivo 
+																if ($idTerceroA != '')  //Se pregunta si el id de acta de capacitacion es diferente de vacio (que es la tabla papá)
+																{
+																	$eliminar = '';
+																	$archivoSave = DB::Select('SELECT * from terceroarchivo where Tercero_idTercero = '.$idTerceroA);
+																	for ($i=0; $i <count($archivoSave) ; $i++) 
+																	{ 
+																		$archivoS = get_object_vars($archivoSave[$i]);
 
-														<div id="upload" class="col-md-4">
-															<div class="input-group">  
-															   <div class="form-group">
-														        	<div class="input-group">
-														            	<div class="dropzone dropzone-previews" id="dropzoneTerceroArchivo"></div>  
-														        	</div>
-														    	</div>
+																		echo '<div id="'.$archivoS['idTerceroArchivo'].'" class="col-lg-4 col-md-4">
+														                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+														                        <div class="panel-heading">
+														                            <div class="row">
+														                                <div class="col-xs-3">
+														                                    <a target="_blank" 
+														                                    	href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'">
+														                                    	<i class="fa fa-book fa-5x" style="color: gray;"></i>
+														                                    </a>
+														                                </div>
+
+														                                <div class="col-xs-9 text-right">
+														                                    <div>'.str_replace('/tercero/','',$archivoS['rutaTerceroArchivo']).'
+														                                    </div>
+														                                </div>
+														                            </div>
+														                        </div>
+														                        <a target="_blank" href="javascript:eliminarDiv('.$archivoS['idTerceroArchivo'].');">
+														                            <div class="panel-footer">
+														                                <span class="pull-left">Eliminar Documento</span>
+														                                <span class="pull-right"><i class="fa fa-times"></i></span>
+														                                <div class="clearfix"></div>
+														                            </div>
+														                        </a>
+														                    </div>
+														                </div>';
+
+																		echo '<input type="hidden" id="idTerceroArchivo[]" name="idTerceroArchivo[]" value="'.$archivoS['idTerceroArchivo'].'" >
+
+																		<input type="hidden" id="rutaTerceroArchivo[]" name="rutaTerceroArchivo[]" value="'.$archivoS['rutaTerceroArchivo'].'" >';
+																	}
+
+																	echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
+																}
+																
+																 ?>							
 															</div>
-														</div>	
+														</div>
 													</div>
-												</div>
+												<!-- </div> -->
 											</div>
-											<center>
-												<div style="border: 1px solid; width:80%; height:300px;">		
-												<?php
-												if ($idTerceroA != '') 
-												{
-													$eliminar = '';
-													$archivoSave = DB::Select('SELECT * from terceroarchivo where Tercero_idTercero = '.$idTerceroA);
-													for ($i=0; $i <count($archivoSave) ; $i++) 
-													{ 
-														$archivoS = get_object_vars($archivoSave[$i]);
-
-														echo '<div id="'.$archivoS['idTerceroArchivo'].'" style="width:50%; height:50%; border:1px solid; float:left;"> <center>
-														<a target="_blank" href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'"><img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaTerceroArchivo'].'"  width="25%"></a></center>';
-														$eliminar .=$archivoS['idTerceroArchivo'].','; 
-														echo' <a style="cursor:pointer;" onclick="eliminarDiv(document.getElementById('.$archivoS['idTerceroArchivo'].').id);">Borrar archivo</a>
-
-														<input type="hidden" id="idTerceroArchivo[]" name="idTerceroArchivo[]" value="'.$archivoS['idTerceroArchivo'].'" >
-
-														<input type="hidden" id="tituloTerceroArchivo[]" name="tituloTerceroArchivo[]" value="'.$archivoS['tituloTerceroArchivo'].'" >
-
-														<input type="hidden" id="fechaTerceroArchivo[]" name="fechaTerceroArchivo[]" value="'.$archivoS['fechaTerceroArchivo'].'" >
-
-														
-														<input type="hidden" id="rutaTerceroArchivo[]" name="rutaTerceroArchivo[]" value="'.$archivoS['rutaTerceroArchivo'].'" ></div>';
-													}
-
-													echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
-												}
-												
-												 ?>							
-												</div>
-											</center>
 										</div>
 									</div>
 								</div>
@@ -988,7 +1070,6 @@
 
 		
 		{!!Form::hidden('archivoTercero', 0, array('id' => 'archivoTercero'))!!}
-		{!!Form::hidden('archivoTerceroArray', '', array('id' => 'archivoTerceroArray'))!!}
 
         <div id="preview">
        		<center><img id="viewer" frameborder="0" scrolling="no" width="60%" height="60%"></center>
@@ -1039,7 +1120,7 @@
 			uploadIcon: "",
 		});
 
-	//--------------------------------- DROPZONE ---------------------------------------
+	 //--------------------------------- DROPZONE ---------------------------------------
 	var baseUrl = "{{ url("/") }}";
     var token = "{{ Session::getToken() }}";
     Dropzone.autoDiscover = false;
@@ -1080,16 +1161,15 @@
 
     document.getElementById('archivoTerceroArray').value = '';
     myDropzone.on("success", function(file, serverFileName) {
-    					abrirModal(file);
+    	// alert('hola');
+    					//abrirModal(file);
                         fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
 						// console.log(fileList);
-
+						
                         document.getElementById('archivoTerceroArray').value += file.name+',';
-                        console.log(document.getElementById('archivoTerceroArray').value);
+                        // console.log(document.getElementById('archivoTerceroArray').value);
                         i++;
                     });
-
-
     </script>
 
 <style>

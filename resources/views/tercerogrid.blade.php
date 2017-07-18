@@ -1,5 +1,12 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Terceros</center></h3>@stop
+
+<?php 
+$tipoTercero = $_GET['tipoTercero'];
+
+// Se crea una  variable para hacer el titulo de grid dinamico Dependiendo el tipo de tercero
+$titulo = ($tipoTercero == '*01*' ? 'Tercero Tipo Empleado' : ($tipoTercero == '*02*' ? 'Proveedor/Contratistas' : ($tipoTercero == '*03*' ? 'Tercero Tipo Cliente' : 'Proveedor/Contratistas')));
+?>
+@section('titulo')<h3 id="titulo"><center><?php echo $titulo ?></center></h3>@stop
 @section('content')
 
 {!!Html::script('js/tercero.js'); !!}
@@ -7,6 +14,8 @@
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
 {!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
+
+
 
 
 <style>
@@ -73,7 +82,7 @@
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:60px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="tercero/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <?php echo '<a href="tercero/create?tipoTercero='.$tipoTercero.'"><span style= "display:'.$visible.'" class="glyphicon glyphicon-plus"></span></a>'; ?>
                                  <a href="javascript:mostrarModalInterface();"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-cloud-upload"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -126,12 +135,14 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        // En el document ready de la grid se pregunta por el tipo para añadirlo a la url
+        var tipo = '<?php echo $tipoTercero?>';
         var table = $('#ttercero').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosTercero?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosTercero?modificar="+modificar+"&eliminar="+eliminar+"&tipoTercero="+tipo+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

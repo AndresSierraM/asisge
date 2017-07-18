@@ -1,3 +1,26 @@
+function validarconstratista()
+{    
+    var vacio = '';
+    // Si seleccionan el chulito de Contratista debe poner el campo disable 
+    if ($('#contratistaTercero').is(":checked"))
+    {          
+                
+         $('#TipoProveedor_idTipoProveedor').prop('disabled', true);           
+    } 
+    else 
+    {
+        // Si no seleccionan el chulito de Contratista debe quitar el campo disable
+         $('#TipoProveedor_idTipoProveedor').prop('disabled', false);        
+    }
+
+// Luego validamos si el usuario dejo alguna opcion seleccionada de ser asi, automaticamente deja el campo vacio
+    if ($('#TipoProveedor_idTipoProveedor').val() != 0 || ($('#TipoProveedor_idTipoProveedor').val() != ''))
+    {
+        $('#TipoProveedor_idTipoProveedor').val(vacio); 
+    }
+
+}
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/tercero";
@@ -90,34 +113,34 @@ function validarFormulario(event)
 
 
 
-function validarTipoTercero()
-{
-    document.getElementById("tipoTercero").value = '';
+// function validarTipoTercero()
+// {
+//     document.getElementById("tipoTercero").value = '';
 
-    for (tipo = 1; tipo <= 4; tipo++)
-    {
-        document.getElementById("tipoTercero").value = document.getElementById("tipoTercero").value + ((document.getElementById("tipoTercero" + (tipo)).checked) ? '*' + document.getElementById("tipoTercero" + (tipo)).value + '*' : '');
-    }
-    mostrarPestanas();
-}
+//     for (tipo = 1; tipo <= 4; tipo++)
+//     {
+//         document.getElementById("tipoTercero").value = document.getElementById("tipoTercero").value + ((document.getElementById("tipoTercero" + (tipo)).checked) ? '*' + document.getElementById("tipoTercero" + (tipo)).value + '*' : '');
+//     }
+//     mostrarPestanas();
+// }
 
-function seleccionarTipoTercero()
-{
-    for (tipo = 1; tipo <= 4; tipo++)
-    {
-        if (document.getElementById("tipoTercero").value.indexOf('*' + document.getElementById("tipoTercero" + (tipo)).value + '*') >= 0)
-        {
-            document.getElementById("tipoTercero" + (tipo)).checked = true;
-        }
-        else
-        {
-            document.getElementById("tipoTercero" + (tipo)).checked = false;
-        }
-    }
+// function seleccionarTipoTercero()
+// {
+//     for (tipo = 1; tipo <= 4; tipo++)
+//     {
+//         if (document.getElementById("tipoTercero").value.indexOf('*' + document.getElementById("tipoTercero" + (tipo)).value + '*') >= 0)
+//         {
+//             document.getElementById("tipoTercero" + (tipo)).checked = true;
+//         }
+//         else
+//         {
+//             document.getElementById("tipoTercero" + (tipo)).checked = false;
+//         }
+//     }
 
-    mostrarPestanas();
+//     mostrarPestanas();
 
-}
+// }
 
 function llenaNombreTercero()
 {
@@ -129,14 +152,25 @@ function llenaNombreTercero()
     document.getElementById('nombreCompletoTercero').value = nombre1 + ' ' + nombre2 + ' ' + apellido1 + ' ' + apellido2;
 }
 
+
+// Se utiliza la misma funcion pero se le hacen unos cambios para validar con el id que trae al formulario "TipoTercero ej *01*"
 function mostrarPestanas()
 {
-    if(document.getElementById('tipoTercero1').checked)
+     // if(document.getElementById('tipoTercero1').checked)
+     // *01* Empleados
+    if(document.getElementById('tipoTercero').value == '*01*')
     {
         document.getElementById('cargo').style.display = 'inline';
         document.getElementById('zona').style.display = 'none';
         document.getElementById('sector').style.display = 'none';
         document.getElementById('pestanaProducto').style.display = 'none';
+        // Se oculta el fax y pagina  por peticion de vivi
+        document.getElementById('fax').style.display = 'none';
+        document.getElementById('pagina').style.display = 'none';
+        document.getElementById('contenedorproveedor').style.display = 'none';
+
+
+        
         // document.getElementById('pestanaExamenes').style.display = 'block';
         document.getElementById('pestanaEducacion').style.display = 'block';
         document.getElementById('pestanaExperiencia').style.display = 'block';
@@ -145,6 +179,14 @@ function mostrarPestanas()
         document.getElementById('pestanaLaboral').style.display = 'block';
         document.getElementById('tipoproveedor').style.display = 'none';
         document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
+        document.getElementById('imagentercero').style.display = 'block';
+        document.getElementById('nombre1').style.display = 'inline';
+        document.getElementById('nombre2').style.display = 'inline';
+        document.getElementById('apellido1').style.display = 'inline';
+        document.getElementById('apellido2').style.display = 'inline';
+        // Se pone  Read Only si es tipo proveedor ya que la funcion llenaNombreTercero concatena  el nombre 
+        document.getElementById('nombreCompletoTercero').readOnly = true;
+         document.getElementById('checkboxcontratista').style.display = 'none';
     }
     /*else
     {
@@ -157,58 +199,112 @@ function mostrarPestanas()
         document.getElementById('pestanaLaboral').style.display = 'none';
     }*/
 
-    if(document.getElementById('tipoTercero2').checked)
+
+    // if(document.getElementById('tipoTercero2').checked)
+    // {
+    //     document.getElementById('cargo').style.display = 'none';
+    //     document.getElementById('zona').style.display = 'inline';
+    //     document.getElementById('sector').style.display = 'inline';
+
+
+    //     document.getElementById('pestanaProducto').style.display = 'block';
+    //     // document.getElementById('pestanaExamenes').style.display = 'none';
+    //     document.getElementById('pestanaEducacion').style.display = 'none';
+    //     document.getElementById('pestanaExperiencia').style.display = 'none';
+    //     document.getElementById('pestanaFormacion').style.display = 'none';
+    //     document.getElementById('pestanaPersonal').style.display = 'none';
+    //     document.getElementById('pestanaLaboral').style.display = 'none';
+    //     document.getElementById('tipoproveedor').style.display = 'inline-block';
+    //     document.getElementById('pestanaCriterioSeleccion').style.display = 'block';
+    // }
+
+
+
+    
+    // Se pregunta  por el tipo CLiente 
+    if(document.getElementById('tipoTercero').value == '*03*')
     {
         document.getElementById('cargo').style.display = 'none';
         document.getElementById('zona').style.display = 'inline';
         document.getElementById('sector').style.display = 'inline';
-
+        // Se oculta el fax y pagina  por peticion de vivi
+        document.getElementById('fax').style.display = 'block';
+        document.getElementById('pagina').style.display = 'block';
+        document.getElementById('contenedorproveedor').style.display = 'none';
+        document.getElementById('sexo').style.display = 'none';
         document.getElementById('pestanaProducto').style.display = 'block';
         // document.getElementById('pestanaExamenes').style.display = 'none';
         document.getElementById('pestanaEducacion').style.display = 'none';
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
-        document.getElementById('pestanaLaboral').style.display = 'none';
-        document.getElementById('tipoproveedor').style.display = 'inline-block';
-        document.getElementById('pestanaCriterioSeleccion').style.display = 'block';
-    }
-
-    if(document.getElementById('tipoTercero3').checked)
-    {
-        document.getElementById('cargo').style.display = 'none';
-        document.getElementById('zona').style.display = 'inline';
-        document.getElementById('sector').style.display = 'inline';
-
-        document.getElementById('pestanaProducto').style.display = 'block';
-        // document.getElementById('pestanaExamenes').style.display = 'none';
-        document.getElementById('pestanaEducacion').style.display = 'none';
-        document.getElementById('pestanaExperiencia').style.display = 'none';
-        document.getElementById('pestanaFormacion').style.display = 'none';
-        document.getElementById('pestanaPersonal').style.display = 'none';
-        document.getElementById('pestanaLaboral').style.display = 'none';
+        document.getElementById('pestanaLaboral').style.display = 'block';
         document.getElementById('tipoproveedor').style.display = 'none';
         document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
+        document.getElementById('pestanaobservacion').style.display = 'block';
+        document.getElementById('imagentercerooculta').style.display = 'block';
+        document.getElementById('nombre1').style.display = 'none';
+        document.getElementById('nombre2').style.display = 'none';
+        document.getElementById('apellido1').style.display = 'none';
+        document.getElementById('apellido2').style.display = 'none';
+         document.getElementById('checkboxcontratista').style.display = 'none';
+        // Se pone  para que la persona escriba normal  si es tipo CLiente 
+        document.getElementById('nombreCompletoTercero').readOnly = false;
+
     }
 
-    if(document.getElementById('tipoTercero4').checked)
+     // Proveedor y contratista,Ya que son las mismas opciones
+      if(document.getElementById('tipoTercero').value == '*02*' || document.getElementById('tipoTercero').value == '*04*')
     {
         document.getElementById('cargo').style.display = 'none';
         document.getElementById('zona').style.display = 'inline';
         document.getElementById('sector').style.display = 'inline';
-        document.getElementById('contratista').style.display = 'inline';
-
-
+        // Se oculta el fax y pagina  por peticion de vivi
+        document.getElementById('fax').style.display = 'block';
+        document.getElementById('pagina').style.display = 'block';
+        document.getElementById('contenedorproveedor').style.display = 'block';
+            document.getElementById('tipoproveedor').style.display = 'block';
+        document.getElementById('sexo').style.display = 'none';
         document.getElementById('pestanaProducto').style.display = 'block';
         // document.getElementById('pestanaExamenes').style.display = 'none';
         document.getElementById('pestanaEducacion').style.display = 'none';
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
-        document.getElementById('pestanaLaboral').style.display = 'none';
-        document.getElementById('tipoproveedor').style.display = 'none';
+        document.getElementById('pestanaLaboral').style.display = 'block';
         document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
+        document.getElementById('pestanaobservacion').style.display = 'block';
+        document.getElementById('imagentercerooculta').style.display = 'block';
+        document.getElementById('nombre1').style.display = 'none';
+        document.getElementById('nombre2').style.display = 'none';
+        document.getElementById('apellido1').style.display = 'none';
+        document.getElementById('apellido2').style.display = 'none';
+        document.getElementById('contratista').style.display = 'block';
+        document.getElementById('checkboxcontratista').style.display = 'block';
+
+        
+        // Se pone  para que la persona escriba normal  si es tipo CLiente 
+        document.getElementById('nombreCompletoTercero').readOnly = false;
     }
+
+    // if(document.getElementById('tipoTercero4').checked)
+    // {
+    //     document.getElementById('cargo').style.display = 'none';
+    //     document.getElementById('zona').style.display = 'inline';
+    //     document.getElementById('sector').style.display = 'inline';
+    //     document.getElementById('contratista').style.display = 'inline';
+
+
+    //     document.getElementById('pestanaProducto').style.display = 'block';
+    //     // document.getElementById('pestanaExamenes').style.display = 'none';
+    //     document.getElementById('pestanaEducacion').style.display = 'none';
+    //     document.getElementById('pestanaExperiencia').style.display = 'none';
+    //     document.getElementById('pestanaFormacion').style.display = 'none';
+    //     document.getElementById('pestanaPersonal').style.display = 'none';
+    //     document.getElementById('pestanaLaboral').style.display = 'none';
+    //     document.getElementById('tipoproveedor').style.display = 'none';
+    //     document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
+    // }
 
 
     /*else
