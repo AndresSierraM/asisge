@@ -950,7 +950,7 @@ class TerceroController extends Controller
                 // para cada registro de empleados recorremos las columnas desde la 0 hasta la 40
                 $terceros[$posTer]["idTercero"] = 0;
                 $terceros[$posTer]["Compania_idCompania"] = 0;
-                for ($columna = 0; $columna <= 41; $columna++) {
+                for ($columna = 0; $columna <= 40; $columna++) {
                     // en la fila 4 del archivo de excel (oculta) estan los nombres de los campos de la tabla
                     $campo = $datos->getCellByColumnAndRow($columna, 4)->getValue();
 
@@ -1170,7 +1170,7 @@ class TerceroController extends Controller
                     }
                     else
                     {
-                        $consulta = \App\Cargo::where('codigoCargo','=', $terceros[ $posTer]["FrecuenciaMedicion_idConsumeLicor"])->lists('idCargo');
+                        $consulta = \App\FrecuenciaMedicion::where('codigoFrecuenciaMedicion','=', $terceros[ $posTer]["FrecuenciaMedicion_idConsumeLicor"])->lists('idFrecuenciaMedicion');
 
                         // si se encuentra el id lo guardamos en el array
                         if(isset($consulta[0]))
@@ -1186,15 +1186,16 @@ class TerceroController extends Controller
                         }
                     }
                 }
-
+                else
+                {
+                    $terceros[$posTer]["FrecuenciaMedicion_idConsumeLicor"] = 0;
+                }
+                
                 $posTer++;
                 $fila++;
                 
             }
-
-
-
-            
+ 
 
             $totalErrores = count($errores);
 
@@ -1287,9 +1288,11 @@ class TerceroController extends Controller
                         $idtercero = $terceros[$reg]["idTercero"];
                         $idTerceroInformacion = \App\TerceroInformacion::where('Tercero_idTercero','=',$idtercero)->lists('idTerceroInformacion');
                     }
-
+echo $reg.' = '.$terceros[$reg]["idTercero"];
+print_r($idTerceroInformacion);
+echo '<br>';
                     $indice = array(
-                          'idTerceroInformacion' => $idTerceroInformacion[0]); 
+                          'idTerceroInformacion' => isset($idTerceroInformacion[0]) ? $idTerceroInformacion[0] : 0 ); 
 
                     $data = array(
                         'Tercero_idTercero' => $idtercero,

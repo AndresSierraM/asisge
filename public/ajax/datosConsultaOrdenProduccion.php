@@ -78,11 +78,11 @@
             ON OP.idOrdenProduccion = OT.OrdenProduccion_idOrdenProduccion 
             LEFT JOIN tipocalidad TC
             ON OT.TipoCalidad_idTipoCalidad = TC.idTipoCalidad
-            LEFT JOIN Proceso P
+            LEFT JOIN proceso P
             ON OT.Proceso_idProceso = P.idProceso
             LEFT JOIN ordenproduccionproceso OPP
             ON OP.idOrdenProduccion = OPP.OrdenProduccion_idOrdenProduccion and OT.Proceso_idProceso = OPP.Proceso_idProceso
-            LEFT JOIN Tercero C
+            LEFT JOIN tercero C
             ON OP.Tercero_idCliente = C.idTercero
             LEFT JOIN fichatecnica FT
             ON OP.FichaTecnica_idFichaTecnica = FT.idFichaTecnica
