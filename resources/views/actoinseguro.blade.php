@@ -130,10 +130,10 @@ $idActoInseguroS = (isset($actoinseguro) ? $actoinseguro->idActoInseguro : 0);
                                         <div class="panel-body">
                                           <div class="col-sm-12 col-xs-12">
                                             <div id="upload" class="col-md-12">
-                                                <div class="dropzone dropzone-previews" id="dropzoneActoInseguroArchivo">
+                                                <div class="dropzone dropzone-previews" id="dropzoneActoInseguroArchivo" style="overflow: auto;">
                                                 </div>  
                                             </div>                                                                             
-                                            <div class="col-sm-12 col-xs-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;">   
+                                            <div class="col-sm-12 col-xs-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">   
                                               {!!Form::hidden('archivoActoInseguroArray', '', array('id' => 'archivoActoInseguroArray'))!!}
                                               <?php
                                                 

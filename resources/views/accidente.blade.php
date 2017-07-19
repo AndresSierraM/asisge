@@ -591,12 +591,12 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 	                                <div class="panel-body">
 										<div class="col-sm-12">
 											<div id="upload" class="col-md-12">
-											    <div class="dropzone dropzone-previews" id="dropzoneAccidenteArchivo">
+											    <div class="dropzone dropzone-previews" id="dropzoneAccidenteArchivo" style="overflow: auto;">
 											    </div>  
 											</div>	
 	 									
 											
-											<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;">		
+											<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">		
 											{!!Form::hidden('archivoAccidenteArray', '', array('id' => 'archivoAccidenteArray'))!!}
 												<?php
 												

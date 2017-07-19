@@ -410,12 +410,12 @@ for ($i=0; $i < count($firmas); $i++)
 					                                <div class="panel-body">
 														<div class="col-sm-12">
 															<div id="upload" class="col-md-12">
-															    <div class="dropzone dropzone-previews" id="dropzoneActaCapacitacionArchivo">
+															    <div class="dropzone dropzone-previews" id="dropzoneActaCapacitacionArchivo" style="overflow: auto;">
 															    </div>  
 															</div>	
 					 									
 															
-															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;">		
+															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">		
 															{!!Form::hidden('archivoActaCapacitacionArray', '', array('id' => 'archivoActaCapacitacionArray'))!!}
 																<?php
 																
