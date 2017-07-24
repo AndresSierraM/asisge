@@ -238,7 +238,7 @@ function mostrarPestanas()
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
-        document.getElementById('pestanaLaboral').style.display = 'block';
+        document.getElementById('pestanaLaboral').style.display = 'none';
         document.getElementById('tipoproveedor').style.display = 'none';
         document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
         document.getElementById('pestanaobservacion').style.display = 'block';
@@ -271,7 +271,7 @@ function mostrarPestanas()
         document.getElementById('pestanaExperiencia').style.display = 'none';
         document.getElementById('pestanaFormacion').style.display = 'none';
         document.getElementById('pestanaPersonal').style.display = 'none';
-        document.getElementById('pestanaLaboral').style.display = 'block';
+        document.getElementById('pestanaLaboral').style.display = 'none';
         document.getElementById('pestanaCriterioSeleccion').style.display = 'none';
         document.getElementById('pestanaobservacion').style.display = 'block';
         document.getElementById('imagentercerooculta').style.display = 'block';
