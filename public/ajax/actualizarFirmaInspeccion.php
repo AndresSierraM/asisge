@@ -3,7 +3,7 @@
 $idRealizador = $_POST['idRealizador'];
 $firma = $_POST['firma'];
 
-$ruta = 'inspeccion/firmainspeccion'.$idRealizador.'.png';
+$ruta = 'inspeccion/firmainspeccion_'.$idRealizador.'.png';
 //----------------------------
 // Guardamos la imagen de la firma como un archivo en disco
 $data = $firma;

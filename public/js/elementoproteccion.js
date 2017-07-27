@@ -132,19 +132,26 @@ function llenarElemento(idTercero)
                     },
                 success: function(respuesta){
                     document.getElementById("contenedor_entregaelementoproteccion").innerHTML = '';
-                    var valor = new Array();
-                    var nombres = new Array();
-
-                    for (var i = 0; i < respuesta.length; i++) 
+                    if (respuesta != '') 
                     {
-                        valor[i] = respuesta[i]["idElementoProteccion"];
-                        nombres[i] = respuesta[i]["nombreElementoProteccion"];
-                        
-                        var valores = new Array(0,valor[i],nombres[i],'',1);
-                        window.parent.entregaelementoproteccion.agregarCampos(valores,'A'); 
+                        var valor = new Array();
+                        var nombres = new Array();
 
-                        llenarDescripcion(valor[i], 'ElementoProteccion_idElementoProteccion'+i)
-                    }  
+                        for (var i = 0; i < respuesta.length; i++) 
+                        {
+                            valor[i] = respuesta[i]["idElementoProteccion"];
+                            nombres[i] = respuesta[i]["nombreElementoProteccion"];
+                            
+                            var valores = new Array(0,valor[i],nombres[i],'',1);
+                            window.parent.entregaelementoproteccion.agregarCampos(valores,'A'); 
+
+                            llenarDescripcion(valor[i], 'ElementoProteccion_idElementoProteccion'+i)
+                        }  
+                    }
+                    else
+                    {
+                        alert('El cargo del empleado no tiene relacionado elementos de proteccion');
+                    }
                 },
                 error:    function(xhr,err){ 
                     alert("Error");

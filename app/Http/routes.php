@@ -26,6 +26,22 @@ Route::get('accesodenegado', function () {
     return view('accesodenegado');
     });
 
+
+// ---------------------------------
+// Rutas sin controllador firmas 
+// ---------------------------------
+Route::get('actacapacitacionfirma', function () {
+    return view('actacapacitacionfirma');
+    });
+
+Route::get('actagrupoapoyofirma', function () {
+    return view('actagrupoapoyofirma');
+    });
+
+// ---------------------------------
+// Cierre Rutas sin controllador firmas 
+// ---------------------------------
+
 Route::group(['middleware' => 'auth'], function () 
 {
 
@@ -69,6 +85,10 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+
+    Route::resource('entregaelementoproteccionfirma', 'EntregaElementoProteccionFirmaController@create');
+    Route::resource('inspeccionfirma', 'InspeccionFirmaController@create');
+    Route::resource('actagrupoapoyofirma', 'ActaGrupoApoyoFirmaController@create');
     Route::resource('diagnostico2', 'Diagnostico2Controller');
     Route::get('consultardiagnostico', 'Diagnostico2Controller@consultardiagnostico');
     Route::resource('actoinseguro', 'ActoInseguroController');
@@ -596,6 +616,27 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/consultarPermisos.php';
     });
     //Ajax de Maestros
+
+
+
+ Route::post('llenarEntregaElementoProteccionFirma', function()
+    {
+        include public_path().'/ajax/llenarEntregaElementoProteccionFirma.php';
+    });
+ Route::post('llenarInspeccionFirma', function()
+    {
+        include public_path().'/ajax/llenarInspeccionFirma.php';
+    });
+    Route::post('llenarTerceroFirma', function()
+    {
+        include public_path().'/ajax/llenarTerceroFirma.php';
+    });
+
+    Route::post('llenarActaGrupoApoyoTerceroFirma', function()
+    {
+        include public_path().'/ajax/llenarActaGrupoApoyoTerceroFirma.php';
+    });
+    
     Route::get('llamarsublinea', function()
     {
         include public_path().'/ajax/llamarsublinea.php';
