@@ -27,16 +27,7 @@ Route::get('accesodenegado', function () {
     });
 
 
-// ---------------------------------
-// Rutas sin controllador firmas 
-// ---------------------------------
-Route::get('actacapacitacionfirma', function () {
-    return view('actacapacitacionfirma');
-    });
 
-Route::get('actagrupoapoyofirma', function () {
-    return view('actagrupoapoyofirma');
-    });
 
 // ---------------------------------
 // Cierre Rutas sin controllador firmas 
@@ -86,6 +77,9 @@ Route::group(['middleware' => 'auth'], function ()
     //     Route::get('logout', 'AuthController@logOut');
     // });
 
+    
+    Route::resource('accidentefirma', 'AccidenteFirmaController@create');
+    Route::resource('actacapacitacionfirma', 'ActaCapacitacionFirmaController@create');
     Route::resource('entregaelementoproteccionfirma', 'EntregaElementoProteccionFirmaController@create');
     Route::resource('inspeccionfirma', 'InspeccionFirmaController@create');
     Route::resource('actagrupoapoyofirma', 'ActaGrupoApoyoFirmaController@create');
@@ -618,12 +612,15 @@ Route::group(['middleware' => 'auth'], function ()
     //Ajax de Maestros
 
 
-
- Route::post('llenarEntregaElementoProteccionFirma', function()
+    Route::post('llenarAccidenteFirma', function()
+    {
+        include public_path().'/ajax/llenarAccidenteFirma.php';
+    });
+    Route::post('llenarEntregaElementoProteccionFirma', function()
     {
         include public_path().'/ajax/llenarEntregaElementoProteccionFirma.php';
     });
- Route::post('llenarInspeccionFirma', function()
+    Route::post('llenarInspeccionFirma', function()
     {
         include public_path().'/ajax/llenarInspeccionFirma.php';
     });
