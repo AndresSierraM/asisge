@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     Route::get('logout', 'AuthController@logOut');
     // });
 
-    
+    Route::resource('matrizriesgoproceso', 'MatrizRiesgoProcesoController');
     Route::resource('accidentefirma', 'AccidenteFirmaController@create');
     Route::resource('actacapacitacionfirma', 'ActaCapacitacionFirmaController@create');
     Route::resource('entregaelementoproteccionfirma', 'EntregaElementoProteccionFirmaController@create');
@@ -737,6 +737,10 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
 
+    Route::get('datosMatrizRiesgoProceso', function()
+    {
+        include public_path().'/ajax/datosMatrizRiesgoProceso.php';
+    });
     Route::post('llenarCentroCostoActaCapacitacion', function()
     {
         include public_path().'/ajax/llenarCentroCostoActaCapacitacion.php';
