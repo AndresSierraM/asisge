@@ -87,7 +87,7 @@ class MatrizRiesgoProcesoController extends Controller
               'interpretacionValorMatrizRiesgoProcesoDetalle' => $request['interpretacionValorMatrizRiesgoProcesoDetalle'][$i],
               'accionesMatrizRiesgoProcesoDetalle' => $request['accionesMatrizRiesgoProcesoDetalle'][$i],
               'descripcionAccionMatrizRiesgoProcesoDetalle' => $request['descripcionAccionMatrizRiesgoProcesoDetalle'][$i],
-              'Tercero_idResponsableAccion' => $request['Tercero_idResponsableAccion'][$i],
+              'Tercero_idResponsableAccion' => ($request['Tercero_idResponsableAccion'][$i] == '' ? NULL : $request['Tercero_idResponsableAccion'][$i]),              
               'seguimientoMatrizRiesgoProcesoDetalle' => $request['seguimientoMatrizRiesgoProcesoDetalle'][$i],
               'fechaSeguimientoMatrizRiesgoProcesoDetalle' => $request['fechaSeguimientoMatrizRiesgoProcesoDetalle'][$i],
               'fechaCierreMatrizRiesgoProcesoDetalle' => $request['fechaCierreMatrizRiesgoProcesoDetalle'][$i],
@@ -110,7 +110,36 @@ class MatrizRiesgoProcesoController extends Controller
      */
     public function show($id, Request $request)
     {
-       
+        if($_GET['accion'] == 'imprimir')
+        {
+          // Se llama los registros para saber  cual es  la que va a imprimir el usuario
+           $matrizriesgoproceso = \App\MatrizRiesgoProceso::find($id);
+
+            $MatrizRiesgoProcesoEncabezado = DB::select('
+            SELECT mrp.fechaMatrizRiesgoProceso,t.nombreCompletoTercero,p.nombreProceso,mrp.idMatrizRiesgoProceso
+            FROM matrizriesgoproceso mrp
+            LEFT JOIN tercero t
+            ON mrp.Tercero_idRespondable = t.idTercero
+            LEFT JOIN proceso p
+            ON mrp.Proceso_idProceso = p.idProceso
+            WHERE mrp.idMatrizRiesgoProceso = '.$id);
+
+
+
+            $MatrizRiesgoProcesoDetalle = DB::select('
+              SELECT mrpd.idMatrizRiesgoProcesoDetalle,mrpd.MatrizRiesgoProceso_idMatrizRiesgoProceso,mrpd.descripcionMatrizRiesgoProcesoDetalle,mrpd.efectoMatrizRiesgoProcesoDetalle,mrpd.frecuenciaMatrizRiesgoProcesoDetalle,mrpd.impactoMatrizRiesgoProcesoDetalle,
+              mrpd.nivelValorMatrizRiesgoProcesoDetalle,mrpd.interpretacionValorMatrizRiesgoProcesoDetalle,
+              mrpd.accionesMatrizRiesgoProcesoDetalle,mrpd.descripcionAccionMatrizRiesgoProcesoDetalle,
+              t.nombreCompletoTercero,mrpd.seguimientoMatrizRiesgoProcesoDetalle,mrpd.fechaSeguimientoMatrizRiesgoProcesoDetalle,
+              mrpd.fechaCierreMatrizRiesgoProcesoDetalle,mrpd.eficazMatrizRiesgoProcesoDetalle
+              FROM matrizriesgoprocesodetalle mrpd
+              LEFT JOIN tercero t
+              ON mrpd.Tercero_idResponsableAccion = t.idTercero
+              where mrpd.MatrizRiesgoProceso_idMatrizRiesgoProceso ='.$id);
+
+
+            return view('formatos.matrizriesgoprocesoimpresion',compact('MatrizRiesgoProcesoEncabezado','MatrizRiesgoProcesoDetalle'));
+        }
         
     }
 
@@ -190,7 +219,7 @@ class MatrizRiesgoProcesoController extends Controller
                   'interpretacionValorMatrizRiesgoProcesoDetalle' => $request['interpretacionValorMatrizRiesgoProcesoDetalle'][$i],
                   'accionesMatrizRiesgoProcesoDetalle' => $request['accionesMatrizRiesgoProcesoDetalle'][$i],
                   'descripcionAccionMatrizRiesgoProcesoDetalle' => $request['descripcionAccionMatrizRiesgoProcesoDetalle'][$i],
-                  'Tercero_idResponsableAccion' => $request['Tercero_idResponsableAccion'][$i],
+                  'Tercero_idResponsableAccion' => ($request['Tercero_idResponsableAccion'][$i] == '' ? NULL : $request['Tercero_idResponsableAccion'][$i]),
                   'seguimientoMatrizRiesgoProcesoDetalle' => $request['seguimientoMatrizRiesgoProcesoDetalle'][$i],
                   'fechaSeguimientoMatrizRiesgoProcesoDetalle' => $request['fechaSeguimientoMatrizRiesgoProcesoDetalle'][$i],
                   'fechaCierreMatrizRiesgoProcesoDetalle' => $request['fechaCierreMatrizRiesgoProcesoDetalle'][$i],

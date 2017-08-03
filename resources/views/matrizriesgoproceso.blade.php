@@ -111,7 +111,7 @@
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
+			                	<i class="fa fa-caret-square-o-down" style="width: 14px;"></i>
 			              	</span>							
 							{!!Form::select('Tercero_idRespondable',$Tercero, (isset($matrizriesgoproceso) ? $matrizriesgoproceso->Tercero_idRespondable : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Empleado Responsable"])!!}
 					    </div>
