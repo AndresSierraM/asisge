@@ -124,7 +124,7 @@
 					    <span class="input-group-addon">
 					      <i class="fa fa-caret-square-o-down" style="width: 14px;"></i>
 					    </span>
-					    {!!Form::select('Proceso_idProceso',$Proceso, (isset($matrizriesgoproceso) ? $matrizriesgoproceso->idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Proceso"])!!}
+					    {!!Form::select('Proceso_idProceso',$Proceso, (isset($matrizriesgoproceso) ? $matrizriesgoproceso->Proceso_idProceso : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Proceso"])!!}
 					  </div>
 					</div>
 				</div>

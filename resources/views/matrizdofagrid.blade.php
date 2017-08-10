@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Matriz de Riesgo por Proceso</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Matriz DOFA</center></h3>@stop
 @section('content')
 
 {!!Html::script('js/matrizriesgo.js'); !!}
@@ -56,11 +56,11 @@
                             <li><a class="toggle-vis" data-column="4"><label> Procesos</label></a></li>
                         </ul>
                     </div>
-                    <table id="matrizriesgoproceso" name="matrizriesgoproceso" class="display table-bordered" width="100%">
+                    <table id="matrizdofa" name="matrizdofa" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:55px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="matrizriesgoproceso/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="matrizdofa/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                 <!--  <a href="javascript:mostrarModalInterface();"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-cloud-upload"></span></a> -->
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -91,7 +91,7 @@
 
     function imprimirFormato(id)
     {
-        window.open('matrizriesgoproceso/'+id+'?accion=imprimir','matrizriesgoproceso','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+        window.open('matrizdofa/'+id+'?accion=imprimir','matrizdofa','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
     }
 
     // function mostrarModalInterface()
@@ -102,7 +102,7 @@
     $(document).ready( function () {
 
         
-        /*$('#matrizriesgoproceso').DataTable({
+        /*$('#matrizdofa').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
@@ -112,12 +112,12 @@
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo $dato["consultarRolOpcion"];?>';
-        var table = $('#matrizriesgoproceso').DataTable( {
+        var table = $('#matrizdofa').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosMatrizRiesgoProceso?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
+            "ajax": "{!! URL::to ('/datosMatrizDofa?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -154,7 +154,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#matrizriesgoproceso tbody')
+        $('#matrizdofa tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -169,15 +169,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#matrizriesgoproceso tfoot th').each( function () {
+    $('#matrizdofa tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#matrizriesgoproceso thead th').eq( $(this).index() ).text();
+        var title = $('#matrizdofa thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#matrizriesgoproceso').DataTable();
+    var table = $('#matrizdofa').DataTable();
  
     // Apply the search
     table.columns().every( function () {
@@ -204,56 +204,6 @@
     
 </script>
 
-<script type="text/javascript">
-        
-        
-    //--------------------------------- DROPZONE ---------------------------------------
-    var baseUrl = "{{ url("/") }}";
-    var token = "{{ Session::getToken() }}";
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("div#dropzoneMatrizRiesgoArchivo", {
-        url: baseUrl + "/dropzone/uploadFiles",
-        params: {
-            _token: token
-        },
-        
-    });
 
-     fileList = Array();
-    var i = 0;
-
-    //Configuro el dropzone
-    myDropzone.options.myAwesomeDropzone =  {
-    paramName: "file", // The name that will be used to transfer the file
-    maxFilesize: 40, // MB
-    acceptedFiles: ".jpeg,.jpg,.png,.gif",
-    addRemoveLinks: true,
-    clickable: true,
-    previewsContainer: ".dropzone-previews",
-    clickable: false,
-    uploadMultiple: true,
-    accept: function(file, done) {
-
-      }
-    };
-
-    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
-     myDropzone.on("addedfile", function(file) {
-          file.previewElement.addEventListener("click", function(reg) {
-          });
-        });
-
-    document.getElementById('archivoMatrizRiesgoArray').value = '';
-    myDropzone.on("success", function(file, serverFileName) {
-                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
-                        // console.log(fileList);
-
-                        document.getElementById('archivoMatrizRiesgoArray').value += file.name+',';
-                        console.log(document.getElementById('archivoMatrizRiesgoArray').value);
-                        i++;
-                    });
-
-
-</script>
 @stop
 
