@@ -14,6 +14,8 @@ use DB;
 // use Response;
 // use Excel;
 include public_path().'/ajax/consultarPermisos.php';
+// Se incluye el ajax que tiene la funcion para guardar en MATRIZ RIESGO PROCESO
+include public_path().'/ajax/guardarMatrizRiesgoProceso.php';
 
 class MatrizDofaController extends Controller
 {
@@ -257,6 +259,12 @@ class MatrizDofaController extends Controller
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Oportunidad'][$i]                  
                   );
 
+                // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
+                if($request['matrizRiesgoMatrizDOFADetalle_Oportunidad'][$i] == 1)
+                  {                    
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Oportunidad'][$i],$request['fechaElaboracionMatrizDOFA']);
+                  }
+            
                 $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
             } 
 
@@ -274,6 +282,12 @@ class MatrizDofaController extends Controller
                   'descripcionMatrizDOFADetalle' => $request['descripcionMatrizDOFADetalle_Fortaleza'][$i],
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Fortaleza'][$i]                  
                   );
+
+                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
+                if($request['matrizRiesgoMatrizDOFADetalle_Fortaleza'][$i] == 1)
+                  {
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Fortaleza'][$i],$request['fechaElaboracionMatrizDOFA']);
+                  }
 
                 $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
             } 
@@ -293,6 +307,13 @@ class MatrizDofaController extends Controller
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Amenaza'][$i]                  
                   );
 
+
+                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
+                if($request['matrizRiesgoMatrizDOFADetalle_Amenaza'][$i] == 1)
+                  {
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Amenaza'][$i],$request['fechaElaboracionMatrizDOFA']);
+                  }
+
                 $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
             } 
 
@@ -311,11 +332,16 @@ class MatrizDofaController extends Controller
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Debilidad'][$i]                  
                   );
 
+                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
+                if($request['matrizRiesgoMatrizDOFADetalle_Debilidad'][$i] == 1)
+                  {
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Debilidad'][$i],$request['fechaElaboracionMatrizDOFA']);
+                  }
+
                 $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
             }  
 
     }
     
-
-}
+ }
 
