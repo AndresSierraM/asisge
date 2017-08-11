@@ -519,7 +519,9 @@ set_time_limit(0);
 // tomamos una fecha inicial para el proceso, que viene como parametro en la variable fecha
 // si no existe, tomamos el dia de hoy
 
-$compania = DB::Select('SELECT idCompania, nombreCompania from compania where idCompania=68');
+$CondCompania = isset($_GET["idCompania"]) ? ' where idCompania = '.$_GET["idCompania"] : '';
+
+$compania = DB::Select('SELECT idCompania, nombreCompania from compania '.$CondCompania);
 for ($i=0; $i < count($compania); $i++) 
 { 
 	$idCompania = get_object_vars($compania[$i]);

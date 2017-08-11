@@ -584,7 +584,7 @@ class TerceroController extends Controller
 
             $terceros = array();
             $errores = array();
-            $fila = 5;
+            $fila = 11;
             $posTer = 0;
             $posErr = 0;
             
@@ -597,7 +597,7 @@ class TerceroController extends Controller
                 $terceros[$posTer]["Compania_idCompania"] = 0;
                 for ($columna = 0; $columna <= 24; $columna++) {
                     // en la fila 4 del archivo de excel (oculta) estan los nombres de los campos de la tabla
-                    $campo = $datos->getCellByColumnAndRow($columna, 4)->getValue();
+                    $campo = $datos->getCellByColumnAndRow($columna, 10)->getValue();
 
                     // si es una celda calculada, la ejeutamos, sino tomamos su valor
                     if ($datos->getCellByColumnAndRow($columna, $fila)->getDataType() == 'f')
@@ -646,17 +646,7 @@ class TerceroController extends Controller
                     }
                 }
 
-                //*****************************
-                // Tipo de Tercero
-                //*****************************
-                // con los campos de tipo cliente y tipo proveedor, armamos el tipo de tercero
-                $terceros[$posTer]["tipoTercero"] = 
-                        ($terceros[$posTer]["tipoProveedor"] != '' ? '*02*': '').
-                        ($terceros[$posTer]["tipoCliente"] != '' ? '*03*': '');
-                // si le tipo de tercero queda vacio, por defecto lo ponemos como proveedor
-                $terceros[$posTer]["tipoTercero"] == ($terceros[$posTer]["tipoTercero"] == '' ? '*02*' : $terceros[$posTer]["tipoTercero"]);
-
-
+                
                 //*****************************
                 // Número de documento
                 //*****************************
@@ -680,35 +670,7 @@ class TerceroController extends Controller
                         $terceros[$posTer]["idTercero"] = $consulta[0];
                 }
 
-                //*****************************
-                // Primer Nombre 
-                //*****************************
-                // si la celda esta en blanco, reportamos error de obligatoriedad
-                if($terceros[ $posTer]["nombre1Tercero"] == '' or 
-                    $terceros[ $posTer]["nombre1Tercero"] == null)
-                {
-                    $errores[$posErr]["linea"] = $fila;
-                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Primer Nombre';
-                    
-                    $posErr++;
-                }
-
-                //*****************************
-                // Primer Apellido
-                //*****************************
-                // si la celda esta en blanco, reportamos error de obligatoriedad
-                if($terceros[ $posTer]["apellido1Tercero"] == '' or 
-                    $terceros[ $posTer]["apellido1Tercero"] == null)
-                {
-                    $errores[$posErr]["linea"] = $fila;
-                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Primer Apellido';
-                    
-                    $posErr++;
-                }
-
-
+                
                 //*****************************
                 // Nombre Completo
                 //*****************************
@@ -721,6 +683,47 @@ class TerceroController extends Controller
                     $errores[$posErr]["mensaje"] = 'Debe diligenciar el Nombre completo o Razon Social';
                     
                     $posErr++;
+                }
+
+                //*****************************
+                // Tipo de Tercero
+                //*****************************
+                // si la celda esta en blanco o no tiene una de las palabras válida, mostramos error
+                if($terceros[$posTer]["tipoTercero"] == '' or 
+                    $terceros[$posTer]["tipoTercero"] == null or 
+                    ($terceros[$posTer]["tipoTercero"] != 'CLIENTE' and 
+                    $terceros[$posTer]["tipoTercero"] != 'PROVEEDOR'))
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe seleccionar el Tipo de Tercero (CLIENTE o PROVEEDOR)';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $terceros[$posTer]["tipoTercero"] = ($terceros[$posTer]["tipoTercero"] == 'PROVEEDOR' ? '*02*' : '*01*');
+                }
+
+
+                //*****************************
+                // Es Contratista
+                //*****************************
+                // si la celda esta en blanco o no tiene una de las palabras válida, mostramos error
+                if($terceros[$posTer]["contratistaTercero"] == '' or 
+                    $terceros[$posTer]["contratistaTercero"] == null or 
+                    ($terceros[$posTer]["contratistaTercero"] != 'SI' and 
+                    $terceros[$posTer]["contratistaTercero"] != 'NO'))
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe seleccionar si es Contratista o no';
+                    
+                    $posErr++;
+                }
+                else
+                {
+                    $terceros[$posTer]["contratistaTercero"] = ($terceros[$posTer]["contratistaTercero"] == 'SI' ? 1 : 0);
                 }
 
                 //*****************************
@@ -740,12 +743,27 @@ class TerceroController extends Controller
                 // si la celda esta en blanco o no tiene una de las palabras válida, la llenamos con activo
                 if($terceros[$posTer]["estadoTercero"] == '' or 
                     $terceros[$posTer]["estadoTercero"] == null or 
-                    $terceros[$posTer]["estadoTercero"] != 'ACTIVO' or 
-                    $terceros[$posTer]["estadoTercero"] != 'INACTIVO')
+                    ($terceros[$posTer]["estadoTercero"] != 'ACTIVO' and 
+                    $terceros[$posTer]["estadoTercero"] != 'INACTIVO'))
                 {
                     $terceros[$posTer]["estadoTercero"] = 'ACTIVO';
                 }
             
+                //*****************************
+                // Dirección
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($terceros[ $posTer]["direccionTercero"] == '' or 
+                    $terceros[ $posTer]["direccionTercero"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar la Dirección';
+                    
+                    $posErr++;
+                }
+
+
                 //*****************************
                 // Ciudad
                 //*****************************
@@ -777,6 +795,21 @@ class TerceroController extends Controller
                 }
 
                 //*****************************
+                // Teléfono
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($terceros[ $posTer]["telefonoTercero"] == '' or 
+                    $terceros[ $posTer]["telefonoTercero"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Teléfono';
+                    
+                    $posErr++;
+                }
+
+
+                //*****************************
                 // Zona
                 //*****************************
                 // si la celda esta en blanco, reportamos error de obligatoriedad
@@ -784,11 +817,6 @@ class TerceroController extends Controller
                     $terceros[ $posTer]["Zona_idZona"] == null)
                 {
                     $terceros[$posTer]["Zona_idZona"] = null;
-                    // $errores[$posErr]["linea"] = $fila;
-                    // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    // $errores[$posErr]["mensaje"] = 'Debe diligenciar el código del Cargo';
-                    
-                    // $posErr++;
                 }
                 else
                 {
@@ -800,11 +828,10 @@ class TerceroController extends Controller
                     else
                     {
                         $terceros[$posTer]["Zona_idZona"] = null;
-                        // $errores[$posErr]["linea"] = $fila;
-                        // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                        // $errores[$posErr]["mensaje"] = 'Código de Cargo '. $terceros[ $posTer]["Cargo_idCargo"]. ' no existe';
-                        
-                        // $posErr++;
+                        $errores[$posErr]["linea"] = $fila;
+                        $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Código de Zona '. $terceros[ $posTer]["Zona_idZona"]. ' no existe';
+                        $posErr++;
                     }
                 }
                 
@@ -817,11 +844,6 @@ class TerceroController extends Controller
                     $terceros[ $posTer]["SectorEmpresa_idSectorEmpresa"] == null)
                 {
                     $terceros[$posTer]["SectorEmpresa_idSectorEmpresa"] = null;
-                    // $errores[$posErr]["linea"] = $fila;
-                    // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    // $errores[$posErr]["mensaje"] = 'Debe diligenciar el código del Cargo';
-                    
-                    // $posErr++;
                 }
                 else
                 {
@@ -833,11 +855,11 @@ class TerceroController extends Controller
                     else
                     {
                         $terceros[$posTer]["SectorEmpresa_idSectorEmpresa"] = null;
-                        // $errores[$posErr]["linea"] = $fila;
-                        // $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                        // $errores[$posErr]["mensaje"] = 'Código de Cargo '. $terceros[ $posTer]["Cargo_idCargo"]. ' no existe';
+                        $errores[$posErr]["linea"] = $fila;
+                        $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Código de Sector Empresarial '. $terceros[ $posTer]["SectorEmpresa_idSectorEmpresa"]. ' no existe';
                         
-                        // $posErr++;
+                        $posErr++;
                     }
                 }
 
@@ -881,9 +903,6 @@ class TerceroController extends Controller
                 for($posTer = 0; $posTer < count($terceros); $posTer++) 
                 {
 
-                    $fechaNacimiento = ($terceros[$posTer]['fechaNacimientoTercero'] + 2 - 25569.833299) * 86400; 
-                    $fechaNacimiento = date("Y-m-d",$fechaNacimiento);
-
                     $fechaCreacion = ($terceros[$posTer]['fechaCreacionTercero'] + 2 - 25569.833299) * 86400; 
                     $fechaCreacion = date("Y-m-d",$fechaCreacion);
                     
@@ -893,23 +912,18 @@ class TerceroController extends Controller
                     $data = array(
                         'TipoIdentificacion_idTipoIdentificacion' => $terceros[$posTer]['TipoIdentificacion_idTipoIdentificacion'],
                         'documentoTercero' => $terceros[$posTer]['documentoTercero'],
-                        'nombre1Tercero' => $terceros[$posTer]['nombre1Tercero'],
-                        'nombre2Tercero' => $terceros[$posTer]['nombre2Tercero'],
-                        'apellido1Tercero' => $terceros[$posTer]['apellido1Tercero'],
-                        'apellido2Tercero' => $terceros[$posTer]['apellido2Tercero'],
                         'nombreCompletoTercero' => $terceros[$posTer]['nombreCompletoTercero'],
                         'fechaCreacionTercero' => $fechaCreacion,
                         'estadoTercero' => $terceros[$posTer]['estadoTercero'],
                         'imagenTercero' => $terceros[$posTer]['imagenTercero'],
                         'tipoTercero' => $terceros[$posTer]['tipoTercero'],
+                        'contratistaTercero' => $terceros[$posTer]['contratistaTercero'],
                         'direccionTercero' => $terceros[$posTer]['direccionTercero'],
                         'Ciudad_idCiudad' => $terceros[$posTer]['Ciudad_idCiudad'],
                         'telefonoTercero' => $terceros[$posTer]['telefonoTercero'],
                         'faxTercero' => $terceros[$posTer]['faxTercero'],
                         'movil1Tercero' => $terceros[$posTer]['movil1Tercero'],
                         'movil2Tercero' => $terceros[$posTer]['movil2Tercero'],
-                        'sexoTercero' => $terceros[$posTer]['sexoTercero'],
-                        'fechaNacimientoTercero' => $fechaNacimiento,
                         'correoElectronicoTercero' => $terceros[$posTer]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$posTer]['paginaWebTercero'],
                         'Zona_idZona' => $terceros[$posTer]['Zona_idZona'],
@@ -938,7 +952,7 @@ class TerceroController extends Controller
             
             $terceros = array();
             $errores = array();
-            $fila = 5;
+            $fila = 11;
             $posTer = 0;
             $posErr = 0;
             
@@ -950,9 +964,9 @@ class TerceroController extends Controller
                 // para cada registro de empleados recorremos las columnas desde la 0 hasta la 40
                 $terceros[$posTer]["idTercero"] = 0;
                 $terceros[$posTer]["Compania_idCompania"] = 0;
-                for ($columna = 0; $columna <= 40; $columna++) {
+                for ($columna = 0; $columna <= 41; $columna++) {
                     // en la fila 4 del archivo de excel (oculta) estan los nombres de los campos de la tabla
-                    $campo = $datos->getCellByColumnAndRow($columna, 4)->getValue();
+                    $campo = $datos->getCellByColumnAndRow($columna, 10)->getValue();
 
                     // si es una celda calculada, la ejecutamos, sino tomamos su valor
                     if ($datos->getCellByColumnAndRow($columna, $fila)->getDataType() == 'f')
@@ -978,7 +992,7 @@ class TerceroController extends Controller
                 {
                     $errores[$posErr]["linea"] = $fila;
                     $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Tipo de identificacion';
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Tipo de identificación';
                     
                     $posErr++;
                 }
@@ -1017,9 +1031,9 @@ class TerceroController extends Controller
                 else
                 {
                     //buscamos el id en el modelo correspondiente
-                    $consulta = \App\Tercero::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('documentoTercero','=', $terceros[ $posTer]["documentoTercero"])->lists('idTercero');
+                    $consulta = \App\Tercero::where('Compania_idCompania', "=", \Session::get('idCompania'))
+                                            ->where('documentoTercero','=', $terceros[ $posTer]["documentoTercero"])->lists('idTercero');
                     // si se encuentra el id lo guardamos en el array
-
                     if(isset($consulta[0]))
                         $terceros[$posTer]["idTercero"] = $consulta[0];
                 }
@@ -1076,6 +1090,33 @@ class TerceroController extends Controller
                 {
                     $terceros[$posTer]["fechaCreacionTercero"] = date("Y-m-d");
                 }
+                else
+                {
+                    // convertimosla fecha de excel a formato Y-m-d
+                    if(is_numeric($terceros[$posTer]["fechaCreacionTercero"]))
+                    {
+                        $terceros[$posTer]["fechaCreacionTercero"] = date("Y-m-d",$terceros[$posTer]["fechaCreacionTercero"]);
+
+                        if( !$this->validarFormatoFecha($terceros[$posTer]["fechaCreacionTercero"]))
+                        {
+                            $errores[$posErr]["linea"] = $fila;
+                            $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                            $errores[$posErr]["mensaje"] = 'La fecha de creación no es válida ('.gettype($terceros[$posTer]["fechaCreacionTercero"]).$terceros[$posTer]["fechaCreacionTercero"].'), debe ser en formato AAAA-MM-DD';
+                            
+                            $posErr++;
+                        }
+                    }
+                    else
+                    {
+                        $errores[$posErr]["linea"] = $fila;
+                        $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'La fecha de creación no es un formato adecuado ('.$terceros[$posTer]["fechaCreacionTercero"].'), debe ser en formato AAAA-MM-DD';
+                        
+                        $posErr++;
+                    }
+                    
+                    
+                }
 
 
                 //*****************************
@@ -1084,12 +1125,47 @@ class TerceroController extends Controller
                 // si la celda esta en blanco o no tiene una de las palabras válida, la llenamos con activo
                 if($terceros[$posTer]["estadoTercero"] == '' or 
                     $terceros[$posTer]["estadoTercero"] == null or 
-                    $terceros[$posTer]["estadoTercero"] != 'ACTIVO' or 
-                    $terceros[$posTer]["estadoTercero"] != 'INACTIVO')
+                    ($terceros[$posTer]["estadoTercero"] != 'ACTIVO' and 
+                    $terceros[$posTer]["estadoTercero"] != 'INACTIVO'))
                 {
                     $terceros[$posTer]["estadoTercero"] = 'ACTIVO';
                 }
+
+                //*****************************
+                // Tipo de Tercero
+                //*****************************
+                // se llena fijo como empleado (01)
+                $terceros[$posTer]["tipoTercero"] = '*01*';
             
+
+                //*****************************
+                // Direccion
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($terceros[ $posTer]["direccionTercero"] == '' or 
+                    $terceros[ $posTer]["direccionTercero"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar la Dirección';
+                    
+                    $posErr++;
+                }
+
+                 //*****************************
+                // Teléfono
+                //*****************************
+                // si la celda esta en blanco, reportamos error de obligatoriedad
+                if($terceros[ $posTer]["telefonoTercero"] == '' or 
+                    $terceros[ $posTer]["telefonoTercero"] == null)
+                {
+                    $errores[$posErr]["linea"] = $fila;
+                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el Teléfono';
+                    
+                    $posErr++;
+                }
+
                 //*****************************
                 // Ciudad
                 //*****************************
@@ -1121,19 +1197,21 @@ class TerceroController extends Controller
                 }
 
                 //*****************************
+                // Sexo
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "sexoTercero", ",null,M,F", "el Sexo (M o F)");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
+                
+
+                //*****************************
                 // Cargo
                 //*****************************
-                // si la celda esta en blanco, reportamos error de obligatoriedad
-                if($terceros[ $posTer]["Cargo_idCargo"] == '' or 
-                    $terceros[ $posTer]["Cargo_idCargo"] == null)
-                {
-                    $errores[$posErr]["linea"] = $fila;
-                    $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
-                    $errores[$posErr]["mensaje"] = 'Debe diligenciar el código del Cargo';
-                    
-                    $posErr++;
-                }
-                else
+                // si la celda NO esta en blanco, validamos que el codigo exista en la BD
+                if($terceros[ $posTer]["Cargo_idCargo"] != '' and 
+                    $terceros[ $posTer]["Cargo_idCargo"] != null)
                 {
                     $consulta = \App\Cargo::where('Compania_idCompania', "=", \Session::get('idCompania'))->where('codigoCargo','=', $terceros[ $posTer]["Cargo_idCargo"])->lists('idCargo');
 
@@ -1151,7 +1229,89 @@ class TerceroController extends Controller
                     }
                 }
 
+                //*****************************
+                // Centro de Costos
+                //*****************************
+                // si la celda NO esta en blanco, validamos que el codigo exista en la BD
+                if($terceros[ $posTer]["CentroCosto_idCentroCosto"] != '' and 
+                    $terceros[ $posTer]["CentroCosto_idCentroCosto"] != null)
+                {
                 
+                    $consulta = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))
+                                                ->where('codigoCentroCosto','=', $terceros[ $posTer]["CentroCosto_idCentroCosto"])->lists('idCentroCosto');
+
+                    // si se encuentra el id lo guardamos en el array
+                    if(isset($consulta[0]))
+                        $terceros[$posTer]["CentroCosto_idCentroCosto"] = $consulta[0];
+                    else
+                    {
+                        
+                        $errores[$posErr]["linea"] = $fila;
+                        $errores[$posErr]["nombre"] = $terceros[ $posTer]["nombreCompletoTercero"];
+                        $errores[$posErr]["mensaje"] = 'Código de Centro de Costos '. $terceros[ $posTer]["CentroCosto_idCentroCosto"]. ' no existe';
+                        
+                        $posErr++;
+                    }
+                }
+
+                
+                //*****************************
+                // Tipo de Contrato
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "tipoContratoTerceroInformacion", ",null,C,TF,I,S", "el Tipo de Contrato");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
+
+                //*****************************
+                // Estado Civil
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "estadoCivilTerceroInformacion", ",null,CASADO,SOLTERO", "el Estado Civil");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
+                //*****************************
+                // Composición Familiar
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "composicionFamiliarTerceroInformacion", ",null,VS,SH,EH,FO,A", "la Composición Familiar");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
+                //*****************************
+                // Tipo de Vivienda
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "tipoViviendaTerceroInformacion", ",null,PROPIA,ARRENDADA,FAMILIAR", "el Tipo de Vivienda");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
+                //*****************************
+                // Tipo de Transporte
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "tipoTransporteTerceroInformacion", ",null,PIE,BICICLETA,PUBLICO,MOTO,CARRO", "el Tipo de Transporte");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+               
+                //*****************************
+                // Actividad Física
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "actividadFisicaTerceroInformacion", ",null,SI,NO", "si hace o no actividad física");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+                
+                //*****************************
+                // Consume Licor
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "consumeLicorTerceroInformacion", ",null,SI,NO", "si consume o no licor");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
                 //*****************************
                 // Frecuencia de Medicion Licor
                 //*****************************
@@ -1190,13 +1350,21 @@ class TerceroController extends Controller
                 {
                     $terceros[$posTer]["FrecuenciaMedicion_idConsumeLicor"] = 0;
                 }
+
+                //*****************************
+                // Consume Cigarrillo
+                //*****************************
+                // Validamos el campo de lista enviando, el nombre del campo, los valores posibles y el mensaje de error
+                $resp = $this->validarListaSeleccion($terceros[$posTer], $fila, "consumeCigarrilloTerceroInformacion", ",null,SI,NO", "si consume o no cigarrillo");
+                $posErr += count($resp);
+                $errores = array_merge($errores, $resp);
+
                 
                 $posTer++;
                 $fila++;
                 
             }
  
-
             $totalErrores = count($errores);
 
             if($totalErrores > 0)
@@ -1229,6 +1397,7 @@ class TerceroController extends Controller
                 // recorremos el array recibido para insertar o actualizar cada registro
                 for($reg = 0; $reg < count($terceros); $reg++)
                 {
+                    
 
                     $fechaNacimiento = ($terceros[$reg]['fechaNacimientoTercero'] + 2 - 25569.833299) * 86400; 
                     $fechaNacimiento = date("Y-m-d",$fechaNacimiento);
@@ -1288,9 +1457,7 @@ class TerceroController extends Controller
                         $idtercero = $terceros[$reg]["idTercero"];
                         $idTerceroInformacion = \App\TerceroInformacion::where('Tercero_idTercero','=',$idtercero)->lists('idTerceroInformacion');
                     }
-echo $reg.' = '.$terceros[$reg]["idTercero"];
-print_r($idTerceroInformacion);
-echo '<br>';
+
                     $indice = array(
                           'idTerceroInformacion' => isset($idTerceroInformacion[0]) ? $idTerceroInformacion[0] : 0 ); 
 
@@ -1328,5 +1495,28 @@ echo '<br>';
         
     }
 
+    function validarListaSeleccion($terceros, $fila, $campo, $opciones, $error)
+    {
+        $valores = explode(",", $opciones);
+        $aError = array();
+        if( !in_array($terceros[$campo], $valores) )
+        {
+            $aError[0]["linea"] = $fila;
+            $aError[0]["nombre"] = $terceros["nombreCompletoTercero"];
+            $aError[0]["mensaje"] = 'Debe seleccionar '.$error;
+            
+           
+        }
+        return $aError;
+    }
+
+    function validarFormatoFecha($fecha)
+    {
+        $valores = explode('-', $fecha);
+        if(count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])){
+            return true;
+        }
+        return false;
+    }
 
 }

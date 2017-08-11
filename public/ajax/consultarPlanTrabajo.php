@@ -1,13 +1,6 @@
 <?php
 
-
-set_time_limit(0);
-
-$año = $_POST['año'];
-$letra = $_POST['letra'];
-$informe = '';
-
-	#REALIZO TODAS LAS CONSULTAS QUE VAN AL PLAN DE TRABAJO HABITUAL
+    #REALIZO TODAS LAS CONSULTAS QUE VAN AL PLAN DE TRABAJO HABITUAL
 
     function nombreMes($fecha)
     {
@@ -31,6 +24,41 @@ $informe = '';
         { 
 
             if ($datos[$i]['idTercero'] == $idTercero && $datos[$i]['idTipoExamenMedico'] == $idExamen) 
+            {
+                $pos = $i;
+                $i = count($datos);
+            }
+        }
+
+        return $pos;
+    }
+
+    
+    function buscarTipoInspeccion($idTipoInspeccion, $datos)
+    {
+        $pos = -1;
+
+        for ($i=0; $i < count($datos); $i++) 
+        { 
+
+            if ($datos[$i]['idTipoInspeccion'] == $idTipoInspeccion) 
+            {
+                $pos = $i;
+                $i = count($datos);
+            }
+        }
+
+        return $pos;
+    }
+
+    function buscarGrupoApoyo($idGrupoApoyo, $datos)
+    {
+        $pos = -1;
+
+        for ($i=0; $i < count($datos); $i++) 
+        { 
+
+            if ($datos[$i]['idGrupoApoyo'] == $idGrupoApoyo) 
             {
                 $pos = $i;
                 $i = count($datos);
@@ -246,8 +274,15 @@ $informe = '';
     //  E X A M E N E S   M E D I C O S
     // -------------------------------------------
 
-	function consultarExamen($idCompania, $fechaInicial, $fechaFinal, $letra, $año)
+	function consultarExamen($idCompania, $fechaInicial, $fechaFinal, $letra, $año, $procesos, $idDiv)
     {
+
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L A S 
+        //  T A R E A S 
+        //*********************
+
         $examen = DB::Select(
             '   SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")", " - ", TEC.nombreTipoExamenMedico) as descripcionTarea,   
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, fechaCreacionCompania, 
@@ -269,7 +304,10 @@ $informe = '';
                 left join compania COM
                 on T.Compania_idCompania = COM.idCompania
                 where tipoTercero like "%01%" and idTipoExamenMedico IS NOT NULL   and 
-                    ('.$año.' >= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") and '.$año.' <= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") OR '.$año.' >= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") and '.$año.' <= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") OR
+                    ('.$año.' >= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") and 
+                    '.$año.' <= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") OR 
+                    '.$año.' >= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") and 
+                    '.$año.' <= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") OR
                         fechaRetiroTerceroInformacion = "0000-00-00") AND
                         fechaIngresoTerceroInformacion != "0000-00-00" AND  
                     estadoTercero = "ACTIVO" AND nombreCompletoTercero like "'.$letra.'%" AND 
@@ -345,6 +383,11 @@ $informe = '';
 
         }
 
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L O S 
+        //  C U M P L I M I E N T O S
+        //*********************
 
         $examen = DB::Select(
             '   SELECT idTercero, idTipoExamenMedico,  fechaCreacionCompania, 
@@ -401,12 +444,12 @@ $informe = '';
                           </h4>
                         </div>';
                         $tabla .= 
-                        '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value)" value="" type="button">Todos</button>';
+                        '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value,\''.$procesos.'\',\''.$idDiv.'\')" value="" type="button">Todos</button>';
                         for($i=65; $i<=90; $i++) 
                         {  
                             $letra = chr($i);  
                             $tabla .= 
-                            '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value)" value="'.$letra.'" type="button">'.$letra.'</button>';
+                            '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value,\''.$procesos.'\',\''.$idDiv.'\')" value="'.$letra.'" type="button">'.$letra.'</button>';
                         }
                         $tabla .= '
                         <div id="examenmedico" class="panel-collapse"> 
@@ -481,48 +524,194 @@ $informe = '';
     //  I N S P E C C I O N E S   D E   S E G U R I D A D
     // -------------------------------------------
 
-	function consultarInspeccion($idCompania, $fechaInicial, $fechaFinal)
+
+    function consultarInspeccion($idCompania, $fechaInicial, $fechaFinal, $año)
     {
-        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
-        // independiente
-        // ------------------------------------------------
-        // Enero    Febrero     Marzo   Abril......
-        // ------------------------------------------------
-        $inicio = $fechaInicial;
-        $anioAnt = date("Y", strtotime($inicio));
-        $columnas = '';
 
-        while($inicio < $fechaFinal)
-        {
-            // adicionamos la columna del mes
-             $columnas .= "SUM(IF((MOD('".date("m", strtotime($inicio))."',valorFrecuenciaMedicion) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') and unidadFrecuenciaMedicion IN ('Meses')), 1 , 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L A S 
+        //  T A R E A S 
+        //*********************
 
-            $columnas .= "SUM(IF((MONTH(fechaElaboracionInspeccion) =  '".date("m", strtotime($inicio))."' AND YEAR(fechaElaboracionInspeccion) =  '".date("Y", strtotime($inicio))."') AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), 1, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
-
-            //Avanzamos al siguiente mes
-            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
-        }
-
-        // Quitamos la ultima coma del concatenado de columnas
-        $columnas = substr($columnas,0, strlen($columnas)-2);
-
-
-        $inspeccion = DB::select(
-            'SELECT nombreTipoInspeccion as descripcionTarea, 
-                idTipoInspeccion as idConcepto,
-                '.$columnas.'
+        $tipoinspeccion = DB::Select(
+            '   SELECT nombreTipoInspeccion as descripcionTarea, 
+                idTipoInspeccion as idConcepto, fechaCreacionCompania,
+                valorFrecuenciaMedicion, unidadFrecuenciaMedicion
             FROM tipoinspeccion TI
             left join frecuenciamedicion FM
             on TI.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-            left join inspeccion I
-            on TI.idTipoInspeccion = I.TipoInspeccion_idTipoInspeccion
             LEFT JOIN compania c 
             ON TI.Compania_idCompania = c.idCompania
             Where TI.Compania_idCompania = '.$idCompania .' 
-            group by idTipoInspeccion');
+            group by idTipoInspeccion
+           ');
 
-            return imprimirTabla('Inspección', $inspeccion, 'inspeccion', $fechaInicial, $fechaFinal, 24);
-	}
+        $datos = array();
+          
+
+        //and nombreCompletoTercero like "'.$letra.'%"
+        for($i= 0; $i < count($tipoinspeccion); $i++)
+        {
+            $registro = get_object_vars($tipoinspeccion[$i]);
+            $pos = buscarTipoInspeccion($registro["idConcepto"], $datos);
+
+            if($pos == -1)
+            {
+                $pos = count($datos);
+                for($mes = 1; $mes <= 12; $mes++)
+                {
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'T'] = 0;
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'C'] = 0;
+                }
+            }
+            $datos[$pos]['idTipoInspeccion'] = $registro["idConcepto"];
+            $datos[$pos]['Nombre'] = $registro["descripcionTarea"];
+
+            // las tareas semanales o diarias deben crear 4 o 30 tareas en cada periodo respectivamente
+            // las tareas expresadas en meses o años, solo deben poner una tarea en el periodo
+            $frecuencia = ($registro['valorFrecuenciaMedicion'] == 0 ? 1 : $registro['valorFrecuenciaMedicion']);
+            $multiplo = ((  $registro['unidadFrecuenciaMedicion'] == 'Años' or 
+                            $registro['unidadFrecuenciaMedicion'] == 'Meses') 
+                        ? 1 
+                        : (($registro['unidadFrecuenciaMedicion'] == 'Semanas' ? 4 : 30) / $frecuencia)) ;
+
+            
+            $periodicidad = $registro['valorFrecuenciaMedicion'] * ($registro['unidadFrecuenciaMedicion'] == 'Años' ? 12 : 1);
+
+            // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+            // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+            $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
+                            ? date($año."-01-01")
+                            : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+        
+            $fechaInicio = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($fechaInicio)));
+            $fechaFin = date($año."-12-31");
+
+            while($fechaInicio <= date("Y-12-31") and $fechaInicio < $fechaFin)
+            {
+                $datos[$pos][str_pad(date("m",strtotime($fechaInicio)), 2, '0', STR_PAD_LEFT).'T'] += (1*$multiplo);    
+                
+                $fechaInicio = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($fechaInicio)));
+            }
+
+        }
+
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L O S 
+        //  C U M P L I M I E N T O S
+        //*********************
+
+        $tipoinspeccion = DB::Select(
+            '  SELECT TipoInspeccion_idTipoInspeccion as idConcepto,
+                        fechaElaboracionInspeccion, fechaCreacionCompania
+            FROM inspeccion I
+            LEFT JOIN compania c 
+            ON I.Compania_idCompania = c.idCompania
+            Where I.Compania_idCompania = '.$idCompania .' and DATE_FORMAT(fechaElaboracionInspeccion,"%Y") = '.$año.' 
+           ');
+
+        // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+        // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+        $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
+                        ? date($año."-01-01")
+                        : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+
+        for($i= 0; $i < count($tipoinspeccion); $i++)
+        {
+            $registro = get_object_vars($tipoinspeccion[$i]);
+            $pos = buscarTipoInspeccion($registro["idConcepto"], $datos);
+
+            $datos[$pos]['idTipoInspeccion'] = $registro["idConcepto"];
+            // CUMPLIMIENTO
+           if($registro["fechaElaboracionInspeccion"] != '0000-00-00' and 
+                date("Y",strtotime($registro["fechaElaboracionInspeccion"])) == date("Y", strtotime($fechaInicio)) and 
+                $registro["fechaElaboracionInspeccion"] >= $registro["fechaCreacionCompania"])
+            {
+                
+                $datos[$pos][date("m",strtotime($registro["fechaElaboracionInspeccion"])).'C'] += 1;
+            }
+        }
+
+        $tabla = '';
+
+        $tabla .= '        
+                    <div class="panel panel-primary" style="border:1px solid">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#inspeccion">Inspecciones</a>
+                          </h4>
+                        </div>';
+                        
+                        $tabla .= '
+                        <div id="inspeccion" class="panel-collapse"> 
+                            <div class="panel-body" style="overflow:auto;">
+                                <table  class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-inverse">
+                                        <tr class="table-info">
+                                            <th scope="col" width="30%">&nbsp;</th>
+                                            <th>Enero</th>
+                                            <th>Febrero</th>
+                                            <th>Marzo</th>
+                                            <th>Abril</th>
+                                            <th>Mayo</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Agosto</th>
+                                            <th>Septiembre</th>
+                                            <th>Octubre</th>
+                                            <th>Noviembre</th>
+                                            <th>Diciembre</th>
+                                            <th>Presupuesto</th>
+                                            <th>Costo Real</th>
+                                            <th>Cumplimiento</th>
+                                            <th>Meta</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>';
+                                        for ($i=0; $i <count($datos); $i++) 
+                                        { 
+                                            $tabla .= 
+                                            '<tr align="center">
+                                                <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="24">
+
+
+                                            <th scope="row">'
+                                                .$datos[$i]["Nombre"].
+                                            '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
+                                            </th>
+                                            <td>
+                                                '.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).
+                                            '<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'">
+                                            </td>
+                                            
+                                            <td>'.colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['05T'],$datos[$i]['05C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['06T'],$datos[$i]['06C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['07T'],$datos[$i]['07C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['08T'],$datos[$i]['08C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['09T'],$datos[$i]['09C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['10C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['11C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['12T'],$datos[$i]['12C']).'</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            </tr>';
+                                        }
+                                        $tabla .= '
+                                        </tbody>
+                                </table>
+                            </div> 
+                        </div>
+                    </div>';
+
+        return $tabla;
+    }
 
     // -------------------------------------------
     //  M A T R I Z   L E G A L
@@ -590,104 +779,194 @@ $informe = '';
     //  G R U P O S   D E   A P O Y O
     // -------------------------------------------
 
-	function consultarGrupoApoyo($idCompania, $fechaInicial, $fechaFinal)
+    function consultarGrupoApoyo($idCompania, $fechaInicial, $fechaFinal, $año)
     {
-        // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
-        // independiente
-        // ------------------------------------------------
-        // Enero    Febrero     Marzo   Abril......
-        // ------------------------------------------------
-        $inicio = $fechaInicial;
-        $anioAnt = date("Y", strtotime($inicio));
-        $columnas = '';
 
-        while($inicio < $fechaFinal)
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L A S 
+        //  T A R E A S 
+        //*********************
+
+        $grupoapoyo = DB::Select(
+            '   SELECT nombreGrupoApoyo as descripcionTarea, 
+                idGrupoApoyo as idConcepto, fechaCreacionCompania,
+                valorFrecuenciaMedicion, unidadFrecuenciaMedicion
+            FROM grupoapoyo GA
+            left join frecuenciamedicion FM
+            on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+            LEFT JOIN compania c 
+            ON GA.Compania_idCompania = c.idCompania
+            Where GA.Compania_idCompania = '.$idCompania .' 
+            group by idGrupoApoyo
+           ');
+
+        $datos = array();
+          
+
+        //and nombreCompletoTercero like "'.$letra.'%"
+        for($i= 0; $i < count($grupoapoyo); $i++)
         {
-            // adicionamos la columna del mes
-           
-            $columnas .= "IF(MOD(".date("m", strtotime($inicio)).", GA.multiploMes) = 0 AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m'), numeroTareas, 0) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'T, ';
+            $registro = get_object_vars($grupoapoyo[$i]);
+            $pos = buscarGrupoApoyo($registro["idConcepto"], $datos);
 
-            $columnas .= "SUM(IF(AGA.mesActa = '".date("m", strtotime($inicio))."' AND CONCAT(DATE_FORMAT(NOW(), '%Y-'), '".date("m", strtotime($inicio))."') >= DATE_FORMAT(fechaCreacionCompania, '%Y-%m') AND (AGA.añoActa) =  '".date("Y", strtotime($inicio))."', numeroCumplidas, 0)) as ". nombreMes($inicio).date("Y", strtotime($inicio)).'C, ';
+            if($pos == -1)
+            {
+                $pos = count($datos);
+                for($mes = 1; $mes <= 12; $mes++)
+                {
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'T'] = 0;
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'C'] = 0;
+                }
+            }
+            $datos[$pos]['idGrupoApoyo'] = $registro["idConcepto"];
+            $datos[$pos]['Nombre'] = $registro["descripcionTarea"];
 
-            //Avanzamos al siguiente mes
-            $inicio = date("Y-m-d", strtotime("+1 MONTH", strtotime($inicio)));
+            // las tareas semanales o diarias deben crear 4 o 30 tareas en cada periodo respectivamente
+            // las tareas expresadas en meses o años, solo deben poner una tarea en el periodo
+            $frecuencia = ($registro['valorFrecuenciaMedicion'] == 0 ? 1 : $registro['valorFrecuenciaMedicion']);
+            $multiplo = ((  $registro['unidadFrecuenciaMedicion'] == 'Años' or 
+                            $registro['unidadFrecuenciaMedicion'] == 'Meses') 
+                        ? 1 
+                        : (($registro['unidadFrecuenciaMedicion'] == 'Semanas' ? 4 : 30) / $frecuencia)) ;
+
+            
+            $periodicidad = $registro['valorFrecuenciaMedicion'] * ($registro['unidadFrecuenciaMedicion'] == 'Años' ? 12 : 1);
+
+            // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+            // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+            $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
+                            ? date($año."-01-01")
+                            : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+        
+            $fechaInicio = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($fechaInicio)));
+            $fechaFin = date($año."-12-31");
+
+            while($fechaInicio <= date("Y-12-31") and $fechaInicio < $fechaFin)
+            {
+                $datos[$pos][str_pad(date("m",strtotime($fechaInicio)), 2, '0', STR_PAD_LEFT).'T'] += (1*$multiplo);    
+                
+                $fechaInicio = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($fechaInicio)));
+            }
 
         }
 
-        // Quitamos la ultima coma del concatenado de columnas
-        $columnas = substr($columnas,0, strlen($columnas)-2);
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L O S 
+        //  C U M P L I M I E N T O S
+        //*********************
 
         $grupoapoyo = DB::Select(
-            'SELECT 
-                nombreGrupoApoyo as descripcionTarea, 
-                idGrupoApoyo as idConcepto,
-                '.$columnas.',
-                SUM(recursoPlaneadoActaGrupoApoyoDetalle) as PresupuestoT,
-                SUM(recursoEjecutadoActaGrupoApoyoDetalle) as PresupuestoC
+            '  SELECT GrupoApoyo_idGrupoApoyo as idConcepto,
+                        fechaActaGrupoApoyo, fechaCreacionCompania
+            FROM actagrupoapoyo A
+            LEFT JOIN compania c 
+            ON A.Compania_idCompania = c.idCompania
+            Where A.Compania_idCompania = '.$idCompania .' and DATE_FORMAT(fechaActaGrupoApoyo,"%Y") = '.$año.' 
+           ');
 
-            FROM 
-            (
-                SELECT 
-                    idGrupoApoyo,
-                    nombreGrupoApoyo,
-                    IF(unidadFrecuenciaMedicion = \'Dias\',
-                        30 / valorFrecuenciaMedicion,
-                        IF(unidadFrecuenciaMedicion = \'Semanas\',
-                            4 / valorFrecuenciaMedicion,
-                            1)) AS numeroTareas,
-                    IF(unidadFrecuenciaMedicion IN (\'Dias\' , \'Semanas\'),
-                        1,
-                        valorFrecuenciaMedicion) AS multiploMes,
-                    fechaCreacionCompania
-                FROM
-                    grupoapoyo GA
-                        LEFT JOIN
-                    frecuenciamedicion FM ON GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                        LEFT JOIN 
-                    compania c ON GA.Compania_idCompania = c.idCompania
-                WHERE
-                    Compania_idCompania = '.$idCompania .' 
-            ) GA
-            Left join 
-            (
-                SELECT 
-                    GrupoApoyo_idGrupoApoyo,
-                    MONTH(fechaActaGrupoApoyo) AS mesActa,
-                    YEAR(fechaActaGrupoApoyo) AS añoActa,
-                    COUNT(idActaGrupoApoyo) as numeroCumplidas
-                FROM
-                    actagrupoapoyo AGA
-                WHERE
-                    AGA.Compania_idCompania = '.$idCompania .' 
-                GROUP BY GrupoApoyo_idGrupoApoyo , mesActa
-            ) AGA
-            on GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
-            left join 
-            (
-                SELECT 
-                    GrupoApoyo_idGrupoApoyo,
-                    MONTH(fechaActaGrupoApoyo) AS mesActa,
-                    YEAR(fechaActaGrupoApoyo) AS añoActa,
-                    SUM(recursoPlaneadoActaGrupoApoyoDetalle) AS recursoPlaneadoActaGrupoApoyoDetalle,
-                    SUM(recursoEjecutadoActaGrupoApoyoDetalle) AS recursoEjecutadoActaGrupoApoyoDetalle
-                FROM
-                    grupoapoyo GA
-                        LEFT JOIN
-                    frecuenciamedicion FM ON GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
-                        LEFT JOIN
-                    actagrupoapoyo AGA ON GA.idGrupoApoyo = AGA.GrupoApoyo_idGrupoApoyo
-                        LEFT JOIN
-                    actagrupoapoyodetalle AGAD ON AGAD.ActaGrupoApoyo_idActaGrupoApoyo = AGA.idActaGrupoApoyo
-                WHERE
-                    AGA.Compania_idCompania = '.$idCompania .'
-                GROUP BY GrupoApoyo_idGrupoApoyo , mesActa, añoActa
-            ) AGAD
-            on GA.idGrupoApoyo = AGAD.GrupoApoyo_idGrupoApoyo and AGA.mesActa = AGAD.mesActa
-            group by idGrupoApoyo');
-        
+        // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+        // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+        $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
+                        ? date($año."-01-01")
+                        : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
 
-            return imprimirTabla('Acta Reunión', $grupoapoyo, 'grupoapoyo', $fechaInicial, $fechaFinal, 9);
-	}
+        for($i= 0; $i < count($grupoapoyo); $i++)
+        {
+            $registro = get_object_vars($grupoapoyo[$i]);
+            $pos = buscarGrupoApoyo($registro["idConcepto"], $datos);
+
+            $datos[$pos]['idGrupoApoyo'] = $registro["idConcepto"];
+            // CUMPLIMIENTO
+           if($registro["fechaActaGrupoApoyo"] != '0000-00-00' and 
+                date("Y",strtotime($registro["fechaActaGrupoApoyo"])) == date("Y", strtotime($fechaInicio)) and 
+                $registro["fechaActaGrupoApoyo"] >= $registro["fechaCreacionCompania"])
+            {
+                
+                $datos[$pos][date("m",strtotime($registro["fechaActaGrupoApoyo"])).'C'] += 1;
+            }
+        }
+
+        $tabla = '';
+
+        $tabla .= '        
+                    <div class="panel panel-primary" style="border:1px solid">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#actagrupoapoyo">Acta de Reunión de Grupos de Apoyo</a>
+                          </h4>
+                        </div>';
+                        
+                        $tabla .= '
+                        <div id="actagrupoapoyo" class="panel-collapse"> 
+                            <div class="panel-body" style="overflow:auto;">
+                                <table  class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-inverse">
+                                        <tr class="table-info">
+                                            <th scope="col" width="30%">&nbsp;</th>
+                                            <th>Enero</th>
+                                            <th>Febrero</th>
+                                            <th>Marzo</th>
+                                            <th>Abril</th>
+                                            <th>Mayo</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Agosto</th>
+                                            <th>Septiembre</th>
+                                            <th>Octubre</th>
+                                            <th>Noviembre</th>
+                                            <th>Diciembre</th>
+                                            <th>Presupuesto</th>
+                                            <th>Costo Real</th>
+                                            <th>Cumplimiento</th>
+                                            <th>Meta</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>';
+                                        for ($i=0; $i <count($datos); $i++) 
+                                        { 
+                                            $tabla .= 
+                                            '<tr align="center">
+                                                <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="9">
+
+
+                                            <th scope="row">'
+                                                .$datos[$i]["Nombre"].
+                                            '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
+                                            </th>
+                                            <td>
+                                                '.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).
+                                            '<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'">
+                                            </td>
+                                            
+                                            <td>'.colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['05T'],$datos[$i]['05C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['06T'],$datos[$i]['06C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['07T'],$datos[$i]['07C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['08T'],$datos[$i]['08C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['09T'],$datos[$i]['09C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['10C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['11C']).'</td>
+                                            <td>'.colorTarea($datos[$i]['12T'],$datos[$i]['12C']).'</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            </tr>';
+                                        }
+                                        $tabla .= '
+                                        </tbody>
+                                </table>
+                            </div> 
+                        </div>
+                    </div>';
+
+        return $tabla;
+    }
+
 
     // -------------------------------------------
     //  A C T A S   D E   R E U N I O N 
@@ -790,98 +1069,70 @@ $informe = '';
     }
 
 
-	$idCompania = \Session::get('idCompania');
+        #EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
+    function colorTarea($valorTarea, $valorCumplido)
+    {
 
-    $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+        $icono = '';    
+        $tool = 'Tareas Pendientes : '.number_format($valorTarea,0,'.',',')."\n".
+                'Tareas Realizadas : '.number_format($valorCumplido,0,'.',','); 
+        $etiqueta = '';
+        if($valorTarea != $valorCumplido and $valorCumplido != 0)
+        {
+            $icono = 'Amarillo.png';
+            $etiqueta = '<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';
+        }elseif($valorTarea == $valorCumplido and $valorTarea != 0)
+        {
+            $icono = 'Verde.png';
+        }
+        elseif($valorTarea > 0 and $valorCumplido == 0)
+        {
+            $icono = 'Rojo.png';        
+        }
 
-    $fechaInicial = ($año.'-01-01');
-    $fechaFinal  = ($año.'-12-31');
+        if($valorTarea != 0 or $valorCumplido != 0)
+        {
+            $icono =    '<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
+                                <img src="images/iconosmenu/'.$icono.'"  width="30">
+                            </a>'.$etiqueta;    
+        }
+        //$valorTarea .' '. $valorCumplido. 
+        return $icono;
+    }
 
+    function valorTarea($valorTarea, $valorCumplido)
+    {
 
-            $informe .= consultarAccidente($idCompania, $fechaInicial, $fechaFinal);
-       
-       		$informe .= consultarGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
-       
-       		$informe .= consultarActividadGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
-       
-            $informe .= consultarExamen($idCompania, $fechaInicial, $fechaFinal, $letra, $año);
-     
-            $informe .= consultarInspeccion($idCompania, $fechaInicial, $fechaFinal);
-      
-            $informe .= consultarAuditoria($idCompania, $fechaInicial, $fechaFinal);
+        $valor = '';    
+        $valor = number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',');
+
+        if ($valorTarea == 0 and $valorCumplido == 0) 
+        {
+            $valor = '';
+        }
         
-            $informe .= consultarCapacitacion($idCompania, $fechaInicial, $fechaFinal);
-       
-            $informe .= consultarPrograma($idCompania, $fechaInicial, $fechaFinal);
-        
-            $informe .= consultarACPM($idCompania, $fechaInicial, $fechaFinal);
-       
-            $informe .= consultarMatriz($idCompania, $fechaInicial, $fechaFinal);
-
-   	#EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
-function colorTarea($valorTarea, $valorCumplido)
-{
-
-    $icono = '';    
-    $tool = 'Tareas Pendientes : '.number_format($valorTarea,0,'.',',')."\n".
-            'Tareas Realizadas : '.number_format($valorCumplido,0,'.',','); 
-    $etiqueta = '';
-    if($valorTarea != $valorCumplido and $valorCumplido != 0)
-    {
-        $icono = 'Amarillo.png';
-        $etiqueta = '<label>'.number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',').'%</label>';
-    }elseif($valorTarea == $valorCumplido and $valorTarea != 0)
-    {
-        $icono = 'Verde.png';
-    }
-    elseif($valorTarea > 0 and $valorCumplido == 0)
-    {
-        $icono = 'Rojo.png';        
+        return $valor;
     }
 
-    if($valorTarea != 0 or $valorCumplido != 0)
+    function imprimirTabla($titulo, $informacion, $idtabla, $fechaInicial, $fechaFinal, $Modulo)
     {
-        $icono =    '<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
-                            <img src="images/iconosmenu/'.$icono.'"  width="30">
-                        </a>'.$etiqueta;    
-    }
-    //$valorTarea .' '. $valorCumplido. 
-    return $icono;
-}
+        $tabla = '';
 
-function valorTarea($valorTarea, $valorCumplido)
-{
-
-    $valor = '';    
-    $valor = number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',');
-
-    if ($valorTarea == 0 and $valorCumplido == 0) 
-    {
-        $valor = '';
-    }
-    
-    return $valor;
-}
-
-   function imprimirTabla($titulo, $informacion, $idtabla, $fechaInicial, $fechaFinal, $Modulo)
-   {
-   		$tabla = '';
-
-   		$tabla .= '        
-               		<div class="panel panel-primary" style="border:1px solid">
+        $tabla .= '        
+                    <div class="panel panel-primary" style="border:1px solid">
                         <div class="panel-heading">
-                          <h4 class="panel-title">
+                            <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#'.$idtabla.'">'.$titulo.'</a>
-                          </h4>
+                            </h4>
                         </div>
                         <div id="'.$idtabla.'" class="panel-collapse"> 
                             <div class="panel-body" style="overflow:auto;">
                                 <table  class="table table-striped table-bordered table-hover">
-                					<thead class="thead-inverse">
-                						<tr class="table-info">
-                							<th scope="col" width="30%">&nbsp;</th>';
-                							   
-                							$inicio = $fechaInicial;
+                                    <thead class="thead-inverse">
+                                        <tr class="table-info">
+                                            <th scope="col" width="30%">&nbsp;</th>';
+                                                
+                                            $inicio = $fechaInicial;
                                             $anioAnt = date("Y", strtotime($inicio));
                                             while($inicio < $fechaFinal)
                                             {
@@ -892,15 +1143,15 @@ function valorTarea($valorTarea, $valorCumplido)
                                             }
 
                                 
-                						$tabla .= '
+                                        $tabla .= '
                                             <th>Presupuesto</th>
                                             <th>Costo Real</th>
                                             <th>Cumplimiento</th>
                                             <th >Meta</th>
                                             <th >Observación</th>
                                         </tr>
-                    					</thead>
-                    					<tbody>';
+                                        </thead>
+                                        <tbody>';
 
                                             $mesesC = 0;
                                             $mesesT = 0;
@@ -919,7 +1170,7 @@ function valorTarea($valorTarea, $valorCumplido)
                                                         .$dato->descripcionTarea.
                                                         '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato->descripcionTarea.'">
                                                     </th>';
-                                               
+                                                
                                                 $inicio = $fechaInicial;
                                                 $anioAnt = date("Y", strtotime($inicio));
                                                 while($inicio < $fechaFinal)
@@ -977,14 +1228,63 @@ function valorTarea($valorTarea, $valorCumplido)
                                             }
 
 
-                    		$tabla.='	</tbody>
-                    				</table>
-                    	          </div> 
-                    	        </div>
-                    	      </div>';
+                            $tabla.='	</tbody>
+                                    </table>
+                                    </div> 
+                                </div>
+                                </div>';
 
-	    return $tabla;
-   }
+        return $tabla;
+    }
+
+
+// *****************************
+//
+//  P R O C E S O   D E   
+//
+//  I N F O R M E 
+//
+// *****************************
+
+    set_time_limit(0);
+
+    $año = $_POST['año'];
+    $letra = $_POST['letra'];
+    // en procesos pueden enviar varios separados por coma
+    $procesos = $_POST["procesos"];
+    $idDiv = $_POST["idDiv"];
+
+    $informe = '';
+
+	$idCompania = \Session::get('idCompania');
+
+    $meses = array('', 'Enero','Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+
+    $fechaInicial = ($año.'-01-01');
+    $fechaFinal  = ($año.'-12-31');
+
+    if(strpos($procesos, 'Accidente') !== false or $procesos == '')
+        $informe .= consultarAccidente($idCompania, $fechaInicial, $fechaFinal);
+    if(strpos($procesos, 'GrupoApoyo') !== false or $procesos == '')
+        $informe .= consultarGrupoApoyo($idCompania, $fechaInicial, $fechaFinal, $año);
+    if(strpos($procesos, 'ActividadGrupoApoyo') !== false or $procesos == '')
+        $informe .= consultarActividadGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
+    if(strpos($procesos, 'Examen') !== false or $procesos == '')
+        $informe .= consultarExamen($idCompania, $fechaInicial, $fechaFinal, $letra, $año, $procesos, $idDiv);
+    if(strpos($procesos, 'Inspeccion') !== false or $procesos == '')
+        $informe .= consultarInspeccion($idCompania, $fechaInicial, $fechaFinal, $año);
+    if(strpos($procesos, 'Auditoria') !== false or $procesos == '')
+        $informe .= consultarAuditoria($idCompania, $fechaInicial, $fechaFinal);
+    if(strpos($procesos, 'Capacitacion') !== false or $procesos == '')
+        $informe .= consultarCapacitacion($idCompania, $fechaInicial, $fechaFinal);
+    if(strpos($procesos, 'Programa') !== false or $procesos == '')
+        $informe .= consultarPrograma($idCompania, $fechaInicial, $fechaFinal);
+    if(strpos($procesos, 'ACPM') !== false or $procesos == '')
+        $informe .= consultarACPM($idCompania, $fechaInicial, $fechaFinal);
+    if(strpos($procesos, 'Matriz') !== false or $procesos == '')
+        $informe .= consultarMatriz($idCompania, $fechaInicial, $fechaFinal);
+
+
 
     echo json_encode($informe);
 

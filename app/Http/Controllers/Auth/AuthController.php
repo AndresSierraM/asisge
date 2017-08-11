@@ -46,7 +46,7 @@ class AuthController extends Controller
         if (view()->exists('auth.authenticate')) {
             return view('auth.authenticate');
         }
-        $compania = \App\Compania::All()->lists('nombreCompania','idCompania');
+        $compania = \App\Compania::All()->sortBy('nombreCompania')->lists('nombreCompania','idCompania');
 
         return view('auth.login',compact('compania'));
     }

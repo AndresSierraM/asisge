@@ -5,10 +5,13 @@
 
 {!! Html::script('chart/Chart.js'); !!}
 {!! Html::script('js/dashboard.js'); !!}
+{!!Html::script('js/plantrabajo.js')!!}
+
 
 <?php 
     $idCompania = \Session::get("idCompania");
     $mes = date("m");
+    $anio = date("Y");
     $anomes = date("Y-m");
 ?>
 <!-- Token para ejecuciones de ajax -->
@@ -24,7 +27,7 @@
                 <h4 class="modal-title"><div>Detalles</div><button style="float:right; display: inline-block;" onclick="$('.PlanTrabajo').css('display', 'none');">X</button></h4>
             </div>
             <div class="modal-body" style="height:400px;">
-                <div class="containerPlanTrabajo" style="width: 100%;height: 100%;overflow-y:scroll;">
+                <div id="containerPlanTrabajo" class="containerPlanTrabajo" style="width: 100%;height: 100%;overflow-y:scroll;">
                  
                 </div> 
             </div>
@@ -80,7 +83,8 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="javascript:consultarPlanTrabajo(<?php echo $idCompania; ?>,'dashboardConsultarProgramas', 'Plan Anual de Programas');">
+                         
+                        <a href="javascript:consultarPlanTrabajo(<?php echo $anio; ?>, '', 'Programa', 'containerPlanTrabajo');">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -160,7 +164,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="javascript:consultarPlanTrabajo(<?php echo $idCompania; ?>,'dashboardConsultarCapacitaciones','Plan Anual de Capacitaciones');">
+                        <a href="javascript:consultarPlanTrabajo(<?php echo $anio; ?>, '', 'Capacitacion', 'containerPlanTrabajo');">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -272,7 +276,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="javascript:consultarPlanTrabajo(<?php echo $idCompania; ?>,'dashboardConsultarInspecciones','Plan Anual de Inspecciones');">
+                        <a href="javascript:consultarPlanTrabajo(<?php echo $anio; ?>, '', 'Inspeccion', 'containerPlanTrabajo');">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -381,7 +385,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="javascript:consultarPlanTrabajo(<?php echo $idCompania; ?>,'dashboardConsultarExamenes','Plan Anual de Exámenes Médicos');">
+                        <a href="javascript:consultarPlanTrabajo(<?php echo $anio; ?>, '', 'Examen', 'containerPlanTrabajo');">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -446,7 +450,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="javascript:consultarPlanTrabajo(<?php echo $idCompania; ?>,'dashboardConsultarAccidentes','Plan Anual de Accidentes');">
+                        <a href="javascript:consultarPlanTrabajo(<?php echo $anio; ?>, '', 'Accidente', 'containerPlanTrabajo');">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -537,7 +541,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="javascript:consultarPlanTrabajo(<?php echo $idCompania; ?>,'dashboardConsultarGrupos','Plan Anual de Grupos de Apoyo');">
+                        <a href="javascript:consultarPlanTrabajo(<?php echo $anio; ?>, '', 'GrupoApoyo', 'containerPlanTrabajo');">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -574,6 +578,8 @@
                     foreach ($cuadroMandoObjeto as $key => $value) 
                     {
                         $CuadroMando = (array) $value;
+                        
+                        
                         // para cada indicador, consultamos los resultados de calculos en la tabla de indicadores
                         $indicadores = DB::table('indicador as I')
                                 ->leftJoin('cuadromando as CM', 'I.CuadroMando_idCuadroMando', '=', 'CM.idCuadroMando')
@@ -680,55 +686,7 @@
                             }
                     }
                 ?>
-                
-                
-             
                
-                <!-- /.col-lg-8 -->
-                <div class="col-lg-12">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <i class="fa fa-pie-chart fa-fw"></i> Indicadores de Gestión
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                        <?php 
-
-                            $indicadores = DB::table('indicador as I')
-                                ->leftJoin('cuadromando as CM', 'I.CuadroMando_idCuadroMando', '=', 'CM.idCuadroMando')
-                                ->leftJoin('frecuenciamedicion as FM', 'CM.FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'FM.idFrecuenciaMedicion')
-                                ->select(DB::raw('idCuadroMando, indicadorCuadroMando, formulaCuadroMando, fechaCalculoIndicador, fechaCorteIndicador, valorIndicador, nombreFrecuenciaMedicion, tipoMetaCuadroMando'))
-                                ->where("I.Compania_idCompania", $idCompania)
-                                ->get();
-                            // por facilidad de manejo convierto el stdclass a tipo array con un cast (array)
-                            $Indicador = array();
-                            foreach ($indicadores as $key => $value) 
-                            {
-                                $Indicador[] = (array) $value;
-                            }
-
-                            // recorremos cada indicador para calcularlo y almacenar su resultado en la tabla de indicadores
-                            for ($i=0; $i < count($Indicador); $i++) 
-                            { 
-                                echo '<div class="list-group">
-                                        <div style="width:300px; display:inline-block;">'.$Indicador[$i]["indicadorCuadroMando"].'</div>
-                                        <div style="width:300px; display:inline-block;">'.$Indicador[$i]["formulaCuadroMando"].'</div>
-                                        <div style="width:300px; display:inline-block;">'.$Indicador[$i]["nombreFrecuenciaMedicion"].'  ('.$Indicador[$i]["fechaCorteIndicador"].')'.'</div>
-                                        <div style="width:300px; display:inline-block;">'.$Indicador[$i]["fechaCalculoIndicador"].'</div>
-                                        <span class="pull-right text-muted small"><em>'.number_format($Indicador[$i]["valorIndicador"],2,'.',',').' '.($Indicador[$i]["tipoMetaCuadroMando"] == 'C' ? 'Und' : $Indicador[$i]["tipoMetaCuadroMando"]).'</em></span>
-                                    </div>';
-                            }
-                        ?>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-
-                </div>
-                <!-- /.col-lg-4 -->
-            </div>
-            <!-- /.row -->
-
-
 
 
 <?php

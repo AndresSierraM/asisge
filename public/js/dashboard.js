@@ -24,7 +24,7 @@ function colorTarea(valorTarea, valorCumplido)
 }
 
 
-function consultarPlanTrabajo(idCompania, proceso, titulo)
+function consultarPlanTrabajoVIEJO(idCompania, proceso, titulo)
 {
     var token = document.getElementById('token').value;
     $.ajax({

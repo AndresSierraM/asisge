@@ -6,7 +6,7 @@
 
 <script>
 	$(document).ready(function(){
-		consultarPlanTrabajo('2017','a');
+		consultarPlanTrabajo('2017','a', '','plantrabajo');
 		// consultarExamenPlanTrabajo('a');
 	});
 </script>
@@ -265,7 +265,7 @@ function imprimirTablaExamenesMedicos($titulo, $informacion , $idtabla)
 
 </style>
 
-	<select id="añoPlanTrabajo" class="form-control" onchange="consultarPlanTrabajo(this.value,'a')">
+	<select id="añoPlanTrabajo" class="form-control" onchange="consultarPlanTrabajo(this.value,'a','','plantrabajo')">
 		<option>2017</option>
 		<option>2016</option>
 	</select>
