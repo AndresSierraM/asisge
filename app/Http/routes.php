@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('equiposeguimiento', 'EquipoSeguimientoController');
     Route::resource('matrizdofa', 'MatrizDofaController');
     Route::resource('matrizriesgoproceso', 'MatrizRiesgoProcesoController');
     Route::resource('accidentefirma', 'AccidenteFirmaController@create');
@@ -737,6 +738,11 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
 
+
+    Route::get('datosEquipoSeguimiento', function()
+    {
+        include public_path().'/ajax/datosEquipoSeguimiento.php';
+    });
     Route::get('datosMatrizDofa', function()
     {
         include public_path().'/ajax/datosMatrizDofa.php';

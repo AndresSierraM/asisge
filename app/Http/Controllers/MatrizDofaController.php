@@ -259,13 +259,25 @@ class MatrizDofaController extends Controller
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Oportunidad'][$i]                  
                   );
 
+                $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+
+                // Se hace este if para validar que el campo sea si es 0, el va devolver el ultimo id de Detalle si no el devuelve el id que tiene ESA MULTIREGSTRO
+                if ($request['idMatrizDOFADetalle_Oportunidad'][$i] == 0) 
+                {
+                  $idMatriz = \App\MatrizDofaDetalle::All()->last();
+                  $idMatrizDOFADetalle_Oportunidad = $idMatriz->idMatrizDOFADetalle;
+                }
+                else
+                {
+                  $idMatrizDOFADetalle_Oportunidad = $request['idMatrizDOFADetalle_Oportunidad'][$i];
+                }
+
                 // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
                 if($request['matrizRiesgoMatrizDOFADetalle_Oportunidad'][$i] == 1)
                   {                    
-                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Oportunidad'][$i],$request['fechaElaboracionMatrizDOFA']);
-                  }
-            
-                $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Oportunidad'][$i],$request['fechaElaboracionMatrizDOFA'],$idMatrizDOFADetalle_Oportunidad);
+                  }           
+                  
             } 
 
              $idsEliminar = explode("," , $request['eliminarFortaleza']);
@@ -282,14 +294,23 @@ class MatrizDofaController extends Controller
                   'descripcionMatrizDOFADetalle' => $request['descripcionMatrizDOFADetalle_Fortaleza'][$i],
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Fortaleza'][$i]                  
                   );
-
-                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
-                if($request['matrizRiesgoMatrizDOFADetalle_Fortaleza'][$i] == 1)
+                $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+               // Se hace este if para validar que el campo sea si es 0, el va devolver el ultimo id de Detalle si no el devuelve el id que tiene ESA MULTIREGSTRO
+                 if ($request['idMatrizDOFADetalle_Fortaleza'][$i] == 0) 
                   {
-                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Fortaleza'][$i],$request['fechaElaboracionMatrizDOFA']);
+                    $idMatrizFortaleza = \App\MatrizDofaDetalle::All()->last();
+                    $idMatrizDOFADetalle_Fortaleza = $idMatrizFortaleza->idMatrizDOFADetalle;
+                  }
+                else
+                  {
+                    $idMatrizDOFADetalle_Fortaleza = $request['idMatrizDOFADetalle_Fortaleza'][$i];
                   }
 
-                $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario a la funcion guardarMatrizRiesgoProceso para enviar los datos a Matriz Riesgo Proceso 
+                if($request['matrizRiesgoMatrizDOFADetalle_Fortaleza'][$i] == 1)
+                  {
+                       guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Fortaleza'][$i],$request['fechaElaboracionMatrizDOFA'],$idMatrizDOFADetalle_Fortaleza);
+                  }                          
             } 
 
             $idsEliminar = explode("," , $request['eliminarAmenaza']);
@@ -307,14 +328,22 @@ class MatrizDofaController extends Controller
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Amenaza'][$i]                  
                   );
 
-
-                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
+               $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+               // Se hace este if para validar que el campo sea si es 0, el va devolver el ultimo id de Detalle si no el devuelve el id que tiene ESA MULTIREGSTRO
+                if ($request['idMatrizDOFADetalle_Amenaza'][$i] == 0) 
+                  {
+                    $idMatrizAmenaza = \App\MatrizDofaDetalle::All()->last();
+                    $idMatrizDOFADetalle_Amenaza = $idMatrizAmenaza->idMatrizDOFADetalle;
+                  }
+                else
+                  {
+                    $idMatrizDOFADetalle_Amenaza = $request['idMatrizDOFADetalle_Amenaza'][$i];
+                  }
+                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario a la funcion guardarMatrizRiesgoProceso para enviar los datos a Matriz Riesgo Proceso 
                 if($request['matrizRiesgoMatrizDOFADetalle_Amenaza'][$i] == 1)
                   {
-                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Amenaza'][$i],$request['fechaElaboracionMatrizDOFA']);
-                  }
-
-                $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Amenaza'][$i],$request['fechaElaboracionMatrizDOFA'],$idMatrizDOFADetalle_Amenaza);
+                  }       
             } 
 
              $idsEliminar = explode("," , $request['eliminarDebilidad']);
@@ -332,16 +361,24 @@ class MatrizDofaController extends Controller
                   'matrizRiesgoMatrizDOFADetalle' => $request['matrizRiesgoMatrizDOFADetalle_Debilidad'][$i]                  
                   );
 
-                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario para enviar los datos a Matriz Riesgo Proceso 
+              $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
+                   // Se hace este if para validar que el campo sea si es 0, el va devolver el ultimo id de Detalle si no el devuelve el id que tiene ESA MULTIREGSTRO
+                if ($request['idMatrizDOFADetalle_Debilidad'][$i] == 0) 
+                {
+                  $idMatrizDebilidad = \App\MatrizDofaDetalle::All()->last();
+                  $idMatrizDOFADetalle_Debilidad = $idMatrizDebilidad->idMatrizDOFADetalle;
+                }
+                else
+                {
+                  $idMatrizDOFADetalle_Debilidad = $request['idMatrizDOFADetalle_Debilidad'][$i];
+                }
+
+                   // Se hace la validacion para saber si tiene chulo que lleve por parametro lo necesario a la funcion guardarMatrizRiesgoProceso para enviar los datos a Matriz Riesgo Proceso  
                 if($request['matrizRiesgoMatrizDOFADetalle_Debilidad'][$i] == 1)
                   {
-                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Debilidad'][$i],$request['fechaElaboracionMatrizDOFA']);
-                  }
-
-                $guardar = \App\MatrizDofaDetalle::updateOrCreate($indice, $data);
-            }  
-
+                     guardarMatrizRiesgoProceso($request['Proceso_idProceso'],$request['Tercero_idResponsable'],$request['descripcionMatrizDOFADetalle_Debilidad'][$i],$request['fechaElaboracionMatrizDOFA'],$idMatrizDOFADetalle_Debilidad);
+                  }              
+            } 
     }
-    
  }
 
