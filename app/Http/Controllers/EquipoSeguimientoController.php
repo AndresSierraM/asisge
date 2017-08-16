@@ -115,7 +115,40 @@ class EquipoSeguimientoController extends Controller
     public function show($id, Request $request)
     {
       
-        
+      if($_GET['accion'] == 'imprimir')
+        {
+          // Se llama los registros para saber  cual es  la que va a imprimir el usuario
+           $equiposeguimiento = \App\EquipoSeguimiento::find($id);
+
+            $EquipoSeguimientoEncabezadoS = DB::select('
+            SELECT es.fechaEquipoSeguimiento,es.nombreEquipoSeguimiento,t.nombreCompletoTercero
+            FROM equiposeguimiento es
+            LEFT JOIN tercero t
+            ON es.Tercero_idResponsable = t.idTercero
+            WHERE es.idEquipoSeguimiento = '.$id);
+
+
+
+            $EquipoSeguimientoDetalleS = DB::select('
+              SELECT esd.identificacionEquipoSeguimientoDetalle,esd.tipoEquipoSeguimientoDetalle,fmc.nombreFrecuenciaMedicion as NombreFrecuenciaMedicionCalibracion,
+              esd.fechaInicioCalibracionEquipoSeguimientoDetalle,fmv.nombreFrecuenciaMedicion as NombreFrecuenciaMedicionVerificacion,esd.fechaInicioVerificacionEquipoSeguimientoDetalle,
+              esd.unidadMedidaCalibracionEquipoSeguimientoDetalle,esd.rangoInicialCalibracionEquipoSeguimientoDetalle,
+              esd.rangoFinalCalibracionEquipoSeguimientoDetalle,esd.escalaCalibracionEquipoSeguimientoDetalle,
+              esd.capacidadInicialCalibracionEquipoSeguimientoDetalle,esd.capacidadFinalCalibracionEquipoSeguimientoDetalle,
+              esd.utilizacionCalibracionEquipoSeguimientoDetalle,esd.toleranciaCalibracionEquipoSeguimientoDetalle,
+              esd.errorPermitidoCalibracionEquipoSeguimientoDetalle
+              FROM equiposeguimientodetalle esd
+              LEFT JOIN equiposeguimiento es
+              ON esd.EquipoSeguimiento_idEquipoSeguimiento = es.idEquipoSeguimiento
+              LEFT JOIN frecuenciamedicion fmc
+              ON esd.FrecuenciaMedicion_idCalibracion = fmc.idFrecuenciaMedicion
+              LEFT JOIN frecuenciamedicion fmv
+              ON esd.FrecuenciaMedicion_idVerificacion = fmv.idFrecuenciaMedicion
+              WHERE esd.EquipoSeguimiento_idEquipoSeguimiento ='.$id);
+
+
+            return view('formatos.equiposeguimientoimpresion',compact('EquipoSeguimientoEncabezadoS','EquipoSeguimientoDetalleS'));
+        }
         
     }
 

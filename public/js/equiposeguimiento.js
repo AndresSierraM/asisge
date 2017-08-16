@@ -1,3 +1,60 @@
+function  ValidarCapacidad(registro,tipo)
+{
+    // Se valida si el rango es inicial o final para saber que posicion tomar 
+    if (tipo == 'Inicial')
+        {   
+            // Si es tipo frecuencia el va reemplzar el nombre por vacio para saber en que posicion va y del mismo modo si es rangoFinal
+            reg = registro.replace('capacidadInicialCalibracionEquipoSeguimientoDetalle', '');
+        }
+    else if (tipo == 'Final') 
+        {
+            reg = registro.replace('capacidadFinalCalibracionEquipoSeguimientoDetalle', '')
+        }
+
+        // Se validan los campos para tener al final, facilidade manejo 
+        Capainicial = ($("#capacidadInicialCalibracionEquipoSeguimientoDetalle"+reg).val() == '' ? '' : $("#capacidadInicialCalibracionEquipoSeguimientoDetalle"+reg).val());
+        CapaFinal = ($("#capacidadFinalCalibracionEquipoSeguimientoDetalle"+reg).val() == '' ? '' : $("#capacidadFinalCalibracionEquipoSeguimientoDetalle"+reg).val());
+
+
+    if (parseFloat(Capainicial) > parseFloat(CapaFinal) || parseFloat(Capainicial) == parseFloat(CapaFinal))
+
+    {
+         alert('La Capacidad inicial  '+Capainicial+'  Debe ser menor a la Capacidad final  '+CapaFinal);
+
+    } 
+}
+
+
+function  ValidarRangos(registro,tipo)
+{
+    // Se valida si el rango es inicial o final para saber que posicion tomar 
+    if (tipo == 'Inicial')
+        {   
+            // Si es tipo frecuencia el va reemplzar el nombre por vacio para saber en que posicion va y del mismo modo si es rangoFinal
+            reg = registro.replace('rangoInicialCalibracionEquipoSeguimientoDetalle', '');
+        }
+    else if (tipo == 'Final') 
+        {
+            reg = registro.replace('rangoFinalCalibracionEquipoSeguimientoDetalle', '')
+        }
+
+        // Se validan los campos para tener al final, facilidade manejo 
+        inicial = ($("#rangoInicialCalibracionEquipoSeguimientoDetalle"+reg).val() == '' ? '' : $("#rangoInicialCalibracionEquipoSeguimientoDetalle"+reg).val());
+        Final = ($("#rangoFinalCalibracionEquipoSeguimientoDetalle"+reg).val() == '' ? '' : $("#rangoFinalCalibracionEquipoSeguimientoDetalle"+reg).val());
+
+
+    if (parseFloat(inicial) > parseFloat(Final) || parseFloat(inicial) == parseFloat(Final))
+
+    {
+         alert('El rango inicial  '+inicial+'  Debe ser menor al rango final  '+Final);
+
+    } 
+}
+
+
+
+
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/equiposeguimiento";

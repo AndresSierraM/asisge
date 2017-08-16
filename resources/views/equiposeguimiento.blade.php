@@ -11,6 +11,13 @@
 	{!!Html::script('js/equiposeguimiento.js')!!}
 <script>
 
+ 	// Validacion para los 
+ 	var CalificarCapacidadInicial = ['onchange','ValidarCapacidad(this.id,"Inicial");']
+	var CalificarCapacidadFinal = ['onchange','ValidarCapacidad(this.id,"Final");']
+	// Validacion para los rangos 
+	var CalificarRangoInicial = ['onchange','ValidarRangos(this.id,"Inicial");']
+	var CalificarRangoFinal = ['onchange','ValidarRangos(this.id,"Final");']
+
 	// Se recibe la consulta de la multigistro para que muestre los datos de los campos
 	 var EquipoSeguimientoDetalle = '<?php echo (isset($EquipoSeguimientoDetalleE) ? json_encode($EquipoSeguimientoDetalleE) : "");?>';
 	EquipoSeguimientoDetalle = (EquipoSeguimientoDetalle != '' ? JSON.parse(EquipoSeguimientoDetalle) : '');
@@ -31,18 +38,7 @@
 	NombreTipo = Array ("Patrón","Planta");
 
 	TipoSeguimiento = [ValorTipo,NombreTipo];
-	// ---------
-	// Variable para el select IMPACTO
-	valorImpacto = Array('3','2','1');
-	NombreImpacto = Array ("Alta","Media","Baja");
-
-	Impacto = [valorImpacto,NombreImpacto];
-	// ---------
-	// Variable para el select ACCIONES
-	valorAccion = Array("Eliminar","Controlar","Asumir");
-	NombreAccion = Array ("Eliminar","Controlar","Asumir");
-
-	Accion = [valorAccion,NombreAccion];
+	
 
 
 
@@ -63,7 +59,7 @@
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
 			detalle.opciones = ['','','',TipoSeguimiento,FrecuenciaCalibracion,'',FrecuenciaCalibracion,'','','','','','','','','',''];
 			var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
-			detalle.funciones = ['','',quitacarac,'','','','','',quitacarac,'','','','',quitacarac,'',''];
+			detalle.funciones = ['','',quitacarac,'','','','','',quitacarac,CalificarRangoInicial,CalificarRangoFinal,'',CalificarCapacidadInicial,CalificarCapacidadFinal,quitacarac,''];
 
 
 			// For para llenar los registros al momento de modificar el registro
@@ -157,7 +153,7 @@
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Tolerancia (+/-)</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Error M&#225;ximo permitido</div>												
 													<div id="contenedor_detalle">
-													</div>
+													</div>											
 												</div>
 											</div>											
 										</div>

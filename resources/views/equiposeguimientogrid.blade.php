@@ -84,17 +84,10 @@
 
 {!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 <script type="text/javascript">
-
-    // function imprimirFormato(id)
-    // {
-    //     window.open('equiposeguimiento/'+id+'?accion=imprimir','equiposeguimiento','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
-    // }
-
-    // function mostrarModalInterface()
-    // {
-    //     $("#modalMatrizRiesgo").modal();
-    // }
-
+    function imprimirFormato(id)
+    {
+        window.open('equiposeguimiento/'+id+'?accion=imprimir','equiposeguimiento','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
     $(document).ready( function () {
 
         
