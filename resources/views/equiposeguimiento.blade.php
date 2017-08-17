@@ -103,7 +103,7 @@
 			              	<span class="input-group-addon">
 			                	<i class="fa fa-caret-square-o-down" style="width: 14px;"></i>
 			              	</span>							
-							{!!Form::text('nombreEquipoSeguimiento',null,['class'=>'form-control','placeholder'=>'Ingresa el Equipo'])!!}              
+							{!!Form::text('nombreEquipoSeguimiento',null,['class'=>'form-control','placeholder'=>'Ingresa el Equipo',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}              
 					    </div>
 					</div>
 				</div>
