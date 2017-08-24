@@ -23,74 +23,103 @@ class FichaTecnicaRequest extends Request
      */
     public function rules()
     {
-        
-        $proc = count($this->get('nombreProceso'));
-        $nota = count($this->get('observacionFichaTecnicaNota'));
+        $color = count($this->get('Color_idColor'));
+        $cantidad = count($this->get('cantidadFichaTecnicaColor'));
+        $talla = count($this->get('Talla_idTalla'));
+        $curva = count($this->get('curvaFichaTecnicaTalla'));
 
-        $validacion = array(
-            "referenciaFichaTecnica" => "required|unique:fichatecnica,referenciaFichaTecnica,".$this->get('idFichaTecnica') .",idFichaTecnica,Compania_idCompania,".(\Session::get('idCompania')),
-            "nombreFichaTecnica" => "required|string|max:80",
-            "LineaProducto_idLineaProducto" => "required"
-        );
+        $validacion = array('referenciaBaseFichaTecnica' => "required",
+            'pesoNetoFichaTecnica' => 'required',
+            'cantidadContenidaFichaTecnica' => 'required',
+            'nombreLargoFichaTecnica' => 'required',
+            'GrupoTalla_idGrupoTalla' => 'required|numeric|min:1',
+            'TipoProducto_idTipoProducto' => 'required|numeric|min:1',
+            'TipoNegocio_idTipoNegocio' => 'required|numeric|min:1'
+            );
 
-        for($i = 0; $i < $proc; $i++)
+        for($i = 0; $i < $color; $i++)
         {
-            if(trim($this->get('ordenFichaTecnicaProceso')[$i]) == '' )
+            if(trim($this->get('Color_idColor')[$i]) == '' or trim($this->get('Color_idColor')[$i]) == 0)
             {    
-                $validacion['ordenFichaTecnicaProceso'.$i] =  'required';
-            }
-            if(trim($this->get('nombreProceso')[$i]) == '' )
-            {    
-                $validacion['nombreProceso'.$i] =  'required';
+                $validacion['Color_idColor'.$i] =  'required';
             }
         }
 
-        for($i = 0; $i < $nota; $i++)
+        for($i = 0; $i < $cantidad; $i++)
         {
-            if(trim($this->get('observacionFichaTecnicaNota')[$i]) == '')
+            if(trim($this->get('cantidadFichaTecnicaColor')[$i]) == '' or trim($this->get('cantidadFichaTecnicaColor')[$i]) == 0)
             {    
-                $validacion['observacionFichaTecnicaNota'.$i] =  'required';
+                $validacion['cantidadFichaTecnicaColor'.$i] =  'required';
             }
         }
 
+        for($i = 0; $i < $talla; $i++)
+        {
+            if(trim($this->get('Talla_idTalla')[$i]) == '' or trim($this->get('Talla_idTalla')[$i]) == 0)
+            {    
+                $validacion['Talla_idTalla'.$i] =  'required';
+            }
+        }
+
+        for($i = 0; $i < $curva; $i++)
+        {
+            if(trim($this->get('curvaFichaTecnicaTalla')[$i]) == '' or trim($this->get('curvaFichaTecnicaTalla')[$i]) == 0)
+            {    
+                $validacion['curvaFichaTecnicaTalla'.$i] =  'required';
+            }
+        }
+    
         return $validacion;
-        
     }
 
     public function messages()
     {
-        $proc = count($this->get('nombreProceso'));
-        $nota = count($this->get('observacionFichaTecnicaNota'));
+        $color = count($this->get('Color_idColor'));
+        $cantidad = count($this->get('cantidadFichaTecnicaColor'));
+        $talla = count($this->get('Talla_idTalla'));
+        $curva = count($this->get('curvaFichaTecnicaTalla'));
 
         $mensajes = array();
-        $mensajes["referenciaFichaTecnica.required"] = "[Encabezado] Debe ingresar la referencia del producto";
-        $mensajes["referenciaFichaTecnica.unique"] = "[Encabezado] La referencia ingresada ya existe";
-        $mensajes["nombreFichaTecnica.required"] = "[Encabezado] Debe ingresar el nombre del Producto";
-        $mensajes["LineaProducto_idLineaProducto.required"] = "[Encabezado] Debe Seleccionar la línea de Producto";
+        $mensajes["pesoNetoFichaTecnica.required"] = "[Encabezado] Debe digitar el peso de la ficha";
+        $mensajes["cantidadContenidaFichaTecnica.required"] = "[Encabezado] Debe digitar la cantidad de la ficha";
+        $mensajes["referenciaBaseFichaTecnica.required"] = "[Encabezado] Debe digitar la referencia de la ficha";
+        $mensajes["nombreLargoFichaTecnica.required"] = "[Encabezado] Debe digitar la descripción de la ficha";
+        $mensajes["GrupoTalla_idGrupoTalla.min"] = "[Clasificación] Debe seleccionar un grupo de talla";
+        $mensajes["TipoProducto_idTipoProducto.min"] = "[Clasificación] Debe seleccionar un tipo de producto";
+        $mensajes["TipoNegocio_idTipoNegocio.min"] = "[Clasificación] Debe seleccionar un tipo de negocio";
 
-        for($i = 0; $i < $proc; $i++)
+        for($i = 0; $i < $color; $i++)
         {
-            if(trim($this->get('ordenFichaTecnicaProceso')[$i]) == '' )
+            if(trim($this->get('Color_idColor')[$i]) == '')
             {    
-                $mensajes["ordenFichaTecnicaProceso".$i.".required"] = "[Ruta de Procesos] Debe ingresar el orden del proceso de la línea ".($i+1);
-            }
-            if(trim($this->get('nombreProceso')[$i]) == '' )
-            {    
-                $mensajes["nombreProceso".$i.".required"] = "[Ruta de Procesos] Debe seleccionar un proceso de la lista en la línea ".($i+1);
-            }
+                $mensajes["Color_idColor".$i.".required"] = "[Variantes] Debe seleccionar el color ".($i+1);
+            }           
         }
 
-        for($i = 0; $i < $nota; $i++)
+        for($i = 0; $i < $cantidad; $i++)
         {
-            if(trim($this->get('observacionFichaTecnicaNota')[$i]) == '')
+            if(trim($this->get('cantidadFichaTecnicaColor')[$i]) == '')
             {    
-                $mensajes["observacionFichaTecnicaNota".$i.".required"] = "[Notas] Debe ingresar la Nota en la  línea ".($i+1);
-            }
+                $mensajes["cantidadFichaTecnicaColor".$i.".required"] = "[Variantes] Debe ingresar la cantidad ".($i+1);
+            }           
         }
 
+        for($i = 0; $i < $talla; $i++)
+        {
+            if(trim($this->get('Talla_idTalla')[$i]) == '')
+            {    
+                $mensajes["Talla_idTalla".$i.".required"] = "[Variantes] Debe seleccionar la talla ".($i+1);
+            }           
+        }
+
+        for($i = 0; $i < $curva; $i++)
+        {
+            if(trim($this->get('curvaFichaTecnicaTalla')[$i]) == '')
+            {    
+                $mensajes["curvaFichaTecnicaTalla".$i.".required"] = "[Variantes] Debe ingresar la curva ".($i+1);
+            }           
+        }
 
         return $mensajes;
-
     }
-
 }

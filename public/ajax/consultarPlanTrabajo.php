@@ -23,7 +23,7 @@
         for ($i=0; $i < count($datos); $i++) 
         { 
 
-            if ($datos[$i]['idTercero'] == $idTercero && $datos[$i]['idTipoExamenMedico'] == $idExamen) 
+            if ($datos[$i]['idTercero'] == $idTercero && $datos[$i]['idConcepto'] == $idExamen) 
             {
                 $pos = $i;
                 $i = count($datos);
@@ -284,7 +284,7 @@
         //*********************
 
         $examen = DB::Select(
-            '   SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico, concat(nombreCompletoTercero , " (", nombreCargo, ")", " - ", TEC.nombreTipoExamenMedico) as descripcionTarea,   
+            '   SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico as idConcepto, concat(nombreCompletoTercero , " (", nombreCargo, ")", " - ", TEC.nombreTipoExamenMedico) as descripcionTarea,   
                     fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, fechaCreacionCompania, 
                     ingresoCargoExamenMedico as ING, 
                     retiroCargoExamenMedico as RET,
@@ -322,7 +322,7 @@
         for($i= 0; $i < count($examen); $i++)
         {
             $registro = get_object_vars($examen[$i]);
-            $pos = buscarTerceroExamen($registro["idTercero"], $registro["idTipoExamenMedico"], $datos);
+            $pos = buscarTerceroExamen($registro["idTercero"], $registro["idConcepto"], $datos);
 
             if($pos == -1)
             {
@@ -334,7 +334,7 @@
                 }
             }
             $datos[$pos]['idTercero'] = $registro["idTercero"];
-            $datos[$pos]['idTipoExamenMedico'] = $registro["idTipoExamenMedico"];
+            $datos[$pos]['idConcepto'] = $registro["idConcepto"];
             $datos[$pos]['Nombre'] = $registro["descripcionTarea"];
 
             
@@ -416,23 +416,25 @@
                     T.Compania_idCompania = '.$idCompania .' 
                 order by nombreCompletoTercero, idTercero
            ');
-
         
         for($i= 0; $i < count($examen); $i++)
         {
             $registro = get_object_vars($examen[$i]);
             $pos = buscarTerceroExamen($registro["idTercero"], $registro["idTipoExamenMedico"], $datos);
-
-            $datos[$pos]['idConcepto'] = $registro["idExamenMedico"];
+            if($pos == -1)
+                $pos = $i;
+        
+            $datos[$pos]['idConcepto'] = $registro["idTipoExamenMedico"];
 
             // CUMPLIMIENTO
-           if($registro["fechaExamenMedico"] != '0000-00-00' and 
+            if($registro["fechaExamenMedico"] != '0000-00-00' and 
                 date("Y",strtotime($registro["fechaExamenMedico"])) == date("Y", strtotime($fechaInicial)) and 
                 $registro["fechaExamenMedico"] >= $registro["fechaCreacionCompania"])
             {
-                    $datos[$pos][date("m",strtotime($registro["fechaExamenMedico"])).'C'] += 1;
+                $datos[$pos][date("m",strtotime($registro["fechaExamenMedico"])).'C'] += 1;
             }
         }
+
 
         $tabla = '';
 
@@ -482,32 +484,48 @@
                                         { 
                                             $tabla .= 
                                             '<tr align="center">
+                                                <input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="null">
                                                 <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="22">
-
+                                                <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$datos[$i]['idConcepto'].'">
+                                                <input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="">
 
                                             <th scope="row">'
                                                 .$datos[$i]["Nombre"].
                                             '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
-                                            </th>
-                                            <td>
-                                                '.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).
-                                            '<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'">
-                                            </td>
+                                            </th>';
                                             
-                                            <td>'.colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['05T'],$datos[$i]['05C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['06T'],$datos[$i]['06C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['07T'],$datos[$i]['07C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['08T'],$datos[$i]['08C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['09T'],$datos[$i]['09C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['10C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['11C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['12T'],$datos[$i]['12C']).'</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
+                                            
+                                            for($mes = 1; $mes <= 12; $mes++)
+                                            {
+                                                $cMes = str_pad($mes,2,'0',STR_PAD_LEFT);
+                                                $fechaMes = date("Y-".$cMes."-01");
+                                                $tabla .= 
+                                                    '<td>'.colorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).
+                                                    '<input type="hidden" id="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle[]" 
+                                                            value="'.valorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).'">
+                                                    </td>';
+                                            }
+
+                                            $tabla .= 
+                                                '<td>
+                                                    0
+                                                    <input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    0
+                                                    <input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    0
+                                                    <input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                    </textarea>
+                                                </td>
                                             </tr>';
                                         }
                                         $tabla .= '
@@ -675,33 +693,50 @@
                                         { 
                                             $tabla .= 
                                             '<tr align="center">
+                                                <input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="null">
                                                 <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="24">
-
+                                                <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$datos[$i]['idTipoInspeccion'].'">
+                                                <input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="">
 
                                             <th scope="row">'
                                                 .$datos[$i]["Nombre"].
                                             '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
-                                            </th>
-                                            <td>
-                                                '.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).
-                                            '<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'">
-                                            </td>
+                                            </th>';
                                             
-                                            <td>'.colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['05T'],$datos[$i]['05C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['06T'],$datos[$i]['06C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['07T'],$datos[$i]['07C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['08T'],$datos[$i]['08C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['09T'],$datos[$i]['09C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['10C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['11C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['12T'],$datos[$i]['12C']).'</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
+                                            
+                                            for($mes = 1; $mes <= 12; $mes++)
+                                            {
+                                                $cMes = str_pad($mes,2,'0',STR_PAD_LEFT);
+                                                $fechaMes = date("Y-".$cMes."-01");
+                                                $tabla .= 
+                                                    '<td>'.colorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).
+                                                    '<input type="hidden" id="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle[]" 
+                                                            value="'.valorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).'">
+                                                    </td>';
+                                            }
+
+                                            $tabla .= 
+                                                '<td>
+                                                    0
+                                                    <input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    0
+                                                    <input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    0
+                                                    <input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                    </textarea>
+                                                </td>
                                             </tr>';
+
                                         }
                                         $tabla .= '
                                         </tbody>
@@ -929,33 +964,52 @@
                                         { 
                                             $tabla .= 
                                             '<tr align="center">
+                                                <input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="null">
                                                 <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="9">
+                                                <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$datos[$i]["idGrupoApoyo"].'">
+                                                <input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="">
 
 
-                                            <th scope="row">'
+                                            <td scope="row">'
                                                 .$datos[$i]["Nombre"].
-                                            '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
-                                            </th>
+                                                '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
+                                            </td>';
+
+                                            
+                                            for($mes = 1; $mes <= 12; $mes++)
+                                            {
+                                                $cMes = str_pad($mes,2,'0',STR_PAD_LEFT);
+                                                $fechaMes = date("Y-".$cMes."-01");
+                                                $tabla .= 
+                                                    '<td>'.colorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).
+                                                    '<input type="hidden" id="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle[]" 
+                                                            value="'.valorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).'">
+                                                    </td>';
+                                            }
+                                            
+                                            $tabla .= 
+                                            '<td>
+                                                0
+                                                <input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="0">
+                                            </td>
                                             <td>
-                                                '.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).
-                                            '<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.colorTarea($datos[$i]['01T'],$datos[$i]['01C']).'">
+                                                0
+                                                <input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                0
+                                                <input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                </textarea>
                                             </td>
                                             
-                                            <td>'.colorTarea($datos[$i]['02T'],$datos[$i]['02C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['03T'],$datos[$i]['03C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['04T'],$datos[$i]['04C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['05T'],$datos[$i]['05C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['06T'],$datos[$i]['06C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['07T'],$datos[$i]['07C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['08T'],$datos[$i]['08C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['09T'],$datos[$i]['09C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['10C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['11T'],$datos[$i]['11C']).'</td>
-                                            <td>'.colorTarea($datos[$i]['12T'],$datos[$i]['12C']).'</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
                                             </tr>';
+
                                         }
                                         $tabla .= '
                                         </tbody>
@@ -1069,7 +1123,7 @@
     }
 
 
-        #EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
+    #EJECUTO LA FUNCIÓN PARA VER DE QUE COLOR SE PINTARÁ EL SEMÁFORO Y QUE VALOR TENDRÁ 
     function colorTarea($valorTarea, $valorCumplido)
     {
 
@@ -1093,7 +1147,7 @@
         if($valorTarea != 0 or $valorCumplido != 0)
         {
             $icono =    '<a href="#" data-toggle="tooltip" data-placement="right" title="'.$tool.'">
-                                <img src="images/iconosmenu/'.$icono.'"  width="30">
+                                <img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/'.$icono.'"  width="30">
                             </a>'.$etiqueta;    
         }
         //$valorTarea .' '. $valorCumplido. 
@@ -1116,6 +1170,8 @@
 
     function imprimirTabla($titulo, $informacion, $idtabla, $fechaInicial, $fechaFinal, $Modulo)
     {
+        // creamos un consecutivo para los id de campos
+        $consec = 0;
         $tabla = '';
 
         $tabla .= '        
@@ -1160,15 +1216,17 @@
                                             $total = 0;
                                             foreach($informacion as $dato)
                                             {
+                                                $num = $Modulo.'_'.$consec;
                                                 $tabla .='
                                                 <tr align="center">
-                                                    <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$Modulo.'">
-
-                                                    <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$dato->idConcepto.'">
+                                                    <input type="hidden" id="idPlanTrabajoDetalle'.$num.'" name="idPlanTrabajoDetalle[]" value="null">
+                                                    <input type="hidden" id="Modulo_idModulo'.$num.'" name="Modulo_idModulo[]" value="'.$Modulo.'">
+                                                    <input type="hidden" id="idConcepto'.$num.'" name="idConcepto[]" value="'.$dato->idConcepto.'">
+                                                    <input type="hidden" id="TipoExamenMedico_idTipoExamenMedico'.$num.'" name="TipoExamenMedico_idTipoExamenMedico[]" value="">
 
                                                     <th scope="row">'
                                                         .$dato->descripcionTarea.
-                                                        '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato->descripcionTarea.'">
+                                                        '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle'.$num.'" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$dato->descripcionTarea.'">
                                                     </th>';
                                                 
                                                 $inicio = $fechaInicial;
@@ -1189,7 +1247,7 @@
                                                     $tabla .= '
                                                     <td>'
                                                         .colorTarea($tarea, $cumplido).
-                                                    '   <input type="hidden" id="'.nombreMesMinuscula($inicio).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($inicio).'planTrabajoDetalle[]" value="'.valorTarea($tarea, $cumplido).'">
+                                                    '   <input type="hidden" id="'.nombreMesMinuscula($inicio).'PlanTrabajoDetalle'.$num.'" name="'.nombreMesMinuscula($inicio).'PlanTrabajoDetalle[]" value="'.valorTarea($tarea, $cumplido).'">
                                                     </td>';
 
                                                     $valorTarea += $tarea;
@@ -1201,11 +1259,11 @@
                                                     $tabla.=
                                                     '<td>'
                                                         .(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').
-                                                    '<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'">
+                                                    '<input type="hidden" id="presupuestoPlanTrabajoDetalle'.$num.'" name="presupuestoPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoT) ? $dato->PresupuestoT : '&nbsp;').'">
                                                     </td>
                                                     <td>'
                                                         .(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').
-                                                    '<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">
+                                                    '<input type="hidden" id="costoRealPlanTrabajoDetalle'.$num.'" name="costoRealPlanTrabajoDetalle[]" value="'.(isset($dato->PresupuestoC) ? $dato->PresupuestoC : '&nbsp;').'">
                                                     </td>';
 
                                                     $total = number_format(($valorCumplido / ($valorTarea == 0 ? 1: $valorTarea) *100),1,'.',',');
@@ -1213,18 +1271,20 @@
                                                     $tabla.= '
                                                     <td>'
                                                         .$total.
-                                                    '<input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.$total.'">
+                                                    '<input type="hidden" id="cumplimientoPlanTrabajoDetalle'.$num.'" name="cumplimientoPlanTrabajoDetalle[]" value="'.$total.'">
                                                     </td>
 
                                                     <td>
-                                                        <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]">
+                                                        <input type="text" id="metaPlanTrabajoDetalle'.$num.'" name="metaPlanTrabajoDetalle[]" value="0">
                                                     </td>
 
                                                     <td>
-                                                        <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                        <textarea id="observacionPlanTrabajoDetalle'.$num.'" name="observacionPlanTrabajoDetalle[]" >
                                                         </textarea>
                                                     </td>
                                                 </tr>';
+
+                                                $consec++;
                                             }
 
 
@@ -1236,7 +1296,6 @@
 
         return $tabla;
     }
-
 
 // *****************************
 //

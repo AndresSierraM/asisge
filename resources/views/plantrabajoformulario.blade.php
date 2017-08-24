@@ -182,43 +182,20 @@
   						{!!Form::hidden('idPlanTrabajoDetalle[]', (isset($plantrabajoformulario->plantrabajodetalle) ? $detalle[$i]["idPlanTrabajoDetalle"] : null), array('id' => 'idPlanTrabajoDetalle')) !!}
   						<?php
   						echo 
-  						'<input type="hidden" id="PlanTrabajo_idPlanTrabajo" name="PlanTrabajo_idPlanTrabajo[]" value="'.$detalle[$i]["PlanTrabajo_idPlanTrabajo"].'">
+  						'<input type="hidden" id="PlanTrabajo_idPlanTrabajo'.$i.'" name="PlanTrabajo_idPlanTrabajo[]" value="'.$detalle[$i]["PlanTrabajo_idPlanTrabajo"].'">
 
-  						<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$detalle[$i]["Modulo_idModulo"].'">
+  						<input type="hidden" id="Modulo_idModulo'.$i.'" name="Modulo_idModulo[]" value="'.$detalle[$i]["Modulo_idModulo"].'">
 
-  						<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$detalle[$i]["idConcepto"].'">
+  						<input type="hidden" id="idConcepto'.$i.'" name="idConcepto[]" value="'.$detalle[$i]["idConcepto"].'">
 
-  						<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$detalle[$i]["TipoExamenMedico_idTipoExamenMedico"].'">
+  						<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico'.$i.'" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$detalle[$i]["TipoExamenMedico_idTipoExamenMedico"].'">
 
-  						<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$detalle[$i]["nombreConceptoPlanTrabajoDetalle"].'">
+  						<input type="hidden" id="nombreConceptoPlanTrabajoDetalle'.$i.'" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$detalle[$i]["nombreConceptoPlanTrabajoDetalle"].'">';
 
-  						<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.$detalle[$i]["eneroPlanTrabajoDetalle"].'">
+  						echo 
+  						'<input type="hidden" id="presupuestoPlanTrabajoDetalle'.$i.'" name="presupuestoPlanTrabajoDetalle[]" value="'.$detalle[$i]["presupuestoPlanTrabajoDetalle"].'">
 
-  						<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.$detalle[$i]["febreroPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.$detalle[$i]["marzoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.$detalle[$i]["abrilPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.$detalle[$i]["mayoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.$detalle[$i]["junioPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.$detalle[$i]["julioPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.$detalle[$i]["agostoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["septiembrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.$detalle[$i]["octubrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["noviembrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.$detalle[$i]["diciembrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.$detalle[$i]["presupuestoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.$detalle[$i]["costoRealPlanTrabajoDetalle"].'">';
+  						<input type="hidden" id="costoRealPlanTrabajoDetalle'.$i.'" name="costoRealPlanTrabajoDetalle[]" value="'.$detalle[$i]["costoRealPlanTrabajoDetalle"].'">';
 
   						echo '<tr align="center">';
   						echo '<td>'.$detalle[$i]["nombreConceptoPlanTrabajoDetalle"].'</td>';
@@ -228,47 +205,48 @@
 	  						switch ($detalle[$i][$meses[$mes]."PlanTrabajoDetalle"]) 
 	  						{
 	  							case null:
-	  								echo '<td>  </td>';
+	  								$icono = '';
 	  								break;
 
 	  							case 0:
-	  								echo '
-	  								<td>
+	  								$icono =  '
 	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
 											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Rojo.png" width="30">
-										</a>
-	  								</td>';
+										</a>';
 	  								break;
 	  							
 	  							case 100:
-	  								echo '
-	  								<td>
+	  								$icono =  '
 	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
 											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Verde.png" width="30">
-										</a>
-	  								</td>';
+										</a>';
 	  								break;
 
 	  							default:
-	  								echo '
-	  								<td>
+	  								$icono =  '
 	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
 											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Amarillo.png" width="30"><label style="color:black;">'.$detalle[$i][$meses[$mes]."PlanTrabajoDetalle"].'%</label>
-										</a>
-	  								</td>';
+										</a>';
 	  								break;
-	  						};
+	  						}
+
+							echo 
+								'<td>
+									<input type="hidden" id="'.$meses[$mes].'PlanTrabajoDetalle'.$i.'" name="'.$meses[$mes].'PlanTrabajoDetalle[]" 
+										value="'.$detalle[$i][$meses[$mes]."PlanTrabajoDetalle"].'">
+									'.$icono.'
+								</td>';
 	  					}
 	  					echo '
 	  					<td>'.(isset($detalle[$i]["presupuestoPlanTrabajoDetalle"]) ? $detalle[$i]["presupuestoPlanTrabajoDetalle"] : "" ).'</td>
 	  					<td>'.(isset($detalle[$i]["costoRealPlanTrabajoDetalle"]) ? $detalle[$i]["costoRealPlanTrabajoDetalle"] : "" ).'</td>
-	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["cumplimientoPlanTrabajoDetalle"]) ? $detalle[$i]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
-	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["metaPlanTrabajoDetalle"]) ? $detalle[$i]["metaPlanTrabajoDetalle"] : "" ).'"</td>
+	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle'.$i.'" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["cumplimientoPlanTrabajoDetalle"]) ? $detalle[$i]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
+	  					<td><input type="text" id="metaPlanTrabajoDetalle'.$i.'" name="metaPlanTrabajoDetalle[]" value="'.(isset($detalle[$i]["metaPlanTrabajoDetalle"]) ? $detalle[$i]["metaPlanTrabajoDetalle"] : "" ).'"</td>
 	  					<td>';?>
 							{!!Form::select('Cargo_idResponsable[]',$Cargo_idResponsable, (isset($plantrabajoformulario) ? $detalle[$i]["idCargo"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
 						<?php 
 						echo '</td>
-	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$detalle[$i]["observacionPlanTrabajoDetalle"].'</textarea></td>
+	  					<td><textarea id="observacionPlanTrabajoDetalle'.$i.'" name="observacionPlanTrabajoDetalle[]">'.$detalle[$i]["observacionPlanTrabajoDetalle"].'</textarea></td>
 
 	  					</tr>';
 
@@ -284,193 +262,19 @@
 				    </div>';
 
   				}
-  				//////////////////////////////////////////////////////////
-  				// R O M P I M I E N T O   E X A M E N E S   M E D I C O S
-  				//////////////////////////////////////////////////////////
-
-  				for ($i=0; $i < count($plantrabajodetalleexamen); $i++) 
-  				{ 
-  					$examen[] = get_object_vars($plantrabajodetalleexamen[$i]);
-  				}
-
-  				$reg = 0;
-  				$total = count($examen);
-
-  				$meses = array('enero','febrero','marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
-
-  					$moduloAnt = $examen[$reg]["nombreModulo"];
-
-  				echo 
-  					'<div class="panel panel-primary">
-            			<div class="panel-heading">
-	              			<h4 class="panel-title">
-	                		<a data-toggle="collapse" data-parent="#accordion" href="#'.$examen[$reg]["Modulo_idModulo"].'">'.$moduloAnt.'</a>
-	              			</h4>
-            			</div>
-            			<div id="'.$examen[$reg]["Modulo_idModulo"].'" class="panel-collapse">
-              			<div class="panel-body" style="overflow:auto;">';
-
-
-			    while ($reg < $total) 
-			    {
-			    	$examenAnt = $examen[$reg]['nombreTipoExamenMedico'];
-			    
-			    	echo '<div class="panel panel-primary">
-			            <div class="panel-heading">
-			              <h4 class="panel-title">
-			                <a data-toggle="collapse" data-parent="#'.str_replace(" ", "_", $examenAnt).'" href="#'.str_replace(" ", "_", $examenAnt).'">'.$examenAnt.'</a>	
-			              </h4>
-			            </div>
-			            <div id="'.str_replace(" ", "_", $examenAnt).'" class="panel-collapse">
-			              <div class="panel-body" style="overflow:auto;">';
-
-			      	echo  '<table  class="table table-striped table-bordered table-hover" style="width:100%;" >
-							<thead class="thead-inverse">
-								<tr class="table-info">
-									<th scope="col" width="30%">&nbsp;</th>
-									<th >Enero</th>
-									<th >Febrero</th>
-									<th >Marzo</th>
-									<th >Abril</th>
-									<th >Mayo</th>
-									<th >Junio</th>
-									<th >Julio</th>
-									<th >Agosto</th>
-									<th >Septiembre</th>
-									<th >Octubre</th>
-									<th >Noviembre</th>
-									<th >Diciembre</th>
-									<th >Presupuesto</th>
-									<th >Costo Real</th>
-									<th >Cumplimiento</th>
-									<th >Meta</th>
-									<th >Responsable</th>
-									<th >Observación</th>
-								</tr>
-							</thead>
-							<tbody>';
-
-			    	while ($reg < $total AND $examenAnt == $examen[$reg]['nombreTipoExamenMedico']) 
-  					{
-  						echo 
-  						'<input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="'.$examen[$reg]["idPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="PlanTrabajo_idPlanTrabajo" name="PlanTrabajo_idPlanTrabajo[]" value="'.$examen[$reg]["PlanTrabajo_idPlanTrabajo"].'">
-
-  						<input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="'.$examen[$reg]["Modulo_idModulo"].'">
-
-  						<input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$examen[$reg]["idConcepto"].'">
-
-  						<input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="'.$examen[$reg]["TipoExamenMedico_idTipoExamenMedico"].'">
-
-  						<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$examen[$reg]["nombreConceptoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="eneroPlanTrabajoDetalle" name="eneroPlanTrabajoDetalle[]" value="'.$examen[$reg]["eneroPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="febreroPlanTrabajoDetalle" name="febreroPlanTrabajoDetalle[]" value="'.$examen[$reg]["febreroPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="marzoPlanTrabajoDetalle" name="marzoPlanTrabajoDetalle[]" value="'.$examen[$reg]["marzoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="abrilPlanTrabajoDetalle" name="abrilPlanTrabajoDetalle[]" value="'.$examen[$reg]["abrilPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="mayoPlanTrabajoDetalle" name="mayoPlanTrabajoDetalle[]" value="'.$examen[$reg]["mayoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="junioPlanTrabajoDetalle" name="junioPlanTrabajoDetalle[]" value="'.$examen[$reg]["junioPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="julioPlanTrabajoDetalle" name="julioPlanTrabajoDetalle[]" value="'.$examen[$reg]["julioPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="agostoPlanTrabajoDetalle" name="agostoPlanTrabajoDetalle[]" value="'.$examen[$reg]["agostoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="septiembrePlanTrabajoDetalle" name="septiembrePlanTrabajoDetalle[]" value="'.$examen[$reg]["septiembrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="octubrePlanTrabajoDetalle" name="octubrePlanTrabajoDetalle[]" value="'.$examen[$reg]["octubrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="noviembrePlanTrabajoDetalle" name="noviembrePlanTrabajoDetalle[]" value="'.$examen[$reg]["noviembrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="diciembrePlanTrabajoDetalle" name="diciembrePlanTrabajoDetalle[]" value="'.$examen[$reg]["diciembrePlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="'.$examen[$reg]["presupuestoPlanTrabajoDetalle"].'">
-
-  						<input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="'.$examen[$reg]["costoRealPlanTrabajoDetalle"].'">';
-
-  						echo '<tr align="center">';
-  						echo '<td>'.$examen[$reg]["nombreConceptoPlanTrabajoDetalle"].'</td>';
-  						
-  						for($mes = 0; $mes <= 11; $mes++)
-	  					{	
-	  						switch ($examen[$reg][$meses[$mes]."PlanTrabajoDetalle"]) 
-	  						{
-	  							case null:
-	  								echo '<td>  </td>';
-	  								break;
-
-	  							case 0:
-	  								echo '
-	  								<td>
-	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
-											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Rojo.png" width="30">
-										</a>
-	  								</td>';
-	  								break;
-	  							
-	  							case 100:
-	  								echo '
-	  								<td>
-	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
-											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Verde.png" width="30">
-										</a>
-	  								</td>';
-	  								break;
-
-	  							default:
-	  								echo '
-	  								<td>
-	  									<a href="#" data-toggle="tooltip" data-placement="right" title="">
-											<img src="http://'.$_SERVER['HTTP_HOST'].'/images/iconosmenu/Amarillo.png" width="30"><label style="color:black;">'.$examen[$reg][$meses[$mes]."PlanTrabajoDetalle"].'%</label>
-										</a>
-	  								</td>';
-	  								break;
-	  						};
-	  					}
-	  					echo '
-	  					<td>'.(isset($examen[$reg]["presupuestoPlanTrabajoDetalle"]) ? $examen[$reg]["presupuestoPlanTrabajoDetalle"] : "" ).'</td>
-	  					<td>'.(isset($examen[$reg]["costoRealPlanTrabajoDetalle"]) ? $examen[$reg]["costoRealPlanTrabajoDetalle"] : "" ).'</td>
-	  					<td><input type="text" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["cumplimientoPlanTrabajoDetalle"]) ? $examen[$reg]["cumplimientoPlanTrabajoDetalle"] : "" ).'"</td>
-	  					<td><input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="'.(isset($examen[$reg]["metaPlanTrabajoDetalle"]) ? $examen[$reg]["metaPlanTrabajoDetalle"] : "" ).'"</td>
-	  					<td>';?>
-							{!!Form::select('Cargo_idResponsable[]',$Cargo_idResponsable, (isset($plantrabajodetalleexamen) ? $examen[$reg]["idCargo"] : ''),["class" => "form-control", "placeholder" =>"Seleccione el cargo responsable"])!!}
-						<?php 
-						echo '</td>
-	  					<td><textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">'.$examen[$reg]["observacionPlanTrabajoDetalle"].'</textarea></td>
-
-	  					</tr>';
-
-  						$reg++;
-  					}
-
-					echo '</tbody>
-						</table>
-			          </div> 
-			        </div>
-			      </div>';
-				}
-				echo '</div> 
-				  </div>
-				</div>';
+  				
   			}
   			else
   			{
 				echo "
 				<script>
-					$(document).ready(function(){
-						consultarPlanTrabajo('2017','a','','plantrabajo');
-					});
+					consultarPlanTrabajo('2017','','','plantrabajo');
 				</script>";
 			}
 		?>
     </div>
 		    
-@if(isset($plantrabajoformulario))
+	@if(isset($plantrabajoformulario))
  		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
    			{!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
   		@else

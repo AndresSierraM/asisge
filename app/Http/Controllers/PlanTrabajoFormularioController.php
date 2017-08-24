@@ -133,30 +133,10 @@ class PlanTrabajoFormularioController extends Controller
         from plantrabajodetalle ptd 
         left join cargo c on c.idCargo = ptd.Cargo_idResponsable
         left join modulo m on ptd.Modulo_idModulo = m.idModulo
-        Where PlanTrabajo_idPlanTrabajo = '.$id.' and Modulo_idModulo != 22
+        Where PlanTrabajo_idPlanTrabajo = '.$id.' 
         order by nombreModulo');
 
-        $plantrabajodetalleexamen = DB::Select('
-        SELECT 
-        nombreTipoExamenMedico, idTipoExamenMedico as TipoExamenMedico_idTipoExamenMedico, PlanTrabajo_idPlanTrabajo, idPlanTrabajoDetalle, Modulo_idModulo, nombreModulo, idConcepto, nombreConceptoPlanTrabajoDetalle, eneroPlanTrabajoDetalle, febreroPlanTrabajoDetalle, marzoPlanTrabajoDetalle, abrilPlanTrabajoDetalle, mayoPlanTrabajoDetalle, junioPlanTrabajoDetalle, julioPlanTrabajoDetalle, agostoPlanTrabajoDetalle, septiembrePlanTrabajoDetalle, octubrePlanTrabajoDetalle, noviembrePlanTrabajoDetalle,diciembrePlanTrabajoDetalle, cumplimientoPlanTrabajoDetalle,    metaPlanTrabajoDetalle, te.nombreCompletoTercero, te.idTercero, presupuestoPlanTrabajoDetalle,    costoRealPlanTrabajoDetalle, observacionPlanTrabajoDetalle
-
-        FROM
-            plantrabajodetalle ptd
-                LEFT JOIN
-            tipoexamenmedico TET ON ptd.TipoExamenMedico_idTipoExamenMedico = TET.idTipoExamenMedico
-                LEFT JOIN
-
-            tercero te ON ptd.Tercero_idResponsable = te.idTercero
-            cargo c ON ptd.Cargo_idResponsable = c.idCargo
-                LEFT JOIN
-            modulo m ON ptd.Modulo_idModulo = m.idModulo
-        WHERE
-            PlanTrabajo_idPlanTrabajo = '.$id.'
-                AND Modulo_idModulo = 22
-                group by idPlanTrabajoDetalle
-        ORDER BY nombreTipoExamenMedico');
-
-        return view('plantrabajoformulario', compact('Tercero_idAuditor','Cargo_idResponsable','plantrabajodetalle','plantrabajodetalleexamen'),['plantrabajoformulario'=>$plantrabajoformulario]);
+        return view('plantrabajoformulario', compact('Tercero_idAuditor','Cargo_idResponsable','plantrabajodetalle'),['plantrabajoformulario'=>$plantrabajoformulario]);
     }
 
     /**
@@ -220,38 +200,40 @@ class PlanTrabajoFormularioController extends Controller
     {
 
         $contadorPlanTrabajo = count($request['observacionPlanTrabajoDetalle']);
+        
         for($i = 0; $i < $contadorPlanTrabajo; $i++)
         {
             $indice = array(
-             'idPlanTrabajoDetalle' => $request['idPlanTrabajoDetalle'][$i]);
+             'idPlanTrabajoDetalle' => @$request['idPlanTrabajoDetalle'][$i]);
 
             $data = array(
             'PlanTrabajo_idPlanTrabajo' => $id,
-            'Modulo_idModulo' => $request['Modulo_idModulo'][$i],
-            'idConcepto' => $request['idConcepto'][$i],
-            'TipoExamenMedico_idTipoExamenMedico' => ($request['TipoExamenMedico_idTipoExamenMedico'][$i] == '' ? NULL : $request['TipoExamenMedico_idTipoExamenMedico'][$i]),
-            'nombreConceptoPlanTrabajoDetalle' => $request['nombreConceptoPlanTrabajoDetalle'][$i],
-            'eneroPlanTrabajoDetalle' => ($request['eneroPlanTrabajoDetalle'][$i] == '' ? NULL : $request['eneroPlanTrabajoDetalle'][$i]),
-            'febreroPlanTrabajoDetalle' => ($request['febreroPlanTrabajoDetalle'][$i] == '' ? NULL : $request['febreroPlanTrabajoDetalle'][$i]),
-            'marzoPlanTrabajoDetalle' => ($request['marzoPlanTrabajoDetalle'][$i] == '' ? NULL : $request['marzoPlanTrabajoDetalle'][$i]),
-            'abrilPlanTrabajoDetalle' => ($request['abrilPlanTrabajoDetalle'][$i] == '' ? NULL : $request['abrilPlanTrabajoDetalle'][$i]),
-            'mayoPlanTrabajoDetalle' => ($request['mayoPlanTrabajoDetalle'][$i] == '' ? NULL : $request['mayoPlanTrabajoDetalle'][$i]),
-            'junioPlanTrabajoDetalle' => ($request['junioPlanTrabajoDetalle'][$i] == '' ? NULL : $request['junioPlanTrabajoDetalle'][$i]),
-            'julioPlanTrabajoDetalle' => ($request['julioPlanTrabajoDetalle'][$i] == '' ? NULL : $request['julioPlanTrabajoDetalle'][$i]),
-            'agostoPlanTrabajoDetalle' => ($request['agostoPlanTrabajoDetalle'][$i] == '' ? NULL : $request['agostoPlanTrabajoDetalle'][$i]),
-            'septiembrePlanTrabajoDetalle' => ($request['septiembrePlanTrabajoDetalle'][$i] == '' ? NULL : $request['septiembrePlanTrabajoDetalle'][$i]),
-            'octubrePlanTrabajoDetalle' => ($request['octubrePlanTrabajoDetalle'][$i] == '' ? NULL : $request['octubrePlanTrabajoDetalle'][$i]),
-            'noviembrePlanTrabajoDetalle' => ($request['noviembrePlanTrabajoDetalle'][$i] == '' ? NULL : $request['noviembrePlanTrabajoDetalle'][$i]),
-            'diciembrePlanTrabajoDetalle' => ($request['diciembrePlanTrabajoDetalle'][$i] == '' ? NULL : $request['diciembrePlanTrabajoDetalle'][$i]),
-            'presupuestoPlanTrabajoDetalle' => $request['presupuestoPlanTrabajoDetalle'][$i],
-            'costoRealPlanTrabajoDetalle' => $request['costoRealPlanTrabajoDetalle'][$i],
-            'cumplimientoPlanTrabajoDetalle' => $request['cumplimientoPlanTrabajoDetalle'][$i],
-            'metaPlanTrabajoDetalle' => $request['metaPlanTrabajoDetalle'][$i],
-            'Cargo_idResponsable' => ($request['Cargo_idResponsable'][$i] == '' ? NULL : $request['Cargo_idResponsable'][$i]),
-            'observacionPlanTrabajoDetalle' => $request['observacionPlanTrabajoDetalle'][$i] 
+            'Modulo_idModulo' => (empty($request['Modulo_idModulo'][$i]) ? 0 : $request['Modulo_idModulo'][$i]),
+            'idConcepto' => (empty($request['idConcepto'][$i]) ? 0 : $request['idConcepto'][$i]),
+            'TipoExamenMedico_idTipoExamenMedico' => (empty($request['TipoExamenMedico_idTipoExamenMedico'][$i]) ? 0 : $request['TipoExamenMedico_idTipoExamenMedico'][$i]),
+            'nombreConceptoPlanTrabajoDetalle' => (empty($request['nombreConceptoPlanTrabajoDetalle'][$i]) ? 0 : $request['nombreConceptoPlanTrabajoDetalle'][$i]),
+            'eneroPlanTrabajoDetalle' => (empty($request['eneroPlanTrabajoDetalle'][$i]) ? null : $request['eneroPlanTrabajoDetalle'][$i]),
+            'febreroPlanTrabajoDetalle' => (empty($request['febreroPlanTrabajoDetalle'][$i]) ? null : $request['febreroPlanTrabajoDetalle'][$i]),
+            'marzoPlanTrabajoDetalle' => (empty($request['marzoPlanTrabajoDetalle'][$i]) ? null : $request['marzoPlanTrabajoDetalle'][$i]),
+            'abrilPlanTrabajoDetalle' => (empty($request['abrilPlanTrabajoDetalle'][$i]) ? null : $request['abrilPlanTrabajoDetalle'][$i]),
+            'mayoPlanTrabajoDetalle' => (empty($request['mayoPlanTrabajoDetalle'][$i]) ? null : $request['mayoPlanTrabajoDetalle'][$i]),
+            'junioPlanTrabajoDetalle' => (empty($request['junioPlanTrabajoDetalle'][$i]) ? null : $request['junioPlanTrabajoDetalle'][$i]),
+            'julioPlanTrabajoDetalle' => (empty($request['julioPlanTrabajoDetalle'][$i]) ? null : $request['julioPlanTrabajoDetalle'][$i]),
+            'agostoPlanTrabajoDetalle' => (empty($request['agostoPlanTrabajoDetalle'][$i]) ? null : $request['agostoPlanTrabajoDetalle'][$i]),
+            'septiembrePlanTrabajoDetalle' => (empty($request['septiembrePlanTrabajoDetalle'][$i]) ? null : $request['septiembrePlanTrabajoDetalle'][$i]),
+            'octubrePlanTrabajoDetalle' => (empty($request['octubrePlanTrabajoDetalle'][$i]) ? null : $request['octubrePlanTrabajoDetalle'][$i]),
+            'noviembrePlanTrabajoDetalle' => (empty($request['noviembrePlanTrabajoDetalle'][$i]) ? null : $request['noviembrePlanTrabajoDetalle'][$i]),
+            'diciembrePlanTrabajoDetalle' => (empty($request['diciembrePlanTrabajoDetalle'][$i]) ? null : $request['diciembrePlanTrabajoDetalle'][$i]),
+            'presupuestoPlanTrabajoDetalle' => (empty($request['presupuestoPlanTrabajoDetalle'][$i]) ? 0 : $request['presupuestoPlanTrabajoDetalle'][$i]),
+            'costoRealPlanTrabajoDetalle' => (empty($request['costoRealPlanTrabajoDetalle'][$i]) ? 0 : $request['costoRealPlanTrabajoDetalle'][$i]),
+            'cumplimientoPlanTrabajoDetalle' => (empty($request['cumplimientoPlanTrabajoDetalle'][$i]) ? 0 : $request['cumplimientoPlanTrabajoDetalle'][$i]),
+            'metaPlanTrabajoDetalle' => (empty($request['metaPlanTrabajoDetalle'][$i]) ? 0 : $request['metaPlanTrabajoDetalle'][$i]),
+            'Cargo_idResponsable' => null,
+            'observacionPlanTrabajoDetalle' => (empty($request['observacionPlanTrabajoDetalle'][$i]) ? 0 : $request['observacionPlanTrabajoDetalle'][$i])
             );
 
             $preguntas = \App\PlanTrabajoDetalle::updateOrCreate($indice, $data);
         }
+        
     }
 }

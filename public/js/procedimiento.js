@@ -224,28 +224,32 @@ function validarformulario()
     // Validamos los datos de detalle
     for(actual = 0; actual < procedimiento.contador ; actual++)
     {
-        if((document.getElementById("actividadProcedimientoDetalle"+(actual)).value == null))
+        if(document.getElementById("actividadProcedimientoDetalle"+(actual)))
         {
-            document.getElementById("actividadProcedimientoDetalle"+(actual)).style = "width: 500px; height: 35px; background-color:#F5A9A9;";
-            resp = false;
-            
-        } 
-        else
-        {
-            document.getElementById("actividadProcedimientoDetalle"+(actual)).style = "width: 500px; height: 35px; background-color:white;";
-        }
+            if((document.getElementById("actividadProcedimientoDetalle"+(actual)).value == null ||
+                document.getElementById("actividadProcedimientoDetalle"+(actual)).value == ''))
+            {
+                $("#actividadProcedimientoDetalle"+(actual)).css("border-color","red");
+                resp = false;
+                
+            } 
+            else
+            {
+                $("#actividadProcedimientoDetalle"+(actual)).css("border-color","white");
+            }
          
-        /*if(document.getElementById("Tercero_idResponsable"+(actual)) && 
-                (document.getElementById("Tercero_idResponsable"+(actual)).value == 0))  
-        {
-            document.getElementById("Tercero_idResponsable"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:red;";
-            resp = false;
+            if(document.getElementById("Tercero_idResponsable"+(actual)) && 
+                    (document.getElementById("Tercero_idResponsable"+(actual)).value == 0))  
+            {
+                $("#Tercero_idResponsable"+(actual)).css("border-color","red");
+                resp = false;
+            }
+            else
+            {
+                $("#Tercero_idResponsable"+(actual)).css("border-color","white");
+            }
         }
-        else
-        {
-            document.getElementById("Tercero_idResponsable"+(actual)).style = "height: 60px; text-align: center; vertical-align: top; width: 100px; background-color:white;";
-        }
-
+        /*
         if(document.getElementById("Documento_idDocumento"+(actual)) && 
                 (document.getElementById("Documento_idDocumento"+(actual)).value == 0))
         {
