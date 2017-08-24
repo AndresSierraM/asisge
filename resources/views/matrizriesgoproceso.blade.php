@@ -61,9 +61,9 @@
 			detalle.campoEliminacion = 'eliminarproceso';
 			detalle.botonEliminacion = true;
 			detalle.campos = ['idMatrizRiesgoProcesoDetalle','MatrizRiesgoProceso_idMatrizRiesgoProceso', 'descripcionMatrizRiesgoProcesoDetalle', 'efectoMatrizRiesgoProcesoDetalle', 'frecuenciaMatrizRiesgoProcesoDetalle', 'impactoMatrizRiesgoProcesoDetalle', 'nivelValorMatrizRiesgoProcesoDetalle', 'interpretacionValorMatrizRiesgoProcesoDetalle', 'accionesMatrizRiesgoProcesoDetalle', 'descripcionAccionMatrizRiesgoProcesoDetalle', 'Tercero_idResponsableAccion', 'seguimientoMatrizRiesgoProcesoDetalle', 'fechaSeguimientoMatrizRiesgoProcesoDetalle', 'fechaCierreMatrizRiesgoProcesoDetalle', 'eficazMatrizRiesgoProcesoDetalle'];
-			detalle.etiqueta = ['input','input','input','input','select','select','input','input','select','input','select','input','input','input','checkbox'];
-			detalle.tipo = ['hidden','hidden','text','text','','','text','text','','','','text','date','date','checkbox'];
-			detalle.estilo = ['','','width: 110px;height:35px;','width: 100px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 80px;height:30px;display:inline-block;'];
+			detalle.etiqueta = ['input','input','textarea','textarea','select','select','input','input','select','textarea','select','textarea','input','input','checkbox'];
+			detalle.tipo = ['hidden','hidden','textarea','textarea','','','text','text','','textarea','','textarea','date','date','checkbox'];
+			detalle.estilo = ['','','vertical-align:top; width: 300px;  height:35px;','vertical-align:top; width: 300px;  height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','vertical-align:top; width: 300px;  height:35px;','width: 110px;height:35px;','vertical-align:top; width: 300px;  height:35px;','width: 150px;height:35px;','width: 150px;height:35px;','width: 80px;height:30px;display:inline-block;'];
 			detalle.clase = ['','','','','','','','','','','','','',''];
 			detalle.sololectura = [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false];
 			detalle.opciones = ['','','','',Frecuencia,Impacto,'','',Accion,'',ResponsableAccion,'','','',''];
@@ -137,20 +137,20 @@
 									<div class="col-sm-12">
 										<div class="row show-grid">
 											<div style="overflow: auto; width: 100%;">
-												<div style="width: 1600px; height: 300px; display: inline-block; ">					
+												<div style="width: 2300px; height: 300px; display: inline-block; ">					
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Descripci&oacute;n del riesgo</div>
-													<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Efecto Posible</div>
+													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n del riesgo</div>
+													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Efecto Posible</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Frecuencia</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Impacto</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel Valor</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Interpretaci&oacute;n Valoraci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Acciones</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Descripci&oacute;n Acci&oacute;n</div>
+													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n Acci&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Responsable Acci&oacute;n</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Seguimiento</div>
+													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Seguimiento</div>
 													<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha Seguimiento</div>
 													<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha Cierre</div>
 													<div class="col-md-1" style="width: 80px;display:inline-block;height:60px;">Eficaz</div>													

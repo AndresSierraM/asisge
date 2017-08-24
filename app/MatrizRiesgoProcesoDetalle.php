@@ -9,7 +9,7 @@ class MatrizRiesgoProcesoDetalle extends Model
     protected $table = 'matrizriesgoprocesodetalle';
     protected $primaryKey = 'idMatrizRiesgoProcesoDetalle';
 
-    protected $fillable = ['MatrizRiesgoProceso_idMatrizRiesgoProceso', 'descripcionMatrizRiesgoProcesoDetalle', 'efectoMatrizRiesgoProcesoDetalle', 'frecuenciaMatrizRiesgoProcesoDetalle', 'impactoMatrizRiesgoProcesoDetalle', 'nivelValorMatrizRiesgoProcesoDetalle', 'interpretacionValorMatrizRiesgoProcesoDetalle', 'accionesMatrizRiesgoProcesoDetalle', 'descripcionAccionMatrizRiesgoProcesoDetalle', 'Tercero_idResponsableAccion', 'seguimientoMatrizRiesgoProcesoDetalle', 'fechaSeguimientoMatrizRiesgoProcesoDetalle', 'fechaCierreMatrizRiesgoProcesoDetalle', 'eficazMatrizRiesgoProcesoDetalle'];
+    protected $fillable = ['MatrizRiesgoProceso_idMatrizRiesgoProceso', 'descripcionMatrizRiesgoProcesoDetalle', 'efectoMatrizRiesgoProcesoDetalle', 'frecuenciaMatrizRiesgoProcesoDetalle', 'impactoMatrizRiesgoProcesoDetalle', 'nivelValorMatrizRiesgoProcesoDetalle', 'interpretacionValorMatrizRiesgoProcesoDetalle', 'accionesMatrizRiesgoProcesoDetalle', 'descripcionAccionMatrizRiesgoProcesoDetalle', 'Tercero_idResponsableAccion', 'seguimientoMatrizRiesgoProcesoDetalle', 'fechaSeguimientoMatrizRiesgoProcesoDetalle', 'fechaCierreMatrizRiesgoProcesoDetalle', 'eficazMatrizRiesgoProcesoDetalle','MatrizDOFADetalle_idMatrizDOFADetalle'];
 
     public $timestamps = false;
 
@@ -17,4 +17,5 @@ class MatrizRiesgoProcesoDetalle extends Model
     {
 		return $this->hasOne('App\MatrizRiesgo','idMatrizRiesgoProceso');
     }
+    
 }
