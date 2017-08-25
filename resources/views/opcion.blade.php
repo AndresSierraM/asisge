@@ -23,7 +23,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-barcode"></i>
+                <i class="fa fa-barcode" style="width:14px;"></i>
               </span>
               {!!Form::text('ordenOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el orden de la opcion en el menu'])!!}
               {!! Form::hidden('idOpcion', null, array('id' => 'idOpcion')) !!}
@@ -38,7 +38,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
+                <i class="fa fa-pencil-square-o " style="width:14px;"></i>
               </span>
       				{!!Form::text('nombreOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la opcion'])!!}
             </div>
@@ -50,7 +50,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
+                <i class="fa fa-pencil-square-o " style="width:14px;"></i>
               </span>
               {!!Form::text('nombreCortoOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre corto de la opcion'])!!}
             </div>
@@ -63,7 +63,7 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-code"></i>
+                <i class="fa fa-code" style="width:14px;"></i>
               </span>
               {!!Form::text('rutaOpcion',null,['class'=>'form-control','placeholder'=>'Ingresa la ruta de acceso'])!!}
             </div>
@@ -75,19 +75,26 @@
             <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">
-                          <i class="fa fa-bars"></i>
+                          <i class="fa fa-bars" style="width:14px;"></i>
                         </span>
                 {!!Form::select('Paquete_idPaquete',$paquete, (isset($opcion) ? $opcion->Paquete_idPaquete : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Paquete"])!!}
               </div>
             </div>
-          </div>
-
-      
-
+        </div>
+          <!-- Chekbox para permitir firma en celular-->
+        <div class="form-group">
+            {!!Form::label('permiteFirmaOpcion', 'Permite Firmar', array('class' => 'col-sm-2 control-label','style'=>'width:215px;padding-right:70px '))!!}
+            <div class="col-sm-10" style="width:900px;">
+              <div class="input-group" style="width:14px;">                     
+                {!!Form::checkbox('permiteFirmaOpcion',1,null, array('id' => 'permiteFirmaOpcion','style'=>'width:50px;height:30px'))!!}
+              </div>
+            </div>
+        </div>
+          
         <div class="form-group" style="width:250px; display: inline;" >
           {!! Form::label('iconoOpcion', 'Icono', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10" style="width:250px;">
-            <div class="panel panel-default">
+            <div class="panel panel-default" >
               <input id="iconoOpcion" name="iconoOpcion" type="file" value="<?php echo (isset($opcion->iconoOpcion) ? 'images/'. $opcion->iconoOpcion : ''); ?>" >
             </div>
           </div>

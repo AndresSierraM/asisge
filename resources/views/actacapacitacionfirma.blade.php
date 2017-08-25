@@ -1,4 +1,5 @@
-@extends('layouts.vista')
+@extends('layouts.menufirma')
+
 
 @section('titulo')<h3 id="titulo"><center>Acta  Capacitaci&oacute;n Firma</center></h3>@stop
 

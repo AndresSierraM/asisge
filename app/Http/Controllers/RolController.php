@@ -73,7 +73,8 @@ class RolController extends Controller
                 'adicionarRolOpcion' => $request['adicionarRolOpcion'][$i],
                 'modificarRolOpcion' => $request['modificarRolOpcion'][$i],
                 'eliminarRolOpcion' => $request['eliminarRolOpcion'][$i],
-                'consultarRolOpcion' => $request['consultarRolOpcion'][$i]
+                'consultarRolOpcion' => $request['consultarRolOpcion'][$i],
+                'firmarRolOpcion' => $request['firmarRolOpcion'][$i]
                ]);
             }
 
@@ -134,7 +135,8 @@ class RolController extends Controller
                 'adicionarRolOpcion' => $request['adicionarRolOpcion'][$i],
                 'modificarRolOpcion' => $request['modificarRolOpcion'][$i],
                 'eliminarRolOpcion' => $request['eliminarRolOpcion'][$i],
-                'consultarRolOpcion' => $request['consultarRolOpcion'][$i]
+                'consultarRolOpcion' => $request['consultarRolOpcion'][$i],
+                'firmarRolOpcion' => $request['firmarRolOpcion'][$i]
                ]);
             }
 

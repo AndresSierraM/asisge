@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EquipoSeguimientoDetalle extends Model
 {
-    protected $table = 'EquipoSeguimientoDetalle';
+    protected $table = 'equiposeguimientodetalle';
     protected $primaryKey = 'idEquipoSeguimientoDetalle';
 
     protected $fillable = ['EquipoSeguimiento_idEquipoSeguimiento','identificacionEquipoSeguimientoDetalle','tipoEquipoSeguimientoDetalle', 'FrecuenciaMedicion_idCalibracion','fechaInicioCalibracionEquipoSeguimientoDetalle','FrecuenciaMedicion_idVerificacion','fechaInicioVerificacionEquipoSeguimientoDetalle','unidadMedidaCalibracionEquipoSeguimientoDetalle','rangoInicialCalibracionEquipoSeguimientoDetalle','rangoFinalCalibracionEquipoSeguimientoDetalle','escalaCalibracionEquipoSeguimientoDetalle','capacidadInicialCalibracionEquipoSeguimientoDetalle','capacidadFinalCalibracionEquipoSeguimientoDetalle','utilizacionCalibracionEquipoSeguimientoDetalle','toleranciaCalibracionEquipoSeguimientoDetalle','errorPermitidoCalibracionEquipoSeguimientoDetalle'];

@@ -82,6 +82,7 @@ class OpcionController extends Controller
             'nombreCortoOpcion' => $request['nombreCortoOpcion'],
             'rutaOpcion' => $request['rutaOpcion'],
             'Paquete_idPaquete' => $request['Paquete_idPaquete'],
+            'permiteFirmaOpcion' => isset($request['permiteFirmaOpcion']) ? 1 : 0,
             'iconoOpcion' =>  $imageName
             ]); 
         return redirect('/opcion');
@@ -124,6 +125,10 @@ class OpcionController extends Controller
         
         $opcion = \App\Opcion::find($id);
         $opcion->fill($request->all());
+        // Se valida si tiene valor el chulo para mandar el respectivo valor cuando esta modificando el registro
+        $opcion->permiteFirmaOpcion = isset($request['permiteFirmaOpcion']) ? 1 : 0;
+        
+
 
         if(null !== Input::file('iconoOpcion') ){
             $image = Input::file('iconoOpcion');

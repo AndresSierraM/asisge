@@ -5,7 +5,7 @@ class RolOpcion extends Model
 {
     protected $table = 'rolopcion';
     protected $primaryKey = 'idRolOpcion';
-    protected $fillable = ['Rol_idRol', 'Opcion_idOpcion', 'adicionarRolOpcion','modificarRolOpcion','eliminarRolOpcion','consultarRolOpcion'];
+    protected $fillable = ['Rol_idRol', 'Opcion_idOpcion', 'adicionarRolOpcion','modificarRolOpcion','eliminarRolOpcion','consultarRolOpcion','firmarRolOpcion'];
     public $timestamps = false;
     
     public function rol()
