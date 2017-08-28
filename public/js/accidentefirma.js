@@ -41,6 +41,10 @@ function asignaridCord(Tercero_idCoordinador)
     $("#Tercero_idCoordinador").val(Tercero_idCoordinador);
 }
 
+
+
+
+
 function actualizarFirma()
 {
     if (signaturePad.isEmpty()) 

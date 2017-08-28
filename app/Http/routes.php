@@ -80,7 +80,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('matrizdofa', 'MatrizDofaController');
     Route::resource('matrizriesgoproceso', 'MatrizRiesgoProcesoController');
     Route::resource('accidentefirma', 'AccidenteFirmaController@create');
-    Route::resource('actacapacitacionfirma', 'ActaCapacitacionFirmaController@create');
+    Route::resource('actacapacitacionfirma', 'ActaCapacitacionFirmaController');
     Route::resource('entregaelementoproteccionfirma', 'EntregaElementoProteccionFirmaController@create');
     Route::resource('inspeccionfirma', 'InspeccionFirmaController@create');
     Route::resource('actagrupoapoyofirma', 'ActaGrupoApoyoFirmaController@create');

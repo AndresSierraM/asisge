@@ -4,7 +4,7 @@ $numeroActa = $_POST['numeroActaCapacitacion'];
 
 
 $consulta = DB::Select('
-SELECT t.nombreCompletoTercero,t.idTercero
+SELECT  ac.idActaCapacitacion,t.nombreCompletoTercero,t.idTercero
 FROM actacapacitacion ac
 LEFT JOIN actacapacitacionasistente  acasis
 ON acasis.ActaCapacitacion_idActaCapacitacion = ac.idActaCapacitacion
@@ -33,8 +33,8 @@ for($i = 0; $i < count($consulta); $i++)
 	$tablahtml .= '
 	<tr background-color:#EEEEEE;>
 		<td><button type="button" value="'.$datosconsulta["idTercero"].'" class="btn btn-primary" onclick="signaturePad.clear();
-                mostrarFirma();asisgnaridTercero(this.value)" style="width:100%;">Firmar</button></td>
-		<td>'.$datosconsulta['nombreCompletoTercero'].'</td>   
+                mostrarFirma();asisgnaridTercero(this.value);asignaridactacapa('.$datosconsulta['idActaCapacitacion'].')" style="width:100%;">Firmar</button></td>
+		<td style="color:black;">'.$datosconsulta['nombreCompletoTercero'].'</td>   
 	</tr>
 	';
 

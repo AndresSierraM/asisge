@@ -4,7 +4,7 @@ $idActa = $_POST['idActa'];
 $idAsistente = $_POST['idAsistente'];
 $firma = $_POST['firma'];
 
-$ruta = 'actacapacitacion/firmaactacapacitaciono_'.$idActa.'_'.$idAsistente.'.png';
+$ruta = 'actacapacitacion/firmaactacapacitacion_'.$idActa.'_'.$idAsistente.'.png';
 //----------------------------
 // Guardamos la imagen de la firma como un archivo en disco
 $data = $firma;

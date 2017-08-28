@@ -1,4 +1,4 @@
-@extends('layouts.vista')
+@extends('layouts.menufirma')
 
 @section('titulo')<h3 id="titulo"><center>Acta de Reunión<br>Grupo de Apoyo Firma</center></h3>@stop
 
@@ -23,18 +23,6 @@
 </script>       
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-3 col-sm-offset-1 col-sm-8">
-	        <!-- Se crea una lista ordenada para las opciones -->
-	        <!-- <ul class="nav nav-tabs">
-			  <li class="active"><a data-toggle="tab" href="#correo"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/correo.png style='width:40px; height:30px;'></a></li></a></li>"?>
-			  <li class=""><a data-toggle="tab" href="#correo"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/correo.png style='width:40px; height:30px;'></a></li></a></li>"?>
-			  <li class=""><a data-toggle="tab" href="#correo"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/correo.png style='width:40px; height:30px;'></a></li></a></li>"?>
-			  <li class=""><a data-toggle="tab" href="#correo"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/correo.png style='width:40px; height:30px;'></a></li></a></li>"?>
-			  <li class=""><a data-toggle="tab" href="#correo"><?php echo "<img src=http://".$_SERVER["HTTP_HOST"]."/images/correo.png style='width:40px; height:30px;'></a></li></a></li>"?>
-			</ul> -->    
-        </div>
-    </div>
 	<br>
 	<div class="form-group">
 		<div class="col-lg-12">
@@ -42,7 +30,7 @@
 				<!-- <div class="panel-heading">&nbsp;</div> -->
 				<div class="panel-body">							
 					<div class="form-group" id='test'>
-						{!!Form::label('GrupoApoyo_idGrupoApoyo', 'Acta de Reunión', array('class' => 'col-sm-2 control-label'))!!}
+						<FONT COLOR="black">{!!Form::label('GrupoApoyo_idGrupoApoyo', 'Acta de Reunión', array('class' => 'col-sm-2 control-label'))!!}</FONT>
 						<div class="col-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon">

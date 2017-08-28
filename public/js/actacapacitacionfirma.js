@@ -38,6 +38,12 @@ function asisgnaridTercero(idAsistente)
     $("#idAsistente").val(idAsistente);
 }
 
+// Se crea una funcion para asignar el id de al capacitacion que esta en ese numero consultado.  funcion ejecuta en LLenar tercero
+function asignaridactacapa(idCapacitacion)
+{
+    $("#idActaCapacitacion").val(idCapacitacion);
+}
+
 function actualizarFirma()
 {
     if (signaturePad.isEmpty()) 

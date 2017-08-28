@@ -15,7 +15,7 @@ $data = base64_decode($data);
 file_put_contents('imagenes/'.$ruta, $data);
 
 
-$update = DB::update('Update accidente set firmaCoordinadorAccidente = "'.$ruta.'" where idAccidente = '.$idCoordinador);
+$update = DB::update('Update accidente set firmaCoordinadorAccidente = "'.$ruta.'" where Tercero_idCoordinador = '.$idCoordinador);
 
 echo json_encode('Firma actualizada correctamente');
 

@@ -28,7 +28,7 @@ for($i = 0; $i < count($consulta); $i++)
 	<tr background-color:#EEEEEE;>
 		<td><button type="button" value="'.$datosconsulta["idEntregaElementoProteccion"].'" class="btn btn-primary" onclick="signaturePad.clear();
                 mostrarFirma();asignaridEntrega(this.value)" style="width:100%;">Firmar</button></td>
-		<td>'.$datosconsulta['nombreCompletoTercero'].'</td>   
+		<td style="color:black;">'.$datosconsulta['nombreCompletoTercero'].'</td>   
 	</tr>
 	';
 

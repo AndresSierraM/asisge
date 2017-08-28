@@ -6,11 +6,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link type="image/x-icon" rel="icon" href="{!!('images/Logo-sisoft.png')!!}">
 
-	@yield('clases')
+ 	@yield('clases')
+
+ 	   {!!Html::script('assets/jquery-v2.1.4/jquery-2.1.4.min.js'); !!}
+ 	    {!!Html::script('choosen/chosen.jquery.js'); !!}
 	{!!Html::style('css/menu.css'); !!}
 	{!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap.min.css'); !!}
 	
 	{!!Html::script('assets/bootstrap-v3.3.5/js/bootstrap.min.js'); !!}
+	{!!Html::script('js/menu.js'); !!}
 
       
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap-theme.min.css'); !!}
@@ -45,7 +49,7 @@
       
       {!!Html::script('assets/tutorial/js/ie10-viewport-bug-workaround.js'); !!}
       {!!Html::script('assets/tutorial/js/ie-emulation-modes-warning.js'); !!}
-      {!!Html::script('assets/jquery-v2.1.4/jquery-2.1.4.min.js'); !!}
+   
       
       {!!Html::script('assets/tutorial/js/helpers.js'); !!}
       {!!Html::script('assets/tutorial/js/base.js'); !!}
@@ -54,7 +58,7 @@
       {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput.js'); !!}
       {!!Html::script('sb-admin/bower_components/fileinput/js/fileinput_locale_es.js'); !!}
       {!!Html::script('sb-admin/bower_components/select2/js/select2.min.js'); !!}
-      {!!Html::script('choosen/chosen.jquery.js'); !!}
+     
       {!!Html::script('choosen/docsupport/prism.js'); !!}
       {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
       {!!Html::script('js/general.js')!!}
@@ -66,6 +70,8 @@
       
       <!-- Radio buttons y checkbox con estilo  -->
       {!! Html::style('css/segmented-controls.css'); !!}
+
+      {!!Html::script('js/app1.js'); !!}
 
 
         <script type="text/javascript">
@@ -105,93 +111,10 @@
 
 	<div id="header">
 		<div id="container">
-		<div class="barramenu" style="height: 78px;">
+		<div class="barramenufirma">
 			
 		<?php
 
-			// // -------------------------------------------
-			// // P A Q U E T E S   S E G U N   E L   R O L 
-			// // D E L   U S U A R I O 
-			// // -------------------------------------------
-			// $paquetes = DB::select(
-			//     'SELECT P.idPaquete,
-			// 	    P.nombrePaquete,
-			// 	    P.iconoPaquete
-			// 	FROM users U
-			// 	left join rol R
-			// 	on U.Rol_idRol = R.idRol
-			// 	left join rolopcion RO
-			// 	on U.Rol_idRol = RO.Rol_idRol
-			// 	left join opcion O
-			// 	on RO.Opcion_idOpcion = O.idOpcion
-			// 	left join paquete P
-			// 	on O.Paquete_idPaquete = P.idPaquete
-			// 	where U.id = '.\Session::get("idUsuario").'
-			// 	GROUP BY P.idPaquete
-			// 	ORDER BY P.ordenPaquete, P.nombrePaquete;');			
-				
-			// 	foreach ($paquetes as $idP => $datosP) 
-			// 	{
-			// 		// si el paquete comienza por CRM,consultamos los Movimientos que tiene permisos, de lo contrario consultamos opciones generales con permiso
-			// 		if(substr($datosP->nombrePaquete,0,3) == 'CRM')
-			// 		{
-			// 			// -------------------------------------------
-			// 			// O P C I O N E S  D E  C R M   S E G U N   E L   R O L 
-			// 			// D E L   U S U A R I O  Y   L A   C O M P A N I A
-			// 			// -------------------------------------------
-			// 			$opciones = DB::select(
-			// 			'Select
-			// 			  CONCAT("movimientocrm?idDocumentoCRM=", idDocumentoCRM) as rutaOpcion,
-			// 			  "menu/casocrm.png" as iconoOpcion,
-			// 			  documentocrm.nombreDocumentoCRM as nombreOpcion,
-			// 			  documentocrm.nombreDocumentoCRM as nombreCortoOpcion
-			// 			From
-			// 			  documentocrm Inner Join
-			// 			  documentocrmrol
-			// 			    On documentocrmrol.DocumentoCRM_idDocumentoCRM = documentocrm.idDocumentoCRM
-			// 			  Inner Join
-			// 			  rol
-			// 			    On documentocrmrol.Rol_idRol = rol.idRol Inner Join
-			// 			  users
-			// 			    On users.Rol_idRol = rol.idRol
-			// 			Where
-			// 			  users.id = '.\Session::get("idUsuario"));
-
-			// 			// foreach ($opciones as $idO => $datosO) 
-			// 			// {
-
-			// 			// 	echo 
-			// 			// 	'
-			// 			// 	<li>
-			// 			// 		<a href="http://'.$_SERVER["HTTP_HOST"].'/movimientocrm?idDocumentoCRM='.$datosO->idDocumentoCRM.'"> <img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/menu/casocrm.png" title="'.$datosO->nombreDocumentoCRM.'" style="width:48px; height:48px;"><br>
-			// 			// 			'.$datosO->nombreDocumentoCRM.'
-			// 			// 		</a>
-			// 			// 	</li>';
-			// 			// }
-			// 		}
-			// 		else if(substr($datosP->nombrePaquete,-6) == 'Compra')
-			// 		{
-			// 			$opciones = DB::select(
-			// 			'Select
-			// 			  CONCAT("ordencompra?idDocumentoCRM=", idDocumentoCRM) as rutaOpcion,
-			// 			  "menu/casocrm.png" as iconoOpcion,
-			// 			  CONCAT("Orden de Compra de ",documentocrm.nombreDocumentoCRM) as nombreOpcion,
-   //  					  CONCAT("Orden de Compra de ",documentocrm.nombreDocumentoCRM) as nombreCortoOpcion
-			// 			From
-			// 			  documentocrm Inner Join
-			// 			  documentocrmrol
-			// 			    On documentocrmrol.DocumentoCRM_idDocumentoCRM = documentocrm.idDocumentoCRM
-			// 			  Inner Join
-			// 			  rol
-			// 			    On documentocrmrol.Rol_idRol = rol.idRol Inner Join
-			// 			  users
-			// 			    On users.Rol_idRol = rol.idRol
-			// 			Where
-			// 			  users.id = '.\Session::get("idUsuario").'
-			// 			AND tipoDocumentoCRM = "Compras"');
-			// 		}
-			// 		else
-			// 		{
 						// -------------------------------------------
 						// O P C I O N E S   S E G U N   E L   R O L 
 						// D E L   U S U A R I O 
@@ -214,34 +137,19 @@
 				       left join paquete P
 				       on O.Paquete_idPaquete = P.idPaquete
 				       where  U.id = '.\Session::get("idUsuario").' and
-				        O.permiteFirmaOpcion = 1
+				        O.permiteFirmaOpcion = 1 AND RO.firmarRolOpcion = 1
 				        GROUP BY O.idOpcion				      
 				        ORDER BY O.ordenOpcion, P.nombrePaquete;');
 
 						
-					// }
-					
-
-					// // Creamos el icono del paquete
-					// echo 
-					// '<div id="menu'.$datosP->idPaquete.'" class="menu">
-					// 	<img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$datosP->iconoPaquete.'" title="'.$datosP->nombrePaquete.'" style="width:40px;" onclick="abreMenu('.$datosP->idPaquete.', '.count($opciones).');">
-					// </div>';
-
-					// // Creamos el marco para las opciones del paquete
-					// echo 
-					// '<div id="gridbox'.$datosP->idPaquete.'" class="gridbox" style="margin-left: 15px;">
-					// 	<div id="innergrid'.$datosP->idPaquete.'" class="innergrid">
-					// 		<ul id="icons'.$datosP->idPaquete.'" class="icons">';
-
 					foreach ($opciones as $idO => $datosO) 
 					{
 					
 						echo 
 						'
 						&nbsp;
-						<div id="Opcion" class="menu" align="center">
-							<a href="http://'.$_SERVER["HTTP_HOST"].'/'.$datosO->rutaOpcion.'"> <img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$datosO->iconoOpcion.'" title="'.$datosO->nombreOpcion.'" style="width:48px; height:48px;"><br>
+						<div id="Opcion" class="menu" align="center" >
+							<a href="http://'.$_SERVER["HTTP_HOST"].'/'.$datosO->rutaOpcion.'"> <img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$datosO->iconoOpcion.'" title="'.$datosO->nombreOpcion.'" style="width:38px; height:48px;"><br>
 								'.$datosO->nombreCortoOpcion.'
 							</a>
 							</div>
@@ -249,14 +157,11 @@
 					}
 					
 			
-				// }
-
+		
 				echo 
-				'<div id="menuuser1" class="menu" style="float: right; width: 60px;height:48">
+				'<div id="menuuser1" class="menu" style="float: right; width: 30px;height:38px">
 		            <div>
         		         '.\Session::get("nombreUsuario").'
-
-                		&nbsp;
 						<a href="http://'.$_SERVER["HTTP_HOST"].'/auth/logout"> <img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de SiSoft" style="width:32px; height:32px;">
 						</a>
 					</div>
@@ -283,3 +188,4 @@
 	</div>
 </body>
 </html>
+

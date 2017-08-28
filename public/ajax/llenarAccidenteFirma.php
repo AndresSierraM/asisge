@@ -30,8 +30,8 @@ for($i = 0; $i < count($consulta); $i++)
 	$tablahtml .= '
 	<tr background-color:#EEEEEE;>
 		<td><button type="button" value="'.$datosconsulta["Tercero_idCoordinador"].'" class="btn btn-primary" onclick="signaturePad.clear();
-                mostrarFirma();asignaridCord(this.value)" style="width:100%;">Firmar</button></td>
-		<td>'.$datosconsulta['nombreCompletoTercero'].'</td>   
+                mostrarFirma();asignaridCord(this.value);" style="width:100%;">Firmar</button></td>
+		<td style="color:black;">'.$datosconsulta['nombreCompletoTercero'].'</td>   
 	</tr>
 	';
 
