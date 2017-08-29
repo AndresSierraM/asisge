@@ -27,14 +27,13 @@ Route::get('accesofirma', function () {
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
- 
+ // no se pone ruta para el logout para que solo funcione con una 
 // ---------------------------------
 // RUtas para FIrmar en celular Login
 // ---------------------------------
 
 Route::get('auth/loginfirma', 'Auth\AuthFirmaController@getLogin');
 Route::post('auth/loginfirma', ['as' =>'auth/loginfirma', 'uses' => 'Auth\AuthFirmaController@postLogin']);
-Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthFirmaController@getLogout']);
  
 
 
