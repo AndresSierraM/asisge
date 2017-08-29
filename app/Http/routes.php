@@ -11,14 +11,33 @@
 |
 */
 
+
+
+// ---------------------------------
+// Ruta de accesoFirma que es la que maneja la imagen de Sisoft
+// ---------------------------------
+Route::get('accesofirma', function () {
+    return view('accesofirma');
+    });
 // ---------------------------------
 // Opciones del modulo de seguridad
 // ---------------------------------
+
 
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', ['as' =>'auth/login', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
  
+// ---------------------------------
+// RUtas para FIrmar en celular Login
+// ---------------------------------
+
+Route::get('auth/loginfirma', 'Auth\AuthFirmaController@getLogin');
+Route::post('auth/loginfirma', ['as' =>'auth/loginfirma', 'uses' => 'Auth\AuthFirmaController@postLogin']);
+Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthFirmaController@getLogout']);
+ 
+
+
 // ---------------------------------
 // Ruta de acceso denegado
 // ---------------------------------
