@@ -1,61 +1,645 @@
-function validarFormulario(event)
+function llamarsublinea(id, valor) 
+{   
+    //Se toma por medio de Id el de la linea selccionada
+    var select = document.getElementById('LineaProducto_idLineaProducto').value;
+    var token = document.getElementById('token').value;
+    $.ajax(
+    {
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        url:'http://'+location.host+'/llamarsublinea', /*Funcion para ejecutar  el Ajax para que consulte en la BD la tabla de sublineas */
+        data:{idLineaProducto: id}, // Este id lo envia por get para el ajax
+        type:  'get',   
+        beforeSend: function(){},
+        success: function(data)
+        {
+            
+            /* cuando reciba la consulta, va a tomar el nombre de la lista de sublineas*/
+            $('#SublineaProducto_idSublineaProducto').html('');
+            var select = document.getElementById('SublineaProducto_idSublineaProducto');
+            /*Recibe el nombre hasta aca*/
+            // Estas Option se utilizan para que agregue una primera opcion que diga seleccione 
+            option = document.createElement('option');
+            option.value = '';
+            option.text = 'Seleccione';
+            select.appendChild(option);
+            //Recorre los registros de sublineas para irlos  creando como opciones en esa lista
+            for (var i = 0;  i < data.length; i++) 
+            {
+
+                option = document.createElement('option');
+                option.value = data[i]['idSublineaProducto'];
+                option.text = data[i]['nombreSublineaProducto'];
+                option.selected = (valor == data[i]['idSublineaProducto'] ? true : false);
+                select.appendChild(option);
+            }
+
+
+
+        },
+        error:    function(xhr,err)
+        {
+            alert('Se ha producido un error: ' +err);
+        }
+    });
+};
+
+
+var AtributosNota = function(nombreObjeto, nombreContenedor, nombreDiv){
+    this.alto = '100px;';
+    this.ancho = '100%;';
+    this.campoid = 'idFichaTecnicaNota';
+    this.campoEliminacion = 'eliminarNota';
+    this.botonEliminacion = true;
+
+    this.nombre = nombreObjeto;
+    this.contenedor = nombreContenedor;
+    this.contenido = nombreDiv;
+    this.contador = 0;
+};
+
+AtributosNota.prototype.agregarNota = function(datos, tipo){
+
+    var valor;
+    if(tipo == 'A')
+       valor = datos;
+    else
+        valor = $.parseJSON(datos);
+    
+    var espacio = document.getElementById(this.contenedor);
+   
+    var div = document.createElement('div');
+    div.id = this.contenido+this.contador;
+    div.setAttribute("class", "col-sm-12");
+    div.setAttribute("style",  "overflow: auto; background: transparent; height:"+this.alto+"width:"+this.ancho+";margin: 3px 3px 3px 3px; padding: 2px 2px 2px 2px;");
+    
+    // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
+    if(this.botonEliminacion && tipo == 'A')
+    {
+        var img = document.createElement('i');
+        var caneca = document.createElement('div');
+        caneca.id = 'eliminarRegistro'+ this.contador;
+        caneca.setAttribute('onclick',this.nombre+'.borrarCampos(\''+div.id+'\',\''+this.campoEliminacion+'\',\''+this.campoid+this.contador+'\')');
+        caneca.setAttribute("class","canecaNota col-md-1");
+        caneca.setAttribute("style","");
+        img.setAttribute("class","glyphicon glyphicon-trash");
+
+        caneca.appendChild(img);
+        div.appendChild(caneca);
+    }
+
+    
+    //--------------------
+    // id de la Nota
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "hidden";
+    input.id =  "idFichaTecnicaNota" + this.contador;
+    input.name =  "idFichaTecnicaNota[]";
+    input.value = valor[(tipo == 'A' ? 0 : "idFichaTecnicaNota")] ;
+    input.setAttribute("class", "");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // id de usuario
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "hidden";
+    input.id =  "Users_idUsuario" + this.contador;
+    input.name =  "Users_idUsuario[]";
+    input.value = valor[(tipo == 'A' ? 1 : "Users_idUsuario")] ;
+    input.setAttribute("class", "");
+    input.readOnly = "";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // Nombre de usuario
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "text";
+    input.id =  "nombreUsuario" + this.contador;
+    input.name =  "nombreUsuario[]";
+    input.value = 'Escrito por: '+valor[(tipo == 'A' ? 2 : "nombreUsuario")] ;
+    input.setAttribute("class", "nombreUsuarioNota");
+    input.readOnly = "readOnly";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // fecha elaboración
+    //--------------------
+    var input = document.createElement('input');
+    input.type =  "text";
+    input.id =  "fechaFichaTecnicaNota" + this.contador;
+    input.name =  "fechaFichaTecnicaNota[]";
+    input.value = valor[(tipo == 'A' ? 3 : "fechaFichaTecnicaNota")] ;
+    input.setAttribute("class", "fechaNota");
+    input.readOnly = "readOnly";
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    //--------------------
+    // Texto de la Nota
+    //--------------------
+    var input = document.createElement('textarea');
+    input.id =  "observacionFichaTecnicaNota" + this.contador;
+    input.name =  "observacionFichaTecnicaNota[]";
+    input.placeholder =  "Descripción";
+    input.value = valor[(tipo == 'A' ? 4 : "observacionFichaTecnicaNota")] ;
+    input.setAttribute("class", "textoNota");
+    input.readOnly = (tipo == 'L' ? "readOnly" : '');
+    input.autocomplete = "false";
+    div.appendChild(input);
+
+    
+
+ 
+       
+    espacio.appendChild(div);
+
+    this.contador++;
+}
+
+AtributosNota.prototype.borrarCampos = function(elemento, campoEliminacion, campoid){
+   
+    if(campoEliminacion && document.getElementById(campoEliminacion) && document.getElementById(campoid))
+        document.getElementById(campoEliminacion).value += document.getElementById(campoid).value + ',';
+
+    // aux = elemento.parentNode;
+    // alert(aux);
+    // if(aux );
+        $("#"+elemento).remove();
+
+}
+
+AtributosNota.prototype.borrarTodosCampos = function(){
+    
+    
+    for (var posborrar = 0 ; posborrar < this.contador; posborrar++) 
+    {
+        this.borrarCampos(this.contenido+posborrar, this.campoEliminacion, this.campoid+this.contador);
+    }
+    this.contador = 0;
+}
+
+
+$(document).ready(function(){ 
+
+
+
+
+
+    $("div#tabsMaterial").tabs();
+    $("div#tabsOperacion").tabs();
+
+    //**************************
+    // 
+    //   P R O C E S O S
+    //
+    //**************************
+    proceso = new Atributos('proceso','contenedor_proceso','proceso_');
+
+    proceso.altura = '35px';
+    proceso.campoid = 'idFichaTecnicaProceso';
+    proceso.campoEliminacion = 'eliminarProceso';
+    proceso.funcionEliminacion = 'eliminarTabMaterial';
+
+    proceso.campos   = ['idFichaTecnicaProceso', 
+                    'ordenFichaTecnicaProceso',
+                    'Proceso_idProceso',
+                    'nombreProceso',
+                    'observacionFichaTecnicaProceso'];
+
+    proceso.etiqueta = ['input','input', 'input','input','input'];
+    proceso.tipo     = ['hidden','text', 'hidden','text','text'];
+    proceso.estilo   = ['','width: 100px;height:35px;','','width: 400px;height:35px;','width: 400px;height:35px;'];
+    proceso.clase    = ['','','','',''];      
+    proceso.sololectura = [false,false,false,true,false];
+    
+    for(var j=0, k = procesos.length; j < k; j++)
+    {
+        proceso.agregarCampos(JSON.stringify(procesos[j]),'L');
+        adicionarTabMaterial(j, procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], materiales);
+        adicionarTabOperacion(j, procesos[j]["Proceso_idProceso"], procesos[j]["nombreProceso"], operaciones);
+    }
+
+
+    //**************************
+    // 
+    //   N O T A S 
+    //
+    //**************************
+    nota = new AtributosNota('nota','contenedor_nota','nota_');
+
+    nota.alto = '100px;';
+    nota.ancho = '100%;';
+    nota.campoid = 'idFichaTecnicaNota';
+    nota.campoEliminacion = 'eliminarNota';
+
+    for(var j=0, k = notas.length; j < k; j++)
+    {
+        nota.agregarNota(JSON.stringify(notas[j]),'L');
+    }
+
+    //**************************
+    // 
+    //   C R I T E R I O
+    //
+    //**************************
+    criterio = new Atributos('criterio','contenedor_criterio','criterio_');
+
+    criterio.altura = '35px';
+    criterio.campoid = 'idFichaTecnicaCriterio';
+    criterio.campoEliminacion = 'eliminarCriterio';
+
+    criterio.campos   = ['idFichaTecnicaCriterio', 
+                    'descripcionFichaTecnicaCriterio',
+                    'FichaTecnica_idFichaTecnica'];
+
+    criterio.etiqueta = ['input','input', 'input'];
+    criterio.tipo     = ['hidden','text', 'hidden'];
+    criterio.estilo   = ['','width: 900px;height:35px;',''];
+    criterio.clase    = ['','',''];      
+    criterio.sololectura = [true,false,true];
+    
+    for(var j=0, k = criterios.length; j < k; j++)
+    {
+        criterio.agregarCampos(JSON.stringify(criterios[j]),'L');
+    }
+
+});
+
+
+function abrirModalProceso(materiales, operaciones)
 {
+    var lastIdx = null;
+    window.parent.$("#tproceso").DataTable().ajax.url('http://'+location.host+"/datosProcesoSelect").load();
+     // Abrir modal
+    window.parent.$("#ModalProceso").modal()
 
-    if( !$.trim( $('#contenedor_color').html() ).length )
+    $("a.toggle-vis").on( "click", function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr("data-column") );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+    window.parent.$("#tproceso tbody").on( "mouseover", "td", function () 
     {
-        alert('Debe ingresar al menos un registro de un color en la pestaña de variantes.');
-        return;
-    }
+        var colIdx = table.cell(this).index().column;
 
-    if( !$.trim( $('#contenedor_talla').html() ).length )
+        if ( colIdx !== lastIdx ) {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+        }
+    }).on( "mouseleave", function () 
     {
-        alert('Debe ingresar al menos un registro de una talla en la pestaña de variantes.');
-        return;
-    }
+        $( table.cells().nodes() ).removeClass( "highlight" );
+    } );
 
 
-    var route = "http://"+location.host+"/fichatecnica";
-    var token = $("#token").val();
-    var dato0 = document.getElementById('idFichaTecnica').value;
-    var dato1 = document.getElementById('referenciaBaseFichaTecnica').value;
-    var dato2 = document.getElementById('pesoNetoFichaTecnica').value;
-    var dato3 = document.getElementById('cantidadContenidaFichaTecnica').value;
-    var dato4 = document.getElementById('GrupoTalla_idGrupoTalla').value;
-    var dato5 = document.getElementById('TipoProducto_idTipoProducto').value;
-    var dato6 = document.getElementById('TipoNegocio_idTipoNegocio').value;
-    var dato7 = document.getElementById('nombreLargoFichaTecnica').value;
-    var datoColor = document.querySelectorAll("[name='Color_idColor[]']");
-    var datoCantidadColor = document.querySelectorAll("[name='cantidadFichaTecnicaColor[]']");
-    var datoTalla = document.querySelectorAll("[name='Talla_idTalla[]']");
-    var datoCurvaTalla = document.querySelectorAll("[name='curvaFichaTecnicaTalla[]']");
-    var dato8 = [];
-    var dato9 = [];
-    var dato10 = [];
-    var dato11 = [];
-
-    for(var j=0,i=datoColor.length; j<i;j++)
+    // Setup - add a text input to each footer cell
+    window.parent.$("#tproceso tfoot th").each( function () 
     {
-        dato8[j] = datoColor[j].value;
-    }
-
-    for(var j=0,i=datoCantidadColor.length; j<i;j++)
+        var title = window.parent.$("#tproceso thead th").eq( $(this).index() ).text();
+        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+    });
+ 
+    // DataTable
+    var table = window.parent.$("#tproceso").DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () 
     {
-        dato9[j] = datoCantidadColor[j].value;
-    }
+        var that = this;
+ 
+        $( "input", this.footer() ).on( "blur change", function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    })
 
-    for(var j=0,i=datoTalla.length; j<i;j++)
-    {
-        dato10[j] = datoTalla[j].value;
-    }
+    window.parent.$('#tproceso tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
 
-    for(var j=0,i=datoCurvaTalla.length; j<i;j++)
+        var datos = table.rows('.selected').data();
+
+
+    } );
+
+    window.parent.$('#botonProceso').click(function() {
+        var datos = table.rows('.selected').data();  
+        
+        
+
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(0, '', datos[i][0],datos[i][2],'');
+            window.parent.proceso.agregarCampos(valores,'A'); 
+
+            adicionarTabMaterial(i, datos[i][0], datos[i][2], materiales);
+
+            adicionarTabOperacion(i, datos[i][0], datos[i][2], operaciones);
+            
+            
+        }
+        
+        
+
+
+        window.parent.$("#ModalProceso").modal("hide");
+    });
+
+}
+
+function abrirModalMaterial(cont, idProceso)
+{
+    var lastIdx = null;
+    window.parent.$("#tmaterial").DataTable().ajax.url('http://'+location.host+"/datosMaterialSelect").load();
+     // Abrir modal
+    window.parent.$("#ModalMaterial").modal()
+
+    $("a.toggle-vis").on( "click", function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr("data-column") );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+    window.parent.$("#tmaterial tbody").on( "mouseover", "td", function () 
     {
-        dato11[j] = datoCurvaTalla[j].value;
+        var colIdx = table.cell(this).index().column;
+
+        if ( colIdx !== lastIdx ) {
+            $( table.cells().nodes() ).removeClass( "highlight" );
+            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
+        }
+    }).on( "mouseleave", function () 
+    {
+        $( table.cells().nodes() ).removeClass( "highlight" );
+    } );
+
+
+    // Setup - add a text input to each footer cell
+    window.parent.$("#tmaterial tfoot th").each( function () 
+    {
+        var title = window.parent.$("#tmaterial thead th").eq( $(this).index() ).text();
+        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
+    });
+ 
+    // DataTable
+    var table = window.parent.$("#tmaterial").DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () 
+    {
+        var that = this;
+ 
+        $( "input", this.footer() ).on( "blur change", function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    })
+
+    window.parent.$('#tmaterial tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+
+        var datos = table.rows('.selected').data();
+
+
+    } );
+
+    window.parent.$('#botonMaterial').click(function() {
+        var datos = table.rows('.selected').data();  
+
+        for (var i = 0; i < datos.length; i++) 
+        {
+            var valores = new Array(0, datos[i][0],datos[i][1],datos[i][2],idProceso, 0, '');
+            window.parent.material[cont].agregarCampos(valores,'A'); 
+
+        }
+
+        window.parent.$("#ModalMaterial").modal("hide");
+    });
+
+}
+
+function adicionarTabMaterial(cont, idTab, nombreTab, datos)
+{
+    $("div#tabsMaterial ul").append(
+        '<li class="active"><a data-toggle="tab" href="#TabMat' + cont + '">' + nombreTab + '</a></li>'
+    );
+
+    $("div#tabsMaterial").append(
+        '<div id="TabMat' + cont + '" class="tab-pane fade in active">'+
+            '<div class="form-group">'+
+            '    <div class="col-sm-12">'+
+            '        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">'+
+            '            <div style="overflow:auto; height:350px;">'+
+            '                <div style="width: 100%; display: inline-block;">'+
+            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="abrirModalMaterial('+cont+','+idTab+');">'+
+            '                      <span class="glyphicon glyphicon-plus"></span>'+
+            '                    </div>'+
+            '                    <div class="col-md-1" style="width: 150px;" >Referencia</div>'+
+            '                    <div class="col-md-1" style="width: 400px;" >Nombre Material</div>'+ 
+            '                    <div class="col-md-1" style="width: 100px;" >Consumo</div>'+
+            '                    <div class="col-md-1" style="width: 300px;" >Observaciones</div>'+
+            '                    <div id="contenedor_material'+cont+'">'+
+            '                    </div>'+
+            '                </div>'+
+            '            </div>'+
+            '        </div>'+
+            '    </div>'+
+            '</div>'+
+        '</div>');
+
+    $("div#tabsMaterial").tabs("refresh");
+
+
+    material[cont] = new Atributos('material['+cont+']','contenedor_material'+cont,'material'+cont+'_');
+
+    material[cont].altura = '35px';
+    material[cont].campoid = 'idFichaTecnicaMaterial';
+    material[cont].campoEliminacion = 'eliminarMaterial';
+
+    material[cont].campos   = ['idFichaTecnicaMaterial', 
+                                'FichaTecnica_idMaterial',
+                                'referenciaFichaTecnicaMaterial',
+                                'nombreFichaTecnicaMaterial',
+                                'Proceso_idMaterial', 
+                                'consumoFichaTecnicaMaterial', 
+                                'observacionFichaTecnicaMaterial'];
+
+    material[cont].etiqueta = ['input','input','input','input', 'input','input','input'];
+    material[cont].tipo     = ['hidden','hidden','text','text', 'hidden','text','text'];
+    material[cont].estilo   = ['','','width: 150px;height:35px;','width: 400px;height:35px;','','width: 100px;height:35px; text-align:right;','width: 300px;height:35px;'];
+    material[cont].clase    = ['','','','','','',''];      
+    material[cont].sololectura = [false,false,true,true,false,false,false];
+
+    // luego de creada la estructra, adicionamos los datos que estan actualmente en la BD, solo los que pertenezcan al proceso actual
+    for(var j=0, k = datos.length; j < k; j++)
+    {
+        if(datos[j]['Proceso_idMaterial'] == idTab)
+            material[cont].agregarCampos(JSON.stringify(datos[j]),'L');
+        
     }
     
+
+}
+
+function eliminarTabMaterial(cont) {
+    var tabIdStr = "#TabMat" + cont
+
+    // Eliminamos los registros para que queden en la variable de ids eliminados
+    // for (var posborrar = 0 ; posborrar < material[cont].contador; posborrar++) 
+    // {
+    //     material[cont].borrarCampos(material[cont].contenido + posborrar, material[cont].campoEliminacion, material[cont].campoid + material[cont].contador);
+    // }
+    material[cont].contador = 0;
+
+    // Elimina el panel
+    $( tabIdStr ).remove();
+    // refresca las pestañas
+    //tabs.tabs( "refresh" );
+
+    // Elimina la pestaña
+    var hrefStr = "a[href='" + tabIdStr + "']"
+    $( hrefStr ).closest("li").remove()
+}
+
+
+function adicionarTabOperacion(cont, idTab, nombreTab, datos)
+{
+    
+    $("div#tabsOperacion ul").append(
+        '<li class="active"><a data-toggle="tab" href="#tab' + cont + '">' + nombreTab + '</a></li>'
+    );
+
+    $("div#tabsOperacion").append(
+        '<div id="tab' + cont + '" class="tab-pane fade in active">'+
+            '<div class="form-group">'+
+            '    <div class="col-sm-12">'+
+            '        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">'+
+            '            <div style="overflow:auto; height:350px;">'+
+            '                <div style="width: 100%; display: inline-block;">'+
+            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="operacion['+cont+'].agregarCampos([\'0\',\''+idTab+'\',\'0\',\'\',\'0.0000\',\'\'], \'A\');">'+
+            '                      <span class="glyphicon glyphicon-plus"></span>'+
+            '                    </div>'+
+            '                    <div class="col-md-1" style="width: 100px;" >Orden</div>'+
+            '                    <div class="col-md-1" style="width: 400px;" >Operacion</div>'+
+            '                    <div class="col-md-1" style="width: 100px;" >SAM</div>'+
+            '                    <div class="col-md-1" style="width: 400px;" >Observaciones</div>'+
+            '                    <div id="contenedor_operacion'+cont+'">'+
+            '                    </div>'+
+            '                </div>'+
+            '            </div>'+
+            '        </div>'+
+            '    </div>'+
+            '</div>'+
+        '</div>');
+
+    $("div#tabsOperacion").tabs("refresh");
+
+
+    operacion[cont] = new Atributos('operacion['+cont+']','contenedor_operacion'+cont,'operacion'+cont+'_');
+
+    operacion[cont].altura = '35px';
+    operacion[cont].campoid = 'idFichaTecnicaOperacion';
+    operacion[cont].campoEliminacion = 'eliminarOperacion';
+
+    operacion[cont].campos   = ['idFichaTecnicaOperacion', 
+                                'Proceso_idOperacion', 
+                                'ordenFichaTecnicaOperacion',
+                                'nombreFichaTecnicaOperacion',
+                                'samFichaTecnicaOperacion', 
+                                'observacionFichaTecnicaOperacion'];
+
+    operacion[cont].etiqueta = ['input','input', 'input','input','input','input'];
+    operacion[cont].tipo     = ['hidden', 'hidden','text','text','text','text'];
+    operacion[cont].estilo   = ['','','width: 100px;height:35px; text-align:right;','width: 400px;height:35px;','width: 100px;height:35px; text-align:right;','width: 400px;height:35px;'];
+    operacion[cont].clase    = ['','','','','',''];      
+    operacion[cont].sololectura = [false,false,false,false,false,false];
+
+    // luego de creada la estructura, adicionamos los datos que estan actualmente en la BD, solo los que pertenezcan al proceso actual
+    for(var j=0, k = datos.length; j < k; j++)
+    {
+        if(datos[j]['Proceso_idOperacion'] == idTab)
+            operacion[cont].agregarCampos(JSON.stringify(datos[j]),'L');
+        
+    }
+    
+
+}
+
+
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
+
+
+function validarFormulario(event)
+{
+    
+    var route = "http://"+location.host+"/fichatecnica";
+    var token = $("#token").val();
+
+    var dato = document.getElementById('idFichaTecnica').value;
+    var dato0 = document.getElementById('referenciaFichaTecnica').value;
+    var dato1 = document.getElementById('nombreFichaTecnica').value;
+    var dato2 = document.getElementById('LineaProducto_idLineaProducto').value;
+
+    var datoOrden = document.querySelectorAll("[name='ordenFichaTecnicaProceso[]']");
+    var datoProc = document.querySelectorAll("[name='nombreProceso[]']");
+    var datoNota = document.querySelectorAll("[name='observacionFichaTecnicaNota[]']");
+   
+    var dato3 = [];
+    var dato4 = [];
+    var dato5 = [];
+  
+   
+
     var valor = '';
     var sw = true;
     
+    for(var j=0,i=datoOrden.length; j<i;j++)
+    {
+        dato3[j] = datoOrden[j].value;
+    }
+
+    
+    for(var j=0,i=datoProc.length; j<i;j++)
+    {
+        dato4[j] = datoProc[j].value;
+    }
+
+    for(var j=0,i=datoNota.length; j<i;j++)
+    {
+        dato5[j] = datoNota[j].value;
+    }
+
+    
+
     $.ajax({
         async: false,
         url:route,
@@ -63,21 +647,18 @@ function validarFormulario(event)
         type: 'POST',
         dataType: 'json',
         data: {respuesta: 'falso',
-                idFichaTecnica: dato0,
-                referenciaBaseFichaTecnica: dato1,
-                pesoNetoFichaTecnica: dato2,
-                cantidadContenidaFichaTecnica: dato3,
-                GrupoTalla_idGrupoTalla: dato4,
-                TipoProducto_idTipoProducto: dato5,
-                TipoNegocio_idTipoNegocio: dato6,
-                nombreLargoFichaTecnica: dato7,
-                Color_idColor: dato8,
-                cantidadFichaTecnicaColor: dato9,
-                Talla_idTalla: dato10,
-                curvaFichaTecnicaTalla: dato11,
+                idFichaTecnica: dato,
+                referenciaFichaTecnica: dato0,
+                nombreFichaTecnica: dato1,
+                LineaProducto_idLineaProducto: dato2,
+
+                ordenFichaTecnicaProceso : dato3, 
+                nombreProceso: dato4, 
+                observacionFichaTecnicaNota: dato5
                 },
         success:function(){
             //$("#msj-success").fadeIn();
+            
             //console.log(' sin errores');
         },
         error:function(msj){
@@ -88,59 +669,40 @@ function validarFormulario(event)
                 sw = false;
                 $("#msj").html('');
                 $("#msj-error").fadeOut();
-
-                guardarFichaTecnica();
             }
             else
             {
                 sw = true;
                 respuesta = JSON.parse(respuesta);
+                
+                (typeof msj.responseJSON.referenciaFichaTecnica === "undefined" ? document.getElementById('referenciaFichaTecnica').style.borderColor = '' : document.getElementById('referenciaFichaTecnica').style.borderColor = '#a94442');
 
-                (typeof msj.responseJSON.referenciaBaseFichaTecnica === "undefined" ? document.getElementById('referenciaBaseFichaTecnica').style.borderColor = '' : document.getElementById('referenciaBaseFichaTecnica').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.nombreFichaTecnica === "undefined" ? document.getElementById('nombreFichaTecnica').style.borderColor = '' : document.getElementById('nombreFichaTecnica').style.borderColor = '#a94442');
 
-                (typeof msj.responseJSON.pesoNetoFichaTecnica === "undefined" ? document.getElementById('pesoNetoFichaTecnica').style.borderColor = '' : document.getElementById('pesoNetoFichaTecnica').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.cantidadContenidaFichaTecnica === "undefined" ? document.getElementById('cantidadContenidaFichaTecnica').style.borderColor = '' : document.getElementById('cantidadContenidaFichaTecnica').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.GrupoTalla_idGrupoTalla === "undefined" ? document.getElementById('GrupoTalla_idGrupoTalla').style.borderColor = '' : document.getElementById('GrupoTalla_idGrupoTalla').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.TipoProducto_idTipoProducto === "undefined" ? document.getElementById('TipoProducto_idTipoProducto').style.borderColor = '' : document.getElementById('TipoProducto_idTipoProducto').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.TipoNegocio_idTipoNegocio === "undefined" ? document.getElementById('TipoNegocio_idTipoNegocio').style.borderColor = '' : document.getElementById('TipoNegocio_idTipoNegocio').style.borderColor = '#a94442');
-
-                (typeof msj.responseJSON.nombreLargoFichaTecnica === "undefined" ? document.getElementById('nombreLargoFichaTecnica').style.borderColor = '' : document.getElementById('nombreLargoFichaTecnica').style.borderColor = '#a94442');
-
-                for(var j=0,i=datoColor.length; j<i;j++)
+                (typeof msj.responseJSON.LineaProducto_idLineaProducto === "undefined" ? document.getElementById('LineaProducto_idLineaProducto').style.borderColor = '' : document.getElementById('LineaProducto_idLineaProducto').style.borderColor = '#a94442');
+        
+                for(var j=0,i=datoProc.length; j<i;j++)
                 {
-                    (typeof respuesta['Color_idColor'+j] === "undefined" 
-                        ? document.getElementById('Color_idColor'+j).style.borderColor = '' 
-                        : document.getElementById('Color_idColor'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['ordenFichaTecnicaProceso'+j] === "undefined" 
+                        ? document.getElementById('ordenFichaTecnicaProceso'+j).style.borderColor = '' 
+                        : document.getElementById('ordenFichaTecnicaProceso'+j).style.borderColor = '#a94442');
+
+                    (typeof respuesta['nombreProceso'+j] === "undefined" 
+                        ? document.getElementById('nombreProceso'+j).style.borderColor = '' 
+                        : document.getElementById('nombreProceso'+j).style.borderColor = '#a94442');
                 }
 
-                for(var j=0,i=datoCantidadColor.length; j<i;j++)
+                for(var j=0,i=datoNota.length; j<i;j++)
                 {
-                    (typeof respuesta['cantidadFichaTecnicaColor'+j] === "undefined" 
-                        ? document.getElementById('cantidadFichaTecnicaColor'+j).style.borderColor = '' 
-                        : document.getElementById('cantidadFichaTecnicaColor'+j).style.borderColor = '#a94442');
+                    (typeof respuesta['observacionFichaTecnicaNota'+j] === "undefined" 
+                        ? document.getElementById('observacionFichaTecnicaNota'+j).style.borderColor = '' 
+                        : document.getElementById('observacionFichaTecnicaNota'+j).style.borderColor = '#a94442');
                 }
 
-                for(var j=0,i=datoTalla.length; j<i;j++)
-                {
-                    (typeof respuesta['Talla_idTalla'+j] === "undefined" 
-                        ? document.getElementById('Talla_idTalla'+j).style.borderColor = '' 
-                        : document.getElementById('Talla_idTalla'+j).style.borderColor = '#a94442');
-                }
-
-                for(var j=0,i=datoCurvaTalla.length; j<i;j++)
-                {
-                    (typeof respuesta['curvaFichaTecnicaTalla'+j] === "undefined" 
-                        ? document.getElementById('curvaFichaTecnicaTalla'+j).style.borderColor = '' 
-                        : document.getElementById('curvaFichaTecnicaTalla'+j).style.borderColor = '#a94442');
-                }
                 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
-                    mensaje +='<li>' +value+'</li><br>';
+                    mensaje +='<li>' +value+'</li>';
                 });
                 mensaje +='</ul>';
                
@@ -155,275 +717,3 @@ function validarFormulario(event)
         event.preventDefault();
 }
 
-$(document).ready(function(){ 
-
-  
-    //**************************
-    // 
-    //   C O L O R E S
-    //
-    //**************************
-    color = new Atributos('color','contenedor_color','color_');
-
-    color.altura = '30px;';
-    color.campoid = 'idFichaTecnicaColor';
-    color.campoEliminacion = 'eliminarColor';
-
-    color.campos   = ['idFichaTecnicaColor', 
-                    'Color_idColor',
-                    'nombreEspecialFichaTecnicaColor',
-                    'cantidadFichaTecnicaColor'];
-
-    color.etiqueta = ['input','select', 'input','input'];
-    color.tipo     = ['hidden','','text','text'];
-    color.estilo   = ['','width:250px;','width:200px;display: inline-block;','width:150px; text-align: right; display: inline-block;'];
-    color.clase    = ['','chosen-select','',''];      
-    color.sololectura = [false,false,false,false];
-    color.opciones = ['',maestrocolor,'',''];
-    
-    
-    for(var j=0, k = fichacolor.length; j < k; j++)
-    {
-        color.agregarCampos(JSON.stringify(fichacolor[j]),'L');
-       
-    }
-
-    
-    //**************************
-    // 
-    //   T A L L A S
-    //
-    //**************************
-    talla = new Atributos('talla','contenedor_talla','talla_');
-
-    talla.altura = '30px;';
-    talla.campoid = 'idFichaTecnicaTalla';
-    talla.campoEliminacion = 'eliminarTalla';
-
-    talla.campos   = ['idFichaTecnicaTalla', 
-                    'Talla_idTalla',
-                    'BaseMedidaFichaTecnicaTalla',
-                    'curvaFichaTecnicaTalla'];
-
-    talla.etiqueta = ['input','select', 'checkbox','input'];
-    talla.tipo     = ['hidden','','checkbox','text'];
-    talla.estilo   = ['','width:300px;','width:100px;text-align: center; display: inline-block;','width:100px;text-align: right; display: inline-block;'];
-    talla.clase    = ['','col-md-5','col-md-3','col-md-3'];      
-    talla.sololectura = [false,false,false,false];
-    talla.opciones = ['',maestrotalla,'',''];
-    
-    
-    for(var j=0, k = fichatalla.length; j < k; j++)
-    {
-        talla.agregarCampos(JSON.stringify(fichatalla[j]),'L');
-    }
-
-
-    //**************************
-    // 
-    //   COMPOSICION
-    //
-    //**************************
-    var listaComponente = [['TELA','FORRO','ENTRETELA'],['TELA','FORRO','ENTRETELA']];
-    var listaTejido = [['PUNTO','PLANO','PLANO - PUNTO'],['PUNTO','PLANO','PLANO - PUNTO']];
-
-    componente = new Atributos('componente','contenedor_componente','componente_');
-
-    componente.altura = '30px;';
-    componente.campoid = 'idFichaTecnicaComponente';
-    componente.campoEliminacion = 'eliminarComponente';
-
-    componente.campos   = ['idFichaTecnicaComponente', 
-                    'componenteFichaTecnicaComponente',
-                    'tejidoFichaTecnicaComponente',
-                    'composicionFichaTecnicaComponente'];
-
-    componente.etiqueta = ['input','select', 'select','input'];
-    componente.tipo     = ['hidden','','','text'];
-    componente.estilo   = ['','width:400px;','width:400px;','width:400px;display: inline-block;'];
-    componente.clase    = ['','chosen-select col-md-3','chosen-select col-md-3','col-md-4'];      
-    componente.sololectura = [false,false,false,false];
-    componente.opciones = ['',listaComponente,listaTejido,''];
-    
-    
-    for(var j=0, k = fichacomponente.length; j < k; j++)
-    {
-        componente.agregarCampos(JSON.stringify(fichacomponente[j]),'L');
-    }
-
-    cargarTallas();
-});
-
-
-function cargarTallas() 
-{
-    
-    talla.borrarTodosCampos();
-    var id = document.getElementById('GrupoTalla_idGrupoTalla').value;
-    if(id == '')
-        return;
-
-    var token = document.getElementById('token').value;
-    $.ajax(
-    {
-        headers: {'X-CSRF-TOKEN': token},
-        dataType: "json",
-        url:'/consultarGrupoTalla',
-        data:{idGrupoTalla: id},
-        type:  'get',
-        beforeSend: function(){},
-        success: function(data)
-        {
-            
-
-            // adicionamos los registros de tallas en un array para crear la lista de seleccion
-            ids = Array();
-            nombres = Array();
-            for (var i = 0;  i <  data.length; i++) 
-            {
-                ids.push(data[i]["idTalla"]);
-                nombres.push(data[i]["nombre1Talla"]);
-            }
-            maestrotalla = [ids, nombres];
-            talla.opciones[1] = maestrotalla;
-            
-            // adicionamos los registros de tallas de la linea de produccion a la Ficha Tecnica
-            for (var i = 0;  i < data.length; i++) 
-            {
-                valores = Array(0, data[i]["idTalla"], data[i]["tallaBaseGrupoTallaDetalle"], data[i]["curvaTallasGrupoTallaDetalle"]);
-                talla.agregarCampos(valores,'A');
-            }
-
-            // en la pestaña de tabla de medidas, ponemos los titulos de la multiregistro, incluidas las tallas dinámicamente
-            if(data.length == 0)
-            {
-                var titulosMedida = '<div id="" class="alert alert-danger alert-dismissible" role="alert">'+
-                                        'La Línea de Producto seleccionada no tiene configuradas las tallas, debe asociarlas por el maestro de Líneas de Producto'+
-                                    '</div> ';
-            }
-            else
-            {
-                var titulosMedida = 
-                    '<div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="medida.agregarCampos(valorMedida, \'A\');">'+
-                    '   <span class="glyphicon glyphicon-plus"></span>'+
-                    '</div>'+
-                    '<div class="col-md-1" style="width: 200px;" >Medida</div>'+
-                    '<div class="col-md-1" style="width: 200px;" >Observacion</div>'+
-                    '<div class="col-md-1" style="width: 100px;" >Tolerancia</div>'+
-                    '<div class="col-md-1" style="width: 100px;" >Escala</div>';
-
-                for (var i = 0;  i <  data.length; i++) 
-                {
-                    var titulosMedida = titulosMedida + '<div class="col-md-1" style="width: 100px;text-align:center;'+(data[i]["tallaBaseGrupoTallaDetalle"] == 1 ? 'color:red;':'')+'" >'+data[i]["nombre1Talla"]+'</div>';
-                }
-            }
-            $("#titulos").html(titulosMedida);
-
-
-            // ahora creamos el prototipo para la multiregistro de Medidas, tamabien con las tallas dinamicas
-            var valorMedida = ['','','',0,0];
-            medida = new Atributos('medida','contenedor_medida','medida_');
-
-            medida.altura = '30px;';
-            medida.campoid = 'idFichaTecnicaMedida';
-            medida.campoEliminacion = 'eliminarMedida';
-
-            medida.campos   = ['idFichaTecnicaMedida', 
-                            'ParteMedida_idParteMedida',
-                            'observacionFichaTecnicaMedida',
-                            'toleranciaFichaTecnicaMedida',
-                            'escalaFichaTecnicaMedida'];
-
-            medida.etiqueta = ['input','select', 'input','input', 'input'];
-            medida.tipo     = ['hidden','','text','number','number'];
-            medida.estilo   = ['','width:200px;','width:200px;display: inline-block;','width:100px;display: inline-block;text-align:center;','width:100px;display: inline-block;text-align:center;'];
-            medida.clase    = ['','chosen-select','','',''];      
-            medida.sololectura = [false,false,false,false, false];
-            medida.opciones = ['',maestromedida,'','',''];
-
-            for (var i = 0;  i <  data.length; i++) 
-            {
-                valorMedida.push(0,'');
-                medida.campos.push('idFichaTecnicaMedidaTalla_'+data[i]["idTalla"],'Talla_'+data[i]["idTalla"]);
-                medida.etiqueta.push('input','input');
-                medida.tipo.push('hidden','text');
-                medida.estilo.push('', 'width:100px;display: inline-block; text-align:center;'+(data[i]["tallaBaseGrupoTallaDetalle"] == 1 ? 'background-color:#D8F6CE; font-weight:bold;':''));
-                
-
-                medida.clase.push('','');
-                medida.sololectura.push(false, false);
-                medida.opciones.push('','');
-            }
-
-            // hacemos un rompimiento de control a la consulta de medidas, por parteMedida para obtener los valores de cada talla
-            var reg = 0;
-            var lin = 0;
-            var tablaMedidas = new Array();
-            while(reg < fichamedida.length)
-            {
-                var ParteAnt = fichamedida[reg]["ParteMedida_idParteMedida"];
-
-                var temporal = new Array();
-                temporal.push(fichamedida[reg]["idFichaTecnicaMedida"]); 
-                temporal.push(fichamedida[reg]["ParteMedida_idParteMedida"]);
-                temporal.push(fichamedida[reg]["observacionFichaTecnicaMedida"]);
-                temporal.push(fichamedida[reg]["toleranciaFichaTecnicaMedida"]);
-                temporal.push(fichamedida[reg]["escalaFichaTecnicaMedida"]);
-
-                while(reg < fichamedida.length && ParteAnt == fichamedida[reg]["ParteMedida_idParteMedida"])
-                {   
-                    temporal.push(fichamedida[reg]["idFichaTecnicaMedidaTalla"]);
-                    temporal.push(fichamedida[reg]["valorFichaTecnicaMedidaTalla"]);
-                    reg++;
-                }
-                lin++;
-                tablaMedidas.push(temporal);
-            }
-
-            for(var j=0, k = tablaMedidas.length; j < k; j++)
-            {
-                medida.agregarCampos(tablaMedidas[j],'A');
-            }
-
-            
-
-        },
-        error:    function(xhr,err)
-        {
-            alert('Se ha producido un error: '+err);
-        }
-    });
-}
-
-function calcularMedidas()
-{
-    
-}
-
-function guardarFichaTecnica()
-{
-    var formId = '#fichatec';
-    var token = document.getElementById('token').value;
-    
-    $.ajax(
-    {
-        async: true,
-        headers: {'X-CSRF-TOKEN': token},
-        url: $(formId).attr('action'),
-        type: $(formId).attr('method'),
-        data: $(formId).serialize(),
-        dataType: 'html',
-        success: function(result)
-        {
-            alert('La ficha técnica se ha guardado correctamente');
-            window.parent.$("#modalFichaTecnica").modal("hide");
-            location.reload();
-            //$(formId)[0].reset();            
-        },
-        error: function(result)
-        {
-            alert('No se ha podido guardar la ficha tecnica.');
-        }
-    });
-
-}
