@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('verificacionequiposeguimiento', 'VerificacionEquipoSeguimientoController');
     Route::resource('equiposeguimiento', 'EquipoSeguimientoController');
     Route::resource('matrizdofa', 'MatrizDofaController');
     Route::resource('matrizriesgoproceso', 'MatrizRiesgoProcesoController');
