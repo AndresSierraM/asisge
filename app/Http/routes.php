@@ -94,7 +94,8 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
-    Route::resource('equiposeguimientoverificacion', 'EquipoSeguimientoControllerVerificacion');
+    Route::resource('equiposeguimientocalibracion', 'EquipoSeguimientoCalibracionController');
+    Route::resource('equiposeguimientoverificacion', 'EquipoSeguimientoVerificacionController');
     Route::resource('equiposeguimiento', 'EquipoSeguimientoController');
     Route::resource('matrizdofa', 'MatrizDofaController');
     Route::resource('matrizriesgoproceso', 'MatrizRiesgoProcesoController');
@@ -757,16 +758,21 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
     
-    
-
-     Route::post('compararErrorEquipo', function()
+    Route::get('llenarCodigoCalibracionEquipoSeguimiento', function()
     {
-        include public_path().'/ajax/compararErrorEquipo.php';
+        include public_path().'/ajax/llenarCodigoCalibracionEquipoSeguimiento.php';
     });
-
-    Route::get('llenarCodigoVerificacionEquipoSeguimiento', function()
+    Route::post('compararErrorEquipoCalibracion', function()
     {
-        include public_path().'/ajax/llenarCodigoVerificacionEquipoSeguimiento.php';
+        include public_path().'/ajax/compararErrorEquipoCalibracion.php';
+    });
+     Route::get('datosEquipoSeguimientoCalibracion', function()
+    {
+        include public_path().'/ajax/datosEquipoSeguimientoCalibracion.php';
+    });
+     Route::post('compararErrorEquipoVerificacion', function()
+    {
+        include public_path().'/ajax/compararErrorEquipoVerificacion.php';
     });
     Route::get('llenarCodigoVerificacionEquipoSeguimiento', function()
     {

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('titulo')<h3 id="titulo"><center>Verificaci&#243;n de Equipos de seguimiento y medici&#243;n</center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Calibraci&#243;n de Equipos de seguimiento y medici&#243;n</center></h3>@stop
 @section('content')
 
 
@@ -50,13 +50,14 @@
                             <li><a class="toggle-vis" data-column="2"><label> Fecha</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Equipo</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Responsable</label></a></li>
+                            <li><a class="toggle-vis" data-column="5"><label> Proveedor</label></a></li>
                         </ul>
                     </div>
-                    <table id="equiposeguimientoverificacion" name="equiposeguimientoverificacion" class="display table-bordered" width="100%">
+                    <table id="equiposeguimientocalibracion" name="equiposeguimientocalibracion" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:55px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="equiposeguimientoverificacion/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="equiposeguimientocalibracion/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                 <!--  <a href="javascript:mostrarModalInterface();"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-cloud-upload"></span></a> -->
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
@@ -64,6 +65,7 @@
                                 <th><b>Fecha</b></th>
                                 <th><b>Equipo</b></th>
                                 <th><b>Responsable</b></th>
+                                <th><b>Proveedor</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -75,6 +77,7 @@
                                 <th>Fecha</th>
                                 <th>Equipo</th>
                                 <th>Responsable</th>
+                                <th>proveedor</th>
                             </tr>
                         </tfoot>        
                     </table>
@@ -86,12 +89,12 @@
 <script type="text/javascript">
     function imprimirFormato(id)
     {
-        window.open('equiposeguimientoverificacion/'+id+'?accion=imprimir','equiposeguimientoverificacion','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+        window.open('equiposeguimientocalibracion/'+id+'?accion=imprimir','equiposeguimientocalibracion','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
     }
     $(document).ready( function () {
 
         
-        /*$('#equiposeguimientoverificacion').DataTable({
+        /*$('#equiposeguimientocalibracion').DataTable({
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
@@ -101,12 +104,12 @@
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
         var imprimir = '<?php echo $dato["consultarRolOpcion"];?>';
-        var table = $('#equiposeguimientoverificacion').DataTable( {
+        var table = $('#equiposeguimientocalibracion').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosEquipoSeguimientoVerificacion?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
+            "ajax": "{!! URL::to ('/datosEquipoSeguimientoCalibracion?modificar="+modificar+"&eliminar="+eliminar+"&imprimir="+imprimir+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -143,7 +146,7 @@
             column.visible( ! column.visible() );
         } );
 
-        $('#equiposeguimientoverificacion tbody')
+        $('#equiposeguimientocalibracion tbody')
         .on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
  
@@ -158,15 +161,15 @@
 
 
         // Setup - add a text input to each footer cell
-    $('#equiposeguimientoverificacion tfoot th').each( function () {
+    $('#equiposeguimientocalibracion tfoot th').each( function () {
         if($(this).index()>0){
-        var title = $('#equiposeguimientoverificacion thead th').eq( $(this).index() ).text();
+        var title = $('#equiposeguimientocalibracion thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
         }
     } );
  
     // DataTable
-    var table = $('#equiposeguimientoverificacion').DataTable();
+    var table = $('#equiposeguimientocalibracion').DataTable();
  
     // Apply the search
     table.columns().every( function () {

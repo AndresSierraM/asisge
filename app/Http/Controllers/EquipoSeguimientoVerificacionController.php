@@ -5,17 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-// use App\Http\Requests\EquipoSeguimientoRequest;
+use App\Http\Requests\EquipoSeguimientoVerificacionRequest;
 use App\Http\Controllers\Controller;
 use DB;
 use Input;
 use File;
-// use Validator;
-// use Response;
-// use Excel;
+
 include public_path().'/ajax/consultarPermisos.php';
 
-class EquipoSeguimientoControllerVerificacion extends Controller
+class EquipoSeguimientoVerificacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -56,7 +54,7 @@ class EquipoSeguimientoControllerVerificacion extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(EquipoSeguimientoVerificacionRequest $request)
     {
        if($request['respuesta'] != 'falso')
         {  
@@ -86,7 +84,24 @@ class EquipoSeguimientoControllerVerificacion extends Controller
       if($_GET['accion'] == 'imprimir')
         {
 
-            // return view('formatos.equiposeguimientoimpresion',compact('EquipoSeguimientoEncabezadoS','EquipoSeguimientoDetalleS'));
+
+            // Se llama los registros para saber  cual es  la que va a imprimir el usuario
+           $equiposeguimientoverificacion = \App\EquipoSeguimientoVerificacion::find($id);
+
+
+              $EquipoSeguimientoVerificacionEncabezadoS = DB::select('
+                SELECT esv.idEquipoSeguimientoVerificacion,esv.fechaEquipoSeguimientoVerificacion,es.nombreEquipoSeguimiento,t.nombreCompletoTercero,esd.identificacionEquipoSeguimientoDetalle,esv.errorEncontradoEquipoSeguimientoVerificacion,esv.resultadoEquipoSeguimientoVerificacion,esv.accionEquipoSeguimientoVerificacion
+                FROM equiposeguimientoverificacion esv
+                LEFT JOIN equiposeguimiento es
+                ON esv.EquipoSeguimiento_idEquipoSeguimiento = es.idEquipoSeguimiento
+                LEFT JOIN tercero t  
+                ON es.Tercero_idResponsable = t.idTercero
+                LEFT JOIN equiposeguimientodetalle esd
+                ON esv.EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle = esd.idEquipoSeguimientoDetalle
+                WHERE   esv.idEquipoSeguimientoVerificacion = '.$id);
+
+
+             return view('formatos.equiposeguimientoverificacionimpresion',compact('EquipoSeguimientoVerificacionEncabezadoS'));
         }
         
     }
@@ -112,13 +127,10 @@ class EquipoSeguimientoControllerVerificacion extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(EquipoSeguimientoVerificacionRequest $request, $id)
     {
        if($request['respuesta'] != 'falso')
         {
-        $equiposeguimientoverificacion = \App\EquipoSeguimientoVerificacion::find($id);
-
-        $EquipoSeguimientoE = \App\EquipoSeguimiento::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreEquipoSeguimiento','idEquipoSeguimiento');
 
           $equiposeguimientoverificacion = \App\EquipoSeguimientoVerificacion::find($id);
           $equiposeguimientoverificacion->fill($request->all());      

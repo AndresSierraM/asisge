@@ -1,13 +1,24 @@
+// Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
 
 function validarFormulario(event)
 {
-    var route = "http://"+location.host+"/equiposeguimientoverificacion";
+    var route = "http://"+location.host+"/equiposeguimientocalibracion";
     var token = $("#token").val();
-    var dato0 = document.getElementById('idEquipoSeguimientoVerificacion').value;
-    var dato1 = document.getElementById('fechaEquipoSeguimientoVerificacion').value;
+    var dato0 = document.getElementById('idEquipoSeguimientoCalibracion').value;
+    var dato1 = document.getElementById('fechaEquipoSeguimientoCalibracion').value;
     var dato2 = document.getElementById('EquipoSeguimiento_idEquipoSeguimiento').value;
     var dato3 = document.getElementById('EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle').value;
-    var dato4 = document.getElementById('errorEncontradoEquipoSeguimientoVerificacion').value;
+    var dato4 = document.getElementById('errorEncontradoEquipoSeguimientoCalibracion').value;
+    var dato5 = document.getElementById('Tercero_idProveedor').value;
 
  
 
@@ -24,11 +35,12 @@ function validarFormulario(event)
         type: 'POST',
         dataType: 'json',
         data: {respuesta: 'falso',
-                idEquipoSeguimientoVerificacion: dato0,
-                fechaEquipoSeguimientoVerificacion: dato1,
+                idEquipoSeguimientoCalibracion: dato0,
+                fechaEquipoSeguimientoCalibracion: dato1,
                 EquipoSeguimiento_idEquipoSeguimiento: dato2,
                 EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle: dato3,
-                errorEncontradoEquipoSeguimientoVerificacion: dato4,
+                errorEncontradoEquipoSeguimientoCalibracion: dato4,
+                Tercero_idProveedor: dato5,
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -50,13 +62,15 @@ function validarFormulario(event)
                 sw = true;
                 respuesta = JSON.parse(respuesta);
                
-                (typeof msj.responseJSON.fechaEquipoSeguimientoVerificacion === "undefined" ? document.getElementById('fechaEquipoSeguimientoVerificacion').style.borderColor = '' : document.getElementById('fechaEquipoSeguimientoVerificacion').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.fechaEquipoSeguimientoCalibracion === "undefined" ? document.getElementById('fechaEquipoSeguimientoCalibracion').style.borderColor = '' : document.getElementById('fechaEquipoSeguimientoCalibracion').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.EquipoSeguimiento_idEquipoSeguimiento === "undefined" ? document.getElementById('EquipoSeguimiento_idEquipoSeguimiento').style.borderColor = '' : document.getElementById('EquipoSeguimiento_idEquipoSeguimiento').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle === "undefined" ? document.getElementById('EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle').style.borderColor = '' : document.getElementById('EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle').style.borderColor = '#a94442');
 
-                 (typeof msj.responseJSON.errorEncontradoEquipoSeguimientoVerificacion === "undefined" ? document.getElementById('errorEncontradoEquipoSeguimientoVerificacion').style.borderColor = '' : document.getElementById('errorEncontradoEquipoSeguimientoVerificacion').style.borderColor = '#a94442');
+                (typeof msj.responseJSON.errorEncontradoEquipoSeguimientoCalibracion === "undefined" ? document.getElementById('errorEncontradoEquipoSeguimientoCalibracion').style.borderColor = '' : document.getElementById('errorEncontradoEquipoSeguimientoCalibracion').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.Tercero_idProveedor === "undefined" ? document.getElementById('Tercero_idProveedor').style.borderColor = '' : document.getElementById('Tercero_idProveedor').style.borderColor = '#a94442');
 
                
 
@@ -78,8 +92,10 @@ function validarFormulario(event)
     if(sw === true)
         event.preventDefault();
 }
+
+
 // Funcion para comrar el campo Errro Encontrado en Equipo Seguimiento verificacion con el campo ERROR permitido de la multiregistro de equipo seguimiento detalle
-function CompararErrorEquipo(idEquipoSeguimientoDetalle)
+function CompararErrorEquipo(idEquipoSeguimientoDetalle,ErrorEncontrado)
 {
       var token = document.getElementById('token').value;
 
@@ -87,7 +103,7 @@ function CompararErrorEquipo(idEquipoSeguimientoDetalle)
             headers: {'X-CSRF-TOKEN': token},
             dataType: "json",
             data: {'idEquipoSeguimientoDetalle': idEquipoSeguimientoDetalle},
-            url:   'http://'+location.host+'/compararErrorEquipoVerificacion/',
+            url:   'http://'+location.host+'/compararErrorEquipoCalibracion/',
             type:  'post',
             beforeSend: function(){
                 //Lo que se hace antes de enviar el formulario
@@ -102,16 +118,16 @@ function CompararErrorEquipo(idEquipoSeguimientoDetalle)
                     Resultado = 'Debe ingresar el Error Máximo permitido en el Módulo Equipos de Seguimiento y Medición en el Detalle';
                 }
                 // Se compara los errores si mayor mostrara en el campo resultado . No apto de lo contrario apto 
-                else if (parseFloat($("#errorEncontradoEquipoSeguimientoVerificacion").val()) > respuesta[0]["errorPermitidoCalibracionEquipoSeguimientoDetalle"])
+                else if (parseFloat($("#errorEncontradoEquipoSeguimientoCalibracion").val()) > respuesta[0]["errorPermitidoCalibracionEquipoSeguimientoDetalle"])
                 {
                     Resultado = 'No Apto';
                 }
-                else if((parseFloat($("#errorEncontradoEquipoSeguimientoVerificacion").val()) <= respuesta[0]["errorPermitidoCalibracionEquipoSeguimientoDetalle"]))
+                else if((parseFloat($("#errorEncontradoEquipoSeguimientoCalibracion").val()) <= respuesta[0]["errorPermitidoCalibracionEquipoSeguimientoDetalle"]))
                 {
                     Resultado = 'Apto';
                 }
 
-            $("#resultadoEquipoSeguimientoVerificacion").val(Resultado);
+            $("#resultadoEquipoSeguimientoCalibracion").val(Resultado);
             },
             error:    function(xhr,err){ 
                 alert("Error");
@@ -131,7 +147,7 @@ function llenarCodigoResponsable(id , valor)
     {
         headers: {'X-CSRF-TOKEN': token},
         dataType: "json",
-        url:'http://'+location.host+'/llenarCodigoVerificacionEquipoSeguimiento', /*Funcion para ejecutar  el Ajax para que consulte en la BD la tabla de equipo seguimiento , detalle y tercero */
+        url:'http://'+location.host+'/llenarCodigoCalibracionEquipoSeguimiento', /*Funcion para ejecutar  el Ajax para que consulte en la BD la tabla de equipo seguimiento , detalle y tercero */
         data:{idequipseguimiento: id}, // Este id lo envia por get para el ajax
         type:  'get',   
         beforeSend: function(){},
