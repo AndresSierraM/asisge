@@ -527,14 +527,32 @@ class TerceroController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
                                                                                //Se pone Tercero_id para que solo consulte los que empiezan por esa palabra y se pone la condicion (and...not like)de que no busque tercero en miniscula para las tablas hijas de tercero
          $consulta = DB::Select("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.`COLUMNS` WHERE COLUMN_NAME like 'Tercero_id%' and TABLE_SCHEMA = 'sisoft' and TABLE_NAME NOT LIKE 'tercero%'");
-        //se crea una variable para concatenar 
+           //se crea una variable para concatenar 
         $tablas = ''; 
+        // Variable para almancenar el tipo
+        $tipo= '';
+        if ($request['tipoTercero'] == '*01*') 
+        {
+            $tipo='Empleado';   
+        }
+        else if($request['tipoTercero'] == '*02*')
+        {
+            $tipo = 'Proveedor/Contratistas';
+        }
+        else if ($request['tipoTercero'] == '*03*')
+        {
+            $tipo= 'Cliente';
+        }
+
         // se crea una variable para el nombre del modulo
-        $nombremodulo = 'tercero';
+        $nombremodulo = 'tercero Tipo '.$tipo;
+
+        // esta variable es la que devuelve al formulario
+         $nombremoduloformulario = 'tercero?tipoTercero='.$request['tipoTercero'];
 
         for ($i=0; $i < count($consulta); $i++)
         {
@@ -553,13 +571,13 @@ class TerceroController extends Controller
         if ($tablas != '') 
         {
              //Se envia la variable tablas a la vista Resources/View/alerta.blade
-            return view('alerts.alerta',compact('tablas','nombremodulo'));
+            return view('alerts.alerta',compact('tablas','nombremodulo','nombremoduloformulario'));
         }
         else
         {
 
             \App\Tercero::destroy($id);
-             return redirect('/tercero');
+             return redirect('/tercero?tipoTercero='.$request['tipoTercero']);
  
         }        
     }

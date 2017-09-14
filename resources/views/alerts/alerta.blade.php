@@ -14,12 +14,12 @@
           //El 0 quiere decir  todo lo que se tiene (datos,informacion) y el -2 es que reste los dos ultimos caracteres (espacio y coma).
          // Finalmente,se utiliza el nombre de la variable que se creo que es la que contiene el nombre de las tablas  sin los ultimos dos caracteres
           $nombretablas=  substr($tablas, 0, -2);
-          echo'Esta intentando eliminar un'.' '.'<b>'.$nombremodulo.'</b>'.' '.'que est&#225; relacionado en:<br>'.' '.'<b>'.$nombretablas.'</b>' 
+          echo'Est&#225; intentando eliminar '.' '.'<b>'.$nombremodulo.'</b>'.' '.'que est&#225; relacionado en:<br>'.' '.'<b>'.$nombretablas.'</b>' 
          ?>
          
          </legend>    
           <!-- Se  hace un boton para que vuelva a la grid del Modulo..-->
-         <?php echo '<a href="http://'.$_SERVER["HTTP_HOST"].'/'.$nombremodulo.'" <input type="submit"class="btn btn-primary">Aceptar</a>'; ?>
+         <?php echo '<a href="http://'.$_SERVER["HTTP_HOST"].'/'.$nombremoduloformulario.'" <input type="submit"class="btn btn-primary">Aceptar</a>'; ?>
          
        </form>
 </div> 

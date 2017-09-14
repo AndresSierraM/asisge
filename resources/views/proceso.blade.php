@@ -93,7 +93,7 @@
               </div>
               <div class="col-md-1" style="width: 60px;">Orden</div>
               <div class="col-md-1" style="width: 500px;">Operación</div>
-              <div class="col-md-1" style="width: 100px;"><span title="Tiempo estándar en minutos">S.A.M</span></div>
+              <div class="col-md-1" style="width: 100px;"><span title="Tiempo estándar en minutos">Min/Und</span></div>
               <div class="col-md-1" style="width: 400px;">Observaciones</div>
               <div id="contenedor_detalle">
               </div>

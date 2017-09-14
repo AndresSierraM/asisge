@@ -339,22 +339,25 @@ class FichaTecnicaController extends Controller
                     {
                         $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
                         $destinationPath = public_path() . '/imagenes/fichatecnica/'.$arrayImage[$i];
-                        $ruta = '/fichatecnica/'.$arrayImage[$i];
-                       
+        
                         if (file_exists($origen))
                         {
                             copy($origen, $destinationPath);
                             unlink($origen);
+                            $ruta = '/fichatecnica/'.$arrayImage[$i];
+
+
+                        DB::table('fichatecnicaimagen')->insert([
+                                'idFichaTecnicaImagen' => '0',
+                                'observacionFichaTecnicaImagen' => '',
+                                'FichaTecnica_idFichaTecnica' =>$id,
+                                'rutaFichaTecnicaImagen' => $ruta]);
                         }   
                         else
                         {
                             echo "No existe la imagen";
                         }
-                        \App\FichaTecnicaImagen::create([
-                        'FichaTecnica_idFichaTecnica' => $id,
-                        'tituloFichaTecnicaImagen' => "", 
-                        'rutaFichaTecnicaImagen' => $ruta
-                       ]);
+                      
                     }
 
                 }
@@ -378,10 +381,56 @@ class FichaTecnicaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        \App\FichaTecnica::destroy($id);
-        return redirect('/fichatecnica');
+                                                                                                //Se pone FichaTecnica_id para que solo consulte los que empiezan por esa palabra y se pone la condicion (and...not like)de que no busque ficha en miniscula para las tablas hijas de ficha
+         $consulta = DB::Select("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.`COLUMNS` WHERE COLUMN_NAME like 'FichaTecnica_id%' and TABLE_SCHEMA = 'sisoft' and TABLE_NAME NOT LIKE 'ficha%'");
+         //se crea una variable para concatenar 
+        $tablas = ''; 
+        // Variable para almancenar el tipo
+        $tipo= '';
+        if ($request['tipoFichaTecnica'] == 'p') 
+        {
+            $tipo='Producto';   
+        }
+        else if($request['tipoFichaTecnica'] == 'm')
+        {
+            $tipo = 'Materias Primas';
+        }
+        else
+        {
+            $tipo= 'Servicio';
+        }
+        // se crea una variable para el nombre del modulo y en que tipo está
+        $nombremodulo = 'Ficha Tecnica Tipo  '.$tipo;
+        // esta variable es la que devuelve al formulario
+        $nombremoduloformulario = 'fichatecnica?tipo='.$request['tipoFichaTecnica'];
+
+
+        for ($i=0; $i < count($consulta); $i++)
+        {
+            $datosconsulta = get_object_vars($consulta[$i]);
+
+            $consultacondicion = DB::Select('SELECT '.$datosconsulta['COLUMN_NAME'].' FROM '.$datosconsulta['TABLE_NAME'].' WHERE '.$datosconsulta['COLUMN_NAME'].' = '. $id);
+
+
+           if (count($consultacondicion)>0) 
+                {   
+                    // se concatena el nombre de cada una de las tablas que recorre el ciclo y simplemente se separan por comas
+                    $tablas .= $datosconsulta['TABLE_NAME'].', ';
+
+                }   
+        }
+        if ($tablas != '') 
+            {
+                 //Se envia la variable tablas a la vista Resources/View/alerta.blade
+                return view('alerts.alerta',compact('tablas','nombremodulo','nombremoduloformulario'));
+            }
+        else
+            {
+                \App\FichaTecnica::destroy($id);
+                return redirect('/fichatecnica?tipo='.$request['tipoFichaTecnica']);
+            }
     }
 
 

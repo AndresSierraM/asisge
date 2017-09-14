@@ -1,6 +1,6 @@
 <?php 
 $tipoFicha = $_GET['tipo'];
-$titulo = ($tipoFicha == 'p' ? 'Producto' : ($tipoFicha == 'm' ? 'Materia Prima' : 'Servicio'));
+$titulo = ($tipoFicha == 'p' ? 'Producto' : ($tipoFicha == 'm' ? 'Materias Primas' : 'Servicio'));
 ?>
 @extends('layouts.grid')
 @section('titulo')<h3 id="titulo"><center>Ficha Técnica <?php echo $titulo ?></center></h3>@stop
@@ -63,7 +63,7 @@ $titulo = ($tipoFicha == 'p' ? 'Producto' : ($tipoFicha == 'm' ? 'Materia Prima'
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
-                                <th><b>Código</b></th>
+                                <th><b>Referencia</b></th>
                                 <th><b>Nombre</b></th>
                                 <th><b>Línea</b></th>
                                 <th><b>Sublinea</b></th>
@@ -77,7 +77,7 @@ $titulo = ($tipoFicha == 'p' ? 'Producto' : ($tipoFicha == 'm' ? 'Materia Prima'
                                     &nbsp;
                                 </th>
                                 <th>ID</th>
-                                <th>Codigo</th>
+                                <th>Referencia</th>
                                 <th>Nombre</th>
                                 <th>Línea</th>
                                 <th>Sublinea</th>

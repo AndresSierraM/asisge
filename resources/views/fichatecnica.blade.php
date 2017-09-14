@@ -7,7 +7,7 @@
 
 ?>
 
-@section('titulo')<h3 id="titulo"><center>Ficha Técnica <?php echo ($tipoFichaTecnica == 'p' ? ' de Producto' : ($tipoFichaTecnica == 'm' ? ' de Material' : ' de Servicio'))?></center></h3>@stop
+@section('titulo')<h3 id="titulo"><center>Ficha Técnica <?php echo ($tipoFichaTecnica == 'p' ? ' de Producto' : ($tipoFichaTecnica == 'm' ? ' de Materias Primas' : ' de Servicio'))?></center></h3>@stop
 
 @section('content')
 @include('alerts.request')
@@ -77,6 +77,8 @@ $(document).ready(function(){
 
 <?php 
 $idFichaTecnicaA = (isset($fichatecnica->idFichaTecnica) ? $fichatecnica->idFichaTecnica : 0);
+
+$idFichaTecnicaI = (isset($fichatecnica->idFichaTecnica) ? $fichatecnica->idFichaTecnica : 0);
 
 $fechahora = Carbon\Carbon::now();
 ?>
@@ -247,10 +249,10 @@ $fechahora = Carbon\Carbon::now();
             {!!Form::hidden('imagenFichaTecnicaArray', '', array('id' => 'imagenFichaTecnicaArray'))!!}
               <?php
 
-              if ($idFichaTecnicaA != '') 
+              if ($idFichaTecnicaI != '') 
               {
                 $eliminar = '';
-                $imagenSave = DB::Select('SELECT * from fichatecnicaimagen where FichaTecnica_idFichaTecnica = '.$idFichaTecnicaA);
+                $imagenSave = DB::Select('SELECT * from fichatecnicaimagen where FichaTecnica_idFichaTecnica = '.$idFichaTecnicaI);
 
                 for ($i=0; $i <count($imagenSave) ; $i++) 
                 { 
@@ -267,12 +269,12 @@ $fechahora = Carbon\Carbon::now();
                                               </a>
                                           </div>
                                           <div class="col-xs-9 text-right">
-                                              <div>'.str_replace('/movimientocrm/','',$imagenS['rutaFichaTecnicaImagen']).'
+                                              <div>'.str_replace('/fichatecnica/','',$imagenS['rutaFichaTecnicaImagen']).'
                                               </div>
                                           </div>
                                       </div>
                                   </div>
-                                  <a target="_blank" href="javascript:eliminarDiv('.$imagenS['idFichaTecnicaImagen'].');">
+                                  <a target="_blank" href="javascript:eliminarDivImagen('.$imagenS['idFichaTecnicaImagen'].');">
                                       <div class="panel-footer">
                                           <span class="pull-left">Eliminar Documento</span>
                                           <span class="pull-right"><i class="fa fa-times"></i></span>
@@ -378,7 +380,7 @@ $fechahora = Carbon\Carbon::now();
                                               </a>
                                           </div>
                                           <div class="col-xs-9 text-right">
-                                              <div>'.str_replace('/movimientocrm/','',$archivoS['rutaFichaTecnicaArchivo']).'
+                                              <div>'.str_replace('/fichatecnica/','',$archivoS['rutaFichaTecnicaArchivo']).'
                                               </div>
                                           </div>
                                       </div>
@@ -576,7 +578,7 @@ $fechahora = Carbon\Carbon::now();
 @stop
 
 <div id="ModalProceso" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:70%;">
+  <div class="modal-dialog" style="width:90%;">
 
     <!-- Modal content-->
     <div style="" class="modal-content">
@@ -590,7 +592,7 @@ $fechahora = Carbon\Carbon::now();
                 <div class="container">
                     <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
                         <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
-                            <i class="glyphicon glyphicon-th icon-th"></i> 
+                            <i class="glyphicon glyphicon-th icon-th" ></i> 
                             <span class="caret"></span>
                         </button>
                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -601,7 +603,7 @@ $fechahora = Carbon\Carbon::now();
                         </ul>
                     </div>
                     
-                    <table id="tproceso" name="tproceso" class="display table-bordered" width="100%">
+                    <table id="tproceso" name="tproceso" class="display table-bordered" width="70%">
                         <thead>
                             <tr class="btn-default active">
 
@@ -611,7 +613,7 @@ $fechahora = Carbon\Carbon::now();
                             </tr>
                         </thead>
                         <tfoot>
-                            <tr class="btn-default active">
+                            <tr class="btn-default active" >
 
                                 <th>ID</th>
                                 <th>Código</th>
@@ -637,7 +639,7 @@ $fechahora = Carbon\Carbon::now();
 
 
 <div id="ModalMaterial" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:70%;">
+  <div class="modal-dialog" style="width:90%;">
 
     <!-- Modal content-->
     <div style="" class="modal-content">

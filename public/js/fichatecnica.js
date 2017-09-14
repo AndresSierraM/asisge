@@ -542,7 +542,7 @@ function adicionarTabOperacion(cont, idTab, nombreTab, datos)
             '                    </div>'+
             '                    <div class="col-md-1" style="width: 100px;" >Orden</div>'+
             '                    <div class="col-md-1" style="width: 400px;" >Operacion</div>'+
-            '                    <div class="col-md-1" style="width: 100px;" >SAM</div>'+
+            '                    <div class="col-md-1" style="width: 100px;" >Min/Und</div>'+
             '                    <div class="col-md-1" style="width: 400px;" >Observaciones</div>'+
             '                    <div id="contenedor_operacion'+cont+'">'+
             '                    </div>'+
@@ -596,6 +596,17 @@ function eliminarDiv(idDiv)
         $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
     }
 }
+
+function eliminarDivImagen(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarImagen").val( $("#eliminarImagen").val() + idDiv + ",");  
+    }
+}
+
 
 
 function validarFormulario(event)
