@@ -9,7 +9,7 @@ class CargoElementoProteccion extends Model
     protected $table = 'cargoelementoproteccion';
     protected $primaryKey = 'idCargoElementoProteccion';
 
-    protected $fillable = ['Cargo_idCargo', 'ElementoProteccion_idElementoProteccion'];
+    protected $fillable = ['Cargo_idCargo', 'ElementoProteccion_idElementoProteccion', 'FrecuenciaMedicion_idFrecuenciaMedicion'];
 
     public $timestamps = false;
 

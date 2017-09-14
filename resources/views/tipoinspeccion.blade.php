@@ -52,6 +52,9 @@
 		{!!Form::open(['route'=>'tipoinspeccion.store','method'=>'POST'])!!}
 	@endif
 
+<?php 
+  $fechahora = Carbon\Carbon::now();
+?>
 
 <div id='form-section' >
 
@@ -94,6 +97,18 @@
         </div>
       </div>
 
+      <div class="form-group" >
+        {!!Form::label('fechaInicialTipoInspeccion', 'Fecha Inicial', array('class' => 'col-sm-2 control-label'))!!}
+        <div class="col-sm-10" >
+          <div class="input-group">
+            <span class="input-group-addon">
+              <i class="fa fa-credit-card" ></i>
+            </span>
+            {!!Form::text('fechaInicialTipoInspeccion',(isset($tipoInspeccion) ? $tipoInspeccion->fechaInicialTipoInspeccion : $fechahora),['class'=>'form-control'])!!}
+          </div>
+        </div>
+      </div>
+
       <div class="form-group" id='test'>
         <div class="col-sm-12">
           <div class="row show-grid">
@@ -125,4 +140,10 @@
 	{!! Form::close() !!}
 	</div>
 </div>
+
+<script> 
+  $('#fechaInicialTipoInspeccion').datetimepicker(({
+			format: "YYYY-MM-DD"
+		}));
+</script>
 @stop

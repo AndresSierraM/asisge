@@ -46,6 +46,7 @@
                             <li><a class="toggle-vis" data-column="2"><label> Código</label></a></li>
                             <li><a class="toggle-vis" data-column="3"><label> Nombre</label></a></li>
                             <li><a class="toggle-vis" data-column="4"><label> Frecuencia de Medición</label></a></li>
+                            <li><a class="toggle-vis" data-column="4"><label> Fecha Inicio</label></a></li>
                         </ul>
                     </div>
                     <table id="ttipoinspeccion" name="ttipoinspeccion" class="display table-bordered" width="100%">
@@ -59,6 +60,7 @@
                                 <th><b>Código</b></th>
                                 <th><b>Nombre</b></th>
                                 <th><b>Frecuencia de Medición</b></th>
+                                <th><b>Fecha Inicio</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -70,6 +72,7 @@
                                 <th>Codigo</th>
                                 <th>Nombre</th>
                                 <th>Frecuencia de Medición</th>
+                                <th>Fecha Inicio</th>
                             </tr>
                         </tfoot>        
                     </table>

@@ -53,6 +53,7 @@ class TipoInspeccionController extends Controller
             'codigoTipoInspeccion' => $request['codigoTipoInspeccion'],
             'nombreTipoInspeccion' => $request['nombreTipoInspeccion'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
+            'fechaInicialTipoInspeccion' => $request['fechaInicialTipoInspeccion'],
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
 

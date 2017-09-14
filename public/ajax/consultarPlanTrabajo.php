@@ -33,6 +33,41 @@
         return $pos;
     }
 
+    function buscarMatriz($idConcepto, $tipo, $datos)
+    {
+        $pos = -1;
+
+        for ($i=0; $i < count($datos); $i++) 
+        { 
+
+            if ($datos[$i]['idConcepto'] == $idConcepto && $datos[$i]['tipo'] == $tipo) 
+            {
+                $pos = $i;
+                $i = count($datos);
+            }
+        }
+
+        return $pos;
+    }
+
+
+    function buscarTerceroEPP($idTercero, $idElemento, $datos)
+    {
+        $pos = -1;
+
+        for ($i=0; $i < count($datos); $i++) 
+        { 
+
+            if ($datos[$i]['idTercero'] == $idTercero && $datos[$i]['idConcepto'] == $idElemento) 
+            {
+                $pos = $i;
+                $i = count($datos);
+            }
+        }
+
+        return $pos;
+    }
+
     
     function buscarTipoInspeccion($idTipoInspeccion, $datos)
     {
@@ -285,7 +320,8 @@
 
         $examen = DB::Select(
             '   SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, idTipoExamenMedico as idConcepto, concat(nombreCompletoTercero , " (", nombreCargo, ")", " - ", TEC.nombreTipoExamenMedico) as descripcionTarea,   
-                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, fechaCreacionCompania, 
+                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, 
+                    IF(fechaInicioExamenMedicoTerceroInformacion > fechaCreacionCompania, fechaInicioExamenMedicoTerceroInformacion, fechaCreacionCompania) as fechaCreacionCompania,
                     ingresoCargoExamenMedico as ING, 
                     retiroCargoExamenMedico as RET,
                     periodicoCargoExamenMedico as PER,
@@ -538,6 +574,270 @@
         return $tabla;
 	}
 
+
+
+    // -------------------------------------------
+    //  E N T R E G A   D E   E P P 
+    // -------------------------------------------
+
+	function consultarEntregaEPP($idCompania, $fechaInicial, $fechaFinal, $letra, $año, $procesos, $idDiv)
+    {
+
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L A S 
+        //  T A R E A S 
+        //*********************
+
+        $examen = DB::Select(
+            '   SELECT valorFrecuenciaMedicion, unidadFrecuenciaMedicion, idTercero, 
+                    idElementoProteccion as idConcepto, 
+                    concat(nombreCompletoTercero , " (", nombreCargo, ")", " - ", EP.nombreElementoProteccion) as descripcionTarea,   
+                    fechaIngresoTerceroInformacion, fechaRetiroTerceroInformacion, fechaCreacionCompania, 
+                    idFrecuenciaMedicion, nombreCompletoTercero
+                FROM tercero T
+                left join terceroinformacion TI
+                on T.idTercero = TI.Tercero_idTercero
+                left join cargo C
+                on T.Cargo_idCargo = C.idCargo
+                left join cargoelementoproteccion CE
+                on C.idCargo = CE.Cargo_idCargo
+                left join frecuenciamedicion FM
+                on CE.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+                left join elementoproteccion EP
+                on CE.ElementoProteccion_idElementoProteccion = EP.idElementoProteccion
+                left join compania COM
+                on T.Compania_idCompania = COM.idCompania
+                where tipoTercero like "%01%" and idElementoProteccion IS NOT NULL   and 
+                    ('.$año.' >= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") and 
+                    '.$año.' <= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") OR 
+                    '.$año.' >= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") and 
+                    '.$año.' <= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") OR
+                        fechaRetiroTerceroInformacion = "0000-00-00") AND
+                        fechaIngresoTerceroInformacion != "0000-00-00" AND  
+                    estadoTercero = "ACTIVO" AND nombreCompletoTercero like "'.$letra.'%" AND 
+                    T.Compania_idCompania = '.$idCompania .' 
+                order by nombreCompletoTercero, idTercero
+           ');
+
+        $datos = array();
+          
+
+        //and nombreCompletoTercero like "'.$letra.'%"
+        for($i= 0; $i < count($examen); $i++)
+        {
+            $registro = get_object_vars($examen[$i]);
+            $pos = buscarTerceroEPP($registro["idTercero"], $registro["idConcepto"], $datos);
+
+            if($pos == -1)
+            {
+                $pos = count($datos);
+                for($mes = 1; $mes <= 12; $mes++)
+                {
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'T'] = 0;
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'C'] = 0;
+                }
+            }
+            $datos[$pos]['idTercero'] = $registro["idTercero"];
+            $datos[$pos]['idConcepto'] = $registro["idConcepto"];
+            $datos[$pos]['Nombre'] = $registro["descripcionTarea"];
+
+            
+
+            // las tareas semanales o diarias deben crear 4 o 30 tareas en cada periodo respectivamente
+            // las tareas expresadas en meses o años, solo deben poner una tarea en el periodo
+            $frecuencia = ($registro['valorFrecuenciaMedicion'] == 0 ? 1 : $registro['valorFrecuenciaMedicion']);
+            $multiplo = ((  $registro['unidadFrecuenciaMedicion'] == 'Años' or 
+                            $registro['unidadFrecuenciaMedicion'] == 'Meses') 
+                        ? 1 
+                        : (($registro['unidadFrecuenciaMedicion'] == 'Semanas' ? 4 : 30) / $frecuencia)) ;
+
+
+            $periodicidad = $registro['valorFrecuenciaMedicion'] * ($registro['unidadFrecuenciaMedicion'] == 'Años' ? 12 : 1);
+            
+            // PERIODICIDAD
+            if($registro["fechaIngresoTerceroInformacion"] != '0000-00-00' and $periodicidad > 0)
+            {
+                
+                $ingreso = date("Y-m-d",strtotime($registro["fechaIngresoTerceroInformacion"]));
+                $ingreso = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($ingreso)));
+                $retiro = $registro["fechaRetiroTerceroInformacion"] == '0000-00-00' ? date("Y-12-31") : $registro["fechaRetiroTerceroInformacion"];
+
+                while($ingreso <= date("Y-12-31") and $ingreso < $retiro)
+                {
+                    
+                    if (date("Y", strtotime($ingreso)) == date("Y", strtotime($fechaInicial)) and $ingreso >= $registro["fechaCreacionCompania"]) 
+                    {
+                        $datos[$pos][str_pad(date("m",strtotime($ingreso)), 2, '0', STR_PAD_LEFT).'T'] += (1*$multiplo);    
+                    }
+
+                    $ingreso = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($ingreso)));
+                }
+            }
+
+            
+
+        }
+
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L O S 
+        //  C U M P L I M I E N T O S
+        //*********************
+
+        $examen = DB::Select(
+            '   SELECT idTercero, idElementoProteccion,  fechaCreacionCompania, 
+                       fechaEntregaElementoProteccion, idEntregaElementoProteccion
+                FROM tercero T
+                left join terceroinformacion TI
+                on T.idTercero = TI.Tercero_idTercero
+                left join cargo C
+                on T.Cargo_idCargo = C.idCargo
+                left join cargoelementoproteccion CE
+                on C.idCargo = CE.Cargo_idCargo
+                left join elementoproteccion EP
+                on CE.ElementoProteccion_idElementoProteccion = EP.idElementoProteccion
+                left join entregaelementoproteccion EEP 
+                on T.idTercero = EEP.Tercero_idTercero
+                left join entregaelementoprotecciondetalle EEPD
+                on  EP.idElementoProteccion = EEPD.ElementoProteccion_idElementoProteccion and 
+                    EEP.idEntregaElementoProteccion = EEPD.EntregaElementoProteccion_idEntregaElementoProteccion
+                left join compania COM
+                on T.Compania_idCompania = COM.idCompania
+                where tipoTercero like "%01%" and idElementoProteccion IS NOT NULL   and 
+                    ('.$año.' >= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") and 
+                    '.$año.' <= DATE_FORMAT(fechaIngresoTerceroInformacion,"%Y") OR 
+                    '.$año.' >= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") and 
+                    '.$año.' <= DATE_FORMAT(fechaRetiroTerceroInformacion,"%Y") OR
+                        fechaRetiroTerceroInformacion = "0000-00-00") AND
+                        fechaIngresoTerceroInformacion != "0000-00-00" AND 
+                    estadoTercero = "ACTIVO" AND nombreCompletoTercero like "'.$letra.'%" AND 
+                    EEPD.ElementoProteccion_idElementoProteccion IS NOT NULL AND
+                    T.Compania_idCompania = '.$idCompania .' 
+                order by nombreCompletoTercero, idTercero
+           ');
+        
+        for($i= 0; $i < count($examen); $i++)
+        {
+            $registro = get_object_vars($examen[$i]);
+            $pos = buscarTerceroEPP($registro["idTercero"], $registro["idElementoProteccion"], $datos);
+            if($pos == -1)
+                $pos = $i;
+        
+            $datos[$pos]['idConcepto'] = $registro["idElementoProteccion"];
+
+            // CUMPLIMIENTO
+            if($registro["fechaEntregaElementoProteccion"] != '0000-00-00' and 
+                date("Y",strtotime($registro["fechaEntregaElementoProteccion"])) == date("Y", strtotime($fechaInicial)) and 
+                $registro["fechaEntregaElementoProteccion"] >= $registro["fechaCreacionCompania"])
+            {
+                $datos[$pos][date("m",strtotime($registro["fechaEntregaElementoProteccion"])).'C'] += 1;
+            }
+        }
+
+
+        $tabla = '';
+
+        $tabla .= '        
+                    <div class="panel panel-primary" style="border:1px solid">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#entregaEPP">Entrega EPP</a>
+                          </h4>
+                        </div>';
+                        $tabla .= 
+                        '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value,\''.$procesos.'\',\''.$idDiv.'\')" value="" type="button">Todos</button>';
+                        for($i=65; $i<=90; $i++) 
+                        {  
+                            $letra = chr($i);  
+                            $tabla .= 
+                            '<button class="btn btn-primary" onclick="consultarPlanTrabajo('.$año.',this.value,\''.$procesos.'\',\''.$idDiv.'\')" value="'.$letra.'" type="button">'.$letra.'</button>';
+                        }
+                        $tabla .= '
+                        <div id="entregaEPP" class="panel-collapse"> 
+                            <div class="panel-body" style="overflow:auto;">
+                                <table  class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-inverse">
+                                        <tr class="table-info">
+                                            <th scope="col" width="30%">&nbsp;</th>
+                                            <th>Enero</th>
+                                            <th>Febrero</th>
+                                            <th>Marzo</th>
+                                            <th>Abril</th>
+                                            <th>Mayo</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Agosto</th>
+                                            <th>Septiembre</th>
+                                            <th>Octubre</th>
+                                            <th>Noviembre</th>
+                                            <th>Diciembre</th>
+                                            <th>Presupuesto</th>
+                                            <th>Costo Real</th>
+                                            <th>Cumplimiento</th>
+                                            <th>Meta</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>';
+                                        for ($i=0; $i <count($datos); $i++) 
+                                        { 
+                                            $tabla .= 
+                                            '<tr align="center">
+                                                <input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="null">
+                                                <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="20">
+                                                <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$datos[$i]['idConcepto'].'">
+                                                <input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="">
+
+                                            <th scope="row">'
+                                                .$datos[$i]["Nombre"].
+                                            '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
+                                            </th>';
+                                            
+                                            
+                                            for($mes = 1; $mes <= 12; $mes++)
+                                            {
+                                                $cMes = str_pad($mes,2,'0',STR_PAD_LEFT);
+                                                $fechaMes = date("Y-".$cMes."-01");
+                                                $tabla .= 
+                                                    '<td>'.colorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).
+                                                    '<input type="hidden" id="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle[]" 
+                                                            value="'.valorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).'">
+                                                    </td>';
+                                            }
+
+                                            $tabla .= 
+                                                '<td>
+                                                    0
+                                                    <input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    0
+                                                    <input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    0
+                                                    <input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="0">
+                                                </td>
+                                                <td>
+                                                    <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                    </textarea>
+                                                </td>
+                                            </tr>';
+                                        }
+                                        $tabla .= '
+                                        </tbody>
+                                </table>
+                            </div> 
+                        </div>
+                    </div>';
+
+        return $tabla;
+	}
+
     // -------------------------------------------
     //  I N S P E C C I O N E S   D E   S E G U R I D A D
     // -------------------------------------------
@@ -554,7 +854,8 @@
 
         $tipoinspeccion = DB::Select(
             '   SELECT nombreTipoInspeccion as descripcionTarea, 
-                idTipoInspeccion as idConcepto, fechaCreacionCompania,
+                idTipoInspeccion as idConcepto, 
+                IF(fechaInicialTipoInspeccion > fechaCreacionCompania, fechaInicialTipoInspeccion, fechaCreacionCompania) as fechaCreacionCompania,
                 valorFrecuenciaMedicion, unidadFrecuenciaMedicion
             FROM tipoinspeccion TI
             left join frecuenciamedicion FM
@@ -630,15 +931,18 @@
             Where I.Compania_idCompania = '.$idCompania .' and DATE_FORMAT(fechaElaboracionInspeccion,"%Y") = '.$año.' 
            ');
 
-        // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
-        // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
-        $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
-                        ? date($año."-01-01")
-                        : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+        
 
         for($i= 0; $i < count($tipoinspeccion); $i++)
         {
             $registro = get_object_vars($tipoinspeccion[$i]);
+
+            // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+            // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+            $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
+                        ? date($año."-01-01")
+                        : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+
             $pos = buscarTipoInspeccion($registro["idConcepto"], $datos);
 
             $datos[$pos]['idTipoInspeccion'] = $registro["idConcepto"];
@@ -752,7 +1056,235 @@
     //  M A T R I Z   L E G A L
     // -------------------------------------------
 
-	function consultarMatriz($idCompania, $fechaInicial, $fechaFinal)
+    function consultarMatriz($idCompania, $fechaInicial, $fechaFinal, $año)
+    {
+
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L A S 
+        //  T A R E A S 
+        //*********************
+
+        $matrices = DB::Select(
+           'SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
+                        idMatrizLegal as idConcepto, "legal" as tipo,  fechaElaboracionMatrizLegal as fechaInicio,
+                        valorFrecuenciaMedicion, unidadFrecuenciaMedicion
+            FROM matrizlegal ML
+            left join frecuenciamedicion FM
+            on ML.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+            Where ML.Compania_idCompania = '.$idCompania .'
+            group by idMatrizLegal
+            
+            UNION
+            
+            SELECT concat("Matriz Riesgo: ",nombreMatrizRiesgo) as descripcionTarea, 
+                        idMatrizRiesgo as idConcepto, "riesgo" as tipo,  fechaElaboracionMatrizRiesgo as fechaInicio,
+                        valorFrecuenciaMedicion, unidadFrecuenciaMedicion
+            FROM matrizriesgo MR
+            left join frecuenciamedicion FM
+            on MR.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
+            Where MR.Compania_idCompania = '.$idCompania .' 
+            group by idMatrizRiesgo');
+           
+
+        $datos = array();
+          
+
+        //and nombreCompletoTercero like "'.$letra.'%"
+        for($i= 0; $i < count($matrices); $i++)
+        {
+            $registro = get_object_vars($matrices[$i]);
+            $pos = buscarMatriz($registro["idConcepto"], $registro["tipo"], $datos);
+
+            if($pos == -1)
+            {
+                $pos = count($datos);
+                $datos[$pos]['idConcepto'] = $registro["idConcepto"];
+                $datos[$pos]['Nombre'] = $registro["descripcionTarea"];
+                $datos[$pos]['tipo'] = $registro["tipo"];
+                
+                for($mes = 1; $mes <= 12; $mes++)
+                {
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'T'] = 0;
+                    $datos[$pos][str_pad($mes, 2, '0', STR_PAD_LEFT).'C'] = 0;
+                }
+            }
+            
+
+            // las tareas semanales o diarias deben crear 4 o 30 tareas en cada periodo respectivamente
+            // las tareas expresadas en meses o años, solo deben poner una tarea en el periodo
+            $frecuencia = ($registro['valorFrecuenciaMedicion'] == 0 ? 1 : $registro['valorFrecuenciaMedicion']);
+            $multiplo = ((  $registro['unidadFrecuenciaMedicion'] == 'Años' or 
+                            $registro['unidadFrecuenciaMedicion'] == 'Meses') 
+                        ? 1 
+                        : (($registro['unidadFrecuenciaMedicion'] == 'Semanas' ? 4 : 30) / $frecuencia)) ;
+
+            
+            $periodicidad = $registro['valorFrecuenciaMedicion'] * ($registro['unidadFrecuenciaMedicion'] == 'Años' ? 12 : 1);
+
+            // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+            // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+            $fechaInicio = date("Y",strtotime($registro["fechaInicio"])) < $año 
+                            ? date($año."-01-01")
+                            : date("Y-m-d",strtotime($registro["fechaInicio"]));
+        
+            $fechaInicio = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($fechaInicio)));
+            $fechaFin = date($año."-12-31");
+
+            while($fechaInicio <= date("Y-12-31") and $fechaInicio < $fechaFin)
+            {
+                $datos[$pos][str_pad(date("m",strtotime($fechaInicio)), 2, '0', STR_PAD_LEFT).'T'] += (1*$multiplo);    
+                
+                $fechaInicio = date("Y-m-d",strtotime("+ ".$periodicidad." MONTH", strtotime($fechaInicio)));
+            }
+
+        }
+
+        //**********************
+        //  C R E A C I O N 
+        //  D E   L O S 
+        //  C U M P L I M I E N T O S
+        //*********************
+
+        $matrices = DB::Select(
+            'SELECT concat("Matriz Legal: ",nombreMatrizLegal) as descripcionTarea, 
+                        idMatrizLegal as idConcepto, "legal" as tipo,  idMatrizLegalActualizacion, 
+                        fechaMatrizLegalActualizacion as fechaActualizacion
+            FROM matrizlegal ML
+            LEFT JOIN matrizlegalactualizacion MLA
+            on ML.idMatrizLegal = MLA.MatrizLegal_idMatrizLegal
+            Where ML.Compania_idCompania = '.$idCompania .' and YEAR(fechaMatrizLegalActualizacion) = "'.$año.'" 
+
+            UNION
+            
+            SELECT concat("Matriz Riesgo: ",nombreMatrizRiesgo) as descripcionTarea, 
+                        idMatrizRiesgo as idConcepto, "riesgo" as tipo,  idMatrizRiesgoActualizacion,
+                        fechaMatrizRiesgoActualizacion as fechaActualizacion
+            FROM matrizriesgo MR
+            LEFT JOIN matrizriesgoactualizacion MRA
+            on MR.idMatrizRiesgo = MRA.MatrizRiesgo_idMatrizRiesgo
+            Where MR.Compania_idCompania = '.$idCompania .' and YEAR(fechaMatrizRiesgoActualizacion) = "'.$año.'" ');
+            
+        // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
+        // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
+        
+
+        for($i= 0; $i < count($matrices); $i++)
+        {
+            $registro = get_object_vars($matrices[$i]);
+            
+            // $fechaInicio = date("Y",strtotime($registro["fechaActualizacion"])) < $año 
+            //             ? date($año."-01-01")
+            //             : date("Y-m-d",strtotime($registro["fechaActualizacion"]));
+
+            $pos = buscarMatriz($registro["idConcepto"], $registro["tipo"], $datos);
+
+            //$datos[$pos]['idConcepto'] = $registro["idConcepto"];
+            // CUMPLIMIENTO
+            $datos[$pos][date("m",strtotime($registro["fechaActualizacion"])).'C'] += 1;
+            
+        }
+
+        $tabla = '';
+
+        $tabla .= '        
+                    <div class="panel panel-primary" style="border:1px solid">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#matrices">Revisión de Información</a>
+                          </h4>
+                        </div>';
+                        
+                        $tabla .= '
+                        <div id="matrices" class="panel-collapse"> 
+                            <div class="panel-body" style="overflow:auto;">
+                                <table  class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-inverse">
+                                        <tr class="table-info">
+                                            <th scope="col" width="30%">&nbsp;</th>
+                                            <th>Enero</th>
+                                            <th>Febrero</th>
+                                            <th>Marzo</th>
+                                            <th>Abril</th>
+                                            <th>Mayo</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Agosto</th>
+                                            <th>Septiembre</th>
+                                            <th>Octubre</th>
+                                            <th>Noviembre</th>
+                                            <th>Diciembre</th>
+                                            <th>Presupuesto</th>
+                                            <th>Costo Real</th>
+                                            <th>Cumplimiento</th>
+                                            <th>Meta</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>';
+                                        for ($i=0; $i <count($datos); $i++) 
+                                        { 
+                                            $tabla .= 
+                                            '<tr align="center">
+                                                <input type="hidden" id="idPlanTrabajoDetalle" name="idPlanTrabajoDetalle[]" value="null">
+                                                <input type="hidden" id="Modulo_idModulo" name="Modulo_idModulo[]" value="30">
+                                                <input type="hidden" id="idConcepto" name="idConcepto[]" value="'.$datos[$i]["idConcepto"].'">
+                                                <input type="hidden" id="TipoExamenMedico_idTipoExamenMedico" name="TipoExamenMedico_idTipoExamenMedico[]" value="">
+
+
+                                            <td scope="row">'
+                                                .$datos[$i]["Nombre"].
+                                                '<input type="hidden" id="nombreConceptoPlanTrabajoDetalle" name="nombreConceptoPlanTrabajoDetalle[]" value="'.$datos[$i]["Nombre"].'">
+                                            </td>';
+
+                                            
+                                            for($mes = 1; $mes <= 12; $mes++)
+                                            {
+                                                $cMes = str_pad($mes,2,'0',STR_PAD_LEFT);
+                                                $fechaMes = date("Y-".$cMes."-01");
+                                                $tabla .= 
+                                                    '<td>'.colorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).
+                                                    '<input type="hidden" id="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle" name="'.nombreMesMinuscula($fechaMes).'PlanTrabajoDetalle[]" 
+                                                            value="'.valorTarea($datos[$i][$cMes.'T'],$datos[$i][$cMes.'C']).'">
+                                                    </td>';
+                                            }
+                                            
+                                            $tabla .= 
+                                            '<td>
+                                                0
+                                                <input type="hidden" id="presupuestoPlanTrabajoDetalle" name="presupuestoPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                0
+                                                <input type="hidden" id="costoRealPlanTrabajoDetalle" name="costoRealPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                0
+                                                <input type="hidden" id="cumplimientoPlanTrabajoDetalle" name="cumplimientoPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="metaPlanTrabajoDetalle" name="metaPlanTrabajoDetalle[]" value="0">
+                                            </td>
+                                            <td>
+                                                <textarea id="observacionPlanTrabajoDetalle" name="observacionPlanTrabajoDetalle[]">
+                                                </textarea>
+                                            </td>
+                                            
+                                            </tr>';
+
+                                        }
+                                        $tabla .= '
+                                        </tbody>
+                                </table>
+                            </div> 
+                        </div>
+                    </div>';
+
+        return $tabla;
+    }
+
+
+	function consultarMatrizVieja($idCompania, $fechaInicial, $fechaFinal)
     {
         // Segun el rango de fechas del filtro, creamos para cada Mes o cada Año una columna 
         // independiente
@@ -825,9 +1357,12 @@
 
         $grupoapoyo = DB::Select(
             '   SELECT nombreGrupoApoyo as descripcionTarea, 
-                idGrupoApoyo as idConcepto, fechaCreacionCompania,
+                idGrupoApoyo as idConcepto, 
+                IF(fechaConstitucionConformacionGrupoApoyo >= fechaCreacionCompania, fechaConstitucionConformacionGrupoApoyo, fechaCreacionCompania) as fechaCreacionCompania,
                 valorFrecuenciaMedicion, unidadFrecuenciaMedicion
             FROM grupoapoyo GA
+            left join conformaciongrupoapoyo CGA 
+            on GA.idGrupoApoyo = CGA.GrupoApoyo_idGrupoApoyo
             left join frecuenciamedicion FM
             on GA.FrecuenciaMedicion_idFrecuenciaMedicion = FM.idFrecuenciaMedicion
             LEFT JOIN compania c 
@@ -903,13 +1438,16 @@
 
         // si la empresa se creó antes del año que estamos consultando, se debe pintar las tareas (fecha inicio enero del año consultado)
         // pero si su creación es posterior, no se deben pintar (fecha de inicio toma la de la compania)
-        $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
-                        ? date($año."-01-01")
-                        : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+        
 
         for($i= 0; $i < count($grupoapoyo); $i++)
         {
             $registro = get_object_vars($grupoapoyo[$i]);
+            
+            $fechaInicio = date("Y",strtotime($registro["fechaCreacionCompania"])) < $año 
+                        ? date($año."-01-01")
+                        : date("Y-m-d",strtotime($registro["fechaCreacionCompania"]));
+
             $pos = buscarGrupoApoyo($registro["idConcepto"], $datos);
 
             $datos[$pos]['idGrupoApoyo'] = $registro["idConcepto"];
@@ -1330,6 +1868,8 @@
         $informe .= consultarActividadGrupoApoyo($idCompania, $fechaInicial, $fechaFinal);
     if(strpos($procesos, 'Examen') !== false or $procesos == '')
         $informe .= consultarExamen($idCompania, $fechaInicial, $fechaFinal, $letra, $año, $procesos, $idDiv);
+    if(strpos($procesos, 'EntregaEPP') !== false or $procesos == '')
+        $informe .= consultarEntregaEPP($idCompania, $fechaInicial, $fechaFinal, $letra, $año, $procesos, $idDiv);
     if(strpos($procesos, 'Inspeccion') !== false or $procesos == '')
         $informe .= consultarInspeccion($idCompania, $fechaInicial, $fechaFinal, $año);
     if(strpos($procesos, 'Auditoria') !== false or $procesos == '')
@@ -1341,7 +1881,7 @@
     if(strpos($procesos, 'ACPM') !== false or $procesos == '')
         $informe .= consultarACPM($idCompania, $fechaInicial, $fechaFinal);
     if(strpos($procesos, 'Matriz') !== false or $procesos == '')
-        $informe .= consultarMatriz($idCompania, $fechaInicial, $fechaFinal);
+        $informe .= consultarMatriz($idCompania, $fechaInicial, $fechaFinal, $año);
 
 
 

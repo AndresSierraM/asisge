@@ -116,15 +116,15 @@
 			elemento.campoid = 'idCargoElementoProteccion';
 			elemento.campoEliminacion = 'eliminarElemento';
 
-			elemento.campos = ['idCargoElementoProteccion', 'ElementoProteccion_idElementoProteccion'];
-			elemento.etiqueta = ['input','select'];
-			elemento.tipo = ['hidden',''];
-			elemento.estilo = ['','width: 900px;height:35px;'];
-			elemento.clase = ['',''];
-			elemento.sololectura = [false,false];
-			elemento.completar = ['off','off'];
-			elemento.opciones = ['',listaElemento];
-			elemento.funciones  = ['',''];
+			elemento.campos = ['idCargoElementoProteccion', 'ElementoProteccion_idElementoProteccion','FrecuenciaMedicion_idElemento'];
+			elemento.etiqueta = ['input','select', 'select'];
+			elemento.tipo = ['hidden','',''];
+			elemento.estilo = ['','width: 450px;height:35px;','width: 450px;height:35px;'];
+			elemento.clase = ['','',''];
+			elemento.sololectura = [false,false,false];
+			elemento.completar = ['off','off','off'];
+			elemento.opciones = ['',listaElemento, frecuenciaMedicion];
+			elemento.funciones  = ['','',''];
 
 			examen = new Atributos('examen','contenedor_examen','examen');
 
@@ -298,7 +298,12 @@
 
 			for(var j=0, k = cargoElementoProteccion.length; j < k; j++)
 			{
-				elemento.agregarCampos(JSON.stringify(cargoElementoProteccion[j]),'L');
+				//alert(cargoElementoProteccion[j]["idCargoElementoProteccion"]);
+				var valores = new Array();
+				valores = 	[cargoElementoProteccion[j]["idCargoElementoProteccion"],
+								cargoElementoProteccion[j]["ElementoProteccion_idElementoProteccion"],
+								cargoElementoProteccion[j]["FrecuenciaMedicion_idFrecuenciaMedicion"]];
+				elemento.agregarCampos(valores,'A');
 			}
 
 			for(var j=0, k = cargoExamenMedico.length; j < k; j++)
@@ -863,7 +868,8 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="elemento.agregarCampos(valorElemento,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 900px;display:inline-block;height:60px;">Descripci&oacute;n</div>
+															<div class="col-md-1" style="width: 450px;display:inline-block;height:60px;">Elemento de Protección</div>
+															<div class="col-md-1" style="width: 450px;display:inline-block;height:60px;">Frecuencia de Entrega</div>
 															<div id="contenedor_elemento">
 															</div>
 														</div>
