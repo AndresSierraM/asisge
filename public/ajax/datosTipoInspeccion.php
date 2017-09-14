@@ -16,7 +16,7 @@
 
     $tipoinspeccion = DB::table('tipoinspeccion')
             ->leftJoin('frecuenciamedicion', 'FrecuenciaMedicion_idFrecuenciaMedicion', '=', 'idFrecuenciaMedicion')
-            ->select(DB::raw('idTipoInspeccion, codigoTipoInspeccion, nombreTipoInspeccion, nombreFrecuenciaMedicion'))
+            ->select(DB::raw('idTipoInspeccion, codigoTipoInspeccion, nombreTipoInspeccion, nombreFrecuenciaMedicion, fechaInicialTipoInspeccion'))
             ->where('Compania_idCompania','=', \Session::get('idCompania'))
             ->get();
 
@@ -33,7 +33,8 @@
         $row[$key][] = $value->idTipoInspeccion;
         $row[$key][] = $value->codigoTipoInspeccion;
         $row[$key][] = $value->nombreTipoInspeccion; 
-        $row[$key][] = $value->nombreFrecuenciaMedicion;    
+        $row[$key][] = $value->nombreFrecuenciaMedicion;  
+        $row[$key][] = $value->fechaInicialTipoInspeccion;  
     }
 
     $output['aaData'] = $row;

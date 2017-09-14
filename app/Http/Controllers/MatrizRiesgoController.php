@@ -335,6 +335,14 @@ class MatrizRiesgoController extends Controller
           $matrizRiesgo->CentroCosto_idCentroCosto = (($request['CentroCosto_idCentroCosto'] == '' or $request['CentroCosto_idCentroCosto'] == 0) ? null : $request['CentroCosto_idCentroCosto'
                 ]);
 
+
+        // cada que se actualice la matriz, guardamos una nueva fecha de actualizacion
+        \App\MatrizRiesgoActualizacion::create([
+            'MatrizRiesgo_idMatrizRiesgo' => $id,
+            'fechaMatrizRiesgoActualizacion' => date("Y-m-d")
+            ]);
+
+            
           /*if(null !== Input::file('imagenTercero') )
           {
               $image = Input::file('imagenTercero');

@@ -9,7 +9,17 @@ class TerceroInformacion extends Model
     protected $table = 'terceroinformacion';
     protected $primaryKey = 'idTerceroInformacion';
 
-    protected $fillable = ['Tercero_idTercero', 'fechaNacimientoTerceroInformacion', 'fechaIngresoTerceroInformacion', 'fechaRetiroTerceroInformacion', 'tipoContratoTerceroInformacion', 'aniosExperienciaTerceroInformacion', 'educacionTerceroInformacion', 'experienciaTerceroInformacion', 'formacionTerceroInformacion', 'estadoCivilTerceroInformacion', 'numeroHijosTerceroInformacion', 'composicionFamiliarTerceroInformacion', 'personasACargoTerceroInformacion', 'estratoSocialTerceroInformacion', 'tipoViviendaTerceroInformacion', 'tipoTransporteTerceroInformacion', 'HobbyTerceroInformacion', 'actividadFisicaTerceroInformacion', 'consumeLicorTerceroInformacion', 'FrecuenciaMedicion_idConsumeLicor', 'consumeCigarrilloTerceroInformacion'];
+    protected $fillable = ['Tercero_idTercero', 'fechaNacimientoTerceroInformacion', 
+                        'fechaIngresoTerceroInformacion', 'fechaRetiroTerceroInformacion', 
+                        'tipoContratoTerceroInformacion', 'aniosExperienciaTerceroInformacion', 
+                        'educacionTerceroInformacion', 'experienciaTerceroInformacion', 
+                        'formacionTerceroInformacion', 'estadoCivilTerceroInformacion', 
+                        'numeroHijosTerceroInformacion', 'composicionFamiliarTerceroInformacion', 
+                        'personasACargoTerceroInformacion', 'estratoSocialTerceroInformacion', 
+                        'tipoViviendaTerceroInformacion', 'tipoTransporteTerceroInformacion', 
+                        'HobbyTerceroInformacion', 'actividadFisicaTerceroInformacion', 
+                        'consumeLicorTerceroInformacion', 'FrecuenciaMedicion_idConsumeLicor', 
+                        'consumeCigarrilloTerceroInformacion', 'fechaInicioExamenMedicoTerceroInformacion'];
 
     public $timestamps = false;
 

@@ -562,6 +562,7 @@
 														</div>
 													</div>
 												</div>
+
 												<div class="form-group" style="width:600px; display: inline;">
 													{!!Form::label('tipoContratoTerceroInformacion', 'Tipo de Contrato', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
@@ -599,6 +600,19 @@
 														</div>
 													</div>
 												</div>
+
+												<div class="form-group" style="width:600px; display: inline;">
+													{!!Form::label('fechaInicioExamenMedicoTerceroInformacion', 'Fecha Inicio Exámenes Médicos', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
+													<div class="col-sm-10" style="width:400px;">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<i class="fa fa-fax" style="width: 14px;"></i>
+															</span>
+															{!!Form::text('fechaInicioExamenMedicoTerceroInformacion',(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->fechaInicioExamenMedicoTerceroInformacion : null),['class'=>'form-control','placeholder'=>'Seleccione la fecha de inicio Exámenes','style'=>'width:340px;'])!!}
+														</div>
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>
@@ -1098,6 +1112,10 @@
 		}));
 
 		$('#fechaRetiroTerceroInformacion').datetimepicker(({
+			format: "YYYY-MM-DD"
+		}));
+
+		$('#fechaInicioExamenMedicoTerceroInformacion').datetimepicker(({
 			format: "YYYY-MM-DD"
 		}));
 

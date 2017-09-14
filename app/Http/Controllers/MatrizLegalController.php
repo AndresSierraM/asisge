@@ -212,6 +212,13 @@ class MatrizLegalController extends Controller
 
             $matrizLegal->save();
 
+
+            // cada que se actualice la matriz, guardamos una nueva fecha de actualizacion
+            \App\MatrizLegalActualizacion::create([
+                'MatrizLegal_idMatrizLegal' => $id,
+                'fechaMatrizLegalActualizacion' => date("Y-m-d")
+                ]);
+
             \App\MatrizLegalDetalle::where('MatrizLegal_idMatrizLegal',$id)->delete();
             
             $contadorDetalle = count($request['TipoNormaLegal_idTipoNormaLegal']);
