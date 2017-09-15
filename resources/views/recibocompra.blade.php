@@ -413,7 +413,7 @@
 @stop
 
 <div id="modalOrdenCompra" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:80%;">
+  <div class="modal-dialog" style="width:90%;">
     <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -422,7 +422,7 @@
       <div class="modal-body">
         <div id="divTabla" class="container">
             <div class="row" style="width:90%;">
-                <div class="container" style="width:100%;">
+                <div class="container" style="width:130%;">
                     <table id="tordencompra" name="tordencompra" class="display table-bordered" width="100%">
                         <thead>
                             <tr class="btn-default active">
@@ -443,6 +443,9 @@
                             </tr>
                         </tfoot>
                     </table>
+                      <div class="modal-footer">
+                        <button id="botonFichaTecnica" name="botonFichaTecnica" type="button" class="btn btn-primary" >Seleccionar</button>
+                    </div>
                 </div>
             </div>
         </div>

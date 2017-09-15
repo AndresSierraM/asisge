@@ -1,3 +1,11 @@
+function limpiarCampo()
+{
+    // Al ejecutar el onclick, va a limpiar toda la informacion seleccionada
+    $("#requerimientoOrdenCompra").val('');
+}
+
+
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/ordencompra";
@@ -7,6 +15,7 @@ function validarFormulario(event)
     var dato2 = document.getElementById('fechaElaboracionOrdenCompra').value;
     var dato3 = document.getElementById('fechaEstimadaOrdenCompra').value;
     var dato4 = document.getElementById('Tercero_idProveedor').value;
+    var dato5 = document.getElementById('estadoReciboOrdenCompra').value;
     
     var valor = '';
     var sw = true;
@@ -23,7 +32,8 @@ function validarFormulario(event)
                 sitioEntregaOrdenCompra: dato1,
                 fechaElaboracionOrdenCompra: dato2,
                 fechaEstimadaOrdenCompra: dato3,
-                Tercero_idProveedor: dato4
+                Tercero_idProveedor: dato4,
+                estadoReciboOrdenCompra: dato5
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -50,6 +60,8 @@ function validarFormulario(event)
                 (typeof msj.responseJSON.fechaEstimadaOrdenCompra === "undefined" ? document.getElementById('fechaEstimadaOrdenCompra').style.borderColor = '' : document.getElementById('fechaEstimadaOrdenCompra').style.borderColor = '#a94442');
 
                 (typeof msj.responseJSON.Tercero_idProveedor === "undefined" ? document.getElementById('Tercero_idProveedor').style.borderColor = '' : document.getElementById('Tercero_idProveedor').style.borderColor = '#a94442');
+
+                (typeof msj.responseJSON.estadoReciboOrdenCompra === "undefined" ? document.getElementById('estadoReciboOrdenCompra').style.borderColor = '' : document.getElementById('estadoReciboOrdenCompra').style.borderColor = '#a94442');
                 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){

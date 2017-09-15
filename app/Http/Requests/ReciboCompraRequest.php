@@ -38,4 +38,24 @@ class ReciboCompraRequest extends Request
         
         return $validacion;
     }
+
+        public function messages()
+    {
+        $tipocalidad = count($this->get('TipoCalidad_idTipoCalidad'));  
+
+
+        $mensajes = array();
+        $mensajes["fechaRealReciboCompra.required"] = "[Encabezado] Debe ingresar la fecha de Entrega";
+
+
+        for($i = 0; $i < $tipocalidad; $i++)
+        {
+            if(trim($this->get('TipoCalidad_idTipoCalidad')[$i]) == '' )
+            {    
+                $mensajes["TipoCalidad_idTipoCalidad".$i.".required"] = "[Recibos] Debe Seleccionar el Tipo Calidad en la línea ".($i+1);
+            }           
+        }
+        return $mensajes;
+
+    }
 }

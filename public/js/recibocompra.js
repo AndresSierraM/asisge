@@ -4,15 +4,15 @@ function validarFormulario(event)
     var token = $("#token").val();
     var dato0 = document.getElementById('idReciboCompra').value;
     var dato1 = document.getElementById('fechaRealReciboCompra').value;
-    var datoTipoCalidad = document.querySelectorAll("[name='TipoCalidad_idTipoCalidad[]']");
+    var tipocalidad = document.querySelectorAll("[name='TipoCalidad_idTipoCalidad[]']");
     var dato2 = [];
     
     var valor = '';
     var sw = true;
     
-    for(var j=0,i=datoTipoCalidad.length; j<i;j++)
+    for(var j=0,i=tipocalidad.length; j<i;j++)
     {
-        dato2[j] = datoTipoCalidad[j].value;
+        dato2[j] = tipocalidad[j].value;
     }
 
     $.ajax({
@@ -46,7 +46,7 @@ function validarFormulario(event)
 
                 (typeof msj.responseJSON.fechaRealReciboCompra === "undefined" ? document.getElementById('fechaRealReciboCompra').style.borderColor = '' : document.getElementById('fechaRealReciboCompra').style.borderColor = '#a94442');
 
-                for(var j=0,i=datoTipoCalidad.length; j<i;j++)
+                for(var j=0,i=tipocalidad.length; j<i;j++)
                 {
                     (typeof respuesta['TipoCalidad_idTipoCalidad'+j] === "undefined" ? document.getElementById('TipoCalidad_idTipoCalidad'+j).style.borderColor = '' : document.getElementById('TipoCalidad_idTipoCalidad'+j).style.borderColor = '#a94442');
                 }
@@ -77,9 +77,9 @@ function abrirModalOrdenCompra()
 
     $("#divTabla").html('');
 
-    estructuraTabla = '<div class="row" style="width:90%;">'+
-                        '<div class="container" style="width:100%;">'+
-                            '<table id="tordencompra" name="tordencompra" class="display table-bordered" width="100%">'+
+    estructuraTabla = '<div class="row" style="width:80%;">'+
+                        '<div class="container" style="width:130%;">'+
+                            '<table id="tordencompra" name="tordencompra" class="display table-bordered" width="60%">'+
                               '<thead>'+
                                   '<tr class="btn-default active">'+
                                       '<th><b>ID</b></th>'+
@@ -100,6 +100,8 @@ function abrirModalOrdenCompra()
                                   '</tr>'+
                               '</tfoot>'+
                           '</table>'+
+                          '<div class="modal-footer">'+
+                        '<button id="botonFichaTecnica" name="botonFichaTecnica" type="button" class="btn btn-primary" >Seleccionar</button>'+
                         '</div>'+
                      '</div>';
 
@@ -162,16 +164,16 @@ function abrirModalOrdenCompra()
         $(this).toggleClass('selected');
     } );
 
-    window.parent.$("#tordencompra tbody").on( "dblclick", "tr", function () 
-    {
-        if ( $(this).hasClass("selected") ) {
-            $(this).removeClass("selected");
-        }
-        else {
-            table.$("tr.selected").removeClass("selected");
-            $(this).addClass("selected");
-        }
-
+    // window.parent.$("#tordencompra tbody").on( "dblclick", "tr", function () 
+    // {
+    //     if ( $(this).hasClass("selected") ) {
+    //         $(this).removeClass("selected");
+    //     }
+    //     else {
+    //         table.$("tr.selected").removeClass("selected");
+    //         $(this).addClass("selected");
+    //     }
+    $('#botonFichaTecnica').click(function() {
         var datos = table.rows('.selected').data();
 
         if (datos.length > 0) 

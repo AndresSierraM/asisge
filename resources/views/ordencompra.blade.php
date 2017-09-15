@@ -82,6 +82,9 @@
           <span class="input-group-addon" title="Adicionar requerimientos" style="cursor:pointer;" onclick="abrirModalCRM()">
             <i class="fa fa-file"></i>
           </span>
+          <span class="input-group-addon" title="Limpiar campo" style="cursor:pointer;" onclick="limpiarCampo()">
+            <i class="fa fa-times"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -99,7 +102,7 @@
     </div>
 
     <div class="form-group col-md-6" id='test'>
-      {!!Form::label('fechaElaboracionOrdenCompra', 'Elaboración', array('class' => 'col-sm-3 control-label')) !!}
+      {!!Form::label('fechaElaboracionOrdenCompra', 'Fecha  elaboración', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon">
@@ -111,7 +114,7 @@
     </div>
 
     <div class="form-group col-md-6" id='test'>
-      {!!Form::label('fechaEstimadaOrdenCompra', 'Est. Entrega', array('class' => 'col-sm-3 control-label')) !!}
+      {!!Form::label('fechaEstimadaOrdenCompra', 'Fecha estimada entrega', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon">
@@ -123,7 +126,7 @@
     </div>
 
     <div class="form-group col-md-6" id='test'>
-      {!!Form::label('fechaVencimientoOrdenCompra', 'Vencimiento', array('class' => 'col-sm-3 control-label')) !!}
+      {!!Form::label('fechaVencimientoOrdenCompra', 'Fecha de vencimiento', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
           <span class="input-group-addon">
