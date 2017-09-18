@@ -21,11 +21,15 @@
 							</tr>
 							<tr>
 								<td>Firma</td>
-								<td><?php echo '<img style="width:25%; height:25%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaRealizadaPorInspeccion.'"';?></td>
+								<td><?php echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$dato->firmaRealizadaPorInspeccion.'"';?></td>
 							</tr>
 							<tr>
 								<td>Fecha Elaboración</td>
 								<td>{{$dato->fechaElaboracionInspeccion}}</td>
+							</tr>
+							<tr>
+								<td>Centro de Costos</td>
+								<td>{{$dato->nombreCentroCosto}}</td>
 							</tr>
 						</thead>
 					</table>
@@ -35,11 +39,11 @@
 				        <td>
 				         Objetivos
 				        </td>
-				       </tr><
+				       </tr>
 				      </thead>
 				      <tbody>
 				       <tr>
-				        <td>				         
+				        <td>
 				         <?php echo $dato->observacionesInspeccion;?>
 				        </td>
 				       </tr>

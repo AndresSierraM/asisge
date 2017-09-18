@@ -109,7 +109,21 @@ function cargarDatosOrdenTrabajo(valorProceso)
     var id = document.getElementById('OrdenProduccion_idOrdenProduccion').value;
     
     if(id == '')
-        return;
+    {
+        // Se envian todos los campos vacios si el id esta vacio para que no quede con campos llenos en caso de volver a seleccionar 
+        // la opción  de Seleccione la Orden de Producción
+
+            $("#referenciaFichaTecnica").val('');
+            $("#nombreFichaTecnica").val('');
+            $("#especificacionOrdenTrabajo").val('');
+            $("#nombreCompletoTercero").val('');
+            $("#numeroPedidoOrdenTrabajo").val('');
+            $("#estadoOrdenTrabajo").val('');
+            // Se pone en validación un return para que cuando arranque la funcion no devuelva error en la consulta 
+            // por no haber seleccionado un id de Proceso
+            return; 
+
+    }
 
     var token = document.getElementById('token').value;
     $.ajax(

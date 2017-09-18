@@ -152,7 +152,15 @@ class InspeccionController extends Controller
         if(isset($request['accion']) and $request['accion'] == 'imprimir')
         {
 
-          $inspeccion = DB::Select('SELECT nombreTipoInspeccion, nombreCompletoTercero, firmaRealizadaPorInspeccion, fechaElaboracionInspeccion, observacionesInspeccion from inspeccion i left join tipoinspeccion ti on ti.idTipoInspeccion = i.TipoInspeccion_idTipoInspeccion left join tercero t on t.idTercero = i.Tercero_idRealizadaPor where idInspeccion = '.$id.' and i.Compania_idCompania = '.\Session::get('idCompania'));
+          $inspeccion = DB::Select('SELECT nombreTipoInspeccion, nombreCompletoTercero, firmaRealizadaPorInspeccion, fechaElaboracionInspeccion, observacionesInspeccion ,cc.nombreCentroCosto
+            from inspeccion i 
+            left join tipoinspeccion ti 
+            on ti.idTipoInspeccion = i.TipoInspeccion_idTipoInspeccion 
+            left join tercero t 
+            on t.idTercero = i.Tercero_idRealizadaPor
+            LEFT JOIN centrocosto cc
+            ON cc.idCentroCosto = i.CentroCosto_idCentroCosto 
+            where idInspeccion = '.$id.' and i.Compania_idCompania = '.\Session::get('idCompania'));
 
           $inspeccionResumen = DB::select('select contenidoTipoInspeccionPregunta, situacionInspeccionDetalle, fotoInspeccionDetalle, ubicacionInspeccionDetalle,   accionMejoraInspeccionDetalle, nombreCompletoTercero, fechaInspeccionDetalle, observacionInspeccionDetalle from inspecciondetalle ipd left join tipoinspeccionpregunta tip on tip.idTipoInspeccionPregunta = ipd.TipoInspeccionPregunta_idTipoInspeccionPregunta left join tercero t on t.idTercero = ipd.Tercero_idResponsable where Inspeccion_idInspeccion = '.$id);
 
