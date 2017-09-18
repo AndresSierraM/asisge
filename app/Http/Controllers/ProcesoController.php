@@ -19,11 +19,18 @@ class ProcesoController extends Controller
      */
     public function index()
     {
-        $vista = basename($_SERVER["PHP_SELF"]);
+        $vista = basename($_SERVER["PHP_SELF"].'?tipo='.$_GET['tipo']);
         $datos = consultarPermisos($vista);
 
+        // si se recibe por get el parametro Tipo, lo enviamos a la vista
+        // de lo contrario es tipo G (G=General,  P=Produccion)
+        if(isset($_GET["tipo"]) and $_GET["tipo"] != "")
+            $tipo = $_GET["tipo"];
+        else
+            $tipo = 'G';
+
         if($datos != null)
-            return view('procesogrid', compact('datos'));
+            return view('procesogrid', compact('datos', 'tipo'));
         else
             return view('accesodenegado');
     }
@@ -34,8 +41,15 @@ class ProcesoController extends Controller
      * @return Response
      */
     public function create()
-    {
-        return view('proceso');
+    {   
+        // si se recibe por get el parametro Tipo, lo enviamos a la vista
+        // de lo contrario es tipo G (G=General,  P=Produccion)
+        if(isset($_GET["tipo"]) and $_GET["tipo"] != "")
+            $tipo = $_GET["tipo"];
+        else
+            $tipo = 'G';
+        
+        return view('proceso', compact('tipo'));
     }
 
     /**
@@ -49,6 +63,7 @@ class ProcesoController extends Controller
         \App\Proceso::create([
             'codigoProceso' => $request['codigoProceso'],
             'nombreProceso' => $request['nombreProceso'],
+            'tipoProceso' => $request['tipoProceso'],
             'Compania_idCompania' => \Session::get("idCompania")
             ]);
 
@@ -56,7 +71,7 @@ class ProcesoController extends Controller
 
         $this->grabarDetalle($proceso->idProceso,$request);
 
-        return redirect('/proceso');
+        return redirect('/proceso?tipo='.$request["tipoProceso"]);
     }
 
     /**
@@ -78,8 +93,16 @@ class ProcesoController extends Controller
      */
     public function edit($id)
     {
+        // si se recibe por get el parametro Tipo, lo enviamos a la vista
+        // de lo contrario es tipo G (G=General,  P=Produccion)
+        if(isset($_GET["tipo"]) and $_GET["tipo"] != "")
+            $tipo = $_GET["tipo"];
+        else
+            $tipo = 'G';
+
+
         $proceso = \App\Proceso::find($id);
-        return view('proceso',['proceso'=>$proceso]);
+        return view('proceso',['proceso'=>$proceso], compact("tipo"));
     }
 
     /**
@@ -98,7 +121,7 @@ class ProcesoController extends Controller
 
         $this->grabarDetalle($id,$request);
 
-        return redirect('/proceso');
+        return redirect('/proceso?tipo='.$request["tipoProceso"]);
 
     }
 
@@ -113,7 +136,7 @@ class ProcesoController extends Controller
     public function destroy($id)
     {
         \App\Proceso::destroy($id);
-        return redirect('/proceso');
+        return redirect('/proceso?tipo='.$request["tipoProceso"]);
     }
 
     protected function grabarDetalle($id, $request)

@@ -12,6 +12,12 @@
             }
 </style> 
 <?php 
+
+    if(!isset($tipo) or (isset($tipo) and $tipo == ""))
+        $tipo = 'G';
+    
+
+
     $visible = '';
 
     if (isset($datos[0])) 
@@ -51,7 +57,7 @@
                         <thead>
                             <tr class="btn-default active">
                                 <th style="width:40px;padding: 1px 8px;" data-orderable="false">
-                                 <a href="proceso/create"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
+                                 <a href="proceso/create?tipo=<?php echo $tipo;?>"><span style= "display: <?php echo $visible;?> " class="glyphicon glyphicon-plus"></span></a>
                                  <a href="#"><span class="glyphicon glyphicon-refresh"></span></a>
                                 </th>
                                 <th><b>ID</b></th>
@@ -89,12 +95,13 @@
         var lastIdx = null;
         var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
         var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var tipo = '<?php echo (isset($tipo) ? $tipo : "G");?>';
         var table = $('#tproceso').DataTable( {
             "order": [[ 1, "asc" ]],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
-            "ajax": "{!! URL::to ('/datosProceso?modificar="+modificar+"&eliminar="+eliminar+"')!!}",
+            "ajax": "{!! URL::to ('/datosProceso?modificar="+modificar+"&eliminar="+eliminar+"&tipo="+tipo+"')!!}",
             "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

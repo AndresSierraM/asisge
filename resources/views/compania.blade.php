@@ -288,7 +288,8 @@
 <script>
     CKEDITOR.replace(('misionCompania','visionCompania','valoresCompania','politicasCompania','principiosCompania','metasCompania'), {
         fullPage: true,
-        allowedContent: true
+        allowedContent: true,
+        
       }); 
 
     $('#fechaCreacionCompania').datetimepicker(({

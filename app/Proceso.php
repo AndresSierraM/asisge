@@ -9,7 +9,7 @@ class Proceso extends Model
     protected $table = 'proceso';
     protected $primaryKey = 'idProceso';
 
-    protected $fillable = ['codigoProceso', 'nombreProceso', 'Compania_idCompania'];
+    protected $fillable = ['codigoProceso', 'nombreProceso','tipoProceso', 'Compania_idCompania'];
 
     public $timestamps = false;
 

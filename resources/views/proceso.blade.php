@@ -62,6 +62,7 @@
               </span>
               {!!Form::text('codigoProceso',null,['class'=>'form-control','placeholder'=>'Ingresa el código del Proceso'])!!}
               {!! Form::hidden('idProceso', null, array('id' => 'idProceso')) !!}
+              {!! Form::hidden('tipoProceso', $tipo, array('id' => 'tipoProceso')) !!}
               {!! Form::hidden('eliminarOperacion', null, array('id' => 'eliminarOperacion')) !!}
               
             </div>
@@ -83,7 +84,10 @@
         </div>
     </fieldset>
 
-
+<?php 
+  if(isset($tipo) and $tipo == 'P')
+  {
+    ?> 
     <div class="panel-body">
       <div class="form-group" id='test'>
         <div class="col-sm-12">
@@ -102,6 +106,7 @@
       </div>  
     </div> 
 
+<?php } ?>
 
     <br>
 	@if(isset($proceso))
