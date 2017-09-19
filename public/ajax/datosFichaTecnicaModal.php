@@ -1,9 +1,10 @@
 <?php 
 
-$ficha = $_GET['ficha'];
+$tipoTercero = $_GET['ficha'];
 
-if ($ficha == 'tercero') 
+if ($tipoTercero == 'cliente' or $tipoTercero == 'proveedor') 
 {
+    $opciones = ($tipoTercero == 'cliente' ? '"p","s"' : '"m","s"');
     $fichatecnica = DB::Select('
         SELECT 
             referenciaFichaTecnica,
@@ -11,7 +12,7 @@ if ($ficha == 'tercero')
             idFichaTecnica
         FROM
             fichatecnica
-        WHERE tipoFichaTecnica IN("m","s")
+        WHERE tipoFichaTecnica IN ('.$opciones.')
         AND Compania_idCompania = '.\Session::get('idCompania'));
 }
 else

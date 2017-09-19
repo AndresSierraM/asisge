@@ -383,7 +383,7 @@ class CargoController extends Controller
             $data = array(
              'Cargo_idCargo' => $id,
              'ElementoProteccion_idElementoProteccion' => $request['ElementoProteccion_idElementoProteccion'][$i],
-             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idElemento'][$i],
+             'FrecuenciaMedicion_idFrecuenciaMedicion' => ($request['FrecuenciaMedicion_idElemento'][$i] == '' ? null : $request['FrecuenciaMedicion_idElemento'][$i]),
              );
 
             $preguntas = \App\CargoElementoProteccion::updateOrCreate($indice, $data);

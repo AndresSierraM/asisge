@@ -434,14 +434,14 @@ function abrirModalFichaTecnica()
 {
 
     idTercero = ($("#Tercero_idTercero").val() == '' ? '' : $("#Tercero_idTercero").val());
-
+    tipo = ($("#tipoTercero").val() == '*02*' ? 'proveedor' : 'cliente');
     window.parent.$("#tfichatecnica tbody tr").each( function () 
     {
         $(this).removeClass('selected');
     });
 
     var lastIdx = null;
-    window.parent.$("#tfichatecnica").DataTable().ajax.url('http://'+location.host+"/datosFichaTecnicaModal?ficha=tercero").load();
+    window.parent.$("#tfichatecnica").DataTable().ajax.url('http://'+location.host+"/datosFichaTecnicaModal?ficha="+tipo).load();
      // Abrir modal
     window.parent.$("#modalFichaTecnica").modal()
 
