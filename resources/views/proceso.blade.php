@@ -53,7 +53,7 @@
 
 <div id='form-section' >
 	<fieldset id="proceso-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('codigoProceso', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -71,7 +71,7 @@
 
 
 		
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('nombreProceso', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">

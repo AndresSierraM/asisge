@@ -188,7 +188,9 @@
 	  <div   class="panel panel-heading">
 	    @yield('titulo')
 	  </div>
+	   
 	  <div  id="contenedor-fin" class="panel-body">
+	  	<p class='requiredAlert'>Los campos Marcados con * son obligatorios</p>
 	    @yield('content') 
 	  </div>
 	</div>

@@ -78,7 +78,7 @@
 <div id='form-section' >
 
 	<fieldset id="clasificacionRiesgo-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('codigoTipoRiesgo', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -93,7 +93,7 @@
             </div>
           </div>
     </div>
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
         {!!Form::label('nombreTipoRiesgo', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
@@ -103,7 +103,7 @@
 			     {!!Form::text('nombreTipoRiesgo',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del tipo de riesgo'])!!}
           </div>
       </div>
-      <div class="form-group" >
+      <div class="form-group required" >
         {!!Form::label('origenTipoRiesgo', 'Origen', array('class' => 'col-sm-2 control-label'))!!}
         <div class="col-sm-10" >
           <div class="input-group">
@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group" >
+      <div class="form-group required" >
         {!!Form::label('ClasificacionRiesgo_idClasificacionRiesgo', 'Clasificaci&oacute;n de Riesgo', array('class' => 'col-sm-2 control-label'))!!}
         <div class="col-sm-10" >
           <div class="input-group">

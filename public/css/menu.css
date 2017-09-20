@@ -16,11 +16,29 @@ body{
 
 
 
+/*Se agrega este Style para que pinte el asterisco de Rojo y en el class "form-group Required"*/
+.form-group.required .control-label:after { 
+   content:"*";
+   font-size:20px;
+   color:red;
+}
+/*Clase para cuando salga el mensaje tenga un borde*/
+.requiredAlert
+{
+font-size:14px;
+color:red;
+margin-left:20px;
+}
+
 #titulo{
     /*padding-top: 23px;*/
     font-size: 18px; 
 }
 
+#Obligatorio{
+    /*padding-top: 23px;*/
+    font-size: 18px; 
+}
 
 
 #contenedor{

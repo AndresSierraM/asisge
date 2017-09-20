@@ -23,12 +23,12 @@
          <legend class="text-center"></legend>    
 
                       <!-- Tipo de la educacion --> 
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                              {!!Form::label('tipoPerfilCargo', 'Tipo', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group"> 
                                   <span class="input-group-addon">
-                                    <i class="fa fa-bars"></i> 
+                                    <i class="fa fa-bars" style="width: 14px";></i> 
                                   </span>
                         {!!Form::select('tipoPerfilCargo',
               array('Educacion'=>'Educacion', 'Formacion'=>'Formacion', 'Habilidad'=>'Habilidades propias del cargo'), (isset($tipoPerfilCargo) ? $tipoPerfilCargo->tipoPerfilCargo: 0),["class" => "form-control"])!!}
@@ -39,12 +39,12 @@
                     </div>
                                    <!--  Nombre del Profesional -->
 
-                    <div class="form-group" id='test'>
+                    <div class="form-group required" id='test'>
                                 {!!Form::label('nombrePerfilCargo', 'Nombre ', array('class' => 'col-sm-1 control-label')) !!}
                           <div class="col-sm-11">
                             <div class="input-group"> 
                                   <span class="input-group-addon">
-                                  <i class="fa fa-pencil-square-o"></i>
+                                  <i class="fa fa-pencil-square-o" style="width: 14px";></i>
                                   </span>
                           {!!Form::text('nombrePerfilCargo',null,['class'=>'form-control','placeholder'=>'Por favor ingrese su Nombre','style'=>'width:100%;,right',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
                                                                   
