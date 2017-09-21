@@ -14,15 +14,21 @@ body{
     margin: 0px;
 }
 
+/*Estilo para las multiregistros que tengann el asterisco, en el titulo de cada campo se llama la clase*/
+ .requiredMulti:after{ 
+   content:"*";
+   font-size:16px;
+   color:red;
 
+}
 
-/*Se agrega este Style para que pinte el asterisco de Rojo y en el class "form-group Required"*/
+/*Se agrega este Style para que pinte el asterisco de Rojo y en el class "form-group Required" despues de la clase del label*/
 .form-group.required .control-label:after { 
    content:"*";
    font-size:20px;
    color:red;
 }
-/*Clase para cuando salga el mensaje tenga un borde*/
+/*Clase para cuando salga el mensaje  de los campos marcados con * tenga un borde*/
 .requiredAlert
 {
 font-size:14px;

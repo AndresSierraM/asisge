@@ -98,7 +98,7 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 
 		<div id="form_section">
 			<fieldset id="grupoapoyo-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('codigoGrupoApoyo', 'C&oacute;digo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -111,7 +111,7 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombreGrupoApoyo', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -122,7 +122,7 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 						</div>
 					</div>
 				</div>
-				<div class="form-group" >
+				<div class="form-group required" >
 			        {!!Form::label('FrecuenciaMedicion_idFrecuenciaMedicion', 'Frecuencia Reuniones', array('class' => 'col-sm-2 control-label'))!!}
 			        <div class="col-sm-10" >
 			          <div class="input-group">

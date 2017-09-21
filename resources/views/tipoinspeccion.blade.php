@@ -59,7 +59,7 @@
 <div id='form-section' >
 
 	<fieldset id="frecuenciaMedicion-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('codigoTipoInspeccion', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -74,18 +74,19 @@
             </div>
           </div>
     </div>
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
         {!!Form::label('nombreTipoInspeccion', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
-          <div class="input-group">
+          <div class="input-group ">
             <span class="input-group-addon">
               <i class="fa fa-pencil-square-o "></i>
             </span>
 			     {!!Form::text('nombreTipoInspeccion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del tipo de Inspecci&oacute;n',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
           </div>
       </div>
+    </div>
       
-      <div class="form-group" >
+      <div class="form-group required" >
         {!!Form::label('FrecuenciaMedicion_idFrecuenciaMedicion', 'Frecuencia de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
         <div class="col-sm-10" >
           <div class="input-group">
@@ -115,8 +116,8 @@
               <div class="col-md-1" style="width: 40px;" onclick="detalle.agregarCampos(valorDetalle,'A')">
                 <span class="glyphicon glyphicon-plus"></span>
               </div>
-              <div class="col-md-1" style="width: 5%;">No.</div>
-              <div class="col-md-1" style="width: 90%;">Pregunta</div>
+              <div class="col-md-1 requiredMulti" style="width: 5%;">No.</div>
+              <div class="col-md-1 requiredMulti" style="width: 90%;">Pregunta</div>
               <div id="contenedor_detalle">
               </div>
           </div>

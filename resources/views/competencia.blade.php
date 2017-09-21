@@ -78,7 +78,7 @@ Estado = [valorEstado,NombreEstado];
          <legend class="text-center"></legend>    
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
                       <!-- Competencia --> 
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                              {!!Form::label('nombreCompetencia', 'H.Actitudinal', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group" style="padding-left:15px "> 
@@ -118,10 +118,10 @@ Estado = [valorEstado,NombreEstado];
                         <div class="col-md-1" style="width: 40px;height: 35px;" onclick="competencia.agregarCampos(competenciamodelo,'A')">
                           <span class="glyphicon glyphicon-plus"></span>
                         </div>
-                        <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">Orden</div>
-                        <div class="col-md-1" style="width: 700px;display:inline-block;height:35px;">Pregunta</div>
-                        <div class="col-md-1" style="width: 150px;display:inline-block;height:35px;">Tipo Respuesta</div>
-                        <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">Estado</div>
+                        <div class="col-md-1 requiredMulti" style="width: 100px;display:inline-block;height:35px;">Orden</div>
+                        <div class="col-md-1 requiredMulti" style="width: 700px;display:inline-block;height:35px;">Pregunta</div>
+                        <div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:35px;">Tipo Respuesta</div>
+                        <div class="col-md-1 requiredMulti" style="width: 100px;display:inline-block;height:35px;">Estado</div>
                           
 
                         <!-- este es el div para donde van insertando los registros --> 
