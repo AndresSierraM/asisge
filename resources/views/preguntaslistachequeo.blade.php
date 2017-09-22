@@ -59,8 +59,8 @@
 							<div class="col-md-1" style="width: 40px;height: 60px;" onclick="pregunta.agregarCampos(valorPregunta,'A')">
 								<span class="glyphicon glyphicon-plus"></span>
 							</div>
-							<div class="col-md-1" style="width: 80px;display:inline-block;height:60px;">Orden</div>
-							<div class="col-md-1" style="width: 1000px;display:inline-block;height:60px;">Pregunta</div>
+							<div class="col-md-1 requiredMulti" style="width: 80px;display:inline-block;height:60px;">Orden</div>
+							<div class="col-md-1 requiredMulti" style="width: 1000px;display:inline-block;height:60px;">Pregunta</div>
 							<div id="contenedor_pregunta">
 							</div>
 						</div>

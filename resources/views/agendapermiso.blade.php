@@ -60,7 +60,7 @@
 <div id='form-section' >
 
   <fieldset id="agendapermiso-form-fieldset"> 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
         {!!Form::label('Users_idAutorizado', 'Usuario', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
@@ -84,15 +84,15 @@
                       <div class="form-group" id='test'>
                         <div class="col-sm-12">
                           <div class="row show-grid">
-                            <div class="col-md-1" style="width: 42px; height: 42px; cursor: pointer;" onclick="agendapermiso.agregarCampos(valorAgendaPermiso,'A');">
+                            <div class="col-md-1" style="width: 42px; height: 44px; cursor: pointer;" onclick="agendapermiso.agregarCampos(valorAgendaPermiso,'A');">
                               <span class="glyphicon glyphicon-plus"></span>
                             </div>
-                            <div class="col-md-1" style="width: 250px;">Acceso a la agenda de</div>
-                            <div class="col-md-1" style="width: 250px;">En la categoria</div>
-                            <div class="col-md-1" style="width: 100px;">Adicionar</div>
-                            <div class="col-md-1" style="width: 100px;">Modificar</div>
-                            <div class="col-md-1" style="width: 100px;">Eliminar</div>
-                            <div class="col-md-1" style="width: 100px;">Consultar</div>
+                            <div class="col-md-1 requiredMulti" style="width: 250px;">Acceso a la agenda de</div>
+                            <div class="col-md-1 requiredMulti" style="width: 250px;">En la categoria</div>
+                            <div class="col-md-1" style="width: 100px;height: 44px;">Adicionar</div>
+                            <div class="col-md-1" style="width: 100px;height: 44px;">Modificar</div>
+                            <div class="col-md-1" style="width: 100px;height: 44px;">Eliminar</div>
+                            <div class="col-md-1" style="width: 100px;height: 44px;">Consultar</div>
                             <div id="contenedor_permisos"> 
                             </div>
                           </div>

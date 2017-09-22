@@ -17,7 +17,7 @@
 <div id='form-section'>
 
 	<fieldset id="tipoelementoproteccion-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('codigoTipoElementoProteccion', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -31,7 +31,7 @@
         </div>
 
 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
           {!!Form::label('nombreTipoElementoProteccion', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -41,6 +41,7 @@
         {!!Form::text('nombreTipoElementoProteccion',null,['class'=>'form-control','placeholder'=>'Ingresa la descripci&oacute;n',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
+      </div>
   
 
     
@@ -54,6 +55,7 @@
         {!!Form::textarea('observacionTipoElementoProteccion',null,['class'=>'form-control','style'=>'height:100px','placeholder'=>'',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
             </div>
           </div>
+    </div>
 
     </fieldset>
 	@if(isset($tipoelementoproteccion))

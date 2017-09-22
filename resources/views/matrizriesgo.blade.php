@@ -48,7 +48,7 @@
 			detalle.campos = ['idMatrizRiesgoDetalle', 'Proceso_idProceso', 'rutinariaMatrizRiesgoDetalle', 'ClasificacionRiesgo_idClasificacionRiesgo', 'TipoRiesgo_idTipoRiesgo', 'TipoRiesgoDetalle_idTipoRiesgoDetalle', 'TipoRiesgoSalud_idTipoRiesgoSalud', 'vinculadosMatrizRiesgoDetalle', 'temporalesMatrizRiesgoDetalle', 'independientesMatrizRiesgoDetalle', 'totalExpuestosMatrizRiesgoDetalle', 'fuenteMatrizRiesgoDetalle', 'medioMatrizRiesgoDetalle', 'personaMatrizRiesgoDetalle', 'nivelDeficienciaMatrizRiesgoDetalle', 'nivelExposicionMatrizRiesgoDetalle', 'nivelProbabilidadMatrizRiesgoDetalle', 'nombreProbabilidadMatrizRiesgoDetalle', 'nivelConsecuenciaMatrizRiesgoDetalle', 'nivelRiesgoMatrizRiesgoDetalle', 'nombreRiesgoMatrizRiesgoDetalle', 'aceptacionRiesgoMatrizRiesgoDetalle', 'eliminacionMatrizRiesgoDetalle', 'sustitucionMatrizRiesgoDetalle', 'controlMatrizRiesgoDetalle', 'elementoProteccionMatrizRiesgoDetalle', 'observacionMatrizRiesgoDetalle'];
 			detalle.etiqueta = ['input','select','checkbox','select','select','select','select','input','input','input','input','input','input','input','select','select','input','input','select','input','input','input','input','input','input','input','input'];
 			detalle.tipo = ['hidden','','checkbox','','','','','number','number','hidden','number','text','text','text','','','text','text','','text','text','text','text','text','text','text','text'];
-			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 210px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 340px;height:35px;'];
+			detalle.estilo = ['','width: 110px;height:35px;','width: 100px;height:32px;display:inline-block;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 90px;height:35px;text-align: right;','width: 90px;height:35px;text-align: right;','','width: 90px;height:35px;text-align: right;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 120px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 210px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 110px;height:35px;','width: 340px;height:35px;'];
 			detalle.clase = ['','','','','','','','','','','','','','','','','','','','','','','','','','',''];
 			detalle.sololectura = [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,false,true,true,true,false,false,false,false,false];
 			detalle.opciones = ['',proceso,'',clasificacionRiesgo,'','','','','','','','','','',nivelDeficiencia, nivelExposicion,'','',nivelConsecuencia,'','','','', '', '', '',''];
@@ -78,7 +78,7 @@
 		
 		<div id="form_section">
 			<fieldset id="matrizRiesgo-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaElaboracionMatrizRiesgo', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -91,7 +91,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombreMatrizRiesgo', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -102,7 +102,7 @@
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" >
+				<div class="form-group required" >
 					{!!Form::label('FrecuenciaMedicion_idFrecuenciaMedicion', 'Frecuencia de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10" >
 					  <div class="input-group">
@@ -139,30 +139,30 @@
 													<div class="col-md-1" style="width: 440px;height:40px;">Peligro</div>
 													<div class="col-md-1" style="width: 270px;height:40px;">Expuestos</div>
 													<div class="col-md-1" style="width: 330px;height:40px;">M&eacute;todos de control existentes</div>
-													<div class="col-md-1" style="width: 770px;height:40px;">Evaluaci&oacute;n de riesgos</div>
+													<div class="col-md-1" style="width: 780px;height:40px;">Evaluaci&oacute;n de riesgos</div>
 													<div class="col-md-1" style="width: 210px;height:40px;">Valoraci&oacute;n</div>
 													<div class="col-md-1" style="width: 440px;height:40px;">Medidas de Intervenci&oacute;n</div>
 													<div class="col-md-1" style="width: 340px;height:40px;">&nbsp;</div>
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Procesos Cargos</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Procesos Cargos</div>
 													<div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Rutinaria</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Clasificaci&oacute;n</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Tipo Riesgo</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Descripci&oacute;n</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Efectos salud</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Clasificaci&oacute;n</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Tipo Riesgo</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Descripci&oacute;n</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Efectos salud</div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Planta</div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Temporal</div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Total</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medio</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel Deficiencia</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel Exposici&oacute;n</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Nivel Deficiencia</div>
+													<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:60px;">Nivel Exposici&oacute;n</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel Probabilidad</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Interpretaci&oacute;n probabilidad</div>
-													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel consecuencia</div>
+													<div class="col-md-1 requiredMulti" style="width: 120px;display:inline-block;height:60px;">Nivel consecuencia</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Nivel Riesgo</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Interpretaci&oacute;n riesgo</div>
 													<div class="col-md-1" style="width: 210px;display:inline-block;height:60px;">Aceptaci&oacute;n riesgo</div>

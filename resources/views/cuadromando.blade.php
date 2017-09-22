@@ -112,7 +112,7 @@
             </div>
           </div>
 
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('numeroCuadroMando', 'N&uacute;mero', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -125,7 +125,7 @@
           </div>
         </div>
 
-          <div class="form-group" id='test'>
+          <div class="form-group required" id='test'>
             {!!Form::label('CompaniaObjetivo_idCompaniaObjetivo', 'Objetivo Estratégico', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">
@@ -151,7 +151,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
             {!!Form::label('Proceso_idProceso', 'Proceso', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
               <div class="input-group">
@@ -175,7 +175,7 @@
           </div>
         </div>
 
-       <div class="form-group" id='test'>
+       <div class="form-group required" id='test'>
           {!! Form::label('indicadorCuadroMando', 'Nombre del indicador', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -199,7 +199,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!! Form::label('formulaCuadroMando', 'Formula del indicador', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -211,7 +211,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test' style="display:inline-block">
+        <div class="form-group required" id='test' style="display:inline-block">
           {!! Form::label('operadorMetaCuadroMando', 'Meta', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-2">
             <div class="input-group">
@@ -235,7 +235,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
             {!!Form::label('FrecuenciaMedicion_idFrecuenciaMedicion', 'Frecuencia', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">
@@ -259,7 +259,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
             {!!Form::label('Tercero_idResponsable', 'Responsable de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">

@@ -86,7 +86,7 @@
 <div id='form-section' >
 
   <fieldset id="programa-form-fieldset">  
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('nombrePrograma', 'Programa', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
@@ -99,24 +99,24 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('fechaElaboracionPrograma', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-calendar" ></i>
+                <i class="fa fa-calendar"></i>
               </span>
-              {!!Form::date('fechaElaboracionPrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Elaboracion', 'style'=>'width:340;'])!!}
+              {!!Form::date('fechaElaboracionPrograma',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Elaboracion', 'style'=>'width:300;'])!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
-          {!!Form::label('ClasificacionRiesgo_idClasificacionRiesgo', 'Clasificaci&oacute;n de Riesgo', array('class' => 'col-sm-2 control-label'))!!}
+        <div class="form-group required" id='test'>
+          {!!Form::label('ClasificacionRiesgo_idClasificacionRiesgo', 'Clasificaci&oacute;n  Riesgo', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-flag"></i>
+                <i class="fa fa-flag" ></i>
               </span>
               {!!Form::select('ClasificacionRiesgo_idClasificacionRiesgo',$clasificacionriesgo, (isset($programa) ? $programa->ClasificacionRiesgo_idClasificacionRiesgo : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la clasificacion de riesgo"])!!}
               {!! Form::hidden('idPrograma', 0, array('id' => 'idPrograma')) !!}
@@ -125,7 +125,6 @@
             </div>
           </div>
         </div>
-
         <div class="form-group" id='test'>
           {!!Form::label('alcancePrograma', 'Alcance', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
@@ -138,7 +137,7 @@
           </div>
         </div>
     
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('CompaniaObjetivo_idCompaniaObjetivo', 'Objetivo', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -162,7 +161,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('Tercero_idElabora', 'Elaborado Por', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -198,18 +197,18 @@
                     <div class="col-md-1" style="width: 300px;">Ejecuci&oacute;n</div>
                     <div class="col-md-1" style="width: 300px;">&nbsp;</div>
                     
-                    <div class="col-md-1" style="width: 40px;" onclick="programa.agregarCampos(valorPrograma,'A')">
+                    <div class="col-md-1" style="width: 40px;height: 44px;" onclick="programa.agregarCampos(valorPrograma,'A')">
                       <span class="glyphicon glyphicon-plus"></span>
                     </div>
                       
-                    <div class="col-md-1" style="width: 400px;">Actividad</div>
-                    <div class="col-md-2" style="width: 200px;">Responsable</div>
-                    <div class="col-md-3" style="width: 200px;">Documento</div>
-                    <div class="col-md-4" style="width: 200px;">Fecha</div>
-                    <div class="col-md-5" style="width: 100px;">Recurso $</div>
-                    <div class="col-md-6" style="width: 200px;">Fecha</div>
-                    <div class="col-md-7" style="width: 100px;">Recurso $</div>
-                    <div class="col-md-8" style="width: 300px;">Observaci&oacute;n</div>
+                    <div class="col-md-1" style="width: 400px;height: 44px;">Actividad</div>
+                    <div class="col-md-2 requiredMulti" style="width: 200px;height: 44px;">Responsable</div>
+                    <div class="col-md-3 requiredMulti" style="width: 200px;height: 44px;">Documento</div>
+                    <div class="col-md-4" style="width: 200px;height: 44px;">Fecha</div>
+                    <div class="col-md-5" style="width: 100px;height: 44px;">Recurso $</div>
+                    <div class="col-md-6" style="width: 200px;height: 44px;">Fecha</div>
+                    <div class="col-md-7" style="width: 100px;height: 44px;">Recurso $</div>
+                    <div class="col-md-8" style="width: 300px;height: 44px;">Observaci&oacute;n</div>
                     <div id="contenedor_programa">
                     </div>
                   </div>

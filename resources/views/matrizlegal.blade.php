@@ -65,7 +65,7 @@
 	@endif
 		<div id="form_section">
 			<fieldset id="matrizLegal-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaElaboracionMatrizLegal', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -79,7 +79,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombreMatrizLegal', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -90,7 +90,7 @@
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('origenMatrizLegal', 'Origen', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" >
+				<div class="form-group required" >
 					{!!Form::label('FrecuenciaMedicion_idFrecuenciaMedicion', 'Frecuencia de Medici&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10" >
 					  <div class="input-group">
@@ -130,9 +130,9 @@
 						                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 												<span class="glyphicon glyphicon-plus"></span>
 											</div>
-											<div class="col-md-1" style="width: 160px;display:inline-block;height:60px;">Tipo de norma</div>
+											<div class="col-md-1 requiredMulti" style="width: 160px;display:inline-block;height:60px;">Tipo de norma</div>
 											<div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Art&iacute;culos Aplicables</div>
-											<div class="col-md-1" style="width: 160px;display:inline-block;height:60px;">Expedida por</div>
+											<div class="col-md-1 requiredMulti" style="width: 160px;display:inline-block;height:60px;">Expedida por</div>
 											<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Exigencia</div>
 											<div class="col-md-1" style="width: 330px;display:inline-block;height:60px;">Controles Existentes</div>
 											<!-- <div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Fuente</div>

@@ -163,7 +163,7 @@
 				<table width="100%">
 					<tr>
 						<td>
-							<div class="form-group" style="width:565px; display: inline;">
+							<div class="form-group required" style="width:565px; display: inline;">
 								{!!Form::label('TipoIdentificacion_idTipoIdentificacion', 'Tipo de Identificaci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -178,7 +178,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: inline; " >
+							<div class="form-group required" style="width:565px; display: inline; " >
 								{!!Form::label('documentoTercero', 'Documento No.', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:30px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group" >
@@ -190,7 +190,7 @@
 								</div>
 							</div>
 							<br/><br/><br/>
-							<div class="form-group" style="width:565px; display: none;" id="nombre1">
+							<div class="form-group required" style="width:565px; display: none;" id="nombre1">
 								{!!Form::label('nombre1Tercero', 'Primer Nombre', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -212,7 +212,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: none;" id="apellido1">
+							<div class="form-group required" style="width:565px; display: none;" id="apellido1">
 								{!!Form::label('apellido1Tercero', 'Primer Apellido', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -258,7 +258,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" style="width:565px; display: inline;" id="fechacreacion">
+							<div class="form-group required" style="width:565px; display: inline;" id="fechacreacion">
 								{!!Form::label('fechaCreacionTercero', 'Fecha Creaci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 								<div class="col-sm-10" style="width:340px;">
 									<div class="input-group">
@@ -359,7 +359,7 @@
 										</div>
 										<div id="collapseOne" class="panel-collapse collapse in">
 											<div class="panel-body">
-												<div class="form-group" style="width:600px; display: inline;" >
+												<div class="form-group required" style="width:600px; display: inline;" >
 													{!!Form::label('Ciudad_idCiudad', 'Ciudad', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group" >
@@ -371,7 +371,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="width:600px; display: inline;">
+												<div class="form-group required" style="width:600px; display: inline;">
 													{!!Form::label('direccionTercero', 'Direcci&oacute;n', array('class' => 'col-sm-2 control-label','style'=>'width:180px;padding-left:auto;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">
@@ -382,7 +382,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="form-group" style="width:600px; display: inline;">
+												<div class="form-group required" style="width:600px; display: inline;">
 													{!!Form::label('telefonoTercero', 'Tel&eacute;fono', array('class' => 'col-sm-2 control-label','style'=>'width:180px;'))!!}
 													<div class="col-sm-10" style="width:400px;">
 														<div class="input-group">

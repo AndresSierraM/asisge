@@ -77,7 +77,7 @@
 <div id='form-section' >
 
   <fieldset id="procedimiento-form-fieldset"> 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
           {!!Form::label('Proceso_idProceso', 'Proceso ', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
                   <div class="input-group">
@@ -93,7 +93,7 @@
         </div>
 
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('nombreProcedimiento', 'Procedimiento', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
@@ -105,7 +105,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('fechaElaboracionProcedimiento', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
@@ -303,12 +303,12 @@
               <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
                   <div style="overflow:auto; height:350px;">
                     <div style="width: 1550px; display: inline-block;">
-                      <div class="col-md-1" style="width: 40px;" onclick="procedimiento.agregarCampos(valorProcedimiento,'A')">
+                      <div class="col-md-1" style="width: 40px;height: 44px;" onclick="procedimiento.agregarCampos(valorProcedimiento,'A')">
                         <span class="glyphicon glyphicon-plus"></span>
                       </div>
-                      <div class="col-md-1" style="width: 900px;">Actividad</div>
-                      <div class="col-md-1" style="width: 300px;">Responsable</div>
-                      <div class="col-md-1" style="width: 300px;">Documento y/o Registro</div>
+                      <div class="col-md-1 requiredMulti" style="width: 900px;">Actividad</div>
+                      <div class="col-md-1 requiredMulti" style="width: 300px;">Responsable</div>
+                      <div class="col-md-1" style="width: 300px;height: 44px;">Documento y/o Registro</div>
                       <div id="contenedor_procedimiento">
                       </div>
                     </div>

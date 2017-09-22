@@ -113,7 +113,7 @@
       <div class="form-group" id='test'>
         <div class="col-sm-12">
           <div class="row show-grid">
-              <div class="col-md-1" style="width: 40px;" onclick="detalle.agregarCampos(valorDetalle,'A')">
+              <div class="col-md-1" style="width: 40px;height:44px" onclick="detalle.agregarCampos(valorDetalle,'A')">
                 <span class="glyphicon glyphicon-plus"></span>
               </div>
               <div class="col-md-1 requiredMulti" style="width: 5%;">No.</div>
