@@ -18,7 +18,7 @@
 
 
 	<fieldset id="opcion-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('ordenOpcion', 'Orden', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -33,7 +33,7 @@
 
 
 		
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!! Form::label('nombreOpcion', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -45,7 +45,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!! Form::label('nombreCortoOpcion', 'Nombre Corto', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -58,7 +58,7 @@
         </div>
 
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!! Form::label('rutaOpcion', 'Ruta', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
             {!!Form::label('Paquete_idPaquete', 'Paquete', array('class' => 'col-sm-2 control-label'))!!}
             <div class="col-sm-10">
                     <div class="input-group">

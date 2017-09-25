@@ -126,7 +126,7 @@
 <div id='form-section' >
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
 	<fieldset id="encuesta-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
       {!!Form::label('tituloEncuesta', 'Título', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -145,7 +145,7 @@
 
 
 		
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
       {!!Form::label('descripcionEncuesta', 'Descripción', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">

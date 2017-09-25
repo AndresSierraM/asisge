@@ -50,7 +50,7 @@
 <div id='form-section' >
 
 	<fieldset id="rol-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('codigoRol', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -66,7 +66,7 @@
 
 
 		
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!! Form::label('nombreRol', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -84,7 +84,7 @@
                 <div class="col-md-1" style="width: 40px;" onclick="permisos.agregarCampos(valorPermisos,'A')">
                   <span class="glyphicon glyphicon-plus"></span>
                 </div>
-                <div class="col-md-1" style="width: 600px;">Opci&oacute;n</div>
+                <div class="col-md-1 requiredMulti" style="width: 600px;height: 42px;">Opci&oacute;n</div>
                 <div class="col-md-1" style="width: 70px;"><center><span title="Adicionar" class="fa fa-plus"></span></center></div>
                 <div class="col-md-1" style="width: 70px;"><center><span title="Modificar" class="fa fa-pencil"></span></center></div>
                 <div class="col-md-1" style="width: 70px;"><center><span title="Eliminar / Anular" class="fa fa-trash"></span></center></div>

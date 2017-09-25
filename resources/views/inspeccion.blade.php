@@ -184,7 +184,7 @@
 
 	<fieldset id="inspeccion-form-fieldset">	
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('TipoInspeccion_idTipoInspeccion', 'Tipo de Inspecci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -199,7 +199,7 @@
             </div>
           </div>
         </div>
-          <div class="form-group" id='test'>
+          <div class="form-group required" id='test'>
               {!!Form::label('Tercero_idRealizadaPor', 'Realizada Por', array('class' => 'col-sm-2 control-label'))!!}       
               <div class="col-sm-10">
                   <div class="input-group">
@@ -214,7 +214,8 @@
               </div>
             </div>
           </div>
-        <div class="form-group" id='test'>
+        </div>
+        <div class="form-group required" id='test'>
           {!!Form::label('fechaElaboracionInspeccion', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
@@ -281,15 +282,15 @@
                     <div class="col-md-1 col-xs-1" style="width: 1220px;">&nbsp;</div>
                     <div class="col-md-1 col-xs-1" style="width: 650px;">Implementaci&oacute;n de la Medida de Intervenci&oacute;n Recomendada</div>
                           
-                    <div class="col-md-1 col-xs-1" style="width: 60px;">No.</div>
-                    <div class="col-md-2 col-xs-1" style="width: 300px;">Pregunta</div>
-                    <div class="col-md-3 col-xs-1" style="width: 300px;">Situaci&oacute;n Identificada</div>
-                    <div class="col-md-4 col-xs-1" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
-                    <div class="col-md-5 col-xs-1" style="width: 100px;">Ubicaci&oacute;n</div>
-                    <div class="col-md-6 col-xs-1" style="width: 200px;">Acci&oacute;n de Mejora</div>
-                    <div class="col-md-7 col-xs-1" style="width: 200px;">Responsable</div>
-                    <div class="col-md-8 col-xs-1" style="width: 150px;">Fecha</div>
-                    <div class="col-md-8 col-xs-0" style="width: 300px;display: inline-block; ">Observaciones</div>
+                    <div class="col-md-1 col-xs-1" style="width: 60px;height: 44px;">No.</div>
+                    <div class="col-md-2 col-xs-1" style="width: 300px;height: 44px;">Pregunta</div>
+                    <div class="col-md-3 col-xs-1 requiredMulti" style="width: 300px;height: 44px;">Situaci&oacute;n Identificada</div>
+                    <div class="col-md-4 col-xs-1" style="width: 260px;height: 44px;">Evidencia Fotogr&aacute;fica</div>
+                    <div class="col-md-5 col-xs-1" style="width: 100px;height: 44px;">Ubicaci&oacute;n</div>
+                    <div class="col-md-6 col-xs-1" style="width: 200px;height: 44px;">Acci&oacute;n de Mejora</div>
+                    <div class="col-md-7 col-xs-1" style="width: 200px;height: 44px;">Responsable</div>
+                    <div class="col-md-8 col-xs-1" style="width: 150px;height: 44px;">Fecha</div>
+                    <div class="col-md-8 col-xs-0" style="width: 300px;height: 44px;display: inline-block; ">Observaciones</div>
                     
                     <div id="contenedor_detalle">
                     </div>

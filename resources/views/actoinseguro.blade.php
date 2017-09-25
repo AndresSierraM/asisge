@@ -28,9 +28,9 @@ $idActoInseguroS = (isset($actoinseguro) ? $actoinseguro->idActoInseguro : 0);
 <div id='form-section' >
 	<fieldset id="actoinseguro-form-fieldset">	
                                                                 <!--Reportado Por  -->
-                    <div class="form-group" id='test' >
+                    <div class="form-group required" id='test' >
                      {!!Form::label('Tercero_idEmpleadoReporta', 'Reportado Por', array('class' => 'col-sm-2 control-label')) !!}
-                                    <div class="col-sm-6 " style="padding-left:10px">
+                                    <div class="col-sm-6" style="padding-left:10px">
                                             <div class="input-group">
                                                      <span class="input-group-addon">
                                                              <i class="fa fa-user" style="width: 14px;" aria-hidden="true"></i>
@@ -130,7 +130,7 @@ $idActoInseguroS = (isset($actoinseguro) ? $actoinseguro->idActoInseguro : 0);
                                         <div class="panel-body">
                                           <div class="col-sm-12 col-xs-12">
                                             <div id="upload" class="col-md-12">
-                                                <div class="dropzone dropzone-previews" id="dropzoneActoInseguroArchivo" style="overflow: auto;">
+                                                <div class="dropzone dropzone-previews" id="dropzoneActoInseguroArchivo" style="overflow: auto">
                                                 </div>  
                                             </div>                                                                             
                                             <div class="col-sm-12 col-xs-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">   

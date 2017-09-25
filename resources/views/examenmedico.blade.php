@@ -75,15 +75,15 @@
 
   </script>
 
-  @if(isset($examenmedico))
-    @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
-      {!!Form::model($examenmedico,['route'=>['examenmedico.destroy',$examenmedico->idExamenMedico],'method'=>'DELETE', 'files' => true])!!}
-    @else
-      {!!Form::model($examenmedico,['route'=>['examenmedico.update',$examenmedico->idExamenMedico],'method'=>'PUT', 'files' => true])!!}
-    @endif
-  @else
-    {!!Form::open(['route'=>'examenmedico.store','method'=>'POST', 'files' => true])!!}
-  @endif
+	@if(isset($examenmedico))
+		@if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
+			{!!Form::model($examenmedico,['route'=>['examenmedico.destroy',$examenmedico->idExamenMedico],'method'=>'DELETE', 'files' => true])!!}
+		@else
+			{!!Form::model($examenmedico,['route'=>['examenmedico.update',$examenmedico->idExamenMedico],'method'=>'PUT', 'files' => true])!!}
+		@endif
+	@else
+		{!!Form::open(['route'=>'examenmedico.store','method'=>'POST', 'files' => true])!!}
+	@endif
 
 
 <div id='form-section' >
@@ -99,9 +99,9 @@
       </div>
   </div>
 
-  <fieldset id="examenmedico-form-fieldset">  
+	<fieldset id="examenmedico-form-fieldset">	
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('Tercero_idTercero', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -130,7 +130,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('fechaExamenMedico', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
@@ -142,7 +142,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('tipoExamenMedico', 'Tipo de Examen', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -174,10 +174,10 @@
               <div class="row show-grid">
                 <div style="overflow: auto; width: 100%;">
   
-                    <div class="col-md-1" style="width: 300px;">Examen</div>
-                    <div class="col-md-4" style="width: 110px;">Resultado</div>
-                    <div class="col-md-4" style="width: 260px;">Evidencia Fotogr&aacute;fica</div>
-                    <div class="col-md-5" style="width: 300px;">Observaci&oacute;n</div>
+                    <div class="col-md-1" style="width: 300px;height: 44px;">Examen</div>
+                    <div class="col-md-4 requiredMulti" style="width: 110px;height: 44px;">Resultado</div>
+                    <div class="col-md-4" style="width: 260px;height: 44px;">Evidencia Fotogr&aacute;fica</div>
+                    <div class="col-md-5" style="width: 300px;height: 44px;">Observaci&oacute;n</div>
                  
                     <div id="contenedor_detalle">
                     </div>
@@ -191,7 +191,7 @@
           </div>
         </div>
     </fieldset>
-  @if(isset($examenmedico))
+	@if(isset($examenmedico))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
       @else
@@ -200,10 +200,10 @@
   @else
          {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
   @endif
-    
+  
   
 
-  {!! Form::close() !!}
+	{!! Form::close() !!}
 
   <script type="text/javascript">
     document.getElementById('contenedor').style.width = '1250px';
@@ -220,7 +220,7 @@
   </script>
 
 
-  </div>
+	</div>
 </div>
 
 {!!Html::script('js/signature_pad.js'); !!}

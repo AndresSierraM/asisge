@@ -48,7 +48,7 @@
     </div>
 </div>
 	<fieldset id="plantrabajo-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('numeroPlanTrabajo', 'Número', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -61,7 +61,7 @@
           </div>
         </div>
 		
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('fechaPlanTrabajo', 'Fecha', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -74,7 +74,7 @@
         </div>
 
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('asuntoPlanTrabajo', 'Asunto', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
            {!!Form::label('Tercero_idAuditor', 'Revisado por:', array('class' => 'col-sm-2 control-label'))!!}          
             <div class="col-sm-10">
                 <div class="input-group">

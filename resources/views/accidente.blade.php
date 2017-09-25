@@ -186,7 +186,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 					</div>
 				</div>
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombreAccidente', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -198,7 +198,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 					</div>
 				</div>
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('clasificacionAccidente', 'Clase de Accidente', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -222,7 +222,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 
 
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Tercero_idCoordinador', 'Coord. Investigaci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -255,7 +255,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
                     <div id="empleado" class="panel-collapse collapse">
 						<div class="panel-body">
 
-							<div class="form-group" id='test'>
+							<div class="form-group required" id='test'>
 								{!!Form::label('Tercero_idEmpleado', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}
 								<div class="col-sm-10">
 						            <div class="input-group">
@@ -279,7 +279,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 					          </div>
 					        </div>
 					        
-					        <div class="form-group" id='test'>
+					        <div class="form-group required" id='test'>
 								{!!Form::label('Ausentismo_idAusentismo', 'Ausencia', array('class' => 'col-sm-2 control-label'))!!}
 								<div class="col-sm-10">
 						            <div class="input-group">
@@ -302,7 +302,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 					          </div>
 					        </div>
 
-							<div class="form-group" id='test'>
+							<div class="form-group required" id='test'>
 								{!!Form::label('Proceso_idProceso', 'Area/Secci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 								<div class="col-sm-10">
 						            <div class="input-group">
@@ -374,7 +374,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
                     <div id="accidente" class="panel-collapse collapse">
 						<div class="panel-body">
 
-					        <div class="form-group" id='test'>
+					        <div class="form-group required" id='test'>
 					          {!!Form::label('fechaOcurrenciaAccidente', 'Fecha/Hora', array('class' => 'col-sm-2 control-label'))!!}
 					          <div class="col-sm-10" >
 					            <div class="input-group">
@@ -534,7 +534,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Persona</div>
 												<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Fecha Verificaci&oacute;n</div>
 												<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Medida Efectiva</div>
-												<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Area Responsable</div>
+												<div class="col-md-1 requiredMulti" style="width: 400px;display:inline-block;height:60px;">Area Responsable</div>
 												<div id="contenedor_recomendacion">
 												</div>
 											</div>
@@ -562,7 +562,7 @@ $idAccidentes = (isset($accidente) ? $accidente->idAccidente : 0);
 												<div class="col-md-1" style="width: 40px;height: 60px;" onclick="equipo.agregarCampos(valorRecomendacion,'A')">
 													<span class="glyphicon glyphicon-plus"></span>
 												</div>
-												<div class="col-md-1" style="width: 1150px;display:inline-block;height:60px;">Nombre Investigador</div>
+												<div class="col-md-1 requiredMulti" style="width: 1150px;display:inline-block;height:60px;">Nombre Investigador</div>
 												<div id="contenedor_equipo">
 												</div>
 											</div>

@@ -34,7 +34,7 @@ $(document).ready(function(){
 		
 		<div id="form_section">
 			<fieldset id="equiposeguimientoverificacion-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaEquipoSeguimientoVerificacion', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -48,7 +48,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!! Form::label('EquipoSeguimiento_idEquipoSeguimiento', 'Equipo', array('class' => 'col-sm-2 control-label')) !!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -71,7 +71,7 @@ $(document).ready(function(){
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('EquipoSeguimientoDetalle_idEquipoSeguimientoDetalle', 'C&#243;digo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -82,7 +82,7 @@ $(document).ready(function(){
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('errorEncontradoEquipoSeguimientoVerificacion', 'Error Encontrado', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">

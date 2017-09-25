@@ -114,7 +114,7 @@ group by Tercero_idVendedor');
   		<input type="hidden" id="token" value="{{csrf_token()}}"/>
 		<div id='form-section' >
 			<fieldset id="presupuesto-form-fieldset">	
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaInicialPresupuesto', 'Fecha Inicial', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -129,7 +129,7 @@ group by Tercero_idVendedor');
 					</div>
 				</div>
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaFinalPresupuesto', 'Fecha Final', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -141,7 +141,7 @@ group by Tercero_idVendedor');
 			    	</div>
 			    </div>
 
-			    <div class="form-group" id='test'>
+			    <div class="form-group required" id='test'>
 					{!!Form::label('descripcionPresupuesto', 'Descripción', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -180,17 +180,17 @@ group by Tercero_idVendedor');
 				             <div class="form-group" id='test'>
 				               <div class="col-sm-12">
 				                 <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-				                   <div style="overflow:auto; height:350px;">
-				                     <div style="width: 100%; display: inline-block;">
-				                       <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="presupuesto.agregarCampos(valorPresupuesto,'A')">
+				                   <div style="overflow:auto; height:350px;width: 100%">
+				                     <div style="width: 1300px; display: inline-block;">
+				                       <div class="col-md-1" style="width:40px;height: 52px; cursor:pointer;" onclick="presupuesto.agregarCampos(valorPresupuesto,'A')">
 				                         <span class="glyphicon glyphicon-plus"></span>
 				                       </div>
-				                       <div class="col-md-1" style="width:200px;" >Vendedor</div>
+				                       <div class="col-md-1 requiredMulti" style="width:200px;height: 52px;" >Vendedor</div>
 				                       <?php
 				                      	for ($i=0; $i < count($lineaNegocio); $i++) 
 									    { 
 									    	$lineaN = get_object_vars($lineaNegocio[$i]);
-									    	echo '<div class="col-md-1" style="width:150px;">'.$lineaN["nombreLineaNegocio"].'</div>';
+									    	echo '<div class="col-md-1" style="width:150px;height: 52px;">'.$lineaN["nombreLineaNegocio"].'</div>';
 									    }
 				                       ?>
 				                       <div id="contenedor_presupuesto">

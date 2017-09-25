@@ -57,7 +57,7 @@
 
 		<div id="form_section">
 			<fieldset id="planauditoria-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('numeroListaChequeo', 'N&uacute;mero', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaElaboracionListaChequeo', 'Fecha Inicio', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -82,7 +82,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('PlanAuditoria_idPlanAuditoria', 'Plan de Auditor&iacute;a', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -94,7 +94,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Proceso_idProceso', 'Proceso', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -128,7 +128,7 @@
 															</div>
 															<div class="col-md-1" style="width: 50px;display:inline-block;height:60px;">N°</div>
 															<div class="col-md-1" style="width: 400px;display:inline-block;height:60px;">Pregunta</div>
-															<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">A qui&eacute;n</div>
+															<div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:60px;">A qui&eacute;n</div>
 															<div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Respuesta</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Conforme</div>
 															<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Hallazgo</div>

@@ -18,7 +18,7 @@
 <div id='form-section' >
 
 	<fieldset id="usuario-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('name', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -32,7 +32,7 @@
         </div>
 
 		
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!! Form::label('email', 'Correo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!! Form::label('password', 'Contrase&ntilde;a', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test' style="display:inline-block;">
+        <div class="form-group required" id='test' style="display:inline-block;">
           {!! Form::label('password_confirmation', 'Confirmar Contrase&ntilde;a', array('class' => 'col-sm-2 control-label')) !!}
             <div class="col-sm-10">
               <div class="input-group">
@@ -66,7 +66,7 @@
               {!!Form::password('password_confirmation',array('class'=>'form-control','placeholder'=>'Ingresa de nuevo la contrase&ntilde;a'))!!}
               </div>
             </div>
-           <div class="form-group " style="display:inline-block;">
+           <div class="form-group required" style="display:inline-block;">
               {!!Form::label('Tercero_idTercero', 'Tercero Asociado', array('class' => 'col-md-2 control-label'))!!}
               <div class="col-sm-10" >
                 <div class="input-group" >

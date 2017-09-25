@@ -92,7 +92,7 @@
 		
 		<div id="form_section">
 			<fieldset id="matrizRiesgoProceso-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaMatrizRiesgoProceso', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -106,7 +106,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Tercero_idRespondable', 'Responsable', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -117,7 +117,7 @@
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" >
+				<div class="form-group required" >
 					{!!Form::label('Proceso_idProceso', 'Procesos', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10" >
 					  <div class="input-group">
@@ -141,7 +141,7 @@
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
-													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n del riesgo</div>
+													<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n del riesgo</div>
 													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Efecto Posible</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Frecuencia</div>
 													<div class="col-md-1" style="width: 110px;display:inline-block;height:60px;">Impacto</div>

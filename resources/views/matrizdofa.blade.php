@@ -153,7 +153,7 @@
 		
 		<div id="form_section">
 			<fieldset id="matrizRiesgoProceso-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaElaboracionMatrizDOFA', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -171,7 +171,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -182,7 +182,7 @@
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" >
+				<div class="form-group required" >
 					{!!Form::label('Proceso_idProceso', 'Procesos', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10" >
 					  <div class="input-group">
@@ -218,7 +218,7 @@
 															         <div class="col-md-1" style="width: 40px;height: 36px;" onclick="oportunidad.agregarCampos(valoroportunidad,'A')">
 																		<span class="glyphicon glyphicon-plus"></span>
 																	</div>
-															          <div class="col-md-1" style="width: 900px;display:inline-block;height:35px;">Oportunidades (Externas)</div>
+															          <div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:35px;">Oportunidades (Externas)</div>
 
 															         <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Matriz Riesgo Proceso</div>
 															          <!-- este es el div para donde van insertando los registros --> 
@@ -252,7 +252,7 @@
 															         <div class="col-md-1" style="width: 40px;height: 36px;" onclick="fortaleza.agregarCampos(valorfortaleza,'A')">
 																		<span class="glyphicon glyphicon-plus"></span>
 																	</div>
-															          <div class="col-md-1" style="width: 900px;display:inline-block;height:35px;">Fortalezas (Internas)</div>
+															          <div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:35px;">Fortalezas (Internas)</div>
 
 															         <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Matriz Riesgo Proceso</div>
 															          <!-- este es el div para donde van insertando los registros --> 
@@ -286,7 +286,7 @@
 															         <div class="col-md-1" style="width: 40px;height: 36px;" onclick="amenaza.agregarCampos(valoramenaza,'A')">
 																		<span class="glyphicon glyphicon-plus"></span>
 																	</div>
-															          <div class="col-md-1" style="width: 900px;display:inline-block;height:35px;">Amenazas (Externas)</div>
+															          <div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:35px;">Amenazas (Externas)</div>
 
 															         <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Matriz Riesgo Proceso</div>
 															          <!-- este es el div para donde van insertando los registros --> 
@@ -320,7 +320,7 @@
 															         <div class="col-md-1" style="width: 40px;height: 36px;" onclick="debilidad.agregarCampos(valordebilidad,'A')">
 																		<span class="glyphicon glyphicon-plus"></span>
 																	</div>
-															          <div class="col-md-1" style="width: 900px;display:inline-block;height:35px;">Debilidades (Internas)</div>
+															          <div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:35px;">Debilidades (Internas)</div>
 
 															         <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Matriz Riesgo Proceso</div>
 															          <!-- este es el div para donde van insertando los registros --> 

@@ -181,7 +181,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 <div id='form-section' >
 	<fieldset id="pestañas-form-fieldset">	
 <input type="hidden" id="token" value="{{csrf_token()}}"/>
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
 			 {!!Form::label('nombrePlanTrabajoAlerta', 'Descripción', array('class' => 'col-sm-1 control-label')) !!}
 			<div class="col-sm-11">
 				<div class="input-group">
@@ -212,7 +212,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 
 			          <!--  Destinatario -->
 
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
 			 {!!Form::label('correoParaPlanTrabajoAlerta', 'Para', array('class' => 'col-sm-1 control-label')) !!}
 			<div class="col-sm-11">
 				<div class="input-group">
@@ -241,7 +241,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 		 </div>
 
 			      <!-- Copia Oculta -->
-					<div class="form-group" id='test'>
+					<div class="form-group required" id='test'>
 					    {!!Form::label('correoCopiaOcultaPlanTrabajoAlerta', 'CCO', array('class' => 'col-sm-1 control-label')) !!}
 				        <div class="col-sm-11">
 				            <div class="input-group">
@@ -255,7 +255,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 
 
 			      	<!-- place holder para la Asunto -->
-			      	<div class="form-group" id='test'>
+			      	<div class="form-group required" id='test'>
 			 		{!!Form::label('correoAsuntoPlanTrabajoAlerta', 'Asunto', array('class' => 'col-sm-1 control-label')) !!}
 			          <div class="col-sm-11">
 			            <div class="input-group">
@@ -269,7 +269,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 			    
 			      <!-- Mensaje -->
 			    
-			        <div class="form-group" id='test'>
+			        <div class="form-group required" id='test'>
 			     {!!Form::label('correoMensajePlanTrabajoAlerta', 'Mensaje', array('class' => 'col-sm-1 control-label')) !!}
 			          <div class="col-sm-12">
 			            <div class="input-group">
@@ -290,7 +290,7 @@ ChekboxMes = (ChekboxMes != '' ? JSON.parse(ChekboxMes) : '');
 	<div id="filtro" class="tab-pane fade">
 		<div class="plantrabajoalerta-container">
 				<!-- Meses pasados --> 
-			<div class="form-group" id='test'>
+			<div class="form-group required" id='test'>
 					         {!!Form::label('filtroMesesPasadosPlanTrabajoAlerta', 'Meses Pasados', array('class' => 'col-sm-1 control-label')) !!}
 					<div class="col-sm-11">
 					        <div class="input-group">	

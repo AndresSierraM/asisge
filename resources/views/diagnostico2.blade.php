@@ -41,7 +41,7 @@
 <div id='form-section' >
 
 	<fieldset id="diagnostico-form-fieldset">	
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!! Form::label('codigoDiagnostico2', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -57,7 +57,7 @@
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('fechaElaboracionDiagnostico2', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
           <div class="col-sm-10" >
             <div class="input-group">
@@ -69,7 +69,7 @@
           </div>
         </div>
 		
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!! Form::label('nombreDiagnostico2', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">

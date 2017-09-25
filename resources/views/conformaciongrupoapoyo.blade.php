@@ -183,7 +183,7 @@ $base64 = '';
 
 		<div id="form_section">
 			<fieldset id="cargo-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('GrupoApoyo_idGrupoApoyo', 'Grupo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -201,7 +201,7 @@ $base64 = '';
 					</div>
 					
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombreConformacionGrupoApoyo', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -212,7 +212,7 @@ $base64 = '';
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaConformacionGrupoApoyo', 'Fecha de Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -248,7 +248,7 @@ $base64 = '';
 														</div>
 													</div>
 												</div>
-												<div class="form-group" id='test'>
+												<div class="form-group required" id='test'>
 													{!!Form::label('Tercero_idRepresentante', 'Representante', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 											            <div class="input-group">
@@ -270,7 +270,7 @@ $base64 = '';
 														</div>
 													</div>
 												</div>
-												<div class="form-group" id='test'>
+												<div class="form-group required" id='test'>
 													{!!Form::label('Tercero_idGerente', 'Gerente General', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 											            <div class="input-group">
@@ -343,7 +343,7 @@ $base64 = '';
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="jurado.agregarCampos(valorJurado,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 900px;display:inline-block;height:50px;">Jurado</div>
+															<div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:50px;">Jurado</div>
 															<div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Firma</div>
 															<div id="contenedor_jurado">
 															</div>
@@ -357,7 +357,7 @@ $base64 = '';
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="resultado.agregarCampos(valorResultado,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 800px;display:inline-block;height:50px;">Nombre</div>
+															<div class="col-md-1 requiredMulti" style="width: 800px;display:inline-block;height:50px;">Nombre</div>
 															<div class="col-md-1" style="width: 200px;display:inline-block;height:50px;">Votos</div>
 															<div id="contenedor_resultado">
 															</div>
@@ -386,7 +386,7 @@ $base64 = '';
 														</div>
 													</div>
 												</div>
-												<div class="form-group" id='test'>
+												<div class="form-group required" id='test'>
 													{!!Form::label('Tercero_idPresidente', 'Presidente', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 											            <div class="input-group">
@@ -398,7 +398,7 @@ $base64 = '';
 													</div>
 												</div>
 
-												<div class="form-group" id='test'>
+												<div class="form-group required" id='test'>
 													{!!Form::label('Tercero_idSecretario', 'Secretario', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 											            <div class="input-group">
@@ -418,8 +418,8 @@ $base64 = '';
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1" style="width: 260px;display:inline-block;height:50px;">Nombrado por</div>
-															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Principal</div>
-															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Suplentes</div>
+															<div class="col-md-1 requiredMulti" style="width: 380px;display:inline-block;height:50px;">Principal</div>
+															<div class="col-md-1 requiredMulti" style="width: 380px;display:inline-block;height:50px;">Suplentes</div>
 															<div id="contenedor_comite">
 															</div>
 														</div>

@@ -101,7 +101,7 @@
 
 	<fieldset id="entregaelementoproteccion-form-fieldset">
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
               {!!Form::label('Tercero_idTercero', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}          
               <div class="col-sm-10">
                   <div class="input-group">
@@ -135,7 +135,7 @@
           </div>
 
           
-          <div class="form-group" id='test'>
+          <div class="form-group required" id='test'>
           {!! Form::label('fechaEntregaElementoProteccion', 'Fecha de Entrega', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -167,7 +167,7 @@
                 </div>
                 <div class="col-md-1" style="width: 200px;">Elemento</div>
                 <div class="col-md-1" style="width: 500px;">Descripci&oacute;n</div>
-                <div class="col-md-1" style="width: 100px;">Cantidad</div>
+                <div class="col-md-1 requiredMulti" style="width: 100px;height: 42px;">Cantidad</div>
                 <div id="contenedor_entregaelementoproteccion">
                 </div>
               </div>

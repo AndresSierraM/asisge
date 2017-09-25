@@ -83,7 +83,7 @@
 
 		<div id='form-section' >
 				<fieldset id="encuestapublicacion-form-fieldset">	
-					<div class="form-group" id='test'>
+					<div class="form-group required" id='test'>
 						{!!Form::label('nombreEncuestaPublicacion', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
 						<div class="col-sm-10">
 				            <div class="input-group">
@@ -95,7 +95,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" id='test'>
+					<div class="form-group required" id='test'>
 						{!!Form::label('fechaEncuestaPublicacion', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 						<div class="col-sm-10">
 				            <div class="input-group">
@@ -106,7 +106,7 @@
 				    		</div>
 				    	</div>
 				    </div>	
-					<div class="form-group" id='test'>
+					<div class="form-group required" id='test'>
 						{!!Form::label('Encuesta_idEncuesta', 'Encuesta', array('class' => 'col-sm-2 control-label'))!!}
 						<div class="col-sm-10">
 				            <div class="input-group">
@@ -129,12 +129,12 @@
                     <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
                       <div style="overflow:auto; height:350px;">
                         <div style="width: 100%; display: inline-block;">
-                          <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="destino.agregarCampos(valorDestino, 'A');">
+                          <div class="col-md-1" style="width:40px;height: 42px;height: 44px; cursor:pointer;" onclick="destino.agregarCampos(valorDestino, 'A');">
                             <span class="glyphicon glyphicon-plus"></span>
                           </div>
-                          <div class="col-md-1" style="width: 400px;" >Nombre</div>
-                          <div class="col-md-1" style="width: 400px;" >Correo Electrónico</div>
-                          <div class="col-md-1" style="width: 300px;" >Teléfono</div>
+                          <div class="col-md-1 requiredMulti" style="width: 400px;height: 44px;" >Nombre</div>
+                          <div class="col-md-1 requiredMulti" style="width: 400px;height: 44px;" >Correo Electrónico</div>
+                          <div class="col-md-1 " style="width: 300px;height: 44px;" >Teléfono</div>
                           <div id="contenedor_destino">
                           </div>
                         </div>

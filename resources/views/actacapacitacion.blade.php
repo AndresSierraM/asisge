@@ -172,7 +172,7 @@ for ($i=0; $i < count($firmas); $i++)
 
 		<div id="form_section">
 			<fieldset id="matrizLegal-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('numeroActaCapacitacion', 'N&uacute;mero', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -188,7 +188,7 @@ for ($i=0; $i < count($firmas); $i++)
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaElaboracionActaCapacitacion', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -199,7 +199,7 @@ for ($i=0; $i < count($firmas); $i++)
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('PlanCapacitacion_idPlanCapacitacion', 'Plan Capacitaci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -355,8 +355,8 @@ for ($i=0; $i < count($firmas); $i++)
 															</div>
 															<div class="col-md-1" style="width: 250px;display:inline-block;height:50px;">Descripci&oacute;n</div>
 															<div class="col-md-1" style="width: 250px;display:inline-block;height:50px;">Capacitador</div>
-															<div class="col-md-1" style="width: 130px;display:inline-block;height:50px;">Fecha</div>
-															<div class="col-md-1" style="width: 110px;display:inline-block;height:50px;">Hora</div>
+															<div class="col-md-1 requiredMulti" style="width: 130px;display:inline-block;height:50px;">Fecha</div>
+															<div class="col-md-1 requiredMulti" style="width: 110px;display:inline-block;height:50px;">Hora</div>
 															<!-- Nuevo campo duracion horas -->
 															<div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Duracion en Horas</div>
 															<div class="col-md-1" style="width: 70px;display:inline-block;height:50px;">Dictado</div>
@@ -383,7 +383,7 @@ for ($i=0; $i < count($firmas); $i++)
 															<div class="col-md-1" style="width: 40px;height: 50px;"  onclick="asistente.agregarCampos(valorAsistente,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 400px;display:inline-block;height:50px;">Nombre</div>
+															<div class="col-md-1 requiredMulti" style="width: 400px;display:inline-block;height:50px;">Nombre</div>
 															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Cargo</div>
 															<div class="col-md-1" style="width: 80px;display:inline-block;height:50px;">Firma</div>
 															<div id="contenedor_asistente">
@@ -415,7 +415,7 @@ for ($i=0; $i < count($firmas); $i++)
 															</div>	
 					 									
 															
-															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">		
+															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto">		
 															{!!Form::hidden('archivoActaCapacitacionArray', '', array('id' => 'archivoActaCapacitacionArray'))!!}
 																<?php
 																

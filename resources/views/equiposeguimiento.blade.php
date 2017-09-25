@@ -82,7 +82,7 @@
 		
 		<div id="form_section">
 			<fieldset id="equiposeguimiento-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaEquipoSeguimiento', 'Fecha', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -96,7 +96,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!! Form::label('nombreEquipoSeguimiento', 'Equipo', array('class' => 'col-sm-2 control-label')) !!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -107,7 +107,7 @@
 					    </div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -137,13 +137,13 @@
 													<div class="col-md-1" style="width: 40px;height: 60px;" onclick="detalle.agregarCampos(valor,'A')">
 														<span class="glyphicon glyphicon-plus"></span>
 													</div>
-													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Identificaci&oacute;n / C&oacute;digo</div>
-													<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Tipo</div>
+													<div class="col-md-1 requiredMulti" style="width: 220px;display:inline-block;height:60px;">Identificaci&oacute;n / C&oacute;digo</div>
+													<div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:60px;">Tipo</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Frecuencia de Calibraci&oacute;n</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Fecha Inicial Calibraci&oacute;n</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Frecuencia Verificaci&oacute;n</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Fecha Inicial Verificac&oacute;on</div>
-													<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Unidad Medida</div>
+													<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Unidad Medida</div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;text-align:center;">></div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;text-align:center;"><</div>
 													<div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Escala</div>

@@ -79,7 +79,7 @@
 
 	
 	<fieldset id="compania-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('codigoCompania', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -95,7 +95,7 @@
 
 
 		
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!! Form::label('nombreCompania', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -108,7 +108,7 @@
         </div>
 
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!! Form::label('fechaCreacionCompania', 'Fecha de creación', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -288,8 +288,7 @@
 <script>
     CKEDITOR.replace(('misionCompania','visionCompania','valoresCompania','politicasCompania','principiosCompania','metasCompania'), {
         fullPage: true,
-        allowedContent: true,
-        
+        allowedContent: true
       }); 
 
     $('#fechaCreacionCompania').datetimepicker(({

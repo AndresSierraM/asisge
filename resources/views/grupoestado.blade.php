@@ -157,7 +157,7 @@
 <div id='form-section' >
 
 	<fieldset id="grupoestado-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('codigoGrupoEstado', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -172,7 +172,7 @@
             </div>
           </div>
     </div>
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
         {!!Form::label('nombreGrupoEstado', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
@@ -201,8 +201,8 @@
                   <div class="col-md-1" style="width: 40px;" onclick="estados.agregarCampos(valorEstado,'A')">
                     <span class="glyphicon glyphicon-plus"></span>
                   </div>
-                  <div class="col-md-1" style="width: 400px;">Estado</div>
-                  <div class="col-md-1" style="width: 400px;">Tipo</div>
+                  <div class="col-md-1 requiredMulti" style="width: 400px;height: 42px;">Estado</div>
+                  <div class="col-md-1 requiredMulti" style="width: 400px;height: 42px;">Tipo</div>
                   <div id="contenedor_estados">
                   </div>
               </div>
@@ -218,7 +218,7 @@
                   <div class="col-md-1" style="width: 40px;" onclick="eventos.agregarCampos(valorEvento,'A')">
                     <span class="glyphicon glyphicon-plus"></span>
                   </div>
-                  <div class="col-md-1" style="width: 200px;">Código</div>
+                  <div class="col-md-1 " style="width: 200px;">Código</div>
                   <div class="col-md-1" style="width: 600px;">Nombre</div>
                   <div id="contenedor_eventos">
                   </div>

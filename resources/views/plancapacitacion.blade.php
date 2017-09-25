@@ -76,7 +76,7 @@
 
 		<div id="form_section">
 			<fieldset id="plancapacitacion-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('tipoPlanCapacitacion', 'Tipo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -93,7 +93,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombrePlanCapacitacion', 'Nombre', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -104,7 +104,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -237,10 +237,10 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="tema.agregarCampos(valor,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Capacitador</div>
-															<div class="col-md-1" style="width: 140px;display:inline-block;height:60px;">Fecha</div>
-															<div class="col-md-1" style="width: 120px;display:inline-block;height:60px;">Hora</div>
+															<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Descripci&oacute;n</div>
+															<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Capacitador</div>
+															<div class="col-md-1 requiredMulti" style="width: 140px;display:inline-block;height:60px;">Fecha</div>
+															<div class="col-md-1 requiredMulti" style="width: 120px;display:inline-block;height:60px;">Hora</div>
 															<div id="contenedor_tema">
 															</div>
 														</div>

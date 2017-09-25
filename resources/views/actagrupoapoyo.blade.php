@@ -217,7 +217,7 @@ for ($i=0; $i < count($firmas); $i++)
 		<div id='form-section' >
 				<fieldset id="actagrupoapoyo-form-fieldset">	
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('GrupoApoyo_idGrupoApoyo', 'Grupo de Apoyo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -235,7 +235,7 @@ for ($i=0; $i < count($firmas); $i++)
 					</div>
 				</div>
 
-		        <div class="form-group" id='test'>
+		        <div class="form-group required" id='test'>
 		          {!!Form::label('fechaActaGrupoApoyo', 'Fecha Reuni&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
@@ -247,7 +247,7 @@ for ($i=0; $i < count($firmas); $i++)
 		          </div>
 		        </div>
 
-		        <div class="form-group" id='test'>
+		        <div class="form-group required" id='test'>
 		          {!!Form::label('horaInicioActaGrupoApoyo', 'Hora Inicio', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
@@ -259,7 +259,7 @@ for ($i=0; $i < count($firmas); $i++)
 		          </div>
 		        </div>
 
-		        <div class="form-group" id='test'>
+		        <div class="form-group required" id='test'>
 		          {!!Form::label('horaFinActaGrupoApoyo', 'Hora Fin', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
@@ -291,7 +291,7 @@ for ($i=0; $i < count($firmas); $i++)
 		                                                    <div class="col-md-1" style="width: 40px;height: 60px;" onclick="participante.agregarCampos(valorTercero,'A')">
 		                                                        <span class="glyphicon glyphicon-plus"></span>
 		                                                    </div>
-		                                                    <div class="col-md-1" style="width: 700px;display:inline-block;height:60px;">Empleados</div>
+		                                                    <div class="col-md-1 requiredMulti" style="width: 700px;display:inline-block;height:60px;">Empleados</div>
 		                                                    <div class="col-md-1" style="width: 100px;display:inline-block;height:60px;">Firma</div>
 		                                                    <div id="contenedor_participante">
 		                                                    </div>
@@ -318,7 +318,7 @@ for ($i=0; $i < count($firmas); $i++)
 		                                                    </div>
 		                                                    <div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Tema</div>
 		                                                    <div class="col-md-1" style="width: 250px;display:inline-block;height:60px;">Desarrollo del Tema</div>
-		                                                    <div class="col-md-1" style="width: 150px;display:inline-block;height:60px;">Responsable</div>
+		                                                    <div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:60px;">Responsable</div>
 		                                                    <div class="col-md-1" style="width: 200px;display:inline-block;height:60px;">Observaciones</div>
 		                                                    <div id="contenedor_tema">
 		                                                    </div>
@@ -344,14 +344,14 @@ for ($i=0; $i < count($firmas); $i++)
 					                                    <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
 					                                </div>
 					                                <div class="panel-body">
-														<div class="col-sm-12" >
+														<div class="col-sm-12">
 															<div id="upload" class="col-md-12">
 															    <div class="dropzone dropzone-previews" id="dropzoneActaGrupoApoyoArchivo" style="overflow: auto;">
 															    </div>  
 															</div>	
 					 									
 															
-															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px; overflow: auto;">		
+															<div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px;overflow: auto;">		
 															{!!Form::hidden('archivoActaGrupoApoyoArray', '', array('id' => 'archivoActaGrupoApoyoArray'))!!}
 																<?php
 																
@@ -442,7 +442,7 @@ for ($i=0; $i < count($firmas); $i++)
 		                    </div>
 		                      
 		                    <div class="col-md-1" style="width: 400px;">Actividad</div>
-		                    <div class="col-md-2" style="width: 200px;">Responsable</div>
+		                    <div class="col-md-2 requiredMulti" style="width: 200px;height: 42px">Responsable</div>
 		                    <div class="col-md-3" style="width: 200px;">Documento</div>
 		                    <div class="col-md-4" style="width: 200px;">Fecha</div>
 		                    <div class="col-md-5" style="width: 100px;">Recurso $</div>

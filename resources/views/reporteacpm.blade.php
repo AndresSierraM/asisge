@@ -77,7 +77,7 @@
 
 		<div id="form_section">
 			<fieldset id="reporteacpm-form-fieldset">
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('numeroReporteACPM', 'N&uacute;mero', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -92,7 +92,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('fechaElaboracionReporteACPM', 'Fecha Inicio', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 						<div class="input-group">
@@ -136,9 +136,9 @@
 													</div>
 													<div class="col-md-1" style="width: 50px;display:inline-block;height:70px;">N°</div>
 													<div class="col-md-1" style="width: 100px;display:inline-block;height:70px;">Fecha reporte</div>
-													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Proceso</div>
-													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Fuente</div>
-													<div class="col-md-1" style="width: 150px;display:inline-block;height:70px;">Tipo</div>
+													<div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:70px;">Proceso</div>
+													<div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:70px;">Fuente</div>
+													<div class="col-md-1 requiredMulti" style="width: 150px;display:inline-block;height:70px;">Tipo</div>
 													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Descripci&oacute;n no conformidad</div>
 													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">An&aacute;lisis causa</div>
 													<div class="col-md-1" style="width: 400px;display:inline-block;height:70px;">Correcci&oacute;n</div>

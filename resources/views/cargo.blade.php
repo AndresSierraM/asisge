@@ -759,7 +759,7 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="tarea.agregarCampos(valorTarea,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 900px;display:inline-block;height:60px;">Descripci&oacute;n</div>
+															<div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:60px;">Descripci&oacute;n</div>
 															<div id="contenedor_tarea">
 															</div>
 														</div>
@@ -782,11 +782,11 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="examen.agregarCampos(valorExamen,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Examen</div>
+															<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Examen</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Ingreso</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Retiro</div>
 															<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;">Peri&oacute;dico</div>
-															<div class="col-md-1" style="width: 300px;display:inline-block;height:60px;">Periodicidad</div>
+															<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Periodicidad</div>
 															<div id="contenedor_examen">
 															</div>
 														</div>
@@ -809,7 +809,7 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="vacuna.agregarCampos(valorVacuna,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 900px;display:inline-block;height:60px;">Descripci&oacute;n</div>
+															<div class="col-md-1 requiredMulti" style="width: 900px;display:inline-block;height:60px;">Descripci&oacute;n</div>
 															<div id="contenedor_vacuna">
 															</div>
 														</div>
@@ -868,7 +868,7 @@
 															<div class="col-md-1" style="width: 40px;height: 60px;" onclick="elemento.agregarCampos(valorElemento,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 450px;display:inline-block;height:60px;">Elemento de Protección</div>
+															<div class="col-md-1 requiredMulti" style="width: 450px;display:inline-block;height:60px;">Elemento de Protección</div>
 															<div class="col-md-1" style="width: 450px;display:inline-block;height:60px;">Frecuencia de Entrega</div>
 															<div id="contenedor_elemento">
 															</div>

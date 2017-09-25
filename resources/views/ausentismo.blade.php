@@ -20,7 +20,7 @@
 		<div id='form-section' >
 				<fieldset id="ausentismo-form-fieldset">	
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('Tercero_idTercero', 'Empleado', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('nombreAusentismo', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -44,7 +44,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id='test'>
+				<div class="form-group required" id='test'>
 					{!!Form::label('tipoAusentismo', 'Tipo de Ausencia', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
@@ -72,7 +72,7 @@
 			    </div>	
 
 
-		        <div class="form-group" id='test'>
+		        <div class="form-group required" id='test'>
 		          {!!Form::label('fechaElaboracionAusentismo', 'Fecha Elaboraci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
@@ -84,7 +84,7 @@
 		          </div>
 		        </div>
 
-		        <div class="form-group" id='test'>
+		        <div class="form-group required" id='test'>
 		          {!!Form::label('fechaInicioAusentismo', 'Fecha Inicio', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
@@ -96,7 +96,7 @@
 		          </div>
 		        </div>
 
-		        <div class="form-group" id='test'>
+		        <div class="form-group required" id='test'>
 		          {!!Form::label('fechaFinAusentismo', 'Fecha Fin', array('class' => 'col-sm-2 control-label'))!!}
 		          <div class="col-sm-10" >
 		            <div class="input-group">
