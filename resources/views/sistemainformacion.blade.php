@@ -18,12 +18,12 @@
 <div id='form-section' >
 
 	<fieldset id="sistemainformacion-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('codigoSistemaInformacion', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-barcode"></i>
+                <i class="fa fa-barcode" style="width: 14px;"></i>
               </span>
               {!!Form::text('codigoSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa el código del sistema de informaci&oacute;n'])!!}
               {!!Form::hidden('idSistemaInformacion', null, array('id' => 'idSistemaInformacion')) !!}
@@ -33,60 +33,60 @@
 
 
 		
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('nombreSistemaInformacion', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
+                <i class="fa fa-pencil-square-o " style="width: 14px;"></i>
               </span>
 				{!!Form::text('nombreSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del sistema de informaci&oacute;n'])!!}
             </div>
           </div>
     </div>
 
-          <div class="form-group" id='test'>
+          <div class="form-group required" id='test'>
         {!! Form::label('webSistemaInformacion', 'Sistema Web', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-1">
           <div class="input-group">
             <span class="input-group-addon">
-              <i class="fa fa-check-circle "></i>
+              <i class="fa fa-check-circle " style="width: 14px;"></i>
             </span>
             {!! Form::checkbox('webSistemaInformacion', 1, null, ['class' => 'form-control']) !!}
           </div>
         </div>
         </div>
 </br></br></br></br></br>
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('ipSistemaInformacion', 'Host', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-certificate"></i>
+                <i class="fa fa-certificate" style="width: 14px;"></i>
               </span>
         {!!Form::text('ipSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa la IP del sistema de informaci&oacute;n'])!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('puertoSistemaInformacion', 'Puerto', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-cubes"></i>
+                <i class="fa fa-cubes" style="width: 14px;"></i>
               </span>
         {!!Form::text('puertoSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa el puerto del sistema de informaci&oacute;n'])!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('usuarioSistemaInformacion', 'Usuario', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-user" style="width: 14px;"></i>
               </span>
         {!!Form::text('usuarioSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa el usuario del sistema de informaci&oacute;n'])!!}
             </div>
@@ -98,31 +98,31 @@
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-key"></i>
+                <i class="fa fa-key" style="width: 14px;"></i>
               </span>
         {!!Form::password('claveSistemaInformacion',array('class'=>'form-control','placeholder'=>'Ingresa la contrase&ntilde;a'))!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('bdSistemaInformacion', 'Base de datos', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-database"></i>
+                <i class="fa fa-database" style="width: 14px;"></i>
               </span>
         {!!Form::text('bdSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa la base del sistema de informaci&oacute;n'])!!}
             </div>
           </div>
         </div>
 
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!!Form::label('motorbdSistemaInformacion', 'Motor base de datos', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-database"></i>
+                <i class="fa fa-database" style="width: 14px;"></i>
               </span>
         {!!Form::text('motorbdSistemaInformacion',null,['class'=>'form-control','placeholder'=>'Ingresa el motor de la base del sistema de informaci&oacute;n'])!!}
             </div>

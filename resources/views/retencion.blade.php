@@ -47,7 +47,7 @@
       retencion.campos   = ['Dependencia_idDependencia', 'Serie_idSerie','SubSerie_idSubSerie','Documento_idDocumento','retencionGestionRetencionDocumental','retencionCentralRetencionDocumental','soporteRetencionDocumental','disposicionFinalRetencionDocumental','microfilmRetencionDocumental','procedimientoRetencionDocumental', 'idRetencionDocumental'];
       retencion.etiqueta = ['select', 'select','select','select','input','input','select','select','checkbox','input', 'input'];
       retencion.tipo     = ['', '','','','text','text','','','checkbox','text', 'hidden'];
-      retencion.estilo   = ['width: 110px;height:35px;;','width: 90px;height:35px;','width: 90px;height:35px;','width: 160px;height:35px;','width: 65px;height:35px;','width: 65px;height:35px;','width: 80px;height:35px;','width: 120px;height:35px;','width: 75px;height:30px;display:inline-block;','width: 200px;height:35px;', ''];
+      retencion.estilo   = ['width: 110px;height:35px;;','width: 110px;height:35px;','width: 110px;height:35px;','width: 200px;height:35px;','width: 65px;height:35px;','width: 65px;height:35px;','width: 80px;height:35px;','width: 200px;height:35px;','width: 100px;height:30px;display:inline-block;','width: 115px;height:35px;', ''];
       retencion.clase    = ['chosen-select ','chosen-select ','chosen-select ','chosen-select ','','','chosen-select ','chosen-select ','','', ''];
       retencion.opciones = [dependencia, serie, subserie, documento, '', '', soporte, disposicion, '', '', '']      
       // retencion.nombreDependencia =  JSON.parse(nombreDependencia);
@@ -85,7 +85,7 @@
 <div id='form-section' >
 
   <fieldset id="retencion-form-fieldset">
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
           {!!Form::label('anioRetencion', 'A&ntilde;o', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -112,15 +112,15 @@
                   <span class="glyphicon glyphicon-plus"></span>
                 </div>
                 <div class="col-md-1" style="width: 110px;">Dependencia</div>
-                <div class="col-md-1" style="width: 90px;">Serie</div>
-                <div class="col-md-1" style="width: 90px;">Sub Serie</div>
-                <div class="col-md-1" style="width: 160px;">Tipo de Documento</div>
+                <div class="col-md-1" style="width: 110px;">Serie</div>
+                <div class="col-md-1" style="width: 110px;">Sub Serie</div>
+                <div class="col-md-1" style="width: 200px;">Tipo de Documento</div>
                 <div class="col-md-1" style="width: 65px;">Gestion</div>
                 <div class="col-md-1" style="width: 65px;">Central</div>
                 <div class="col-md-1" style="width: 80px;">Soporte</div>
-                <div class="col-md-1" style="width: 120px;">Disposicion Final</div>
-                <div class="col-md-1" style="width: 75px;">Micro film</div>
-                <div class="col-md-1" style="width: 200px;">Procedimiento</div>
+                <div class="col-md-1" style="width: 200px;">Disposicion Final</div>
+                <div class="col-md-1" style="width: 100px;">Micro film</div>
+                <div class="col-md-1" style="width: 115px;">Procedimiento</div>
                 <div id="contenedor_retencion"> 
                 </div>
                 <!-- </div> -->

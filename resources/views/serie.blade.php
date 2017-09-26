@@ -71,7 +71,7 @@ for($i = 0; $i < count($datos); $i++)
 
 
 
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!!Form::label('codigoSerie', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -87,7 +87,7 @@ for($i = 0; $i < count($datos); $i++)
 
 
 		
-		    <div class="form-group" id='test'>
+		    <div class="form-group required" id='test'>
           {!!Form::label('nombreSerie', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -100,7 +100,7 @@ for($i = 0; $i < count($datos); $i++)
         </div>
 
           
-        <div class="form-group" id='test'>
+        <div class="form-group required" id='test'>
           {!! Form::label('directorioSerie', 'Directorio', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -134,7 +134,7 @@ for($i = 0; $i < count($datos); $i++)
                               <div class="col-md-1" style="width: 40px; cursor: pointer;" onclick="abrirModalRol();">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 900px;">Rol</div>
+                              <div class="col-md-1" style="width: 900px;height: 36px;">Rol</div>
                               <div id="contenedor_permisos"> 
                               </div>
                             </div>

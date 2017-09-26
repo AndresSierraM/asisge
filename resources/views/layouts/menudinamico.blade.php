@@ -190,7 +190,7 @@
 	  </div>
 	   
 	  <div  id="contenedor-fin" class="panel-body">
-	  	<p class='requiredAlert'>Los campos Marcados con * son obligatorios</p>
+	  	<!-- <p class='requiredAlert'>Los campos Marcados con * son obligatorios</p> -->
 	    @yield('content') 
 	  </div>
 	</div>

@@ -21,7 +21,7 @@
              <legend class="text-center"></legend>    
 
       <!-- Respuesta --> 
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                              {!!Form::label('respuestaCompetenciaRespuesta', 'Respuesta', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group"> 
@@ -35,7 +35,7 @@
                         </div>
                     </div>
               <!--  Porcentaje Normal -->
-                    <div tyle="display:inline-block; class="form-group" id='test'>
+                    <div tyle="display:inline-block;" class="form-group required" id='test'>
                                 {!!Form::label('porcentajeNormalCompetenciaRespuesta', 'Porcentaje Normal ', array('class' => 'col-sm-1 control-label')) !!}
                             <div class="col-sm-11">
                                 <div class="input-group"> 
@@ -50,7 +50,7 @@
 
                     </div>
                         <!--porcentajeInversoCompetenciaRespuesta -->
-                      <div style="display:inline-block; class="form-group" id='test'>
+                      <div style="display:inline-block;" class="form-group required" id='test'>
                                 {!!Form::label('porcentajeInversoCompetenciaRespuesta', 'Porcentaje inverso ', array('class' => 'col-sm-1 control-label')) !!}
                             <div class="col-sm-11">
                                 <div class="input-group"> 
