@@ -88,7 +88,7 @@ $fechahora = Carbon\Carbon::now();
 <div id='form-section' >
 	<fieldset id="fichatecnica-form-fieldset">	
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('LineaProducto_idLineaProducto', 'Linea', array())!!}
       </div>
       <div class="col-sm-8">
@@ -133,7 +133,7 @@ $fechahora = Carbon\Carbon::now();
     </div>  
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 ">
         {!!Form::label('referenciaClienteFichaTecnica', 'Referencia '. ($tipoFichaTecnica == 'p' ? 'Cliente' : 'Proveedor'), array())!!}
       </div>
       <div class="col-sm-8">
@@ -155,7 +155,7 @@ $fechahora = Carbon\Carbon::now();
     </div>  
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('referenciaFichaTecnica', 'Referencia', array())!!}
       </div>
       <div class="col-sm-8">
@@ -169,7 +169,7 @@ $fechahora = Carbon\Carbon::now();
     </div>  
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('nombreFichaTecnica', 'Descripción', array())!!}
       </div>
       <div class="col-sm-8">

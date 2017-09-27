@@ -2,7 +2,7 @@
 
     @section('clases')
 
-     
+  
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap-theme.min.css'); !!}
       {!!Html::style('assets/font-awesome-v4.3.0/css/font-awesome.min.css'); !!}
       {!!Html::style('assets/tutorial/css/main.css'); !!}
@@ -31,7 +31,10 @@
       <style type="text/css" media="all">
           /* fix rtl for demo */
           .chosen-rtl .chosen-drop { left: -9000px; }
+
+
         </style>
+
 
       
       {!!Html::script('assets/tutorial/js/ie10-viewport-bug-workaround.js'); !!}
@@ -49,6 +52,7 @@
       {!!Html::script('choosen/docsupport/prism.js'); !!}
       {!!Html::script('sb-admin/bower_components/ckeditor/ckeditor.js'); !!}
       {!!Html::script('js/general.js')!!}
+      
 
       <!-- Librerías de graficos morris y flot -->
       <!-- {!!Html::script('sb-admin/bower_components/morrisjs/morris.js'); !!}

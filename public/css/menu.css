@@ -26,15 +26,15 @@ body{
 .form-group.required .control-label:after { 
    content:"*";
    font-size:20px;
-   color:red;
+   /*color:red;*/
 }
-/*Clase para cuando salga el mensaje  de los campos marcados con * tenga un borde
+/*Clase para cuando salga el mensaje  de los campos marcados con */
 .requiredAlert
 {
 font-size:14px;
 color:red;
 margin-left:20px;
-}*/
+}
 
 #titulo{
     /*padding-top: 23px;*/

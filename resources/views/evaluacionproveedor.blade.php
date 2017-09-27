@@ -83,7 +83,7 @@
 
 	<fieldset id="evaluacionproveedor-form-fieldset">	
     <input type="hidden" id="token" value="{{csrf_token()}}"/>
-		<div class="form-group col-md-6" id='test'>
+		<div class="form-group col-md-6 required" id='test'>
       {!!Form::label('Tercero_idProveedor', 'Proveedor', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -108,7 +108,7 @@
         </div>
       </div>
     </div>
-
+<br><br><br><br><br>
     <div class="form-group col-md-6" id='test'>
       {!!Form::label('fechaInicialEvaluacionProveedor', 'Fecha Inicial', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">

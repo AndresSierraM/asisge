@@ -45,7 +45,7 @@
     
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('numeroOrdenTrabajo', 'Número O.T.', array())!!}
       </div>
       <div class="col-sm-8">
@@ -78,7 +78,7 @@
     </div>  
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('OrdenProduccion_idOrdenProduccion', 'Número O.P.', array())!!}
       </div>
       <div class="col-sm-8">
@@ -92,7 +92,7 @@
     </div> 
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('Proceso_idProceso', 'Proceso', array())!!}
       </div>
       <div class="col-sm-8">
@@ -190,7 +190,7 @@
     </div> 
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('cantidadOrdenTrabajo', 'Cantidad', array())!!}
       </div>
       <div class="col-sm-8">
@@ -221,8 +221,8 @@
                           <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="detalle.agregarCampos(valorDetalle,'A');">
                             <span class="glyphicon glyphicon-plus"></span>
                           </div>
-                          <div class="col-md-1" style="width: 400px;" >Tipo de Calidad</div>
-                          <div class="col-md-1" style="width: 150px;" >Cantidad</div>
+                          <div class="col-md-1 requiredMulti" style="width: 400px;height: 42px;" >Tipo de Calidad</div>
+                          <div class="col-md-1 requiredMulti" style="width: 150px;height: 42px;" >Cantidad</div>
                           <div id="contenedor_detalle">
                           </div>
                       </div>
