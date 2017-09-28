@@ -2,6 +2,13 @@
 @section('titulo')<h3 id="titulo"><center>Evaluación de Proveedor</center></h3>@stop
 
 @section('content')
+ <style>
+          /*Se quema la clase, ya que se esta utilizando el layout grid para que salga el mensaje los campos que tienen * ----*/
+  .requiredAlert
+          {
+            display: block;
+          }
+  </style>
 @include('alerts.request')
 {!!Html::script('js/evaluacionproveedor.js'); !!}
 	@if(isset($evaluacionproveedor))
