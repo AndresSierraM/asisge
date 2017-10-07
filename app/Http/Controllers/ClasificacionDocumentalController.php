@@ -93,7 +93,7 @@ class ClasificacionDocumentalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) 
     {
         $clasificaciondocumental = \App\ClasificacionDocumentalEnc::find($id);
         $clasificaciondocumental->fill($request->all());
@@ -114,7 +114,7 @@ class ClasificacionDocumentalController extends Controller
             ]);
         }
         
-        return redirect('/scalia');
+        return redirect('/dashboard');
     }
 
     /**

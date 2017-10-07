@@ -295,7 +295,7 @@ $(document).ready(function()
 
   <fieldset id="evaluaciondesempenio-form-fieldset">  
                  <!-- Tipo de la educacion --> 
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                              {!!Form::label('Tercero_idEmpleado', 'Empleado', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group" style="padding-left:10px "> 
@@ -323,7 +323,7 @@ $(document).ready(function()
                         </div>
                   </div>
                      <!--  Cargo -->
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                                 {!!Form::label('nombreCargo', 'Cargo ', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group" style="padding-left:10px "> 
@@ -338,7 +338,7 @@ $(document).ready(function()
                        </div>
                   </div>  
                   <!-- Responsable --> 
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                              {!!Form::label('Tercero_idResponsable', 'Responsable', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group" style="padding-left:10px"> 
@@ -350,7 +350,7 @@ $(document).ready(function()
                         </div>
                   </div>
                       <!-- Fecha con hora sugerida por ele sistema  --> 
-                  <div class="form-group" id='test'>
+                  <div class="form-group required" id='test'>
                              {!!Form::label('fechaElaboracionEvaluacionDesempenio', 'Fecha', array('class' => 'col-sm-1 control-label')) !!}
                         <div class="col-sm-11">
                             <div class="input-group" style="padding-left:10px "> 
@@ -392,7 +392,7 @@ $(document).ready(function()
                                               <div class="col-sm-12">
                                                   <div class="row show-grid">
                                                       <div class="col-md-1" style="width: 800px;display:inline-block;height:35px;">Pregunta </div>
-                                                      <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Respuesta</div>
+                                                      <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Respuesta</div>
                                                     
                                                       <!-- este es el div para donde van insertando los registros --> 
                                                       <div id="habilidadactitudinal_Modulo">
@@ -421,7 +421,7 @@ $(document).ready(function()
                                               <div class="col-sm-12">
                                                   <div class="row show-grid">
                                                       <div class="col-md-1" style="width: 800px;display:inline-block;height:35px;">Responsabilidad</div>
-                                                      <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Respuesta</div>
+                                                      <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Respuesta</div>
                                                     
                                                       <!-- este es el div para donde van insertando los registros --> 
                                                       <div id="responsabilidades_Modulo">
@@ -473,7 +473,7 @@ $(document).ready(function()
                                                                              <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
 
 
-                                                                             <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
+                                                                             <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
 
                                                                              <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Resultado</div>
 
@@ -522,7 +522,7 @@ $(document).ready(function()
                                                                                    <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
 
 
-                                                                                   <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
+                                                                                   <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
                                                                                   <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Resultado</div>
                                                                                   
                                                                                     <!-- este es el div para donde van insertando los registros --> 
@@ -565,7 +565,7 @@ $(document).ready(function()
                                                                                    <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
 
 
-                                                                                   <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
+                                                                                   <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
                                                                                   <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Resultado</div>
                                                                                   
                                                                                     <!-- este es el div para donde van insertando los registros --> 
@@ -598,7 +598,7 @@ $(document).ready(function()
                                                 <div class="col-md-1" style="width: 40px;height: 35px;" onclick="EvaluacionAccion.agregarCampos(planaccion,'A')">
                                                   <span class="glyphicon glyphicon-plus"></span>
                                                 </div>
-                                                <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Actividad</div>
+                                                <div class="col-md-1 requiredMulti" style="width: 200px;display:inline-block;height:35px;">Actividad</div>
                                                 <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Responsable</div>
                                                 <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">Documento</div>
                                                 <div class="col-md-1" style="width: 200px;display:inline-block;height:35px;">F.Planeada</div>

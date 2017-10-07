@@ -3,6 +3,13 @@
 @section('titulo')<h3 id="titulo"><center>Orden de Producción</center></h3>@stop
 
 @section('content')
+ <style>
+          /*Se quema la clase, ya que se esta utilizando el layout grid para que salga el mensaje los campos que tienen * ----*/
+  .requiredAlert
+          {
+            display: block;
+          }
+  </style>
 @include('alerts.request')
 
 <script type="">
@@ -38,7 +45,7 @@
     
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 ">
         {!!Form::label('numeroOrdenProduccion', 'Número O.P.', array())!!}
       </div>
       <div class="col-sm-8">
@@ -70,7 +77,7 @@
     </div>  
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('Tercero_idCliente', 'Cliente', array())!!}
       </div>
       <div class="col-sm-8">
@@ -126,7 +133,7 @@
     </div> 
 
     <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('FichaTecnica_idFichaTecnica', 'Referencia', array())!!}
       </div>
       <div class="col-sm-8">
@@ -168,7 +175,7 @@
     </div> 
 
      <div class="col-sm-6">
-      <div class="col-sm-4">
+      <div class="col-sm-4 requiredMulti">
         {!!Form::label('cantidadOrdenProduccion', 'Cantidad', array())!!}
       </div>
       <div class="col-sm-8">
@@ -252,7 +259,7 @@
 @stop
 
 <div id="ModalProceso" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:70%;">
+  <div class="modal-dialog" style="width:90%;">
 
     <!-- Modal content-->
     <div style="" class="modal-content">

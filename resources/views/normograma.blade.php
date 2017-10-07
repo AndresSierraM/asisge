@@ -17,7 +17,7 @@
 <div id='form-section' >
 
 	<fieldset id="normograma-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!!Form::label('nombreNormograma', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -31,7 +31,7 @@
         </div>
 
 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
           {!!Form::label('descripcionNormograma', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -41,6 +41,7 @@
         {!!Form::textarea('descripcionNormograma',null,['class'=>'form-control ckeditor','style'=>'height:100px','placeholder'=>'Ingresa la descripci&oacute;n de la norma'])!!}
             </div>
           </div>
+        </div>
   
 
     

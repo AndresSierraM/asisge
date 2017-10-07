@@ -395,20 +395,20 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
                           <fieldset id="entrevista-form-fieldset">  
 
-                                                                                <div class="form-group col-md-6">
+                                                                                <div class="form-group col-md-6 required">
                                                                                 {!!Form::label('TipoIdentificacion_idTipoIdentificacion', 'Tipo ', array('class' => 'col-sm-2 control-label'))!!}
                                                                                 <div class="col-sm-8">
                                                                                   <div class="input-group" style="padding-left:15px ">
                                                                                     <span class="input-group-addon">
                                                                                       <i class="fa fa-credit-card" style="width: 14px;"></i>
                                                                                     </span>
-                                                                                    {!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($entrevista) ? $entrevista->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:268px;'])!!}
+                                                                                    {!!Form::select('TipoIdentificacion_idTipoIdentificacion',$tipoIdentificacion, (isset($entrevista) ? $entrevista->TipoIdentificacion_idTipoIdentificacion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tipo de identificaci&oacute;n",'style'=>'width:328px;'])!!}
                                                                                   </div>
                                                                                 </div>
                                                                               </div>
 
                                                               <!-- Cedula aspirante -->
-                                                                    <div class="form-group col-md-6" id='test'>
+                                                                    <div class="form-group col-md-6 required" id='test'>
                                                                         {!!Form::label('documentoAspiranteEntrevista', 'Cedula', array('class' => 'col-sm-2 control-label')) !!}
                                                                               <div class="col-sm-8">
                                                                                 <div class="input-group" style="padding-left:25px ">
@@ -436,7 +436,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
 
                                                                       <!-- Cargo -->
-      <div class="form-group col-md-6" id='test'>
+      <div class="form-group col-md-6 required" id='test'>
           {!!Form::label('Cargo_idCargo','Cargo',array('class' => 'col-sm-2 control-label')) !!}
               <div class="col-sm-8">
                 <div class="input-group" style="padding-left:15px ">
@@ -452,7 +452,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                               </div>
 
                                                                                 <!-- Estado Final -->
-                                                                      <div class="form-group col-md-6" id='test'>
+                                                                      <div class="form-group col-md-6 required" id='test'>
                                                                           {!!Form::label('estadoEntrevista', 'Estado Final', array('class' => 'col-sm-2 control-label')) !!}
                                                                             <div class="col-sm-8">
                                                                               <div class="input-group" style="padding-left:25px ">
@@ -478,7 +478,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
 
                                                                                      <!-- Nombre 1 aspirante -->
-                                                                              <div class="form-group col-md-6" id='test'>
+                                                                              <div class="form-group col-md-6 required" id='test'>
                                                                                     {!!Form::label('nombre1AspiranteEntrevista', 'Nombre1', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
                                                                                       <div class="input-group" style="padding-left:15px ">
@@ -508,7 +508,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
                                         
                                                                                           <!-- Apellido 1 aspirante -->
-                                                                            <div class="form-group col-md-6" id='test'>
+                                                                            <div class="form-group col-md-6 required" id='test'>
                                                                                   {!!Form::label('apellido1AspiranteEntrevista','Apellido1', array('class' => 'col-sm-2 control-label')) !!}
                                                                                   <div class="col-sm-8">
                                                                                     <div class="input-group" style="padding-left:15px ">
@@ -534,7 +534,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                               </div>
 
                                                                                        <!--  Entrevistador --> 
-                                                                                <div class="form-group col-md-6" id='test'>
+                                                                                <div class="form-group col-md-6 required" id='test'>
                                                                                     {!!Form::label('Tercero_idEntrevistador', 'Entrevistador', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
                                                                                       <div class="input-group" style="padding-left:15px ">
@@ -547,8 +547,8 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                                 </div>
 
                                                                                   <!-- Fecha Entrevista -->
-                                                                                <div class="form-group col-md-6" id='test'>
-                                                                                    {!!Form::label('fechaEntrevista', 'F.Entrevista ', array('class' => 'col-sm-2 control-label')) !!}
+                                                                                <div class="form-group col-md-6 required" id='test'>
+                                                                                    {!!Form::label('fechaEntrevista', 'F.Entrevista', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
                                                                                       <div class="input-group" style="padding-left:25px ">
                                                                                         <span class="input-group-addon">
@@ -561,7 +561,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
 
                                                                                  <!-- Experiencia en Años -->
-                                                                                <div class="form-group col-md-6" id='test'>
+                                                                                <div class="form-group col-md-6 required" id='test'>
                                                                                     {!!Form::label('experienciaAspiranteEntrevista', 'Exp(Años)', array('class' => 'col-sm-2 control-label')) !!}
                                                                                     <div class="col-sm-8">
                                                                                       <div class="input-group" style="padding-left:15px ">
@@ -630,7 +630,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
                                                                                                  <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
 
-                                                                                                 <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Cumple </div>
+                                                                                                 <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Cumple </div>
 
                                                                                                 
                                                                                                   <!-- este es el div para donde van insertando los registros --> 
@@ -677,7 +677,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
 
                                                                                                          <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
-                                                                                                        <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Cumple </div>
+                                                                                                        <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Cumple </div>
                                                                                                         
                                                                                                           <!-- este es el div para donde van insertando los registros --> 
                                                                                                           <div id="FormacionEntrevista_Modulo">
@@ -720,7 +720,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
 
 
                                                                                                          <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Competencia del Empleado</div>
-                                                                                                        <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Cumple </div>
+                                                                                                        <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Cumple </div>
                                                                                                         
                                                                                                           <!-- este es el div para donde van insertando los registros --> 
                                                                                                           <div id="HabilidadEntrevista_Modulo">
@@ -863,7 +863,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                                                     </div>
                                                                                                </div>
 
-                                                                                                 <div class="form-group" id='test'>
+                                                                                                 <div class="form-group required" id='test'>
                                                                                                      {!!Form::label('Ciudad_idResidencia', 'Ciudad', array('class' => 'col-sm-2 control-label')) !!}
                                                                                                       <div class="col-sm-10">
                                                                                                            <div class="input-group">
@@ -923,7 +923,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                                   <div class="col-md-1" style="width: 40px;height: 35px;" onclick="EntrevistaHijoPregunta.agregarCampos(competenciamodelo,'A')">
                                                                                     <span class="glyphicon glyphicon-plus"></span>
                                                                                   </div>
-                                                                                  <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Nombre</div>
+                                                                                  <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Nombre</div>
                                                                                   <div class="col-md-1" style="width: 78px;display:inline-block;height:35px;">Edad</div>
                                                                                   <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Ocupación</div>
                                                                                  
@@ -998,7 +998,7 @@ var calificarcompetencia = ['onchange','calificacionHabilidadCompetencia(this.va
                                                                                   <div class="col-md-1" style="width: 40px;height: 35px;" onclick="EntrevistaRelacion.agregarCampos(Relacionfamilia,'A')">
                                                                                     <span class="glyphicon glyphicon-plus"></span>
                                                                                   </div>
-                                                                                  <div class="col-md-1" style="width: 500px;display:inline-block;height:35px;"> </div>
+                                                                                  <div class="col-md-1 requiredMulti" style="width: 500px;display:inline-block;height:35px;"> </div>
                                                                                   <div class="col-md-1" style="width: 500px;display:inline-block;height:35px;"></div>
                                                                                 
 

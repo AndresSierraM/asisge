@@ -17,12 +17,12 @@
 <div id='form-section' >
 
 	<fieldset id="sitioweb-form-fieldset">	
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
           {!!Form::label('descripcionSitioWeb', 'Descripci&oacute;n', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
+                <i class="fa fa-pencil-square-o " style="width: 14px;"></i>
               </span>
         {!!Form::textarea('descripcionSitioWeb',null,['class'=>'form-control','style'=>'height:60px','placeholder'=>'Ingresa la descripci&oacute;n del sitio Web'])!!}
             </div>
@@ -30,12 +30,12 @@
   
 
     
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
           {!!Form::label('urlSitioWeb', 'URL', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-share-alt "></i>
+                <i class="fa fa-share-alt " style="width: 14px;"></i>
               </span>
         {!!Form::text('urlSitioWeb',null,['class'=>'form-control','placeholder'=>'Ingrese la URL del sitio Web'])!!}
             </div>

@@ -2,6 +2,13 @@
 @section('titulo')<h3 id="titulo"><center>Recibo de Compra</center></h3>@stop
 
 @section('content')
+ <style>
+          /*Se quema la clase, ya que se esta utilizando el layout grid para que salga el mensaje los campos que tienen * ----*/
+  .requiredAlert
+          {
+            display: block;
+          }
+  </style>
 @include('alerts.request')
 {!!Html::script('js/recibocompra.js'); !!}
 	@if(isset($recibocompra))
@@ -224,7 +231,7 @@
       </div>
     </div>
 
-    <div class="form-group col-md-6" id='test'>
+    <div class="form-group col-md-6 " id='test'>
       {!!Form::label('fechaEstimadaReciboCompra', 'Est. Entrega', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -236,7 +243,7 @@
       </div>
     </div>
 
-    <div class="form-group col-md-6" id='test'>
+    <div class="form-group col-md-6 required"   id='test' >
       {!!Form::label('fechaRealReciboCompra', 'Entrega', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -260,7 +267,7 @@
         </div>
       </div>
     </div>
-
+    <br><br><br><br><br><br><br><br><br><br><br><br>
     <div class="form-group col-md-6" id='test'>
       {!!Form::label('Users_idCrea', 'Solicitante', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
@@ -302,7 +309,7 @@
                       <div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Descripción</div>
                       <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Cantidad OC</div>
                       <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Cantidad Recibo</div>
-                      <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Tipo Calidad</div>
+                      <div class="col-md-1 requiredMulti" style="width: 100px;display:inline-block;height:50px;">Tipo Calidad</div>
                       <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Costo OC</div>
                       <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Costo Recibo</div>
                       <div class="col-md-1" style="width: 100px;display:inline-block;height:50px;">Valor Total</div>

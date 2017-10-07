@@ -1,7 +1,9 @@
 @extends('layouts.menudinamico')
 
     @section('clases')
-
+          
+          
+  
       {!!Html::style('assets/bootstrap-v3.3.5/css/bootstrap-theme.min.css'); !!}
       {!!Html::style('assets/font-awesome-v4.3.0/css/font-awesome.min.css'); !!}
     
@@ -19,6 +21,11 @@
         <style type="text/css" media="all">
           /* fix rtl for demo */
           .chosen-rtl .chosen-drop { left: -9000px; }
+          /*Se adiciona un display none a la clase que estaen menu dinamico para que se desaparezca en las grid*/
+          .requiredAlert
+          {
+            display: none;
+          }
         </style>
 
       

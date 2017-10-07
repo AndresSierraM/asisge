@@ -311,7 +311,7 @@ for($i = 0; $i < count($datos); $i++)
 
   
   <fieldset id="documento-form-fieldset"> 
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
       {!! Form::label('codigoDocumento', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -331,7 +331,7 @@ for($i = 0; $i < count($datos); $i++)
 
     {!! Form::hidden('registro', null, array('id' => 'registro')) !!}
     
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
       {!! Form::label('nombreDocumento', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -343,7 +343,7 @@ for($i = 0; $i < count($datos); $i++)
       </div>
     </div>
 
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
       {!! Form::label('directorioDocumento', 'Directorio', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -355,7 +355,7 @@ for($i = 0; $i < count($datos); $i++)
       </div>
     </div>
 
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
       {!! Form::label('tipoDocumento', 'Tipo', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">

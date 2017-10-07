@@ -2,6 +2,13 @@
 @section('titulo')<h3 id="titulo"><center>Evaluación de Proveedor</center></h3>@stop
 
 @section('content')
+ <style>
+          /*Se quema la clase, ya que se esta utilizando el layout grid para que salga el mensaje los campos que tienen * ----*/
+  .requiredAlert
+          {
+            display: block;
+          }
+  </style>
 @include('alerts.request')
 {!!Html::script('js/evaluacionproveedor.js'); !!}
 	@if(isset($evaluacionproveedor))
@@ -83,7 +90,7 @@
 
 	<fieldset id="evaluacionproveedor-form-fieldset">	
     <input type="hidden" id="token" value="{{csrf_token()}}"/>
-		<div class="form-group col-md-6" id='test'>
+		<div class="form-group col-md-6 required" id='test'>
       {!!Form::label('Tercero_idProveedor', 'Proveedor', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -108,7 +115,7 @@
         </div>
       </div>
     </div>
-
+<br><br><br><br><br>
     <div class="form-group col-md-6" id='test'>
       {!!Form::label('fechaInicialEvaluacionProveedor', 'Fecha Inicial', array('class' => 'col-sm-3 control-label')) !!}
       <div class="col-sm-10">

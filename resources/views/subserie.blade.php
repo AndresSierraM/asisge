@@ -120,12 +120,12 @@ for($i = 0; $i < count($datos); $i++)
 <div id='form-section' >
 
   <fieldset id="subserie-form-fieldset"> 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
         {!!Form::label('codigoSubSerie', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
             <span class="input-group-addon">
-              <i class="fa fa-barcode"></i>
+              <i class="fa fa-barcode" style="width:14px;"></i>
             </span>
             {!!Form::text('codigoSubSerie',null,['class'=>'form-control','placeholder'=>'Ingresa el código del sistema de la sub serie'])!!}
             {!!Form::hidden('idSubSerie', null, array('id' => 'idSubSerie')) !!}
@@ -137,36 +137,36 @@ for($i = 0; $i < count($datos); $i++)
 
 
     
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
           {!!Form::label('nombreSubSerie', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-pencil-square-o "></i>
+                <i class="fa fa-pencil-square-o " style="width:14px;"></i>
               </span>
         {!!Form::text('nombreSubSerie',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la sub serie'])!!}
             </div>
           </div>
       </div>
 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
         {!!Form::label('directorioSubSerie', 'Directorio', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
             <span class="input-group-addon">
-              <i class="fa fa-folder-open  "></i>
+              <i class="fa fa-folder-open" style="width:14px;"></i>
             </span>
       {!!Form::text('directorioSubSerie',null,['class'=>'form-control','placeholder'=>'Ingresa el directorio de la sub serie'])!!}
           </div>
         </div>
       </div>    
 
-      <div class="form-group" id='test'>
+      <div class="form-group required" id='test'>
         {!!Form::label('Serie_idSerie', 'Serie', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
             <span class="input-group-addon">
-              <i class="fa fa-bars"></i>
+              <i class="fa fa-bars" style="width:14px;"></i>
             </span>
           {!!Form::select('Serie_idSerie',$serie, (isset($subserie) ? $subserie->Serie_idSerie : 0),["class" => "select form-control" ,"placeholder" =>"Seleccione una serie"])!!}  
           </div>
@@ -196,7 +196,7 @@ for($i = 0; $i < count($datos); $i++)
                               <div class="col-md-1" style="width: 40px; cursor: pointer;" onclick="abrirModalDocumento();">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 900px;">Documento</div>
+                              <div class="col-md-1 requiredMulti" style="width: 900px;height: 36px;">Documento</div>
                               <div id="contenedor_subseriedetalle"> 
                               </div>
                             </div>
@@ -220,7 +220,7 @@ for($i = 0; $i < count($datos); $i++)
                               <div class="col-md-1" style="width: 40px; cursor: pointer;" onclick="abrirModalRol();">
                                 <span class="glyphicon glyphicon-plus"></span>
                               </div>
-                              <div class="col-md-1" style="width: 900px;">Rol</div>
+                              <div class="col-md-1" style="width: 900px;height: 36px;">Rol</div>
                               <div id="contenedor_permisos"> 
                               </div>
                             </div>

@@ -51,7 +51,7 @@
 <div id='form-section' >
 
 	<fieldset id="lista-form-fieldset">
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
       {!!Form::label('codigoLista', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
       <div class="col-sm-10">
         <div class="input-group">
@@ -67,7 +67,7 @@
 
 
     
-    <div class="form-group" id='test'>
+    <div class="form-group required" id='test'>
       {!!Form::label('nombreLista', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
         <div class="col-sm-10">
           <div class="input-group">
@@ -193,12 +193,12 @@
               </h4>
             </div>
             <div id="opcionLista" class="panel-collapse collapse">
-              <div class="panel-body">
+              <div class="panel-body" style="overflow: auto; width: 100%;">
                 <div class="form-group" id='test'>
                   <div class="col-sm-10" style="width: 100%;">
-                    <div class="panel-body">
+                    <div class="panel-body" style="width: 1230px; height: 300px; display: inline-block;">
                       <div class="form-group" id='test'>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" >
                           <div class="row show-grid">
                             <div class="col-md-1" style="width: 40px; height: 69px; cursor: pointer;" onclick="lista.agregarCampos(valorlista,'A')">
                               <span id="boton" class="glyphicon glyphicon-plus"></span>

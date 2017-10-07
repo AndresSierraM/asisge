@@ -2,6 +2,13 @@
 @section('titulo')<h1 id="titulo"><center>Dashboard</center></h1>@stop
 
 @section('content')
+ <style>
+          /*Se quema la clase, none para que no se muestre el mensaje de los campos con * son obligatorios * ----*/
+  .requiredAlert
+          {
+            display: none;
+          }
+  </style>
 
 {!! Html::script('chart/Chart.js'); !!}
 {!! Html::script('js/dashboard.js'); !!}

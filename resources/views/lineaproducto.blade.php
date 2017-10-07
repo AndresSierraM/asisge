@@ -55,7 +55,7 @@ $(document).ready( function () {
 
 <div id='form-section' >
 	<fieldset id="lineaproducto-form-fieldset">	
-		<div class="form-group" id='test'>
+		<div class="form-group required" id='test'>
           {!! Form::label('codigoLineaProducto', 'C&oacute;digo', array('class' => 'col-sm-2 control-label')) !!}
           <div class="col-sm-10">
             <div class="input-group">
@@ -69,7 +69,7 @@ $(document).ready( function () {
             </div>
           </div>
         </div>
-    		<div class="form-group" id='test'>
+    		<div class="form-group required" id='test'>
               {!! Form::label('nombreLineaProducto', 'Nombre', array('class' => 'col-sm-2 control-label')) !!}
               <div class="col-sm-10">
                 <div class="input-group">
@@ -95,8 +95,8 @@ $(document).ready( function () {
                               <div class="col-md-1" style="width: 40px;height: 35px;" onclick="sublineaproducto.agregarCampos(sublineaproductoM,'A')">
                                     <span class="glyphicon glyphicon-plus"></span>
                                   </div>
-                                  <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Codigo SubLinea</div>
-                                  <div class="col-md-1" style="width: 300px;display:inline-block;height:35px;">Nombre Sublinea</div>        
+                                  <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Codigo SubLinea</div>
+                                  <div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:35px;">Nombre Sublinea</div>        
                                   <!-- este es el div para donde van insertando los registros --> 
                                   <div id="sublineaproducto_Modulo">
                                   </div>
