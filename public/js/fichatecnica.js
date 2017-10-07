@@ -273,169 +273,64 @@ $(document).ready(function(){
 });
 
 
-function abrirModalProceso(materiales, operaciones)
+function abrirModalProceso(idiframe, ruta, materiales, operaciones)
 {
-    var lastIdx = null;
-    window.parent.$("#tproceso").DataTable().ajax.url('http://'+location.host+"/datosProcesoSelect").load();
-     // Abrir modal
-    window.parent.$("#ModalProceso").modal()
-
-    $("a.toggle-vis").on( "click", function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        var column = table.column( $(this).attr("data-column") );
- 
-        // Toggle the visibility
-        column.visible( ! column.visible() );
-    } );
-
-    window.parent.$("#tproceso tbody").on( "mouseover", "td", function () 
-    {
-        var colIdx = table.cell(this).index().column;
-
-        if ( colIdx !== lastIdx ) {
-            $( table.cells().nodes() ).removeClass( "highlight" );
-            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
-        }
-    }).on( "mouseleave", function () 
-    {
-        $( table.cells().nodes() ).removeClass( "highlight" );
-    } );
-
-
-    // Setup - add a text input to each footer cell
-    window.parent.$("#tproceso tfoot th").each( function () 
-    {
-        var title = window.parent.$("#tproceso thead th").eq( $(this).index() ).text();
-        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
-    });
- 
-    // DataTable
-    var table = window.parent.$("#tproceso").DataTable();
- 
-    // Apply the search
-    table.columns().every( function () 
-    {
-        var that = this;
- 
-        $( "input", this.footer() ).on( "blur change", function () {
-            if ( that.search() !== this.value ) {
-                that
-                    .search( this.value )
-                    .draw();
-            }
-        } );
-    })
-
-    window.parent.$('#tproceso tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-
-        var datos = table.rows('.selected').data();
-
-
-    } );
-
-    window.parent.$('#botonProceso').click(function() {
-        var datos = table.rows('.selected').data();  
-        
-        
-
-        for (var i = 0; i < datos.length; i++) 
-        {
-            var valores = new Array(0, '', datos[i][0],datos[i][2],'');
-            window.parent.proceso.agregarCampos(valores,'A'); 
-
-            adicionarTabMaterial(i, datos[i][0], datos[i][2], materiales);
-
-            adicionarTabOperacion(i, datos[i][0], datos[i][2], operaciones);
-            
-            
-        }
-        
-        
-
-
-        window.parent.$("#ModalProceso").modal("hide");
-    });
+    var $iframe = $('#' + idiframe);
+    if ( $iframe.length ) {
+        $iframe.attr('src',ruta);   
+        $('#ModalProceso').modal('show');
+    }
 
 }
 
-function abrirModalMaterial(cont, idProceso)
+function adicionarRegistros(nombreTabla, datos)
 {
-    var lastIdx = null;
-    window.parent.$("#tmaterial").DataTable().ajax.url('http://'+location.host+"/datosMaterialSelect").load();
-     // Abrir modal
-    window.parent.$("#ModalMaterial").modal()
-
-    $("a.toggle-vis").on( "click", function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        var column = table.column( $(this).attr("data-column") );
- 
-        // Toggle the visibility
-        column.visible( ! column.visible() );
-    } );
-
-    window.parent.$("#tmaterial tbody").on( "mouseover", "td", function () 
+    switch(nombreTabla)
     {
-        var colIdx = table.cell(this).index().column;
-
-        if ( colIdx !== lastIdx ) {
-            $( table.cells().nodes() ).removeClass( "highlight" );
-            $( table.column( colIdx ).nodes() ).addClass( "highlight" );
-        }
-    }).on( "mouseleave", function () 
-    {
-        $( table.cells().nodes() ).removeClass( "highlight" );
-    } );
-
-
-    // Setup - add a text input to each footer cell
-    window.parent.$("#tmaterial tfoot th").each( function () 
-    {
-        var title = window.parent.$("#tmaterial thead th").eq( $(this).index() ).text();
-        $(this).html( "<input type='text' placeholder='Buscar por "+title+"'/>" );
-    });
- 
-    // DataTable
-    var table = window.parent.$("#tmaterial").DataTable();
- 
-    // Apply the search
-    table.columns().every( function () 
-    {
-        var that = this;
- 
-        $( "input", this.footer() ).on( "blur change", function () {
-            if ( that.search() !== this.value ) {
-                that
-                    .search( this.value )
-                    .draw();
-            }
-        } );
-    })
-
-    window.parent.$('#tmaterial tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-
-        var datos = table.rows('.selected').data();
-
-
-    } );
-
-    window.parent.$('#botonMaterial').click(function() {
-        var datos = table.rows('.selected').data();  
-
-        for (var i = 0; i < datos.length; i++) 
+        case 'tproceso':
         {
-            var valores = new Array(0, datos[i][0],datos[i][1],datos[i][2],idProceso, 0, '');
-            window.parent.material[cont].agregarCampos(valores,'A'); 
+            for (var i = 0; i < datos.length; i++) 
+            {
+                var valores = new Array(0, '', datos[i][0],datos[i][2],'');
+                window.parent.proceso.agregarCampos(valores,'A'); 
 
+                adicionarTabMaterial(i, datos[i][0], datos[i][2], materiales);
+
+                adicionarTabOperacion(i, datos[i][0], datos[i][2], operaciones);
+
+            }
+            window.parent.$("#ModalProceso").modal("hide");
+            break;
         }
 
-        window.parent.$("#ModalMaterial").modal("hide");
-    });
+        case 'tfichatecnica':
+        {
+            for (var i = 0; i < datos.length; i++) 
+            {
+                var valores = new Array(0, datos[i][0],datos[i][1],datos[i][2],$('#idProceso').val(), 0, '');
+                window.parent.material[$('#cont').val()].agregarCampos(valores,'A'); 
+
+            }
+
+            window.parent.$("#ModalMaterial").modal("hide");
+            break;
+        }
+    
+    }
+
+}
+
+function abrirModalMaterial(idiframe, ruta, cont, idProceso)
+{
+    // guardamos los valores en el modal para uso posterior 
+    $('#cont').val(cont);
+    $('#idProceso').val(idProceso);
+
+    var $iframe = $('#' + idiframe);
+    if ( $iframe.length ) {
+        $iframe.attr('src',ruta);   
+        $('#ModalMaterial').modal('show');
+    }
 
 }
 
@@ -452,7 +347,8 @@ function adicionarTabMaterial(cont, idTab, nombreTab, datos)
             '        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">'+
             '            <div style="overflow:auto; height:350px;">'+
             '                <div style="width: 100%; display: inline-block;">'+
-            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="abrirModalMaterial('+cont+','+idTab+');">'+
+            '                    <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" '+
+            '                               onclick="abrirModalMaterial(\'iframeMateriales\',\'http://'+location.host+'/fichatecnicaselect?tipo=M\','+cont+','+idTab+');">'+
             '                      <span class="glyphicon glyphicon-plus"></span>'+
             '                    </div>'+
             '                    <div class="col-md-1" style="width: 150px;" >Referencia</div>'+

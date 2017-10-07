@@ -130,6 +130,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('tipoidentificacion','TipoIdentificacionController');
     Route::resource('frecuenciamedicion','FrecuenciaMedicionController');
     Route::resource('proceso','ProcesoController');
+    Route::resource('procesoselect', 'ProcesoController@indexSelect');
     Route::resource('compania','CompaniaController');
     Route::resource('tercero','TerceroController');
     Route::resource('cargo','CargoController');
@@ -220,6 +221,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('sublineaproducto','SublineaProductoController');
     Route::resource('tipocalidad','TipoCalidadController');
     Route::resource('fichatecnica','FichaTecnicaController');
+    Route::resource('fichatecnicaselect','FichaTecnicaController@indexSelect');
     Route::resource('ordenproduccion','OrdenProduccionController');
     Route::resource('ordentrabajo','OrdenTrabajoController');
     Route::resource('ejecuciontrabajo','EjecucionTrabajoController');
@@ -244,6 +246,13 @@ Route::group(['middleware' => 'auth'], function ()
     });
     Route::get('/visorinforme', function () {
         return view('visorinforme');
+    });
+
+    Route::resource('informe','InformeController');
+
+    Route::get('datosInforme', function()
+    {
+        include public_path().'/ajax/datosInforme.php';
     });
 
 
@@ -510,6 +519,11 @@ Route::group(['middleware' => 'auth'], function ()
     {
         include public_path().'/ajax/datosFichaTecnica.php';
     });
+     Route::get('datosFichaTecnicaSelect{tipo}', function()
+    {
+        include public_path().'/ajax/datosFichaTecnicaSelect.php';
+    });
+    
     Route::get('datosProcesoSelect', function()
     {
         include public_path().'/ajax/datosProcesoSelect.php';

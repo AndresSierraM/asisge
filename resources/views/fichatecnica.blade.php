@@ -310,7 +310,8 @@ $fechahora = Carbon\Carbon::now();
                 <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
                     <div style="overflow:auto; height:350px;">
                         <div style="width: 100%; display: inline-block;">
-                            <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" onclick="abrirModalProceso(materiales, operaciones);">
+                            <div class="col-md-1" style="width: 40px;height: 42px; cursor:pointer;" 
+                              onclick="abrirModalProceso(\'iframeProcesos\', \'http://'.$_SERVER["HTTP_HOST"].'/procesoselect\', materiales, operaciones);">
                               <span class="glyphicon glyphicon-plus"></span>
                             </div>
                             <div class="col-md-1" style="width: 100px;" >Orden</div>
@@ -587,50 +588,9 @@ $fechahora = Carbon\Carbon::now();
         <h4 class="modal-title">Selecci&oacute;n de Procesos</h4>
       </div>
       <div class="modal-body">
-         <div class="container">
-            <div class="row">
-                <div class="container">
-                    <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
-                        <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
-                            <i class="glyphicon glyphicon-th icon-th" ></i> 
-                            <span class="caret"></span>
-                        </button>
-                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Código</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Proceso</label></a></li>
-                            
-                        </ul>
-                    </div>
-                    
-                    <table id="tproceso" name="tproceso" class="display table-bordered" width="70%">
-                        <thead>
-                            <tr class="btn-default active">
-
-                                <th><b>ID</b></th>
-                                <th><b>Código</b></th>
-                                <th><b>Proceso</b></th>        
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr class="btn-default active" >
-
-                                <th>ID</th>
-                                <th>Código</th>
-                                <th>Proceso</th>                             
-                            </tr>
-                        </tfoot>
-                    </table>
-
-                    <div class="modal-footer">
-                        <button id="botonProceso" name="botonProceso" type="button" class="btn btn-primary" >Seleccionar</button>
-                    </div>
-
-                
-
-                </div>
-            </div>
-        </div>
+        <?php 
+        echo '<iframe style="width:100%; height:400px; " id="iframeProcesos" name="iframeProcesos" src="http://'.$_SERVER["HTTP_HOST"].'/procesoselect"></iframe>'
+        ?> 
 
       </div>
     </div>
@@ -647,57 +607,12 @@ $fechahora = Carbon\Carbon::now();
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Selecci&oacute;n de Materiales</h4>
       </div>
+      <input type="hidden" id="cont" name="cont" value="">
+      <input type="hidden" id="idProceso" name="idProceso" value="">
       <div class="modal-body">
-         <div class="container">
-            <div class="row">
-                <div class="container">
-                    <div class="btn-group" style="margin-left: 94%;margin-bottom:4px" title="Columns">
-                        <button  type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown">
-                            <i class="glyphicon glyphicon-th icon-th"></i> 
-                            <span class="caret"></span>
-                        </button>
-                       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Referencia</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Descripción</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Línea</label></a></li>
-                            <li><a class="toggle-vis" data-column="0"><label> Sublinea</label></a></li>
-                            
-                        </ul>
-                    </div>
-                    
-                    <table id="tmaterial" name="tmaterial" class="display table-bordered" width="100%">
-                        <thead>
-                            <tr class="btn-default active">
-
-                                <th><b>ID</b></th>
-                                <th><b>Referencia</b></th>
-                                <th><b>Descripción</b></th>        
-                                <th><b>Línea</b></th>  
-                                <th><b>Sublinea</b></th>  
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr class="btn-default active">
-
-                                <th>ID</th>
-                                <th>Referencia</th>
-                                <th>Descripción</th>                             
-                                <th>Linea</th>
-                                <th>Sublinea</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-                    <div class="modal-footer">
-                        <button id="botonMaterial" name="botonMaterial" type="button" class="btn btn-primary" >Seleccionar</button>
-                    </div>
-
-                
-
-                </div>
-            </div>
-        </div>
+        <?php 
+        echo '<iframe style="width:100%; height:400px; " id="iframeMateriales" name="iframeMateriales" src="http://'.$_SERVER["HTTP_HOST"].'/fichatecnicaselect?tipo=M"></iframe>'
+        ?> 
 
       </div>
     </div>

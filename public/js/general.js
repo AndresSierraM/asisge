@@ -88,8 +88,8 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
     
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
-    div.setAttribute("class", "col-sm-12");
-    div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
+    //div.setAttribute("class", "");
+    div.setAttribute("style",  "width: 1500px; height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
     
     // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
     if(this.botonEliminacion)

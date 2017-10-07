@@ -55,7 +55,22 @@ class OrdenTrabajoController extends Controller
      */
     public function create()
     {
-        $ordenproduccion = \App\OrdenProduccion::where('Compania_idCompania','=', \Session::get('idCompania'))->where('estadoOrdenProduccion','!=','Cerrada')->lists('numeroOrdenProduccion','idOrdenProduccion');
+        // $ordenproduccion = \App\OrdenProduccion::where('Compania_idCompania','=', \Session::get('idCompania'))
+        //                     ->where('estadoOrdenProduccion','!=','Cerrada')
+        //                     ->lists(DB::raw('concat(numeroOrdenProduccion, fechaElaboracionOrdenProduccion) as numeroOrdenProduccion, idOrdenProduccion'));
+        // $ordenproduccion = DB::table('ordenproduccion')
+        // ->select(DB::raw('idOrdenProduccion, concat(numeroOrdenProduccion, fechaElaboracionOrdenProduccion) as numeroOrdenProduccion'))
+        // ->where('Compania_idCompania','=', \Session::get('idCompania'))
+        // ->where('estadoOrdenProduccion','!=','Cerrada')
+        // ->orderby('numeroOrdenProduccion')
+        // ->get();
+
+        $ordenproduccion = \App\OrdenProduccion::selectRaw('idOrdenProduccion, concat(numeroOrdenProduccion, fechaElaboracionOrdenProduccion) as numeroOrdenProduccion')
+        ->where('Compania_idCompania','=', \Session::get('idCompania'))
+        ->where('estadoOrdenProduccion','!=','Cerrada')
+        ->orderby('numeroOrdenProduccion')
+        ->get();
+
         $proceso = \App\Proceso::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreProceso','idProceso');
         $idTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('idTipoCalidad');
         $nombreTipoCalidad = \App\TipoCalidad::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreTipoCalidad');

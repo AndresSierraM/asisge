@@ -50,6 +50,11 @@ class FichaTecnicaController extends Controller
 
     }
 
+    public function indexSelect()
+    {
+            return view('fichatecnicagridselect');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -35,6 +35,11 @@ class ProcesoController extends Controller
             return view('accesodenegado');
     }
 
+    public function indexSelect()
+    {
+           return view('procesogridselect');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
