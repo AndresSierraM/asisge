@@ -261,7 +261,7 @@
 										<span class="input-group-addon">
 											<i class="fa fa-navicon" style="width: 14px;"></i>
 										</span>
-										{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>$NombreDinamicoPlace,'style'=>'width:820px;','readonly'=>true])!!}
+										{!!Form::text('nombreCompletoTercero',null,['class'=>'form-control','placeholder'=>$NombreDinamicoPlace,'style'=>'width:820px;','readonly'=>true,"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
 									</div>
 								</div>
 							</div>

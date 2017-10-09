@@ -279,8 +279,42 @@ class MatrizLegalController extends Controller
     }
 
 
+    function quitarCaracterEspeciales($string) 
+    {
+        // recibe el texto completo en str
+         // Se valida el string que esta recibiendo para que elimine el ENTER, Comillas sencillas y dobles y lo deje vacio en php
+        $str  = preg_replace("[\n|\r|\n\r|\'|\"]", ' ', $string);
+        // 1. lo convierte todo a minúsculas y lo guarda en lower
+        $lower = strtolower($str);
+        // Se convierte a array  e igualando a la variable todo lo que está convertido en miniscula (para devolverlo con posicion y letra)
+        $lower = str_split($lower);
 
-    public function importarMatrizLegal()
+        // 2. lo convierte todo a mayúsculas y lo guarda en upper
+        $upper = strtoupper($str);
+        
+        // Se convierte a array  e igualando a la variable todo lo que está convertido en Mayuscula- (para devolverlo con posicion y letra)
+        $upper = str_split($upper);
+        // se iguala el string e iguala la variable a array para que pueda tomar posicion 0
+        $str = str_split($str);
+
+        $res = '';
+        // 3. con el for recorre el texto original letra por letra
+        for($i=0; $i<count($lower); $i++) 
+        {  
+            // si esa letra en minúscula no es igual a la misma letra en mayúscula lower[i] != upper[i]
+            // OR
+            // 5. SI es un espacio en blanco o un vacio
+            // OR
+            // 6. si es un numero de 0 a 9
+            // 7. Si es una de las anteriores gurda ese carácter en la variable RES
+            // por ultimo devuelve RES
+            if($lower[$i] != $upper[$i] || trim($lower[$i]) === '' || (trim($lower[$i]) >= 0 && trim($lower[$i]) <= 9))
+                $res .= $str[$i];
+        }
+        return $res;
+    } 
+
+    public function importarMatrizLegal()   
     {
       $destinationPath = public_path() . '/imagenes/repositorio/temporal'; 
         Excel::load($destinationPath.'/Plantilla Matriz Legal.xlsx', function($reader) {
@@ -387,7 +421,8 @@ class MatrizLegalController extends Controller
                                 ? ''
                                 : $datos->getCellByColumnAndRow($columna, $fila)->getValue());
                     }
-
+                // Se agrega la funcion para que limpie campo a campo (celda a celda)
+                    $matriz[$posMatriz][$campo] = $this->quitarCaracterEspeciales($matriz[$posMatriz][$campo]);
                 }
 
                 

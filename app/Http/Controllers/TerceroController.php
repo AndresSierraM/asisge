@@ -999,6 +999,8 @@ class TerceroController extends Controller
                                 : $datos->getCellByColumnAndRow($columna, $fila)->getValue());
                     }
 
+                 
+                    
                 }
 
                 // tomamos el tipo de identificacion que el usuario llena como codigo para convertirlo en id buscandolo en el modelo
