@@ -15,8 +15,7 @@ if (!empty($movimientoCRMTarea))
 	  $camposAgendaTarea[$i] = (array) $movimientoCRMTarea[$i];
 	}	
 }
-
-					              
+		              
 function mostrarCampo($arrayCampos, $campo, $rolUsuario, $atributo)
 {
 	// recorremos el array verificando si en la columna nombreCampoCRM existe el valor del parametro $campo
@@ -438,8 +437,52 @@ $fechahora = Carbon\Carbon::now();
 					    		</div>
 					    	</div>
 					    </div>
-					    <?php
-						
+
+						<?php
+
+							if(strpos($camposVista, 'DocumentoCRM_idBase') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('DocumentoCRM_idBase', 'Documento Base', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	@if(mostrarCampo($arrayCampos, 'DocumentoCRM_idBase', $rolUsuario,'select') == '')
+					              		{!!Form::select('DocumentoCRM_idBase',$documentobase, (isset($movimientocrm) ? $movimientocrm->DocumentoCRM_idBase : $tercero['idTercero']),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('DocumentoCRM_idBase', (isset($movimientocrm) ? $movimientocrm->DocumentoCRM_idBase : $documentobase['idDocumentoCRM']), array('id' => 'DocumentoCRM_idBase'))!!}
+										{!!Form::text('nombreDocumentoBase',(isset($movimientocrm->DocumentoCRMBase->nombreDocumentoCRM) ? $movimientocrm->DocumentoCRMBase->nombreDocumentoCRM : $documentobase['nombreDocumentoCRM']),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+
+				              	
+
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('numeroDocumentoBase', 'Número Documento Base', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+									{!!Form::text('numeroDocumentoBase',null,
+											["onclick"=>"abrirModalMovimientos('iframeMovimientos', 'http://".$_SERVER["HTTP_HOST"]."/movimientocrmgridselect',$('#DocumentoCRM_idBase').val());", 'id'=>'numeroDocumentoBase','readonly'=>'readonly',  'class'=>'form-control','placeholder'=>'Selecciona Documento Base (Haz Click)'])!!}
+									{!!Form::hidden('MovimientoCRM_idBase',null,['id'=>'MovimientoCRM_idBase'])!!}
+					    		</div>
+					    	</div>
+					    </div>
+						<?php
+							}
+
+					
 							if(strpos($camposVista, 'OrigenCRM_idOrigenCRM') !== false)
 							{ 
 						?>
@@ -600,7 +643,7 @@ $fechahora = Carbon\Carbon::now();
 						?>
 						<div class="col-sm-6">
 							<div class="col-sm-4">
-								{!!Form::label('Tercero_idSolicitante', 'Solicitante', array())!!}
+								{!!Form::label('Tercero_idSolicitante', 'Solicitante/Cliente', array())!!}
 							</div>
 							<div class="col-sm-8">
 					            <div class="input-group">
@@ -612,6 +655,33 @@ $fechahora = Carbon\Carbon::now();
 					              	@else
 					        			{!!Form::hidden('Tercero_idSolicitante', (isset($movimientocrm) ? $movimientocrm->Tercero_idSolicitante : $tercero['idTercero']), array('id' => 'Tercero_idSolicitante'))!!}
 										{!!Form::text('nombreSolicitante',(isset($movimientocrm->TerceroSolicitante->nombreCompletoTercero) ? $movimientocrm->TerceroSolicitante->nombreCompletoTercero : $tercero['nombreCompletoTercero']),['readonly'=>'readonly', 'class'=>'form-control'])!!}
+									@endif
+
+				              	
+
+								</div>
+							</div>
+						</div>
+						<?php
+							}
+
+							if(strpos($camposVista, 'Tercero_idAsesor') !== false)
+							{ 
+						?>
+						<div class="col-sm-6">
+							<div class="col-sm-4">
+								{!!Form::label('Tercero_idAsesor', 'Asesor', array())!!}
+							</div>
+							<div class="col-sm-8">
+					            <div class="input-group">
+					              	<span class="input-group-addon">
+					                	<i class="fa fa-pencil-square-o"></i>
+					              	</span>
+					              	@if(mostrarCampo($arrayCampos, 'Tercero_idAsesor', $rolUsuario,'select') == '')
+					              		{!!Form::select('Tercero_idAsesor',$asesor, (isset($movimientocrm) ? $movimientocrm->Tercero_idAsesor : $tercero['idTercero']),["class" => "chosen-select form-control"])!!}
+					              	@else
+					        			{!!Form::hidden('Tercero_idAsesor', (isset($movimientocrm) ? $movimientocrm->Tercero_idAsesor : $tercero['idTercero']), array('id' => 'Tercero_idAsesor'))!!}
+										{!!Form::text('nombreAsesor',(isset($movimientocrm->TerceroAsesor->nombreCompletoTercero) ? $movimientocrm->TerceroAsesor->nombreCompletoTercero : $tercero['nombreCompletoTercero']),['readonly'=>'readonly', 'class'=>'form-control'])!!}
 									@endif
 
 				              	
@@ -1312,6 +1382,24 @@ $fechahora = Carbon\Carbon::now();
 				</div>
             </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ModalMovimientos" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:95%;">
+    
+    <!-- Modal content-->
+    <div style="" class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Selecci&oacute;n de Movimientos</h4>
+      </div>
+      <div class="modal-body">
+      <?php 
+        echo '<iframe style="width:100%; height:400px; " id="iframeMovimientos" name="iframeMovimientos" src=""></iframe>'
+      ?>
       </div>
     </div>
   </div>

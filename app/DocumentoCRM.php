@@ -9,13 +9,21 @@ class DocumentoCRM extends Model
     protected $table = 'documentocrm';
     protected $primaryKey = 'idDocumentoCRM';
 
-    protected $fillable = ['codigoDocumentoCRM', 'nombreDocumentoCRM', 'tipoDocumentoCRM', 'numeracionDocumentoCRM', 'longitudDocumentoCRM', 'desdeDocumentoCRM', 'hastaDocumentoCRM', 'actualDocumentoCRM', 'GrupoEstado_idGrupoEstado','Compania_idCompania'];
+    protected $fillable = ['codigoDocumentoCRM', 'nombreDocumentoCRM', 'tipoDocumentoCRM', 
+                            'numeracionDocumentoCRM', 'longitudDocumentoCRM', 'desdeDocumentoCRM', 
+                            'hastaDocumentoCRM', 'actualDocumentoCRM', 'GrupoEstado_idGrupoEstado',
+                            'filtroSolicitanteDocumentoCRM','Compania_idCompania'];
 
     public $timestamps = false;
 
     public function documentocrmcampo()
     {
     	return $this->hasMany('App\DocumentoCRMCampo','DocumentoCRM_idDocumentoCRM');
+    }
+
+    public function documentocrmbase()
+    {
+    	return $this->hasMany('App\DocumentoCRMBase','DocumentoCRM_idDocumentoCRM');
     }
 
     public function documentocrmgrafico()

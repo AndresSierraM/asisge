@@ -1,5 +1,5 @@
 
-{{--  {!!Html::script('js/informe.js'); !!}  --}}
+ {!!Html::script('js/informe.js'); !!} 
 
 @extends('layouts.vista')
 @section('titulo')<h3 id="titulo"><center>Diseñador de Informes</center></h3>@stop
@@ -26,11 +26,18 @@
         var informecolumna = '<?php echo (isset($informecolumna) ? json_encode($informecolumna) : "");?>';
         informecolumna = (informecolumna != '' ? JSON.parse(informecolumna) : '');
         
+        alineacionH =  [['I','C', 'D'] , ['Izquierda', 'Centro', 'Derecha']];
+        alineacionV =  [['S','C', 'I'] , ['Superior', 'Centro', 'Inferior']];
+        alineacionR =  [['I', 'D'] , ['Izquierda', 'Derecha']];
+
         var valorColumna = ['','','','','','','','','','','','','',''];
 
         
-        $(document).ready(function()
-        {
+       $(document).ready(function(){
+
+		    vista = "<?php echo @$informe->vistaInforme; ?>";
+		    if($("#SistemaInformacion_idSistemaInformacion").val() !== '')
+			    llamarVistas($("#SistemaInformacion_idSistemaInformacion").val(), vista);
 
             //***************************************
             //
@@ -80,9 +87,9 @@
             columnas.tipo = [
                                 'hidden',
                                 'text',
-                                '',
-                                '',
-                                '',
+                                'checkbox',
+                                'checkbox',
+                                'checkbox',
                                 'text',
                                 '',
                                 '',
@@ -115,7 +122,7 @@
             columnas.sololectura = [true,true,false,false,false,false,false,false,false,false,false,false,false,false];  
             columnas.funciones = ['','','','','','','','','','','','','',''];
             columnas.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
-            columnas.opciones = ['','','','','','','','','','','','','',''];
+            columnas.opciones = ['','','','','','',alineacionH, alineacionV,'', alineacionR,'','','',''];
 
             for(var j=0, k = informecolumna.length; j < k; j++)
             {
@@ -136,6 +143,7 @@
                             <i class="fa fa-user"></i>
                         </span>
                         {!!Form::select('CategoriaInforme_idCategoriaInforme',$categoriainforme, null,["class" => "chosen-select form-control","placeholder"=>"Seleccione Categoría"])!!}
+                        <input type="hidden" id="token" value="{{csrf_token()}}"/>
                     </div>
                 </div>
             </div>
@@ -185,13 +193,38 @@
                 <div id="columnas" class="panel-collapse collapse in">
                     <div class="panel-body">
 
+                        <div class="form-group" >
+                            {!! Form::label('SistemaInformacion_idSistemaInformacion', 'Seleccione el Sistema', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                    {!!Form::select('SistemaInformacion_idSistemaInformacion',$sistemainformacion, null,["class" => "chosen-select form-control", 'onchange'=>'llamarVistas(this.value, vista);', "placeholder"=>"Seleccione Sistema"])!!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" >
+                            {!! Form::label('vistaInforme', 'Seleccione la Tabla o Vista', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                    {!!Form::select('vistaInforme',[''=>''], null,["id" => "vistaInforme", "class" => "chosen-select form-control","placeholder"=>"Seleccione la Consulta"])!!}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
                         <div class="form-group" id='test'>
                             <div class="col-sm-12">
                             <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
                                 <div style="overflow:auto; height:350px;">
                                     <div style="width: 1500px; display: inline-block;">
                                         <div class="col-md-1" style="width:40px; height: 35px; cursor:pointer;" 
-                                            onclick="columnas.agregarCampos(valorColumna,'A'); ; //abrirModalCampos('Encabezado','iframeConceptos', 'http://'+location.host+'/gen_campogridselect?form=Inv_DocumentoInventarioForm&tipo=Encabezado');">
+                                        onclick="abrirModalCampos('iframeCampos', 'http://'+location.host+'/informecampo?basedatos='+$('#SistemaInformacion_idSistemaInformacion').val()+'&tabla='+$('#vistaInforme').val());">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </div>
                                         <div class="col-md-1" style="width: 200px; height: 35px;" >Campo</div>
@@ -235,7 +268,7 @@
                                 <div style="overflow:auto; height:350px;">
                                 <div style="width: 100%; display: inline-block;">
                                     <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" 
-                                        onclick="abrirModalCampos('Encabezado','iframeConceptos', 'http://'+location.host+'/gen_campogridselect?form=Inv_DocumentoInventarioForm&tipo=Encabezado');">
+                                        onclick="abrirModalCampos('iframeCampos', 'http://'+location.host+'/informecampo?basedatos=sisoft&tabla=movimientocrm');">
                                     <span class="glyphicon glyphicon-plus"></span>
                                     </div>
                                     <div class="col-md-1" style="width: 500px;" >Campo</div>
@@ -316,7 +349,7 @@
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="campos" name="campos" src="http://'.$_SERVER["HTTP_HOST"].'/gen_campogridselect?form=Inv_DocumentoInventarioForm&tipo=Encabezado"></iframe>'
+        echo '<iframe style="width:100%; height:400px; " id="iframeCampos" name="campos" src=""></iframe>'
       ?>
       </div>
     </div>

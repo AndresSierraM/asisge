@@ -45,9 +45,11 @@ class DocumentoCRMController extends Controller
      */
     public function create()
     {
-       $grupoestado = \App\GrupoEstado::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoEstado','idGrupoEstado');
-
-        return view('documentocrm', compact('grupoestado'));
+        $grupoestado = \App\GrupoEstado::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoEstado','idGrupoEstado');
+        $iddocumentocrmbase = \App\DocumentoCRM::All()->lists('idDocumentoCRM');
+        $nombredocumentocrmbase = \App\DocumentoCRM::All()->lists('nombreDocumentoCRM');
+        
+        return view('documentocrm', compact('grupoestado','iddocumentocrmbase','nombredocumentocrmbase'));
     }
 
     /**
@@ -68,6 +70,7 @@ class DocumentoCRMController extends Controller
             'hastaDocumentoCRM' => $request['hastaDocumentoCRM'], 
             'actualDocumentoCRM' => $request['desdeDocumentoCRM']-1, 
             'GrupoEstado_idGrupoEstado' => $request['GrupoEstado_idGrupoEstado'],
+            'filtroSolicitanteDocumentoCRM' => $request['filtroSolicitanteDocumentoCRM'],
             'Compania_idCompania' => \Session::get("idCompania")
             ]);
 
@@ -102,7 +105,10 @@ class DocumentoCRMController extends Controller
     {
         $documentocrm = \App\DocumentoCRM::find($id);
         $grupoestado = \App\GrupoEstado::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoEstado','idGrupoEstado');
-        return view('documentocrm',compact('grupoestado'),['documentocrm'=>$documentocrm]);
+        $iddocumentocrmbase = \App\DocumentoCRM::All()->lists('idDocumentoCRM');
+        $nombredocumentocrmbase = \App\DocumentoCRM::All()->lists('nombreDocumentoCRM');
+
+        return view('documentocrm',compact('grupoestado','iddocumentocrmbase','nombredocumentocrmbase'),['documentocrm'=>$documentocrm]);
     }
 
     /**
@@ -169,6 +175,29 @@ class DocumentoCRMController extends Controller
              $preguntas = \App\DocumentoCRMCampo::updateOrCreate($indice, $data);
 
         }
+
+        // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarDocumentoCRMBase']);
+        \App\DocumentoCRMBase::whereIn('idDocumentoCRMBase',$idsEliminar)->delete();
+
+        $contador = count($request['idDocumentoCRMBase']);
+
+        for($i = 0; $i < $contador; $i++)
+        {
+
+            $indice = array(
+             'idDocumentoCRMBase' => $request['idDocumentoCRMBase'][$i]);
+
+
+            $data = array(
+             'DocumentoCRM_idDocumentoCRM' => $id,
+            'DocumentoCRM_idBase' => $request['DocumentoCRM_idBase'][$i]);
+
+             $preguntas = \App\DocumentoCRMBase::updateOrCreate($indice, $data);
+
+        }
+
 
 
         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma

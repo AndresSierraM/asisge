@@ -25,9 +25,6 @@ function abrirModalVacante()
 }
 function cambiarEstado(id, TipoEstado, modificar, eliminar, consultar, aprobar)
 {
-
-    
-
     //$("#tmovimientocrm").DataTable().ajax.url('http://'+location.host+"/datosMovimientoCRM?idDocumento="+id+"&TipoEstado="+TipoEstado+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar).load();
     location.href= 'http://'+location.host+"/movimientocrm?idDocumentoCRM="+id+"&TipoEstado="+TipoEstado+"&modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"&aprobar="+aprobar;
 }
@@ -43,6 +40,70 @@ function mostrarTableroCRM(idDoc)
 }
 
 
+function abrirModalMovimientos(idiframe, ruta, idDoc)
+{
+    var $iframe = $('#' + idiframe);
+    if ( $iframe.length ) {
+        $iframe.attr('src',ruta+'?idDocumentoCRM='+idDoc);   
+        $('#ModalMovimientos').modal('show');
+    }
+}
+
+
+function adicionarRegistros(nombreTabla, datos)
+{
+    if(datos.length >= 1) 
+    {
+        $("#MovimientoCRM_idBase").val(datos[i][0]);
+        $("#numeroDocumentoBase").val(datos[i][1] + ' - ' + datos[i][2]);
+
+        // luego de seleccionar el id de movimiento base, ejecutamos un ajax
+        // que consulte el registro y lo traiga a los campos del formulario
+        consultarMovimientoCRMBase(datos[i][0]);
+    }
+    $('#ModalMovimientos').modal('hide');
+}
+
+
+function consultarMovimientoCRMBase(idBase)
+{   
+    // con el id del movimiento debemos consultar los datos a
+    // mostrar en el modal
+    var token = document.getElementById('token').value;
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            url:   'http://'+location.host+'/consultarMovimientoCRMBase',
+            type:  'post',
+            data: {idBase : idBase},
+            beforeSend: function(){
+                
+                },
+            success: function(respuesta)
+            {
+                console.log(respuesta);
+                // asignamos los valores a los campos del modal
+                if(respuesta["idMovimientoCRM"] !== null)
+                {   
+                    $("#asuntoMovimientoCRM").val(respuesta[0]["asuntoMovimientoCRM"]);
+                    $("#prioridadMovimientoCRM").val(respuesta[0]["prioridadMovimientoCRM"]);
+                    $("#Tercero_idSolicitante").val(respuesta[0]["Tercero_idSolicitante"]);
+                    $("#CategoriaCRM_idCategoriaCRM").val(respuesta[0]["CategoriaCRM_idCategoriaCRM"]);
+                    
+
+                    CKEDITOR.instances['detallesMovimientoCRM'].setData(respuesta[0]["detallesMovimientoCRM"]);
+                    CKEDITOR.instances['solucionMovimientoCRM'].setData(respuesta[0]["solucionMovimientoCRM"]);
+                  
+                }
+
+            },
+            error: function(xhr,err)
+            { 
+                console.log(xhr);
+                alert("Error "+xhr);
+            }
+        });
+}
 
 
 function validarFormulario(event)

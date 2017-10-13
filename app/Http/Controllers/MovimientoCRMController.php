@@ -43,6 +43,12 @@ class MovimientoCRMController extends Controller
     }
 
 
+    public function indexSelect()
+    {
+        //$idDoc = (isset($_GET["idDocumentoCRM"]) ? $_GET["idDocumentoCRM"] : 0 );
+        return view('movimientocrmgridselect');
+    }
+
     //Funcion para subir archivos con dropzone
     public function uploadFiles(Request $request) 
     {
@@ -81,10 +87,24 @@ class MovimientoCRMController extends Controller
     {
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
+        $documentobase = \App\DocumentoCRMBase::leftjoin('documentocrm','DocumentoCRM_idBase','=','idDocumentoCRM')
+                            ->where('DocumentoCRM_idDocumentoCRM','=',$idDocumento)
+                            ->lists('nombreDocumentoCRM','idDocumentoCRM');
+         
+
         $documentoTercero = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('tipoDocumentoCRM');
-        
+        $filtroSolicitante = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)
+                            ->lists('filtroSolicitanteDocumentoCRM');
         // consultamos los maestros asociados a la compania
-        $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        // tomamos el campos de filtro de solicitante del DocumentoCRM para aplicar los filtros
+        // $filtroSolicitante contiene un valor asi "*01*,*03*,*02*", lo podemos utilizar con un whereIN
+        
+        $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+            ->whereIn('tipoTercero',explode(",",$filtroSolicitante[0]))->lists('nombreCompletoTercero','idTercero');
+        $asesor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+            ->where('tipoTercero','=','*01*')
+            ->lists('nombreCompletoTercero','idTercero');
+
         $lineanegocio = \App\LineaNegocio::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaNegocio','idLineaNegocio');
         
         // consultamos las tablas maestras que estan asociadas al grupo de estados, filtrando por el IDde grupo asociado al documentoCRM
@@ -96,7 +116,7 @@ class MovimientoCRMController extends Controller
         // Consultamos el tercero a mostrar en el formulario (si hace parte de los campos a mostrar) dependiendo del tipo de Documento CRM
         $proveedor = ($documentoTercero[0] == 'Compras' ? \App\Tercero::where('tipoTercero','like','%*02*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : ($documentoTercero[0] == 'Comercial') ? \App\Tercero::where('tipoTercero','like','%*03*%')->where('Compania_idCompania', '=', \Session::get('idCompania'))->lists('nombreCompletoTercero', 'idTercero') : Array());        
 
-       return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento', 'proveedor'));
+       return view('movimientocrm',compact('documentobase', 'solicitante', 'asesor', 'categoria','documento','lineanegocio','origen','estado', 'evento', 'proveedor'));
     }
 
     /**
@@ -207,15 +227,17 @@ class MovimientoCRMController extends Controller
         //
         //********************************
         // consultamos el correo del usuario logueado y los correos de los usuarios aprobadores de este documento
+        $condSolic = $request['Tercero_idSolicitante'] != '' ? ' T.idTercero = '.$request['Tercero_idSolicitante'].' ' : '';
+        $condAses = $request['Tercero_idAsesor'] != '' ? ' T.idTercero = '.$request['Tercero_idAsesor'].' ' : '';
+        $condTercero = '('. $condSolic . (($condSolic != '' and $condAses != '') ? ' or ' : ''). $condAses.')';
+
         $correos = DB::select(
             ($request['Tercero_idSolicitante'] != '' ? 
                 'SELECT  correoElectronicoTercero
                 FROM    users U 
                 LEFT JOIN tercero T 
                 ON U.Tercero_idTercero = T.idTercero
-                WHERE   (T.idTercero = '.$request['Tercero_idSolicitante'].' '.
-                        ($request['Tercero_idAsesor'] != '' ? ' or T.idTercero = '.$request['Tercero_idAsesor'] : '').
-                        ') and
+                WHERE   '.$condTercero. ($condTercero != '' ? ' and ' : '' ). ' 
                         correoElectronicoTercero != "" 
             UNION DISTINCT' : '').
             ' SELECT  correoElectronicoTercero 
@@ -350,10 +372,18 @@ class MovimientoCRMController extends Controller
         $idDocumento = $_GET["idDocumentoCRM"];
         $documento = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('GrupoEstado_idGrupoEstado');
         $documentoTercero = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)->lists('tipoDocumentoCRM');
-       
-
+        $filtroSolicitante = \App\DocumentoCRM::where('idDocumentoCRM','=',$idDocumento)
+                            ->lists('filtroSolicitanteDocumentoCRM');
         // consultamos los maestros asociados a la compania
-        $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
+        // tomamos el campos de filtro de solicitante del DocumentoCRM para aplicar los filtros
+        // $filtroSolicitante contiene un valor asi "*01*,*03*,*02*", lo podemos utilizar con un whereIN
+        
+        $solicitante = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+            ->whereIn('tipoTercero',explode(",",$filtroSolicitante[0]))->lists('nombreCompletoTercero','idTercero');
+        $asesor = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))
+            ->where('tipoTercero','=','*01*')
+            ->lists('nombreCompletoTercero','idTercero');
+
         $lineanegocio = \App\LineaNegocio::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreLineaNegocio','idLineaNegocio');
         
         // consultamos las tablas maestras que estan asociadas al grupo de estados, filtrando por el IDde grupo asociado al documentoCRM
@@ -410,7 +440,7 @@ class MovimientoCRMController extends Controller
 
 
 
-        return view('movimientocrm',compact('solicitante', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea', 'proveedor', 'movimientoCRMProductoServicio'),['movimientocrm'=>$movimientocrm]);
+        return view('movimientocrm',compact('solicitante', 'asesor', 'categoria','documento','lineanegocio','origen','estado', 'evento','movimientocrmcargo', 'movimientoCRMTarea', 'proveedor', 'movimientoCRMProductoServicio'),['movimientocrm'=>$movimientocrm]);
     }
 
     /**
@@ -510,14 +540,16 @@ class MovimientoCRMController extends Controller
 
         // por Solicitud de Juan Erasmo, al modificar un documento solo se envia correo
         // al asesor y al solicitante, se quitó la consulta de los supervisores
+        $condSolic = $request['Tercero_idSolicitante'] != '' ? ' T.idTercero = '.$request['Tercero_idSolicitante'].' ' : '';
+        $condAses = $request['Tercero_idAsesor'] != '' ? ' T.idTercero = '.$request['Tercero_idAsesor'].' ' : '';
+        $condTercero = '('. $condSolic . (($condSolic != '' and $condAses != '') ? ' or ' : ''). $condAses.')';
+
         $correos = DB::select('
             SELECT  correoElectronicoTercero
                 FROM    users U 
                 LEFT JOIN tercero T 
                 ON U.Tercero_idTercero = T.idTercero
-                WHERE   (T.idTercero = '.$request['Tercero_idSolicitante'].' '.
-                        ($request['Tercero_idAsesor'] != '' ? ' or T.idTercero = '.$request['Tercero_idAsesor'] : '').
-                        ') and
+                WHERE   '.$condTercero. ($condTercero != '' ? ' and ' : '' ). ' 
                         correoElectronicoTercero != ""');
        
         $datos['correos'] = array();
@@ -795,6 +827,15 @@ class MovimientoCRMController extends Controller
         $acuerdo = get_object_vars($acuerdo[0]);
 
         echo json_encode($acuerdo);
+    }
+
+
+    public function consultarMovimientoCRMBase()
+    {
+        $datos = \App\MovimientoCRM::where('idMovimientoCRM','=',$_POST["idBase"])
+                    ->get();
+       
+        echo json_encode($datos);
     }
 
         

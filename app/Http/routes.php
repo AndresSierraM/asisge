@@ -145,6 +145,7 @@ Route::group(['middleware' => 'auth'], function ()
     Route::resource('tipoelementoproteccion','TipoElementoProteccionController');
     Route::resource('elementoproteccion','ElementoProteccionController');
     Route::resource('movimientocrm','MovimientoCRMController');
+    Route::get('movimientocrmgridselect','MovimientoCRMController@indexSelect');
 
 
 
@@ -255,6 +256,13 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosInforme.php';
     });
 
+    Route::get('datosInformeCampo', function()
+    {
+        include public_path().'/ajax/datosInformeCampo.php';
+    });
+
+    Route::resource('llamarVistas','InformeController@llamarVistas');
+    Route::resource('informecampo','InformeController@indexCampoGridSelect');
 
 });
 
@@ -603,6 +611,11 @@ Route::group(['middleware' => 'auth'], function ()
     Route::get('datosMovimientoCRMModal', function()
     {
         include public_path().'/ajax/datosMovimientoCRMModal.php';
+    });
+
+    Route::get('datosMovimientoCRMSelect', function()
+    {
+        include public_path().'/ajax/datosMovimientoCRMSelect.php';
     });
 
     Route::post('cargarProductosOrdenCompra', function()
@@ -1039,6 +1052,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('consultarDiasAcuerdoServicio', [
             'as' => 'consultarDiasAcuerdoServicio', 
             'uses' => 'MovimientoCRMController@consultarDiasAcuerdoServicio']);
+    
+    Route::post('consultarMovimientoCRMBase', [
+            'as' => 'consultarMovimientoCRMBase', 
+            'uses' => 'MovimientoCRMController@consultarMovimientoCRMBase']);
     
     Route::get('datosCampoCRMSelect', function()
     {

@@ -11,6 +11,9 @@
     var documentocrmcampo = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmcampo) : "");?>';
     documentocrmcampo = (documentocrmcampo != '' ? JSON.parse(documentocrmcampo) : '');
 
+    var documentocrmbase = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmbase) : "");?>';
+    documentocrmbase = (documentocrmbase != '' ? JSON.parse(documentocrmbase) : '');
+
     var documentocrmgrafico = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmgrafico) : "");?>';
     documentocrmgrafico = (documentocrmgrafico != '' ? JSON.parse(documentocrmgrafico) : '');
 
@@ -20,7 +23,13 @@
     var documentocrmrol = '<?php echo (isset($documentocrm) ? json_encode($documentocrm->documentocrmrol) : "");?>';
     documentocrmrol = (documentocrmrol != '' ? JSON.parse(documentocrmrol) : '');
 
+    var idDocumentoCRMBase = '<?php echo isset($iddocumentocrmbase) ? $iddocumentocrmbase : 0;?>';
+		var nombreDocumentoCRMBase = '<?php echo isset($nombredocumentocrmbase) ? $nombredocumentocrmbase : "";?>';
+		
+		var listaDocumentoBase = [JSON.parse(idDocumentoCRMBase),JSON.parse(nombreDocumentoCRMBase)];
+
     var valoresGrafico = [0,'','','',''];
+    var valoresDocumento = [0,0];
     $(document).ready(function(){
 
       protCampos = new Atributos('protCampos','contenedor_protCampos','documentocrmcampo');
@@ -89,6 +98,45 @@
 
         llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
       }
+
+
+      protDocumentos = new Atributos('protDocumentos','contenedor_protDocumentos','documentocrmbase');
+
+      protDocumentos.altura = '35px';
+      protDocumentos.campoid = 'idDocumentoCRMBase';
+      protDocumentos.campoEliminacion = 'eliminarDocumentoCRMBase';
+
+      protDocumentos.campos   = [
+      'idDocumentoCRMBase',
+      'DocumentoCRM_idBase'
+      ];
+
+      protDocumentos.etiqueta = [
+      'input',
+      'select'
+      ];
+
+      protDocumentos.tipo = [
+      'hidden',
+      ''
+      ];
+
+      protDocumentos.estilo = [
+      '',
+      'width: 600px;height:35px;'
+      ];
+
+      protDocumentos.clase    = ['','chosen-select'];
+      protDocumentos.sololectura = [true,false];  
+      protDocumentos.funciones = ['',''];
+      protDocumentos.completar = ['off','off'];
+      protDocumentos.opciones = ['',listaDocumentoBase];
+
+      for(var j=0, k = documentocrmbase.length; j < k; j++)
+      {
+        protDocumentos.agregarCampos(JSON.stringify(documentocrmbase[j]),'L');
+      }
+
 
       protGraficos = new Atributos('protGraficos','contenedor_protGraficos','documentocrmgrafico');
 
@@ -279,7 +327,8 @@
                                                 {!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
 
                                                 {!!Form::hidden('eliminarDocumentoCRMCampo', '', array('id' => 'eliminarDocumentoCRMCampo'))!!}
-                                                <!-- {!!Form::hidden('eliminarDocumentoCRMCompania', '', array('id' => 'eliminarDocumentoCRMCompania'))!!} -->
+                                                {!!Form::hidden('eliminarDocumentoCRMBase', '', array('id' => 'eliminarDocumentoCRMBase'))!!} 
+                                                {!!Form::hidden('eliminarDocumentoCRMGrafico', '', array('id' => 'eliminarDocumentoCRMGrafico'))!!} 
                                                 {!!Form::hidden('eliminarDocumentoCRMRol', '', array('id' => 'eliminarDocumentoCRMRol'))!!}
 
                                           </div>
@@ -321,6 +370,21 @@
                               </div>
                             </div>
                           </div>
+
+                          <div class="form-group" >
+                            {!!Form::label('filtroSolicitanteDocumentoCRM', 'Tipos de Solicitantes', array('class' => 'col-sm-2 control-label'))!!}
+                            <div class="col-sm-10" >
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-credit-card" ></i>
+                                </span>
+                                {!!Form::select('filtroSolicitanteDocumentoCRM',
+                                
+                                    array('*01*'=>'Empleados','*02*'=>'Proveedores/Contratistas','*03*'=>'Clientes'), (isset($documentocrm) ? $documentocrm->filtroSolicitanteDocumentoCRM : ''),["class" => "chosen-select form-control", "data-placeholder"=>"Seleccione el tipo de tercero...", "multiple"=>""])!!}
+                              </div>
+                            </div>
+                          </div>
+
                         
                               <div class="form-group">
                             <div class="col-lg-12">
@@ -404,36 +468,73 @@
                                       <div id="contenido" class="panel-collapse collapse in">
                                         <div class="panel-body">
                                           
-                                                    <div class="panel-body">
-                                                      <div class="form-group" id='test'>
-                                                        <div class="col-sm-12">
-                                                          <div class="panel-body" >
-                                                            <div class="form-group" id='test'>
-                                                              <div class="col-sm-12">
-                                                                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-                                                                  <div style="overflow:auto; height:350px;">
-                                                                    <div style="width: 100%; display: inline-block;">
-                                                                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCampos();">
-                                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                                      </div>
-                                                                      <div class="col-md-1" style="width: 260px;" >Campo</div>
-                                                                      <div class="col-md-1" style="width: 100px;" >Consulta</div>
-                                                                      <div class="col-md-1" style="width: 100px;" >Formulario</div>
-                                                                      <div class="col-md-1" style="width: 100px;" >Obligatorio</div>
-                                                                      <div class="col-md-1" style="width: 100px;" >Solicitante</div>
-                                                                      <div class="col-md-1" style="width: 100px;" >Asesor</div>
-                                                                      <div class="col-md-1" style="width: 100px;" >Aprobador</div>
-                                                                      <div id="contenedor_protCampos">
-                                                                      </div>
-                                                                    </div>
-                                                                  </div>
-                                                                </div>
+                                            <div class="panel-body">
+                                              <div class="form-group" id='test'>
+                                                <div class="col-sm-12">
+                                                  <div class="panel-body" >
+                                                    <div class="form-group" id='test'>
+                                                      <div class="col-sm-12">
+                                                        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                                          <div style="overflow:auto; height:350px;">
+                                                            <div style="width: 100%; display: inline-block;">
+                                                              <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="abrirModalCampos();">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                              </div>
+                                                              <div class="col-md-1" style="width: 260px;" >Campo</div>
+                                                              <div class="col-md-1" style="width: 100px;" >Consulta</div>
+                                                              <div class="col-md-1" style="width: 100px;" >Formulario</div>
+                                                              <div class="col-md-1" style="width: 100px;" >Obligatorio</div>
+                                                              <div class="col-md-1" style="width: 100px;" >Solicitante</div>
+                                                              <div class="col-md-1" style="width: 100px;" >Asesor</div>
+                                                              <div class="col-md-1" style="width: 100px;" >Aprobador</div>
+                                                              <div id="contenedor_protCampos">
                                                               </div>
                                                             </div>
                                                           </div>
                                                         </div>
-                                                      </div>  
+                                                      </div>
                                                     </div>
+                                                  </div>
+                                                </div>
+                                              </div>  
+                                            </div>
+                                     
+                                           
+                                        </div> 
+                                      </div>
+                                    </div>
+
+                                    <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#documentobase">Documentos Base</a>
+                                        </h4>
+                                      </div>
+                                      <div id="documentobase" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                          
+                                            <div class="panel-body">
+                                              <div class="form-group" id='test'>
+                                                <div class="col-sm-12">
+                                                  
+                                                        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                                          <div style="overflow:auto; height:350px;">
+                                                            <div style="width: 100%; display: inline-block;">
+                                                              <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="protDocumentos.agregarCampos(valoresDocumento,'A');">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                              </div>
+                                                              
+                                                              <div class="col-md-1" style="width: 600px;" >Nombre Documento</div>
+                                                              
+                                                            </div>
+                                                            <div id="contenedor_protDocumentos">
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      
+                                                </div>
+                                              </div>  
+                                            </div>
                                      
                                            
                                         </div> 
@@ -449,39 +550,39 @@
                                       <div id="graficos" class="panel-collapse collapse in">
                                         <div class="panel-body">
                                           
-                                                    <div class="panel-body">
-                                                      <div class="form-group" id='test'>
-                                                        <div class="col-sm-12">
-                                                          <div class="panel-body" >
-                                                            <div class="form-group" id='test'>
-                                                              <div class="col-sm-12">
-                                                                <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
-                                                                  <div style="overflow:auto; height:350px;">
-                                                                    <div style="width: 100%; display: inline-block;">
-                                                                      <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="protGraficos.agregarCampos(valoresGrafico,'A');">
-                                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                                      </div>
-                                                                      <div class="col-md-1" style="width: 200px;" >Serie</div>
-                                                                      <div class="col-md-1" style="width: 400px;" >Título del Gráfico</div>
-                                                                      <div class="col-md-1" style="width: 200px;" >Tipo</div>
-                                                                      <div class="col-md-1" style="width: 200px;" >Valor</div>
-                                                                      <div id="contenedor_protGraficos">
-                                                                      </div>
-                                                                    </div>
-                                                                  </div>
-                                                                </div>
+                                            <div class="panel-body">
+                                              <div class="form-group" id='test'>
+                                                <div class="col-sm-12">
+                                                  <div class="panel-body" >
+                                                    <div class="form-group" id='test'>
+                                                      <div class="col-sm-12">
+                                                        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                                          <div style="overflow:auto; height:350px;">
+                                                            <div style="width: 100%; display: inline-block;">
+                                                              <div class="col-md-1" style="width:40px;height: 42px; cursor:pointer;" onclick="protGraficos.agregarCampos(valoresGrafico,'A');">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                              </div>
+                                                              <div class="col-md-1" style="width: 200px;" >Serie</div>
+                                                              <div class="col-md-1" style="width: 400px;" >Título del Gráfico</div>
+                                                              <div class="col-md-1" style="width: 200px;" >Tipo</div>
+                                                              <div class="col-md-1" style="width: 200px;" >Valor</div>
+                                                              <div id="contenedor_protGraficos">
                                                               </div>
                                                             </div>
                                                           </div>
                                                         </div>
-                                                      </div>  
+                                                      </div>
                                                     </div>
+                                                  </div>
+                                                </div>
+                                              </div>  
+                                            </div>
                                      
                                            
                                         </div> 
                                       </div>
                                     </div>
-                                          <div class="panel panel-default">
+                                    <div class="panel panel-default">
                                       <div class="panel-heading">
                                         <h4 class="panel-title">
                                           <a data-toggle="collapse" data-parent="#accordion" href="#permisos">Roles</a>

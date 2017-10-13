@@ -15,6 +15,10 @@ class MovimientoCRM extends Model
 
     public $timestamps = false;
 
+    public function DocumentoCRMBase()
+    {
+        return $this->hasOne('App\DocumentoCRM','idDocumentoCRM','DocumentoCRM_idBase');
+    }
 
     public function AcuerdoServicio()
     {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
 
 class InformeController extends Controller
 {
@@ -19,6 +20,11 @@ class InformeController extends Controller
         return view('informegrid');
     }
 
+
+    public function indexCampoGridSelect()
+    {
+        return view('informecampogridselect');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -27,7 +33,10 @@ class InformeController extends Controller
     public function create()
     {
         $categoriainforme = \App\CategoriaInforme::All()->lists('nombreCategoriaInforme','idCategoriaInforme');
-        return view('informe', compact('categoriainforme'));
+        $sistemainformacion = \App\SistemaInformacion::All()->lists('nombreSistemaInformacion','idSistemaInformacion');
+        $tablas = DB::select('select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA = "sisoft"');
+        
+        return view('informe', compact('categoriainforme','sistemainformacion','tablas'));
     }
 
     /**
@@ -84,5 +93,21 @@ class InformeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function llamarVistas()
+    {
+        $id = $_GET["idSistemaInformacion"];
+        $tablas = DB::select('select TABLE_NAME, TABLE_COMMENT from information_schema.TABLES where TABLE_SCHEMA = 
+                            (SELECT bdSistemaInformacion FROM sistemainformacion Where idSistemaInformacion = '.$id.')');
+
+
+        $informe= array();
+        for($i = 0; $i < count($tablas); $i++) 
+        {
+          $informe[] = get_object_vars($tablas[$i]);
+        }
+
+        echo json_encode($informe);
     }
 }
