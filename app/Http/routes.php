@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('planemergencia', 'PlanEmergenciaController');
     Route::resource('equiposeguimientocalibracion', 'EquipoSeguimientoCalibracionController');
     Route::resource('equiposeguimientoverificacion', 'EquipoSeguimientoVerificacionController');
     Route::resource('equiposeguimiento', 'EquipoSeguimientoController');
@@ -784,7 +785,11 @@ Route::group(['middleware' => 'auth'], function ()
     // ---------------------------------
     // Documentos
     // ---------------------------------
-    
+
+    Route::get('datosPlanEmergencia', function()
+    {
+        include public_path().'/ajax/datosPlanEmergencia.php';
+    });
     Route::get('llenarCodigoCalibracionEquipoSeguimiento', function()
     {
         include public_path().'/ajax/llenarCodigoCalibracionEquipoSeguimiento.php';

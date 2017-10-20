@@ -142,7 +142,7 @@
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Frecuencia de Calibraci&oacute;n</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Fecha Inicial Calibraci&oacute;n</div>
 													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Frecuencia Verificaci&oacute;n</div>
-													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Fecha Inicial Verificac&oacute;on</div>
+													<div class="col-md-1" style="width: 220px;display:inline-block;height:60px;">Fecha Inicial Verificaci&oacute;n</div>
 													<div class="col-md-1 requiredMulti" style="width: 300px;display:inline-block;height:60px;">Unidad Medida</div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;text-align:center;">></div>
 													<div class="col-md-1" style="width: 90px;display:inline-block;height:60px;text-align:center;"><</div>

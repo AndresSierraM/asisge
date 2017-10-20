@@ -23,6 +23,8 @@
             ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo,fechaIngresoTerceroInformacion'))
             ->where('tercero.Compania_idCompania','=', \Session::get('idCompania'))
             ->where('tipoTercero', '=', $tipo)
+            // Se hace un grupby para que solo se filtre por id papa
+            ->groupby('idTercero')
             ->get();
 
     $row = array();

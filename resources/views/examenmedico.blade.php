@@ -60,8 +60,8 @@
         examenmedico.sololectura = [false,false,true,false,false,false,false];
       
         examenmedico.opciones = ['','','',resultado,'','',''];
-
-        examenmedico.funciones ['','','','','','',''];
+        var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+        examenmedico.funciones ['','','','','','',quitacarac];
 
         document.getElementById('registros').value = 0 ;
         // hacemos un rompimiento de control para agrupar las preguntas

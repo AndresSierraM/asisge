@@ -386,7 +386,7 @@ Atributos.prototype.cambiarCheckbox = function(campo, registro)
 function quitarCaracterEspecial(str) {
 	// recibe el texto completo en str
 	 // Se valida el string que esta recibiendo para que elimine el ENTER y lo deje vacio
-	str.replace(/\r\n/g, "");
+	str.replace(/\f\t\r\n/g, "");
 	// 1. lo convierte todo a minúsculas y lo guarda en lower
     var lower = str.toLowerCase();
     // 2. lo convierte todo a mayúsculas y lo guarda en upper
