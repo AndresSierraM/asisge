@@ -8,6 +8,12 @@
 {!!Html::style('css/image-pad.css'); !!} 
 
 
+<!-- DROPZONE  -->
+{!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
+{!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
+{!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
+
+
 <?php
   // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
   // al cuadro de imagen y al input oculto de firmabase64
@@ -26,6 +32,11 @@
 ?> 
 
 
+<?php 
+//Se pregunta  si existe el id de Equipo Seguimiento Calibracion  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
+$idPlanEmergencia = (isset($planemergencia) ? $planemergencia->idPlanEmergencia : 0);
+?>
+
 
   <script>
   // Se recibe la consulta de la multigistro para que muestre los datos de los campos en multi limite
@@ -34,11 +45,36 @@
 // Se recibe la consulta de la multigistro para que muestre los datos de los campos en multi Inventario
     var PlanEmergenciaIventarioDetalle = '<?php echo (isset($PlanEmergenciaInventario) ? json_encode($PlanEmergenciaInventario) : "");?>';
   PlanEmergenciaIventarioDetalle = (PlanEmergenciaIventarioDetalle != '' ? JSON.parse(PlanEmergenciaIventarioDetalle) : '');
+// Se recibe la consulta de la multigistro para que muestre los datos de los campos en multi Comite
+    var PlanEmergenciaComiteDetalle = '<?php echo (isset($PlanEmergenciaComite) ? json_encode($PlanEmergenciaComite) : "");?>';
+  PlanEmergenciaComiteDetalle = (PlanEmergenciaComiteDetalle != '' ? JSON.parse(PlanEmergenciaComiteDetalle) : '');
+
+
+
+
+// ---------------------------------Se reciben las variables para el create y el modificar
+  // Se recibe el array armado unicamente en el create para que muestre las respectivas opciones del nivel 
+    var NivelesCreate = '<?php echo (isset($Nivel) ? json_encode($Nivel) : "");?>';
+  NivelesCreate = (NivelesCreate != '' ? JSON.parse(NivelesCreate) : '');
+
+  // Se recibe la consulta de la multigistro para que muestre los datos de los campos en multi Nivel
+
+   var NivelesDetalle = '<?php echo (isset($PlanEmergenciaNivel) ? json_encode($PlanEmergenciaNivel) : "");?>';
+  NivelesDetalle = (NivelesDetalle != '' ? JSON.parse(NivelesDetalle) : '');
+
+// -----------------------------------------------------------------
+
+
 
 // Datos para mutiregistro Limite
 var LimiteDatos = ['','','','','','',''];
 // Datos para mutiregistro Inventario
 var InventarioDatos = ['','','','','','',''];
+// Datos para mutiregistro Comite
+var comiteDatos = ['','','','','','','',''];
+
+
+
 $(document).ready(function(){
                                                               // MULTIREGISTRO LIMITE
       limite = new Atributos('limite','limite_detalle','detalle_');
@@ -73,6 +109,43 @@ $(document).ready(function(){
       inventario.funciones = ['','',quitacarac,quitacarac,quitacarac,quitacarac,quitacarac];
 
 
+
+                                                                       // MULTIREGISTRO comite
+      comite = new Atributos('comite','Comite_detalle','detalle_');
+      comite.altura = '36px;';
+      comite.campoid = 'idPlanEmergenciaComite';
+      comite.campoEliminacion = 'eliminarComite';
+      comite.botonEliminacion = true;
+      comite.campos = ['idPlanEmergenciaComite','PlanEmergencia_idPlanEmergencia','comitePlanEmergenciaComite','integrantesPlanEmergenciaComite', 'funcionesPlanEmergenciaComite','antesPlanEmergenciaComite','durantePlanEmergenciaComite','despuesPlanEmergenciaComite'];
+      comite.etiqueta = ['input','input','input','input','textarea','textarea','textarea','textarea'];
+      comite.tipo = ['hidden','hidden','text','text','textarea','textarea','textarea','textarea'];
+      comite.estilo = ['','','width: 180px;height:35px;','width: 180px;height:35px;','vertical-align:top; width: 180px;height:35px;','vertical-align:top; width: 180px;height:35px;','vertical-align:top; width: 180px;height:35px;','vertical-align:top; width: 180px;height:35px;'];
+      comite.clase = ['','','','','','','',''];
+      comite.sololectura = [false,false,false,false,false,false,false,false];
+      comite.opciones = ['','','','','','','',''];
+      var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+      comite.funciones = ['','',quitacarac,quitacarac,quitacarac,quitacarac,quitacarac,quitacarac];
+
+
+                                                         // MULTIREGISTRO Nivel
+      nivel = new Atributos('nivel','Nivel_detalle','detalle_');
+      nivel.altura = '36px;';
+      nivel.campoid = 'idPlanEmergenciaNivel';
+      nivel.campoEliminacion = 'eliminarNivel';
+      nivel.botonEliminacion = false;
+      nivel.campos = ['idPlanEmergenciaNivel','PlanEmergencia_idPlanEmergencia','nivelPlanEmergenciaNivel','cargoPlanEmergenciaNivel', 'funcionPlanEmergenciaNivel','papelPlanEmergenciaNivel'];
+      nivel.etiqueta = ['input','input','input','input','textarea','textarea'];
+      nivel.tipo = ['hidden','hidden','text','text','text','textarea','textarea'];
+      nivel.estilo = ['','','width: 180px;height:35px;background-color:#EEEEEE;','width: 180px;height:35px;','vertical-align:top; width: 200px;height:35px;','vertical-align:top; width: 200px;height:35px;'];
+      nivel.clase = ['','','','','',''];
+      nivel.sololectura = [false,false,true,false,false,false];
+      nivel.opciones = ['','','','','',''];
+      var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
+      nivel.funciones = ['','',quitacarac,quitacarac,quitacarac,quitacarac];
+
+
+
+    
       // For para llenar los registros al momento de modificar el registro Limite
       for(var j=0, k = PlanEmergenciaLimiteDetalle.length; j < k; j++)
       {       
@@ -86,7 +159,37 @@ $(document).ready(function(){
       }
 
 
+        // For para llenar los registros al momento de modificar el registro Comite
+      for(var j=0, k = PlanEmergenciaComiteDetalle.length; j < k; j++)
+      {       
+        comite.agregarCampos(JSON.stringify(PlanEmergenciaComiteDetalle[j]),'L');       
+      }
+
+
+
+// ----------------------------------------------FOR PARA ENVIAR LAS OPCIONES EN EL CREATE---------------------
+      for(var j=0, k = NivelesCreate.length; j < k; j++)
+      {       
+        // Se cambia cuando se ejecuta la funcion la letra "L" por la Letra "A "que son los datos en general js
+        // Y se quita el json.Stringify para que no los separe por letras
+        nivel.agregarCampos((NivelesCreate[j]),'A');  
+      }
+
+
+// Segundo for para que devuelva las opciones guadads para modificarlas 
+
+     // For para llenar los registros al momento de modificar el registro Nivel
+      for(var j=0, k = NivelesDetalle.length; j < k; j++)
+      {       
+        nivel.agregarCampos(JSON.stringify(NivelesDetalle[j]),'L');       
+      }
+
+
+// ---------------------------------------------- Fin de for de niveles 
     });
+
+
+
 
   </script>
 
@@ -137,10 +240,12 @@ $(document).ready(function(){
                           <i class="fa fa-pencil-square-o" style="width: 14px";></i>
                           </span>
                     {!!Form::text('nombrePlanEmergencia',null,['class'=>'form-control','placeholder'=>'Por favor ingrese su Nombre',"onchange"=>"this.value=quitarCaracterEspecial(this.value);"])!!}
-                    {!!Form::hidden('idPlanEmergencia', 0, array('id' => 'idPlanEmergencia'))!!}
-                     {!!Form::hidden('eliminarlimite',null, array('id' => 'eliminarlimite'))!!}
-                     {!!Form::hidden('eliminarInventario',null, array('id' => 'eliminarInventario'))!!}                     
-                                                                  
+                      <input type="hidden" id="token" value="{{csrf_token()}}"/>
+                      {!!Form::hidden('idPlanEmergencia', 0, array('id' => 'idPlanEmergencia'))!!}
+                      {!!Form::hidden('eliminarlimite',null, array('id' => 'eliminarlimite'))!!}
+                      {!!Form::hidden('eliminarInventario',null, array('id' => 'eliminarInventario'))!!}  
+                      {!!Form::hidden('eliminarComite',null, array('id' => 'eliminarComite'))!!}  
+                      {!!Form::hidden('eliminarNivel',null, array('id' => 'eliminarNivel'))!!}                                           
                     </div>
                  </div>
             </div>
@@ -325,7 +430,7 @@ $(document).ready(function(){
                     <div class="panel panel-default">
                       <div class="panel-heading">
                         <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#accordion" href="#infoempresa">Información de la Empresa</a>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#infoempresa">Información de la empresa</a>
                         </h4>
                       </div>
                       <div id="infoempresa" class="panel-collapse collapse">
@@ -448,7 +553,7 @@ $(document).ready(function(){
                      <div class="panel panel-default">
                       <div class="panel-heading">
                         <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#accordion" href="#limites">limites geogr&#225;ficos</a>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#limites">Límites geogr&#225;ficos</a>
                         </h4>
                       </div>
                       <div id="limites" class="panel-collapse collapse">
@@ -476,11 +581,11 @@ $(document).ready(function(){
                         </div>
                     </div>
                   </div>
-                      <!-- Acordeon limites Geofraficos -->
+                      <!-- Acordeon Inventario de recursos Físicos -->
                      <div class="panel panel-default">
                       <div class="panel-heading">
                         <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="#accordion" href="#inventario">Inventario de recursos Físicos</a>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#inventario">Inventario de recursos físicos</a>
                         </h4>
                       </div>
                       <div id="inventario" class="panel-collapse collapse">
@@ -507,6 +612,366 @@ $(document).ready(function(){
                             </div>                      
                         </div>
                     </div>
+                  </div>
+                   <!-- Acordeon Comit&#233;s y Grupos que apoyan situaciones de Emergencia -->
+                     <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#comite">Comit&#233;s y grupos que apoyan situaciones de emergencia</a>
+                        </h4>
+                      </div>
+                      <div id="comite" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group" id='test'>
+                                <div class="col-sm-12">
+                                  <div class="row show-grid">
+                                    <div class="col-md-1" style="width: 220px;height:35px;">&nbsp;</div>
+                                    <div class="col-md-1" style="width: 180px;height:35px;">&nbsp;</div>
+                                    <div class="col-md-1" style="width: 180px;height:35px;">&nbsp;</div>
+                                    <div class="col-md-1" style="width: 540px;height:35px;">Actuaci&oacute;n en caso de Emergencia</div>
+                                    <div class="col-md-1" style="width: 40px;height: 35px;" onclick="comite.agregarCampos(comiteDatos,'A')">
+                                                                
+                                      <span class="glyphicon glyphicon-plus"></span>
+                                    </div>
+                                    <div class="col-md-1 requiredMulti" style="width: 180px;display:inline-block;height:35px;">Comit&#233; / grupo</div>
+                                    <div class="col-md-1 requiredMulti" style="width: 180px;display:inline-block;height:35px;">Integrantes</div>
+                                    <div class="col-md-1 " style="width: 180px;display:inline-block;height:35px;">Funciones</div>
+                                    <div class="col-md-1 " style="width: 180px;display:inline-block;height:35px;">Antes</div>
+                                    <div class="col-md-1 " style="width: 180px;display:inline-block;height:35px;">Durante</div>
+                                    <div class="col-md-1 " style="width: 180px;display:inline-block;height:35px;">Despues</div>
+                                      
+
+                                    <!-- este es el div para donde van insertando los registros --> 
+                                    <div id="Comite_detalle">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div> 
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Acordeon niveles de Actuación -->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#nivel">Niveles de actuaci&oacute;n</a>
+                        </h4>
+                      </div>
+                      <div id="nivel" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group" id='test'>
+                                <div class="col-sm-12">
+
+                                  <div class="row show-grid">                    
+                                    <div class="col-md-1 " style="width: 180px;display:inline-block;height:35px;">Nivel</div>
+                                    <div class="col-md-1 requiredMulti" style="width: 180px;display:inline-block;height:35px;">Cargo</div>
+                                    <div class="col-md-1 " style="width: 200px;display:inline-block;height:35px;">Funci&oacute;n general</div>
+                                    <div class="col-md-1 " style="width: 200px;display:inline-block;height:35px;">Papel b&#225;sico</div>
+                                 
+                                    <!-- este es el div para donde van insertando los registros --> 
+                                    <div id="Nivel_detalle">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>                      
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Acordeon Procedimiento general de Atuacion en caso de emergencia -->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#procedimiento">Procedimiento general de actuaci&oacute;n en caso de emergencias</a>
+                        </h4>
+                      </div>
+                      <div id="procedimiento" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('procedimientoEmergenciaPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese El procedimiento'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Acordeon Sistema de alerta y alarma-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#sistema">Sistema de alerta y alarma</a>
+                        </h4>
+                      </div>
+                      <div id="sistema" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('sistemaAlertaPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese El  Sistema de alerta y alarma'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <!-- Acordeon  Notificación interna-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#notificacion">Notificaci&oacute;n interna</a>
+                        </h4>
+                      </div>
+                      <div id="notificacion" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('notificacionInternaPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la notificación interna'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Acordeon  Rutas de Evacuacion-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#rutaevacuacion">Rutas de evacuaci&oacute;n</a>
+                        </h4>
+                      </div>
+                      <div id="rutaevacuacion" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('rutasEvacuacionPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese rutas de evacuación'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Acordeon  Sistemas de Comunicaci&ocute;n-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#comunicacion">Sistemas de comunicación</a>
+                        </h4>
+                      </div>
+                      <div id="comunicacion" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('sistemaComunicacionPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese Sistemas de comunicación'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                        <!-- Acordeon  Coordinación y notificación a organismos de socorro -->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#coordinacion">Coordinación y notificación a organismos de socorro </a>
+                        </h4>
+                      </div>
+                      <div id="coordinacion" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('coordinacionSocorroPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la Coordinación y notificación a organismos de socorro '])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                     <!-- Acordeon  Determinación de cese del peligro y reestablecimiento de actividades-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#determinacion">Determinación de cese del peligro y reestablecimiento de actividades</a>
+                        </h4>
+                      </div>
+                      <div id="determinacion" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('cesePeligroPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la Determinación de cese del peligro y reestablecimiento de actividades'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <!-- Acordeon  Determinación de cese del peligro y reestablecimiento de actividades-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#capacitaciones">Capacitaciones, prácticas y simulacros</a>
+                        </h4>
+                      </div>
+                      <div id="capacitaciones" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('capacitacionSimulacroPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese las Capacitaciones, Prácticas y simulacros '])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <!-- Acordeon Análisis de vulnerabilidad-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#vulnerabilidad">Análisis de vulnerabilidad</a>
+                        </h4>
+                      </div>
+                      <div id="vulnerabilidad" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('analisisVulnerabilidadPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la notificación interna'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                     <!-- Acordeon Análisis de vulnerabilidad-->
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#anexos">Listado de anexos</a>
+                        </h4>
+                      </div>
+                      <div id="anexos" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <div class="form-group" id='test'>
+                            <div class="col-sm-10">
+                              <div class="input-group">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-pencil-square-o "></i>
+                                </span>
+                                {!!Form::textarea('listaAnexosPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese el Anexo'])!!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                                          <!-- Nuevo pestaña para adjuntar archivos -->
+                                              <!-- Ya que el panel cuando aparece el dropzone desaparece, se le agrega un style inline-block y el tamaño completo para que este no desaparezca -->
+                      <div class="panel panel-default" style="display:inline-block;width:100%">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#archivos">Archivos</a>
+                          </h4>
+                        </div>
+                        <div id="archivos" class="panel-collapse collapse">
+                          <div class="col-sm-12">
+                                        <div class="panel-heading ">
+                                            <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
+                                        </div>
+                                          <div class="panel-body">
+                              <div class="col-sm-12" >
+                                <div id="upload" class="col-md-12">
+                                    <div class="dropzone dropzone-previews" id="dropzonePlanEmergenciaArchivo" style="overflow: auto;">
+                                    </div>  
+                                </div>  
+                                  <div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px; overflow: auto;">   
+                                    {!!Form::hidden('archivoPlanEmergenciaArray', '', array('id' => 'archivoPlanEmergenciaArray'))!!}
+                                    <?php
+                                    
+                                    // Cuando este editando el archivo 
+                                    if ($idPlanEmergencia != '')  //Se pregunta si el id de acta de capacitacion es diferente de vacio (que es la tabla papá)
+                                    {
+                                      $eliminar = '';
+                                      $archivoSave = DB::Select('SELECT * from planemergenciaarchivo where PlanEmergencia_idPlanEmergencia = '.$idPlanEmergencia);
+                                      for ($i=0; $i <count($archivoSave) ; $i++) 
+                                      { 
+                                        $archivoS = get_object_vars($archivoSave[$i]);
+
+                                        echo '<div id="'.$archivoS['idPlanEmergenciaArchivo'].'" class="col-lg-4 col-md-4">
+                                                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <a target="_blank" 
+                                                                      href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaPlanEmergenciaArchivo'].'">
+                                                                      <i class="fa fa-book fa-5x" style="color: gray;"></i>
+                                                                    </a>
+                                                                </div>
+
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div>'.str_replace('/planemergencia/','',$archivoS['rutaPlanEmergenciaArchivo']).'
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a target="_blank" href="javascript:eliminarDiv('.$archivoS['idPlanEmergenciaArchivo'].');">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">Eliminar Documento</span>
+                                                                <span class="pull-right"><i class="fa fa-times"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>';
+
+                                        echo '<input type="hidden" id="idPlanEmergenciaArchivo[]" name="idPlanEmergenciaArchivo[]" value="'.$archivoS['idPlanEmergenciaArchivo'].'" >
+
+                                        <input type="hidden" id="rutaPlanEmergenciaArchivo[]" name="rutaPlanEmergenciaArchivo[]" value="'.$archivoS['rutaPlanEmergenciaArchivo'].'" >';
+                                      }
+
+                                      echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
+                                    }
+                                              
+                                    ?>              
+                                  </div>
+                              </div>
+                            </div>                        
+                          </div>
+                        </div>
+                      </div>
+
                   </div>
                 </div>
             </div>
@@ -567,7 +1032,53 @@ $(document).ready(function(){
     CKEDITOR.replace(('alcancePlanEmergencia'), {
         fullPage: true,
         allowedContent: true
+      }); 
+
+    CKEDITOR.replace(('procedimientoEmergenciaPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      });
+    CKEDITOR.replace(('sistemaAlertaPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
       });  
+    CKEDITOR.replace(('notificacionInternaPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      }); 
+    CKEDITOR.replace(('rutasEvacuacionPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      });  
+    CKEDITOR.replace(('sistemaComunicacionPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      }); 
+    CKEDITOR.replace(('coordinacionSocorroPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      });
+    CKEDITOR.replace(('cesePeligroPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      });  
+    CKEDITOR.replace(('capacitacionSimulacroPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      });
+    CKEDITOR.replace(('analisisVulnerabilidadPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      }); 
+
+    CKEDITOR.replace(('listaAnexosPlanEmergencia'), {
+        fullPage: true,
+        allowedContent: true
+      }); 
+
+
+
+
 
 
     $(document).ready(function()
@@ -576,6 +1087,70 @@ $(document).ready(function(){
       mostrarImagen();
     });
     
+
+</script>
+
+<script>
+    //--------------------------------- DROPZONE ---------------------------------------
+  var baseUrl = "{{ url("/") }}";
+    var token = "{{ Session::getToken() }}";
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#dropzonePlanEmergenciaArchivo", {
+        url: baseUrl + "/dropzone/uploadFiles",
+        params: {
+            _token: token
+        },
+        
+    });
+
+     fileList = Array();
+    var i = 0;
+
+    //Configuro el dropzone
+    myDropzone.options.myAwesomeDropzone =  {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 40, // MB
+    addRemoveLinks: true,
+    clickable: true,
+    previewsContainer: ".dropzone-previews",
+    clickable: false,
+    uploadMultiple: true,
+    accept: function(file, done) {
+
+      }
+    };
+    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+     myDropzone.on("addedfile", function(file) {
+          file.previewElement.addEventListener("click", function(reg) {
+            // abrirModal(file);
+            // pos = fileList.indexOf(file["name"]);
+            // alert(pos);
+            // console.log(fileList[pos]);
+            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+          });
+        });
+
+    document.getElementById('archivoPlanEmergenciaArray').value = '';
+    myDropzone.on("success", function(file, serverFileName) {
+              //abrirModal(file);
+                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+            // console.log(fileList);
+                        document.getElementById('archivoPlanEmergenciaArray').value += file.name+',';
+                        // console.log(document.getElementById('archivoPlanEmergenciaArray').value);
+                        i++;
+                    });
+
+
+// Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
 
 </script>
 {!!Html::script('js/signature_pad.js'); !!}

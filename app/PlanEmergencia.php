@@ -17,8 +17,20 @@ class PlanEmergencia extends Model
     {
 		return $this->hasMany('App\PlanEmergenciaLimite','PlanEmergencia_idPlanEmergencia');
     }
-     public function PlanEmergenciaInventario()
+ 	public function PlanEmergenciaInventario()
     {
 		return $this->hasMany('App\PlanEmergenciaInventario','PlanEmergencia_idPlanEmergencia');
+    }
+  	public function PlanEmergenciaComite()
+    {
+		return $this->hasMany('App\PlanEmergenciaComite','PlanEmergencia_idPlanEmergencia');
+    }
+    public function PlanEmergenciaNivel()
+    {
+		return $this->hasMany('App\PlanEmergenciaNivel','PlanEmergencia_idPlanEmergencia');
+    }
+  	public function PlanEmergenciaArchivo()
+    {
+		return $this->hasMany('App\PlanEmergenciaArchivo','PlanEmergencia_idPlanEmergencia');
     }
 }

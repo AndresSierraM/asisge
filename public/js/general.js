@@ -88,8 +88,8 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
     
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
-    //div.setAttribute("class", "");
-    div.setAttribute("style",  "width: 1500px; height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
+    div.setAttribute("class", "col-sm-12");
+    div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
     
     // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
     if(this.botonEliminacion)
@@ -255,7 +255,19 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             input.id =  this.campos[i]+'C'+this.contador;
             input.name =  this.campos[i]+'C'+'[]';
             input.checked = (valor[(tipo == 'A' ? i : this.campos[i])] == 1 ? true : false);
-            input.setAttribute("onclick", this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')');
+
+            if(typeof(this.funciones[i]) !== "undefined") 
+            {
+                for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
+                {
+                    // alert(this.funciones[i][h] );
+                    // if(this.funciones[i][h] == 'onclick')
+                    //     this.funciones[i][h+1] = this.funciones[i][h+1] + ';' + this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')'
+                    // alert(this.funciones[i][h+1]);
+                    input.setAttribute(this.funciones[i][h], this.funciones[i][h+1] + this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')');
+                }
+            }
+            //input.setAttribute("onclick", this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')');
      
             divCheck.appendChild(input);
  
@@ -384,23 +396,23 @@ Atributos.prototype.cambiarCheckbox = function(campo, registro)
 
 
 function quitarCaracterEspecial(str) {
-	// recibe el texto completo en str
-	 // Se valida el string que esta recibiendo para que elimine el ENTER y lo deje vacio
-	str.replace(/\f\t\r\n/g, "");
-	// 1. lo convierte todo a minúsculas y lo guarda en lower
+    // recibe el texto completo en str
+     // Se valida el string que esta recibiendo para que elimine el ENTER y lo deje vacio
+    str.replace(/\r\n/g, "");
+    // 1. lo convierte todo a minúsculas y lo guarda en lower
     var lower = str.toLowerCase();
     // 2. lo convierte todo a mayúsculas y lo guarda en upper
     var upper = str.toUpperCase();
     var res = "";
     // 3. con el for recorre el texto original letra por letra
     for(var i=0; i<lower.length; ++i) {
-    	// si esa letra en minúscula no es igual a la misma letra en mayúscula lower[i] != upper[i]
-    	// OR
-		// 5. SI es un espacio en blanco o un vacio
-		// OR
-		// 6. si es un numero de 0 a 9
-		// 7. Si es una de las anteriores gurda ese carácter en la variable RES
-		// por ultimo devuelve RES
+        // si esa letra en minúscula no es igual a la misma letra en mayúscula lower[i] != upper[i]
+        // OR
+        // 5. SI es un espacio en blanco o un vacio
+        // OR
+        // 6. si es un numero de 0 a 9
+        // 7. Si es una de las anteriores gurda ese carácter en la variable RES
+        // por ultimo devuelve RES
         if(lower[i] != upper[i] || lower[i].trim() === '' || (lower[i].trim() >= 0 && lower[i].trim() <= 9))
             res += str[i];
     }
