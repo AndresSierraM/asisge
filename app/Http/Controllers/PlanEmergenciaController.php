@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-// use App\Http\Requests\PerfilCargoRequest;
+use App\Http\Requests\PlanEmergenciaRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
@@ -98,7 +98,7 @@ class PlanEmergenciaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PlanEmergenciaRequest $request)
     {
      if($request['respuesta'] != 'falso')
         {  
@@ -258,9 +258,54 @@ class PlanEmergenciaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+           if($_GET['accion'] == 'imprimir')
+        {
+          // Se llama los registros para saber  cual es  la que va a imprimir el usuario
+           $planemergencia = \App\PlanEmergencia::find($id);
+
+            $PlanEmergenciaEncabezado = DB::select('
+            SELECT pe.idPlanEmergencia,pe.fechaElaboracionPlanEmergencia,pe.nombrePlanEmergencia,cc.nombreCentroCosto,pe.justificacionPlanEmergencia,pe.marcoLegalPlanEmergencia,pe.definicionesPlanEmergencia,pe.generalidadesPlanEmergencia,pe.objetivosPlanEmergencia,pe.alcancePlanEmergencia,pe.nitPlanEmergencia,pe.direccionPlanEmergencia,pe.telefonoPlanEmergencia,pe.ubicacionPlanEmergencia,pe.personalOperativoPlanEmergencia,pe.personalAdministrativoPlanEmergencia,pe.turnoOperativoPlanEmergencia,pe.turnoAdministrativoPlanEmergencia,pe.visitasDiaPlanEmergencia,pe.procedimientoEmergenciaPlanEmergencia,pe.sistemaAlertaPlanEmergencia,pe.notificacionInternaPlanEmergencia,pe.rutasEvacuacionPlanEmergencia,pe.sistemaComunicacionPlanEmergencia,pe.coordinacionSocorroPlanEmergencia,pe.cesePeligroPlanEmergencia,pe.capacitacionSimulacroPlanEmergencia,pe.analisisVulnerabilidadPlanEmergencia,pe.listaAnexosPlanEmergencia,t.nombreCompletoTercero,pe.firmaRepresentantePlanEmergencia
+            FROM planemergencia pe
+            LEFT JOIN centrocosto cc
+            ON pe.CentroCosto_idCentroCosto = cc.idCentroCosto
+            LEFT JOIN tercero t
+            ON pe.Tercero_idRepresentanteLegal = t.idTercero
+            WHERE pe.idPlanEmergencia = '.$id);
+
+
+            $PlanEmergenciaLimie = DB::select('
+            SELECT pel.PlanEmergencia_idPlanEmergencia,pel.sedePlanEmergenciaLimite,pel.nortePlanEmergenciaLimite,pel.surPlanEmergenciaLimite,pel.orientePlanEmergenciaLimite,pel.occidentePlanEmergenciaLimite,pel.idPlanEmergenciaLimite
+            FROM planemergencialimite pel
+            LEFT JOIN planemergencia  pe
+            ON pel.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+            WHERE pel.PlanEmergencia_idPlanEmergencia ='.$id);
+
+            $PlanEmergenciaIventario = DB::select('
+            SELECT pei.idPlanEmergenciaInventario,pei.PlanEmergencia_idPlanEmergencia,pei.sedePlanEmergenciaInventario,pei.recursoPlanEmergenciaInventario,pei.cantidadPlanEmergenciaInventario,pei.ubicacionPlanEmergenciaInventario,pei.observacionPlanEmergenciaInventario
+            FROM planemergenciainventario pei
+            LEFT JOIN planemergencia pe ON pei.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+            WHERE pei.PlanEmergencia_idPlanEmergencia = '.$id);
+
+           $PlanEmergenciaNivel = DB::SELECT('
+            SELECT pen.idPlanEmergenciaNivel,pen.PlanEmergencia_idPlanEmergencia,pen.nivelPlanEmergenciaNivel,pen.cargoPlanEmergenciaNivel,pen.funcionPlanEmergenciaNivel, pen.papelPlanEmergenciaNivel
+            FROM planemergencianivel pen
+            LEFT JOIN planemergencia pe
+            ON pen.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+            WHERE pen.PlanEmergencia_idPlanEmergencia ='.$id);
+
+
+            $PlanEmergenciaArchivo = DB::SELECT('
+            SELECT pea.idPlanEmergenciaArchivo,pea.PlanEmergencia_idPlanEmergencia,pea.rutaPlanEmergenciaArchivo
+            FROM planemergenciaarchivo pea
+            LEFT JOIN planemergencia pe
+            ON pea.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+            WHERE pea.PlanEmergencia_idPlanEmergencia = '.$id); 
+
+
+            return view('formatos.planemergenciaimpresion',compact('PlanEmergenciaEncabezado','PlanEmergenciaLimie','PlanEmergenciaIventario','PlanEmergenciaNivel','PlanEmergenciaArchivo'));
+        }
     }
 
     /**
@@ -321,7 +366,7 @@ class PlanEmergenciaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PlanEmergenciaRequest $request, $id)
     {
         if($request['respuesta'] != 'falso')
         {

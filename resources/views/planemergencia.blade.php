@@ -7,7 +7,7 @@
 {!!Html::style('css/signature-pad.css'); !!} 
 {!!Html::style('css/image-pad.css'); !!} 
 
-
+{!!Html::script('js/planemergencia.js')!!}
 <!-- DROPZONE  -->
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
@@ -985,10 +985,10 @@ $(document).ready(function(){
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
       @else
-         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"habilitarSubmit(event);"])!!}
+         {!!Form::submit('Modificar',["class"=>"btn btn-primary","onclick"=>"validarFormulario(event);"])!!}
       @endif
   @else
-         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'habilitarSubmit(event);'])!!}
+         {!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
   @endif
   
   
