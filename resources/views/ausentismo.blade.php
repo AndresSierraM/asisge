@@ -25,7 +25,7 @@
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-flag"></i>
+			                	<i class="fa fa-flag" style="width: 14px;"></i>
 			              	</span>
 							{!!Form::select('Tercero_idTercero',$tercero, (isset($ausentismo) ? $ausentismo->Tercero_idTercero : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el Empleado"])!!}
 						</div>
@@ -37,7 +37,7 @@
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-barcode"></i>
+			                	<i class="fa fa-barcode" style="width: 14px;"></i>
 			              	</span>
 							{!!Form::text('nombreAusentismo',null,['class'=>'form-control','placeholder'=>'Ingresa la descripcion del ausentismo'])!!}
 					      	{!!Form::hidden('idAusentismo', null, array('id' => 'idAusentismo'))!!}
@@ -49,7 +49,7 @@
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-pencil-square-o"></i>
+			                	<i class="fa fa-pencil-square-o" style="width: 14px;"></i>
 			              	</span>
 							{!!Form::select('tipoAusentismo',
 							array(
@@ -77,7 +77,7 @@
 		          <div class="col-sm-10" >
 		            <div class="input-group">
 		              <span class="input-group-addon">
-		                <i class="fa fa-calendar" ></i>
+		                <i class="fa fa-calendar" style="width: 14px;"></i>
 		              </span>
 		              {!!Form::text('fechaElaboracionAusentismo',(isset($ausentismo) ? $ausentismo->fechaElaboracionAusentismo : $mytime->toDateTimeString()), ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Elaboracion', 'style'=>'width:340;'])!!}
 		            </div>
@@ -89,7 +89,7 @@
 		          <div class="col-sm-10" >
 		            <div class="input-group">
 		              <span class="input-group-addon">
-		                <i class="fa fa-calendar" ></i>
+		                <i class="fa fa-calendar" style="width: 14px;"></i>
 		              </span>
 		              {!!Form::text('fechaInicioAusentismo',null, ['onblur' => 'calcularDiasAusencia(this.value, document.getElementById(\'fechaFinAusentismo\').value)', 'class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Inicio', 'style'=>'width:340;'])!!}
 		            </div>
@@ -101,7 +101,7 @@
 		          <div class="col-sm-10" >
 		            <div class="input-group">
 		              <span class="input-group-addon">
-		                <i class="fa fa-calendar" ></i>
+		                <i class="fa fa-calendar" style="width: 14px;"></i>
 		              </span>
 		              {!!Form::text('fechaFinAusentismo',null, ['onblur' => 'calcularDiasAusencia( document.getElementById(\'fechaInicioAusentismo\').value,this.value)', 'class'=>'form-control', 'placeholder'=>'Ingresa la fecha de Fin', 'style'=>'width:340;'])!!}
 		            </div>
@@ -112,9 +112,20 @@
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-barcode"></i>
+			                	<i class="fa fa-barcode" style="width: 14px;"></i>
 			              	</span>
 							{!!Form::text('diasAusentismo',null,['readonly' => 'readonly', 'class'=>'form-control'])!!}
+						</div>
+					</div>
+				</div>
+				 <div class="form-group " id='test' title="Este campo se muestra HORAS/MINUTOS/SEGUNDOS">
+					{!!Form::label('horasAusentismo', 'Horas Ausentismo', array('class' => 'col-sm-2 control-label'))!!}
+					<div class="col-sm-10">
+			            <div class="input-group">
+			              	<span class="input-group-addon">
+			                	<i class="fa fa-barcode" style="width: 14px;"></i>
+			              	</span>
+							{!!Form::text('horasAusentismo',null,['readonly' => 'readonly','class'=>'form-control'])!!}
 						</div>
 					</div>
 				</div>
@@ -145,14 +156,13 @@
     }));
 
     $('#fechaInicioAusentismo').datetimepicker(({
-    	format: "YYYY-MM-DD HH:mm:ss"
+    	format: "YYYY-MM-DD HH:mm"
     }));
 
     $('#fechaFinAusentismo').datetimepicker(({
-	   	format: "YYYY-MM-DD HH:mm:ss"
+	   	format: "YYYY-MM-DD HH:mm"
     }));
 
-        
 
 </script>
 
