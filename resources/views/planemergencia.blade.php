@@ -278,7 +278,7 @@ $(document).ready(function(){
                         <span class="input-group-addon">
                           <i class="fa fa-flag"></i>
                         </span>
-                      {!!Form::select('Tercero_idRepresentanteLegal',$tercero, (isset($planemergencia) ? $planemergencia->Tercero_idRepresentanteLegal : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tercero de quien realiza el Plan de Emergencia"])!!}
+                      {!!Form::select('Tercero_idRepresentanteLegal',$tercero, (isset($planemergencia) ? $planemergencia->Tercero_idRepresentanteLegal : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione el tercero que realiza el plan de emergencias"])!!}
                       <div class="col-sm-10">
                         <img id="firma" style="width:200px; height: 150px; border: 1px solid;" onclick="mostrarFirma();" src="<?php echo $base64;?>">
                         {!!Form::hidden('firmabase64', $base64, array('id' => 'firmabase64'))!!}

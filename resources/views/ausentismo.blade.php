@@ -108,7 +108,7 @@
 		          </div>
 		        </div>
 		        <div class="form-group" id='test'>
-					{!!Form::label('diasAusentismo', 'D&iacute;as', array('class' => 'col-sm-2 control-label'))!!}
+					{!!Form::label('diasAusentismo', 'D&iacute;as Ausentismo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
@@ -118,17 +118,29 @@
 						</div>
 					</div>
 				</div>
-				 <div class="form-group " id='test' title="Este campo se muestra HORAS/MINUTOS/SEGUNDOS">
+				 <div class="form-group " id='test' title="Este campo, calcula las horas de diferencia entre fecha inicio y fecha fin tomando hora y minuto">
 					{!!Form::label('horasAusentismo', 'Horas Ausentismo', array('class' => 'col-sm-2 control-label'))!!}
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-barcode" style="width: 14px;"></i>
+			                	<i class="fa fa-clock-o" style="width: 14px;"></i>
 			              	</span>
 							{!!Form::text('horasAusentismo',null,['readonly' => 'readonly','class'=>'form-control'])!!}
 						</div>
 					</div>
 				</div>
+				   <!-- Nuevo Campo Centro de Costos  -->
+	          	<div class="form-group">
+		                  {!!Form::label('CentroCosto_idCentroCosto', 'Centro de Costos', array('class' => 'col-sm-2 control-label'))!!}
+	                <div class="col-sm-10" ">
+	                  	<div class="input-group">
+		                    <span class="input-group-addon">
+		                      <i class="fa fa-university" style="width: 14px;"></i>
+		                    </span>
+		                    {!!Form::select('CentroCosto_idCentroCosto',$centrocosto, (isset($ausentismo) ? $ausentismo->CentroCosto_idCentroCosto : 0),["class" => "select form-control", "placeholder" =>"Seleccione"])!!}                    
+		                  </div>
+		                </div>
+		          	</div>
 		        <div class="form-group"  >
 		        {!! Form::label('archivoAusentismo', 'Soporte de la Ausencia', array('class' => 'col-sm-2 control-label')) !!}
 		          	<div class="col-sm-10" >

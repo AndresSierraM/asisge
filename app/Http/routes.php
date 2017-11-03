@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function ()
     //     // Esta ruta nos servirá para cerrar sesión.
     //     Route::get('logout', 'AuthController@logOut');
     // });
+    Route::resource('manualgestion', 'ManualGestionController');
     Route::resource('planemergencia', 'PlanEmergenciaController');
     Route::resource('equiposeguimientocalibracion', 'EquipoSeguimientoCalibracionController');
     Route::resource('equiposeguimientoverificacion', 'EquipoSeguimientoVerificacionController');
@@ -786,6 +787,10 @@ Route::group(['middleware' => 'auth'], function ()
     // Documentos
     // ---------------------------------
 
+    Route::get('datosManualGestion', function()
+    {
+        include public_path().'/ajax/datosManualGestion.php';
+    });
     Route::get('datosPlanEmergencia', function()
     {
         include public_path().'/ajax/datosPlanEmergencia.php';

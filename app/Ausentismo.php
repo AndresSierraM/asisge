@@ -11,7 +11,7 @@ class Ausentismo extends Model
 
     protected $fillable = ['Tercero_idTercero', 'nombreAusentismo', 'fechaElaboracionAusentismo', 
     						'tipoAusentismo','fechaInicioAusentismo',
-    						'fechaFinAusentismo','archivoAusentismo','diasAusentismo', 'Compania_idCompania'];
+    						'fechaFinAusentismo','archivoAusentismo','diasAusentismo','horasAusentismo','CentroCosto_idCentroCosto', 'Compania_idCompania'];
 
     public $timestamps = false;
 }
