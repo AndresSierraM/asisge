@@ -37,7 +37,7 @@
               <th><b>Campo</b></th>
               <th><b>Tipo</b></th>
               <th><b>Longitud</b></th>
-
+              <th><b>Decimales</b></th>
             </tr>
           </thead>
           <tfoot>
@@ -47,6 +47,7 @@
               <th><b>Campo</b></th>
               <th><b>Tipo</b></th>
               <th><b>Longitud</b></th>
+              <th><b>Decimales</b></th>
             </tr>
           </tfoot>
         </table>

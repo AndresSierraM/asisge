@@ -14,25 +14,13 @@
             }
 </style> 
 
-<script type="text/javascript">
-    $(document).ready( function () {
-        
-        var lastIdx = null;
-        var modificar = '<?php echo (isset($datos) ? $datos["modificarRolOpcion"] : 0);?>';
-        var eliminar = '<?php echo (isset($datos) ? $datos["eliminarRolOpcion"] : 0);?>';
-        var consultar = '<?php echo (isset($datos) ? $datos["consultarRolOpcion"] : 0);?>';
-        
-        configurarGrid('tinforme',"{!! URL::to ('/datosInforme?modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"')!!}");
-    });
-</script>
-
 <?php 
     $visible = '';
 
-    if (isset($datos)) 
+    if (isset($datos[0])) 
     {
-        //$dato = get_object_vars($datos[0]);
-        if ($datos['adicionarRolOpcion'] == 1) 
+        $dato = get_object_vars($datos[0]);
+        if ($dato['adicionarRolOpcion'] == 1) 
         {
             $visible = 'inline-block;';    
         }
@@ -45,7 +33,20 @@
     {
         $visible = 'none;';
     }
-?> 
+?>
+
+<script type="text/javascript">
+    $(document).ready( function () {
+        
+        var lastIdx = null;
+        var modificar = '<?php echo (isset($datos[0]) ? $dato["modificarRolOpcion"] : 0);?>';
+        var eliminar = '<?php echo (isset($datos[0]) ? $dato["eliminarRolOpcion"] : 0);?>';
+        var consultar = '<?php echo (isset($datos[0]) ? $dato["consultarRolOpcion"] : 0);?>';
+        
+        configurarGrid('tinforme',"{!! URL::to ('/datosInforme?modificar="+modificar+"&eliminar="+eliminar+"&consultar="+consultar+"')!!}");
+    });
+</script>
+
 
 <div class="container">
     <div class="row">
@@ -68,7 +69,7 @@
                 <thead>
                     <tr class="btn-primary active">
                         <th style="width:60px;padding: 1px 8px;" data-orderable="false">
-                        <a href="inv_documentoinventario/create"><span style= "display: <?php echo $visible;?> color:white;" class="glyphicon glyphicon-plus"></span></a>
+                        <a href="informe/create"><span style= "display: <?php echo $visible;?> color:white;" class="glyphicon glyphicon-plus"></span></a>
                             <a href="#"><span style="color:white" class="glyphicon glyphicon-refresh"></span></a>
                             <a><span class="glyphicon glyphicon-remove-sign" style="color:white; cursor:pointer;" id="btnLimpiarFiltros"></span></a>
                         </th>

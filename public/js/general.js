@@ -255,7 +255,8 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
             input.id =  this.campos[i]+'C'+this.contador;
             input.name =  this.campos[i]+'C'+'[]';
             input.checked = (valor[(tipo == 'A' ? i : this.campos[i])] == 1 ? true : false);
-
+            
+            var func = this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+');';
             if(typeof(this.funciones[i]) !== "undefined") 
             {
                 for(var h=0,c = this.funciones[i].length;h<c;h+=2) 
@@ -264,10 +265,12 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
                     // if(this.funciones[i][h] == 'onclick')
                     //     this.funciones[i][h+1] = this.funciones[i][h+1] + ';' + this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')'
                     // alert(this.funciones[i][h+1]);
-                    input.setAttribute(this.funciones[i][h], this.funciones[i][h+1] + this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')');
+                    func = func + this.funciones[i][h+1];
+                    //input.setAttribute(this.funciones[i][h], this.funciones[i][h+1] );
                 }
             }
-            //input.setAttribute("onclick", this.nombre+'.cambiarCheckbox("'+this.campos[i]+'",'+this.contador+')');
+
+            input.setAttribute("onclick", func);
      
             divCheck.appendChild(input);
  
