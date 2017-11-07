@@ -13,9 +13,20 @@ class ManualGestion extends Model
 
     public $timestamps = false;
 
-  //   public function PlanEmergenciaLimite()
-  //   {
-		// return $this->hasMany('App\PlanEmergenciaLimite','PlanEmergencia_idPlanEmergencia');
-  //   }
-
+    public function ManualGestionParte()
+    {
+		return $this->hasMany('App\ManualGestionParte','ManualGestion_idManualGestion');
+    }
+    public function ManualGestionProceso()
+    {
+        return $this->hasMany('App\ManualGestionProceso','ManualGestion_idManualGestion');
+    }
+    public function ManualGestionEstructura()
+    {
+        return $this->hasMany('App\ManualGestionEstructura','ManualGestion_idManualGestion');
+    }
+    public function ManualGestionAdjunto()
+    {
+        return $this->hasMany('App\ManualGestionAdjunto','ManualGestion_idManualGestion');
+    }
 }

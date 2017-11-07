@@ -82,10 +82,10 @@
 
 
 <script type="text/javascript">
-   // function imprimirFormato(id)
-   //  {
-   //      window.open('planemergencia/'+id+'?accion=imprimir','planemergencia','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
-   //  }
+   function imprimirFormato(id)
+    {
+        window.open('manualgestion/'+id+'?accion=imprimir','manualgestion','width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
+    }
     $(document).ready( function () {
         
         var lastIdx = null;

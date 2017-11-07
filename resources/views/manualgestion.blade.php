@@ -7,7 +7,7 @@
 {!!Html::style('css/signature-pad.css'); !!} 
 {!!Html::style('css/image-pad.css'); !!} 
 
-<!-- {!!Html::script('js/planemergencia.js')!!} -->
+{!!Html::script('js/manualgestion.js')!!}
 <!-- DROPZONE  -->
 {!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
 {!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
@@ -32,9 +32,18 @@
 ?> 
 
 
+<?php 
+//Se pregunta  si existe el id de Equipo Seguimiento Calibracion  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
+$idManualGestion = (isset($manualgestion) ? $manualgestion->idManualGestion : 0);
+?>
 
 
   <script>
+     // Se recibe la consulta de la multigistro para que muestre los datos de los campos en multi limite
+   var ManualGestionParteDetalle = '<?php echo (isset($ManualGestionParte) ? json_encode($ManualGestionParte) : "");?>';
+  ManualGestionParteDetalle = (ManualGestionParteDetalle != '' ? JSON.parse(ManualGestionParteDetalle) : '');
+
+
 
 // Datos para mutiregistro Partes Interesadas
 var ParteInteresadaDatos = ['','','','',''];
@@ -59,6 +68,13 @@ var ParteInteresadaDatos = ['','','','',''];
       parteinteresada.opciones = ['','','','',''];
       var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
       parteinteresada.funciones = ['','',quitacarac,quitacarac,quitacarac];
+
+
+        // For para llenar los registros al momento de modificar el registro manual gestion parte
+      for(var j=0, k = ManualGestionParteDetalle.length; j < k; j++)
+      {       
+        parteinteresada.agregarCampos(JSON.stringify(ManualGestionParteDetalle[j]),'L');       
+      }
 
 
 
@@ -435,6 +451,228 @@ var ParteInteresadaDatos = ['','','','',''];
                         </div>
                     </div>
                   </div>
+                                           <!-- Nuevo pestaña para adjuntar archivos -->
+                                              <!-- Ya que el panel cuando aparece el dropzone desaparece, se le agrega un style inline-block y el tamaño completo para que este no desaparezca -->
+                      <div class="panel panel-default" style="display:inline-block;width:100%">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#interaccion">Interacci&oacute;n de los procesos</a>
+                          </h4>
+                        </div>
+                        <div id="interaccion" class="panel-collapse collapse">
+                          <div class="col-sm-12">
+                                        <div class="panel-heading ">
+                                            <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
+                                        </div>
+                                          <div class="panel-body">
+                              <div class="col-sm-12" >
+                                <div id="upload" class="col-md-12">
+                                    <div class="dropzone dropzone-previews" id="dropzoneInteraccionproceso" style="overflow: auto;">
+                                    </div>  
+                                </div>  
+                                  <div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px; overflow: auto;">   
+                                    {!!Form::hidden('InteraccionProcesoArray', '', array('id' => 'InteraccionProcesoArray'))!!}
+                                    <?php
+                                    
+                                    // Cuando este editando el archivo 
+                                    if ($idManualGestion != '')  //Se pregunta si el id de manualgestion es diferente de vacio (que es la tabla papá)
+                                    {
+                                      $eliminar = '';
+                                      $archivoSave = DB::Select('SELECT * from manualgestionproceso where ManualGestion_idManualGestion = '.$idManualGestion);
+                                      for ($i=0; $i <count($archivoSave) ; $i++) 
+                                      { 
+                                        $archivoS = get_object_vars($archivoSave[$i]);
+
+                                        echo '<div id="'.$archivoS['idManualGestionProceso'].'" class="col-lg-4 col-md-4">
+                                                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <a target="_blank" 
+                                                                      href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaManualGestionProceso'].'">
+                                                                      <i class="fa fa-book fa-5x" style="color: gray;"></i>
+                                                                    </a>
+                                                                </div>
+
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div>'.str_replace('/manualgestion/','',$archivoS['rutaManualGestionProceso']).'
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a target="_blank" href="javascript:eliminarProceso('.$archivoS['idManualGestionProceso'].');">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">Eliminar Documento</span>
+                                                                <span class="pull-right"><i class="fa fa-times"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>';
+
+                                        echo '<input type="hidden" id="idManualGestionProceso[]" name="idManualGestionProceso[]" value="'.$archivoS['idManualGestionProceso'].'" >
+
+                                        <input type="hidden" id="rutaManualGestionProceso[]" name="rutaManualGestionProceso[]" value="'.$archivoS['rutaManualGestionProceso'].'" >';
+                                      }
+
+                                      echo '<input type="hidden" name="eliminarProceso" id="eliminarProceso" value="">';
+                                    }
+                                              
+                                    ?>              
+                                  </div>
+                              </div>
+                            </div>                        
+                          </div>
+                        </div>
+                      </div>
+                                                                 <!-- Nuevo pestaña para adjuntar archivos -->
+                                              <!-- Ya que el panel cuando aparece el dropzone desaparece, se le agrega un style inline-block y el tamaño completo para que este no desaparezca -->
+                      <div class="panel panel-default" style="display:inline-block;width:100%">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#estructura">Estructura organizacional</a>
+                          </h4>
+                        </div>
+                        <div id="estructura" class="panel-collapse collapse">
+                          <div class="col-sm-12">
+                                        <div class="panel-heading ">
+                                            <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
+                                        </div>
+                                          <div class="panel-body">
+                              <div class="col-sm-12" >
+                                <div id="upload" class="col-md-12">
+                                    <div class="dropzone dropzone-previews" id="dropzoneEstructuraOrganizacional" style="overflow: auto;">
+                                    </div>  
+                                </div>  
+                                  <div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px; overflow: auto;">   
+                                    {!!Form::hidden('EstructuraOrganizacionalArray', '', array('id' => 'EstructuraOrganizacionalArray'))!!}
+                                    <?php
+                                    
+                                    // Cuando este editando el archivo 
+                                    if ($idManualGestion != '')  //Se pregunta si el id de manualgestion es diferente de vacio (que es la tabla papá)
+                                    {
+                                      $eliminar = '';
+                                      $archivoSave = DB::Select('SELECT * from manualgestionestructura where ManualGestion_idManualGestion = '.$idManualGestion);
+                                      for ($i=0; $i <count($archivoSave) ; $i++) 
+                                      { 
+                                        $archivoS = get_object_vars($archivoSave[$i]);
+
+                                        echo '<div id="'.$archivoS['idManualGestionEstructura'].'" class="col-lg-4 col-md-4">
+                                                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <a target="_blank" 
+                                                                      href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaManualGestionEstructura'].'">
+                                                                      <i class="fa fa-book fa-5x" style="color: gray;"></i>
+                                                                    </a>
+                                                                </div>
+
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div>'.str_replace('/manualgestion/','',$archivoS['rutaManualGestionEstructura']).'
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a target="_blank" href="javascript:eliminarEstructura('.$archivoS['idManualGestionEstructura'].');">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">Eliminar Documento</span>
+                                                                <span class="pull-right"><i class="fa fa-times"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>';
+
+                                        echo '<input type="hidden" id="idManualGestionEstructura[]" name="idManualGestionEstructura[]" value="'.$archivoS['idManualGestionEstructura'].'" >
+
+                                        <input type="hidden" id="rutaManualGestionEstructura[]" name="rutaManualGestionEstructura[]" value="'.$archivoS['rutaManualGestionEstructura'].'" >';
+                                      }
+
+                                      echo '<input type="hidden" name="eliminarEstructura" id="eliminarEstructura" value="">';
+                                    }
+                                              
+                                    ?>              
+                                  </div>
+                              </div>
+                            </div>                        
+                          </div>
+                        </div>
+                      </div>
+                                                                  <!-- Nuevo pestaña para adjuntar archivos -->
+                                              <!-- Ya que el panel cuando aparece el dropzone desaparece, se le agrega un style inline-block y el tamaño completo para que este no desaparezca -->
+                      <div class="panel panel-default" style="display:inline-block;width:100%">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#Archivos">Archivos</a>
+                          </h4>
+                        </div>
+                        <div id="Archivos" class="panel-collapse collapse">
+                          <div class="col-sm-12">
+                                        <div class="panel-heading ">
+                                            <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
+                                        </div>
+                                          <div class="panel-body">
+                              <div class="col-sm-12" >
+                                <div id="upload" class="col-md-12">
+                                    <div class="dropzone dropzone-previews" id="dropzoneManualGestionAdjunto" style="overflow: auto;">
+                                    </div>  
+                                </div>  
+                                  <div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px; overflow: auto;">   
+                                    {!!Form::hidden('ManualGestionAdjuntoArray', '', array('id' => 'ManualGestionAdjuntoArray'))!!}
+                                    <?php
+                                    
+                                    // Cuando este editando el archivo 
+                                    if ($idManualGestion != '')  //Se pregunta si el id de manualgestion es diferente de vacio (que es la tabla papá)
+                                    {
+                                      $eliminar = '';
+                                      $archivoSave = DB::Select('SELECT * from manualgestionadjunto where ManualGestion_idManualGestion = '.$idManualGestion);
+                                      for ($i=0; $i <count($archivoSave) ; $i++) 
+                                      { 
+                                        $archivoS = get_object_vars($archivoSave[$i]);
+
+                                        echo '<div id="'.$archivoS['idManualGestionAdjunto'].'" class="col-lg-4 col-md-4">
+                                                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <a target="_blank" 
+                                                                      href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaManualGestionAdjunto'].'">
+                                                                      <i class="fa fa-book fa-5x" style="color: gray;"></i>
+                                                                    </a>
+                                                                </div>
+
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div>'.str_replace('/manualgestion/','',$archivoS['rutaManualGestionAdjunto']).'
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a target="_blank" href="javascript:eliminarAdjunto('.$archivoS['idManualGestionAdjunto'].');">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">Eliminar Documento</span>
+                                                                <span class="pull-right"><i class="fa fa-times"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>';
+
+                                        echo '<input type="hidden" id="idManualGestionAdjunto[]" name="idManualGestionAdjunto[]" value="'.$archivoS['idManualGestionAdjunto'].'" >
+
+                                        <input type="hidden" id="rutaManualGestionAdjunto[]" name="rutaManualGestionAdjunto[]" value="'.$archivoS['rutaManualGestionAdjunto'].'" >';
+                                      }
+
+                                      echo '<input type="hidden" name="eliminarAdjunto" id="eliminarAdjunto" value="">';
+                                    }
+                                              
+                                    ?>              
+                                  </div>
+                              </div>
+                            </div>                        
+                          </div>
+                        </div>
+                      </div>
                 </div>
             </div>
           </div>
@@ -535,7 +773,7 @@ var ParteInteresadaDatos = ['','','','',''];
   var baseUrl = "{{ url("/") }}";
     var token = "{{ Session::getToken() }}";
     Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("div#dropzonePlanEmergenciaArchivo", {
+    var myDropzone = new Dropzone("div#dropzoneInteraccionproceso", {
         url: baseUrl + "/dropzone/uploadFiles",
         params: {
             _token: token
@@ -570,27 +808,122 @@ var ParteInteresadaDatos = ['','','','',''];
           });
         });
 
-    document.getElementById('archivoPlanEmergenciaArray').value = '';
+    document.getElementById('InteraccionProcesoArray').value = '';
     myDropzone.on("success", function(file, serverFileName) {
               //abrirModal(file);
                         fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
             // console.log(fileList);
-                        document.getElementById('archivoPlanEmergenciaArray').value += file.name+',';
-                        // console.log(document.getElementById('archivoPlanEmergenciaArray').value);
+                        document.getElementById('InteraccionProcesoArray').value += file.name+',';
+                        // console.log(document.getElementById('InteraccionProcesoArray').value);
                         i++;
                     });
 
 
-// Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
-function eliminarDiv(idDiv)
-{
-    eliminar=confirm("¿Deseas eliminar este archivo?");
-    if (eliminar)
-    {
-        $("#"+idDiv ).remove();  
-        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
-    }
-}
+    //--------------------------------- DROPZONE  para Estructura organizacional---------------------------------------
+  var baseUrl = "{{ url("/") }}";
+    var token = "{{ Session::getToken() }}";
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#dropzoneEstructuraOrganizacional", {
+        url: baseUrl + "/dropzone/uploadFiles",
+        params: {
+            _token: token
+        },
+        
+    });
+
+     fileList = Array();
+    var i = 0;
+
+    //Configuro el dropzone
+    myDropzone.options.myAwesomeDropzone =  {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 40, // MB
+    addRemoveLinks: true,
+    clickable: true,
+    previewsContainer: ".dropzone-previews",
+    clickable: false,
+    uploadMultiple: true,
+    accept: function(file, done) {
+
+      }
+    };
+    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+     myDropzone.on("addedfile", function(file) {
+          file.previewElement.addEventListener("click", function(reg) {
+            // abrirModal(file);
+            // pos = fileList.indexOf(file["name"]);
+            // alert(pos);
+            // console.log(fileList[pos]);
+            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+          });
+        });
+
+    document.getElementById('EstructuraOrganizacionalArray').value = '';
+    myDropzone.on("success", function(file, serverFileName) {
+              //abrirModal(file);
+                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+            // console.log(fileList);
+                        document.getElementById('EstructuraOrganizacionalArray').value += file.name+',';
+                        // console.log(document.getElementById('EstructuraOrganizacionalArray').value);
+                        i++;
+                    });
+
+
+
+    //--------------------------------- DROPZONE  para Adjuntos---------------------------------------
+  var baseUrl = "{{ url("/") }}";
+    var token = "{{ Session::getToken() }}";
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#dropzoneManualGestionAdjunto", {
+        url: baseUrl + "/dropzone/uploadFiles",
+        params: {
+            _token: token
+        },
+        
+    });
+
+     fileList = Array();
+    var i = 0;
+
+    //Configuro el dropzone
+    myDropzone.options.myAwesomeDropzone =  {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 40, // MB
+    addRemoveLinks: true,
+    clickable: true,
+    previewsContainer: ".dropzone-previews",
+    clickable: false,
+    uploadMultiple: true,
+    accept: function(file, done) {
+
+      }
+    };
+    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+     myDropzone.on("addedfile", function(file) {
+          file.previewElement.addEventListener("click", function(reg) {
+            // abrirModal(file);
+            // pos = fileList.indexOf(file["name"]);
+            // alert(pos);
+            // console.log(fileList[pos]);
+            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+          });
+        });
+
+    document.getElementById('ManualGestionAdjuntoArray').value = '';
+    myDropzone.on("success", function(file, serverFileName) {
+              //abrirModal(file);
+                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+            // console.log(fileList);
+                        document.getElementById('ManualGestionAdjuntoArray').value += file.name+',';
+                        // console.log(document.getElementById('ManualGestionAdjuntoArray').value);
+                        i++;
+                    });
+
+
+
+
+
+
 
 </script>
 

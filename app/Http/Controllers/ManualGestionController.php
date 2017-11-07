@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-// use App\Http\Requests\Request;
+use App\Http\Requests\ManualGestionRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
@@ -84,7 +84,7 @@ class ManualGestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ManualGestionRequest $request)
     {
      if($request['respuesta'] != 'falso')
         {  
@@ -133,6 +133,110 @@ class ManualGestionController extends Controller
 
 
 
+
+             // Multiregistro Manual Gestion Parte Guardado
+            for ($i=0; $i < count($request['interesadoManualGestionParte']); $i++) 
+               { 
+                \App\ManualGestionParte::create([
+                'ManualGestion_idManualGestion' => $manualgestion->idManualGestion,
+                'interesadoManualGestionParte' => $request['interesadoManualGestionParte'][$i],
+                'necesidadManualGestionParte' => $request['necesidadManualGestionParte'][$i], 
+                'cumplimientoManualGestionParte' => $request['cumplimientoManualGestionParte'][$i]
+                  ]);
+               }
+
+            // Guardado del dropzone para Interaccion proceso
+                $arrayImage = $request['InteraccionProcesoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/manualgestion/'.$arrayImage[$i];
+                        $ruta = '/manualgestion/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ManualGestionProceso::create([
+                        'ManualGestion_idManualGestion' => $manualgestion->idManualGestion,
+                        'rutaManualGestionProceso' => $ruta
+                       ]);
+                    }
+
+                }
+
+                        // Guardado del dropzone para Estructura
+                $arrayImage = $request['EstructuraOrganizacionalArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/manualgestion/'.$arrayImage[$i];
+                        $ruta = '/manualgestion/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ManualGestionEstructura::create([
+                        'ManualGestion_idManualGestion' => $manualgestion->idManualGestion,
+                        'rutaManualGestionEstructura' => $ruta
+                       ]);
+                    }
+
+                }
+
+                            // Guardado del dropzone para Adjuntos
+                $arrayImage = $request['ManualGestionAdjuntoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/manualgestion/'.$arrayImage[$i];
+                        $ruta = '/manualgestion/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ManualGestionAdjunto::create([
+                        'ManualGestion_idManualGestion' => $manualgestion->idManualGestion,
+                        'rutaManualGestionAdjunto' => $ruta
+                       ]);
+                    }
+
+                }
+
+
+
            
         }
             
@@ -150,8 +254,21 @@ class ManualGestionController extends Controller
     {
            if($_GET['accion'] == 'imprimir')
         {
-         
-            return view('formatos.planemergenciaimpresion',compact('PlanEmergenciaEncabezado','PlanEmergenciaLimie','PlanEmergenciaIventario','PlanEmergenciaNivel','PlanEmergenciaArchivo'));
+            // Se llama los registros para saber  cual es  la que va a imprimir el usuario
+           $manualgestion = \App\ManualGestion::find($id);
+
+
+
+            $ManualGestionEncabezado = DB::select('
+            SELECT mg.codigoManualGestion,mg.nombreManualGestion,mg.fechaManualGestion,
+            t.nombreCompletoTercero,mg.firmaEmpleadorManualGestion
+            FROM manualgestion mg
+            LEFT JOIN tercero t
+            ON mg.Tercero_idEmpleador = t.idTercero
+            WHERE mg.idManualGestion = '.$id);
+
+
+            return view('formatos.manualgestionimpresion',compact('ManualGestionEncabezado'));
         }
     }
 
@@ -168,8 +285,15 @@ class ManualGestionController extends Controller
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
 
+        $ManualGestionParte = DB::SELECT('
+        SELECT mgp.idManualGestionParte,mgp.ManualGestion_idManualGestion,mgp.interesadoManualGestionParte,mgp.necesidadManualGestionParte,mgp.cumplimientoManualGestionParte
+        FROM manualgestionparte mgp
+        LEFT JOIN manualgestion mg
+        ON mgp.ManualGestion_idManualGestion = mg.idManualGestion
+        WHERE mgp.ManualGestion_idManualGestion ='.$id);
 
-        return view('manualgestion',compact('tercero'),['manualgestion'=>$manualgestion]);
+
+        return view('manualgestion',compact('tercero','ManualGestionParte'),['manualgestion'=>$manualgestion]);
     }
 
     /**
@@ -179,7 +303,7 @@ class ManualGestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ManualGestionRequest $request, $id)
     {
         if($request['respuesta'] != 'falso')
         {
@@ -215,6 +339,156 @@ class ManualGestionController extends Controller
 
 
             
+                       // Update para el detalle de  limite
+                 $idsEliminar = explode("," , $request['eliminarparteinteresada']);
+                //Eliminar registros de la multiregistro
+                \App\ManualGestionParte::whereIn('idManualGestionParte', $idsEliminar)->delete();
+                // Guardamos el detalle de los modulos
+                for($i = 0; $i < count($request['idManualGestionParte']); $i++)
+                {
+                     $indice = array(
+                        'idManualGestionParte' => $request['idManualGestionParte'][$i]);
+
+                    $data = array(
+                    'ManualGestion_idManualGestion' => $manualgestion->idManualGestion,
+                    'interesadoManualGestionParte' => $request['interesadoManualGestionParte'][$i],
+                    'necesidadManualGestionParte' => $request['necesidadManualGestionParte'][$i], 
+                    'cumplimientoManualGestionParte' => $request['cumplimientoManualGestionParte'][$i]
+                      );
+
+                    $guardar = \App\ManualGestionParte::updateOrCreate($indice, $data);
+                } 
+
+
+
+                 //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE de 
+            if ($request['InteraccionProcesoArray'] != '') 
+            {
+                $arrayImage = $request['InteraccionProcesoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/manualgestion/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/manualgestion/'.$arrayImage[$i];
+
+                            DB::table('manualgestionproceso')->insert(['idManualGestionProceso' => '0', 'ManualGestion_idManualGestion' =>$id,'rutaManualGestionProceso' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+               // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarProceso'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ManualGestionProceso::whereIn('idManualGestionProceso',$idsEliminar)->delete();
+            }
+
+
+
+                             //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE de 
+            if ($request['EstructuraOrganizacionalArray'] != '') 
+            {
+                $arrayImage = $request['EstructuraOrganizacionalArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/manualgestion/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/manualgestion/'.$arrayImage[$i];
+
+                            DB::table('manualgestionestructura')->insert(['idManualGestionEstructura' => '0', 'ManualGestion_idManualGestion' =>$id,'rutaManualGestionEstructura' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+               // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarEstructura'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ManualGestionEstructura::whereIn('idManualGestionEstructura',$idsEliminar)->delete();
+            }
+
+
+                       //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE de 
+            if ($request['ManualGestionAdjuntoArray'] != '') 
+            {
+                $arrayImage = $request['ManualGestionAdjuntoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/manualgestion/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/manualgestion/'.$arrayImage[$i];
+
+                            DB::table('manualgestionadjunto')->insert(['idManualGestionAdjunto' => '0', 'ManualGestion_idManualGestion' =>$id,'rutaManualGestionAdjunto' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+               // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarAdjunto'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ManualGestionAdjunto::whereIn('idManualGestionAdjunto',$idsEliminar)->delete();
+            }
+
+
+
 
         }
 
