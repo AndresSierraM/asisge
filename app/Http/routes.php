@@ -262,7 +262,11 @@ Route::group(['middleware' => 'auth'], function ()
     });
 
     Route::resource('llamarVistas','InformeController@llamarVistas');
+    Route::resource('llamarCampos','InformeController@llamarCampos');
+    Route::resource('llamarFiltros','InformeController@llamarFiltros');
     Route::resource('informecampo','InformeController@indexCampoGridSelect');
+    Route::resource('informegenerador','InformeController@indexInformeGenerador');
+    Route::get('generarinforme/{idInforme}/{condicion}','InformeController@GenerarInforme');
 
 });
 
@@ -1180,6 +1184,8 @@ Route::group(['middleware' => 'auth'], function ()
 
 
     Route::get('informeconceptogridselect','VisorInformeController@indexInformeConceptoGrid');
+
+    
 
 
 

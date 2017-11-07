@@ -4,10 +4,6 @@
 @extends('layouts.vista')
 @section('titulo')<h3 id="titulo"><center>Diseñador de Informes</center></h3>@stop
 
-<?php 
-    $formatoImpresion = ['Formato 1'=>'Formato 1','Formato 2'=>'Formato 2','Formato 3'=>'Formato 3'];
-    //$informegrupo = ['Compras'=>'Compras','Ventas'=>'Ventas','Ajustes'=>'Ajustes'];
-?>
 @section('content')
 	@include('alerts.request')
 	@if(isset($informe))
@@ -49,12 +45,12 @@
         var parentesisAbre = [["", "(", "((", "(((", "(((("], ["", "(", "((", "(((", "(((("]];
         var parentesisCierra = [["", ")", "))", ")))", "))))"], ["", ")", "))", ")))", "))))"]];
 
-        var operador = [["=", ">", ">=", "<", "<=", "!=", "%like", "like%", "%like%", "BETWEEN"],
+        var operador = [["=", ">", ">=", "<", "<=", "!=", "like%", "%like", "%like%", "BETWEEN"],
                         ["Igual a", "Mayor que", "Mayor o igual", "Menor que", "Menor o igual que", "Diferente de", "Comienza con", "Termina con", "Contiene", "Desde, Hasta"]];
         var campos = [[],[]];
         var conector =  [["AND", "OR"], ["Y", "O"]];
         
-        var valorColumna = ['','','','','','','','','','','','','',''];
+        var valorColumna = ['','0','','','','','','','','','','','','',''];
         var valorGrupo = ['','','','',''];
         var valorfiltros = [0,'','','','','',''];
 
@@ -75,7 +71,8 @@
             columnas.campoEliminacion = 'eliminarInformeColumna';
 
             columnas.campos   = [
-                                'idInformeColumna', 
+                                'idInformeColumna',
+                                'secuenciaInformeColumna', 
                                 'campoInformeColumna', 
                                 'ordenInformeColumna', 
                                 'grupoInformeColumna', 
@@ -92,6 +89,7 @@
                                 ];
 
             columnas.etiqueta = [
+                                'input',
                                 'input',
                                 'input',
                                 'checkbox',
@@ -111,6 +109,7 @@
             columnas.tipo = [
                                 'hidden',
                                 'text',
+                                'text',
                                 'checkbox',
                                 'checkbox',
                                 'checkbox',
@@ -127,6 +126,7 @@
 
             columnas.estilo = [
                                 '',
+                                'width: 70px; height: 35px; display:inline-block;',
                                 'width: 200px; height: 35px; display:inline-block;',
                                 'width: 70px; height: 35px; display:inline-block;',
                                 'width: 70px; height: 35px; display:inline-block;',
@@ -142,11 +142,11 @@
                                 'width: 60px; height: 35px; display:inline-block;',
                                 ];
 
-            columnas.clase    = ['','','','','','','','','','','','','numerico','numerico'];
-            columnas.sololectura = [true,true,false,false,false,false,false,false,false,false,false,false,false,false];  
-            columnas.funciones = ['','','', funcionGrupo,'','','','','','','','','',''];
-            columnas.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
-            columnas.opciones = ['','','','','','',alineacionH, alineacionV,'', alineacionR,calculo,formato,'',''];
+            columnas.clase    = ['','','','','','','','','','','','','','numerico','numerico'];
+            columnas.sololectura = [true,false, true,false,false,false,false,false,false,false,false,false,false,false,false];  
+            columnas.funciones = ['','','','', funcionGrupo,'','','','','','','','','',''];
+            columnas.completar = ['off','off','off','off','off','off','off','off','off','off','off','off','off','off','off'];
+            columnas.opciones = ['','','','','','','',alineacionH, alineacionV,'', alineacionR,calculo,formato,'',''];
 
             for(var j=0, k = informecolumna.length; j < k; j++)
             {
@@ -164,6 +164,7 @@
             grupos.altura = '35px';
             grupos.campoid = 'idInformeGrupo';
             grupos.botonEliminacion = false;
+            grupos.campoEliminacion = 'eliminarInformeGrupo';
 
             grupos.campos   = [
                                  'idInformeGrupo', 
@@ -208,6 +209,12 @@
                 grupos.agregarCampos(JSON.stringify(informegrupo[j]),'L'); 
             }
 
+
+            //***************************************
+            //
+            // F I L T R O S   D E L   I N F O R M E
+            //
+            //***************************************
 
             filtros = new Atributos('filtros','contenedor_filtros','filtros_');
 
@@ -285,6 +292,68 @@
             }
 
 
+            //***************************************
+            //
+            // R O L E S   D E L   I N F O R M E
+            //
+            //***************************************
+            
+
+            // rol = [JSON.parse(idRol),JSON.parse(nombreRol)];
+
+            var informerol = '<?php echo (isset($informerol) ? json_encode($informerol) : "");?>';
+            informerol = (informerol != '' ? JSON.parse(informerol) : '');
+            var valorInformeRol = ['','',0,0,0,0,0,0,0,0];
+
+
+            protRol = new Atributos('protRol','contenedor_permisos','permisos_');
+
+            protRol.altura = '35px';
+            protRol.campoid = 'idInformeRol';
+            protRol.campoEliminacion = 'eliminarRol';
+
+            protRol.campos   = ['idInformeRol','Rol_idRol','nombreRol'];
+            protRol.etiqueta = ['input','input','input'];
+            protRol.tipo     = ['hidden','hidden','text'];
+            protRol.estilo   = ['','','width: 600px;height:35px'];
+            protRol.clase    = ['','',''];
+            protRol.sololectura = [true,true,true];
+            
+            for(var j=0, k = informerol.length; j < k; j++)
+            {
+                protRol.agregarCampos(JSON.stringify(informerol[j]),'L');
+            }
+                
+
+        
+            //***************************************
+            //
+            // C O M P A N I A S   D E L   I N F O R M E
+            //
+            //***************************************
+
+            var informecompania = '<?php echo (isset($informecompania) ? json_encode($informecompania) : "");?>';
+            informecompania = (informecompania != '' ? JSON.parse(informecompania) : '');
+            var valorCompania = ['','', 0];
+
+
+            protCompania = new Atributos('protCompania','contenedor_compania','compania_');
+
+            protCompania.altura = '35px';
+            protCompania.campoid = 'idInformeCompania';
+            protCompania.campoEliminacion = 'eliminarCompania';
+
+            protCompania.campos   = ['idInformeCompania', 'Compania_idCompania', 'nombreCompania'];
+            protCompania.etiqueta = ['input', 'input', 'input'];
+            protCompania.tipo     = ['hidden', 'hidden', 'text'];
+            protCompania.estilo   = ['', '' ,'width: 800px;height:35px;'];
+            protCompania.clase    = ['','', '', ''];
+            protCompania.sololectura = [true,true,true];
+            for(var j=0, k = informecompania.length; j < k; j++)
+            {
+                protCompania.agregarCampos(JSON.stringify(informecompania[j]),'L');
+            }
+
 
             vista = "<?php echo @$informe->vistaInforme; ?>";
 		    if($("#SistemaInformacion_idSistemaInformacion").val() !== '')
@@ -319,7 +388,10 @@
                         {!!Form::text('nombreInforme',null,['class'=>'form-control required','placeholder'=>'Ingresa el Nombre del Informe'])!!}
                         {!!Form::hidden('idInforme', null, array('id' => 'idInforme')) !!}
                         {!!Form::hidden('eliminarInformeColumna', null, array('id' => 'eliminarInformeColumna')) !!}
+                        {!!Form::hidden('eliminarInformeGrupo', null, array('id' => 'eliminarInformeGrupo')) !!}
                         {!!Form::hidden('eliminarInformeFiltro', null, array('id' => 'eliminarInformeFiltro')) !!}
+                        {!!Form::hidden('eliminarRol', null, array('id' => 'eliminarRol')) !!}
+                        {!!Form::hidden('eliminarCompania', null, array('id' => 'eliminarCompania')) !!}
 
                     </div>
                 </div>
@@ -386,12 +458,13 @@
                         <div class="col-sm-12">
                         <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
                             <div style="overflow:auto; height:350px;">
-                                <div style="width: 1500px; display: inline-block;">
+                                <div style="width: 1600px; display: inline-block;">
                                     <div class="col-md-1" style="width:40px; height: 35px; cursor:pointer;" 
                                     onclick="abrirModalCampos('iframeCampos', 'http://'+location.host+'/informecampo?basedatos='+$('#SistemaInformacion_idSistemaInformacion').val()+'&tabla='+$('#vistaInforme').val());">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </div>
-                                    <div class="col-md-1" style="width: 200px; height: 35px;" >Campo</div>
+                                    <div class="col-md-1" style="width: 70px; height: 35px;" >Secuencia</div>
+                                    <div class="col-md-1" style="width: 200px; height: 35px;">Campo</div>
                                     <div class="col-md-1" style="width: 70px; height: 35px;" >Orden</div>
                                     <div class="col-md-1" style="width: 70px; height: 35px;" >Grupo</div>
                                     <div class="col-md-1" style="width: 70px; height: 35px;" >Oculto</div>
@@ -479,6 +552,70 @@
 
                     </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                            Permisos
+                    </h4>
+                </div>
+                    <div class="panel-body">
+
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a data-toggle="tab" href="#permCompania">Compañías</a></li>
+                          <li><a data-toggle="tab" href="#permRol">Roles</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div id="permCompania" class="tab-pane fade in active">
+                            <div class="panel-body" id="permCompania">
+                              <div class="form-group" id='test'>
+                                <div class="col-sm-12">
+                                  <div class="panel-body" >
+                                    <div class="form-group" id='test'>
+                                      <div class="col-sm-12">
+                                        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                          <div class="col-md-1" style="width: 40px; cursor: pointer;" onclick="mostrarModalCompania()">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                          </div>
+                                          <div class="col-md-1" style="width: 800px;">Compañía</div>
+                                          <div id="contenedor_compania">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>  
+                            </div>
+                          </div>
+
+                          <div id="permRol" class="tab-pane fade">
+                            <div class="panel-body" >
+                              <div class="form-group" id='test'>
+                                <div class="col-sm-12">
+                                  <div class="panel-body" >
+                                    <div class="form-group" id='test'>
+                                      <div class="col-sm-12">
+                                        <div class="row show-grid" style=" border: 1px solid #C0C0C0;">
+                                          <div class="col-md-1" style="width: 40px; cursor: pointer;" onclick="mostrarModalRol()">
+                                          <span class="glyphicon glyphicon-plus"></span>
+                                          </div>
+                                          <div class="col-md-1" style="width: 600px;">Rol</div>
+                                          <div id="contenedor_permisos">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>  
+                            </div>
+                          </div>  
+                        </div>
+
+                    </div>
+            </div>
         </div> 
 
         @if(isset($informe))
@@ -510,4 +647,38 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Modal de roles-->
+<div id="ModalRoles" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:1000px;">
+
+        <!-- Modal content-->
+        <div style="" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Selecci&oacute;n de Roles</h4>
+        </div>
+        <div class="modal-body">
+            <iframe style="width:100%; height:500px; " id="rol" name="rol" src="{!! URL::to ('rolselect')!!}"> </iframe> 
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de compañias -->
+<div id="ModalCompanias" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:1000px;">
+
+        <!-- Modal content-->
+        <div style="" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Selecci&oacute;n de Compañias</h4>
+        </div>
+        <div class="modal-body">
+            <iframe style="width:100%; height:500px; " id="rol" name="rol" src="{!! URL::to ('companiaselect')!!}"></iframe> 
+        </div>
+        </div>
+    </div>
 </div>

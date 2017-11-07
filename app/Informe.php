@@ -15,4 +15,13 @@ class Informe extends Model
     public $timestamps = false;
 
   
+    public function InformeRol() 
+	{
+		return $this->hasMany('App\InformeRol','Informe_idInforme');
+	}
+
+    public function InformeCompania() 
+	{
+		return $this->hasMany('App\InformeCompania','Informe_idInforme');
+	}
 }

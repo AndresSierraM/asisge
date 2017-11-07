@@ -10,6 +10,7 @@ class InformeColumna extends Model
     protected $primaryKey = 'idInformeColumna';
 
     protected $fillable = ['Informe_idInforme', 
+                            'secuenciaInformeColumna',
                             'campoInformeColumna', 
                             'ordenInformeColumna', 
                             'grupoInformeColumna', 

@@ -79,7 +79,7 @@ function llamarCampos(tabla)
                 valores[j] = data[j].COLUMN_NAME;
                 nombres[j] = data[j].COLUMN_COMMENT;
             }
-            console.log(valores);
+            //console.log(valores);
             // con el array de campos, cambiamos el valor de las opciones para la multiregistro de condiciones que 
             // muestra los mismos nombres de campo
             filtros.opciones[2] = [valores,nombres];
@@ -120,7 +120,7 @@ function adicionarRegistros(nombreTabla, datos)
                             : ((datos[i][2] == 'date' || datos[i][2] == 'datetime') 
                             ? 'AMD' 
                             : ''))); 
-                var valores = new Array(0, datos[i][1], 0,0,0, datos[i][0],  'I','S','','I', '',formato,datos[i][3], datos[i][4]);
+                var valores = new Array(0, ((i+1)*5), datos[i][1], 0,0,0, datos[i][0],  'I','S','','I', '',formato,datos[i][3], datos[i][4]);
 
                 window.parent.columnas.agregarCampos(valores,'A');  
             }
@@ -128,9 +128,6 @@ function adicionarRegistros(nombreTabla, datos)
         break;
 
     }
-
-
-
 }
 
 
@@ -260,4 +257,108 @@ function validarFormulario(event)
    
     if(sw === true)
         event.preventDefault();
+}
+
+
+function mostrarModalRol()
+{
+
+   $('#ModalRoles').modal('show'); 
+    
+}
+
+function mostrarModalCompania()
+{
+
+   $('#ModalCompanias').modal('show'); 
+    
+}
+
+function cargarFiltros(idInforme)
+{
+    alert(idInforme);
+    var token = document.getElementById('token').value;
+    $.ajax(
+    {
+        headers: {'X-CSRF-TOKEN': token},
+        dataType: "json",
+        url:'http://'+location.host+'/llamarFiltros', /*Funcion para ejecutar  el Ajax para que consulte en la BD la tabla de sublineas */
+        data:{idInforme: idInforme}, // Este id lo envia por get para el ajax
+        type:  'get',   
+        beforeSend: function(){},
+        success: function(data)
+        {
+            console.log(data);
+            //con el nombre de l atabla del informe, cargamos los campos
+            llamarCampos(data[0]["vistaInforme"]);
+            //    console.log(filtros.opciones);
+            //Recorre los registros de sublineas para irlos  creando como opciones en esa lista
+            for (var i = 0;  i < data.length; i++) 
+            {
+                var valorfiltros = [data[i]['idInformeFiltro'], 
+                                    data[i]['agrupadorInicialInformeFiltro'], 
+                                    data[i]['campoInformeFiltro'], 
+                                    data[i]['operadorInformeFiltro'], 
+                                    data[i]['valorInformeFiltro'], 
+                                    data[i]['agrupadorFinalInformeFiltro'], 
+                                    data[i]['conectorInformeFiltro'] ];
+                //filtros.agregarCampos(valorfiltros, 'A');
+            }
+        },
+        error:    function(xhr,err)
+        {
+            alert('Se ha producido un error: ' +err);
+        }
+    });
+}
+
+
+function concatenarCondicion()
+{
+    datos = '';
+    for(i = 0; i < filtros.contador; i++)
+    {
+        if($("#operadorInformeFiltro"+i))
+        {
+            // todos los operadores estan tal cual se requieren para SQL, excepto
+            // el like y el BETWEEN que son especiales en su sintaxis
+            // "=", ">", ">=", "<", "<=", "!=", "%like", "like%", "%like%", "BETWEEN"
+            operadorBase = $("#operadorInformeFiltro"+i).val().replace(/%/g,'');
+
+            switch(operadorBase)
+            {
+                case 'like':
+                    // al operador le quitamos los %
+                    operador = operadorBase;
+                    // al valor lo ubicamos odnde esta la palabra like para que le queden los % en elorden correcto
+                    valor = $("#operadorInformeFiltro"+i).val().replace('like',$("#valorInformeFiltro"+i).val());
+                    break;
+
+                case 'BETWEEN':
+                    // para el between, el usuario debe escribir los 2 valores separados por coma y
+                    // aca convertremos la coma por un AND
+                    // el operador no cambia
+                    operador = $("#operadorInformeFiltro"+i).val();
+                    // al valor lo separamos con AND (donde esta la coma)
+                    valor = $("#valorInformeFiltro"+i).val().replace(',','" AND "');
+                    break;
+
+                default:
+                    operador = $("#operadorInformeFiltro"+i).val();
+                    valor = $("#valorInformeFiltro"+i).val();
+                    break;
+            } 
+
+            datos += 
+                $("#agrupadorInicialInformeFiltro"+i).val()+' '+
+                $("#campoInformeFiltro"+i).val()+' '+
+                operador+' '+
+                '"'+valor+'" '+
+                $("#agrupadorFinalInformeFiltro"+i).val()+' '+
+                $("#conectorInformeFiltro"+i).val()+' ';
+        }
+    }
+    condicion = datos.substring(1, datos.length - 4);
+    idInforme = $("#idInforme").val()
+    window.open('generarinforme/'+ idInforme+'/'+condicion,'informe'+idInforme,'width=5000,height=5000,scrollbars=yes, status=0, toolbar=0, location=0, menubar=0, directories=0');
 }
