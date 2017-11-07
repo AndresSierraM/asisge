@@ -308,7 +308,7 @@
                       </div>
                       <div class="col-md-1 requiredMulti" style="width: 900px;">Actividad</div>
                       <div class="col-md-1 requiredMulti" style="width: 300px;">Responsable</div>
-                      <div class="col-md-1" style="width: 300px;height: 44px;">Documento y/o Registro</div>
+                      <div class="col-md-1 requiredMulti" style="width: 300px;height: 44px;">Documento y/o Registro</div>
                       <div id="contenedor_procedimiento">
                       </div>
                     </div>

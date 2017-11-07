@@ -48,9 +48,9 @@ class AusentismoController extends Controller
      */
     public function create()
     {
-        
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto');    
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
-        return view('ausentismo',compact('tercero'));
+        return view('ausentismo',compact('tercero','centrocosto'));
     }
 
     /**
@@ -109,6 +109,8 @@ class AusentismoController extends Controller
             'fechaInicioAusentismo' => $request['fechaInicioAusentismo'],
             'fechaFinAusentismo' => $request['fechaFinAusentismo'],
             'diasAusentismo' => $request['diasAusentismo'],
+            'horasAusentismo' => $request['horasAusentismo'],
+            'CentroCosto_idCentroCosto' => $request['CentroCosto_idCentroCosto'],
             'Compania_idCompania' => \Session::get('idCompania'),
             'archivoAusentismo' => $imageName
 
@@ -128,10 +130,12 @@ class AusentismoController extends Controller
     public function show($id, Request $request)
     {
         $ausentismoS = DB::SELECT(" 
-        SELECT t.nombreCompletoTercero,aus.nombreAusentismo,aus.tipoAusentismo,aus.fechaElaboracionAusentismo,aus.fechaInicioAusentismo,aus.fechaFinAusentismo,aus.diasAusentismo,aus.archivoAusentismo
+        SELECT t.nombreCompletoTercero,aus.nombreAusentismo,aus.tipoAusentismo,aus.fechaElaboracionAusentismo,aus.fechaInicioAusentismo,aus.fechaFinAusentismo,aus.diasAusentismo,aus.archivoAusentismo,aus.horasAusentismo,cc.nombreCentroCosto
         FROM ausentismo aus
         LEFT JOIN tercero t 
         ON aus.Tercero_idTercero = t.idTercero
+        LEFT JOIN centrocosto cc
+        on aus.CentroCosto_idCentroCosto = cc.idCentroCosto
         WHERE aus.idAusentismo = ".$id);
 
         return view('formatos.ausentismoimpresion',compact('ausentismoS'));
@@ -147,10 +151,11 @@ class AusentismoController extends Controller
     public function edit($id)
     {
         $ausentismo = \App\Ausentismo::find($id);
+        $centrocosto = \App\CentroCosto::where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCentroCosto','idCentroCosto');    
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
     
-        return view('ausentismo',compact('tercero'),['ausentismo'=>$ausentismo]);
+        return view('ausentismo',compact('tercero','centrocosto'),['ausentismo'=>$ausentismo]);
     }
 
     /**

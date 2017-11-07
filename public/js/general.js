@@ -88,8 +88,8 @@ Atributos.prototype.agregarCampos = function(datos, tipo){
     
     var div = document.createElement('div');
     div.id = this.contenido+this.contador;
-    //div.setAttribute("class", "");
-    div.setAttribute("style",  "width: 2000px; height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
+    div.setAttribute("class", "col-sm-12");
+    div.setAttribute("style",  "height:"+this.altura+"margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;");
     
     // si esta habilitado el parametro de eliminacion de registros del detalle, adicionamos la caneca
     if(this.botonEliminacion)
@@ -399,23 +399,23 @@ Atributos.prototype.cambiarCheckbox = function(campo, registro)
 
 
 function quitarCaracterEspecial(str) {
-	// recibe el texto completo en str
-	 // Se valida el string que esta recibiendo para que elimine el ENTER y lo deje vacio
-	str.replace(/\r\n/g, "");
-	// 1. lo convierte todo a minúsculas y lo guarda en lower
+    // recibe el texto completo en str
+     // Se valida el string que esta recibiendo para que elimine el ENTER y lo deje vacio
+    str.replace(/\r\n/g, "");
+    // 1. lo convierte todo a minúsculas y lo guarda en lower
     var lower = str.toLowerCase();
     // 2. lo convierte todo a mayúsculas y lo guarda en upper
     var upper = str.toUpperCase();
     var res = "";
     // 3. con el for recorre el texto original letra por letra
     for(var i=0; i<lower.length; ++i) {
-    	// si esa letra en minúscula no es igual a la misma letra en mayúscula lower[i] != upper[i]
-    	// OR
-		// 5. SI es un espacio en blanco o un vacio
-		// OR
-		// 6. si es un numero de 0 a 9
-		// 7. Si es una de las anteriores gurda ese carácter en la variable RES
-		// por ultimo devuelve RES
+        // si esa letra en minúscula no es igual a la misma letra en mayúscula lower[i] != upper[i]
+        // OR
+        // 5. SI es un espacio en blanco o un vacio
+        // OR
+        // 6. si es un numero de 0 a 9
+        // 7. Si es una de las anteriores gurda ese carácter en la variable RES
+        // por ultimo devuelve RES
         if(lower[i] != upper[i] || lower[i].trim() === '' || (lower[i].trim() >= 0 && lower[i].trim() <= 9))
             res += str[i];
     }
