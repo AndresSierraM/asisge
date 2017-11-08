@@ -11,7 +11,7 @@
 					<table class="table" width="100%">
 						<thead>
 							<tr>
-								<td colspan="2" align="center"  style=" background-color:#337ab7; color:white;">Plan de Emergencias</td>
+								<td colspan="2" align="center"  style=" background-color:#337ab7; color:white;">Manual del sistema de gesti&oacute;n</td>
 							</tr>
 							<tr>
 								<td><b>C&oacute;digo</b></td>

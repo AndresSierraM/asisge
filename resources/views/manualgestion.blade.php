@@ -15,6 +15,9 @@
 
 
 <?php
+
+
+
   // tomamos la imagen de la firma y la convertimos en base 64 para asignarla
   // al cuadro de imagen y al input oculto de firmabase64
   $base64 = ''; 
@@ -681,7 +684,7 @@ var ParteInteresadaDatos = ['','','','',''];
 
       
     </fieldset>
-  @if(isset($planemergencia))
+  @if(isset($manualgestion))
     @if(isset($_GET['accion']) and $_GET['accion'] == 'eliminar')
          {!!Form::submit('Eliminar',["class"=>"btn btn-primary"])!!}
       @else
