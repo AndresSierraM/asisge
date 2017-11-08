@@ -261,14 +261,51 @@ class ManualGestionController extends Controller
 
             $ManualGestionEncabezado = DB::select('
             SELECT mg.codigoManualGestion,mg.nombreManualGestion,mg.fechaManualGestion,
-            t.nombreCompletoTercero,mg.firmaEmpleadorManualGestion
+            t.nombreCompletoTercero,mg.firmaEmpleadorManualGestion,mg.generalidadesManualGestion,mg.misionManualGestion,mg.visionManualGestion,mg.valoresManualGestion,mg.politicasManualGestion,
+            mg.principiosManualGestion,mg.metasManualGestion,mg.objetivosManualGestion,mg.objetivoCalidadManualGestion,
+            mg.alcanceManualGestion,mg.exclusionesManualGestion
             FROM manualgestion mg
             LEFT JOIN tercero t
             ON mg.Tercero_idEmpleador = t.idTercero
             WHERE mg.idManualGestion = '.$id);
 
 
-            return view('formatos.manualgestionimpresion',compact('ManualGestionEncabezado'));
+
+            $ManualGestionInventario = DB::select('
+             SELECT mgp.idManualGestionParte,mgp.ManualGestion_idManualGestion,mgp.interesadoManualGestionParte,mgp.necesidadManualGestionParte,mgp.cumplimientoManualGestionParte
+            FROM manualgestionparte mgp
+            LEFT JOIN manualgestion mg
+            ON mgp.ManualGestion_idManualGestion = mg.idManualGestion
+            WHERE mgp.ManualGestion_idManualGestion ='.$id);
+
+            $ManualGestionProceso = DB::select('
+            SELECT mgpr.idManualGestionProceso,mgpr.ManualGestion_idManualGestion,
+            mgpr.rutaManualGestionProceso
+            FROM manualgestionproceso mgpr
+            LEFT JOIN manualgestion mg
+            ON mgpr.ManualGestion_idManualGestion = mg.idManualGestion
+            WHERE mgpr.ManualGestion_idManualGestion ='.$id);
+
+            $ManualGestionEstructura = DB::select('
+            SELECT mges.idManualGestionEstructura,mges.ManualGestion_idManualGestion,mges.rutaManualGestionEstructura
+            FROM manualgestionestructura mges
+            LEFT JOIN manualgestion mg
+            ON mges.ManualGestion_idManualGestion = mg.idManualGestion
+            WHERE mges.ManualGestion_idManualGestion ='.$id);
+
+
+            $ManualGestionArchivo = DB::select('
+            SELECT mgad.idManualGestionAdjunto,mgad.ManualGestion_idManualGestion,mgad.rutaManualGestionAdjunto
+            FROM manualgestionadjunto mgad
+            LEFT JOIN manualgestion mg
+            ON mgad.ManualGestion_idManualGestion = mg.idManualGestion
+            WHERE mgad.ManualGestion_idManualGestion ='.$id);
+
+
+           
+
+
+            return view('formatos.manualgestionimpresion',compact('ManualGestionEncabezado','ManualGestionInventario','ManualGestionProceso','ManualGestionEstructura','ManualGestionArchivo'));
         }
     }
 
