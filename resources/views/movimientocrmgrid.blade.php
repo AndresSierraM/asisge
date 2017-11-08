@@ -1,7 +1,7 @@
 {!!Html::script('js/movimientocrm.js'); !!}
 
 <?php 
-    $TipoEstado = (isset($_GET["TipoEstado"]) ? $_GET["TipoEstado"] : 'Nuevo');
+    $TipoEstado = (isset($_GET["TipoEstado"]) ? $_GET["TipoEstado"] : '');
 
     $visible = '';
     $aprobador = 0;

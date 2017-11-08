@@ -23,6 +23,8 @@
                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li><a class="toggle-vis" data-column="0"><label> ID</label></a></li>
                             <li><a class="toggle-vis" data-column="0"><label> Campo</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Grid</label></a></li>
+                            <li><a class="toggle-vis" data-column="0"><label> Oblig</label></a></li>
                             
                         </ul>
                     </div>
@@ -32,14 +34,18 @@
                             <tr class="btn-default active">
 
                                 <th><b>ID</b></th>
-                                <th><b>Campo</b></th>        
+                                <th><b>Campo</b></th>  
+                                <th><b>Grid</b></th>  
+                                <th><b>Oblig</b></th>        
                             </tr>
                         </thead>
                         <tfoot>
                             <tr class="btn-default active">
 
                                 <th>ID</th>
-                                <th>Campo</th>                             
+                                <th>Campo</th>  
+                                <th>Grid</th>                             
+                                <th>Oblig</th>  
                             </tr>
                         </tfoot>
                     </table>
@@ -63,6 +69,18 @@
         var tipo = '<?php echo $tipo;?>';
         var table = $('#tcampoSelect').DataTable( {
             "order": [[ 1, "asc" ]],
+             "columnDefs": [
+                    {
+                        "targets": [ 2 ],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [ 3 ],
+                        "visible": false,
+                        "searchable": false
+                    }
+                ],
             "aProcessing": true,
             "aServerSide": true,
             "stateSave":true,
@@ -153,9 +171,31 @@
         var datos = table.rows('.selected').data();  
 
         for (var i = 0; i < datos.length; i++) 
-        {
-            var valores = new Array(0, datos[i][0],datos[i][1],1,1,1);
-            window.parent.protCampos.agregarCampos(valores,'A');  
+        {   
+            var grid = 1;
+            var vista = 1;
+            var oblig = 1;
+
+            // si no es seleccion para grid
+            if(datos[i][2] == 0)
+            {    
+                grid = 0;
+                window.parent.$("#mostrarGridDocumentoCRMCampo"+( window.parent.protCampos.contador - 1)).val(0);
+                window.parent.$("#mostrarGridDocumentoCRMCampo"+( window.parent.protCampos.contador - 1)).css('display', 'none');
+            }
+
+            // si no es seleccion para obligatoriedad
+            if(datos[i][3] == 0)
+            {    
+                oblig = 0;
+                window.parent.$("#obligatorioDocumentoCRMCampo"+( window.parent.protCampos.contador - 1)).val(0);
+                window.parent.$("#obligatorioDocumentoCRMCampoC"+( window.parent.protCampos.contador - 1)).css('display', 'none');
+            }
+
+            var valores = new Array(0, datos[i][0], datos[i][1], grid, 1, oblig);
+            window.parent.protCampos.agregarCampos(valores,'A');
+            
+            
         }
         window.parent.$("#ModalCampos").modal("hide");
     });

@@ -1249,64 +1249,95 @@ $fechahora = Carbon\Carbon::now();
 	{!!Form::close()!!}	
 
 <script>
-    CKEDITOR.replace((<?php
+
+ 	var editores = <?php
+	 echo 'Array(';
      echo (strpos($camposVista, 'detallesMovimientoCRM') !== false) ? "'".'detallesMovimientoCRM'."'" : '';
      echo ((strpos($camposVista, 'detallesMovimientoCRM') !== false and strpos($camposVista, 'solucionMovimientoCRM') !== false)) ? "," : '';
      echo (strpos($camposVista, 'solucionMovimientoCRM') !== false) ? "'".'solucionMovimientoCRM'."'" : '';
-     ?>), {
-        fullPage: true,
-        allowedContent: true
-      });  
-
-
-    //--------------------------------- DROPZONE ---------------------------------------
-	var baseUrl = "{{ url("/") }}";
-    var token = "{{ Session::getToken() }}";
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("div#dropzonemovimientoCRMArchivo", {
-        url: baseUrl + "/dropzone/uploadFiles",
-        params: {
-            _token: token
-        },
-        
+	 echo ')';
+     ?>;
+    $.each(editores, function (i, editores) {
+     CKEDITOR.replace(editores, {
+       	fullPage: true,
+        allowedContent: true,
+		width: '100%',
+		height: 300
+     });
     });
 
-   	 fileList = Array();
-   	var i = 0;
 
-    //Configuro el dropzone
-    myDropzone.options.myAwesomeDropzone =  {
-    paramName: "file", // The name that will be used to transfer the file
-    maxFilesize: 40, // MB
-    addRemoveLinks: true,
-    clickable: true,
-    previewsContainer: ".dropzone-previews",
-    clickable: false,
-    uploadMultiple: true,
-    accept: function(file, done) {
+	
+	// hook into Bootstrap's tab JS
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		// get the ID of the textarea (I have IDs based on the tab pane ID)
+		var paneId = $(this).attr('href').replace('#', '');
+		
+		switch(paneId)
+		{
+			case 'detalles':
+				CKEDITOR.instances['detallesMovimientoCRM'].focus();
+				break;
+			case 'solucion':
+				CKEDITOR.instances['solucionMovimientoCRM'].focus();
+				break;
+			
+		}
+		
+		
+	});
+console.log($("#dropzonemovimientoCRMArchivo"));
+	if($("#dropzonemovimientoCRMArchivo"))
+    {
+		//--------------------------------- DROPZONE ---------------------------------------
+		var baseUrl = "{{ url("/") }}";
+		var token = "{{ Session::getToken() }}";
+		Dropzone.autoDiscover = false;
+		var myDropzone = new Dropzone("div#dropzonemovimientoCRMArchivo", {
+			url: baseUrl + "/dropzone/uploadFiles",
+			params: {
+				_token: token
+			},
+			
+		});
 
-      }
-    };
-    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
-     myDropzone.on("addedfile", function(file) {
-          file.previewElement.addEventListener("click", function(reg) {
-            // abrirModal(file);
-            // pos = fileList.indexOf(file["name"]);
-            // alert(pos);
-            // console.log(fileList[pos]);
-            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
-          });
-        });
+		fileList = Array();
+		var i = 0;
 
-    document.getElementById('archivoMovimientoCRMArray').value = '';
-    myDropzone.on("success", function(file, serverFileName) {
-    					//abrirModal(file);
-                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
-						// console.log(fileList);
-                        document.getElementById('archivoMovimientoCRMArray').value += file.name+',';
-                        // console.log(document.getElementById('archivoMovimientoCRMArray').value);
-                        i++;
-                    });
+		//Configuro el dropzone
+		myDropzone.options.myAwesomeDropzone =  {
+		paramName: "file", // The name that will be used to transfer the file
+		maxFilesize: 40, // MB
+		addRemoveLinks: true,
+		clickable: true,
+		previewsContainer: ".dropzone-previews",
+		clickable: false,
+		uploadMultiple: true,
+		accept: function(file, done) {
+
+		}
+		};
+		//envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+		myDropzone.on("addedfile", function(file) {
+			file.previewElement.addEventListener("click", function(reg) {
+				// abrirModal(file);
+				// pos = fileList.indexOf(file["name"]);
+				// alert(pos);
+				// console.log(fileList[pos]);
+				// $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+			});
+			});
+
+		document.getElementById('archivoMovimientoCRMArray').value = '';
+		myDropzone.on("success", function(file, serverFileName) {
+							//abrirModal(file);
+							fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+							// console.log(fileList);
+							document.getElementById('archivoMovimientoCRMArray').value += file.name+',';
+							// console.log(document.getElementById('archivoMovimientoCRMArray').value);
+							i++;
+						});
+	}
 
 </script>
 

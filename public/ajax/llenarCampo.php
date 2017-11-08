@@ -3,11 +3,15 @@
 $idCampoCRM = $_POST['idCampoCRM'];
 
 $campo = DB::table('campocrm')
-->select(DB::raw('descripcionCampoCRM'))
+->select(DB::raw('descripcionCampoCRM, gridCampoCRM, obligatorioCampoCRM'))
 ->where ('idCampoCRM', "=", $idCampoCRM)
 ->get();
 
+$campos = array();
 //Convierto un array en string
-$nombrecampo = get_object_vars($campo[0]); 
-echo json_encode($nombrecampo['descripcionCampoCRM']); //envio el nombre del campo mediante JSON
+for($i = 0; $i < count($campo); $i++)
+{
+    $campos[] = get_object_vars($campo[0]);
+} 
+echo json_encode($campo); //envio el nombre del campo mediante JSON
 ?>

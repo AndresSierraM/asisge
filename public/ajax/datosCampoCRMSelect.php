@@ -3,7 +3,7 @@
     $tipo = $_GET['tipo'];
 
     $consulta = DB::Select(
-        'SELECT idCampoCRM, descripcionCampoCRM 
+        'SELECT idCampoCRM, descripcionCampoCRM ,  gridCampoCRM, obligatorioCampoCRM
         FROM campocrm
         WHERE formularioCampoCRM = "'.$tipo.'"');
 

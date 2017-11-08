@@ -32,7 +32,23 @@ function llenarDatosCampo(id, reg)
                 },
             success: function(respuesta)
             {
-                $('#descripcionCampoCRM'+reg).val(respuesta);
+                $('#descripcionCampoCRM'+reg).val(respuesta[0]['descripcionCampoCRM']);
+
+                // si no es seleccion para grid
+                if(respuesta[0]["gridCampoCRM"] == 0)
+                {    
+                    $("#mostrarGridDocumentoCRMCampo"+(reg )).val(0);
+                    $("#mostrarGridDocumentoCRMCampoC"+(reg )).css('display', 'none');
+                }
+                
+                // si no es seleccion para obligatoriedad
+                if(respuesta[0]["obligatorioCampoCRM"] == 0)
+                {    
+                    $("#obligatorioDocumentoCRMCampo"+(reg )).val(0);
+                    $("#obligatorioDocumentoCRMCampoC"+(reg )).css('display', 'none');
+                }
+
+                
                 
             },
             error: function(xhr,err)

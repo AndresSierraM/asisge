@@ -96,6 +96,8 @@
       {
         protCampos.agregarCampos(JSON.stringify(documentocrmcampo[j]),'L');
 
+        
+
         llenarDatosCampo($('#CampoCRM_idCampoCRM'+j).val(), j);
       }
 
