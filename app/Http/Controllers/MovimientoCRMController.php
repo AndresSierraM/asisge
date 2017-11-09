@@ -575,7 +575,7 @@ class MovimientoCRMController extends Controller
         }
         
 
-        return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
+        //return redirect('/movimientocrm?idDocumentoCRM='.$request['DocumentoCRM_idDocumentoCRM']);
     }
 
     /**

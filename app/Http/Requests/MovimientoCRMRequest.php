@@ -41,7 +41,7 @@ class MovimientoCRMRequest extends Request
             where documentocrm.idDocumentoCRM = '.$id.' and 
                obligatorioDocumentoCRMCampo = 1  and 
                mostrarVistaDocumentoCRMCampo = 1  and 
-               nombreCampoCRM NOT IN ("Tercero_idAsesor","AcuerdoServicio_idAcuerdoServicio","Tercero_idSupervisor") and 
+               nombreCampoCRM NOT IN ("AcuerdoServicio_idAcuerdoServicio","Tercero_idSupervisor") and 
                 '.$rolUsuario.'DocumentoCRMCampo = 1');
 
         $validacion = array();
