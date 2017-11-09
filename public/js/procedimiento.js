@@ -186,7 +186,8 @@ function habilitarSubmit(event)
 
 function validarformulario()
 {
-
+    // Se crea variable que va a contener el mensaje
+    var mensaje = '';
     var resp = true;
 
         // Se hace un if para validar por medio del ID si el campo esta vacio para que este se pinte de Rojo 
@@ -195,8 +196,11 @@ function validarformulario()
         if((document.getElementById("Proceso_idProceso").value == '' ))
             {
                 // document.getElementById("TipoInspeccion_idTipoInspeccion").style = "background-color:#F5A9A9;";
-                //se deja en false para que no envie el formulario hasta que elijan una opcion del select
+                //se deja en false para que no envie el formulario hasta que elijan una opcion 
+         
                 resp = false;
+                // Se agrega la viñeta de punto con alt +7
+                mensaje += '• Debe elegir el proceso<br>';
             } 
             else
                 {
@@ -207,6 +211,7 @@ function validarformulario()
             {
                 document.getElementById("nombreProcedimiento").style = "background-color:#F5A9A9;";
                 resp = false;
+                mensaje += '• Debe digitar el nombre del procedimiento <br>';
             } 
             else
                 {
@@ -216,6 +221,7 @@ function validarformulario()
             {
                 document.getElementById("fechaElaboracionProcedimiento").style = "background-color:#F5A9A9;";
                 resp = false;
+                mensaje += '• Debe digitar la fecha de elaboración del procedimiento <br>';
             } 
             else
                 {
@@ -229,24 +235,39 @@ function validarformulario()
             if((document.getElementById("actividadProcedimientoDetalle"+(actual)).value == null ||
                 document.getElementById("actividadProcedimientoDetalle"+(actual)).value == ''))
             {
+                mensaje += '• Debe digitar la actividad en la linea '+(actual+1) + '<br>';
+
                 $("#actividadProcedimientoDetalle"+(actual)).css("border-color","red");
                 resp = false;
                 
             } 
             else
             {
-                $("#actividadProcedimientoDetalle"+(actual)).css("border-color","white");
+                $("#actividadProcedimientoDetalle"+(actual)).css("border-color","inherit");
             }
          
             if(document.getElementById("Tercero_idResponsable"+(actual)) && 
                     (document.getElementById("Tercero_idResponsable"+(actual)).value == 0))  
             {
+                 mensaje += '• Debe elegir el responsable en la linea '+(actual+1) + '<br>';
                 $("#Tercero_idResponsable"+(actual)).css("border-color","red");
                 resp = false;
             }
             else
             {
-                $("#Tercero_idResponsable"+(actual)).css("border-color","white");
+                $("#Tercero_idResponsable"+(actual)).css("border-color","inherit");
+            }
+
+            if(document.getElementById("Documento_idDocumento"+(actual)) && 
+                    (document.getElementById("Documento_idDocumento"+(actual)).value == 0))  
+            {
+                 mensaje += '• Debe elegir el documento en la linea '+(actual+1) + '<br>';
+                $("#Documento_idDocumento"+(actual)).css("border-color","red");
+                resp = false;
+            }
+            else
+            {
+                $("#Documento_idDocumento"+(actual)).css("border-color","inherit");
             }
         }
         /*
@@ -268,7 +289,14 @@ function validarformulario()
     }
     else
     {
-        alert('Por favor verifique, los campos resaltados en rojo son obligatorios');
+        // alert('Por favor verifique, los campos resaltados en rojo son obligatorios'); 
+        if(mensaje != '')
+        {
+            $("#msj").html(mensaje);
+            $("#msj-error").css("display","block");
+        
+            event.preventDefault();
+        }
     }
 
     return true;
