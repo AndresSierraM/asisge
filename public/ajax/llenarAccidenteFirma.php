@@ -10,7 +10,7 @@ LEFT JOIN compania c
 ON acc.Compania_idCompania = c.idCompania
 LEFT JOIN tercero t
 ON acc.Tercero_idCoordinador = t.idTercero
-WHERE acc.numeroAccidente = '.$NumAccidente);
+WHERE acc.numeroAccidente = '.$NumAccidente.' and acc.Compania_idCompania = '.\Session::get('idCompania'));
  	
 $tablahtml = '';
 $datosconsulta = null;

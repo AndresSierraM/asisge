@@ -10,7 +10,7 @@ LEFT JOIN actacapacitacionasistente  acasis
 ON acasis.ActaCapacitacion_idActaCapacitacion = ac.idActaCapacitacion
 LEFT JOIN tercero t 
 ON acasis.Tercero_idAsistente = t.idTercero
-WHERE ac.numeroActaCapacitacion = '.$numeroActa);
+WHERE ac.numeroActaCapacitacion = '.$numeroActa.' and ac.Compania_idCompania = '.\Session::get('idCompania'));
 
 
 
