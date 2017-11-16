@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-
+{!!Form::button('Limpiar filtros',["class"=>"btn btn-primary","id"=>'btnLimpiarFiltros'])!!}
 
 <script type="text/javascript">
 
@@ -174,6 +174,13 @@
                     .draw();
             }
         } );
+
+            $('#btnLimpiarFiltros').click(function() 
+        {
+            that
+                .search('')
+                .draw();
+        }); 
     })
 
     
