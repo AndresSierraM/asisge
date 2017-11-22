@@ -155,29 +155,74 @@ class ActaCapacitacionController extends Controller
         {
             $idPlanCapacitacion = \App\ActaCapacitacion::find($id);
 
-            $actaCapacitacion = DB::table('actacapacitacion as ac')
-            ->leftJoin('plancapacitacion as pc', 'ac.PlanCapacitacion_idPlanCapacitacion', '=', 'pc.idPlanCapacitacion')
-            ->leftJoin('tercero as t', 'pc.Tercero_idResponsable', '=', 't.idTercero')
-            ->select(DB::raw('numeroActaCapacitacion, fechaElaboracionActaCapacitacion, PlanCapacitacion_idPlanCapacitacion, idPlanCapacitacion, tipoPlanCapacitacion, nombrePlanCapacitacion, objetivoPlanCapacitacion, Tercero_idResponsable, t.nombreCompletoTercero, personalInvolucradoPlanCapacitacion, fechaInicioPlanCapacitacion, fechaFinPlanCapacitacion, metodoEficaciaPlanCapacitacion'))
-            ->where('idActaCapacitacion','=',$id)
-            ->get();
 
-            $planCapacitacionTema = DB::table('plancapacitaciontema as pct')
-            ->leftJoin('tercero as t', 'pct.Tercero_idCapacitador', '=', 't.idTercero')
-            ->select(DB::raw('nombrePlanCapacitacionTema, Tercero_idCapacitador, t.nombreCompletoTercero,fechaPlanCapacitacionTema, horaPlanCapacitacionTema,duracionActaCapacitacionTema,dictadaPlanCapacitacionTema,cumpleObjetivoPlanCapacitacionTema'))
-            ->orderby('idPlanCapacitacionTema','ASC')
-            ->where('PlanCapacitacion_idPlanCapacitacion','=',$idPlanCapacitacion->PlanCapacitacion_idPlanCapacitacion)
-            ->get();
+            $ActaCapacitaciones = DB::SELECT('
+                SELECT ac.numeroActaCapacitacion,ac.fechaElaboracionActaCapacitacion,pc.nombrePlanCapacitacion,
+                pc.tipoPlanCapacitacion,t.nombreCompletoTercero,cc.nombreCentroCosto,pc.objetivoPlanCapacitacion,pc.personalInvolucradoPlanCapacitacion,pc.fechaInicioPlanCapacitacion,pc.fechaFinPlanCapacitacion,pc.metodoEficaciaPlanCapacitacion
+                FROM actacapacitacion ac
+                LEFT JOIN plancapacitacion pc 
+                ON ac.PlanCapacitacion_idPlanCapacitacion = pc.idPlanCapacitacion
+                LEFT JOIN tercero t
+                ON pc.Tercero_idResponsable = t.idTercero
+                LEFT JOIN centrocosto cc
+                ON pc.CentroCosto_idCentroCosto = cc.idCentroCosto
+                WHERE ac.idActaCapacitacion = '.$id);
 
-            $actaCapacitacionAsistente = DB::table('actacapacitacionasistente as aca')
-            ->leftJoin('tercero as t', 'aca.Tercero_idAsistente', '=', 't.idTercero')
-            ->leftJoin('cargo as c', 't.Cargo_idCargo', '=', 'c.idCargo')
-            ->select(DB::raw('ActaCapacitacion_idActaCapacitacion, Tercero_idAsistente, t.nombreCompletoTercero, t.Cargo_idCargo, c.nombreCargo'))
-            ->orderby('idActaCapacitacionAsistente','ASC')
-            ->where('ActaCapacitacion_idActaCapacitacion','=',$id)
-            ->get();
 
-            return view('formatos.actacapacitacionimpresion',compact('actaCapacitacion','planCapacitacionTema','actaCapacitacionAsistente'));
+            $ActaCapacitacionTema = DB::SELECT('
+                SELECT pct.nombrePlanCapacitacionTema, t.nombreCompletoTercero, act.fechaActaCapacitacionTema, act.horaActaCapacitacionTema, act.duracionActaCapacitacionTema, act.dictadaActaCapacitacionTema, act.cumpleObjetivoActaCapacitacionTema
+                FROM actacapacitaciontema act
+                LEFT JOIN plancapacitaciontema pct 
+                ON act.PlanCapacitacionTema_idPlanCapacitacionTema = pct.idPlanCapacitacionTema
+                LEFT JOIN tercero t
+                ON act.Tercero_idCapacitador = t.idTercero
+                LEFT JOIN actacapacitacion  ac
+                ON act.ActaCapacitacion_idActaCapacitacion = ac.idActaCapacitacion
+                WHERE act.ActaCapacitacion_idActaCapacitacion ='.$id);
+
+
+
+
+            $ActaCapacitacionAsistentes = DB:: SELECT ('
+                SELECT t.nombreCompletoTercero, acas.firmaActaCapacitacionAsistente
+                FROM actacapacitacionasistente acas
+                LEFT JOIN actacapacitacion 
+                ON acas.ActaCapacitacion_idActaCapacitacion = actacapacitacion.idActaCapacitacion
+                LEFT JOIN tercero t
+                ON acas.Tercero_idAsistente = t.idTercero
+                WHERE acas.ActaCapacitacion_idActaCapacitacion ='.$id);
+
+            $ActaCapacitacionArchivos = DB:: SELECT ('
+            SELECT acar.rutaActaCapacitacionArchivo
+            FROM actacapacitacionarchivo acar
+            LEFT JOIN actacapacitacion ac
+            ON acar.ActaCapacitacion_idActaCapacitacion = ac.idActaCapacitacion
+            WHERE acar.ActaCapacitacion_idActaCapacitacion ='.$id);   
+            
+
+            // $actaCapacitacion = DB::table('actacapacitacion as ac')
+            // ->leftJoin('plancapacitacion as pc', 'ac.PlanCapacitacion_idPlanCapacitacion', '=', 'pc.idPlanCapacitacion')
+            // ->leftJoin('tercero as t', 'pc.Tercero_idResponsable', '=', 't.idTercero')
+            // ->select(DB::raw('numeroActaCapacitacion, fechaElaboracionActaCapacitacion, PlanCapacitacion_idPlanCapacitacion, idPlanCapacitacion, tipoPlanCapacitacion, nombrePlanCapacitacion, objetivoPlanCapacitacion, Tercero_idResponsable, t.nombreCompletoTercero, personalInvolucradoPlanCapacitacion, fechaInicioPlanCapacitacion, fechaFinPlanCapacitacion, metodoEficaciaPlanCapacitacion'))
+            // ->where('idActaCapacitacion','=',$id)
+            // ->get();
+
+            // $planCapacitacionTema = DB::table('plancapacitaciontema as pct')
+            // ->leftJoin('tercero as t', 'pct.Tercero_idCapacitador', '=', 't.idTercero')
+            // ->select(DB::raw('nombrePlanCapacitacionTema, Tercero_idCapacitador, t.nombreCompletoTercero,fechaPlanCapacitacionTema, horaPlanCapacitacionTema,duracionActaCapacitacionTema,dictadaPlanCapacitacionTema,cumpleObjetivoPlanCapacitacionTema'))
+            // ->orderby('idPlanCapacitacionTema','ASC')
+            // ->where('PlanCapacitacion_idPlanCapacitacion','=',$idPlanCapacitacion->PlanCapacitacion_idPlanCapacitacion)
+            // ->get();
+
+            // $actaCapacitacionAsistente = DB::table('actacapacitacionasistente as aca')
+            // ->leftJoin('tercero as t', 'aca.Tercero_idAsistente', '=', 't.idTercero')
+            // ->leftJoin('cargo as c', 't.Cargo_idCargo', '=', 'c.idCargo')
+            // ->select(DB::raw('ActaCapacitacion_idActaCapacitacion, Tercero_idAsistente, t.nombreCompletoTercero, t.Cargo_idCargo, c.nombreCargo'))
+            // ->orderby('idActaCapacitacionAsistente','ASC')
+            // ->where('ActaCapacitacion_idActaCapacitacion','=',$id)
+            // ->get();
+
+            return view('formatos.actacapacitacionimpresion',compact('ActaCapacitaciones','ActaCapacitacionTema','ActaCapacitacionAsistentes','ActaCapacitacionArchivos'));
         }
 
         $planCapacitacion = \App\PlanCapacitacion::find($request['idPlanCapacitacion']);

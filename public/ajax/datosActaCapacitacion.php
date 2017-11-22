@@ -1,9 +1,12 @@
 <?php
     $modificar = $_GET['modificar'];
     $eliminar = $_GET['eliminar'];
+    $imprimir = $_GET['imprimir'];
 
     $visibleM = '';
     $visibleE = '';
+    $visibleI = '';
+
     if ($modificar == 1) 
         $visibleM = 'inline-block;';
     else
@@ -13,6 +16,10 @@
         $visibleE = 'inline-block;';
     else
         $visibleE = 'none;';
+    if ($imprimir == 1) 
+        $visibleI = 'inline-block;';
+    else
+        $visibleI = 'none';
 
     $actacapacitacion = DB::table('actacapacitacion')
             ->leftJoin('plancapacitacion', 'PlanCapacitacion_idPlanCapacitacion', '=', 'idPlanCapacitacion')
@@ -32,6 +39,9 @@
                         '</a>&nbsp;'.
                         '<a onclick="firmarActaCapacitacion('.$value->idActaCapacitacion.')">'.
                             '<span class="glyphicon glyphicon-edit" style = "cursor:pointer; display:'.$visibleM.'"></span>'.
+                        '</a>&nbsp;'.
+                        '<a href="#" onclick="imprimirFormato('.$value->idActaCapacitacion.');">'.
+                            '<span class="glyphicon glyphicon-print" style = "display:'.$visibleI.'"></span>'.
                         '</a>';
         $row[$key][] = $value->idActaCapacitacion;
         $row[$key][] = $value->numeroActaCapacitacion;
