@@ -79,13 +79,17 @@ $base64 = '';
 		var valorElemento = [0,''];
 		var valorExamen = [0,'',0,0,0,''];
 
+
 		var idTercero = '<?php echo isset($idTercero) ? $idTercero : 0;?>';
 		var nombreCompletoTercero = '<?php echo isset($nombreCompletoTercero) ? $nombreCompletoTercero : "";?>';
 		
 		var listaTercero = [JSON.parse(idTercero),JSON.parse(nombreCompletoTercero)];
-		var valorComite = ['E','T'];
-		var nombreComite = ['Empresa','Trabajadores'];
-		var listaComite = [valorComite,nombreComite];
+	
+
+ 		valorComite = Array('E','T');
+ 		nombreComite = Array ('Empresa','Trabajadores');
+
+	 	listaComite = [valorComite,nombreComite];
 		
 		$(document).ready(function()
 		{
@@ -136,6 +140,10 @@ $base64 = '';
 			comite.completar = ['off','off','off','off'];
 			comite.opciones = ['',listaComite,listaTercero,listaTercero];
 			comite.funciones  = ['','','',''];
+
+
+
+			// Nueva multiregistro Candidatos inscritos
 
 			
 			for(var j=0, k = conformacionGrupoApoyoComite.length; j < k; j++)
@@ -275,7 +283,7 @@ $base64 = '';
 													<div class="col-sm-10">
 											            <div class="input-group">
 											              	<span class="input-group-addon">
-											                	<i class="fa fa-flag"></i>
+											                	<i class="fa fa-flag" style="width: 14px;"></i>
 											              	</span>
 											              	{!!Form::select('Tercero_idGerente',$tercero, (isset($conformacionGrupoApoyo) ? $conformacionGrupoApoyo->Tercero_idGerente : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el Gerente General"])!!}
 														</div>
@@ -285,10 +293,64 @@ $base64 = '';
 											</div>
 										</div>
 									</div>
+									 <!-- Acordeon Convocatoria votaci&oacute;n -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#convocatoriavotacion">Convocatoria votaci&oacute;n</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="convocatoriavotacion" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('convocatoriaVotacionConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+				                     <!--  Acta de escrutinio y votaci&acute;n -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#escrutinio">Acta de escrutinio y votaci&oacute;n</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="escrutinio" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('actaEscrutinioConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+				                     <!--  Acta de escrutinio y votaci&acute;n -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito"  style="background-color: red">Candidatos Inscritos (FALTA)</a>
+					                        </h4>
+				                      	</div>
+				                      	<!-- Codigo aquí -->
+					     
+				                    </div>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#votacion">Actas de Votaci&oacute;n</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#votacion">Actas de votaci&oacute;n</a>
 											</h4>
 										</div>
 										<div id="votacion" class="panel-collapse collapse">
@@ -386,7 +448,7 @@ $base64 = '';
 														</div>
 													</div>
 												</div>
-												<div class="form-group required" id='test'>
+												<div class="form-group" id='test'>
 													{!!Form::label('Tercero_idPresidente', 'Presidente', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 											            <div class="input-group">
@@ -398,7 +460,7 @@ $base64 = '';
 													</div>
 												</div>
 
-												<div class="form-group required" id='test'>
+												<div class="form-group" id='test'>
 													{!!Form::label('Tercero_idSecretario', 'Secretario', array('class' => 'col-sm-2 control-label'))!!}
 													<div class="col-sm-10">
 											            <div class="input-group">
@@ -417,9 +479,9 @@ $base64 = '';
 															<div class="col-md-1" style="width: 40px;height: 50px;" onclick="comite.agregarCampos(valorComite,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
-															<div class="col-md-1" style="width: 260px;display:inline-block;height:50px;">Nombrado por</div>
-															<div class="col-md-1 requiredMulti" style="width: 380px;display:inline-block;height:50px;">Principal</div>
-															<div class="col-md-1 requiredMulti" style="width: 380px;display:inline-block;height:50px;">Suplentes</div>
+															<div class="col-md-1 requiredMulti" style="width: 260px;display:inline-block;height:50px;">Nombrado por</div>
+															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Principal</div>
+															<div class="col-md-1" style="width: 380px;display:inline-block;height:50px;">Suplentes</div>
 															<div id="contenedor_comite">
 															</div>
 														</div>
@@ -428,6 +490,128 @@ $base64 = '';
 											</div>
 										</div>
 									</div>
+									   <!--  Acta Cierre -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#cierreacta">Acta de cierre</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="cierreacta" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('actaCierreConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+				                      <!--  Acta conformacion -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#conformacionacta">Acta de conformaci&oacute;n</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="conformacionacta" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('actaConformacionConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+				                        <!--  Acta de escrutinio y votaci&acute;n -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#Documentos" style="background-color: red">Documentos(FALTA)</a>
+					                        </h4>
+				                      	</div>
+				                      	<!-- Codigo aquí -->
+					     
+				                    </div>
+				                       <!--  Funciones el grupo de apoyo -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#funcionesgrupo">Funciones el grupo de apoyo</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="funcionesgrupo" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('funcionesGrupoConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+				                           <!--  Funciones del presidente -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#presidente">Funciones del presidente</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="presidente" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('funcionesPresidenteConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+
+				                       <!--  Funciones del  secretario -->
+			                     	<div class="panel panel-default">
+				                      	<div class="panel-heading">
+					                        <h4 class="panel-title">
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#funcionessecretario">Funciones del secretario</a>
+					                        </h4>
+				                      	</div>
+				                      	<div id="funcionessecretario" class="panel-collapse collapse">
+					                        <div class="panel-body">
+					                          <div class="form-group" id='test'>
+					                            <div class="col-sm-10">
+					                              <div class="input-group">
+					                                <span class="input-group-addon">
+					                                  <i class="fa fa-pencil-square-o "></i>
+					                                </span>
+					                                {!!Form::textarea('funcionesSecretarioConformacionGrupoApoyo',null,['class'=>'form-control','placeholder'=>'Ingrese la Definici&oacute;n'])!!}
+					                              </div>
+					                            </div>
+					                          </div>
+					                        </div>
+				                      	</div>
+				                    </div>
+
 								</div>
 							</div>
 						</div>
@@ -468,6 +652,47 @@ $base64 = '';
 		$('#fechaConstitucionConformacionGrupoApoyo').datetimepicker(({
 			format: "YYYY-MM-DD"
 		}));
+
+
+	 	CKEDITOR.replace(('convocatoriaVotacionConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+
+
+	 	CKEDITOR.replace(('actaEscrutinioConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+
+
+	 	CKEDITOR.replace(('actaCierreConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+
+
+
+  		CKEDITOR.replace(('actaConformacionConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+
+
+  		CKEDITOR.replace(('funcionesGrupoConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+
+  		CKEDITOR.replace(('funcionesPresidenteConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+  		CKEDITOR.replace(('funcionesSecretarioConformacionGrupoApoyo'), {
+        fullPage: true,
+        allowedContent: true
+  		}); 
+
 
 	  $(document).ready(function()
 	  {

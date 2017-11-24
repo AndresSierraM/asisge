@@ -59,6 +59,15 @@ class ConformacionGrupoApoyoController extends Controller
                 'Tercero_idRepresentante' => $request['Tercero_idRepresentante'],
                 'fechaVotacionConformacionGrupoApoyo' => $request['fechaVotacionConformacionGrupoApoyo'],
                 'Tercero_idGerente' => $request['Tercero_idGerente'],
+                'convocatoriaVotacionConformacionGrupoApoyo' => $request['convocatoriaVotacionConformacionGrupoApoyo'],
+                 'actaEscrutinioConformacionGrupoApoyo' => $request['actaEscrutinioConformacionGrupoApoyo'],
+                 'actaCierreConformacionGrupoApoyo' => $request['actaCierreConformacionGrupoApoyo'],
+                 'actaConformacionConformacionGrupoApoyo' => $request['actaConformacionConformacionGrupoApoyo'],
+                 'funcionesGrupoConformacionGrupoApoyo' => $request['funcionesGrupoConformacionGrupoApoyo'],
+                 'funcionesPresidenteConformacionGrupoApoyo' => $request['funcionesPresidenteConformacionGrupoApoyo'],
+                 'funcionesSecretarioConformacionGrupoApoyo' => $request['funcionesSecretarioConformacionGrupoApoyo'],
+
+
                 'fechaActaConformacionGrupoApoyo' => $request['fechaActaConformacionGrupoApoyo'],
                 'horaActaConformacionGrupoApoyo' => $request['horaActaConformacionGrupoApoyo'],
                 'fechaInicioConformacionGrupoApoyo' => $request['fechaInicioConformacionGrupoApoyo'],
@@ -203,8 +212,8 @@ class ConformacionGrupoApoyoController extends Controller
             $data = array(
              'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
             'nombradoPorConformacionGrupoApoyoComite' => $request['nombradoPorConformacionGrupoApoyoComite'][$i],
-            'Tercero_idPrincipal' => $request['Tercero_idPrincipal'][$i],
-            'Tercero_idSuplente' => $request['Tercero_idSuplente'][$i] );
+            'Tercero_idPrincipal' => ($request['Tercero_idPrincipal'][$i] == '' ? null : $request['Tercero_idPrincipal'][$i]),
+            'Tercero_idSuplente' => ($request['Tercero_idSuplente'][$i] == '' ? null : $request['Tercero_idSuplente'][$i]));
 
             $preguntas = \App\ConformacionGrupoApoyoComite::updateOrCreate($indice, $data);
         }

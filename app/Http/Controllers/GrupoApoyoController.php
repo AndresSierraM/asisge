@@ -51,9 +51,11 @@ class GrupoApoyoController extends Controller
         \App\GrupoApoyo::create([
             'codigoGrupoApoyo' => $request['codigoGrupoApoyo'],
             'nombreGrupoApoyo' => $request['nombreGrupoApoyo'],
-            'convocatoriaVotacionGrupoApoyo' => $request['convocatoriaVotacionGrupoApoyo'],
-            'actaEscrutinioGrupoApoyo' => $request['actaEscrutinioGrupoApoyo'],
-            'actaConstitucionGrupoApoyo' => $request['actaConstitucionGrupoApoyo'],
+            'fechaConformacionGrupoApoyo' => $request['fechaConformacionGrupoApoyo'],
+            'fechaVencimientoGrupoApoyo' => $request['fechaVencimientoGrupoApoyo'],
+            // 'convocatoriaVotacionGrupoApoyo' => $request['convocatoriaVotacionGrupoApoyo'],
+            // 'actaEscrutinioGrupoApoyo' => $request['actaEscrutinioGrupoApoyo'],
+            // 'actaConstitucionGrupoApoyo' => $request['actaConstitucionGrupoApoyo'],
             'FrecuenciaMedicion_idFrecuenciaMedicion' => $request['FrecuenciaMedicion_idFrecuenciaMedicion'],
             'Compania_idCompania' => \Session::get('idCompania')
             ]);
@@ -97,6 +99,9 @@ class GrupoApoyoController extends Controller
     {
         $grupoApoyo = \App\GrupoApoyo::find($id);
         $grupoApoyo->fill($request->all());
+        $grupoApoyo->FrecuenciaMedicion_idFrecuenciaMedicion = (($request['FrecuenciaMedicion_idFrecuenciaMedicion'] == '' or $request['FrecuenciaMedicion_idFrecuenciaMedicion'] == 0) ? null : $request['FrecuenciaMedicion_idFrecuenciaMedicion'
+                    ]);
+
         $grupoApoyo->save();
 
         return redirect('/grupoapoyo');

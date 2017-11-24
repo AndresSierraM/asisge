@@ -25,74 +25,72 @@
 
 <script>
 
+// Se elimina la variable que contiene lo que se manda del controlador del grupoApoyoPermiso ya que llama una variable que no existe, si se necesita esta en backup local  17-Noviembre-2017
 
-var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoyo->GrupoApoyoPermiso) : "");?>';
-    GrupoApoyoPermiso = (GrupoApoyoPermiso != '' ? JSON.parse(GrupoApoyoPermiso) : '');
+//   $(document).ready(function(){
+//     protRol = new Atributos('protRol','contenedor_grupoapoyo','grupoapoyoseleccion');
 
-  $(document).ready(function(){
-    protRol = new Atributos('protRol','contenedor_grupoapoyo','grupoapoyoseleccion');
+//       protRol.altura = '35px';
+//       protRol.campoid = 'idGrupoApoyoPermiso';
+//       protRol.campoEliminacion = 'eliminarRol';
+//       protRol.campos   = [
+//       'idGrupoApoyoPermiso', 
+//       'Rol_idRol',
+//       'nombreRol',  
+//       'adicionarGrupoApoyoPermiso',
+//       'modificarGrupoApoyoPermiso',
+//       'eliminarGrupoApoyoPermiso',
+//       'consultarGrupoApoyoPermiso'
+//       ];
 
-      protRol.altura = '35px';
-      protRol.campoid = 'idGrupoApoyoPermiso';
-      protRol.campoEliminacion = 'eliminarRol';
-      protRol.campos   = [
-      'idGrupoApoyoPermiso', 
-      'Rol_idRol',
-      'nombreRol',  
-      'adicionarGrupoApoyoPermiso',
-      'modificarGrupoApoyoPermiso',
-      'eliminarGrupoApoyoPermiso',
-      'consultarGrupoApoyoPermiso'
-      ];
+//       protRol.etiqueta = [
+//       'input',
+//       'input', 
+//       'input',  
+//       'checkbox',
+//       'checkbox',
+//       'checkbox',
+//       'checkbox'
+//       ];
 
-      protRol.etiqueta = [
-      'input',
-      'input', 
-      'input',  
-      'checkbox',
-      'checkbox',
-      'checkbox',
-      'checkbox'
-      ];
+//       protRol.tipo = [
+//       'hidden',
+//       'hidden',
+//       'text',
+//       'checkbox',
+//       'checkbox',
+//       'checkbox',
+//       'checkbox',
 
-      protRol.tipo = [
-      'hidden',
-      'hidden',
-      'text',
-      'checkbox',
-      'checkbox',
-      'checkbox',
-      'checkbox',
+//       ];
 
-      ];
+//       protRol.estilo = [
+//       '',
+//       '',
+//       'width: 530px;height:35px;',
+//       'width: 70px;height:35px; display:inline-block;',
+//       'width: 70px;height:35px; display:inline-block;',
+//       'width: 70px;height:35px; display:inline-block;',
+//       'width: 70px;height:35px; display:inline-block;'
+//       ];
 
-      protRol.estilo = [
-      '',
-      '',
-      'width: 530px;height:35px;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;',
-      'width: 70px;height:35px; display:inline-block;'
-      ];
+//       protRol.clase    = ['','','','','','','']; 
+//       protRol.sololectura = [true,true,true,true,true,true,true];  
+//       protRol.funciones = ['','','','','','',''];
+//       protRol.completar = ['off','off','off','off','off','off','off'];
+//       protRol.opciones = ['','','','','','','']
 
-      protRol.clase    = ['','','','','','','']; 
-      protRol.sololectura = [true,true,true,true,true,true,true];  
-      protRol.funciones = ['','','','','','',''];
-      protRol.completar = ['off','off','off','off','off','off','off'];
-      protRol.opciones = ['','','','','','','']
+//       for(var j=0, k = GrupoApoyoPermiso.length; j < k; j++)
+//       {
+//         protRol.agregarCampos(JSON.stringify(GrupoApoyoPermiso[j]),'L');
+//         llenarNombreRol($("#Rol_idRol"+j).val());
+//         // Llamar la funcion en el for para que por cada registro de la multiregistro el haga el ajax de llenar el nombre del rol
+//         // enviando el respectivo id del rol 
 
-      for(var j=0, k = GrupoApoyoPermiso.length; j < k; j++)
-      {
-        protRol.agregarCampos(JSON.stringify(GrupoApoyoPermiso[j]),'L');
-        llenarNombreRol($("#Rol_idRol"+j).val());
-        // Llamar la funcion en el for para que por cada registro de la multiregistro el haga el ajax de llenar el nombre del rol
-        // enviando el respectivo id del rol 
-
-      }
+//       }
 
 
-    });
+//     });
 
   </script>
 
@@ -127,13 +125,38 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 			        <div class="col-sm-10" >
 			          <div class="input-group">
 			            <span class="input-group-addon">
-			              <i class="fa fa-credit-card" ></i>
+			              <i class="fa fa-credit-card" style="width: 14px;" ></i>
 			            </span>
-			            {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciaMedicion, (isset($tipoInspeccion) ? $tipoInspeccion->frecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
+			            {!!Form::select('FrecuenciaMedicion_idFrecuenciaMedicion',$frecuenciaMedicion, (isset($grupoApoyo) ? $grupoApoyo->FrecuenciaMedicion_idFrecuenciaMedicion : 0),["class" => "chosen-select form-control", "placeholder" =>"Seleccione la frecuencia de medici&oacute;n"])!!}
 			          </div>
 			        </div>
 			    </div>
-				<div class="form-group">
+		        <div class="form-group required" >
+			        {!!Form::label('fechaConformacionGrupoApoyo', 'Fecha de conformaci&oacute;n', array('class' => 'col-sm-2 control-label'))!!}
+			        <div class="col-sm-10" >
+			          <div class="input-group">
+			            <span class="input-group-addon">
+			              <i class="fa fa-calendar" style="width: 14px;" ></i>
+			            </span>
+			           {!!Form::text('fechaConformacionGrupoApoyo',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de conformaci&oacute;n'])!!}
+			          </div>
+			        </div>
+			    </div>
+		     	<div class="form-group required" >
+			        {!!Form::label('fechaVencimientoGrupoApoyo', 'Fecha de vencimiento', array('class' => 'col-sm-2 control-label'))!!}
+			        <div class="col-sm-10" >
+			          <div class="input-group">
+			            <span class="input-group-addon">
+			              <i class="fa fa-calendar" style="width: 14px;" ></i>
+			            </span>
+			           {!!Form::text('fechaVencimientoGrupoApoyo',null, ['class'=>'form-control', 'placeholder'=>'Ingresa la fecha de vencimiento'])!!}
+			          </div>
+			        </div>
+			    </div>
+
+			    					 <!--Toda la parte de detalles no entra en este maestro debido que se repite en la conformacion cambio pedido por vivi  -->
+
+				<!-- <div class="form-group">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">Detalles</div>
@@ -193,16 +216,16 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 											</div>
 										</div>
 
-									</div>
-										<div class="panel panel-default">
+									</div> -->
+										<!-- <div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
 												<a data-toggle="collapse" data-parent="#accordion" href="#permisos">Permisos</a>
 											</h4>
-										</div>
+										</div> -->
 
 										<!-- Nuevo cambio multiregistro con permisos  -->
-										<div id="permisos" class="panel-collapse collapse">
+									<!-- 	<div id="permisos" class="panel-collapse collapse">
 									   <div class="panel-body" >
 								          <div class="form-group" id='test'>
 								            <div class="col-sm-12">
@@ -231,15 +254,17 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 								            </div>
 								          </div>  
 								        </div>
-								   </div>
+								   </div> -->
 										
-									</div>
-									
+									<!-- </div> -->
+								<!-- 	
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
+
+			</br></br></br></br></br></br></br></br>
 				<div class="form-group">
 					<div class="col-sm-12">
 						@if(isset($grupoApoyo))
@@ -247,30 +272,47 @@ var GrupoApoyoPermiso = '<?php echo (isset($grupoApoyo) ? json_encode($grupoApoy
 						@else
 							{!!Form::submit('Adicionar',["class"=>"btn btn-primary","onclick"=>'validarFormulario(event);'])!!}
 						@endif
-						</br></br></br></br>
+					
 					</div>
 				</div>
 			</fieldset>
 		</div>	
 	{!!Form::close()!!}
+
+<script type="text/javascript">
+
+    
+
+    $('#fechaConformacionGrupoApoyo').datetimepicker(({
+      format: "YYYY-MM-DD"
+    }));
+
+  	$('#fechaVencimientoGrupoApoyo').datetimepicker(({
+      format: "YYYY-MM-DD"
+	}));
+
+
+    
+
+</script>
 @stop
 
-
-<div id="ModalRoles" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:70%;">
+<!-- <div id="ModalRoles" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:70%;"> -->
 
     <!-- Modal content-->
-    <div style="" class="modal-content">
+ <!--    <div style="" class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Selecci&oacute;n de Roles</h4>
       </div>
       <div class="modal-body">
       <?php 
-        echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
+        // echo '<iframe style="width:100%; height:400px; " id="roles" name="roles" src="http://'.$_SERVER["HTTP_HOST"].'/rolgridselect"></iframe>'
       ?>
       </div>
     </div>
   </div>
 </div>
 
+ -->

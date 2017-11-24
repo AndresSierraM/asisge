@@ -20,11 +20,18 @@
     else
         $visibleI = 'none';
 
-    $conformaciongrupoapoyo = DB::table('conformaciongrupoapoyo')
-            ->leftJoin('grupoapoyo', 'GrupoApoyo_idGrupoApoyo', '=', 'idGrupoApoyo')
-            ->select(DB::raw('idConformacionGrupoApoyo, nombreGrupoApoyo, nombreConformacionGrupoApoyo, fechaConformacionGrupoApoyo'))
-            ->where('conformaciongrupoapoyo.Compania_idCompania','=', \Session::get('idCompania'))
-            ->get();
+    // $conformaciongrupoapoyo = DB::table('conformaciongrupoapoyo')
+    //         ->leftJoin('grupoapoyo', 'GrupoApoyo_idGrupoApoyo', '=', 'idGrupoApoyo')
+    //         ->select(DB::raw('idConformacionGrupoApoyo, nombreGrupoApoyo, nombreConformacionGrupoApoyo, fechaConformacionGrupoApoyo'))
+    //         ->where('conformaciongrupoapoyo.Compania_idCompania','=', \Session::get('idCompania'))
+    //         ->get();
+    $conformaciongrupoapoyo = DB::select('
+        SELECT cga.idConformacionGrupoApoyo,ga.nombreGrupoApoyo,
+        cga.nombreConformacionGrupoApoyo,cga.fechaConformacionGrupoApoyo
+        FROM conformaciongrupoapoyo cga
+        LEFT JOIN grupoapoyo ga
+        ON cga.GrupoApoyo_idGrupoApoyo = ga.idGrupoApoyo
+        WHERE cga.Compania_idCompania = '.\Session::get('idCompania'));
 
     // print_r($conformaciongrupoapoyo);
     // exit;

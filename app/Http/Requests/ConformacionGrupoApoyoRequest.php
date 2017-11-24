@@ -25,16 +25,14 @@ class ConformacionGrupoApoyoRequest extends Request
     {
         $jurado = count($this->get('Tercero_idJurado'));
         $candidato = count($this->get('Tercero_idCandidato'));
-        $principal = count($this->get('Tercero_idPrincipal'));
-        $suplente = count($this->get('Tercero_idSuplente'));
+        $Nombradopor = count($this->get('nombradoPorConformacionGrupoApoyoComite'));
+
        
         $validacion = array(
             'nombreConformacionGrupoApoyo' => "required|string|max:80",
             'GrupoApoyo_idGrupoApoyo' => 'required',
             'fechaConformacionGrupoApoyo' => 'required',
             'Tercero_idRepresentante' => 'required',
-            'Tercero_idPresidente' => 'required',
-            'Tercero_idSecretario' => 'required',
             'Tercero_idGerente' => 'required',
             );
         
@@ -54,22 +52,55 @@ class ConformacionGrupoApoyoRequest extends Request
             }
         }
 
-        for($i = 0; $i < $principal; $i++)
+        for($i = 0; $i < $Nombradopor; $i++)
         {
-            if(trim($this->get('Tercero_idPrincipal')[$i]) == '' or trim($this->get('Tercero_idPrincipal')[$i]) == 0)
+            if(trim($this->get('nombradoPorConformacionGrupoApoyoComite')[$i]) == '')
             {    
-                $validacion['Tercero_idPrincipal'.$i] =  'required';
+                $validacion['nombradoPorConformacionGrupoApoyoComite'.$i] =  'required';
             }
         }
 
-        for($i = 0; $i < $suplente; $i++)
-        {
-            if(trim($this->get('Tercero_idSuplente')[$i]) == '' or trim($this->get('Tercero_idSuplente')[$i]) == 0)
-            {    
-                $validacion['Tercero_idSuplente'.$i] =  'required';
-            }
-        }
 
         return $validacion;
+    }
+
+     public function messages()
+    {
+        $jurado = count($this->get('Tercero_idJurado'));
+        $candidato = count($this->get('Tercero_idCandidato'));
+        $Nombradopor = count($this->get('nombradoPorConformacionGrupoApoyoComite'));
+
+
+        $mensajes = array();
+        $mensajes["GrupoApoyo_idGrupoApoyo.required"] = "[Encabezado] Debe seleccionar el grupo de apoyo";
+        $mensajes["nombreConformacionGrupoApoyo.required"] = "[Encabezado] Debe ingresar la descripción";
+        $mensajes["fechaConformacionGrupoApoyo.required"] = "[Encabezado] Debe ingresar la fecha de elaboración";
+        $mensajes["Tercero_idRepresentante.required"] = "[Detalle Convocatoria] Debe Seleccionar el representante";
+        $mensajes["Tercero_idGerente.required"] = "[Detalle Convocatoria] Debe Seleccionar el Gerente General";
+
+        for($i = 0; $i < $jurado; $i++)
+        {
+            if(trim($this->get('Tercero_idJurado')[$i]) == '' )
+            {    
+                $mensajes["Tercero_idJurado".$i.".required"] = "[Detalle Actas de votación] Debe seleccionar el jurado  en la línea ".($i+1);
+            }           
+        }
+         for($i = 0; $i < $candidato; $i++)
+        {
+            if(trim($this->get('Tercero_idCandidato')[$i]) == '' )
+            {    
+                $mensajes["Tercero_idCandidato".$i.".required"] = "[Detalle Actas de votación] Debe seleccionar el nombre del candidato en la línea ".($i+1);
+            }           
+        }
+         for($i = 0; $i < $Nombradopor; $i++)
+        {
+            if(trim($this->get('nombradoPorConformacionGrupoApoyoComite')[$i]) == '' )
+            {    
+                $mensajes["nombradoPorConformacionGrupoApoyoComite".$i.".required"] = "[Detalle Constitución] Debe seleccionar por quién fue nombrado  en la línea ".($i+1);
+            }           
+        }
+
+        return $mensajes;
+
     }
 }
