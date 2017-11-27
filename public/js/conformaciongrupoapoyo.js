@@ -1,3 +1,49 @@
+function llenarInformacionCandidato(IdTerceroEmpleado)
+{
+       var token = document.getElementById('token').value;
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: "json",
+            data: {'IdTerceroEmpleado': IdTerceroEmpleado.value},
+            url:   'http://'+location.host+'/llenarInformacionCandidato/',
+            type:  'post',
+            beforeSend: function(){
+                //Lo que se hace antes de enviar el formulario
+                },
+            success: function(respuesta){
+                // Se reemplaza el id con blanco para tener el registro 
+                reg = IdTerceroEmpleado.id.replace('nombreCandidatoConformacionActaGrupoApoyo','');
+
+                // Se valida que el cargo que se esta consultando si tenga valor, si tiene valor devuelve el valor, de no tener un valor devuelve un mensaje en el campo
+                if (respuesta[0]['Cargo_idCargo'] == '' || respuesta[0]['Cargo_idCargo'] == '' ||  respuesta[0]['Cargo_idCargo'] == null) 
+                    {
+                        $("#nombreCargo"+reg).val('Debe llenar el cargo de este tercero');
+                    }
+                else
+                    {                                     
+                        $("#nombreCargo"+reg).val(respuesta[0]['nombreCargo']);
+                    }
+
+                // Se valida que el Centro de costo que se esta consultando si tenga valor, si tiene valor devuelve el valor, de no tener un valor devuelve un mensaje en el campo
+                if (respuesta[0]['CentroCosto_idCentroCosto'] == '' || respuesta[0]['CentroCosto_idCentroCosto'] == '' ||  respuesta[0]['CentroCosto_idCentroCosto'] == null)
+                    {
+                        $("#centrocosto"+reg).val('Debe llenar el centro de costo de este tercero');
+                    }
+                else
+                    {
+                        $("#centrocosto"+reg).val(respuesta[0]['nombreCentroCosto']);
+                    }                         
+            },
+            error:    function(xhr,err){ 
+                alert("Error");
+            }
+        });
+
+}
+
+
+
 function validarFormulario(event)
 {
     var route = "http://"+location.host+"/conformaciongrupoapoyo";

@@ -74,6 +74,23 @@ $base64 = '';
 		var conformacionGrupoApoyoResultado = '<?php echo (isset($conformacionGrupoApoyo) ? json_encode($conformacionGrupoApoyo->conformacionGrupoApoyoResultados) : "");?>';
 		conformacionGrupoApoyoResultado = (conformacionGrupoApoyoResultado != '' ? JSON.parse(conformacionGrupoApoyoResultado) : '');
 
+
+
+		// Se reciben los datos enviados del controlador
+			// Se reciben el id de tercero y nombre tercero para enviarlo al campo tipo select de candidats inscritos
+		var idTerceroEmpleados = '<?php echo isset($idTerceroEmpleado) ? $idTerceroEmpleado : "";?>';
+		var NombreTerceroEmpleados = '<?php echo isset($NombreTerceroEmpleado) ? $NombreTerceroEmpleado : "";?>';
+
+		var  NombreCandidato = [JSON.parse(idTerceroEmpleados),JSON.parse(NombreTerceroEmpleados)];
+
+
+
+		 	// Nombre del evento para llenar multiregistro
+	 	var llenarInformacionCandidatos = ['onchange','llenarInformacionCandidato(this)']
+	 	var valorCandidato = [0,0,'',''];
+		
+
+
 		var valorJurado = [0,'','',''];
 		var valorResultado = [0,'',0];
 		var valorElemento = [0,''];
@@ -90,7 +107,10 @@ $base64 = '';
  		nombreComite = Array ('Empresa','Trabajadores');
 
 	 	listaComite = [valorComite,nombreComite];
-		
+
+
+
+
 		$(document).ready(function()
 		{
 			jurado = new Atributos('jurado','contenedor_jurado','jurado');
@@ -140,6 +160,26 @@ $base64 = '';
 			comite.completar = ['off','off','off','off'];
 			comite.opciones = ['',listaComite,listaTercero,listaTercero];
 			comite.funciones  = ['','','',''];
+
+			// Multiregistro Candidatos Inscritos
+
+
+			candidato = new Atributos('candidato','contenedor_candidato','i');
+
+			candidato.altura = '36px;';
+			candidato.campoid = 'idActaCapacitacionAsistente';
+			candidato.campoEliminacion = 'eliminarAsistente';
+
+			candidato.campos = ['idActaCapacitacionAsistente', 'nombreCandidatoConformacionActaGrupoApoyo', 'nombreCargo','centrocosto'];
+			candidato.etiqueta = ['input','select','input','input'];
+			candidato.tipo = ['hidden','','text','',''];
+			candidato.estilo = ['','width: 400px;height:35px;','width: 300px;height:35px; background-color:#EEEEEE;','width: 300px;height:35px; background-color:#EEEEEE;'];
+			candidato.clase = ['','','',''];
+			candidato.sololectura = [false,false,true,true];
+			candidato.completar = ['off','off','off','off'];
+			candidato.opciones = ['',NombreCandidato,'', ''];
+			candidato.funciones  = ['',llenarInformacionCandidatos,'', ''];
+
 
 
 
@@ -337,16 +377,32 @@ $base64 = '';
 					                        </div>
 				                      	</div>
 				                    </div>
-				                     <!--  Acta de escrutinio y votaci&acute;n -->
-			                     	<div class="panel panel-default">
-				                      	<div class="panel-heading">
-					                        <h4 class="panel-title">
-					                          <a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito"  style="background-color: red">Candidatos Inscritos (FALTA)</a>
-					                        </h4>
-				                      	</div>
-				                      	<!-- Codigo aquí -->
-					     
-				                    </div>
+				                    <!-- Candidatos Inscritos -->
+				                    <div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito">Candidatos Inscritos</a>
+											</h4>
+										</div>
+										<div id="candidatoinscrito" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="form-group" id='test'>
+													<div class="col-sm-12" >
+														<div class="row show-grid">
+															<div class="col-md-1" style="width: 40px;height: 50px;"  onclick="candidato.agregarCampos(valorCandidato,'A')">
+																<span class="glyphicon glyphicon-plus"></span>
+															</div>
+															<div class="col-md-1 requiredMulti" style="width: 400px;display:inline-block;height:50px;">Nombre</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Cargo</div>
+															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Centro de costos</div>
+															<div id="contenedor_candidato">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">

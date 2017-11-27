@@ -665,7 +665,10 @@ Route::group(['middleware' => 'auth'], function ()
     });
     //Ajax de Maestros
 
-
+    Route::post('llenarInformacionCandidato', function()
+    {
+        include public_path().'/ajax/llenarInformacionCandidato.php';
+    });
     Route::post('llenarAccidenteFirma', function()
     {
         include public_path().'/ajax/llenarAccidenteFirma.php';
