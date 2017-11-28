@@ -71,8 +71,6 @@ class ConformacionGrupoApoyoController extends Controller
                  'funcionesGrupoConformacionGrupoApoyo' => $request['funcionesGrupoConformacionGrupoApoyo'],
                  'funcionesPresidenteConformacionGrupoApoyo' => $request['funcionesPresidenteConformacionGrupoApoyo'],
                  'funcionesSecretarioConformacionGrupoApoyo' => $request['funcionesSecretarioConformacionGrupoApoyo'],
-
-
                 'fechaActaConformacionGrupoApoyo' => $request['fechaActaConformacionGrupoApoyo'],
                 'horaActaConformacionGrupoApoyo' => $request['horaActaConformacionGrupoApoyo'],
                 'fechaInicioConformacionGrupoApoyo' => $request['fechaInicioConformacionGrupoApoyo'],
@@ -103,7 +101,7 @@ class ConformacionGrupoApoyoController extends Controller
     {
 
         $conformaciongrupoapoyoS = DB::SELECT("
-        SELECT ga.nombreGrupoApoyo,cga.nombreConformacionGrupoApoyo,cga.fechaConformacionGrupoApoyo,cga.fechaConvocatoriaConformacionGrupoApoyo,tr.nombreCompletoTercero as representante,cga.fechaVotacionConformacionGrupoApoyo,tg.nombreCompletoTercero as gerente,cga.fechaActaConformacionGrupoApoyo,cga.horaActaConformacionGrupoApoyo,cga.fechaInicioConformacionGrupoApoyo,cga.fechaFinConformacionGrupoApoyo,cga.fechaConstitucionConformacionGrupoApoyo,tp.nombreCompletoTercero as presidente,ts.nombreCompletoTercero as secretario
+        SELECT ga.nombreGrupoApoyo,cga.nombreConformacionGrupoApoyo,cga.fechaConformacionGrupoApoyo,cga.fechaConvocatoriaConformacionGrupoApoyo,tr.nombreCompletoTercero as representante,cga.fechaVotacionConformacionGrupoApoyo,tg.nombreCompletoTercero as gerente,cga.fechaActaConformacionGrupoApoyo,cga.horaActaConformacionGrupoApoyo,cga.fechaInicioConformacionGrupoApoyo,cga.fechaFinConformacionGrupoApoyo,cga.fechaConstitucionConformacionGrupoApoyo,tp.nombreCompletoTercero as presidente,ts.nombreCompletoTercero as secretario,cga.convocatoriaVotacionConformacionGrupoApoyo,cga.actaEscrutinioConformacionGrupoApoyo,cga.actaCierreConformacionGrupoApoyo,cga.actaConformacionConformacionGrupoApoyo,cga.funcionesPresidenteConformacionGrupoApoyo,cga.funcionesSecretarioConformacionGrupoApoyo,cga.funcionesGrupoConformacionGrupoApoyo
         FROM conformaciongrupoapoyo cga
         LEFT JOIN grupoapoyo ga
         ON cga.GrupoApoyo_idGrupoApoyo = ga.idGrupoApoyo

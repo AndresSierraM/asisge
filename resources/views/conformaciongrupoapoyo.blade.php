@@ -381,7 +381,7 @@ $base64 = '';
 				                    <div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito">Candidatos Inscritos</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito" style="background-color: red">Candidatos Inscritos (Falta tabla)</a>
 											</h4>
 										</div>
 										<div id="candidatoinscrito" class="panel-collapse collapse">
@@ -604,7 +604,7 @@ $base64 = '';
 			                     	<div class="panel panel-default">
 				                      	<div class="panel-heading">
 					                        <h4 class="panel-title">
-					                          <a data-toggle="collapse" data-parent="#accordion" href="#funcionesgrupo">Funciones el grupo de apoyo</a>
+					                          <a data-toggle="collapse" data-parent="#accordion" href="#funcionesgrupo">Funciones del grupo de apoyo</a>
 					                        </h4>
 				                      	</div>
 				                      	<div id="funcionesgrupo" class="panel-collapse collapse">

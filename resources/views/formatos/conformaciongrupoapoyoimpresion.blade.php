@@ -2,6 +2,8 @@
 
 @section('contenido')
 	{!!Form::model($conformaciongrupoapoyoS)!!}
+		<!-- Se quema el overflow-y auto apra que salga la barra vertical cuando tiene mucha informacion -->
+	<html lang="es" style="overflow-y: auto;">
 		<div class="col-lg-12">
             <div class="panel panel-default" style="width:1500px;">
 				<div class="panel-body">
@@ -9,7 +11,7 @@
 					<table class="table" width="100%">
 						<thead>
 							<tr>
-								<td colspan="2" align="center">Conformaci&#243;n de  Grupos Apoyo</td>
+								<td colspan="2" align="center" style=" background-color:#337ab7; color:white;">Conformaci&#243;n de  Grupos Apoyo</td>
 							</tr>
 							<tr>
 								<td>Grupo</td>
@@ -33,7 +35,7 @@
 				     			<td><b>Detalles</b></td>
 			     			</tr>
 			     			<tr>
-				     			<td colspan="2"><b>Convocatoria</b></td>
+				     			<td colspan="2" style=" background-color:#848484; color:white;"><b>Convocatoria</b></td>
 			     			</tr>
 					       	<tr>
 								<td><b>Fecha</b></td>
@@ -53,11 +55,57 @@
 							</tr>
 					      </thead>
 				     </table>
+				     <!-- Convocatoria de votacion -->
+				     <table class="table table-striped table-bordered" width="100%">
+				      	<thead>
+					       	<tr>
+					        	<td style=" background-color:#848484; color:white;">Convocatoria votaci&oacute;n</td>
+					       	</tr>
+				      	</thead>
+				      	<tbody>
+				       		<tr>
+				        		<td><?php echo $encabezado->convocatoriaVotacionConformacionGrupoApoyo;?></td>
+				       		</tr>
+				      	</tbody>
+			     	</table>
+			     	<!-- Acta de escrutinio y votaci&oacute;n</ -->
+	     	   		<table class="table table-striped table-bordered" width="100%">
+				      	<thead>
+					       	<tr>
+					        	<td style=" background-color:#848484; color:white;">Acta de escrutinio y votaci&oacute;n</td>
+					       	</tr>
+				      	</thead>
+				      	<tbody>
+				       		<tr>
+				        		<td><?php echo $encabezado->actaEscrutinioConformacionGrupoApoyo;?></td>
+				       		</tr>
+				      	</tbody>
+			     	</table>
+			     	   <!-- Multiregistro Candidatos Inscritos  -->
+			       	<table  class="table table-striped table-bordered" width="100%">
+					     	<thead>
+					     			<tr>
+					     				<td style=" background-color:#DF0101; color:white;"><b>Candidatos Inscritos(FALTA TABLA)</b></td>
+					     			</tr>
+									<tr>
+										<td><b>Nombre</b></td>
+										<td><b>Cargo</b></td>
+										<td><b>Centro de costos</b></td>
+									</tr>
+									<tr>
+										
+									</tr>
+					      	</thead>
+					       <tbody>
+									<!-- For each acá -->
+					 	
+					      </tbody>
+				     </table>
 				     <!-- Pestaña Actas de votacion-->
 				        <table  class="table table-striped table-bordered" width="70%">
 					     <thead>				     		
 				     			<tr>
-					     			<td colspan="2"><b>Actas de Votaci&#243;n</b></td>
+					     			<td colspan="2" style=" background-color:#848484; color:white;"><b>Actas de Votaci&#243;n</b></td>
 				     			</tr>
 						       	<tr>
 									<td><b>Fecha</b></td>
@@ -128,7 +176,7 @@
 				        @foreach($conformaciongrupoapoyoS as $encabezado)
 					     <thead>				     		
 				     			<tr>
-					     			<td colspan="2"><b>Constituci&#243;n</b></td>
+					     			<td colspan="2" style=" background-color:#848484; color:white;"><b>Constituci&#243;n</b></td>
 				     			</tr>
 						       	<tr>
 									<td><b>Fecha</b></td>
@@ -144,30 +192,106 @@
 								</tr>
 								@endforeach
 						      </thead>
-				     	</table>
-				     	  <!-- Multiregistro Integrantes del Comite  -->
-				       <table  class="table table-striped table-bordered" width="100%">
-					     	<thead>
-					     			<tr>
-					     				<td><b>Integrantes del Comite</b></td>
-					     			</tr>
-									<tr>
-										<td><b>Nombrado Por</b></td>
-										<td><b>Principal</b></td>
-										<td><b>Suplentes</b></td>
-									</tr>
-					      	</thead>
-					       <tbody>
-					         @foreach($conformaciongrupoapoyocomiteS as $integrante)
-						       <tr>
-						        <td>{{$integrante->nombradoPor}}</td>
-						        <td>{{$integrante->principal}}</td>
-						        <td>{{$integrante->suplente}}</td>
-						       </tr>
-						       @endforeach					 	
-					      </tbody>
-				     </table>
+								       <!-- Multiregistro Integrantes del Comite  -->
+					       	<table  class="table table-striped table-bordered" width="100%">
+							     	<thead>
+							     			<tr>
+							     				<td><b>Integrantes del Comite</b></td>
+							     			</tr>
+											<tr>
+												<td><b>Nombrado Por</b></td>
+												<td><b>Principal</b></td>
+												<td><b>Suplentes</b></td>
+											</tr>
+							      	</thead>
+							       <tbody>
+							         @foreach($conformaciongrupoapoyocomiteS as $integrante)
+								       <tr>
+								        <td>{{$integrante->nombradoPor}}</td>
+								        <td>{{$integrante->principal}}</td>
+								        <td>{{$integrante->suplente}}</td>
+								       </tr>
+								       @endforeach					 	
+							      </tbody>
+						     </table>
 
+				     	</table>
+				     			<!-- Acta de cierre</ -->
+	     	   			<table class="table table-striped table-bordered" width="100%">
+			      			<thead>
+						       	<tr>
+						        	<td style=" background-color:#848484; color:white;">Acta de cierre</td>
+						       	</tr>
+					      	</thead>
+					      	<tbody>
+					       		<tr>
+					        		<td><?php echo $encabezado->actaCierreConformacionGrupoApoyo;?></td>
+					       		</tr>
+					      	</tbody>
+				     	</table>
+				     			<!-- Acta de conformaci&oacute;n</ -->
+	     	   			<table class="table table-striped table-bordered" width="100%">
+			      			<thead>
+						       	<tr>
+						        	<td style=" background-color:#848484; color:white;">Acta de conformaci&oacute;n</td>
+						       	</tr>
+					      	</thead>
+					      	<tbody>
+					       		<tr>
+					        		<td><?php echo $encabezado->actaConformacionConformacionGrupoApoyo;?></td>
+					       		</tr>
+					      	</tbody>
+				     	</table>
+
+						<table class="table table-striped table-bordered" width="100%">
+					      	<thead>
+								<tr>
+									<td style=" background-color:#DF0101; color:white;"><b>Documentos(Falta tabla)</b></td>
+														<!-- mIRAR EN PLAN EMERGENCIAS LOS DOCUMENTOS -->
+								</tr>	
+				     		</thead>
+				     	</table>
+				     				     		<!-- Funciones el grupo de apoyo -->
+	     	   			<table class="table table-striped table-bordered" width="100%">
+			      			<thead>
+						       	<tr>
+						        	<td style=" background-color:#848484; color:white;">Funciones del grupo de apoyo</td>
+						       	</tr>
+					      	</thead>
+					      	<tbody>
+					       		<tr>
+					        		<td><?php echo $encabezado->funcionesGrupoConformacionGrupoApoyo;?></td>
+					       		</tr>
+					      	</tbody>
+				     	</table>
+			     	<!-- Funciones del presidente -->
+	     	   			<table class="table table-striped table-bordered" width="100%">
+			      			<thead>
+						       	<tr>
+						        	<td style=" background-color:#848484; color:white;">Funciones del presidente</td>
+						       	</tr>
+					      	</thead>
+					      	<tbody>
+					       		<tr>
+					        		<td><?php echo $encabezado->funcionesPresidenteConformacionGrupoApoyo;?></td>
+					       		</tr>
+					      	</tbody>
+				     	</table>
+				     	<!-- Funciones del secretario -->
+	     	   			<table class="table table-striped table-bordered" width="100%">
+			      			<thead>
+						       	<tr>
+						        	<td style=" background-color:#848484; color:white;">Funciones del secretario</td>
+						       	</tr>
+					      	</thead>
+					      	<tbody>
+					       		<tr>
+					        		<td><?php echo $encabezado->funcionesSecretarioConformacionGrupoApoyo;?></td>
+					       		</tr>
+					      	</tbody>
+				     	</table>
+
+				     	 
 				</div>
 			</div>
 		</div>
