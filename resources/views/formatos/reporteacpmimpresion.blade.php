@@ -2,37 +2,39 @@
 
 @section('contenido')
 
-	{!!Form::model($reporteACPM)!!}
+	{!!Form::model($reporteACPMEncabezado)!!}
+	<html lang="es" style="overflow-y: auto;">
 		<div class="col-lg-12">
             <div class="panel panel-default" style="width:1500px;">
 				<div class="panel-body" >
-					
+					@foreach($reporteACPMEncabezado as $encabezado)
 					<table class="table" width="100%">
 						<thead>
 							<tr>
-								<td colspan="2" align="center">Registro y seguimiento de acciones correctivas, preventivas y de mejora</td>
+								<td colspan="2" align="center" style=" background-color:#337ab7; color:white;">Reporte ACPM</td>
+
+								<!-- Registro y seguimiento de acciones correctivas, preventivas y de mejora -->
 							</tr>
 							<tr>
 								<td>N&uacute;mero</td>
-								<td>{{$reporteACPM->numeroReporteACPM}}</td>
+								<td>{{$encabezado->numeroReporteACPM}}</td>
 							</tr>
 							<tr>
-								<td>Fecha</td>
-								<td>{{$reporteACPM->fechaElaboracionReporteACPM}}</td>
+								<td>Fecha Inicio</td>
+								<td>{{$encabezado->fechaElaboracionReporteACPM}}</td>
 							</tr>
 							<tr>
 								<td>Descripci&oacute;n</td>
-								<td>{{$reporteACPM->descripcionReporteACPM}}</td>
-							</tr>
-							
-							
+								<td>{{$encabezado->descripcionReporteACPM}}</td>
+							</tr>							
+					@endforeach		
 						</thead>
 					</table>
 
 		            
 					<table  class="table table-striped table-bordered" width="100%">
 						<thead>
-							<tr>
+							<tr style=" background-color:#848484; color:white;">
 								<td>N°</td>
 								<td>Fecha Reporte</td>
 								<td>Proceso</td>
@@ -48,7 +50,6 @@
 								<td>Estado Actual</td>
 								<td>Fecha Cierre</td>
 								<td>¿Eficaz?</td>
-								<td>D&iacute;as Atraso</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -57,19 +58,18 @@
 								<td>{{$dato->ordenReporteACPMDetalle}}</td>
 								<td>{{$dato->fechaReporteACPMDetalle}}</td>
 								<td>{{$dato->nombreProceso}}</td>
-								<td>&nbsp;</td>
-								<td>{{($dato->tipoReporteACPMDetalle == 'C'? 'Correctiva' : ($dato->tipoReporteACPMDetalle == 'P' ? 'Preventiva' : 'Mejora'))}}</td>
+								<td>{{$dato->nombreModulo}}</td>
+								<td>{{($dato->tipoReporteACPMDetalle == 'Correctiva'? 'Correctiva' : ($dato->tipoReporteACPMDetalle == 'Preventiva' ? 'Preventiva' : 'Mejora'))}}</td>
 								<td>{{$dato->descripcionReporteACPMDetalle}}</td>
 								<td>{{$dato->analisisReporteACPMDetalle}}</td>
 								<td>{{$dato->correccionReporteACPMDetalle}}</td>
-								<td>{{$dato->nombreCompletoResponsableCorrecion}}</td>
+								<td>{{$dato->ResponsableCoreccion}}</td>
 								<td>{{$dato->planAccionReporteACPMDetalle}}</td>
-								<td>{{$dato->nombreCompletoResponsablePlanAccion}}</td>
+								<td>{{$dato->ResponsablePlanAccion}}</td>
 								<td>{{$dato->fechaEstimadaCierreReporteACPMDetalle}}</td>
 								<td>{{$dato->estadoActualReporteACPMDetalle}}</td>
-								<td>{{$dato->fechaCierreReporteACPMDetalle}}</td>
+								<td style="width: 100px;">{{$dato->fechaCierreReporteACPMDetalle}}</td>
 								<td>{{($dato->eficazReporteACPMDetalle == 1 ? 'S&iacute;' : 'No')}}</td>
-								<td>{{$dato->diasAtraso}}</td>
 							</tr>
 							@endforeach
 						</tbody>

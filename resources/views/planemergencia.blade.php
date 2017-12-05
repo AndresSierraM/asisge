@@ -504,7 +504,7 @@ $(document).ready(function(){
                                   <span class="input-group-addon">
                                     <i class="fa fa-pencil-square" style="width: 14px;"></i>
                                   </span>
-                                  {!!Form::text('personalAdministrativoPlanEmergencia',(isset($planemergencia) ? $planemergencia->ubicacionPlanEmergencia : null),['class'=>'form-control','placeholder'=>'Ingrese el número de Personal Administrativo','style'=>'width:340px;'])!!}
+                                  {!!Form::text('personalAdministrativoPlanEmergencia',(isset($planemergencia) ? $planemergencia->personalAdministrativoPlanEmergencia : null),['class'=>'form-control','placeholder'=>'Ingrese el número de Personal Administrativo','style'=>'width:340px;'])!!}
                                 </div>
                               </div>
                             </div>

@@ -99,9 +99,44 @@ class ReporteACPMController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        
+        if($_GET['accion'] == 'imprimir')
+            {
+
+            // Se llaman todos los id del Módulo
+         $reporteACPM = \App\ReporteACPM::find($id);
+
+
+
+        $reporteACPMEncabezado = DB::select('
+          SELECT ra.numeroReporteACPM,ra.fechaElaboracionReporteACPM,ra.descripcionReporteACPM
+          FROM reporteacpm ra
+          WHERE ra.idReporteACPM = '.$id);
+
+
+
+        $reporteACPMDetalle = DB::select('
+            SELECT rad.ordenReporteACPMDetalle,rad.fechaReporteACPMDetalle,p.nombreProceso,m.nombreModulo,rad.tipoReporteACPMDetalle,rad.descripcionReporteACPMDetalle,rad.analisisReporteACPMDetalle,rad.correccionReporteACPMDetalle,trc.nombreCompletoTercero as ResponsableCoreccion,rad.planAccionReporteACPMDetalle,trpa.nombreCompletoTercero as ResponsablePlanAccion,rad.fechaEstimadaCierreReporteACPMDetalle,rad.estadoActualReporteACPMDetalle,rad.fechaCierreReporteACPMDetalle,rad.eficazReporteACPMDetalle
+            FROM reporteacpmdetalle rad
+            LEFT JOIN reporteacpm ra
+            ON rad.ReporteACPM_idReporteACPM = ra.idReporteACPM
+            LEFT JOIN proceso p
+            ON rad.Proceso_idProceso = p.idProceso
+            LEFT JOIN modulo m
+            ON rad.Modulo_idModulo = m.idModulo
+            LEFT JOIN tercero trc 
+            ON rad.Tercero_idResponsableCorrecion = trc.idTercero
+            LEFT JOIN tercero trpa 
+            ON rad.Tercero_idResponsablePlanAccion = trpa.idTercero
+            WHERE rad.ReporteACPM_idReporteACPM = '.$id);
+            
+
+
+
+             return view('formatos.reporteacpmimpresion',compact('reporteACPMEncabezado','reporteACPMDetalle'));
+
+            }
     }
 
     /**
