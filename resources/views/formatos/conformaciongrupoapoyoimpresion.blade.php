@@ -100,8 +100,9 @@
 							 @foreach($conformacongrupoapooinscrito as $inscrito)
 						       <tr>
 						        <td>{{$inscrito->nombreCompletoTercero}}</td>
-						        <td>{{$inscrito->nombreCargo}}</td>
-						        <td>{{$inscrito->nombreCentroCosto}}</td>
+						        <!-- Se validan los dos campos  para que muestre el mismo mensaje que en el blade -->
+						        <td>{{($inscrito->nombreCargo == null ? 'No tiene cargo asociado' : $inscrito->nombreCargo)}}</td>
+						        <td>{{($inscrito->nombreCentroCosto == null ? 'No tiene centro de costo asociado' : $inscrito->nombreCentroCosto)}}</td>
 						       </tr>
 					       	@endforeach						 	
 					      </tbody>
