@@ -26,6 +26,7 @@ class ConformacionGrupoApoyoRequest extends Request
         $jurado = count($this->get('Tercero_idJurado'));
         $candidato = count($this->get('Tercero_idCandidato'));
         $Nombradopor = count($this->get('nombradoPorConformacionGrupoApoyoComite'));
+        $TerceroInscrito = count($this->get('Tercero_idInscrito'));
 
        
         $validacion = array(
@@ -60,6 +61,15 @@ class ConformacionGrupoApoyoRequest extends Request
             }
         }
 
+        for($i = 0; $i < $TerceroInscrito; $i++)
+        {
+            if(trim($this->get('Tercero_idInscrito')[$i]) == '')
+            {    
+                $validacion['Tercero_idInscrito'.$i] =  'required';
+            }
+        }
+
+
 
         return $validacion;
     }
@@ -69,6 +79,7 @@ class ConformacionGrupoApoyoRequest extends Request
         $jurado = count($this->get('Tercero_idJurado'));
         $candidato = count($this->get('Tercero_idCandidato'));
         $Nombradopor = count($this->get('nombradoPorConformacionGrupoApoyoComite'));
+        $TerceroInscrito = count($this->get('Tercero_idInscrito'));
 
 
         $mensajes = array();
@@ -97,6 +108,14 @@ class ConformacionGrupoApoyoRequest extends Request
             if(trim($this->get('nombradoPorConformacionGrupoApoyoComite')[$i]) == '' )
             {    
                 $mensajes["nombradoPorConformacionGrupoApoyoComite".$i.".required"] = "[Detalle Constitución] Debe seleccionar por quién fue nombrado  en la línea ".($i+1);
+            }           
+        }
+
+        for($i = 0; $i < $TerceroInscrito; $i++)
+        {
+            if(trim($this->get('Tercero_idInscrito')[$i]) == '' )
+            {    
+                $mensajes["Tercero_idInscrito".$i.".required"] = "[Detalle Candidatos Inscritos] Debe seleccionar el candidato inscrito en la línea ".($i+1);
             }           
         }
 

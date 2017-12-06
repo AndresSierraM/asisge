@@ -27,4 +27,16 @@ class ConformacionGrupoApoyo extends Model
     {
     	return $this->hasMany('App\ConformacionGrupoApoyoResultado','ConformacionGrupoApoyo_idConformacionGrupoApoyo');
     }
+
+    public function ConformacionGrupoApoyoInscrito()
+    {
+        return $this->hasMany('App\ConformacionGrupoApoyoInscrito','ConformacionGrupoApoyo_idConformacionGrupoApoyo');
+    }
+
+     public function ConformacionGrupoApoyoArchivo()
+    {
+        return $this->hasMany('App\ConformacionGrupoApoyoArchivo','ConformacionGrupoApoyo_idConformacionGrupoApoyo');
+    }
+
+    
 }

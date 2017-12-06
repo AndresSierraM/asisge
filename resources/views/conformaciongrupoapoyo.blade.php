@@ -12,8 +12,17 @@
 
 {!!Html::style('css/signature-pad.css'); !!} 
 
+<!-- DROPZONE  -->
+{!!Html::script('js/dropzone.js'); !!}<!--Llamo al dropzone-->
+{!!Html::style('assets/dropzone/dist/min/dropzone.min.css'); !!}<!--Llamo al dropzone-->
+{!!Html::style('css/dropzone.css'); !!}<!--Llamo al dropzone-->
+
 
 <?php
+
+//Se pregunta  si existe el id de conformacion grupo  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
+$idConformacionGrupoApoyo = (isset($conformacionGrupoApoyo) ? $conformacionGrupoApoyo->idConformacionGrupoApoyo : 0);
+
 
 $firmas = isset($actaGrupoApoyo->actaGrupoApoyoTercero) ? $actaGrupoApoyo->actaGrupoApoyoTercero : null;
 
@@ -61,6 +70,7 @@ $base64 = '';
 ?>
 
 
+
 	{!!Html::script('js/conformaciongrupoapoyo.js')!!}
 
 	<script>
@@ -75,6 +85,11 @@ $base64 = '';
 		conformacionGrupoApoyoResultado = (conformacionGrupoApoyoResultado != '' ? JSON.parse(conformacionGrupoApoyoResultado) : '');
 
 
+		  // Se recibe la consulta de la multigistro para que muestre los datos de los campos en multi Candidatos inscritos
+		var conformaciongrupoapoyoInscrito = '<?php echo (isset($ConformacionGrupoApoyoInscrito) ? json_encode($ConformacionGrupoApoyoInscrito) : "");?>';
+		conformaciongrupoapoyoInscrito = (conformaciongrupoapoyoInscrito != '' ? JSON.parse(conformaciongrupoapoyoInscrito) : '');
+
+
 
 		// Se reciben los datos enviados del controlador
 			// Se reciben el id de tercero y nombre tercero para enviarlo al campo tipo select de candidats inscritos
@@ -87,7 +102,7 @@ $base64 = '';
 
 		 	// Nombre del evento para llenar multiregistro
 	 	var llenarInformacionCandidatos = ['onchange','llenarInformacionCandidato(this)']
-	 	var valorCandidato = [0,0,'',''];
+	 	var valorInscrito = [0,0,0,'',''];
 		
 
 
@@ -164,21 +179,21 @@ $base64 = '';
 			// Multiregistro Candidatos Inscritos
 
 
-			candidato = new Atributos('candidato','contenedor_candidato','i');
+			inscrito = new Atributos('inscrito','contenedor_inscrito','inscrito');
 
-			candidato.altura = '36px;';
-			candidato.campoid = 'idActaCapacitacionAsistente';
-			candidato.campoEliminacion = 'eliminarAsistente';
+			inscrito.altura = '36px;';
+			inscrito.campoid = 'idConformacionGrupoApoyoInscrito';
+			inscrito.campoEliminacion = 'eliminarInscrito';
 
-			candidato.campos = ['idActaCapacitacionAsistente', 'nombreCandidatoConformacionActaGrupoApoyo', 'nombreCargo','centrocosto'];
-			candidato.etiqueta = ['input','select','input','input'];
-			candidato.tipo = ['hidden','','text','',''];
-			candidato.estilo = ['','width: 400px;height:35px;','width: 300px;height:35px; background-color:#EEEEEE;','width: 300px;height:35px; background-color:#EEEEEE;'];
-			candidato.clase = ['','','',''];
-			candidato.sololectura = [false,false,true,true];
-			candidato.completar = ['off','off','off','off'];
-			candidato.opciones = ['',NombreCandidato,'', ''];
-			candidato.funciones  = ['',llenarInformacionCandidatos,'', ''];
+			inscrito.campos = ['idConformacionGrupoApoyoInscrito','ConformacionGrupoApoyo_idConformacionGrupoApoyo', 'Tercero_idInscrito', 'nombreCargo','centrocosto'];
+			inscrito.etiqueta = ['input','input','select','input','input'];
+			inscrito.tipo = ['hidden','hidden','','text','',''];
+			inscrito.estilo = ['','','width: 400px;height:35px;','width: 300px;height:35px; background-color:#EEEEEE;','width: 300px;height:35px; background-color:#EEEEEE;'];
+			inscrito.clase = ['','','','',''];
+			inscrito.sololectura = [false,false,false,true,true];
+			inscrito.completar = ['off','off','off','off','off'];
+			inscrito.opciones = ['','',NombreCandidato,'', ''];
+			inscrito.funciones  = ['','',llenarInformacionCandidatos,'', ''];
 
 
 
@@ -200,6 +215,15 @@ $base64 = '';
 			{
 				resultado.agregarCampos(JSON.stringify(conformacionGrupoApoyoResultado[j]),'L');
 			}
+
+			for(var j=0, k = conformaciongrupoapoyoInscrito.length; j < k; j++)
+			{
+				inscrito.agregarCampos(JSON.stringify(conformaciongrupoapoyoInscrito[j]),'L');
+				// Se ejecta la funcion para que muestre el cargo y centro de costos 
+				llenarInformacionCandidato(document.getElementById('Tercero_idInscrito'+j));
+			}
+
+			
 
 		});
 
@@ -236,7 +260,7 @@ $base64 = '';
 					<div class="col-sm-10">
 			            <div class="input-group">
 			              	<span class="input-group-addon">
-			                	<i class="fa fa-flag"></i>
+			                	<i class="fa fa-flag" style="width: 14px;"></i>
 			              	</span>
 			              	<input type="hidden" id="token" value="{{csrf_token()}}"/>
 			             	{!!Form::select('GrupoApoyo_idGrupoApoyo',$grupoApoyo, (isset($conformacionGrupoApoyo) ? $conformacionGrupoApoyo->GrupoApoyo_idGrupoApoyo : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el Grupo de Apoyo"])!!}
@@ -245,6 +269,7 @@ $base64 = '';
 			              	{!!Form::hidden('eliminarJurado', '', array('id' => 'eliminarJurado'))!!}
 			              	{!!Form::hidden('eliminarResultado', '', array('id' => 'eliminarResultado'))!!}
 			              	{!!Form::hidden('eliminarComite', '', array('id' => 'eliminarComite'))!!}
+			              	{!!Form::hidden('eliminarInscrito', '', array('id' => 'eliminarInscrito'))!!}
 						</div>
 					</div>
 					
@@ -301,7 +326,7 @@ $base64 = '';
 													<div class="col-sm-10">
 											            <div class="input-group">
 											              	<span class="input-group-addon">
-											                	<i class="fa fa-flag"></i>
+											                	<i class="fa fa-flag" style="width: 14px;"></i>
 											              	</span>
 											              	{!!Form::select('Tercero_idRepresentante',$tercero, (isset($conformacionGrupoApoyo) ? $conformacionGrupoApoyo->Tercero_idRepresentante : 0),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione el Representante"])!!}
 														</div>
@@ -381,7 +406,7 @@ $base64 = '';
 				                    <div class="panel panel-default">
 										<div class="panel-heading">
 											<h4 class="panel-title">
-												<a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito" style="background-color: red">Candidatos Inscritos (Falta tabla)</a>
+												<a data-toggle="collapse" data-parent="#accordion" href="#candidatoinscrito">Candidatos Inscritos</a>
 											</h4>
 										</div>
 										<div id="candidatoinscrito" class="panel-collapse collapse">
@@ -389,13 +414,13 @@ $base64 = '';
 												<div class="form-group" id='test'>
 													<div class="col-sm-12" >
 														<div class="row show-grid">
-															<div class="col-md-1" style="width: 40px;height: 50px;"  onclick="candidato.agregarCampos(valorCandidato,'A')">
+															<div class="col-md-1" style="width: 40px;height: 50px;"  onclick="inscrito.agregarCampos(valorInscrito,'A')">
 																<span class="glyphicon glyphicon-plus"></span>
 															</div>
 															<div class="col-md-1 requiredMulti" style="width: 400px;display:inline-block;height:50px;">Nombre</div>
 															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Cargo</div>
 															<div class="col-md-1" style="width: 300px;display:inline-block;height:50px;">Centro de costos</div>
-															<div id="contenedor_candidato">
+															<div id="contenedor_inscrito">
 															</div>
 														</div>
 													</div>
@@ -590,16 +615,82 @@ $base64 = '';
 					                        </div>
 				                      	</div>
 				                    </div>
-				                        <!--  Acta de escrutinio y votaci&acute;n -->
-			                     	<div class="panel panel-default">
-				                      	<div class="panel-heading">
-					                        <h4 class="panel-title">
-					                          <a data-toggle="collapse" data-parent="#accordion" href="#Documentos" style="background-color: red">Documentos(FALTA)</a>
-					                        </h4>
-				                      	</div>
-				                      	<!-- Codigo aquí -->
-					     
-				                    </div>
+
+								                                                              <!-- Nuevo pestaña para adjuntar archivos -->
+				                                              <!-- Ya que el panel cuando aparece el dropzone desaparece, se le agrega un style inline-block y el tamaño completo para que este no desaparezca -->
+				                      <div class="panel panel-default" style="display:inline-block;width:100%">
+				                        <div class="panel-heading">
+				                          <h4 class="panel-title">
+				                            <a data-toggle="collapse" data-parent="#accordion" href="#archivos">Documentos</a>
+				                          </h4>
+				                        </div>
+				                        <div id="archivos" class="panel-collapse collapse">
+				                          <div class="col-sm-12">
+				                                        <div class="panel-heading ">
+				                                            <!-- <i class="fa fa-pencil-square-o"></i> --> <!-- {!!Form::label('', 'Documentos', array())!!} -->
+				                                        </div>
+				                                          <div class="panel-body">
+				                              <div class="col-sm-12" >
+				                                <div id="upload" class="col-md-12">
+				                                    <div class="dropzone dropzone-previews" id="dropzoneConformacionGrupoapoyoArchivo" style="overflow: auto;">
+				                                    </div>  
+				                                </div>  
+				                                  <div class="col-sm-12" style="padding: 10px 10px 10px 10px;border: 1px solid; height:300px; overflow: auto;">   
+				                                    {!!Form::hidden('archivoConformaciongrupoApoyoArray', '', array('id' => 'archivoConformaciongrupoApoyoArray'))!!}
+				                                    <?php
+				                                    
+				                                    // Cuando este editando el archivo 
+				                                    if ($idConformacionGrupoApoyo != '')  //Se pregunta si el id de acta de capacitacion es diferente de vacio (que es la tabla papá)
+				                                    {
+				                                      $eliminar = '';
+				                                      $archivoSave = DB::Select('SELECT * from conformaciongrupoapoyoarchivo where ConformacionGrupoApoyo_idConformacionGrupoApoyo = '.$idConformacionGrupoApoyo);
+				                                      for ($i=0; $i <count($archivoSave) ; $i++) 
+				                                      { 
+				                                        $archivoS = get_object_vars($archivoSave[$i]);
+
+				                                        echo '<div id="'.$archivoS['idConformacionGrupoApoyoArchivo'].'" class="col-lg-4 col-md-4">
+				                                                    <div class="panel panel-yellow" style="border: 1px solid orange;">
+				                                                        <div class="panel-heading">
+				                                                            <div class="row">
+				                                                                <div class="col-xs-3">
+				                                                                    <a target="_blank" 
+				                                                                      href="http://'.$_SERVER["HTTP_HOST"].'/imagenes'.$archivoS['rutaConformacionGrupoApoyoArchivo'].'">
+				                                                                      <i class="fa fa-book fa-5x" style="color: gray;"></i>
+				                                                                    </a>
+				                                                                </div>
+
+				                                                                <div class="col-xs-9 text-right">
+				                                                                    <div>'.str_replace('/conformaciongrupoapoyo/','',$archivoS['rutaConformacionGrupoApoyoArchivo']).'
+				                                                                    </div>
+				                                                                </div>
+				                                                            </div>
+				                                                        </div>
+				                                                        <a target="_blank" href="javascript:eliminarDiv('.$archivoS['idConformacionGrupoApoyoArchivo'].');">
+				                                                            <div class="panel-footer">
+				                                                                <span class="pull-left">Eliminar Documento</span>
+				                                                                <span class="pull-right"><i class="fa fa-times"></i></span>
+				                                                                <div class="clearfix"></div>
+				                                                            </div>
+				                                                        </a>
+				                                                    </div>
+				                                                </div>';
+
+				                                        echo '<input type="hidden" id="idConformacionGrupoApoyoArchivo[]" name="idConformacionGrupoApoyoArchivo[]" value="'.$archivoS['idConformacionGrupoApoyoArchivo'].'" >
+
+				                                        <input type="hidden" id="rutaConformacionGrupoApoyoArchivo[]" name="rutaConformacionGrupoApoyoArchivo[]" value="'.$archivoS['rutaConformacionGrupoApoyoArchivo'].'" >';
+				                                      }
+
+				                                      echo '<input type="hidden" name="eliminarArchivo" id="eliminarArchivo" value="">';
+				                                    }
+				                                              
+				                                    ?>              
+				                                  </div>
+				                              </div>
+				                            </div>                        
+				                          </div>
+				                        </div>
+				                      </div>
+
 				                       <!--  Funciones el grupo de apoyo -->
 			                     	<div class="panel panel-default">
 				                      	<div class="panel-heading">
@@ -755,6 +846,70 @@ $base64 = '';
 	    mostrarFirma();
 	  });
 	</script>
+
+<script>
+    //--------------------------------- DROPZONE ---------------------------------------
+  var baseUrl = "{{ url("/") }}";
+    var token = "{{ Session::getToken() }}";
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#dropzoneConformacionGrupoapoyoArchivo", {
+        url: baseUrl + "/dropzone/uploadFiles",
+        params: {
+            _token: token
+        },
+        
+    });
+
+     fileList = Array();
+    var i = 0;
+
+    //Configuro el dropzone
+    myDropzone.options.myAwesomeDropzone =  {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 40, // MB
+    addRemoveLinks: true,
+    clickable: true,
+    previewsContainer: ".dropzone-previews",
+    clickable: false,
+    uploadMultiple: true,
+    accept: function(file, done) {
+
+      }
+    };
+    //envio las funciones a realizar cuando se de clic en la vista previa dentro del dropzone
+     myDropzone.on("addedfile", function(file) {
+          file.previewElement.addEventListener("click", function(reg) {
+            // abrirModal(file);
+            // pos = fileList.indexOf(file["name"]);
+            // alert(pos);
+            // console.log(fileList[pos]);
+            // $("#tituloTerceroArchivo").val(fileList[pos]["titulo"]);
+          });
+        });
+
+    document.getElementById('archivoConformaciongrupoApoyoArray').value = '';
+    myDropzone.on("success", function(file, serverFileName) {
+              //abrirModal(file);
+                        fileList[i] = {"serverFileName" : serverFileName, "fileName" : file.name,"fileId" : i, "titulo" : '' };
+            // console.log(fileList);
+                        document.getElementById('archivoConformaciongrupoApoyoArray').value += file.name+',';
+                        // console.log(document.getElementById('archivoConformaciongrupoApoyoArray').value);
+                        i++;
+                    });
+
+
+// Se hace una funcion para que elimine los archivos que estan subidos en el dropzone y estan siendo mostrados en la preview
+function eliminarDiv(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
+
+</script>
 	{!!Html::script('js/signature_pad.js'); !!}
 	{!!Html::script('js/app.js'); !!}
 @stop

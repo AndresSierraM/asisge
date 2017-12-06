@@ -13,12 +13,12 @@ function llenarInformacionCandidato(IdTerceroEmpleado)
                 },
             success: function(respuesta){
                 // Se reemplaza el id con blanco para tener el registro 
-                reg = IdTerceroEmpleado.id.replace('nombreCandidatoConformacionActaGrupoApoyo','');
+                reg = IdTerceroEmpleado.id.replace('Tercero_idInscrito','');
 
                 // Se valida que el cargo que se esta consultando si tenga valor, si tiene valor devuelve el valor, de no tener un valor devuelve un mensaje en el campo
                 if (respuesta[0]['Cargo_idCargo'] == '' || respuesta[0]['Cargo_idCargo'] == '' ||  respuesta[0]['Cargo_idCargo'] == null) 
                     {
-                        $("#nombreCargo"+reg).val('Debe llenar el cargo de este tercero');
+                        $("#nombreCargo"+reg).val('No tiene cargo asociado');
                     }
                 else
                     {                                     
@@ -28,7 +28,7 @@ function llenarInformacionCandidato(IdTerceroEmpleado)
                 // Se valida que el Centro de costo que se esta consultando si tenga valor, si tiene valor devuelve el valor, de no tener un valor devuelve un mensaje en el campo
                 if (respuesta[0]['CentroCosto_idCentroCosto'] == '' || respuesta[0]['CentroCosto_idCentroCosto'] == '' ||  respuesta[0]['CentroCosto_idCentroCosto'] == null)
                     {
-                        $("#centrocosto"+reg).val('Debe llenar el centro de costo de este tercero');
+                        $("#centrocosto"+reg).val('No tiene centro de costo asociado');
                     }
                 else
                     {
@@ -59,8 +59,11 @@ function validarFormulario(event)
     var datoCandidato = document.querySelectorAll("[name='Tercero_idCandidato[]']");
     var dato9 = [];
 
-   var datonombrado = document.querySelectorAll("[name='nombradoPorConformacionGrupoApoyoComite[]']");
+    var datonombrado = document.querySelectorAll("[name='nombradoPorConformacionGrupoApoyoComite[]']");
     var dato10 = [];
+
+    var datoinscrito = document.querySelectorAll("[name='Tercero_idInscrito[]']");
+    var dato11 = [];
 
 
     
@@ -83,6 +86,11 @@ function validarFormulario(event)
         dato10[j] = datonombrado[j].value;
     }
 
+    for(var j=0,i=datoinscrito.length; j<i;j++)
+    {
+        dato11[j] = datoinscrito[j].value;
+    }
+
 
 
     $.ajax({
@@ -100,6 +108,7 @@ function validarFormulario(event)
                 Tercero_idGerente: dato8,
                 Tercero_idCandidato: dato9,
                 nombradoPorConformacionGrupoApoyoComite: dato10,
+                Tercero_idInscrito: dato11
 
   
                 },
@@ -145,11 +154,18 @@ function validarFormulario(event)
                         : document.getElementById('Tercero_idCandidato'+j).style.borderColor = '#a94442');
                 }
 
-                 for(var j=0,i=datonombrado.length; j<i;j++)
+                for(var j=0,i=datonombrado.length; j<i;j++)
                 {
                     (typeof respuesta['nombradoPorConformacionGrupoApoyoComite'+j] === "undefined"
                         ? document.getElementById('nombradoPorConformacionGrupoApoyoComite'+j).style.borderColor = '' 
                         : document.getElementById('nombradoPorConformacionGrupoApoyoComite'+j).style.borderColor = '#a94442');
+                }
+
+                for(var j=0,i=datoinscrito.length; j<i;j++)
+                {
+                    (typeof respuesta['Tercero_idInscrito'+j] === "undefined"
+                        ? document.getElementById('Tercero_idInscrito'+j).style.borderColor = '' 
+                        : document.getElementById('Tercero_idInscrito'+j).style.borderColor = '#a94442');
                 }
 
 

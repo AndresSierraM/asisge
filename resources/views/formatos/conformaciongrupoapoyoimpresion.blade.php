@@ -85,7 +85,7 @@
 			       	<table  class="table table-striped table-bordered" width="100%">
 					     	<thead>
 					     			<tr>
-					     				<td style=" background-color:#DF0101; color:white;"><b>Candidatos Inscritos(FALTA TABLA)</b></td>
+					     				<td style=" background-color:#848484; color:white;"><b>Candidatos Inscritos</b></td>
 					     			</tr>
 									<tr>
 										<td><b>Nombre</b></td>
@@ -97,8 +97,13 @@
 									</tr>
 					      	</thead>
 					       <tbody>
-									<!-- For each acá -->
-					 	
+							 @foreach($conformacongrupoapooinscrito as $inscrito)
+						       <tr>
+						        <td>{{$inscrito->nombreCompletoTercero}}</td>
+						        <td>{{$inscrito->nombreCargo}}</td>
+						        <td>{{$inscrito->nombreCentroCosto}}</td>
+						       </tr>
+					       	@endforeach						 	
 					      </tbody>
 				     </table>
 				     <!-- Pestaña Actas de votacion-->
@@ -243,14 +248,30 @@
 					      	</tbody>
 				     	</table>
 
-						<table class="table table-striped table-bordered" width="100%">
-					      	<thead>
-								<tr>
-									<td style=" background-color:#DF0101; color:white;"><b>Documentos(Falta tabla)</b></td>
-														<!-- mIRAR EN PLAN EMERGENCIAS LOS DOCUMENTOS -->
-								</tr>	
-				     		</thead>
-				     	</table>
+					<table class="table table-striped table-bordered" width="100%">
+				      	<thead>
+							<tr>
+								<td style=" background-color:#848484; color:white;"><b>Documentos</b></td>
+							@foreach($conformaciongrupoapoyoarchivo as $Adjunto)
+								<td>
+									<?php
+							// Se hace un substr para validar la extencion del archivo tomando desde el "punto".
+							// Si es un pdf o un word va a devolver un mensaje donde dice Archivo Adjunto.
+								if (substr($Adjunto->rutaConformacionGrupoApoyoArchivo, -4) === ".pdf" or (substr($Adjunto->rutaConformacionGrupoApoyoArchivo, -5)) === ".docx" or (substr($Adjunto->rutaConformacionGrupoApoyoArchivo, -5) === ".pptx"))
+									{
+										echo' <style="width:50%; height:50%;><b>Archivo Adjunto</b>';
+									} 
+								 else
+								 	{
+								 		// Si no es un archivo PDF o Word, el sistema mostrara la Imagen 
+								 		echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$Adjunto->rutaConformacionGrupoApoyoArchivo.'"';
+								 	}							
+							?>
+							@endforeach
+								</td>								
+							</tr>	
+			     	</thead>
+			     </table>
 				     				     		<!-- Funciones el grupo de apoyo -->
 	     	   			<table class="table table-striped table-bordered" width="100%">
 			      			<thead>

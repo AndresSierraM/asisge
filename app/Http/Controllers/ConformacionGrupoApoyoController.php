@@ -82,6 +82,37 @@ class ConformacionGrupoApoyoController extends Controller
                 ]);
 
             $conformacionGrupoApoyo = \App\ConformacionGrupoApoyo::All()->last();
+
+
+              // Guardado del dropzone
+                $arrayImage = $request['archivoConformaciongrupoApoyoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/conformaciongrupoapoyo/'.$arrayImage[$i];
+                        $ruta = '/conformaciongrupoapoyo/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ConformacionGrupoApoyoArchivo::create([
+                        'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $conformacionGrupoApoyo->idConformacionGrupoApoyo,
+                        'rutaConformacionGrupoApoyoArchivo' => $ruta
+                       ]);
+                    }
+
+                }
             
             //---------------------------------
             // guardamos las tablas de detalle
@@ -135,17 +166,39 @@ class ConformacionGrupoApoyoController extends Controller
         WHERE cgar.ConformacionGrupoApoyo_idConformacionGrupoApoyo =".$id);
 
         $conformaciongrupoapoyocomiteS = DB::SELECT("
-            SELECT cgac.nombradoPorConformacionGrupoApoyoComite,IF(nombradoPorConformacionGrupoApoyoComite = 'E','Empresa','Trabajadores') as nombradoPor,t.nombreCompletoTercero as principal,ts.nombreCompletoTercero as suplente
-            FROM conformaciongrupoapoyo cga
-            LEFT JOIN conformaciongrupoapoyocomite cgac
-            ON cgac.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
-            LEFT JOIN tercero t
-            ON cgac.Tercero_idPrincipal = t.idTercero
-            LEFT JOIN tercero ts
-            ON cgac.Tercero_idSuplente = ts.idTercero
-            WHERE cgac.ConformacionGrupoApoyo_idConformacionGrupoApoyo = ".$id);
+        SELECT cgac.nombradoPorConformacionGrupoApoyoComite,IF(nombradoPorConformacionGrupoApoyoComite = 'E','Empresa','Trabajadores') as nombradoPor,t.nombreCompletoTercero as principal,ts.nombreCompletoTercero as suplente
+        FROM conformaciongrupoapoyo cga
+        LEFT JOIN conformaciongrupoapoyocomite cgac
+        ON cgac.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+        LEFT JOIN tercero t
+        ON cgac.Tercero_idPrincipal = t.idTercero
+        LEFT JOIN tercero ts
+        ON cgac.Tercero_idSuplente = ts.idTercero
+        WHERE cgac.ConformacionGrupoApoyo_idConformacionGrupoApoyo = ".$id);
 
-        return view('formatos.conformaciongrupoapoyoimpresion',compact('conformaciongrupoapoyoS','conformaciongrupoapoyojuradoS','conformaciongrupoapoyoresultadoS','conformaciongrupoapoyocomiteS'));
+
+        $conformacongrupoapooinscrito = DB::SELECT("
+        SELECT t.nombreCompletoTercero,c.nombreCargo,cc.nombreCentroCosto
+        FROM conformaciongrupoapoyoinscrito cgai
+        LEFT JOIN conformaciongrupoapoyo cga
+        ON cgai.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+        LEFT JOIN tercero t 
+        ON cgai.Tercero_idInscrito = t.idTercero
+        LEFT JOIN cargo c 
+        ON t.Cargo_idCargo = c.idCargo
+        LEFT JOIN centrocosto  cc
+        ON t.CentroCosto_idCentroCosto = cc.idCentroCosto
+        WHERE cgai.ConformacionGrupoApoyo_idConformacionGrupoApoyo = ".$id);
+
+        $conformaciongrupoapoyoarchivo = DB::SELECT("
+        SELECT cgaar.idConformacionGrupoApoyoArchivo,cgaar.ConformacionGrupoApoyo_idConformacionGrupoApoyo,cgaar.rutaConformacionGrupoApoyoArchivo
+        FROM conformaciongrupoapoyoarchivo cgaar
+        LEFT JOIN conformaciongrupoapoyo cga
+        ON cgaar.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+        WHERE cgaar.ConformacionGrupoApoyo_idConformacionGrupoApoyo = ".$id);
+
+
+        return view('formatos.conformaciongrupoapoyoimpresion',compact('conformaciongrupoapoyoarchivo','conformacongrupoapooinscrito','conformaciongrupoapoyoS','conformaciongrupoapoyojuradoS','conformaciongrupoapoyoresultadoS','conformaciongrupoapoyocomiteS'));
     }
 
     /**
@@ -160,8 +213,24 @@ class ConformacionGrupoApoyoController extends Controller
         $nombreCompletoTercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero');
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
         $grupoApoyo = \App\GrupoApoyo::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreGrupoApoyo','idGrupoApoyo');
+
+             // Se envia parametros parecidos con la diferencia de que los que se van a utilizar con los de tipo Emplado = 01 
+        $idTerceroEmpleado = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('idTercero');
+        $NombreTerceroEmpleado = \App\Tercero::where('tipoTercero', "like", "%*01*%")->where('Compania_idCompania', "=", \Session::get('idCompania'))->lists('nombreCompletoTercero');
+
+
         $conformacionGrupoApoyo = \App\ConformacionGrupoApoyo::find($id);
-        return view('conformaciongrupoapoyo',compact('grupoApoyo','tercero','idTercero','nombreCompletoTercero'),['conformacionGrupoApoyo'=>$conformacionGrupoApoyo]);
+
+
+        $ConformacionGrupoApoyoInscrito = DB::SELECT('
+            SELECT cgai.idConformacionGrupoApoyoInscrito,cgai.ConformacionGrupoApoyo_idConformacionGrupoApoyo,cgai.Tercero_idInscrito
+            FROM conformaciongrupoapoyoinscrito cgai
+            LEFT JOIN conformaciongrupoapoyo cga
+            ON cgai.ConformacionGrupoApoyo_idConformacionGrupoApoyo = cga.idConformacionGrupoApoyo
+            WHERE cgai.ConformacionGrupoApoyo_idConformacionGrupoApoyo ='.$id);
+
+
+        return view('conformaciongrupoapoyo',compact('NombreTerceroEmpleado','idTerceroEmpleado','ConformacionGrupoApoyoInscrito','grupoApoyo','tercero','idTercero','nombreCompletoTercero'),['conformacionGrupoApoyo'=>$conformacionGrupoApoyo]);
     }
 
     /**
@@ -177,6 +246,50 @@ class ConformacionGrupoApoyoController extends Controller
             $conformacionGrupoApoyo->fill($request->all());
 
             $conformacionGrupoApoyo->save();
+
+
+
+
+                 //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE
+            if ($request['archivoConformaciongrupoApoyoArray'] != '') 
+            {
+                $arrayImage = $request['archivoConformaciongrupoApoyoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/conformaciongrupoapoyo/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/conformaciongrupoapoyo/'.$arrayImage[$i];
+
+                            DB::table('conformaciongrupoapoyoarchivo')->insert(['idConformacionGrupoApoyoArchivo' => '0', 'ConformacionGrupoApoyo_idConformacionGrupoApoyo' =>$id,'rutaConformacionGrupoApoyoArchivo' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+               // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarArchivo'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ConformacionGrupoApoyoArchivo::whereIn('idConformacionGrupoApoyoArchivo',$idsEliminar)->delete();
+            }
 
             //---------------------------------
             // guardamos las tablas de detalle
@@ -278,6 +391,30 @@ class ConformacionGrupoApoyoController extends Controller
             $preguntas = \App\ConformacionGrupoApoyoResultado::updateOrCreate($indice, $data);
 
         }
+
+
+         // en el formulario hay un campo oculto en el que almacenamos los id que se eliminan separados por coma
+        // en este proceso lo convertimos en array y eliminamos dichos id de la tabla de detalle
+        $idsEliminar = explode(',', $request['eliminarInscrito']);
+        \App\ConformacionGrupoApoyoInscrito::whereIn('idConformacionGrupoApoyoInscrito',$idsEliminar)->delete();
+
+        $contadorInscrito = count($request['Tercero_idInscrito']);
+        for($i = 0; $i < $contadorInscrito; $i++)
+        {
+
+            $indice = array(
+             'idConformacionGrupoApoyoInscrito' => $request['idConformacionGrupoApoyoInscrito'][$i]);
+
+            $data = array(
+             'ConformacionGrupoApoyo_idConformacionGrupoApoyo' => $id,
+            'Tercero_idInscrito' => $request['Tercero_idInscrito'][$i]);
+
+            $preguntas = \App\ConformacionGrupoApoyoInscrito::updateOrCreate($indice, $data);
+
+        }
+
+
+       
 
     }
 }
