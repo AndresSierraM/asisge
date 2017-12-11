@@ -531,7 +531,7 @@ class TerceroController extends Controller
      */
     public function destroy(Request $request,$id)
     {
-                                                                               //Se pone Tercero_id para que solo consulte los que empiezan por esa palabra y se pone la condicion (and...not like)de que no busque tercero en miniscula para las tablas hijas de tercero
+                                                                              //Se pone Tercero_id para que solo consulte los que empiezan por esa palabra y se pone la condicion (and...not like)de que no busque tercero en miniscula para las tablas hijas de tercero
          $consulta = DB::Select("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.`COLUMNS` WHERE COLUMN_NAME like 'Tercero_id%' and TABLE_SCHEMA = 'sisoft' and TABLE_NAME NOT LIKE 'tercero%'");
            //se crea una variable para concatenar 
         $tablas = ''; 
@@ -554,7 +554,7 @@ class TerceroController extends Controller
         $nombremodulo = 'tercero Tipo '.$tipo;
 
         // esta variable es la que devuelve al formulario
-         $nombremoduloformulario = 'tercero?tipoTercero='.$request['tipoTercero'];
+        $nombremoduloformulario = 'tercero?tipoTercero='.$request['tipoTercero'];
 
         for ($i=0; $i < count($consulta); $i++)
         {
@@ -581,7 +581,7 @@ class TerceroController extends Controller
             \App\Tercero::destroy($id);
              return redirect('/tercero?tipoTercero='.$request['tipoTercero']);
  
-        }        
+        }          
     }
 
     public function importarTerceroProveedor()
@@ -999,8 +999,6 @@ class TerceroController extends Controller
                                 : $datos->getCellByColumnAndRow($columna, $fila)->getValue());
                     }
 
-                 
-                    
                 }
 
                 // tomamos el tipo de identificacion que el usuario llena como codigo para convertirlo en id buscandolo en el modelo
@@ -1459,7 +1457,7 @@ class TerceroController extends Controller
                         'correoElectronicoTercero' => $terceros[$reg]['correoElectronicoTercero'],
                         'paginaWebTercero' => $terceros[$reg]['paginaWebTercero'],
                         'Cargo_idCargo' => $terceros[$reg]['Cargo_idCargo'],
-                        'CentroCosto_idCentroCosto' => $terceros[$reg]['CentroCosto_idCentroCosto'],
+                         'CentroCosto_idCentroCosto' => ($terceros[$reg]['CentroCosto_idCentroCosto'] == '' or $terceros[$reg]['CentroCosto_idCentroCosto'] == 0 ? null : $terceros[$reg]['CentroCosto_idCentroCosto']),
                         'Compania_idCompania' => \Session::get("idCompania")
                     );
 
