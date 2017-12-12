@@ -50,32 +50,32 @@ class CompetenciaController extends Controller
      */
     public function store(CompetenciaRequest $request)
     {
-        
-         \App\Competencia::create([
-            'nombreCompetencia' => $request['nombreCompetencia'],
-            'estadoCompetencia' => $request['estadoCompetencia']
-        ]);
-
-
-// en esta parte es el guardado de la multiregistro descripcion
-         //Primero consultar el ultimo id guardado
-         $competencia = \App\Competencia::All()->last();
-         //for para guardar cada registro de la multiregistro
-
-         for ($i=0; $i < count($request['ordenCompetenciaPregunta']); $i++) 
-         { 
-             \App\CompetenciaPregunta::create([
-            'Competencia_idCompetencia' => $competencia->idCompetencia,
-            'ordenCompetenciaPregunta' => $request['ordenCompetenciaPregunta'][$i],
-            'preguntaCompetenciaPregunta' => $request['preguntaCompetenciaPregunta'][$i],
-            'respuestaCompetenciaPregunta' => $request['respuestaCompetenciaPregunta'][$i],
-            'estadoCompetenciaPregunta' => $request['estadoCompetenciaPregunta'][$i],
-            'respuestaCompetenciaPregunta' => $request['respuestaCompetenciaPregunta'][$i],
-
-
+    if($request['respuesta'] != 'falso')
+        {   
+             \App\Competencia::create([
+                'nombreCompetencia' => $request['nombreCompetencia'],
+                'estadoCompetencia' => ($request['estadoCompetencia'] == 'Activo' ? 'Activo' : 'Inactivo')
             ]);
-         }
 
+
+    // en esta parte es el guardado de la multiregistro descripcion
+             //Primero consultar el ultimo id guardado
+             $competencia = \App\Competencia::All()->last();
+             //for para guardar cada registro de la multiregistro
+
+             for ($i=0; $i < count($request['ordenCompetenciaPregunta']); $i++) 
+             { 
+                 \App\CompetenciaPregunta::create([
+                'Competencia_idCompetencia' => $competencia->idCompetencia,
+                'ordenCompetenciaPregunta' => $request['ordenCompetenciaPregunta'][$i],
+                'preguntaCompetenciaPregunta' => $request['preguntaCompetenciaPregunta'][$i],
+                'respuestaCompetenciaPregunta' => $request['respuestaCompetenciaPregunta'][$i],
+                'estadoCompetenciaPregunta' => $request['estadoCompetenciaPregunta'][$i]
+
+
+                ]);
+             }
+        }
         return redirect('/competencia');
     }
 
@@ -98,7 +98,7 @@ class CompetenciaController extends Controller
      */
     public function edit($id)
     {
-          $competencia = \App\Competencia::find($id);
+         $competencia = \App\Competencia::find($id);
          $idModulo= \App\Modulo::All()->lists('idModulo');
          $nombreModulo= \App\Modulo::All()->lists('nombreModulo');
         return view ('competencia',['competencia'=>$competencia], compact('idModulo','nombreModulo'));
@@ -113,29 +113,31 @@ class CompetenciaController extends Controller
      */
     public function update(CompetenciaRequest $request, $id)
     {
-        $Competencia = \App\Competencia::find($id);
-        $Competencia->fill($request->all());
+    if($request['respuesta'] != 'falso')
+        {  
+            $competencia = \App\Competencia::find($id);
+            $competencia->fill($request->all());
 
-        $Competencia->save();
+            $competencia->save();
 
-        $idsEliminar = explode("," , $request['idsborrados']);
-        //Eliminar registros de la multiregistro
-        \App\CompetenciaPregunta::whereIn('idCompetenciaPregunta', $idsEliminar)->delete();
+            $idsEliminar = explode("," , $request['idsborrados']);
+            //Eliminar registros de la multiregistro
+            \App\CompetenciaPregunta::whereIn('idCompetenciaPregunta', $idsEliminar)->delete();
 
-        for ($i=0; $i < count($request['ordenCompetenciaPregunta']); $i++) 
-        { 
-            $indice = array(
-                'idCompetenciaPregunta' => $request['idCompetenciaPregunta'][$i]);
+            for ($i=0; $i < count($request['ordenCompetenciaPregunta']); $i++) 
+            { 
+                $indice = array(
+                    'idCompetenciaPregunta' => $request['idCompetenciaPregunta'][$i]);
 
-            $data = array(
-                'Competencia_idCompetencia' => $id,
-                'ordenCompetenciaPregunta' => $request['ordenCompetenciaPregunta'][$i],
-                'preguntaCompetenciaPregunta' => $request['preguntaCompetenciaPregunta'][$i],
-                'respuestaCompetenciaPregunta' => $request['respuestaCompetenciaPregunta'][$i],
-                'estadoCompetenciaPregunta' => $request['estadoCompetenciaPregunta'][$i],
-                'respuestaCompetenciaPregunta' => $request['respuestaCompetenciaPregunta'][$i]);
+                $data = array(
+                    'Competencia_idCompetencia' => $id,
+                    'ordenCompetenciaPregunta' => $request['ordenCompetenciaPregunta'][$i],
+                    'preguntaCompetenciaPregunta' => $request['preguntaCompetenciaPregunta'][$i],
+                    'respuestaCompetenciaPregunta' => $request['respuestaCompetenciaPregunta'][$i],
+                    'estadoCompetenciaPregunta' => $request['estadoCompetenciaPregunta'][$i]);
 
-            $guardar = \App\CompetenciaPregunta::updateOrCreate($indice, $data);
+                $guardar = \App\CompetenciaPregunta::updateOrCreate($indice, $data);
+            }
         }
 
         return redirect('competencia');
