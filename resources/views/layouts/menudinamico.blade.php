@@ -155,7 +155,7 @@
 						echo 
 						'
 						<li>
-							<a href="http://'.$_SERVER["HTTP_HOST"].'/'.$datosO->rutaOpcion.'"> <img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$datosO->iconoOpcion.'" title="'.$datosO->nombreOpcion.'" style="width:48px; height:48px;"><br>
+							<a href="http://'.$_SERVER["HTTP_HOST"].'/'.$datosO->rutaOpcion.'"> <img src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$datosO->iconoOpcion.'" title="'.$datosO->nombreOpcion.'" style="width:70px; height:58px;"><br>
 								'.$datosO->nombreCortoOpcion.'
 							</a>
 						</li>';
@@ -169,17 +169,7 @@
 				}
 
 				echo 
-				'<div id="menuuser1" class="menu" style="float: right; width: 200px;">
-		            <div>
-        		         '.\Session::get("nombreUsuario").'
-
-                		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="http://'.$_SERVER["HTTP_HOST"].'/auth/logout"> <img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de SiSoft" style="width:32px; height:32px;">
-						</a>
-					</div>
-				</div>
-
-			</div>';
+					'<li style="float:right; color:white;">'.\Session::get("nombreUsuario").', '.\Session::get("nombreCompania").'<a href="http://'.$_SERVER["HTTP_HOST"].'/auth/logout">'.'&nbsp;'.'<img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de Sisoft" style="width:30px; height:30px;"></a></li>';
 		?>
 
 
