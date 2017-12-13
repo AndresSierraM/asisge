@@ -169,7 +169,11 @@
 				}
 
 				echo 
-					'<li style="float:right; color:white;">'.\Session::get("nombreUsuario").', '.\Session::get("nombreCompania").'<a href="http://'.$_SERVER["HTTP_HOST"].'/auth/logout">'.'&nbsp;'.'<img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de Sisoft" style="width:30px; height:30px;"></a></li>';
+					'<li style="float:right;">'.\Session::get("nombreUsuario").', '.\Session::get("nombreCompania").'<a href="http://'.$_SERVER["HTTP_HOST"].'/auth/logout">'.'&nbsp;'.'<img src="http://'.$_SERVER["HTTP_HOST"].'/images/iconosmenu/salir.png" title="Salir de Sisoft" style="width:30px; height:30px;">
+
+						</a>
+					</li>
+				</div>';
 		?>
 
 
