@@ -256,6 +256,8 @@
 						       @endforeach					 	
 				      	</tbody>
 			     	</table>
+						<!-- SE abre el for each para que abarque los registros de la primera defnicion1 -->
+	      	   @foreach($PlanEmergenciaDefinicion1 as $Defenicion1)
 			     	<table class="table table-striped table-bordered" width="100%">
 				      	<thead>
 					       	<tr>
@@ -263,9 +265,11 @@
 					       	</tr>
 				      	</thead>
 				      	<tbody>
+				      		
 				       		<tr>
-				        		<td><?php echo $encabezado->procedimientoEmergenciaPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion1->procedimientoEmergenciaPlanEmergenciaDefinicion1;?></td>
 				       		</tr>
+				       		
 				      	</tbody>
 			     	</table>
 			     	<table class="table table-striped table-bordered" width="100%">
@@ -276,7 +280,7 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->sistemaAlertaPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion1->sistemaAlertaPlanEmergenciaDefinicion1;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
@@ -288,7 +292,7 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->notificacionInternaPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion1->notificacionInternaPlanEmergenciaDefinicion1;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
@@ -300,10 +304,14 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->rutasEvacuacionPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion1->rutasEvacuacionPlanEmergenciaDefinicion1;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
+			     	<!-- Se cierra el primer for each de definicion 1 -->
+			     	@endforeach	
+			     <!-- SE abre el for each para que abarque los registros de la primera defnicion2 -->
+	      	   @foreach($PlanEmergenciaDefinicion2 as $Defenicion2)
 	     	    	<table class="table table-striped table-bordered" width="100%">
 				      	<thead>
 					       	<tr>
@@ -312,7 +320,7 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->sistemaComunicacionPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion2->sistemaComunicacionPlanEmergenciaDefinicion2;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
@@ -324,7 +332,7 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->coordinacionSocorroPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion2->coordinacionSocorroPlanEmergenciaDefinicion2;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
@@ -336,10 +344,15 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->cesePeligroPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion2->cesePeligroPlanEmergenciaDefinicion2;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
+			     	<!-- Se cierra el primer for each de definicion 2-->
+			     	@endforeach	
+
+ 			<!-- SE abre el for each para que abarque los registros de la primera defnicion2 -->
+	      	   @foreach($PlanEmergenciaDefinicion3 as $Defenicion3)
 			     	<table class="table table-striped table-bordered" width="100%">
 				      	<thead>
 					       	<tr>
@@ -348,7 +361,7 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->capacitacionSimulacroPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion3->capacitacionSimulacroPlanEmergenciaDefinicion3;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
@@ -360,7 +373,7 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->analisisVulnerabilidadPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion3->analisisVulnerabilidadPlanEmergenciaDefinicion3;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
@@ -372,11 +385,12 @@
 				      	</thead>
 				      	<tbody>
 				       		<tr>
-				        		<td><?php echo $encabezado->listaAnexosPlanEmergencia;?></td>
+				        		<td><?php echo $Defenicion3->listaAnexosPlanEmergenciaDefinicion3;?></td>
 				       		</tr>
 				      	</tbody>
 			     	</table>
-
+  	<!-- Se cierra el primer for each de definicion 3-->
+			     	@endforeach	
 
 
 

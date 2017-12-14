@@ -121,16 +121,16 @@ class PlanEmergenciaController extends Controller
          'turnoOperativoPlanEmergencia'=> $request['turnoOperativoPlanEmergencia'],
          'turnoAdministrativoPlanEmergencia'=> $request['turnoAdministrativoPlanEmergencia'],
          'visitasDiaPlanEmergencia'=> $request['visitasDiaPlanEmergencia'],
-         'procedimientoEmergenciaPlanEmergencia'=> $request['procedimientoEmergenciaPlanEmergencia'],
-         'sistemaAlertaPlanEmergencia'=> $request['sistemaAlertaPlanEmergencia'],
-         'notificacionInternaPlanEmergencia'=> $request['notificacionInternaPlanEmergencia'],
-         'rutasEvacuacionPlanEmergencia'=> $request['rutasEvacuacionPlanEmergencia'],
-         'sistemaComunicacionPlanEmergencia'=> $request['sistemaComunicacionPlanEmergencia'],
-         'coordinacionSocorroPlanEmergencia'=> $request['coordinacionSocorroPlanEmergencia'],
-         'cesePeligroPlanEmergencia'=> $request['cesePeligroPlanEmergencia'],
-         'capacitacionSimulacroPlanEmergencia'=> $request['capacitacionSimulacroPlanEmergencia'],
-         'analisisVulnerabilidadPlanEmergencia'=> $request['analisisVulnerabilidadPlanEmergencia'],
-         'listaAnexosPlanEmergencia'=> $request['listaAnexosPlanEmergencia'],
+         // 'procedimientoEmergenciaPlanEmergencia'=> $request['procedimientoEmergenciaPlanEmergencia'],
+         // 'sistemaAlertaPlanEmergencia'=> $request['sistemaAlertaPlanEmergencia'],
+         // 'notificacionInternaPlanEmergencia'=> $request['notificacionInternaPlanEmergencia'],
+         // 'rutasEvacuacionPlanEmergencia'=> $request['rutasEvacuacionPlanEmergencia'],
+         // 'sistemaComunicacionPlanEmergencia'=> $request['sistemaComunicacionPlanEmergencia'],
+         // 'coordinacionSocorroPlanEmergencia'=> $request['coordinacionSocorroPlanEmergencia'],
+         // 'cesePeligroPlanEmergencia'=> $request['cesePeligroPlanEmergencia'],
+         // 'capacitacionSimulacroPlanEmergencia'=> $request['capacitacionSimulacroPlanEmergencia'],
+         // 'analisisVulnerabilidadPlanEmergencia'=> $request['analisisVulnerabilidadPlanEmergencia'],
+         // 'listaAnexosPlanEmergencia'=> $request['listaAnexosPlanEmergencia'],
          'Tercero_idRepresentanteLegal'=> $request['Tercero_idRepresentanteLegal'],
          'Compania_idCompania' => \Session::get('idCompania')
         ]);
@@ -139,6 +139,37 @@ class PlanEmergenciaController extends Controller
            //Primero consultar el ultimo id guardado
        $planemergencia = \App\PlanEmergencia::All()->last();
            //for para guardar cada registro de la multiregistro
+
+
+       // GUargado de la tabla definicion 1
+       \App\PlanEmergenciaDefinicion1::create([
+         'PlanEmergencia_idPlanEmergencia' => $planemergencia->idPlanEmergencia,
+         'procedimientoEmergenciaPlanEmergenciaDefinicion1' => $request['procedimientoEmergenciaPlanEmergenciaDefinicion1'],
+         'sistemaAlertaPlanEmergenciaDefinicion1'  => $request['sistemaAlertaPlanEmergenciaDefinicion1'],
+         'notificacionInternaPlanEmergenciaDefinicion1'  => $request['notificacionInternaPlanEmergenciaDefinicion1'],
+         'rutasEvacuacionPlanEmergenciaDefinicion1'  => $request['rutasEvacuacionPlanEmergenciaDefinicion1']
+       ]);
+
+           // GUargado de la tabla definicion 2
+       \App\PlanEmergenciaDefinicion2::create([
+         'PlanEmergencia_idPlanEmergencia' => $planemergencia->idPlanEmergencia,
+         'sistemaComunicacionPlanEmergenciaDefinicion2' => $request['sistemaComunicacionPlanEmergenciaDefinicion2'],
+         'coordinacionSocorroPlanEmergenciaDefinicion2' => $request['coordinacionSocorroPlanEmergenciaDefinicion2'],
+         'cesePeligroPlanEmergenciaDefinicion2' => $request['cesePeligroPlanEmergenciaDefinicion2']
+       ]);
+
+
+             // GUargado de la tabla definicion 3
+       \App\PlanEmergenciaDefinicion3::create([
+         'PlanEmergencia_idPlanEmergencia' => $planemergencia->idPlanEmergencia,
+         'capacitacionSimulacroPlanEmergenciaDefinicion3' => $request['capacitacionSimulacroPlanEmergenciaDefinicion3'],
+         'analisisVulnerabilidadPlanEmergenciaDefinicion3' => $request['analisisVulnerabilidadPlanEmergenciaDefinicion3'],
+         'listaAnexosPlanEmergenciaDefinicion3' => $request['listaAnexosPlanEmergenciaDefinicion3']
+       ]);
+
+
+
+
 
 
 
@@ -193,6 +224,9 @@ class PlanEmergenciaController extends Controller
             'papelPlanEmergenciaNivel' => $request['papelPlanEmergenciaNivel'][$i]
               ]);        
            }
+
+
+
 
            // Guardado del dropzone
                 $arrayImage = $request['archivoPlanEmergenciaArray'];
@@ -265,8 +299,31 @@ class PlanEmergenciaController extends Controller
           // Se llama los registros para saber  cual es  la que va a imprimir el usuario
            $planemergencia = \App\PlanEmergencia::find($id);
 
+
+           $PlanEmergenciaDefinicion3 = DB::SELECT('
+            SELECT ped3.capacitacionSimulacroPlanEmergenciaDefinicion3,ped3.analisisVulnerabilidadPlanEmergenciaDefinicion3,ped3.listaAnexosPlanEmergenciaDefinicion3
+            FROM planemergenciadefinicion3 ped3
+            LEFT JOIN planemergencia pe
+            ON ped3.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+            WHERE ped3.PlanEmergencia_idPlanEmergencia = '.$id);
+
+           $PlanEmergenciaDefinicion2 = DB::SELECT('
+            SELECT ped2.sistemaComunicacionPlanEmergenciaDefinicion2,ped2.coordinacionSocorroPlanEmergenciaDefinicion2,ped2.cesePeligroPlanEmergenciaDefinicion2
+            FROM planemergenciadefinicion2 ped2
+            LEFT JOIN planemergencia pe
+            ON ped2.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+            WHERE ped2.PlanEmergencia_idPlanEmergencia = '.$id);
+
+           $PlanEmergenciaDefinicion1 = DB::SELECT('
+            SELECT ped1.procedimientoEmergenciaPlanEmergenciaDefinicion1,ped1.sistemaAlertaPlanEmergenciaDefinicion1,ped1.notificacionInternaPlanEmergenciaDefinicion1,ped1.rutasEvacuacionPlanEmergenciaDefinicion1
+            FROM planemergenciadefinicion1 ped1
+            LEFT JOIN planemergencia pe
+            ON ped1.PlanEmergencia_idPlanEmergencia = pe.idPlanEmergencia
+             WHERE ped1.PlanEmergencia_idPlanEmergencia = '.$id);
+          
+
             $PlanEmergenciaEncabezado = DB::select('
-            SELECT pe.idPlanEmergencia,pe.fechaElaboracionPlanEmergencia,pe.nombrePlanEmergencia,cc.nombreCentroCosto,pe.justificacionPlanEmergencia,pe.marcoLegalPlanEmergencia,pe.definicionesPlanEmergencia,pe.generalidadesPlanEmergencia,pe.objetivosPlanEmergencia,pe.alcancePlanEmergencia,pe.nitPlanEmergencia,pe.direccionPlanEmergencia,pe.telefonoPlanEmergencia,pe.ubicacionPlanEmergencia,pe.personalOperativoPlanEmergencia,pe.personalAdministrativoPlanEmergencia,pe.turnoOperativoPlanEmergencia,pe.turnoAdministrativoPlanEmergencia,pe.visitasDiaPlanEmergencia,pe.procedimientoEmergenciaPlanEmergencia,pe.sistemaAlertaPlanEmergencia,pe.notificacionInternaPlanEmergencia,pe.rutasEvacuacionPlanEmergencia,pe.sistemaComunicacionPlanEmergencia,pe.coordinacionSocorroPlanEmergencia,pe.cesePeligroPlanEmergencia,pe.capacitacionSimulacroPlanEmergencia,pe.analisisVulnerabilidadPlanEmergencia,pe.listaAnexosPlanEmergencia,t.nombreCompletoTercero,pe.firmaRepresentantePlanEmergencia
+            SELECT pe.idPlanEmergencia,pe.fechaElaboracionPlanEmergencia,pe.nombrePlanEmergencia,cc.nombreCentroCosto,pe.justificacionPlanEmergencia,pe.marcoLegalPlanEmergencia,pe.definicionesPlanEmergencia,pe.generalidadesPlanEmergencia,pe.objetivosPlanEmergencia,pe.alcancePlanEmergencia,pe.nitPlanEmergencia,pe.direccionPlanEmergencia,pe.telefonoPlanEmergencia,pe.ubicacionPlanEmergencia,pe.personalOperativoPlanEmergencia,pe.personalAdministrativoPlanEmergencia,pe.turnoOperativoPlanEmergencia,pe.turnoAdministrativoPlanEmergencia,pe.visitasDiaPlanEmergencia,t.nombreCompletoTercero,pe.firmaRepresentantePlanEmergencia
             FROM planemergencia pe
             LEFT JOIN centrocosto cc
             ON pe.CentroCosto_idCentroCosto = cc.idCentroCosto
@@ -304,7 +361,7 @@ class PlanEmergenciaController extends Controller
             WHERE pea.PlanEmergencia_idPlanEmergencia = '.$id); 
 
 
-            return view('formatos.planemergenciaimpresion',compact('PlanEmergenciaEncabezado','PlanEmergenciaLimie','PlanEmergenciaIventario','PlanEmergenciaNivel','PlanEmergenciaArchivo'));
+            return view('formatos.planemergenciaimpresion',compact('PlanEmergenciaDefinicion3','PlanEmergenciaDefinicion2','PlanEmergenciaDefinicion1','PlanEmergenciaEncabezado','PlanEmergenciaLimie','PlanEmergenciaIventario','PlanEmergenciaNivel','PlanEmergenciaArchivo'));
         }
     }
 
@@ -314,6 +371,8 @@ class PlanEmergenciaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
     public function edit($id)
     {
         $planemergencia = \App\PlanEmergencia::find($id);
@@ -321,6 +380,33 @@ class PlanEmergenciaController extends Controller
         $tercero = \App\Tercero::where('Compania_idCompania','=', \Session::get('idCompania'))->lists('nombreCompletoTercero','idTercero');
 
 
+
+        // orm, query builder, consulta modelo
+        // Se envia la informacion con este tipo de consulta para que me reciba los datos sin problemas 
+        // Se hace la consulta al modelo para enviar los campos al momento de editar, de sus respetivas tablas 
+        $PLanEmergenciaDefiniciones = \App\PlanEmergencia::selectRaw(
+        'planemergenciadefinicion1.idPlanEmergenciaDefinicion1,
+        planemergenciadefinicion1.procedimientoEmergenciaPlanEmergenciaDefinicion1,
+        planemergenciadefinicion1.sistemaAlertaPlanEmergenciaDefinicion1,
+        planemergenciadefinicion1.notificacionInternaPlanEmergenciaDefinicion1,
+        planemergenciadefinicion1.rutasEvacuacionPlanEmergenciaDefinicion1,
+        planemergenciadefinicion2.idPlanEmergenciaDefinicion2,
+        planemergenciadefinicion2.sistemaComunicacionPlanEmergenciaDefinicion2,
+        planemergenciadefinicion2.coordinacionSocorroPlanEmergenciaDefinicion2,
+        planemergenciadefinicion2.cesePeligroPlanEmergenciaDefinicion2, 
+        planemergenciadefinicion3.idPlanEmergenciaDefinicion3,
+        planemergenciadefinicion3.capacitacionSimulacroPlanEmergenciaDefinicion3,
+        planemergenciadefinicion3.analisisVulnerabilidadPlanEmergenciaDefinicion3,
+        listaAnexosPlanEmergenciaDefinicion3')
+        ->leftjoin('planemergenciadefinicion1','PlanEmergencia.idPlanEmergencia','=','planemergenciadefinicion1.PlanEmergencia_idPlanEmergencia')
+        ->leftjoin('planemergenciadefinicion2','PlanEmergencia.idPlanEmergencia','=','planemergenciadefinicion2.PlanEmergencia_idPlanEmergencia')
+        ->leftjoin('planemergenciadefinicion3','PlanEmergencia.idPlanEmergencia','=','planemergenciadefinicion3.PlanEmergencia_idPlanEmergencia')
+        ->where('PlanEmergencia.idPlanEmergencia','=', $id)
+        ->firstOrFail(); /*Para que solo muestre el primer registro */
+        //  se ejecuta este echo$PLanEmergenciaDefinicionesQuery->toSql(); para verificar en php myadmin que todo este correcto
+
+
+      
       $PlanEmergenciaLimite = DB::SELECT('
         SELECT pel.idPlanEmergenciaLimite,pel.PlanEmergencia_idPlanEmergencia,pel.sedePlanEmergenciaLimite,pel.nortePlanEmergenciaLimite,pel.surPlanEmergenciaLimite,pel.orientePlanEmergenciaLimite,pel.occidentePlanEmergenciaLimite
         FROM planemergencialimite pel
@@ -352,11 +438,7 @@ class PlanEmergenciaController extends Controller
         WHERE pen.PlanEmergencia_idPlanEmergencia ='.$id);
 
 
-
-
-
-
-        return view('planemergencia',compact('PlanEmergenciaNivel','PlanEmergenciaComite','PlanEmergenciaInventario','PlanEmergenciaLimite','centrocosto','tercero'),['planemergencia'=>$planemergencia]);
+        return view('planemergencia',compact('PLanEmergenciaDefiniciones','PlanEmergenciaNivel','PlanEmergenciaComite','PlanEmergenciaInventario','PlanEmergenciaLimite','centrocosto','tercero'),['planemergencia'=>$planemergencia]);
     }
 
     /**
@@ -380,6 +462,56 @@ class PlanEmergenciaController extends Controller
 
             $planemergencia->save();
 
+
+
+            //Se guarda los registros de la tabla PlanEmergenciaDefinicion1 
+                //se pregunta si el ID ya existe para que reemplace todos los campos Actuales
+            $indice = array(
+                'PlanEmergencia_idPlanEmergencia' => $id);
+
+            $data = array(
+                'procedimientoEmergenciaPlanEmergenciaDefinicion1' => $request['procedimientoEmergenciaPlanEmergenciaDefinicion1'],
+                'sistemaAlertaPlanEmergenciaDefinicion1'  => $request['sistemaAlertaPlanEmergenciaDefinicion1'],
+                'notificacionInternaPlanEmergenciaDefinicion1'  => $request['notificacionInternaPlanEmergenciaDefinicion1'],
+                'rutasEvacuacionPlanEmergenciaDefinicion1'  => $request['rutasEvacuacionPlanEmergenciaDefinicion1']); 
+
+                 $planemergenciadefinicion1 = \App\PlanEmergenciaDefinicion1::updateOrCreate($indice, $data);
+
+
+
+                      //Se guarda los registros de la tabla PlanEmergenciaDefinicion2
+                //se pregunta si el ID ya existe para que reemplace todos los campos Actuales
+            $indice = array(
+                'PlanEmergencia_idPlanEmergencia' => $id);
+
+            $data = array(
+                 'sistemaComunicacionPlanEmergenciaDefinicion2' => $request['sistemaComunicacionPlanEmergenciaDefinicion2'],
+                 'coordinacionSocorroPlanEmergenciaDefinicion2' => $request['coordinacionSocorroPlanEmergenciaDefinicion2'],
+                 'cesePeligroPlanEmergenciaDefinicion2' => $request['cesePeligroPlanEmergenciaDefinicion2']); 
+
+                 $planemergenciadefinicion2 = \App\PlanEmergenciaDefinicion2::updateOrCreate($indice, $data);
+
+
+
+                      //Se guarda los registros de la tabla PlanEmergenciaDefinicion3
+                //se pregunta si el ID ya existe para que reemplace todos los campos Actuales
+            $indice = array(
+                'PlanEmergencia_idPlanEmergencia' => $id);
+
+            $data = array(                 
+                    'capacitacionSimulacroPlanEmergenciaDefinicion3' => $request['capacitacionSimulacroPlanEmergenciaDefinicion3'],
+                    'analisisVulnerabilidadPlanEmergenciaDefinicion3' => $request['analisisVulnerabilidadPlanEmergenciaDefinicion3'],
+                    'listaAnexosPlanEmergenciaDefinicion3' => $request['listaAnexosPlanEmergenciaDefinicion3']);
+
+                 $planemergenciadefinicion3 = \App\PlanEmergenciaDefinicion3::updateOrCreate($indice, $data);
+
+
+
+
+
+
+
+
                   // Update para el detalle de  limite
                  $idsEliminar = explode("," , $request['eliminarlimite']);
                 //Eliminar registros de la multiregistro
@@ -401,7 +533,6 @@ class PlanEmergenciaController extends Controller
 
                     $guardar = \App\PlanEmergenciaLimite::updateOrCreate($indice, $data);
                 } 
-
 
 
                        // Update para el detalle de  limite

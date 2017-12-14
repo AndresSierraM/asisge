@@ -9,7 +9,7 @@ class PlanEmergencia extends Model
     protected $table = 'planemergencia';
     protected $primaryKey = 'idPlanEmergencia';
 
-    protected $fillable = ['fechaElaboracionPlanEmergencia','nombrePlanEmergencia','CentroCosto_idCentroCosto', 'justificacionPlanEmergencia','marcoLegalPlanEmergencia','definicionesPlanEmergencia','generalidadesPlanEmergencia','objetivosPlanEmergencia','alcancePlanEmergencia','nitPlanEmergencia','direccionPlanEmergencia','telefonoPlanEmergencia','ubicacionPlanEmergencia','personalOperativoPlanEmergencia','personalAdministrativoPlanEmergencia','turnoOperativoPlanEmergencia','turnoAdministrativoPlanEmergencia','visitasDiaPlanEmergencia','procedimientoEmergenciaPlanEmergencia','sistemaAlertaPlanEmergencia','notificacionInternaPlanEmergencia','rutasEvacuacionPlanEmergencia','sistemaComunicacionPlanEmergencia','coordinacionSocorroPlanEmergencia','cesePeligroPlanEmergencia','capacitacionSimulacroPlanEmergencia','analisisVulnerabilidadPlanEmergencia','listaAnexosPlanEmergencia','Tercero_idRepresentanteLegal','firmaRepresentantePlanEmergencia','Compania_idCompania'];
+    protected $fillable = ['fechaElaboracionPlanEmergencia','nombrePlanEmergencia','CentroCosto_idCentroCosto', 'justificacionPlanEmergencia','marcoLegalPlanEmergencia','definicionesPlanEmergencia','generalidadesPlanEmergencia','objetivosPlanEmergencia','alcancePlanEmergencia','nitPlanEmergencia','direccionPlanEmergencia','telefonoPlanEmergencia','ubicacionPlanEmergencia','personalOperativoPlanEmergencia','personalAdministrativoPlanEmergencia','turnoOperativoPlanEmergencia','turnoAdministrativoPlanEmergencia','visitasDiaPlanEmergencia','Tercero_idRepresentanteLegal','firmaRepresentantePlanEmergencia','Compania_idCompania'];
 
     public $timestamps = false;
 
@@ -33,4 +33,22 @@ class PlanEmergencia extends Model
     {
 		return $this->hasMany('App\PlanEmergenciaArchivo','PlanEmergencia_idPlanEmergencia');
     }
+
+    public function PlanEmergenciaDefinicion1()
+    {   
+        return $this->hasMany('App\PlanEmergenciaDefinicion1','PlanEmergencia_idPlanEmergencia');
+    }
+
+    public function PlanEmergenciaDefinicion2()
+    {   
+        return $this->hasMany('App\PlanEmergenciaDefinicion2','PlanEmergencia_idPlanEmergencia');
+    }
+
+    public function PlanEmergenciaDefinicion3()
+    {   
+        return $this->hasMany('App\PlanEmergenciaDefinicion3','PlanEmergencia_idPlanEmergencia');
+    }
+
+
+    
 }

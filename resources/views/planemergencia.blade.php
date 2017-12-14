@@ -33,7 +33,9 @@
 
 
 <?php 
-//Se pregunta  si existe el id de Equipo Seguimiento Calibracion  para saber si existe o que devuelva un 0 (se le envia la variable al dropzone )
+
+
+
 $idPlanEmergencia = (isset($planemergencia) ? $planemergencia->idPlanEmergencia : 0);
 ?>
 
@@ -245,7 +247,7 @@ $(document).ready(function(){
                       {!!Form::hidden('eliminarlimite',null, array('id' => 'eliminarlimite'))!!}
                       {!!Form::hidden('eliminarInventario',null, array('id' => 'eliminarInventario'))!!}  
                       {!!Form::hidden('eliminarComite',null, array('id' => 'eliminarComite'))!!}  
-                      {!!Form::hidden('eliminarNivel',null, array('id' => 'eliminarNivel'))!!}                                           
+                      {!!Form::hidden('eliminarNivel',null, array('id' => 'eliminarNivel'))!!}                                             
                     </div>
                  </div>
             </div>
@@ -690,9 +692,9 @@ $(document).ready(function(){
                             <div class="col-sm-10">
                               <div class="input-group">
                                 <span class="input-group-addon">
-                                  <i class="fa fa-pencil-square-o "></i>
-                                </span>
-                                {!!Form::textarea('procedimientoEmergenciaPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese El procedimiento'])!!}
+                                  <i class="fa fa-pencil-square-o "></i>                              
+                               </span>
+                                {!!Form::textarea('procedimientoEmergenciaPlanEmergenciaDefinicion1',(isset($PLanEmergenciaDefiniciones) ? $PLanEmergenciaDefiniciones->procedimientoEmergenciaPlanEmergenciaDefinicion1 : null),['class'=>'form-control','placeholder'=>'Ingrese El procedimiento'])!!}
                               </div>
                             </div>
                           </div>
@@ -714,7 +716,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('sistemaAlertaPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese El  Sistema de alerta y alarma'])!!}
+                                {!!Form::textarea('sistemaAlertaPlanEmergenciaDefinicion1',(isset($PLanEmergenciaDefiniciones) ? $PLanEmergenciaDefiniciones->sistemaAlertaPlanEmergenciaDefinicion1 : null),['class'=>'form-control','placeholder'=>'Ingrese El  Sistema de alerta y alarma'])!!}
                               </div>
                             </div>
                           </div>
@@ -736,7 +738,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('notificacionInternaPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la notificación interna'])!!}
+                                {!!Form::textarea('notificacionInternaPlanEmergenciaDefinicion1',(isset($PLanEmergenciaDefiniciones) ? $PLanEmergenciaDefiniciones->notificacionInternaPlanEmergenciaDefinicion1 : null),['class'=>'form-control','placeholder'=>'Ingrese la notificación interna'])!!}
                               </div>
                             </div>
                           </div>
@@ -758,7 +760,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('rutasEvacuacionPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese rutas de evacuación'])!!}
+                                {!!Form::textarea('rutasEvacuacionPlanEmergenciaDefinicion1',(isset($PLanEmergenciaDefiniciones) ? $PLanEmergenciaDefiniciones->rutasEvacuacionPlanEmergenciaDefinicion1 : null),['class'=>'form-control','placeholder'=>'Ingrese rutas de evacuación'])!!}
                               </div>
                             </div>
                           </div>
@@ -780,7 +782,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('sistemaComunicacionPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese Sistemas de comunicación'])!!}
+                                {!!Form::textarea('sistemaComunicacionPlanEmergenciaDefinicion2',(isset($PLanEmergenciaDefiniciones)? $PLanEmergenciaDefiniciones->sistemaComunicacionPlanEmergenciaDefinicion2 : null),['class'=>'form-control','placeholder'=>'Ingrese Sistemas de comunicación'])!!}
                               </div>
                             </div>
                           </div>
@@ -802,7 +804,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('coordinacionSocorroPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la Coordinación y notificación a organismos de socorro '])!!}
+                                {!!Form::textarea('coordinacionSocorroPlanEmergenciaDefinicion2',(isset($PLanEmergenciaDefiniciones)? $PLanEmergenciaDefiniciones->coordinacionSocorroPlanEmergenciaDefinicion2 : null),['class'=>'form-control','placeholder'=>'Ingrese la Coordinación y notificación a organismos de socorro '])!!}
                               </div>
                             </div>
                           </div>
@@ -824,7 +826,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('cesePeligroPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la Determinación de cese del peligro y reestablecimiento de actividades'])!!}
+                                {!!Form::textarea('cesePeligroPlanEmergenciaDefinicion2',(isset($PLanEmergenciaDefiniciones)? $PLanEmergenciaDefiniciones->cesePeligroPlanEmergenciaDefinicion2 : null),['class'=>'form-control','placeholder'=>'Ingrese la Determinación de cese del peligro y reestablecimiento de actividades'])!!}
                               </div>
                             </div>
                           </div>
@@ -846,7 +848,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('capacitacionSimulacroPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese las Capacitaciones, Prácticas y simulacros '])!!}
+                                {!!Form::textarea('capacitacionSimulacroPlanEmergenciaDefinicion3',(isset($PLanEmergenciaDefiniciones)? $PLanEmergenciaDefiniciones->capacitacionSimulacroPlanEmergenciaDefinicion3 : null),['class'=>'form-control','placeholder'=>'Ingrese las Capacitaciones, Prácticas y simulacros '])!!}
                               </div>
                             </div>
                           </div>
@@ -868,7 +870,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('analisisVulnerabilidadPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese la notificación interna'])!!}
+                                {!!Form::textarea('analisisVulnerabilidadPlanEmergenciaDefinicion3',(isset($PLanEmergenciaDefiniciones)? $PLanEmergenciaDefiniciones->analisisVulnerabilidadPlanEmergenciaDefinicion3 : null),['class'=>'form-control','placeholder'=>'Ingrese la notificación interna'])!!}
                               </div>
                             </div>
                           </div>
@@ -890,7 +892,7 @@ $(document).ready(function(){
                                 <span class="input-group-addon">
                                   <i class="fa fa-pencil-square-o "></i>
                                 </span>
-                                {!!Form::textarea('listaAnexosPlanEmergencia',null,['class'=>'form-control','placeholder'=>'Ingrese el Anexo'])!!}
+                                {!!Form::textarea('listaAnexosPlanEmergenciaDefinicion3',(isset($PLanEmergenciaDefiniciones)? $PLanEmergenciaDefiniciones->listaAnexosPlanEmergenciaDefinicion3 : null),['class'=>'form-control','placeholder'=>'Ingrese el Anexo'])!!}
                               </div>
                             </div>
                           </div>
@@ -1034,44 +1036,44 @@ $(document).ready(function(){
         allowedContent: true
       }); 
 
-    CKEDITOR.replace(('procedimientoEmergenciaPlanEmergencia'), {
+    CKEDITOR.replace(('procedimientoEmergenciaPlanEmergenciaDefinicion1'), {
         fullPage: true,
         allowedContent: true
       });
-    CKEDITOR.replace(('sistemaAlertaPlanEmergencia'), {
+    CKEDITOR.replace(('sistemaAlertaPlanEmergenciaDefinicion1'), {
         fullPage: true,
         allowedContent: true
       });  
-    CKEDITOR.replace(('notificacionInternaPlanEmergencia'), {
+    CKEDITOR.replace(('notificacionInternaPlanEmergenciaDefinicion1'), {
         fullPage: true,
         allowedContent: true
       }); 
-    CKEDITOR.replace(('rutasEvacuacionPlanEmergencia'), {
+    CKEDITOR.replace(('rutasEvacuacionPlanEmergenciaDefinicion1'), {
         fullPage: true,
         allowedContent: true
       });  
-    CKEDITOR.replace(('sistemaComunicacionPlanEmergencia'), {
+    CKEDITOR.replace(('sistemaComunicacionPlanEmergenciaDefinicion2'), {
         fullPage: true,
         allowedContent: true
       }); 
-    CKEDITOR.replace(('coordinacionSocorroPlanEmergencia'), {
+    CKEDITOR.replace(('coordinacionSocorroPlanEmergenciaDefinicion2'), {
         fullPage: true,
         allowedContent: true
       });
-    CKEDITOR.replace(('cesePeligroPlanEmergencia'), {
+    CKEDITOR.replace(('cesePeligroPlanEmergenciaDefinicion2'), {
         fullPage: true,
         allowedContent: true
       });  
-    CKEDITOR.replace(('capacitacionSimulacroPlanEmergencia'), {
+    CKEDITOR.replace(('capacitacionSimulacroPlanEmergenciaDefinicion3'), {
         fullPage: true,
         allowedContent: true
       });
-    CKEDITOR.replace(('analisisVulnerabilidadPlanEmergencia'), {
+    CKEDITOR.replace(('analisisVulnerabilidadPlanEmergenciaDefinicion3'), {
         fullPage: true,
         allowedContent: true
       }); 
 
-    CKEDITOR.replace(('listaAnexosPlanEmergencia'), {
+    CKEDITOR.replace(('listaAnexosPlanEmergenciaDefinicion3'), {
         fullPage: true,
         allowedContent: true
       }); 
