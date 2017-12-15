@@ -121,16 +121,6 @@ class PlanEmergenciaController extends Controller
          'turnoOperativoPlanEmergencia'=> $request['turnoOperativoPlanEmergencia'],
          'turnoAdministrativoPlanEmergencia'=> $request['turnoAdministrativoPlanEmergencia'],
          'visitasDiaPlanEmergencia'=> $request['visitasDiaPlanEmergencia'],
-         // 'procedimientoEmergenciaPlanEmergencia'=> $request['procedimientoEmergenciaPlanEmergencia'],
-         // 'sistemaAlertaPlanEmergencia'=> $request['sistemaAlertaPlanEmergencia'],
-         // 'notificacionInternaPlanEmergencia'=> $request['notificacionInternaPlanEmergencia'],
-         // 'rutasEvacuacionPlanEmergencia'=> $request['rutasEvacuacionPlanEmergencia'],
-         // 'sistemaComunicacionPlanEmergencia'=> $request['sistemaComunicacionPlanEmergencia'],
-         // 'coordinacionSocorroPlanEmergencia'=> $request['coordinacionSocorroPlanEmergencia'],
-         // 'cesePeligroPlanEmergencia'=> $request['cesePeligroPlanEmergencia'],
-         // 'capacitacionSimulacroPlanEmergencia'=> $request['capacitacionSimulacroPlanEmergencia'],
-         // 'analisisVulnerabilidadPlanEmergencia'=> $request['analisisVulnerabilidadPlanEmergencia'],
-         // 'listaAnexosPlanEmergencia'=> $request['listaAnexosPlanEmergencia'],
          'Tercero_idRepresentanteLegal'=> $request['Tercero_idRepresentanteLegal'],
          'Compania_idCompania' => \Session::get('idCompania')
         ]);
@@ -384,6 +374,7 @@ class PlanEmergenciaController extends Controller
         // orm, query builder, consulta modelo
         // Se envia la informacion con este tipo de consulta para que me reciba los datos sin problemas 
         // Se hace la consulta al modelo para enviar los campos al momento de editar, de sus respetivas tablas 
+        // Se agrega e los leftjoin la tabla como tal planemergencia, ya que si se pone el modelo en linux no aparece la relacion
         $PLanEmergenciaDefiniciones = \App\PlanEmergencia::selectRaw(
         'planemergenciadefinicion1.idPlanEmergenciaDefinicion1,
         planemergenciadefinicion1.procedimientoEmergenciaPlanEmergenciaDefinicion1,
@@ -398,12 +389,12 @@ class PlanEmergenciaController extends Controller
         planemergenciadefinicion3.capacitacionSimulacroPlanEmergenciaDefinicion3,
         planemergenciadefinicion3.analisisVulnerabilidadPlanEmergenciaDefinicion3,
         listaAnexosPlanEmergenciaDefinicion3')
-        ->leftjoin('planemergenciadefinicion1','PlanEmergencia.idPlanEmergencia','=','planemergenciadefinicion1.PlanEmergencia_idPlanEmergencia')
-        ->leftjoin('planemergenciadefinicion2','PlanEmergencia.idPlanEmergencia','=','planemergenciadefinicion2.PlanEmergencia_idPlanEmergencia')
-        ->leftjoin('planemergenciadefinicion3','PlanEmergencia.idPlanEmergencia','=','planemergenciadefinicion3.PlanEmergencia_idPlanEmergencia')
-        ->where('PlanEmergencia.idPlanEmergencia','=', $id)
+        ->leftjoin('planemergenciadefinicion1','planemergencia.idPlanEmergencia','=','planemergenciadefinicion1.PlanEmergencia_idPlanEmergencia')
+        ->leftjoin('planemergenciadefinicion2','planemergencia.idPlanEmergencia','=','planemergenciadefinicion2.PlanEmergencia_idPlanEmergencia')
+        ->leftjoin('planemergenciadefinicion3','planemergencia.idPlanEmergencia','=','planemergenciadefinicion3.PlanEmergencia_idPlanEmergencia')
+        ->where('planemergencia.idPlanEmergencia','=', $id)
         ->firstOrFail(); /*Para que solo muestre el primer registro */
-        //  se ejecuta este echo$PLanEmergenciaDefinicionesQuery->toSql(); para verificar en php myadmin que todo este correcto
+        //  se ejecuta este echo$PLanEmergenciaDefiniciones->toSql(); para verificar en php myadmin que todo este correcto
 
 
       
