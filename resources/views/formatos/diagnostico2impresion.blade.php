@@ -105,6 +105,8 @@
                     	$totalRegistros= 0;               	
                         // dentro de acada while se va crear una variable que contenga almenos el titulo para comprarlo con el sigueinte
                         $nivel2 = $datos[$i]['tituloDiagnosticoNivel2'];
+                         // Se crea una variable que contenta el valor maximo del nivel 1 porcnivel1
+                        $porcnivel1 = $datos[$i]['valorDiagnosticoNivel1'];
                         $porcnivel2 = $datos[$i]['valorDiagnosticoNivel2'];
                         $idnivel2 = $datos[$i]['idDiagnosticoNivel2'];                     	
                         echo '
@@ -168,7 +170,7 @@
                        echo '
                     <thead class="thead-inverse">  
                         <tr class="table-info">
-                       <th colspan="3" style=" background-color:#255986; color:white;">RESULTADO '.$niveles.' (PUNTAJE MÁXIMO 25%)</th>
+                       <th colspan="3" style=" background-color:#255986; color:white;">RESULTADO '.$niveles.' (PUNTAJE MÁXIMO '.$porcnivel1.'%)</th>
                        <th><input type="text" id="resultadonivel1_'.$idniveles.'" name="resultadonivel1[]" value='.$totalAcumulador.' readonly="readonly"></th>              
                       </tr>
                       <tr class="table-info">

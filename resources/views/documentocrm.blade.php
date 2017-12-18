@@ -325,7 +325,7 @@
                                           <i class="fa fa-barcode"></i>
                                           </span>
                                           <input type="hidden" id="token" value="{{csrf_token()}}"/>
-                                                {!!Form::text('codigoDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el código de la Línea'])!!}
+                                                {!!Form::text('codigoDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el código del documento'])!!}
                                                 {!!Form::hidden('idDocumentoCRM', null, array('id' => 'idDocumentoCRM'))!!}
 
                                                 {!!Form::hidden('eliminarDocumentoCRMCampo', '', array('id' => 'eliminarDocumentoCRMCampo'))!!}
@@ -343,7 +343,7 @@
                                           <span class="input-group-addon">
                                           <i class="fa fa-pencil-square-o"></i>
                                           </span>
-                                                {!!Form::text('nombreDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre de la Línea'])!!}
+                                                {!!Form::text('nombreDocumentoCRM',null,['class'=>'form-control','placeholder'=>'Ingresa el nombre del documento'])!!}
                                     </div>
                               </div>
                             </div>  

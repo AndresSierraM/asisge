@@ -37,7 +37,7 @@ class Diagnostico2Controller extends Controller
     { 
         // SE ENVIA EL idDiagnostico2 como null para engañar al sistema y hacer una validacion en el boton preguntando si es nulo o no para identificar si es Modificar o Adicionar
        $diagnostico2 = DB::select('
-        SELECT NULL as idDiagnostico2Detalle,NULL as respuestaDiagnostico2Detalle,NULL as mejoraDiagnostico2Detalle,NULL as resultadoDiagnostico2Detalle,NULL as idDiagnostico2,diag4.idDiagnosticoNivel4,diag1.idDiagnosticoNivel1,diag2.idDiagnosticoNivel2,diag1.numeroDiagnosticoNivel1,diag1.tituloDiagnosticoNivel1,diag2.numeroDiagnosticoNivel2,
+        SELECT NULL as idDiagnostico2Detalle,NULL as respuestaDiagnostico2Detalle,NULL as mejoraDiagnostico2Detalle,NULL as resultadoDiagnostico2Detalle,NULL as idDiagnostico2,diag4.idDiagnosticoNivel4,diag1.idDiagnosticoNivel1,diag1.valorDiagnosticoNivel1,diag2.idDiagnosticoNivel2,diag1.numeroDiagnosticoNivel1,diag1.tituloDiagnosticoNivel1,diag2.numeroDiagnosticoNivel2,
         diag2.tituloDiagnosticoNivel2,diag2.valorDiagnosticoNivel2,diag3.numeroDiagnosticoNivel3,diag3.tituloDiagnosticoNivel3,
         diag3.valorDiagnosticoNivel3,diag4.numeroDiagnosticoNivel4,diag4.tituloDiagnosticoNivel4,diag4.valorDiagnosticoNivel4
         FROM
@@ -116,7 +116,7 @@ class Diagnostico2Controller extends Controller
 
         // Se hace una consulta de la tabla Diagnostico2 Para traer todos los registros que fueron llenados
         $diagnostico2 = DB::select('
-            SELECT idDiagnostico2Detalle,diag2.idDiagnostico2,diagn4.idDiagnosticoNivel4,diagn1.idDiagnosticoNivel1,diagn2.idDiagnosticoNivel2,diagn1.numeroDiagnosticoNivel1,
+            SELECT idDiagnostico2Detalle,diag2.idDiagnostico2,diagn4.idDiagnosticoNivel4,diagn1.idDiagnosticoNivel1,diagn1.valorDiagnosticoNivel1,diagn2.idDiagnosticoNivel2,diagn1.numeroDiagnosticoNivel1,
             diagn1.tituloDiagnosticoNivel1,diagn2.numeroDiagnosticoNivel2,diagn2.tituloDiagnosticoNivel2,
             diagn2.valorDiagnosticoNivel2,diagn3.numeroDiagnosticoNivel3,diagn3.tituloDiagnosticoNivel3,
             diagn3.valorDiagnosticoNivel3,diagn4.numeroDiagnosticoNivel4,diagn4.tituloDiagnosticoNivel4,

@@ -26,7 +26,7 @@ class Diagnostico2Request extends Request
        
          $datoDetalleR = count($this->get('respuestaDiagnostico2Detalle'));
         
-         $validacion = array('codigoDiagnostico2' => "required|string|max:20|unique:diagnostico2,codigoDiagnostico2,".$this->get('idDiagnostico2') .",idDiagnostico2,Compania_idCompania,".(\Session::get('idCompania')),
+         $validacion = array('codigoDiagnostico2' => "required",
                              'nombreDiagnostico2' => 'required|string|max:80',
                             'fechaElaboracionDiagnostico2' => 'required|date');
 
