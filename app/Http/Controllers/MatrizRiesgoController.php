@@ -160,6 +160,129 @@ class MatrizRiesgoController extends Controller
               $nombreDescripcion = \App\TipoRiesgoDetalle::find($request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i]);
               
 
+
+              //************************************************
+              //
+              //    V A L I D A C I O N E S  E N L O S 3 C A M P O S     
+              //
+              //************************************************
+              // Se valida cuando los 3  campos tienen valores, para que por medio de una concatenacion se guarde el registro de los 3
+              if ($request['eliminacionMatrizRiesgoDetalle'][$i] != '' and $request['sustitucionMatrizRiesgoDetalle'][$i] != '' and $request['controlMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i].',Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i].',Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              //************************************************
+              //
+              //    V A L I D A C I O N E S P A R A  E L I M I N A C I O N     
+              //
+              //************************************************
+              // Luego se valida el primer campo eliminacion con los otros 2 campos 
+              if ($request['eliminacionMatrizRiesgoDetalle'][$i] != '' and $request['sustitucionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i].',Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else 
+              if ($request['eliminacionMatrizRiesgoDetalle'][$i] != '' and $request['controlMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i].',Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              //************************************************
+              //
+              //    V A L I D A C I O N E S P A R A S U S T I T U C I O N   
+              //
+              //************************************************
+                // Para el campo de sustitucion se valida de igual forma con los 2 campos
+              if ($request['sustitucionMatrizRiesgoDetalle'][$i] != '' and $request['eliminacionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i].', Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              if ($request['sustitucionMatrizRiesgoDetalle'][$i] != '' and $request['controlMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i].',Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              //************************************************
+              //
+              //    V A L I D A C I O N E S P A R A  C O N T R O L    
+              //
+              //************************************************
+              if ($request['controlMatrizRiesgoDetalle'][$i] != '' and $request['eliminacionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i].', Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              if ($request['controlMatrizRiesgoDetalle'][$i] != '' and $request['sustitucionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i].', Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              // Finalmente se validan los campos por individuales,por si el usuario decide llenar solo 1 de los 3
               if($request['eliminacionMatrizRiesgoDetalle'][$i] != '')
               {
                   $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
@@ -173,6 +296,7 @@ class MatrizRiesgoController extends Controller
                       $descripcionAccion = $accionACPM
                       ); 
               }
+              else
               if($request['sustitucionMatrizRiesgoDetalle'][$i] != '')
               {
                   $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
@@ -186,6 +310,7 @@ class MatrizRiesgoController extends Controller
                       $descripcionAccion = $accionACPM
                       ); 
               }
+              else
               if($request['controlMatrizRiesgoDetalle'][$i] != '')
               {
                   $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
@@ -404,7 +529,128 @@ class MatrizRiesgoController extends Controller
               $nombreRiesgo = \App\TipoRiesgo::find($request['TipoRiesgo_idTipoRiesgo'][$i]);
               $nombreDescripcion = \App\TipoRiesgoDetalle::find($request['TipoRiesgoDetalle_idTipoRiesgoDetalle'][$i]);
               
-
+                           //************************************************
+              //
+              //    V A L I D A C I O N E S  E N L O S 3 C A M P O S     
+              //
+              //************************************************
+              // Se valida cuando los 3  campos tienen valores, para que por medio de una concatenacion se guarde el registro de los 3
+              if ($request['eliminacionMatrizRiesgoDetalle'][$i] != '' and $request['sustitucionMatrizRiesgoDetalle'][$i] != '' and $request['controlMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i].',Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i].',Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              //************************************************
+              //
+              //    V A L I D A C I O N E S P A R A  E L I M I N A C I O N     
+              //
+              //************************************************
+              // Luego se valida el primer campo eliminacion con los otros 2 campos 
+              if ($request['eliminacionMatrizRiesgoDetalle'][$i] != '' and $request['sustitucionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i].',Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else 
+              if ($request['eliminacionMatrizRiesgoDetalle'][$i] != '' and $request['controlMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i].',Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              //************************************************
+              //
+              //    V A L I D A C I O N E S P A R A S U S T I T U C I O N   
+              //
+              //************************************************
+                // Para el campo de sustitucion se valida de igual forma con los 2 campos
+              if ($request['sustitucionMatrizRiesgoDetalle'][$i] != '' and $request['eliminacionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i].', Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              if ($request['sustitucionMatrizRiesgoDetalle'][$i] != '' and $request['controlMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i].',Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              //************************************************
+              //
+              //    V A L I D A C I O N E S P A R A  C O N T R O L    
+              //
+              //************************************************
+              if ($request['controlMatrizRiesgoDetalle'][$i] != '' and $request['eliminacionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i].', Eliminación: '.$request['eliminacionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+              if ($request['controlMatrizRiesgoDetalle'][$i] != '' and $request['sustitucionMatrizRiesgoDetalle'][$i] != '') 
+              {
+                 $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
+                            'Tipo: '.$nombreRiesgo->nombreTipoRiesgo.', '.
+                            'Descripción: '.$nombreDescripcion->nombreTipoRiesgoDetalle.', '.
+                            'Control Adm: '.$request['controlMatrizRiesgoDetalle'][$i].', Sustitución: '.$request['sustitucionMatrizRiesgoDetalle'][$i];
+                  guardarReporteACPM(
+                      $fechaAccion = date("Y-m-d"), 
+                      $idModulo = 28, 
+                      $tipoAccion = 'Correctiva', 
+                      $descripcionAccion = $accionACPM
+                      ); 
+              }
+              else
+   // Finalmente se validan los campos por individuales,por si el usuario decide llenar solo 1 de los 3
               if($request['eliminacionMatrizRiesgoDetalle'][$i] != '')
               {
                   $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
@@ -418,6 +664,7 @@ class MatrizRiesgoController extends Controller
                       $descripcionAccion = $accionACPM
                       ); 
               }
+              else
               if($request['sustitucionMatrizRiesgoDetalle'][$i] != '')
               {
                   $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
@@ -431,6 +678,7 @@ class MatrizRiesgoController extends Controller
                       $descripcionAccion = $accionACPM
                       ); 
               }
+              else
               if($request['controlMatrizRiesgoDetalle'][$i] != '')
               {
                   $accionACPM = 'Clasificación: '.$nombreClasificacion->nombreClasificacionRiesgo.', '.
