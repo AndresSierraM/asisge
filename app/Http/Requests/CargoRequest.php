@@ -28,6 +28,7 @@ class CargoRequest extends Request
         $elemento = count($this->get('ElementoProteccion_idElementoProteccion'));
         $examen = count($this->get('FrecuenciaMedicion_idFrecuenciaMedicion'));
         $tipoexamen = count($this->get('TipoExamenMedico_idTipoExamenMedico'));
+        $ResponsabilidadDescripcion = count($this->get('descripcionCargoResponsabilidad'));
 
 
         $validacion = array('codigoCargo' => "required|numeric|unique:cargo,codigoCargo,".$this->get('idCargo') .",idCargo,Compania_idCompania,".(\Session::get('idCompania')),
@@ -74,6 +75,15 @@ class CargoRequest extends Request
             }
         }    
 
+
+        for($i = 0; $i < $ResponsabilidadDescripcion; $i++)
+        {
+            if(trim($this->get('descripcionCargoResponsabilidad')[$i]) == '' or trim($this->get('descripcionCargoResponsabilidad')[$i]) == '')
+            {    
+                $validacion['descripcionCargoResponsabilidad'.$i] =  'required';
+            }
+        }
+
         return $validacion;
     }
     public function messages()
@@ -85,6 +95,7 @@ class CargoRequest extends Request
         $elemento = count($this->get('ElementoProteccion_idElementoProteccion'));
         $examen = count($this->get('FrecuenciaMedicion_idFrecuenciaMedicion'));
         $tipoexamen = count($this->get('TipoExamenMedico_idTipoExamenMedico'));
+        $ResponsabilidadDescripcion = count($this->get('descripcionCargoResponsabilidad'));
 
         $mensajes = array();
         $mensajes["codigoCargo.required"] = "[Encabezado] Debe ingresar el código";
@@ -133,6 +144,15 @@ class CargoRequest extends Request
                 $mensajes["ElementoProteccion_idElementoProteccion".$i.".required"] = "[Detalle Elementos de Protección Personal] Debe seleccionar el elemento de protección en la línea ".($i+1);
             }           
         }
+
+         for($i = 0; $i < $ResponsabilidadDescripcion; $i++)
+        {
+            if(trim($this->get('descripcionCargoResponsabilidad')[$i]) == '' )
+            {    
+                $mensajes["descripcionCargoResponsabilidad".$i.".required"] = "[Detalle Responsabilidades] Debe ingresar la descripción en la línea ".($i+1);
+            }           
+        }
+
 
 
         

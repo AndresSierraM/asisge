@@ -43,7 +43,8 @@
 		var valorVacuna = [0,''];
 		var valorElemento = [0,''];
 		var valorExamen = [0,'',0,0,0,''];
-		var ResponsabilidadesModelo = [0,'',0];
+		var ResponsabilidadesModelo = [0,'','','',''];
+
 		
 
 		var idListaTarea = '<?php echo isset($idListaTarea) ? $idListaTarea : 0;?>';
@@ -152,22 +153,22 @@
 			    Responsabilidades.campoEliminacion = 'eliminarResponsabilidades';//hermanitas         Cuando se utilice la funcionalidad 
 			    Responsabilidades.botonEliminacion = true;//hermanitas
 			    // despues del punto son las propiedades que se le van adicionar al objeto
-			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','Cargo_idCargo','porcentajeCargoResponsabilidad']; //[arrays ]
+			    Responsabilidades.campos = ['idCargoResponsabilidad','descripcionCargoResponsabilidad','rendicionCuentasCargoResponsabilidad','Cargo_idCargo','porcentajeCargoResponsabilidad']; //[arrays ]
 			    Responsabilidades.altura = '35px;'; 
 			     // correspondiente en el mismo orden del mismo array , no puede tener mas campos que los que esten definidos
-			    Responsabilidades.etiqueta = ['input','textarea','input','input'];
-			    Responsabilidades.tipo = ['hidden','textarea','hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
-			    Responsabilidades.estilo = ['','vertical-align:top; width: 600px;  height:35px;','','width: 100px;height:35px;'];	
+			    Responsabilidades.etiqueta = ['input','textarea','textarea','input','input'];
+			    Responsabilidades.tipo = ['hidden','textarea','textarea','hidden','']; //tipo hidden - oculto para el usuario  y los otros quedan visibles ''
+			    Responsabilidades.estilo = ['','vertical-align:top; width: 600px;  height:35px;','vertical-align:top; width: 420px;  height:35px;','','width: 100px;height:35px;'];	
 
 			    // estas propiedades no son muy usadas PERO SON UTILES
 			    
-			    Responsabilidades.clase = ['','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
-			    Responsabilidades.sololectura = [false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
-			    Responsabilidades.completar = ['off','off','off','off']; //autocompleta 
+			    Responsabilidades.clase = ['','','','',''];  //En esta propiedad se puede utilizar las clases , pueden ser de  boostrap  ejm: from-control o clases propias
+			    Responsabilidades.sololectura = [false,false,false,false,false]; //es para que no le bloquee el campo al usuario para que este pueda digitar de lo contrario true 
+			    Responsabilidades.completar = ['off','off','off','off','off']; //autocompleta 
 			    
-			    Responsabilidades.opciones = ['','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
+			    Responsabilidades.opciones = ['','','','','']; // se utiliza cuando las propiedades de la etiqueta son tipo select 
 			    var quitacarac = ["onchange","this.value=quitarCaracterEspecial(this.value);"];
-			    Responsabilidades.funciones  = ['',quitacarac,'',validacionesPesoR]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
+			    Responsabilidades.funciones  = ['',quitacarac,quitacarac,'',validacionesPesoR]; // cositas mas especificas , ejemplo ; vaya a  propiedad etiqueta y cuando escriba referencia  trae la funcion  
 
 
 
@@ -692,7 +693,8 @@
 														          <div class="col-md-1" style="width: 40px;height: 35px;" onclick="Responsabilidades.agregarCampos(ResponsabilidadesModelo,'A')">
 														            <span class="glyphicon glyphicon-plus"></span>
 														          </div>
-														          <div class="col-md-1" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+														          <div class="col-md-1 requiredMulti" style="width: 600px;display:inline-block;height:35px;">Descripcion</div>
+									       						<div class="col-md-1" style="width: 420px;display:inline-block;height:35px;">Rendici&oacute;n de cuentas</div>
 														          <div class="col-md-1" style="width: 100px;display:inline-block;height:35px;">% Peso</div>
 														          <!-- este es el div para donde van insertando los registros --> 
 														          <div id="Responsabilidad_Modulo">

@@ -179,7 +179,7 @@ class CargoController extends Controller
             WHERE Cargo_idCargo = ".$id);
 
             $cargoresponsabilidad = DB::select(
-            "SELECT cr.descripcionCargoResponsabilidad,cr.Cargo_idCargo,cr.porcentajeCargoResponsabilidad,c.idCargo,cr.idCargoResponsabilidad
+            "SELECT cr.descripcionCargoResponsabilidad,cr.rendicionCuentasCargoResponsabilidad,cr.Cargo_idCargo,cr.porcentajeCargoResponsabilidad,c.idCargo,cr.idCargoResponsabilidad
             FROM cargo c
             LEFT JOIN cargoresponsabilidad cr
             ON cr.Cargo_idCargo =  c.idCargo
@@ -473,6 +473,7 @@ class CargoController extends Controller
             $data = array(
             'Cargo_idCargo' => $id,
             'descripcionCargoResponsabilidad' => $request['descripcionCargoResponsabilidad'][$i],
+            'rendicionCuentasCargoResponsabilidad' => $request['rendicionCuentasCargoResponsabilidad'][$i],
             'porcentajeCargoResponsabilidad' => $request['porcentajeCargoResponsabilidad'][$i] );
 
             $preguntas = \App\CargoResponsabilidad::updateOrCreate($indice, $data);

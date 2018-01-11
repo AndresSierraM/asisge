@@ -9,31 +9,31 @@
 					<table class="table" width="100%">
 						<thead>
 							<tr>
-								<td colspan="2" align="center">Cargos</td>
+								<td colspan="2" align="center"  style=" background-color:#337ab7; color:white;">Cargos</td>
 							</tr>
 							<tr>
-								<td>Codigo</td>
+								<td><b>Codigo</b></td>
 								<td>{{$dato->codigoCargo}}</td>
 							</tr>
 							<tr>
-								<td>Nombre</td>
+								<td><b>Nombre</b></td>
 								<td>{{$dato->nombreCargop}}</td>
 								
 							</tr>
 							<tr>
-								<td>Salario Base</td>
+								<td><b>Salario Base</b></td>
 								<td>{{$dato->salarioBaseCargo}}</td>
 
 							</tr>
 							<tr>
-								<td>Nivel Riesgo</td>
+								<td><b>Nivel Riesgo</b></td>
 								<td>{{$dato->nivelRiesgoCargo}}</td>
 								
 							</tr>
 						 @endforeach
 						 @foreach($Cargodepende as $depende)
 							<tr>
-								<td>Depende De</td>
+								<td><b>Depende De</td>
 								<td>{{$depende->nombreCargo}}</td>
 							</tr>
 						 @endforeach
@@ -51,7 +51,7 @@
 				     <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 				     			<tr>
-				     			<td><b>Objetivos</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Objetivos</b></td>
 				     			</tr>
 				     </thead>
 					      <tbody>
@@ -66,7 +66,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Educaci&#243;n</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Educaci&#243;n</b></td>
 
 			     			</tr>
 			     			<tr>
@@ -97,7 +97,7 @@
 				     <thead>
 				     @foreach($Cargo as $dato)
 			     			<tr>
-				     			<td><b>Experiencia</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Experiencia</b></td>
 
 			     			</tr>
 					       	<tr>
@@ -122,7 +122,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Formaci&#243;n</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Formaci&#243;n</b></td>
 
 			     			</tr>
 			     			<tr>
@@ -153,7 +153,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Habilidades propias del cargo</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Habilidades propias del cargo</b></td>
 
 			     			</tr>
 			     			<tr>
@@ -185,7 +185,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Responsabilidades</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Responsabilidades</b></td>
 
 			     			</tr>
 			     			<tr>
@@ -195,6 +195,7 @@
 							<!-- Multiregistro Responsabilidad  -->
 							<tr>
 								<td><b>Descripci&#243;n</b></td>
+								<td><b>Rendici&#243;n de cuentas</b></td>
 								<td><b>% Peso</b></td>
 							</tr>
 							<tr>
@@ -205,6 +206,7 @@
 					         @foreach($cargoresponsabilidad as $responsabilidad)
 						       <tr>
 						        <td>{{$responsabilidad->descripcionCargoResponsabilidad}}</td>
+						        <td>{{$responsabilidad->rendicionCuentasCargoResponsabilidad}}</td>
 						        <td>{{$responsabilidad->porcentajeCargoResponsabilidad}}</td>
 						       </tr>
 						       @endforeach
@@ -215,7 +217,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Habilidades Actitudinales</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Habilidades Actitudinales</b></td>
 
 			     			</tr>
 							
@@ -240,7 +242,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Tareas de Alto Riesgo</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Tareas de Alto Riesgo</b></td>
 
 			     			</tr>
 							
@@ -264,7 +266,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Examenes m&#233;dicos Requeridos</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Examenes m&#233;dicos Requeridos</b></td>
 			     			</tr>
 							
 							<tr>
@@ -297,7 +299,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Vacunas Requeridas</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Vacunas Requeridas</b></td>
 
 			     			</tr>
 							
@@ -321,7 +323,7 @@
 				    <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 				     			<tr>
-				     			<td><b>Posici&#243;n predominante (m&#225;s del 60% de la jornada) </b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Posici&#243;n predominante (m&#225;s del 60% de la jornada) </b></td>
 				     			</tr>
 				     </thead>
 					      <tbody>
@@ -336,7 +338,7 @@
 				    <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 				     			<tr>
-				     			<td><b>Restricciones para el Cargo</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Restricciones para el Cargo</b></td>
 				     			</tr>
 				     </thead>
 					      <tbody>
@@ -351,7 +353,7 @@
 				       <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 			     			<tr>
-				     			<td><b>Elementos de Protecci&#243;n Personal</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Elementos de Protecci&#243;n Personal</b></td>
 
 			     			</tr>
 							
@@ -375,7 +377,7 @@
 				    <table  class="table table-striped table-bordered" width="100%">
 				     <thead>
 				     			<tr>
-				     			<td><b>Autoridades</b></td>
+				     			<td style=" background-color:#848484; color:white;"><b>Autoridades</b></td>
 				     			</tr>
 				     </thead>
 					      <tbody>

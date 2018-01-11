@@ -19,16 +19,21 @@ function validarFormulario(event)
     var dato1 = document.getElementById('codigoCargo').value;
     var dato2 = document.getElementById('nombreCargo').value;
     var dato3 = document.getElementById('salarioBaseCargo').value;
+
+
+
     var datoTarea = document.querySelectorAll("[name='ListaGeneral_idTareaAltoRiesgo[]']");
     var datoVacuna = document.querySelectorAll("[name='ListaGeneral_idVacuna[]']");
     var datoElemento = document.querySelectorAll("[name='ElementoProteccion_idElementoProteccion[]']");
     var datoExamen = document.querySelectorAll("[name='FrecuenciaMedicion_idFrecuenciaMedicion[]']");
     var datoTipoExamen = document.querySelectorAll("[name='TipoExamenMedico_idTipoExamenMedico[]']");
+    var datoDescripcion = document.querySelectorAll("[name='descripcionCargoResponsabilidad[]']");
     var dato4 = [];
     var dato5 = [];
     var dato6 = [];
     var dato7 = [];
     var dato8 = [];
+    var dato9 = [];
     
     var valor = '';
     var sw = true;
@@ -58,6 +63,11 @@ function validarFormulario(event)
         dato8[j] = datoTipoExamen[j].value;
     }
 
+    for(var j=0,i=datoDescripcion.length; j<i;j++)
+    {
+        dato9[j] = datoDescripcion[j].value;
+    }
+
     $.ajax({
         async: false,
         url:route,
@@ -73,7 +83,8 @@ function validarFormulario(event)
                 ListaGeneral_idVacuna: dato5, 
                 ElementoProteccion_idElementoProteccion: dato6, 
                 FrecuenciaMedicion_idFrecuenciaMedicion: dato7,
-                TipoExamenMedico_idTipoExamenMedico: dato8
+                TipoExamenMedico_idTipoExamenMedico: dato8,
+                descripcionCargoResponsabilidad: dato9
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -135,6 +146,16 @@ function validarFormulario(event)
                 {
                     (typeof respuesta['TipoExamenMedico_idTipoExamenMedico'+j] === "undefined" ? document.getElementById('TipoExamenMedico_idTipoExamenMedico'+j).style.borderColor = '' : document.getElementById('TipoExamenMedico_idTipoExamenMedico'+j).style.borderColor = '#a94442');
                 }
+
+
+                for(var j=0,i=datoDescripcion.length; j<i;j++)
+                {
+                    (typeof respuesta['descripcionCargoResponsabilidad'+j] === "undefined" ? document.getElementById('descripcionCargoResponsabilidad'+j).style.borderColor = '' : document.getElementById('descripcionCargoResponsabilidad'+j).style.borderColor = '#a94442');
+                }
+
+
+
+                
 
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){
