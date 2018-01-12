@@ -7,6 +7,16 @@
 // }
 
 
+function eliminarArchivo(idDiv)
+{
+    eliminar=confirm("¿Deseas eliminar este archivo?");
+    if (eliminar)
+    {
+        $("#"+idDiv ).remove();  
+        $("#eliminarArchivo").val( $("#eliminarArchivo").val() + idDiv + ",");  
+    }
+}
+
 function validarformulario(event)
 {
     var route = "http://"+location.host+"/programa";
@@ -19,8 +29,10 @@ function validarformulario(event)
     var dato5 = document.getElementById('Tercero_idElabora').value;
     var datoResponsable = document.querySelectorAll("[name='Tercero_idResponsable[]']");
     var datoDocumento = document.querySelectorAll("[name='Documento_idDocumento[]']");
+    var datoActividades = document.querySelectorAll("[name='actividadProgramaDetalle[]']");
     var dato6 = [];
     var dato7 = [];
+    var dato8 = [];
     
     var valor = '';
     var sw = true;
@@ -33,6 +45,11 @@ function validarformulario(event)
     for(var j=0,i=datoDocumento.length; j<i;j++)
     {
         dato7[j] = datoDocumento[j].value;
+    }
+
+    for(var j=0,i=datoActividades.length; j<i;j++)
+    {
+        dato8[j] = datoActividades[j].value;
     }
 
     $.ajax({
@@ -49,7 +66,9 @@ function validarformulario(event)
                 CompaniaObjetivo_idCompaniaObjetivo: dato4, 
                 Tercero_idElabora: dato5, 
                 Tercero_idResponsable: dato6,
-                Documento_idDocumento: dato7
+                Documento_idDocumento: dato7,
+                actividadProgramaDetalle: dato8
+
                 },
         success:function(){
             //$("#msj-success").fadeIn();
@@ -91,6 +110,14 @@ function validarformulario(event)
                 for(var j=0,i=datoDocumento.length; j<i;j++)
                 {
                     (typeof respuesta['Documento_idDocumento'+j] === "undefined" ? document.getElementById('Documento_idDocumento'+j).style.borderColor = '' : document.getElementById('Documento_idDocumento'+j).style.borderColor = '#a94442');
+                }
+
+
+                for(var j=0,i=datoActividades.length; j<i;j++)
+                {
+                    (typeof respuesta['actividadProgramaDetalle'+j] === "undefined" 
+                        ? document.getElementById('actividadProgramaDetalle'+j).style.borderColor = '' 
+                        : document.getElementById('actividadProgramaDetalle'+j).style.borderColor = '#a94442');
                 }
                 var mensaje = 'Por favor verifique los siguientes valores <br><ul>';
                 $.each(respuesta,function(index, value){

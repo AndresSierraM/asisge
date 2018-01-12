@@ -20,4 +20,9 @@ class Programa extends Model
     {
     	return $this->hasMany('App\ProgramaDetalle','Programa_idPrograma');
     }
+
+     public function ProgramaArchivo()
+    {
+        return $this->hasMany('App\ProgramaArchivo','Programa_idPrograma');
+    }
 }

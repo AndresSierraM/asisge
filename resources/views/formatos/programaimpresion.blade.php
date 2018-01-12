@@ -10,51 +10,78 @@
 					<table class="table" width="100%">
 						<thead>
 							<tr>
-								<td colspan="2" align="center">Programa</td>
+								<td colspan="2" align="center" style=" background-color:#337ab7; color:white;">Programa</td>
 							</tr>
 							<tr>
-								<td>Programa</td>
+								<td><b>Programa</b></td>
 								<td>{{$dato->nombrePrograma}}</td>
 							</tr>
 							<tr>
-								<td>Fecha de Elaboracion</td>
+								<td><b>Fecha de Elaboracion</b></td>
 								<td>{{$dato->fechaElaboracionPrograma}}</td>
 							</tr>
 							<tr>
-								<td>Clasificacion de Riesgo</td>
+								<td><b>Clasificacion de Riesgo</b></td>
 								<td>{{$dato->nombreClasificacionRiesgo}}</td>
 							</tr>
 							<tr>
-								<td>Alcance</td>
+								<td><b>Alcance</b></td>
 								<td>{{$dato->alcancePrograma}}</td>
 							</tr>
 							<tr>
-								<td>Objetivo</td>
+								<td><b>Objetivo</b></td>
 								<td>{{$dato->nombreCompaniaObjetivo}}</td>
 							</tr>
 							<tr>
-								<td>Objetivo Especifico</td>
-								<td>{{$dato->objetivoEspecificoPrograma}}</td>
+								<td><b>Objetivo Especifico</b></td>
+								<td><?php echo $dato->objetivoEspecificoPrograma ?></td>
 							</tr>
 							<tr>
-								<td>Elaborado Por</td>
+								<td><b>Elaborado Por</b></td>
 								<td>{{$dato->nombreCompletoTercero}}</td>
 							</tr>
 							
 						</thead>
 					</table>
 					@endforeach
+
+									     	<!--  -->
+					<table class="table table-striped table-bordered" width="100%">
+				      	<thead>
+							<tr>
+								<td style=" background-color:#848484; color:white;"><b>Interacci&oacute;n de los procesos</b></td>
+							@foreach($ProgramaArchivo as $archivo)
+								<td>
+									<?php
+							// Se hace un substr para validar la extencion del archivo tomando desde el "punto".
+							// Si es un pdf o un word va a devolver un mensaje donde dice Archivo Adjunto.
+								if (substr($archivo->rutaProgramaArchivo, -4) === ".pdf" or (substr($archivo->rutaProgramaArchivo, -5)) === ".docx" or (substr($archivo->rutaProgramaArchivo, -5) === ".pptx"))
+									{
+										echo' <style="width:50%; height:50%;><b>Archivo Adjunto</b>';
+									} 
+								 else
+								 	{
+								 		// Si no es un archivo PDF o Word, el sistema mostrara la Imagen 
+								 		echo '<img style="width:50%; height:50%; position:left;" src="http://'.$_SERVER["HTTP_HOST"].'/imagenes/'.$archivo->rutaProgramaArchivo.'"';
+								 	}							
+							?>
+							@endforeach
+								</td>								
+							</tr>	
+			     		</thead>
+			     	</table>
+
 		            <table  class="table table-striped table-bordered" width="100%">
 						<thead>
 							<tr>
-								<td>Actividad</td>
-								<td>Responsable</td>
-								<td>Documento</td>
-								<td>Fecha Planeada</td>
-								<td>Recurso Planeado</td>
-								<td>Fecha Ejecutada</td>
-								<td>Recurso Ejecutado</td>
-								<td>Observacion</td>
+								<td style=" background-color:#848484; color:white;"><b>Actividad</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Responsable</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Documento</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Fecha Planeada</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Recurso Planeado</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Fecha Ejecutada</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Recurso Ejecutado</b></td>
+								<td style=" background-color:#848484; color:white;"><b>Observacion</b></td>
 							</tr>
 						</thead>
 						<tbody>

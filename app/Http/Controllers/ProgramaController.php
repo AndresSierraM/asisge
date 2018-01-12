@@ -33,6 +33,41 @@ class ProgramaController extends Controller
      *
      * @return Response
      */
+
+
+
+
+
+      // Esta funcion es para que cuando suba el archvio vaya al repositorio/temporal y guarde una copia mientras le dan guardar al registro 
+    //Funcion para subir archivos con dropzone
+    public function uploadFiles(Request $request) 
+    {
+ 
+        $input = Input::all();
+ 
+        $rules = array(
+        );
+ 
+        $validation = Validator::make($input, $rules);
+ 
+        if ($validation->fails()) {
+            return Response::make($validation->errors->first(), 400);
+        }
+        
+        $destinationPath = public_path() . '/imagenes/repositorio/temporal'; //Guardo en la carpeta  temporal
+
+        $extension = Input::file('file')->getClientOriginalExtension(); 
+        $fileName = Input::file('file')->getClientOriginalName(); // nombre de archivo
+        $upload_success = Input::file('file')->move($destinationPath, $fileName);
+ 
+        if ($upload_success) {
+            return Response::json('success', 200);
+        } 
+        else {
+            return Response::json('error', 400);
+        }
+    }
+    
     public function create()
     {
         // cuando se crea un nuevo programa, enviamos los maestros requeridos para el encabezado         
@@ -88,8 +123,38 @@ class ProgramaController extends Controller
                ]);
             }
 
-            
-        }
+
+                }
+
+                            // Guardado del dropzone para Adjuntos
+                $arrayImage = $request['ProgramaArchivoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+                for ($i=0; $i < count($arrayImage) ; $i++) 
+                { 
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/programa/'.$arrayImage[$i];
+                        $ruta = '/programa/'.$arrayImage[$i];
+                       
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                        \App\ProgramaArchivo::create([
+                        'Programa_idPrograma' => $programa->idPrograma,
+                        'rutaProgramaArchivo' => $ruta
+                       ]);
+                    }
+
+                }
         return redirect('/programa');
     }
 
@@ -128,8 +193,18 @@ class ProgramaController extends Controller
           
             $programaDetalle = DB::select("SELECT actividadProgramaDetalle,nombreCompletoTercero,fechaPlaneadaProgramaDetalle,nombreDocumentoSoporte,recursoPlaneadoProgramaDetalle,recursoEjecutadoProgramaDetalle,fechaEjecucionProgramaDetalle,observacionProgramaDetalle from programadetalle pd LEFT JOIN tercero t ON t.idTercero = pd.Tercero_idResponsable LEFT JOIN documentosoporte d ON d.idDocumentoSoporte = pd.Documento_idDocumento WHERE Programa_idPrograma =  ".$id);
 
+              // Se llama los registros para saber  cual es  la que va a imprimir el usuario
+            $Programa = \App\Programa::find($id);
+
+            $ProgramaArchivo = DB::SELECT("
+                SELECT pa.idProgramaArchivo,pa.Programa_idPrograma,pa.rutaProgramaArchivo
+                FROM programaarchivo pa
+                LEFT JOIN programa p
+                ON pa.Programa_idPrograma = p.idPrograma
+                WHERE pa.Programa_idPrograma = ".$id);
+
             
-            return view('formatos.programaimpresion',compact('programa','programaDetalle'));
+            return view('formatos.programaimpresion',compact('ProgramaArchivo','programa','programaDetalle'));
        } 
         
     }
@@ -194,6 +269,50 @@ class ProgramaController extends Controller
                 'observacionProgramaDetalle' => $request['observacionProgramaDetalle'][$i]
                ]);
             }
+
+
+
+                        //Para sobreescribir  el archivo 
+            // HAGO UN INSERT A LOS NUEVOS ARCHIVOS SUBIDOS EN EL DROPZONE de 
+            if ($request['ProgramaArchivoArray'] != '') 
+            {
+                $arrayImage = $request['ProgramaArchivoArray'];
+                $arrayImage = substr($arrayImage, 0, strlen($arrayImage)-1);
+                $arrayImage = explode(",", $arrayImage);
+                $ruta = '';
+
+                for($i = 0; $i < count($arrayImage); $i++)
+                {
+                    if ($arrayImage[$i] != '' || $arrayImage[$i] != 0) 
+                    {
+                        $origen = public_path() . '/imagenes/repositorio/temporal/'.$arrayImage[$i];
+                        $destinationPath = public_path() . '/imagenes/programa/'.$arrayImage[$i];
+                        
+                        if (file_exists($origen))
+                        {
+                            copy($origen, $destinationPath);
+                            unlink($origen);
+                            $ruta = '/programa/'.$arrayImage[$i];
+
+                            DB::table('programaarchivo')->insert(['idProgramaArchivo' => '0', 'Programa_idPrograma' =>$id,'rutaProgramaArchivo' => $ruta]);
+                        }   
+                        else
+                        {
+                            echo "No existe el archivo";
+                        }
+                    }
+                }
+            }
+               // Para eliminar los archivos que se muestran en el preview del archivo cargado.Se hace una funcion en el JS para eliminar el div 
+            // ELIMINO LOS ARCHIVOS
+            $idsEliminar = $request['eliminarArchivo'];
+            $idsEliminar = substr($idsEliminar, 0, strlen($idsEliminar)-1);
+            if($idsEliminar != '')
+            {
+                $idsEliminar = explode(',',$idsEliminar);
+                \App\ProgramaArchivo::whereIn('idProgramaArchivo',$idsEliminar)->delete();
+            }
+
 
             return redirect('/programa');
         }
