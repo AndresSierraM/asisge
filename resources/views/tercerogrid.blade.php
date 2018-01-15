@@ -76,6 +76,7 @@ $titulo = ($tipoTercero == '*01*' ? 'Tercero Tipo Empleado' : ($tipoTercero == '
                             <li><a class="toggle-vis" data-column="5"><label> Estado</label></a></li>
                             <li><a class="toggle-vis" data-column="6"><label> Cargo</label></a></li>
                             <li><a class="toggle-vis" data-column="7"><label> Fecha Ingreso</label></a></li>
+                            <li><a class="toggle-vis" data-column="8"><label> Centro de Costos</label></a></li>
                         </ul>
                     </div>
                     <table id="ttercero" name="ttercero" class="display table-bordered" width="100%">
@@ -93,6 +94,7 @@ $titulo = ($tipoTercero == '*01*' ? 'Tercero Tipo Empleado' : ($tipoTercero == '
                                 <th><b>Estado</b></th>
                                 <th><b>Cargo</b></th>
                                 <th><b>Fecha Ingreso</b></th>
+                                <th><b>Centro de Costos</b></th>
                             </tr>
                         </thead>
                                         <tfoot>
@@ -107,6 +109,7 @@ $titulo = ($tipoTercero == '*01*' ? 'Tercero Tipo Empleado' : ($tipoTercero == '
                                 <th>Estado</th>
                                 <th>Cargo</th>
                                 <th>Fecha Ingreso</th>
+                                <th>Centro de Costos</th>
 
                             </tr>
                         </tfoot>        

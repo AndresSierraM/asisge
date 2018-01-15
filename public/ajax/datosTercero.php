@@ -20,7 +20,8 @@
             ->leftJoin('cargo', 'Cargo_idCargo', '=', 'idCargo') 
             ->leftJoin('terceroinformacion','Tercero_idTercero','=','idTercero')
             ->leftJoin('tipoidentificacion', 'TipoIdentificacion_idTipoIdentificacion', '=', 'idTipoIdentificacion')
-            ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo,fechaIngresoTerceroInformacion'))
+            ->leftJoin('centrocosto', 'CentroCosto_idCentroCosto', '=', 'idCentroCosto')
+            ->select(DB::raw('idTercero, nombreTipoIdentificacion , documentoTercero, nombreCompletoTercero, estadoTercero,nombreCargo,fechaIngresoTerceroInformacion,nombreCentroCosto'))
             ->where('tercero.Compania_idCompania','=', \Session::get('idCompania'))
             ->where('tipoTercero', '=', $tipo)
             // Se hace un grupby para que solo se filtre por id papa
@@ -45,6 +46,7 @@
         $row[$key][] = $value->nombreCargo;
         // En la salida de la informacion se hace una condicion de que si tiene en 000-000  o no esta diligenciado el campo ,la fecha de ingreso mostrara en la grid el campo vacio.
         $row[$key][] = ($value->fechaIngresoTerceroInformacion == "0000-00-00" ? "" : $value->fechaIngresoTerceroInformacion);
+        $row[$key][] = $value->nombreCentroCosto;
 
         
 
