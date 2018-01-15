@@ -2,6 +2,8 @@
 
 @section('contenido')
 	{!!Form::model($inspeccion)!!}
+	<!-- Se quema el overflow-y auto apra que salga la barra vertical cuando tiene mucha informacion -->
+	<html lang="es" style="overflow-y: auto;">
 		<div class="col-lg-12">
             <div class="panel panel-default" style="width:1500px;">
 				<div class="panel-body" >
