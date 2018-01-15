@@ -25,7 +25,7 @@ class CategoriaAgendaRequest extends Request
     {
         
         return[
-            "codigoCategoriaAgenda" => "required|alpha|max:20|unique:categoriaagenda,codigoCategoriaAgenda,".$this->get('idCategoriaAgenda') .",idCategoriaAgenda,Compania_idCompania,".(\Session::get('idCompania')),
+            "codigoCategoriaAgenda" => "required|string|max:20|unique:categoriaagenda,codigoCategoriaAgenda,".$this->get('idCategoriaAgenda') .",idCategoriaAgenda,Compania_idCompania,".(\Session::get('idCompania')),
             "nombreCategoriaAgenda" => "required|string|max:80"
         ];
     }
