@@ -347,8 +347,8 @@ Route::group(['middleware' => 'auth'], function ()
 
 
     Route::get('datosCiudad', function()
-    {
-        include public_path().'/ajax/datosCiudad.php';
+    
+{        include public_path().'/ajax/datosCiudad.php';
     });
 
     Route::get('datosTipoIdentificacion', function()
@@ -380,6 +380,18 @@ Route::group(['middleware' => 'auth'], function ()
         include public_path().'/ajax/datosTercero.php';
     });
 
+    Route::get('datosTerceroEmpleado', function()
+    {
+        include public_path().'/ajax/datosTerceroEmpleado.php';
+    });
+    Route::get('datosTerceroCliente', function()
+    {
+        include public_path().'/ajax/datosTerceroCliente.php';
+    });
+     Route::get('datosTerceroProveedor', function()
+    {
+        include public_path().'/ajax/datosTerceroProveedor.php';
+    });
     Route::get('datosCargo', function()
     {
         include public_path().'/ajax/datosCargo.php';

@@ -402,6 +402,8 @@ function quitarCaracterEspecial(str) {
     // recibe el texto completo en str
      // Se valida el string que esta recibiendo para que elimine el ENTER y lo deje vacio
     str.replace(/\r\n/g, "");
+    // Lo que quede restante en la variable la va a limpiar en la segunda, ya sea tabulaciones
+    str.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
     // 1. lo convierte todo a minúsculas y lo guarda en lower
     var lower = str.toLowerCase();
     // 2. lo convierte todo a mayúsculas y lo guarda en upper

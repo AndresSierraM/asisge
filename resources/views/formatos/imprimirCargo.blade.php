@@ -10,6 +10,7 @@
 						<thead>
 							<tr>
 								<td colspan="2" align="center"  style=" background-color:#337ab7; color:white;">Cargos</td>
+								<?php echo \Session::get("nombreCompania") ?>
 							</tr>
 							<tr>
 								<td><b>Codigo</b></td>

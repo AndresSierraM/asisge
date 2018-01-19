@@ -38,9 +38,29 @@ class TerceroController extends Controller
         $datos = consultarPermisos($vista);
 
         if($datos != null)
-            return view('tercerogrid', compact('datos'));
+        {
+            // Se hace la condicion para las 3 rutas del parametro de tipo de tercero con el fin de que muestre la grid correspondiente
+            if ($vista ==  basename($_SERVER["PHP_SELF"].'?tipoTercero='.'*01*')) 
+                {
+                     return view('terceroempleadogrid', compact('datos'));
+                }
+            else 
+            if ($vista ==  basename($_SERVER["PHP_SELF"].'?tipoTercero='.'*02*')) 
+                {
+                     return view('terceroproveedorgrid', compact('datos'));
+                }
+            else
+            if ($vista == basename($_SERVER["PHP_SELF"].'?tipoTercero='.'*03*')) 
+                {
+                     return view('terceroclientegrid', compact('datos'));
+                }
+
+           
+        }
         else
+        {
             return view('accesodenegado');
+        }
     }
 
     public function indexdropzone() 
