@@ -727,7 +727,7 @@
 																<i class="fa fa-user" style="width: 14px;"></i>
 															</span>
 															{!!Form::select('composicionFamiliarTerceroInformacion',
-															array('VS'=>'Vive Solo','SH'=>'Solo con Hijos','EH'=>'Esposo e Hijos','FO'=>'Familia de Origen','A'=>'Amigos'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->composicionFamiliarTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la composici&oacute;n familiar",'style'=>'width:340px;'])!!}
+															array('VS'=>'Vive Solo','SH'=>'Solo con Hijos','EH'=>'Esposo e Hijos','FO'=>'Familia de Origen','A'=>'Amigos','SE'=>'Solo con Esposo(a)'),(isset($tercero->terceroInformaciones) ? $tercero->terceroInformaciones->composicionFamiliarTerceroInformacion : null),["class" => "js-example-placeholder-single js-states form-control", "placeholder" =>"Seleccione la composici&oacute;n familiar",'style'=>'width:340px;'])!!}
 														</div>
 													</div>
 												</div>
