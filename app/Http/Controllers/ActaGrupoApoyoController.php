@@ -351,7 +351,7 @@ class ActaGrupoApoyoController extends Controller
                 'actividadGrupoApoyoDetalle' => $request['actividadGrupoApoyoDetalle'][$i],
                 'Tercero_idResponsableDetalle' => $request['Tercero_idResponsableDetalle'][$i],
                 'fechaPlaneadaActaGrupoApoyoDetalle' => $request['fechaPlaneadaActaGrupoApoyoDetalle'][$i],
-                'DocumentoSoporte_idDocumentoSoporte' => $request['DocumentoSoporte_idDocumentoSoporte'][$i],
+                 'DocumentoSoporte_idDocumentoSoporte' => (($request['DocumentoSoporte_idDocumentoSoporte'][$i] == '' or $request['DocumentoSoporte_idDocumentoSoporte'][$i] == 0) ? null : $request['DocumentoSoporte_idDocumentoSoporte'][$i]),
                 'recursoPlaneadoActaGrupoApoyoDetalle' => $request['recursoPlaneadoActaGrupoApoyoDetalle'][$i],
                 'recursoEjecutadoActaGrupoApoyoDetalle' => $request['recursoEjecutadoActaGrupoApoyoDetalle'][$i],
                 'fechaEjecucionGrupoApoyoDetalle' => $request['fechaEjecucionGrupoApoyoDetalle'][$i],
